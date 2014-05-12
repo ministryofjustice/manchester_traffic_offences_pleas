@@ -1,0 +1,7 @@
+# Manchester Traffic Offences
+
+## Installation
+
+This is a standard django install.  Use `virtualenv` and `pip install requirements/local.txt` for local dev.
+
+TODO Make this better ;)
