@@ -124,7 +124,9 @@ INSTALLED_APPS = (
     'south',
 )
 
-PROJECT_APPS = ()
+PROJECT_APPS = (
+    'testing',
+)
 
 INSTALLED_APPS += PROJECT_APPS
 
