@@ -2,7 +2,7 @@
 # After the first "pip install -r", just run "pip freeze" and add the version
 # to each package in each requirements/*.txt.
 
-django
+Django==1.6.5
 
 django-model-utils
 
@@ -12,3 +12,6 @@ South
 Pillow
 
 lxml
+
+# MOJ Template
+django-moj-template==0.11.1
