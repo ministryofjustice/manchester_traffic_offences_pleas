@@ -11,7 +11,7 @@ sys.path.insert(0, root('apps'))
 
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+template_DEBUG = DEBUG
 
 ADMINS = ()
 
@@ -113,6 +113,18 @@ TEMPLATE_DIRS = (
     root('templates'),
 )
 
+TEMPLATE_CONTEXT_PROCESSORS =  (
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    'django.core.context_processors.request',
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages",
+    "django.contrib.auth.context_processors.auth",
+    'manchester_traffic_offences.context_processors.globals'    
+)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -126,6 +138,7 @@ INSTALLED_APPS = (
 
 PROJECT_APPS = (
     'testing',
+    'moj_template',
 )
 
 INSTALLED_APPS += PROJECT_APPS
