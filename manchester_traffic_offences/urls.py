@@ -15,5 +15,11 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     
-    url(r'^test/', TemplateView.as_view(template_name="test.html")),
+    url(r'^$', TemplateView.as_view(template_name="start.html")),
+    url(r'^plea/', TemplateView.as_view(
+        template_name="plea_form.html"), 
+        name="plea_form"),
+    url(r'^feedback/', TemplateView.as_view(
+        template_name="feedback.html"), 
+        name="feedback"),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
