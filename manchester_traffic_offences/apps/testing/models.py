@@ -14,6 +14,8 @@ class Defendant(models.Model):
     email = models.EmailField()
     lawyer_name = models.TextField(blank=True)
     is_company = models.BooleanField(default=False)
+    driver_number = models.CharField(blank=False, max_length=100)
+    ni_number = models.CharField(blank=True, max_length=100)
 
 class Plea(models.Model):
     urn = models.CharField(primary_key=True, max_length=100)
