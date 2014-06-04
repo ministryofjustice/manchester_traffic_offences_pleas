@@ -19,9 +19,11 @@ class Defendant(models.Model):
 
 class Plea(models.Model):
     urn = models.CharField(primary_key=True, max_length=100)
+    charge = models.ForeignKey('Charge')
     defendant = models.ForeignKey(Defendant)
     plea = models.CharField(blank=True, max_length=100)
     mitigations = models.TextField(blank=True)
+    
 
 class Charge(models.Model):
     urn = models.CharField(primary_key=True, max_length=100)
@@ -63,4 +65,5 @@ class Court(models.Model):
 
 class CourtUser(models.Model):
     court = models.ForeignKey(Court)
+
 

@@ -15,3 +15,5 @@ lxml
 
 # MOJ Template
 django-moj-template==0.11.1
+
+django_extensions
