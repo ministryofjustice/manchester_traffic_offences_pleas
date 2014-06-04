@@ -59,7 +59,7 @@ manchester_traffic_offences/settings/local.py
 manchester_traffic_offences/settings/production.py
 
 # collect static output directory
-manchester_traffic_offences/assets/
+#manchester_traffic_offences/assets/
 manchester_traffic_offences/static/
 
 .DS_Store
