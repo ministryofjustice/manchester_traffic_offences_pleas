@@ -1,3 +1,4 @@
+
 // GOV.UK Toolkit imports
 @import "govuk_frontend_toolkit/stylesheets/colours";
 @import "govuk_frontend_toolkit/stylesheets/conditionals";
@@ -19,7 +20,13 @@
 @import "utilities";
 @import "icons";
 
+// MoJ Styles
+#global-header .header-wrapper {max-width: 990px; margin: 0 auto; padding: 0.5em 15px;}
 
-* {
-	background-color:red;
-}
+label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.31579; font-weight: 400; text-transform: none; display: block;}
+
+input[type=text], input[type="number"], input[type=email], input[type=tel], input[type=date], select[type=text], select[type=email], select[type=tel], select[type=date] {width: 250px; padding: 5px 4px 2px; color: #0b0c0c; border: 1px solid #bfc1c3; margin: 0 0 10px 0;}
+
+input, select {font-family: "nta", Arial, sans-serif;font-size: 19px; line-height: 1.31579; font-weight: 400;text-transform:none; margin: 0;}
+
+select {border-color: #bfc1c3;}
