@@ -140,6 +140,7 @@ INSTALLED_APPS = (
 PROJECT_APPS = (
     'testing',
     'moj_template',
+    'defendant',
 )
 
 INSTALLED_APPS += PROJECT_APPS
