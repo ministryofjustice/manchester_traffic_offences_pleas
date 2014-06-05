@@ -13,6 +13,11 @@ class URNField(CharField):
         if not is_valid_urn_format(value):
             raise ValidationError("URN isn't valid")
 
+# Because of this bug?
+# http://stackoverflow.com/questions/14386536/instantiating-django-model-raises-typeerror-isinstance-arg-2-must-be-a-class
+from django.db.models.loading import cache as model_cache
+    if not model_cache.loaded:
+        model_cache._populate()
 
 class Defendant(models.Model):
     urn = URNField(primary_key=True, max_length=100)
