@@ -4,8 +4,6 @@ from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 
 
-from functools import wraps
-
 def urn_required(f):
     def wrap(request, *args, **kwargs):
         if 'urn' in request.session:
