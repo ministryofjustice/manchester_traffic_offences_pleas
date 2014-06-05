@@ -9,7 +9,7 @@
 <form class="form">
 	<p>By filling this form, I plead guilty and ask the court to deal with my case in my absence.</p>
 	<fieldset>
-		<h2>1. Personal details</h2>
+		<h2>Personal details</h2>
 		<div class="group">
 			<label for="urn">
 				URN
@@ -50,7 +50,17 @@
 				What is your date of birth?
 				<span class="hint">For example 31/12/1970</span>
 			</label>
-			<input type="number" name="dob" value="" id="dob">
+			<select class="day" id="" name="">
+				<option value="">day</option>
+			</select>
+			<select class="month" id="" name="">
+				<option value="">Month</option>
+			</select>
+			<select class="year" id="" name="">
+				<option value="">Year</option>
+			</select>
+			
+			
 		</div>
 		
 		<div class="group">
@@ -77,14 +87,14 @@
 	</fieldset>
 	
 	<fieldset>
-		<h2>2. Mitigating Circumstances on Guilty Plea</h2>
+		<h2>Mitigating Circumstances on Guilty Plea</h2>
 		<p>Mitigating circumstances are facts about the offence or yourself, which tend to make the offence less serious. The legal advisor will read out everything you write in the space below to the court. (You may write your mitigation on a separate sheet if you wish.)</p>
 		<textarea></textarea>
 	</fieldset>
 	
 	
 	<fieldset>
-		<h2>3. Financial Position</h2>
+		<h2>Financial Position</h2>
 		<p>You are legally required to provide full details of your financial means and it is an offence not to do so (<cite>S.84 Magistrates Courts Act 1980</cite>).</p> <!--
 			TODO Link to the above on legislation?
 		-->
