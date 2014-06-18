@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Example Step</h2>
+{{ request.session.plea.example }}<a href="{% url "example_step" %}">edit</a>
+
+{% endblock content %}
