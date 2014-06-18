@@ -3,6 +3,7 @@ import json
 from django.core.mail import send_mail
 from django.shortcuts import render
 from django.core.urlresolvers import reverse_lazy
+from django.http import HttpResponseRedirect
 
 from django.views.generic import FormView
 from django.views.generic import TemplateView
@@ -29,7 +30,7 @@ class ReviewStep(TemplateView):
     template_name = "plea/review.html"
     
 class CompleteStep(TemplateView):
-    http_method_names = ['post',]
+    http_method_names = ['get', 'post',]
     template_name = "plea/complete.html"
     
     def post(self, request, *args, **kwargs):
@@ -39,8 +40,8 @@ class CompleteStep(TemplateView):
             '[TEST] A plea has been submitted',
             json.dumps(self.request.session['plea']),
             'sym.roe@digital.justice.gov.uk',
-            ['manchesterteam@digital.justice.gov.uk'],
+            ['manchesterteam+testplea@digital.justice.gov.uk'],
             fail_silently=False
         )
         del self.request.session['plea']
-        return self.get(request)
+        return HttpResponseRedirect(reverse_lazy("complete_step"))
