@@ -20,9 +20,7 @@ urlpatterns = patterns('',
     
     url(r'^urn/', DefendantLogin.as_view(), name="urn"),
     
-    url(r'^plea/',
-        urn_required(TemplateView.as_view(template_name="plea_form.html")),
-        name="plea_form"),
+    url(r'^plea/', include('plea.urls',)),
     
     url(r'^feedback/', TemplateView.as_view(
         template_name="feedback.html"), 
