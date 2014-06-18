@@ -141,6 +141,7 @@ PROJECT_APPS = (
     'testing',
     'moj_template',
     'defendant',
+    'plea',
 )
 
 INSTALLED_APPS += PROJECT_APPS
@@ -173,6 +174,8 @@ LOGGING = {
         },
     }
 }
+
+INTERNAL_IPS = ['127.0.0.1']
 
 
 # EMAILS
