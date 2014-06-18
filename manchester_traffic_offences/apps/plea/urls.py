@@ -7,4 +7,5 @@ from . import views
 urlpatterns = patterns('',
     url(r'^example/$', views.ExampleStep.as_view(), name='example_step'),
     url(r'^review/$', views.ReviewStep.as_view(), name='review_step'),
+    url(r'^complete/$', views.CompleteStep.as_view(), name='complete_step'),
 )
