@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method=POST>
+	{% csrf_token %}
+	{{ wizard.management_form }}
+	{{ wizard.form }}
+	<button type=submit>Submit</button>
+
+</form>
+{% endblock content %}
