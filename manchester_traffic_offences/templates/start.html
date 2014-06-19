@@ -12,7 +12,7 @@
 	<div class="text panel-indent">
 		<p>placeholder for 33% discount text and no need to go to court.</p>
     </div>
-<p> < body text ></p>
+    <p> < body text ></p>
     
     <h4>You will need:</h4>
     
@@ -22,13 +22,21 @@
         <li>Access to your financial details</li>
         <li>Plea date</li>
      
+
     </ul>
     
     <p><strong>Fine and sentencing details will be sent to you by post within [x] days</strong></p>
     <p><strong>If the decision is to disqualify you from driving, another hearing will be scheduled for you to attend at a later date.</strong></p>
     
-    <a class=button button-get-started href="{% url "example_step" %}" role=button>
-        Start now
+	<ul>
+		<li><a href="{% url "plea_form_step" "about" %}">About</a></li>
+		<li><a href="{% url "plea_form_step" "plea" %}">Plea</a></li>
+		<li></li>
+	</ul>
+	
+	
+    <a class=button href="{% url "plea_form" %}" role=button>
+        Plea guilty now
     </a>
 </section>
 
