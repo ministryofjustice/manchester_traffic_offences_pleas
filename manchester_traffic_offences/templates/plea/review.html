@@ -1,13 +1,53 @@
-{% extends "base.html" %}
+{% extends "plea/base.html" %}
 
 {% block content %}
 
-<h2>Example Step</h2>
-{{ request.session.plea.example }}<a href="{% url "plea_form" %}">edit</a>
+<style>
+/*Sorry Vera, hacking this in for now! */
+h1 {
+    font-size:2em;
+    margin-top:0.5em;
+}
 
-<form method=POST action="{% url "complete_step" %}">
-	{% csrf_token %}
-	<button class="button">Confirm</button>
+h2 {
+    font-size:1.5em;
+    margin-top:0.5em;
+}
+
+dt {
+    font-weight:bold;
+}
+dd {
+    margin-left:1em;
+}
+
+</style>
+
+<form method=POST>
+    {% csrf_token %}
+    {{ wizard.management_form }}
+    <h1>Confirm</h1>
+    <h2>About</h2>
+    <dl>
+        <dt>Date of hearing</dt>
+        <dd>{{ all_data.date_of_hearing }}</dd>
+        <dt>Name</dt>
+        <dd>{{ all_data.name }}</dd>
+        <dt>URN</dt>
+        <dd>{{ all_data.urn }}</dd>
+    </dl>
+    <a class="button" href="{% url "plea_form_step" "about" %}?next=review">Edit</a>
+    
+    <h2>Plea</h2>
+    <dl>
+        <dt>Plea</dt>
+        <dd>{{ all_data.guilty }}</dd>
+        <dt>Mitigations</dt>
+        <dd>{{ all_data.mitigations }}</dd>
+        <dt>Understand?</dt>
+        <dd>{{ all_data.understand }}</dd>
+    </dl>
+    <a class="button" href="{% url "plea_form_step" "plea" %}">Edit</a>
+
 </form>
-
 {% endblock content %}
