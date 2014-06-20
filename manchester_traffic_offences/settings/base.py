@@ -135,6 +135,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'south',
     'django_extensions',
+    'django.contrib.formtools',
 )
 
 PROJECT_APPS = (

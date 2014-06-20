@@ -2,9 +2,15 @@
 
 {% block content %}
 <form method=POST>
-	{% csrf_token %}
-	{{ wizard.management_form }}
-	{{ wizard.form }}
-	<button type=submit>Submit</button>
+    {% csrf_token %}
+    {{ wizard.management_form }}
+    
+    
+    {{ wizard.form }}
+    
+    {% if next %}
+    <input type="hidden" name="next" value="{{ next }}">
+    {% endif %}
+    <button type=submit>Submit</button>
 </form>
 {% endblock content %}
