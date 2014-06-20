@@ -1,25 +1,31 @@
 from django import forms
-from django.forms.widgets import Textarea
+from django.forms.widgets import Textarea, RadioSelect
 
 
 class BasePleaStepForm(forms.Form):
+    """
+    Note that names in these forms can't be the same, otherwise they will get 
+    merged in to the last value used.
+    """
     pass
-    # step_name = None
-
-    # def save(self, request):
-    #     assert self.step_name is not None, "step_name is not defined"
-    #     plea = request.session.get('plea', {})
-    #     plea[self.step_name] = self.cleaned_data
-    #     request.session['plea'] = plea
-    
 
 class AboutForm(BasePleaStepForm):
-    name = forms.CharField(max_length=255)
     date_of_hearing = forms.SplitDateTimeField()
     urn = forms.CharField(max_length=255)
+    name = forms.CharField(max_length=255)
 
 class PleaInfoForm(BasePleaStepForm):
-    mitigations = forms.CharField(widget=Textarea())
-    guilty = forms.BooleanField()
-    understand = forms.BooleanField()
     
+    PLEA_CHOICES = (
+        ('guilty', 'Guilty'),
+        ('not_guilty', 'Not Guilty'),
+        ('both', 'Both'),
+    )
+    
+    guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect())
+    mitigations = forms.CharField(widget=Textarea())
+    understand = forms.BooleanField()
+
+class ReviewForm(BasePleaStepForm):
+    # Left blank for now, as this isn't a real form.
+    pass
