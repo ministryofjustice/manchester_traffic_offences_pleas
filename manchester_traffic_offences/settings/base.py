@@ -122,20 +122,21 @@ TEMPLATE_CONTEXT_PROCESSORS =  (
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
     "django.contrib.auth.context_processors.auth",
-    'manchester_traffic_offences.context_processors.globals'    
+    'manchester_traffic_offences.context_processors.globals',
 )
 
 INSTALLED_APPS = (
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.formtools',
+    'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.sites',
-    'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
     'south',
     'django_extensions',
-    'django.contrib.formtools',
+    'lettuce.django',
 )
 
 PROJECT_APPS = (
@@ -190,5 +191,5 @@ except ImportError:
 
 
 # importing test settings file if necessary (TODO chould be done better)
-if len(sys.argv) > 1 and 'test' in sys.argv[1]:
+if len(sys.argv) > 1 and 'test' or 'harvest' in sys.argv[1]:
     from .testing import *
