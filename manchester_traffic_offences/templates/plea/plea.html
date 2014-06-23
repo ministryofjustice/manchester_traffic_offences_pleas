@@ -1,6 +1,12 @@
 {% extends "plea/base.html" %}
 
 {% block content %}
+<style>
+    input[name=plea-guilty][value=guilty]:after {
+        content:"asdad";
+    }
+</style>
+
 <form method=POST>
 	{% csrf_token %}
 	{{ wizard.management_form }}

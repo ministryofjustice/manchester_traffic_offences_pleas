@@ -2,12 +2,10 @@ import datetime
 
 from django.db import models
 
-from defendant.models import Defendant
-
 class Plea(models.Model):
     urn = models.CharField(primary_key=True, max_length=100)
     charge = models.ForeignKey('Charge')
-    defendant = models.ForeignKey(Defendant)
+    defendant = models.ForeignKey('defendant.Defendant')
     plea = models.CharField(blank=True, max_length=100)
     mitigations = models.TextField(blank=True)
     
