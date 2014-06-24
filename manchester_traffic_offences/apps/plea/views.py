@@ -43,7 +43,7 @@ class PleaForms(NamedUrlSessionWizardView):
     
     def done(self, form_list, **kwargs):
         # Send the email
-        context_data = []
+        context_data = {}
 
         for form in form_list:
             context_data.update(form.cleaned_data)
