@@ -10,8 +10,8 @@ admin.autodiscover()
 
 from django.views.generic import TemplateView
 
-from defendant.views import DefendantLogin
-from defendant.decorators import urn_required
+from apps.defendant.views import DefendantLogin
+from apps.defendant.decorators import urn_required
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
