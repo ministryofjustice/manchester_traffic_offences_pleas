@@ -4,6 +4,9 @@ from django.conf import settings
 
 
 class TemplateAttachmentEmail(object):
+    """
+    Email with a templated attachment.
+    """
     def __init__(self, from_address, attachment_name, attachment_template,
                  attachment_data, attachment_mime):
         self.from_address = from_address
@@ -24,6 +27,12 @@ class TemplateAttachmentEmail(object):
 
 
 def send_plea_email(context_data):
+    """
+    Sends a plea email. All addresses, content etc. are defined in
+    settings.
+
+    context_data: dict populated by form  fields
+    """
     plea_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
                                          settings.PLEA_EMAIL_ATTACHMENT_NAME,
                                          settings.PLEA_EMAIL_TEMPLATE,

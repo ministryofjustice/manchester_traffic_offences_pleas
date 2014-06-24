@@ -1,20 +1,17 @@
-import json
-
-from django.core.mail import send_mail
-from django.shortcuts import render
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
-from django.core.serializers.json import DjangoJSONEncoder
 from django.views.generic import TemplateView
 from django.contrib.formtools.wizard.views import NamedUrlSessionWizardView
 
 from . import forms
+from email import send_plea_email
 
 PLEA_FORMS = [
-        ("about", forms.AboutForm),
-        ("plea", forms.PleaInfoForm),
-        ("review", forms.ReviewForm),
-    ]
+    ("about", forms.AboutForm),
+    ("plea", forms.PleaInfoForm),
+    ("review", forms.ReviewForm),
+]
+
 PLEA_TEMPLATES = {
     "about": "plea/about.html",
     "plea": "plea/plea.html",
@@ -24,7 +21,7 @@ PLEA_TEMPLATES = {
 
 class PleaForms(NamedUrlSessionWizardView):
     def get_template_names(self):
-           return [PLEA_TEMPLATES[self.steps.current]]
+        return [PLEA_TEMPLATES[self.steps.current]]
 
     def get_context_data(self, form, **kwargs):
         context = super(PleaForms, self).get_context_data(form=form, **kwargs)
@@ -43,27 +40,18 @@ class PleaForms(NamedUrlSessionWizardView):
                 next_url = self.get_step_url(self.request.GET['next'])
                 return HttpResponseRedirect(next_url)
         return next_form
-        
     
     def done(self, form_list, **kwargs):
         # Send the email
-        # TODO Extract this out properly.
-        
-        forms_dict_list = []
-        for i, form in enumerate(form_list):
-            forms_dict_list.append({
-                PLEA_FORMS[i][0]: form.cleaned_data
-            })
-        
-        send_mail(
-            '[TEST] A plea has been submitted',
-            json.dumps(forms_dict_list, cls=DjangoJSONEncoder),
-            'sym.roe@digital.justice.gov.uk',
-            ['manchesterteam+testplea@digital.justice.gov.uk'],
-            fail_silently=False
-        )
+        context_data = []
+
+        for form in form_list:
+            context_data.update(form.cleaned_data)
+
+        send_plea_email(context_data)
 
         return HttpResponseRedirect(reverse_lazy("complete_step"))
+
 
 class CompleteStep(TemplateView):
     template_name = "plea/complete.html"
