@@ -5,3 +5,5 @@ model-mommy
 
 -e git+https://github.com/gabrielfalcao/lettuce.git#egg=lettuce
 cssselect
+splinter
+lettuce_webdriver
