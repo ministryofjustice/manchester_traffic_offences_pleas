@@ -1,14 +1,12 @@
 from django.conf.urls import patterns, url
-from django.contrib.auth import views as django_views
-from django.core.urlresolvers import reverse_lazy
 
 from . import views
 
 plea = views.PleaForms.as_view(
-            views.PLEA_FORMS,
-            url_name='plea_form_step',
-            done_step_name='complete_step'
-        )
+    views.PLEA_FORMS,
+    url_name='plea_form_step',
+    done_step_name='complete_step'
+)
 
 urlpatterns = patterns('',
     url(r'^(?P<step>.+)/$', plea, name='plea_form_step'),
