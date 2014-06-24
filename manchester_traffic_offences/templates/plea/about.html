@@ -1,10 +1,42 @@
 {% extends "plea/base.html" %}
 
 {% block content %}
-<form method=POST>
+<header class="page-header group">
+	<hgroup>
+		<h1>Access your plea online account</h1>
+	</hgroup>
+	<p>Leaad text</p>
+</header>
+
+<form method=POST class="form">
 	{% csrf_token %}
 	{{ wizard.management_form }}
-	{{ wizard.form }}
-	<button type=submit>Submit</button>
+	<h4>Enter your hearing date</h4>
+	<p>hint text with img thumb</p>
+
+	{{ wizard.form.name.errors }}
+    <label for="{{ wizard.form.date_of_hearing.name }}">{{ wizard.form.name.label }}</label>
+    <input type="text" name="{{ wizard.form.date_of_hearing.name }}" value="{{ wizard.form.date_of_hearing.value }}" id="{{ wizard.form.date_of_hearing.name }}">
+	
+	<label for="{{ wizard.form.date_of_hearing.name }}">{{ wizard.form.name.label }}</label>
+    <input type="text" name="{{ wizard.form.date_of_hearing.name }}" value="{{ wizard.form.date_of_hearing.value }}" id="{{ wizard.form.date_of_hearing.name }}">
+
+<label for="{{ wizard.form.date_of_hearing.name }}">{{ wizard.form.name.label }}</label>
+    <input type="text" name="{{ wizard.form.date_of_hearing.name }}" value="{{ wizard.form.date_of_hearing.value }}" id="{{ wizard.form.date_of_hearing.name }}">
+
+	<h4>Enter your unique reference number</h4>
+	<p>hint text with img thumb</p>
+	{{ wizard.form.name.errors }}
+    <label for="{{ wizard.form.name.name }}">{{ wizard.form.name.label }}</label>
+    <input type="text" name="{{ wizard.form.name.name }}" value="{{ wizard.form.name.value }}" id="{{ wizard.form.name.name }}">
+
+	
+	<h4>Enter your full name</h4>
+	{{ wizard.form.name.errors }}
+    <label for="{{ wizard.form.name.name }}">{{ wizard.form.name.label }}</label>
+    <input type="text" name="{{ wizard.form.name.name }}" value="{{ wizard.form.name.value }}" id="{{ wizard.form.name.name }}">
+	
+
+	<button class="button" type=submit>Continue</button>
 </form>
 {% endblock content %}

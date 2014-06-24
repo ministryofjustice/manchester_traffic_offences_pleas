@@ -3,41 +3,25 @@
 {% block content %}
 <header class="page-header group">
     <hgroup>
-        <h1>Plea online</h1>
+        <h1>Make your plea online</h1>
     </hgroup>
 </header>
 <section>
-
-    <h2>Make your plea online</h2>
 	<div class="text panel-indent">
-		<p>placeholder for 33% discount text and no need to go to court.</p>
+		<p>This service is for Manchester Magistrates court for traffic offences.</p>
     </div>
-    <p> < body text ></p>
+    <p> Lorem ipsum....</p>
     
     <h4>You will need:</h4>
-    
-    <ul>
+    <ul class="list-bullet text">
         <li>Your postal requistion pack</li>
         <li>It will take XX minutes to complete</li>
         <li>Access to your financial details</li>
         <li>Plea date</li>
-     
-
     </ul>
-    
     <p><strong>Fine and sentencing details will be sent to you by post within [x] days</strong></p>
     <p><strong>If the decision is to disqualify you from driving, another hearing will be scheduled for you to attend at a later date.</strong></p>
-    
-	<ul>
-		<li><a href="{% url "plea_form_step" "about" %}">About</a></li>
-		<li><a href="{% url "plea_form_step" "plea" %}">Plea</a></li>
-		<li></li>
-	</ul>
-	
-	
-    <a class=button href="{% url "plea_form" %}" role=button>
-        Plea guilty now
-    </a>
+    <a class="button button-get-started" href="{% url "plea_form" %}" role=button>Start</a>
 </section>
 
 {% endblock content %}
