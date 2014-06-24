@@ -12,6 +12,7 @@
 <form method=POST class="form">
 	{% csrf_token %}
 	{{ wizard.management_form }}
+    {{ form }}
 	<h4>Enter your hearing date</h4>
 	<p>hint text with img thumb</p>
 
