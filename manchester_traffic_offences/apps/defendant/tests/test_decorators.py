@@ -2,7 +2,8 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from django.contrib.auth.models import AnonymousUser
 
-from defendant.tests.urls import private_page
+from urls import private_page
+
 
 class URNRequiredTestCase(TestCase):
     urls = 'defendant.tests.urls'

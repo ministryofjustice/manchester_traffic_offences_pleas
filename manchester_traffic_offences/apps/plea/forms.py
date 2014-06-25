@@ -26,6 +26,7 @@ class PleaInfoForm(BasePleaStepForm):
     mitigations = forms.CharField(widget=Textarea())
     understand = forms.BooleanField()
 
+
 class ReviewForm(BasePleaStepForm):
     # Left blank for now, as this isn't a real form.
     pass
