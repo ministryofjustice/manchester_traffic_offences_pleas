@@ -18,6 +18,7 @@ class AboutForm(BasePleaStepForm):
     date_of_hearing = forms.DateField(widget=GovUkDateWidget())
     urn = URNField(max_length=255)
     name = forms.CharField(max_length=255)
+    number_of_charges = forms.IntegerField()
 
 class PleaInfoForm(BasePleaStepForm):
     
