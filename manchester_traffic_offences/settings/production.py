@@ -1,4 +1,5 @@
 from .base import *
+import os
 
 
 DEBUG = True
@@ -21,3 +22,8 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+EMAIL_HOST = os.environ['SENDGRID_EMAIL_HOST']
+EMAIL_PORT = os.environ['SENDGRID_EMAIL_PORT']
+EMAIL_HOST_USER = os.environ['SENDGRID_EMAIL_HOST_USERNAME']
+EMAIL_HOST_PASSWORD = os.environ['SENDGRID_EMAIL_HOST_PASSWORD']
