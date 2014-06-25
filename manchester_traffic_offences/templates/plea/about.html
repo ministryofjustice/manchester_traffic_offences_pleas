@@ -1,5 +1,5 @@
 {% extends "plea/base.html" %}
-
+{% load pdb %}
 {% block content %}
 
 <header class="page-header group">
@@ -12,13 +12,15 @@
 <form method=POST class="form">
 	{% csrf_token %}
 	{{ wizard.management_form }}
-    {{ form }}
+    {{ wizard|ipdb }}
+    <h2>------{{ wizard.form.name }}----</h2>
+    <h2>------{{ form.name|ipdb }}----</h2>
 	<h4>Enter your hearing date</h4>
 	<p>hint text with img thumb</p>
 
 	{{ wizard.form.name.errors }}
     <label for="{{ wizard.form.date_of_hearing.name }}">{{ wizard.form.name.label }}</label>
-    <input type="text" name="{{ wizard.form.date_of_hearing.name }}" value="{{ wizard.form.date_of_hearing.value }}" id="{{ wizard.form.date_of_hearing.name }}">
+    <input type="text" name="about-{{ wizard.form.date_of_hearing.name }}" value="{{ wizard.form.date_of_hearing.value }}" id="{{ wizard.form.date_of_hearing.name }}">
 	
 	<label for="{{ wizard.form.date_of_hearing.name }}">{{ wizard.form.name.label }}</label>
     <input type="text" name="{{ wizard.form.date_of_hearing.name }}" value="{{ wizard.form.date_of_hearing.value }}" id="{{ wizard.form.date_of_hearing.name }}">
