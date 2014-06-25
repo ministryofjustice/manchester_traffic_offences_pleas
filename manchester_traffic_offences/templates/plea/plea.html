@@ -1,22 +1,78 @@
 {% extends "plea/base.html" %}
 
 {% block content %}
+<header class="page-header group">
+    <hgroup>
+        <h1>Enter your plea</h1>
+    </hgroup>
+</header>
+<section>
 
-    
-    {{ wizard.form.name.is_hidden }}<br />
-    {{ wizard.form.name.errors }}<br />
-    {{ wizard.form.name.label }}<br />
-    {{ wizard.form.name.name }} <br />
-    {{ wizard.form.name.value }}<br />
+	<h2>What plea do you want to make?</h2>
+
+	<ul class="list-bullet">
+        <li>You must read and understand the charge against you before making your plea </li>
+    </ul>
 
 
 <form method=POST>
+<h2>Enter your plea</h2>
+
+<!-- 	<fieldset class="inline">
+              <legend>Charge 1 xxxxx</legend>
+      <label for="radio-inline-1" class="block-label">
+        <input id="radio-inline-1" type="radio" name="radio-inline-group" value="Yes">
+        Guilty
+      </label>
+      <label for="radio-inline-2" class="block-label">
+        <input id="radio-inline-2" type="radio" name="radio-inline-group" value="No">
+        Not Guilty
+      </label>
+    </fieldset>
+<h4>Enter any special circumstances</h4>
+                
+    <div class="group">
+			<p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
+			<span class="validation-message">{{ form.name.errors }}</span>
+		    <label for="{{ form.name.name }}">{{ form.name.label }}</label>
+		    <textarea rows="4" cols="50" name="plea-{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}" id="{{ form.name.name }}"></textarea>
+		</div>
+
+		<fieldset class="inline">
+              <legend>Charge 2 xxxxx</legend>
+      <label for="radio-inline-1" class="block-label">
+        <input id="radio-inline-1" type="radio" name="radio-inline-group" value="Yes">
+        Guilty
+      </label>
+      <label for="radio-inline-2" class="block-label">
+        <input id="radio-inline-2" type="radio" name="radio-inline-group" value="No">
+        Not Guilty
+      </label>
+    </fieldset>
+<h4>Enter any special circumstances</h4>
+                
+    <div class="group">
+			<p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
+			<span class="validation-message">{{ form.name.errors }}</span>
+		    <label for="{{ form.name.name }}">{{ form.name.label }}</label>
+		    <textarea rows="4" cols="50" name="plea-{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}" id="{{ form.name.name }}"></textarea>
+		</div>
+
+<label for="checkbox" class="form-checkbox">
+        <input id="checkbox-" type="checkbox" class="block-label" value="checkbox-">
+        I confirm that I have read and understand the charge against me.
+      </label>
+
+ -->
+
+{{form}}
+
 	{% csrf_token %}
 	{{ wizard.management_form }}
 
 	{{ wizard.form.name.errors }}
-    <label for="{{ wizard.form.name.name }}">{{ wizard.form.name.label }}</label>
-    <input type="text" name="{{ wizard.form.name.name }}" value="{{ wizard.form.name.value }}" id="{{ wizard.form.name.name }}">
+<!--     <label for="{{ wizard.form.name.name }}">{{ wizard.form.name.label }}</label>
+    <input type="text" name="plea-{{ wizard.form.name.name }}" value="{{ wizard.form.name.value }}" id="{{ wizard.form.name.name }}"> -->
 	<button class=button type=submit>Submit</button>
 </form>
 {% endblock content %}
