@@ -1,6 +1,11 @@
 from django import forms
 from django.forms.widgets import Textarea, RadioSelect
 
+from govuk_utils.forms import GovUkDateWidget
+from defendant.utils import is_valid_urn_format
+
+class URNField(forms.CharField):
+    default_validators = [is_valid_urn_format, ]
 
 class BasePleaStepForm(forms.Form):
     """
@@ -10,8 +15,8 @@ class BasePleaStepForm(forms.Form):
     pass
 
 class AboutForm(BasePleaStepForm):
-    date_of_hearing = forms.SplitDateTimeField()
-    urn = forms.CharField(max_length=255)
+    date_of_hearing = forms.DateField(widget=GovUkDateWidget())
+    urn = URNField(max_length=255)
     name = forms.CharField(max_length=255)
 
 class PleaInfoForm(BasePleaStepForm):
