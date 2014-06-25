@@ -1050,29 +1050,29 @@ fieldset {
       font-size: 14px;
       line-height: 1.14286; } }
 
-.date-of-birth label {
+.date-of-hearing label {
   display: block;
   margin-bottom: 5px; }
 
-.date-of-birth .form-group {
+.date-of-hearing .form-group {
   width: 50px;
   float: left;
   margin-right: 20px;
   clear: none; }
 
-.date-of-birth .form-group-year {
+.date-of-hearing .form-group-year {
   width: 70px; }
 
-.date-of-birth .form-group input {
+.date-of-hearing .form-group input {
   width: 100%; }
 
-.touch .date-of-birth {
+.touch .date-of-hearing {
   display: none; }
 
-.no-touch .native-date-of-birth {
+.no-touch .native-date-of-hearing {
   display: none; }
 
-.touch .native-date-of-birth {
+.touch .native-date-of-hearing {
   display: block; }
 
 .touch input[type="date"] {
@@ -1530,3 +1530,7 @@ section .info-notice p {
 
 section .application-notice {
   padding: 0.1em 0 0.1em 1em; }
+
+form .datefield {float:left; width:50px; margin-right: 20px;}
+form .datefield input { display: block;}
+

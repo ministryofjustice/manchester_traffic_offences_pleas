@@ -1,7 +1,12 @@
 {% extends "plea/base.html" %}
 
 {% block content %}
-
+<header class="page-header group">
+    <hgroup>
+        <h1>Enter your plea</h1>
+    </hgroup>
+</header>
+<section>
     
     {{ wizard.form.name.is_hidden }}<br />
     {{ wizard.form.name.errors }}<br />
