@@ -61,9 +61,9 @@ class PleaForms(NamedUrlSessionWizardView):
             done_response = self.done(final_form_list, **kwargs)
         except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
             return HttpResponseRedirect(reverse_lazy('plea_form_step', args=('review_send_error', )))
-        else:
-            self.storage.reset()
-            return done_response
+
+        self.storage.reset()
+        return done_response
     
     def done(self, form_list, **kwargs):
         # Send the email
