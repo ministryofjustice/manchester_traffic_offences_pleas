@@ -38,6 +38,7 @@ def send_plea_email(context_data):
                                          settings.PLEA_EMAIL_TEMPLATE,
                                          context_data,
                                          "text/html")
+
     plea_email.send((settings.PLEA_EMAIL_TO, ),
                     settings.PLEA_EMAIL_SUBJECT.format(**context_data),
                     settings.PLEA_EMAIL_BODY)
