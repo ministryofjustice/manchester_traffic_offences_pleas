@@ -22,7 +22,14 @@ class AboutForm(BasePleaStepForm):
     name = forms.CharField(max_length=255)
     number_of_charges = forms.IntegerField()
 
+
 class PleaInfoForm(BasePleaStepForm):
+    PLEA_CHOICES = (
+        ('guilty', 'Guilty'),
+        ('not_guilty', 'Not Guilty'),
+        ('both', 'Both'),
+    )
+
     guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect())
     mitigations = forms.CharField(widget=Textarea())
     understand = forms.BooleanField()
