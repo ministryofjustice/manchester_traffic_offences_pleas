@@ -4,7 +4,6 @@ from django.forms.widgets import Textarea, RadioSelect
 from govuk_utils.forms import GovUkDateWidget
 from defendant.utils import is_valid_urn_format
 
-
 class URNField(forms.CharField):
     default_validators = [is_valid_urn_format, ]
 
@@ -23,15 +22,7 @@ class AboutForm(BasePleaStepForm):
     name = forms.CharField(max_length=255)
     number_of_charges = forms.IntegerField()
 
-
 class PleaInfoForm(BasePleaStepForm):
-    
-    PLEA_CHOICES = (
-        ('guilty', 'Guilty'),
-        ('not_guilty', 'Not Guilty'),
-        ('both', 'Both'),
-    )
-    
     guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect())
     mitigations = forms.CharField(widget=Textarea())
     understand = forms.BooleanField()
