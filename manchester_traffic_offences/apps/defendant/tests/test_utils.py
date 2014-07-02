@@ -1,6 +1,7 @@
 from django.test import TestCase
-
+from django import forms
 from defendant.utils import is_valid_urn_format
+
 
 class UtilsTestCase(TestCase):
     urls = 'defendant.tests.urls'
@@ -23,5 +24,5 @@ class UtilsTestCase(TestCase):
             self.assertTrue(is_valid_urn_format(URN))
         
         for URN in bad_URNs:
-            self.assertFalse(is_valid_urn_format(URN))
-        
+            with self.assertRaises(forms.ValidationError):
+                is_valid_urn_format(URN)
