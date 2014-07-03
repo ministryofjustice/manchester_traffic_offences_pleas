@@ -70,24 +70,28 @@ class TestMultiStageForm(TestCase):
 
     @patch("govuk_utils.forms.reverse", reverse)
     def test_form_intro_loads(self):
+        request_context = {}
         msf = MultiStageFormTest("intro", "msf-url", {})
-        response = msf.load()
+        response = msf.load(request_context)
 
         self.assertContains(response, "<h1>Test intro page</h1>")
 
     @patch("govuk_utils.forms.reverse", reverse)
     def test_form_stage2_loads(self):
+        request_context = {}
         msf = MultiStageFormTest("stage_2", "msf-url", {})
-        response = msf.load()
+        response = msf.load(request_context)
         self.assertContains(response, "id_field1")
         self.assertContains(response, "id_field2")
 
     @patch("govuk_utils.forms.reverse", reverse)
     def test_form_stage2_saves(self):
+        request_context = {}
         msf = MultiStageFormTest("stage_2", "msf-url", {})
-        msf.load()
+        msf.load(request_context)
         response = msf.save({"field1": "Joe",
-                             "field2": 10})
+                             "field2": 10},
+                            request_context)
 
         self.assertEqual(msf.form_data["field1"], "Joe")
         self.assertEqual(msf.form_data["field2"], 10)
@@ -97,9 +101,10 @@ class TestMultiStageForm(TestCase):
 
     @patch("govuk_utils.forms.reverse", reverse)
     def test_form_stage3_loads(self):
+        request_context = {}
         msf = MultiStageFormTest("stage_3", "msf-url", {})
         msf.form_data["field2"] = 2
-        response = msf.load()
+        response = msf.load(request_context)
         self.assertContains(response, "id_field5")
         self.assertContains(response, "id_form-0-field3")
         self.assertContains(response, "id_form-0-field4")
@@ -108,6 +113,7 @@ class TestMultiStageForm(TestCase):
 
     @patch("govuk_utils.forms.reverse", reverse)
     def test_form_stage3_saves(self):
+        request_context = {}
         msf = MultiStageFormTest("stage_3", "msf_url", {})
         msf.form_data["field2"] = 2
         mgmt_data = {"form-TOTAL_FORMS": "2",
@@ -119,31 +125,35 @@ class TestMultiStageForm(TestCase):
                      "form-1-field4": "jill.smith@example.org",
                      "field5": True}
         form_data.update(mgmt_data)
-        response = msf.save(form_data)
+        response = msf.save(form_data, request_context)
 
     @patch("govuk_utils.forms.reverse", reverse)
     def test_form_review_loads(self):
+        request_context = {}
         msf = MultiStageFormTest("review", "msf-url", {})
-        response = msf.load()
+        response = msf.load(request_context)
         self.assertContains(response, "<h1>Review</h1>")
 
     @patch("govuk_utils.forms.reverse", reverse)
     def test_save_doesnt_blank_storage_dict_and_nothing_is_added(self):
+        request_context = {}
         fake_storage = {"field0": "Not on the form"}
         msf = MultiStageFormTest("intro",  "msf_url", fake_storage)
-        msf.load()
-        msf.save({})
+        msf.load(request_context)
+        msf.save({}, request_context)
         self.assertTrue(fake_storage["field0"], "Not on the form")
         self.assertEqual(len(fake_storage), 1)
 
     @patch("govuk_utils.forms.reverse", reverse)
     def test_save_data_persists_between_stages(self):
+        request_context = {}
         fake_storage = {}
         msf = MultiStageFormTest("stage_2", "msf_url", fake_storage)
-        msf.load()
+        msf.load(request_context)
 
         response = msf.save({"field1": "Joe",
-                             "field2": 2})
+                             "field2": 2},
+                            request_context)
 
         msf = MultiStageFormTest("stage_3", "msf_url", fake_storage)
         mgmt_data = {"form-TOTAL_FORMS": "2",
@@ -155,7 +165,7 @@ class TestMultiStageForm(TestCase):
                      "form-1-field4": "jill.smith@example.org",
                      "field5": True}
         form_data.update(mgmt_data)
-        response = msf.save(form_data)
+        response = msf.save(form_data, request_context)
 
         self.assertEqual(fake_storage["field1"], "Joe")
         self.assertEqual(fake_storage["field2"], 2)
@@ -166,10 +176,12 @@ class TestMultiStageForm(TestCase):
 
     @patch("govuk_utils.forms.reverse", reverse)
     def test_stage_standard_single_form_validation(self):
+        request_context = {}
         msf = MultiStageFormTest("stage_2", "msf-url", {})
-        msf.load()
+        msf.load(request_context)
         response = msf.save({"field1": "",
-                             "field2": "This is not an integer"})
+                             "field2": "This is not an integer"},
+                            request_context)
 
         # check it doesn't redirect
         self.assertEqual(response.status_code, 200)

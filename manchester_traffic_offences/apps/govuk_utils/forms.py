@@ -1,10 +1,9 @@
 from collections import OrderedDict
 
 from django.core.urlresolvers import reverse
-from django.forms import ValidationError
 from django.forms.extras.widgets import SelectDateWidget
 from django.forms.widgets import NumberInput
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, QueryDict
 from django.shortcuts import render_to_response
 
 
@@ -35,6 +34,9 @@ class FormStage(object):
         clean_data = {}
         all_valid = True
 
+        if isinstance(form_data, QueryDict):
+            form_data = {k: v for (k, v) in form_data.items()}
+
         self.load_forms(form_data)
 
         for form in self.forms:
@@ -54,13 +56,13 @@ class FormStage(object):
 
         return form_data
 
-    def render(self):
+    def render(self, request_context):
         if self.next:
             return HttpResponseRedirect(self.next)
         else:
             context = {k: v for (k, v) in self.form_data.items()}
             context["forms"] = self.forms
-            return render_to_response(self.template, context)
+            return render_to_response(self.template, context, request_context)
 
 
 class MultiStageForm(object):
@@ -92,17 +94,17 @@ class MultiStageForm(object):
     def save_to_storage(self):
         self.storage_dict.update({key: val for (key, val) in self.form_data.items()})
 
-    def load(self):
+    def load(self, request_context):
         # TODO validate previous stages?
         stage = self.current_stage_class(self.urls, self.form_data)
         stage.load()
-        return stage.render()
+        return stage.render(request_context)
 
-    def save(self, form_data):
+    def save(self, form_data, request_context):
         stage = self.current_stage_class(self.urls, self.form_data)
         self.form_data.update(stage.save(form_data))
         self.save_to_storage()
-        return stage.render()
+        return stage.render(request_context)
 
 
 class GovUkDateWidget(SelectDateWidget):
