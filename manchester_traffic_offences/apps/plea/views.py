@@ -64,6 +64,7 @@ class PleaOnlineForms(MultiStageForm):
 
 class PleaOnlineViews(TemplateView):
     def get(self, request, stage):
+        print {k: v for k, v in request.session.items()}
         form = PleaOnlineForms(stage, "plea_form_step", request.session)
         return form.load(RequestContext(request))
 

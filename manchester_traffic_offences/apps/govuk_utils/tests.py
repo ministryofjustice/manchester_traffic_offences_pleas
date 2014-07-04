@@ -1,3 +1,4 @@
+from datetime import datetime, date
 from mock import patch
 
 from django import forms
@@ -5,6 +6,7 @@ from django.forms.formsets import formset_factory
 from django.http import Http404
 from django.test import TestCase
 from govuk_utils.forms import MultiStageForm, FormStage
+from govuk_utils.serializers import DateAwareSerializer
 
 
 def reverse(url_name, args=None):
@@ -188,3 +190,36 @@ class TestMultiStageForm(TestCase):
         self.assertContains(response, "Enter a whole number")
         self.assertContains(response, "This field is required")
 
+
+class DateAwareSerializerTests(TestCase):
+    def test_serializer_dumps_plain(self):
+        test_str = """{"key2": 2, "key1": "value1"}"""
+        test_dict = {"key1": "value1",
+                     "key2": 2}
+
+        ds = DateAwareSerializer().dumps(test_dict)
+        self.assertEqual(ds, test_str)
+
+    def test_serializer_loads_plain(self):
+        test_str = """{"key2": 2, "key1": "value1"}"""
+        test_dict = {"key1": "value1",
+                     "key2": 2}
+
+        ds = DateAwareSerializer().loads(test_str)
+        self.assertEqual(ds, test_dict)
+
+    def test_serializer_dumps_datetime(self):
+        test_str = """{"key2": "2014-06-03", "key1": "value1"}"""
+        test_dict = {"key1": "value1",
+                     "key2": datetime(2014, 6, 3)}
+
+        ds = DateAwareSerializer().dumps(test_dict)
+        self.assertEqual(ds, test_str)
+
+    def test_serializer_loads_datetime(self):
+        test_str = """{"key2": "2014-06-03", "key1": "value1"}"""
+        test_dict = {u"key1": u"value1",
+                     u"key2": date(2014, 6, 3)}
+
+        ds = DateAwareSerializer().loads(test_str)
+        self.assertEqual(ds, test_dict)
