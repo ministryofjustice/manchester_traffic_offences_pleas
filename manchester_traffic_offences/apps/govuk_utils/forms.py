@@ -24,11 +24,15 @@ class FormStage(object):
 
         return self.all_urls.values()[-1]
 
-    def load_forms(self, data=None):
+    def load_forms(self, data=None, initial=False):
+        if initial:
+            self.forms = [form(initial=self.form_data) for form in self.form_classes]
+            return
+
         self.forms = [form(data) for form in self.form_classes]
 
     def load(self):
-        self.load_forms()
+        self.load_forms(initial=True)
 
     def save(self, form_data):
         clean_data = {}
