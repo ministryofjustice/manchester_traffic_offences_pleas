@@ -10,6 +10,8 @@ class UtilsTestCase(TestCase):
         good_URNs = [
             "00/AA/0000000/00",
             "12/bb/1234567/12",
+            "06/JJ/50563/14",
+            "06/JJ/50534/14",
         ]
         bad_URNs = [
             "123",
