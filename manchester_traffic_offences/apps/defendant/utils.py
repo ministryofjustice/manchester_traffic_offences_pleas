@@ -10,7 +10,7 @@ def is_valid_urn_format(urn):
     00/AA/0000000/00
     """
 
-    pattern = r"[0-9]{2}/[a-zA-Z]{2}/[0-9]{7}/[0-9]{2}"
+    pattern = r"[0-9]{2}/[a-zA-Z]{2}/(?:[0-9]{7}|[0-9]{5})/[0-9]{2}"
 
     if not re.match(pattern, urn):
         raise exceptions.ValidationError(_('Not a valid URN'))
