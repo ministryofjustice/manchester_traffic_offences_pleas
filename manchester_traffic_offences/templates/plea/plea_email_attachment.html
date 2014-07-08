@@ -2,28 +2,35 @@
 
 <table>
     <tr>
-        <td>Name</td>
-        <td>{{ name }}</td>
-    </tr>
-    <tr>
-        <td>Plea choice</td>
-        <td>{{ guilty }}</td>
-    </tr>
-    <tr>
-        <td>
-            Mitigations
-        </td>
-        <td>
-            {{ mitigations }}
-        </td>
-    </tr>
-    <tr>
-        <td>I understand ...</td>
-        <td>{{ understand }}</td>
+        <td>URN</td>
+        <td>{{ about.urn }}</td>
     </tr>
     <tr>
         <td>Date of hearing</td>
-        <td>{{ date_of_hearing }}</td>
+        <td>{{ about.date_of_hearing }}</td>
     </tr>
+    <tr>
+        <td>Name</td>
+        <td>{{ about.name }}</td>
+    </tr>
+    {%  for plea_item in plea.PleaForms %}
+    <tr>
+        <td>Plea for charge {{ forloop.counter }}</td>
+        <td>{{ plea_item.guilty }}</td>
+    </tr>
+    <tr>
+        <td>
+            Mitigations for charge {{ forloop.counter }}
+        </td>
+        <td>
+            {{ plea_item.mitigations }}
+        </td>
+    </tr>
+    {%  endfor %}
+    <tr>
+        <td>I understand ...</td>
+        <td>{{ plea.understand }}</td>
+    </tr>
+
 
 </table>
