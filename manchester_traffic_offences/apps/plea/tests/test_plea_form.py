@@ -40,10 +40,18 @@ class TestMultiPleaForms(TestCase):
 
         form = PleaOnlineForms("plea", "plea_form_step", fake_session)
         response = form.load(request_context)
-        response = form.save({"guilty": "guilty",
-                              "mitigations": "lorem ipsum",
-                              "understand": "True"},
-                             request_context)
+
+        mgmt_data = {"form-TOTAL_FORMS": "2",
+                     "form-INITIAL_FORMS": "0",
+                     "form-MAX_NUM_FORMS": "1000"}
+
+        mgmt_data.update({"form-0-guilty": "guilty",
+                          "form-0-mitigations": "lorem ipsum 1",
+                          "form-1-guilty": "guilty",
+                          "form-1-mitigations": "lorem ipsum 2",
+                          "understand": "True"})
+
+        response = form.save(mgmt_data, request_context)
 
         self.assertEqual(response.status_code, 302)
 
@@ -57,13 +65,15 @@ class TestMultiPleaForms(TestCase):
         form = PleaOnlineForms("complete", "plea_form_step", fake_session)
         response = form.load(request_context)
 
-        self.assertEqual(fake_session["date_of_hearing"], datetime.date(2015, 1, 1))
-        self.assertEqual(fake_session["urn"], "00/AA/0000000/00")
-        self.assertEqual(fake_session["name"], "Charlie Brown")
-        self.assertEqual(fake_session["number_of_charges"], 2)
-        self.assertEqual(fake_session["guilty"], "guilty")
-        self.assertEqual(fake_session["mitigations"], "lorem ipsum")
-        self.assertEqual(fake_session["understand"], True)
+        self.assertEqual(fake_session["about"]["date_of_hearing"], datetime.date(2015, 1, 1))
+        self.assertEqual(fake_session["about"]["urn"], "00/AA/0000000/00")
+        self.assertEqual(fake_session["about"]["name"], "Charlie Brown")
+        self.assertEqual(fake_session["about"]["number_of_charges"], 2)
+        self.assertEqual(fake_session["plea"]["PleaForms"][0]["guilty"], "guilty")
+        self.assertEqual(fake_session["plea"]["PleaForms"][0]["mitigations"], "lorem ipsum 1")
+        self.assertEqual(fake_session["plea"]["PleaForms"][1]["guilty"], "guilty")
+        self.assertEqual(fake_session["plea"]["PleaForms"][1]["mitigations"], "lorem ipsum 2")
+        self.assertEqual(fake_session["plea"]["understand"], True )
 
     def successful_completion_multiple_charges(self):
         pass
