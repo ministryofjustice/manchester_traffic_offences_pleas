@@ -88,7 +88,7 @@ class ReviewStage(FormStage):
     template = "plea/review.html"
     form_classes = []
 
-    def save(self, form_data):
+    def save(self, form_data, next=None):
         response = super(ReviewStage, self).save(form_data)
 
         try:
