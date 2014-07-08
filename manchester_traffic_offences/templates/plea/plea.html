@@ -64,11 +64,11 @@
       </label>
 
  -->
-
-{{form}}
+    {% for form in forms %}
+        {{ form }}
+    {% endfor %}
 
 	{% csrf_token %}
-	{{ wizard.management_form }}
 
 	{{ wizard.form.name.errors }}
 <!--     <label for="{{ wizard.form.name.name }}">{{ wizard.form.name.label }}</label>

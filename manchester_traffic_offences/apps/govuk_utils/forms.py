@@ -11,9 +11,9 @@ class FormStage(object):
     """
 
     """
-    def __init__(self, all_urls=None, form_data=None):
+    def __init__(self, all_urls=None, all_data=None):
         self.all_urls = all_urls
-        self.form_data = form_data or {}
+        self.all_data = all_data or {}
         self.forms = []
         self.next = ""
 
@@ -26,17 +26,26 @@ class FormStage(object):
 
     def load_forms(self, data=None, initial=False):
         if initial:
-            self.forms = [form(initial=self.form_data) for form in self.form_classes]
+            initial_data = self.all_data.get(self.name, None)
+            for form_class in self.form_classes:
+                self.forms.append(form_class(initial=initial_data))
             return
 
         self.forms = [form(data) for form in self.form_classes]
+
+    def save_forms(self):
+        form_data = {}
+        for form in self.forms:
+            form_data.update(form.cleaned_data)
+
+        return form_data
 
     def load(self):
         self.load_forms(initial=True)
 
     def save(self, form_data):
-        clean_data = {}
         all_valid = True
+        clean_data = {}
 
         if isinstance(form_data, QueryDict):
             form_data = {k: v for (k, v) in form_data.items()}
@@ -44,27 +53,19 @@ class FormStage(object):
         self.load_forms(form_data)
 
         for form in self.forms:
-            if form.is_valid():
-                if hasattr(form, "management_form"):
-                    for fdata in form.cleaned_data:
-                        clean_data.update(fdata)
-                        continue
-
-                clean_data.update(form.cleaned_data)
-            else:
-                all_valid = False
+            all_valid = all_valid and form.is_valid()
 
         if all_valid:
-            form_data.update(clean_data)
+            clean_data.update(self.save_forms())
             self.next = self.get_next()
 
-        return form_data
+        return clean_data
 
     def render(self, request_context):
         if self.next:
             return HttpResponseRedirect(self.next)
         else:
-            context = {k: v for (k, v) in self.form_data.items()}
+            context = {k: v for (k, v) in self.all_data.items()}
             context["forms"] = self.forms
             return render_to_response(self.template, context, request_context)
 
@@ -74,10 +75,11 @@ class MultiStageForm(object):
         self.urls = OrderedDict()
         self.current_stage_class = None
         self.storage_dict = storage_dict
-        self.form_data = {}
+        self.all_data = {}
 
         for stage_class in self.stage_classes:
             self.urls[stage_class.name] = reverse(url_name, args=(stage_class.name,))
+            self.all_data[stage_class.name] = {}
             if stage_class.name == current_stage:
                 self.current_stage_class = stage_class
 
@@ -93,20 +95,22 @@ class MultiStageForm(object):
 
     def load_from_storage(self, storage_dict):
         # copy data out so we're not manipulating an external object
-        self.form_data = {key: val for (key, val) in storage_dict.items()}
+        self.all_data.update({key: val for (key, val) in storage_dict.items()})
 
     def save_to_storage(self):
-        self.storage_dict.update({key: val for (key, val) in self.form_data.items()})
+        self.storage_dict.update({key: val for (key, val) in self.all_data.items()})
 
     def load(self, request_context):
         # TODO validate previous stages?
-        stage = self.current_stage_class(self.urls, self.form_data)
+        stage = self.current_stage_class(self.urls, self.all_data)
         stage.load()
         return stage.render(request_context)
 
     def save(self, form_data, request_context):
-        stage = self.current_stage_class(self.urls, self.form_data)
-        self.form_data.update(stage.save(form_data))
+        stage = self.current_stage_class(self.urls, self.all_data)
+        if stage.name not in self.all_data:
+            self.all_data[stage.name] = {}
+        self.all_data[stage.name].update(stage.save(form_data))
         self.save_to_storage()
         return stage.render(request_context)
 

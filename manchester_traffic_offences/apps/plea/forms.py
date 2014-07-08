@@ -24,6 +24,10 @@ class AboutForm(BasePleaStepForm):
 
 
 class PleaInfoForm(BasePleaStepForm):
+    understand = forms.BooleanField()
+
+
+class PleaForm(BasePleaStepForm):
     PLEA_CHOICES = (
         ('guilty', 'Guilty'),
         ('not_guilty', 'Not Guilty'),
@@ -32,7 +36,6 @@ class PleaInfoForm(BasePleaStepForm):
 
     guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect())
     mitigations = forms.CharField(widget=Textarea())
-    understand = forms.BooleanField()
 
 
 class ReviewForm(BasePleaStepForm):

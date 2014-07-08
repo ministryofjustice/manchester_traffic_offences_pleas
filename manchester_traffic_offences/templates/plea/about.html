@@ -13,15 +13,14 @@
 
 <form method=POST class="pleaform">
 	{% csrf_token %}
-	{{ wizard.management_form }}
-
+    {%  with forms.0 as form %}
 	<fieldset>
 		<legend>Enter your full name</legend>
 		<div class="group">
 			<p class="form-hint datefield-hint" id="">As shown on the pack we sent you</p>
 			<span class="validation-message">{{ form.name.errors }}</span>
 		    <label for="{{ form.name.name }}">{{ form.name.label }}</label>
-		    <input type="text" name="about-{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}" id="{{ form.name.name }}">
+		    <input type="text" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}" id="{{ form.name.name }}">
 		</div>
 		
 		<div class="group">
@@ -52,13 +51,13 @@
 			<p class="form-hint datefield-hint" id="">You’ll find your URN in the top right corner of page 1 of the pack we sent you</p>
 			<span class="validation-message">{{ form.urn.errors }}</span>
 		    <label for="{{ form.urn.name }}">{{ form.urn.label }}</label>
-		    <input type="text" name="about-{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}">
+		    <input type="text" name="{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}">
 		</div>
 		<div class="group">
 			<legend>Confirm the number of charges against you</legend>
 			<p class="form-hint datefield-hint" id="">You’ll find the charges on page 2 of the pack we sent you.</p>
 			<label for="{{ form.number_of_charges.name }}">{{ form.number_of_charges.label }}</label>
-			<input type="number" name="about-{{ form.number_of_charges.name }}" value="{{ form.number_of_charges.value|default_if_none:"" }}" id="{{ form.number_of_charges.name }}">
+			<input type="number" name="{{ form.number_of_charges.name }}" value="{{ form.number_of_charges.value|default_if_none:"" }}" id="{{ form.number_of_charges.name }}">
 				
 		</div>
 
@@ -74,7 +73,7 @@
 		</div>
 
 	</fieldset>
-
+    {% endwith %}
 	
 
 </form>
