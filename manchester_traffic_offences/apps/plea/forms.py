@@ -1,8 +1,15 @@
+import smtplib
+import socket
+
 from django import forms
+from django.core.urlresolvers import reverse_lazy
+from django.forms.formsets import formset_factory
 from django.forms.widgets import Textarea, RadioSelect
 
-from govuk_utils.forms import GovUkDateWidget
-from defendant.utils import is_valid_urn_format
+from manchester_traffic_offences.apps.govuk_utils.forms import GovUkDateWidget, FormStage, MultiStageForm
+from manchester_traffic_offences.apps.defendant.utils import is_valid_urn_format
+from email import send_plea_email
+
 
 class URNField(forms.CharField):
     default_validators = [is_valid_urn_format, ]
@@ -38,6 +45,77 @@ class PleaForm(BasePleaStepForm):
     mitigations = forms.CharField(widget=Textarea())
 
 
-class ReviewForm(BasePleaStepForm):
-    # Left blank for now, as this isn't a real form.
-    pass
+###### Form stage classes #######
+
+class AboutStage(FormStage):
+    name = "about"
+    template = "plea/about.html"
+    form_classes = [AboutForm, ]
+
+
+class PleaStage(FormStage):
+    name = "plea"
+    template = "plea/plea.html"
+    form_classes = [PleaInfoForm, PleaForm]
+
+    def load_forms(self, data=None, initial=False):
+        count = self.all_data["about"].get("number_of_charges", 1)
+
+        PleaForms = formset_factory(PleaForm, extra=count)
+        if initial:
+            initial_plea_data = self.all_data[self.name].get("PleaForms", [])
+            initial_info_data = self.all_data[self.name]
+            self.forms.append(PleaInfoForm(initial=initial_info_data))
+            self.forms.append(PleaForms(initial=initial_plea_data))
+        else:
+            self.forms.append(PleaInfoForm(data))
+            self.forms.append(PleaForms(data))
+
+    def save_forms(self):
+        form_data = {}
+
+        for form in self.forms:
+            if hasattr(form, "management_form"):
+                form_data["PleaForms"] = form.cleaned_data
+            else:
+                form_data.update(form.cleaned_data)
+
+        return form_data
+
+
+class ReviewStage(FormStage):
+    name = "review"
+    template = "plea/review.html"
+    form_classes = []
+
+    def save(self, form_data):
+        response = super(ReviewStage, self).save(form_data)
+
+        try:
+            send_plea_email(self.all_data)
+            next_step = reverse_lazy("plea_form_step", args=("complete", ))
+        except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
+            next_step = reverse_lazy('plea_form_step', args=('review_send_error', ))
+
+        self.next = next_step
+        return form_data
+
+
+class ReviewSendErrorStage(FormStage):
+    name = "send_error"
+    template = "plea/review_send_error.html"
+    form_classes = []
+
+
+class CompleteStage(FormStage):
+    name = "complete"
+    template = "plea/complete.html"
+    form_classes = []
+
+
+class PleaOnlineForms(MultiStageForm):
+    stage_classes = [AboutStage,
+                     PleaStage,
+                     ReviewStage,
+                     ReviewSendErrorStage,
+                     CompleteStage]

@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = patterns('',
     url(r'^(?P<stage>.+)/$', views.PleaOnlineViews.as_view(), name='plea_form_step'),
-    url(r'^$', views.PleaOnlineViews.as_view(), name='plea_form')
+    url(r'^$', views.PleaOnlineViews.as_view(), name='plea_form'),
 )
