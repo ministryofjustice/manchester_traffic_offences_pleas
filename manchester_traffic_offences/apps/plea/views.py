@@ -17,5 +17,6 @@ class PleaOnlineViews(TemplateView):
         return form.load(RequestContext(request))
 
     def post(self, request, stage):
+        next = request.GET.get("next", None)
         form = PleaOnlineForms(stage, "plea_form_step", request.session)
-        return form.save(request.POST, RequestContext(request))
+        return form.save(request.POST, RequestContext(request), next)

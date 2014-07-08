@@ -17,7 +17,10 @@ class FormStage(object):
         self.forms = []
         self.next = ""
 
-    def get_next(self):
+    def get_next(self, next):
+        if next:
+            return next
+
         current = self.all_urls.keys().index(self.name)
         if current <= len(self.all_urls.keys()):
             return self.all_urls.values()[current+1]
@@ -43,7 +46,7 @@ class FormStage(object):
     def load(self):
         self.load_forms(initial=True)
 
-    def save(self, form_data):
+    def save(self, form_data, next=None):
         all_valid = True
         clean_data = {}
 
@@ -57,7 +60,7 @@ class FormStage(object):
 
         if all_valid:
             clean_data.update(self.save_forms())
-            self.next = self.get_next()
+            self.next = self.get_next(next)
 
         return clean_data
 
@@ -76,6 +79,7 @@ class MultiStageForm(object):
         self.current_stage_class = None
         self.storage_dict = storage_dict
         self.all_data = {}
+        self.url_name = url_name
 
         for stage_class in self.stage_classes:
             self.urls[stage_class.name] = reverse(url_name, args=(stage_class.name,))
@@ -106,11 +110,15 @@ class MultiStageForm(object):
         stage.load()
         return stage.render(request_context)
 
-    def save(self, form_data, request_context):
+    def save(self, form_data, request_context, next=None):
+        next_url = None
+        if next:
+            next_url = reverse(self.url_name, args=(next, ))
+
         stage = self.current_stage_class(self.urls, self.all_data)
         if stage.name not in self.all_data:
             self.all_data[stage.name] = {}
-        self.all_data[stage.name].update(stage.save(form_data))
+        self.all_data[stage.name].update(stage.save(form_data, next=next_url))
         self.save_to_storage()
         return stage.render(request_context)
 
