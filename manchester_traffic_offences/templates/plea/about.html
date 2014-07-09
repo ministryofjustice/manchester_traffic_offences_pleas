@@ -57,8 +57,8 @@
 			<legend>Confirm the number of charges against you</legend>
 			<p class="form-hint datefield-hint" id="">You’ll find the charges on page 2 of the pack we sent you.</p>
 			<label for="{{ form.number_of_charges.name }}">{{ form.number_of_charges.label }}</label>
-			<input type="number" name="{{ form.number_of_charges.name }}" value="{{ form.number_of_charges.value|default_if_none:"" }}" id="{{ form.number_of_charges.name }}">
-				
+            {{ form.number_of_charges }}
+
 		</div>
 
 		<details>

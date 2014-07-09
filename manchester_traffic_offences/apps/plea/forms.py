@@ -25,24 +25,23 @@ class BasePleaStepForm(forms.Form):
 
 class AboutForm(BasePleaStepForm):
     date_of_hearing = forms.DateField(widget=GovUkDateWidget())
-    urn = URNField(max_length=255)
-    name = forms.CharField(max_length=255)
-    number_of_charges = forms.IntegerField()
+    urn = URNField(max_length=255, required=True)
+    name = forms.CharField(max_length=255, required=True)
+    number_of_charges = forms.IntegerField(widget=forms.Select(choices=[(i, i) for i in range(1, 11)]))
 
 
 class PleaInfoForm(BasePleaStepForm):
-    understand = forms.BooleanField()
+    understand = forms.BooleanField(required=True)
 
 
 class PleaForm(BasePleaStepForm):
     PLEA_CHOICES = (
         ('guilty', 'Guilty'),
         ('not_guilty', 'Not Guilty'),
-        ('both', 'Both'),
     )
 
-    guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect())
-    mitigations = forms.CharField(widget=Textarea())
+    guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect(), required=True)
+    mitigations = forms.CharField(widget=Textarea(), required=False)
 
 
 ###### Form stage classes #######
