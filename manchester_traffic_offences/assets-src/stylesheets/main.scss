@@ -57,6 +57,10 @@
 
 // MoJ Styles
 #global-header .header-wrapper {max-width: 990px; margin: 0 auto; padding: 0.5em 15px;}
+.article-container {background-color: #fff; margin-right: 22.25em; min-height: 35em; max-width: 38em;}
+#wrapper.service header.page-header div h1 {padding-left:35px;}
+
+h2#your-details {font-size: 2em; font-weight: bold;}
 
 label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.31579; font-weight: 400; text-transform: none; display: block;}
 
@@ -70,3 +74,11 @@ section .info-notice {background: none; border-left: 10px #dee0e2 solid; margin-
 section .info-notice p{line-height: 1.31579;}
 section .application-notice {padding: 0.1em 0 0.1em 1em;}
 
+#before-you-start {margin-top:2em;}
+#before-you-start h2 {font-size:1.2em; font-weight:bold;}
+
+.related-positioning { height: 0; left: 0; position: absolute; top: 9.5em; width: 100%; z-index: 0;}
+.related-positioning .related-container { position: relative; height: 0; margin: 0 auto; max-width: 1020px; z-index: 50;}
+.related {position: absolute; right: 1.75em; margin: 3em 0 0 0; width: 18.75em; border-top: 10px solid #d53880;}
+.related #stat {font-size:5em; font-weight:bold;}
+.js-enabled .related-positioning {top: 8em;}
