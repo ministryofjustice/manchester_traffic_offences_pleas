@@ -1,5 +1,5 @@
 import json
-import datetime
+from dateutil import parser
 from time import mktime
 
 from django.core.serializers.json import DjangoJSONEncoder
@@ -11,9 +11,9 @@ def load_with_datetime(pairs):
     for k, v in pairs:
         if isinstance(v, basestring):
             try:
-                d[k] = datetime.datetime.strptime(v, "%Y-%m-%d").date()
+                d[k] = parser.parse(v)
                 continue
-            except ValueError:
+            except TypeError:
                 pass
 
         d[k] = v
@@ -22,11 +22,7 @@ def load_with_datetime(pairs):
 
 class DateAwareSerializer(object):
     def dumps(self, obj):
-        s = json.dumps(obj, cls=DjangoJSONEncoder)
-        print s
-        return s
+        return json.dumps(obj, cls=DjangoJSONEncoder)
 
     def loads(self, data):
-        j = json.loads(data, object_pairs_hook=load_with_datetime)
-        print j
-        return j
+        return json.loads(data, object_pairs_hook=load_with_datetime)
