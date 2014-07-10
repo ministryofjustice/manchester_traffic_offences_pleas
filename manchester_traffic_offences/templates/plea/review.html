@@ -30,22 +30,24 @@ dd {
     <h2>About</h2>
     <dl>
         <dt>Date of hearing</dt>
-        <dd>{{ all_data.date_of_hearing }}</dd>
+        <dd>{{ about.date_of_hearing }}</dd>
         <dt>Name</dt>
-        <dd>{{ all_data.name }}</dd>
+        <dd>{{ about.name }}</dd>
         <dt>URN</dt>
-        <dd>{{ all_data.urn }}</dd>
+        <dd>{{ about.urn }}</dd>
     </dl>
     <a class="button" href="{% url "plea_form_step" "about" %}?next=review">Edit</a>
     
-    <h2>Plea</h2>
+    <h2>Pleas</h2>
     <dl>
-        <dt>Plea</dt>
-        <dd>{{ all_data.guilty }}</dd>
-        <dt>Mitigations</dt>
-        <dd>{{ all_data.mitigations }}</dd>
+        {%  for plea_info in plea.PleaForms %}
+            <dt>Plea {{ forloop.counter }}</dt>
+            <dd>{{ plea_info.guilty }}</dd>
+            <dt>Plea {{ forloop.counter }} Mitigations</dt>
+            <dd>{{ plea_info.mitigations }}</dd>
+        {% endfor %}
         <dt>Understand?</dt>
-        <dd>{{ all_data.understand }}</dd>
+        <dd>{{ plea.understand }}</dd>
     </dl>
     <a class="button" href="{% url "plea_form_step" "plea" %}">Edit</a>
     
