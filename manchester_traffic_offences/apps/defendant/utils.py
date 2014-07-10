@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 def is_valid_urn_format(urn):
     """
     URN is 13 characters long in the following format:
-    
+
     00/AA/0000000/00
     """
 
