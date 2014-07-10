@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpRequest
 from django.template import Template, RequestContext
 from django.views.decorators.cache import never_cache
 
-from defendant.decorators import urn_required
+from ..decorators import urn_required
 
 @never_cache
 def public_page(request):

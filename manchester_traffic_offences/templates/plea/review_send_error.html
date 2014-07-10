@@ -28,29 +28,27 @@ dd {
     {{ wizard.management_form }}
     <h1>Confirm</h1>
     <h2>About</h2>
+
+    <h2 style="color:red; border: solid 2px red">There was a problem sending your plea, please try again</h2>
     <dl>
         <dt>Date of hearing</dt>
-        <dd>{{ about.date_of_hearing }}</dd>
+        <dd>{{ all_data.date_of_hearing }}</dd>
         <dt>Name</dt>
-        <dd>{{ about.name }}</dd>
+        <dd>{{ all_data.name }}</dd>
         <dt>URN</dt>
-        <dd>{{ about.urn }}</dd>
+        <dd>{{ all_data.urn }}</dd>
     </dl>
-    <a class="button" href="{% url "plea_form_step" "about" %}?next=review">Edit</a>
-    
-    <h2>Pleas</h2>
+
+    <h2>Plea</h2>
     <dl>
-        {%  for plea_info in plea.PleaForms %}
-            <dt>Plea {{ forloop.counter }}</dt>
-            <dd>{{ plea_info.guilty }}</dd>
-            <dt>Plea {{ forloop.counter }} Mitigations</dt>
-            <dd>{{ plea_info.mitigations }}</dd>
-        {% endfor %}
+        <dt>Plea</dt>
+        <dd>{{ all_data.guilty }}</dd>
+        <dt>Mitigations</dt>
+        <dd>{{ all_data.mitigations }}</dd>
         <dt>Understand?</dt>
-        <dd>{{ plea.understand }}</dd>
+        <dd>{{ all_data.understand }}</dd>
     </dl>
-    <a class="button" href="{% url "plea_form_step" "plea" %}">Edit</a>
-    
+
     <p><button type="submit" class="button">Submit your plea</button></p>
     
 </form>
