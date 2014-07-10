@@ -1,6 +1,3 @@
-import smtplib
-import socket
-
 from django import forms
 from django.core.urlresolvers import reverse_lazy
 from django.forms.formsets import formset_factory
@@ -8,7 +5,8 @@ from django.forms.widgets import Textarea, RadioSelect
 
 from manchester_traffic_offences.apps.govuk_utils.forms import GovUkDateWidget, FormStage, MultiStageForm
 from manchester_traffic_offences.apps.defendant.utils import is_valid_urn_format
-from email import send_plea_email
+from .email import send_plea_email
+from .models import CourtEmailPlea
 
 
 class URNField(forms.CharField):
@@ -90,10 +88,10 @@ class ReviewStage(FormStage):
     def save(self, form_data, next=None):
         response = super(ReviewStage, self).save(form_data)
 
-        try:
-            send_plea_email(self.all_data)
+        email_result = send_plea_email(self.all_data)
+        if email_result:
             next_step = reverse_lazy("plea_form_step", args=("complete", ))
-        except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
+        else:
             next_step = reverse_lazy('plea_form_step', args=('review_send_error', ))
 
         self.next = next_step

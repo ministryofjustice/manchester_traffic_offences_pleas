@@ -1,6 +1,5 @@
 import json
 from dateutil import parser
-from time import mktime
 
 from django.core.serializers.json import DjangoJSONEncoder
 
