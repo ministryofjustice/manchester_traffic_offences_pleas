@@ -25,9 +25,12 @@ class EmailGenerationTests(unittest.TestCase):
         self.assertEqual(mail.outbox[0].body, "Body Text")
 
     def test_plea_email_sends(self):
-        context_data = {"date_of_hearing": "2014-06-30T12:00:00+01:00",
-                        "urn": "cvxcvx89", "name": "vcx", "understand": True,
-                        "mitigations": "tests", "guilty": "guilty"}
+        context_data = {"about": {"date_of_hearing": "2014-06-30T12:00:00+01:00",
+                                  "urn": "cvxcvx89", "name": "vcx"},
+                        "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
+                                               {"mitigations": "test2", "guilty": "guilty"}],
+                                 "understand": True}}
+
         send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 1)
