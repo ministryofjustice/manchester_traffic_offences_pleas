@@ -106,6 +106,8 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'manchester_traffic_offences.urls'
 
+SESSION_SERIALIZER = 'manchester_traffic_offences.apps.govuk_utils.serializers.DateAwareSerializer'
+
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'manchester_traffic_offences.wsgi.application'
 
@@ -141,6 +143,7 @@ INSTALLED_APPS = (
 
 PROJECT_APPS = (
     'testing',
+    'govuk_utils',
     'moj_template',
     'defendant',
     'plea',
@@ -181,7 +184,12 @@ INTERNAL_IPS = ['127.0.0.1']
 
 
 # EMAILS
-
+PLEA_EMAIL_FROM = "plea_from@example.org"
+PLEA_EMAIL_ATTACHMENT_NAME = "plea.html"
+PLEA_EMAIL_TEMPLATE = "plea/plea_email_attachment.html"
+PLEA_EMAIL_TO = "plea_to@example.org"
+PLEA_EMAIL_SUBJECT = "{about[urn]} ONLINE PLEA"
+PLEA_EMAIL_BODY = ""
 
 # .local.py overrides all the common settings.
 try:

@@ -54,6 +54,7 @@ venv
 *.ipr
 *.iml
 *.iws
+.idea/
 
 manchester_traffic_offences/settings/local.py
 manchester_traffic_offences/settings/production.py

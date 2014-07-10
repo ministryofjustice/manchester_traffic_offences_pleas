@@ -1496,11 +1496,21 @@ ol li {
 .article-container {
   background-color: #fff;
   margin-right: 22.25em;
-  min-height: 35em;
+  min-height: 25em;
   max-width: 38em; }
 
+#wrapper {
+  padding-bottom: 0px !important;
+  text-align: left;
+  border-bottom: 10px solid #d53880; }
+
 #wrapper.service header.page-header div h1 {
-  padding-left: 35px; }
+  padding: 48px 0 0 35px; }
+
+h2#your-details {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 20px 0; }
 
 label {
   font-family: "nta", Arial, sans-serif;
@@ -1540,6 +1550,10 @@ section .info-notice p {
 section .application-notice {
   padding: 0.1em 0 0.1em 1em; }
 
+.get-started-intro a.button.button-get-started {
+  font-size: 135%;
+  font-weight: normal; }
+
 #before-you-start {
   margin-top: 2em; }
 
@@ -1566,12 +1580,13 @@ section .application-notice {
   position: absolute;
   right: 1.75em;
   margin: 3em 0 0 0;
-  width: 18.75em;
+  width: 15.75em;
   border-top: 10px solid #d53880; }
 
 .related #stat {
   font-size: 5em;
-  font-weight: bold; }
+  font-weight: bold;
+  margin-left: 20%; }
 
 .js-enabled .related-positioning {
   top: 8em; }

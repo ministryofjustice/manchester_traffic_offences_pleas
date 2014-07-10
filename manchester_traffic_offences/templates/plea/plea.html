@@ -68,6 +68,12 @@
 
 
 
+    {% for form in forms %}
+        {{ form }}
+    {% endfor %}
+
+	{% csrf_token %}
+
         {{form}}
 
         	{% csrf_token %}
