@@ -1,0 +1,39 @@
+<h1>Case Reference: {{ urn }}</h1>
+
+<table>
+    <tr>
+        <td colspan="2"><h2>Details</h2></td>
+    </tr>
+    <tr>
+        <td>URN</td>
+        <td>{{ about.urn }}</td>
+    </tr>
+    <tr>
+        <td>Date of hearing</td>
+        <td>{{ about.date_of_hearing }}</td>
+    </tr>
+    <tr>
+        <td>Name</td>
+        <td>{{ about.name }}</td>
+    </tr>
+    <tr>
+        <td>I understand ...</td>
+        <td>{{ plea.understand }}</td>
+    </tr>
+    <tr>
+        <td colspan="2"><h2>Charges</h2></td>
+    </tr>
+    {%  for plea_item in plea.PleaForms %}
+        <tr>
+            <td colspan="2"><h3>Charge {{ forloop.counter }}</h3></td>
+        </tr>
+        <tr>
+            <td>Plea</td>
+            <td>{{ plea_item.guilty }}</td>
+        </tr>
+        <tr>
+            <td>Mitigating circumstances</td>
+            <td>{{ plea_item.mitigations|linebreaks }}</td>
+        </tr>
+    {%  endfor %}
+</table>
