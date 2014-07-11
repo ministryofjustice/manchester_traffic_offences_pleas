@@ -1,80 +1,81 @@
 {% extends "plea/base.html" %}
 {% load staticfiles %}
 {% block content %}
+<header>
+    
     <hgroup>
         <div><h1><span>Service</span>Make your plea online</h1></div>
     </hgroup>
 </header>
-
 <div class="article-container group">
     <article role="article" class="group">
         <div class="inner">
           <section>
-          		<h2 id="your-details">Your details</h2>
-				<form method=POST class="pleaform">
-					{% csrf_token %}
-				    {%  with forms.0 as form %}
+                <h2 id="your-details">Your details</h2>
+                <form method=POST class="pleaform">
+                    {% csrf_token %}
+                    {%  with forms.0 as form %}
 
-				    {{ form.errors }}
-					<fieldset>
-						<div class="group">
-							<span class="validation-message">{{ form.name.errors }}</span>
-						    <label for="{{ form.name.name }}">Full name</label>
-							<p class="form-hint datefield-hint" id="">As shown on the pack we sent you</p>
-							<input type="text" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}" id="{{ form.name.name }}">
-						</div>
-						
-						<div class="group" id="urn">
-							<span class="validation-message">{{ form.urn.errors }}</span>
-						    <label for="{{ form.name.name }}">Unique reference number (URN)</label>
-							<p class="form-hint datefield-hint" id="">It's on page 1 of the pack, in the top right corner</p>
-							<input type="text" id="urn-one" name="{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}"> / 
-							<input type="text" id="urn-two" name="{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}"> / 
-							<input type="text" id="urn-three" name="{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}"> / 
-							<input type="text" id="urn-four" name="{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}">
-						</div>
-							<div id="urn-loc"><img src="{% static "images/img-urn.png" %}" alt="Location of URN"></div>
-							
-							<div class="group">
-								<span class="validation-message">{{ form.date_of_hearing.errors }}</span>
-								<label for="{{ form.date_of_hearing.name }}">Court hearing date and time</label>
-								<p class="form-hint datefield-hint" id="">It's on page 1 of the pack<br />
+                    {{ form.errors }}
+                    <fieldset>
+                        <div class="group">
+                            <span class="validation-message">{{ form.name.errors }}</span>
+                            <label for="{{ form.name.name }}">Full name</label>
+                            <p class="form-hint datefield-hint" id="">As shown on the pack we sent you</p>
+                            <input type="text" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}" id="{{ form.name.name }}">
+                        </div>
+                        
+                        <div class="group" id="urn">
+                            <span class="validation-message">{{ form.urn.errors }}</span>
+                            <label for="{{ form.name.name }}">Unique reference number (URN)</label>
+                            <p class="form-hint datefield-hint" id="">It's on page 1 of the pack, in the top right corner</p>
+                            <input type="text" id="urn-one" name="{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}"> / 
+                            <input type="text" id="urn-two" name="{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}"> / 
+                            <input type="text" id="urn-three" name="{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}"> / 
+                            <input type="text" id="urn-four" name="{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}">
+                        </div>
+                            <div id="urn-loc"><img src="{% static "images/img-urn.png" %}" alt="Location of URN"></div>
+                            
+                            <div class="group">
+                                <span class="validation-message">{{ form.date_of_hearing.errors }}</span>
+                                <label for="{{ form.date_of_hearing.name }}">Court hearing date and time</label>
+                                <p class="form-hint datefield-hint" id="">It's on page 1 of the pack<br />
 For example, 08/04/2014 at 09:30</p>{{form.date_of_hearing }} at [ hour ] : [ minute ]
-							</div>
+                            </div>
 
-							<div class="group">
-								<label for="{{ form.number_of_charges.name }}">Number of charges against you</label>
-								<p class="form-hint datefield-hint" id="">It's on page 2 of the pack we sent you.</p>
-								<select name="{{ form.number_of_charges.name }}" value="{{ form.number_of_charges.value|default_if_none:"" }}" id="{{ form.number_of_charges.name }}">
-					                <option value="">Please select…</option>
-					                <option value="0">1</option>
-					                <option value="1">2</option>
-					                <option value="2">3</option>
-					                <option value="3">4</option>
-					                <option value="4">5</option>
-					                <option value="5">6</option>
-					                <option value="6">7</option>
-					                <option value="7">8</option>
-					                <option value="8">9</option>
-					                <option value="9">10</option>
-					              </select>
-							</div>
+                            <div class="group">
+                                <label for="{{ form.number_of_charges.name }}">Number of charges against you</label>
+                                <p class="form-hint datefield-hint" id="">It's on page 2 of the pack we sent you.</p>
+                                <select name="{{ form.number_of_charges.name }}" value="{{ form.number_of_charges.value|default_if_none:"" }}" id="{{ form.number_of_charges.name }}">
+                                    <option value="">Please select…</option>
+                                    <option value="0">1</option>
+                                    <option value="1">2</option>
+                                    <option value="2">3</option>
+                                    <option value="3">4</option>
+                                    <option value="4">5</option>
+                                    <option value="5">6</option>
+                                    <option value="6">7</option>
+                                    <option value="7">8</option>
+                                    <option value="8">9</option>
+                                    <option value="9">10</option>
+                                  </select>
+                            </div>
 
-							<details>
-					            <summary role="button" aria-expanded="false">Don’t have all these details?</summary>
-					            <p>Check the pack we posted to you.</p> 
-								<p>If you can’t find these details, you must:</p>
-								<p>fill in the information in the pack and return it by post. You can’t make your plea online without these details</p>
-					          </details>
+                            <details>
+                                <summary role="button" aria-expanded="false">Don’t have all these details?</summary>
+                                <p>Check the pack we posted to you.</p> 
+                                <p>If you can’t find these details, you must:</p>
+                                <p>fill in the information in the pack and return it by post. You can’t make your plea online without these details</p>
+                              </details>
 
-							<button class="button" type=submit>Continue</button>
+                            <button class="button" type=submit>Continue</button>
 
-							</div>
+                            </div>
 
-						</fieldset>
-    					{% endwith %}
+                        </fieldset>
+                        {% endwith %}
 
-					</form>
+                    </form>
             </section>
         </div>
     </article>
