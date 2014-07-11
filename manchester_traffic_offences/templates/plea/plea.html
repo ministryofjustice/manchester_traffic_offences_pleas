@@ -14,30 +14,41 @@
             <section>
             <h2>Your plea</h2>
                 <form method=POST>
-                    {% for form in forms %}
-
-                    <h2>Charge {{forloop.counter}}</h2>
-                    <fieldset class="inline">
-                        <div class="group">
-                            <label for="radio-inline-1" class="block-label"><input id="id_form-0-guilty_0" type="radio" name="radio-inline-group" value="Yes">Guilty</label>
-                            <label for="radio-inline-2" class="block-label"><input id="id_form-0-guilty_1" type="radio" name="radio-inline-group" value="No">Not Guilty</label>
-                        </div>
-                        
-                        <div class="group">
-                            <label for="{{ form.name.name }}">Special circumstances</label>
-                            <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
-                            <span class="validation-message">{{ form.name.errors }}</span>
-                            <textarea rows="4" cols="50" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}" id="id_form-0-mitigations {{ form.name.name }}"></textarea>
-                        </div>
-                    </fieldset>
-                    {% endfor %}
-
-                    <div class="group">
-                        <label for="checkbox" id="id_understand_checkbox" class="block-label"><input id="id_understand" type="checkbox" class="block-label" value="checkbox-"><span>I confirm</span> that I have read and understand the charge against me.</label>
-                    </div>
-
                     {% csrf_token %}
-                    <button class="button" type=submit>Continue</button> <a href="/about/" id="submit-btn">Back</a>
+                    {% with forms.1 as formset %}
+                        {{ formset.management_form }}
+                        {% for form in formset %}
+                            <h2>Charge {{ forloop.counter }}</h2>
+                            <fieldset class="inline">
+                                <div class="group">
+                                    {% for choice in form.guilty %}
+                                        <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
+                                            <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
+                                            {{ choice.choice_label }}
+                                        </label>
+                                    {% endfor %}
+                                    <span class="validation-message">{{ form.guilty.errors }}</span>
+                                </div>
+
+                                <div class="group">
+                                    <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances</label>
+                                    <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
+                                    <span class="validation-message">{{ form.mitigations.errors }}</span>
+                                    <textarea rows="4" cols="50" name="{{ form.mitigations.html_name }}" value="{{ form.mitigations.value|default_if_none:"" }}" id="{{ form.mitigations.id_for_label }}"></textarea>
+                                </div>
+                            </fieldset>
+                        {% endfor %}
+                    {% endwith %}
+
+                    {% with forms.0 as form %}
+                        <div class="group">
+                            <label for="{{ form.understand.id_for_label }}" class="block-label">
+                                <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" class="block-label" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}><span>I confirm</span> that I have read and understand the charge against me.
+                            </label>
+                            <span class="validation-message">{{ form.understand.errors }}</span>
+                        </div>
+                    {% endwith %}
+                    <button class="button" type=submit>Continue</button> <a href="{% url "plea_form_step" "about" %}" id="submit-btn">Back</a>
                 </form>
            </section>
         </div>
