@@ -96,12 +96,14 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 ROOT_URLCONF = 'manchester_traffic_offences.urls'
@@ -142,7 +144,6 @@ INSTALLED_APPS = (
 )
 
 PROJECT_APPS = (
-    'testing',
     'govuk_utils',
     'moj_template',
     'defendant',
@@ -188,7 +189,7 @@ PLEA_EMAIL_FROM = "plea_from@example.org"
 PLEA_EMAIL_ATTACHMENT_NAME = "plea.html"
 PLEA_EMAIL_TEMPLATE = "plea/plea_email_attachment.html"
 PLEA_EMAIL_TO = "plea_to@example.org"
-PLEA_EMAIL_SUBJECT = "{about[urn]} ONLINE PLEA"
+PLEA_EMAIL_SUBJECT = "ONLINE PLEA: {about[urn]} - DOH:{about[date_of_hearing]} - {about[name]}"
 PLEA_EMAIL_BODY = ""
 
 # .local.py overrides all the common settings.
