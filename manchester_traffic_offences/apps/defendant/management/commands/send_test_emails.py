@@ -23,4 +23,4 @@ class Command(BaseCommand):
         send = True if raw_input("%s (y/N) " % msg).lower() == 'y' else False
         if send:
             for defendant in TEST_DEFENDANTS:
-                send_plea_email(defendant, plea_email_to=email)
+                send_plea_email({'about': defendant}, plea_email_to=email)
