@@ -75,7 +75,7 @@ class PleaForm(BasePleaStepForm):
 
     guilty = forms.ChoiceField(
         choices=PLEA_CHOICES, widget=RadioSelect(), required=True)
-    mitigations = forms.CharField(widget=Textarea(), required=False)
+        mitigations = forms.CharField(widget=Textarea(), required=False)
 
 
 ###### Form stage classes #######
@@ -92,9 +92,23 @@ class PleaStage(FormStage):
     form_classes = [PleaInfoForm, PleaForm]
 
     def load_forms(self, data=None, initial=False):
-        count = self.all_data["about"].get("number_of_charges", 1)
+        forms_wanted = self.all_data["about"].get("number_of_charges", 1)
+        extra_forms = 0
+        # truncate forms data if the count has changed
+        if "PleaForms" in self.all_data["plea"]:
+            forms_count = len(self.all_data["plea"]["PleaForms"])
+            # truncate data if the count is changed
+            if forms_count > forms_wanted:
+                self.all_data["plea"]["PleaForms"] = self.all_data["plea"]["PleaForms"][:forms_wanted]
+                forms_count = forms_wanted
 
-        PleaForms = formset_factory(PleaForm, extra=count)
+            if forms_count < forms_wanted:
+                extra_forms = forms_wanted - forms_count
+
+        else:
+            extra_forms = forms_wanted
+
+        PleaForms = formset_factory(PleaForm, extra=extra_forms)
         if initial:
             initial_plea_data = self.all_data[self.name].get("PleaForms", [])
             initial_info_data = self.all_data[self.name]
