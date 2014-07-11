@@ -1,85 +1,79 @@
 {% extends "plea/base.html" %}
+{% load staticfiles %}
 {% block content %}
 
 <header class="page-header group">
-	<hgroup>
-		<h1>Your details</h1>
-	</hgroup>
+    <hgroup>
+        <div><h1><span>Service</span>Make your plea online</h1></div>
+    </hgroup>
 </header>
 
+<div class="article-container group">
+    <article role="article" class="group">
+        <div class="inner">
+            <section>
+                <h2 id="your-details">Your details</h2>
+                <form method=POST class="pleaform">
+                    {% csrf_token %}
+                
+                    {%  with forms.0 as form %}
+                    <fieldset>
+                        <div class="group">
+                            <label for="{{ form.name.name }}">Full name</label>
+                            <p class="form-hint datefield-hint">As shown on the pack we sent you</p>
+                            <span class="validation-message">{{ form.name.errors }}</span>
+                            <input type="text" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}" id="{{ form.name.name }}">
+                        </div>
+                        
+                        <div class="group" id="urn">
+                            <label for="{{ form.urn.name }}">Unique reference number (URN)</label>
+                            <p class="form-hint datefield-hint" id="">It's on page 1 of the pack, in the top right corner</p>
+                            {#  Django handles the output of the URN field #}
+                            <span class="validation-message">{{ form.urn.errors }}</span>
+                            {{ form.urn }}
+                            <div id="urn-loc"><img src="{% static "images/img-urn.png" %}" alt="Location of URN"></div>
+                        </div>
 
- <h4>Who are you?</h4>
+                        <div class="group">
+                            <label for="{{ form.date_of_hearing.name }}">Court hearing date and time</label>
+                            <p class="form-hint datefield-hint" id="">It's on page 1 of the pack<br />
+                            For example, 08/04/2014 at 09:30</p>
+                            <span class="validation-message">{{ form.date_of_hearing.errors }}</span>
+                            {{form.date_of_hearing }} at [ hour ] : [ minute ]
+                        </div>
 
-            <ul class="list-bullet text">
-                <li>let us know your details so the court can consider your plea</li>
-            </ul>
+                        <div class="group">
+                            <label for="{{ form.number_of_charges.name }}">Number of charges against you</label>
+                            <p class="form-hint datefield-hint" id="">It's on page 2 of the pack we sent you.</p>
+                            <span class="validation-message">{{ form.number_of_charges.errors }}</span>
+                            <select name="{{ form.number_of_charges.name }}" value="{{ form.number_of_charges.value|default_if_none:"" }}" id="{{ form.number_of_charges.name }}">
+                                <option value="">Please select…</option>
+                                <option value="1" {% if form.number_of_charges.value == "1" %}selected{% endif %}>1</option>
+                                <option value="2" {% if form.number_of_charges.value == "2" %}selected{% endif %}>2</option>
+                                <option value="3" {% if form.number_of_charges.value == "3" %}selected{% endif %}>3</option>
+                                <option value="4" {% if form.number_of_charges.value == "4" %}selected{% endif %}>4</option>
+                                <option value="5" {% if form.number_of_charges.value == "5" %}selected{% endif %}>5</option>
+                                <option value="6" {% if form.number_of_charges.value == "6" %}selected{% endif %}>6</option>
+                                <option value="7" {% if form.number_of_charges.value == "7" %}selected{% endif %}>7</option>
+                                <option value="8" {% if form.number_of_charges.value == "8" %}selected{% endif %}>8</option>
+                                <option value="9" {% if form.number_of_charges.value == "9" %}selected{% endif %}>9</option>
+                              </select>
+                        </div>
 
-<form method=POST class="pleaform">
-	{% csrf_token %}
-    {%  with forms.0 as form %}
-	<fieldset>
-		<legend>Enter your full name</legend>
-		<div class="group">
-			<p class="form-hint datefield-hint" id="">As shown on the pack we sent you</p>
-			<span class="validation-message">{{ form.name.errors }}</span>
-		    <label for="{{ form.name.name }}">{{ form.name.label }}</label>
-		    <input type="text" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}" id="{{ form.name.name }}">
-		</div>
-		
-		<div class="group">
-		<legend>Enter the date of your court hearing</legend>
-		<div class="date-of-hearing">
-			<p class="form-hint datefield-hint" id="">You’ll find the court hearing date on page 1 of the pack we sent you.
-</p>
-			<div class="group">
-				
-				<span class="validation-message">{{ form.date_of_hearing.errors }}</span>
-				<label for="{{ form.date_of_hearing.name }}">{{ form.date_of_hearing.label }}</label>
-				{{form.date_of_hearing }}
-			</div>
-			<!-- <div class="datefield form-group form-group-month">
-				<span class="validation-message">{{ form.name.errors }}</span>
-				<label for="{{ form.date_of_hearing.name }}">{{ form.name.label }}</label>
-				<input type="text" name="about-{{ form.date_of_hearing.name }}" value="{{ form.date_of_hearing.value|default_if_none:"" }}" id="{{ form.date_of_hearing.name }}" type="text" value="11">
-			</div>
-			<div class="datefield form-group form-group-year">
-				<span class="validation-message">{{ form.name.errors }}</span>
-				<label for="{{ form.date_of_hearing.name }}">{{ form.name.label }}</label>
-				<input type="text" name="about-{{ form.date_of_hearing.name }}" value="{{ form.date_of_hearing.value|default_if_none:"" }}" id="{{ form.date_of_hearing.name }}" type="text" value="11">
-			</div> -->
-			</div>
-		</div>
-		<div class="group">
-			<legend>Enter your unique reference number (URN)</legend>
-			<p class="form-hint datefield-hint" id="">You’ll find your URN in the top right corner of page 1 of the pack we sent you</p>
-			<span class="validation-message">{{ form.urn.errors }}</span>
-		    <label for="{{ form.urn.name }}">{{ form.urn.label }}</label>
-		    <input type="text" name="{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}">
-		</div>
-		<div class="group">
-			<legend>Confirm the number of charges against you</legend>
-			<p class="form-hint datefield-hint" id="">You’ll find the charges on page 2 of the pack we sent you.</p>
-			<label for="{{ form.number_of_charges.name }}">{{ form.number_of_charges.label }}</label>
-            {{ form.number_of_charges }}
+                        <details>
+                            <summary role="button" aria-expanded="false">Don’t have all these details?</summary>
+                            <p>Check the pack we posted to you.</p> 
+                            <p>If you can’t find these details, you must:</p>
+                            <p>fill in the information in the pack and return it by post. You can’t make your plea online without these details</p>
+                        </details>
 
-		</div>
-
-		<details>
-            <summary role="button" aria-expanded="false">Don’t have all these details?</summary>
-            <p>Check the pack we posted to you.</p> 
-			<p>If you can’t find these details, you must:</p>
-			<p>fill in the information in the pack and return it by post. You can’t make your plea online without these details</p>
-          </details>
-
-		<button class="button" type=submit>Continue</button>
-
-		</div>
-
-	</fieldset>
-    {% endwith %}
-	
-
-</form>
-
+                        <button class="button" type=submit>Continue</button>
+                    </fieldset>
+                    {% endwith %}
+                </form>
+            </section>
+        </div>
+    </article>
+</div>
 
 {% endblock content %}
