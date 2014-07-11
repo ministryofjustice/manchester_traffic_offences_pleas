@@ -75,7 +75,7 @@ class PleaForm(BasePleaStepForm):
 
     guilty = forms.ChoiceField(
         choices=PLEA_CHOICES, widget=RadioSelect(), required=True)
-        mitigations = forms.CharField(widget=Textarea(), required=False)
+    mitigations = forms.CharField(widget=Textarea(), required=False)
 
 
 ###### Form stage classes #######
