@@ -8,9 +8,6 @@ from django.shortcuts import render_to_response
 
 
 class FormStage(object):
-    """
-
-    """
     def __init__(self, all_urls=None, all_data=None):
         self.all_urls = all_urls
         self.all_data = all_data or {}
