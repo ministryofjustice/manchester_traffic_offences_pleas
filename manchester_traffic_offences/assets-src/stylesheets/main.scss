@@ -59,23 +59,38 @@
 
 #global-header .header-wrapper {max-width: 990px; margin: 0 auto; padding: 0.5em 15px;}
 .article-container {background-color: #fff; margin-right: 22.25em; min-height: 25em; max-width: 38em;}
-#wrapper {padding-bottom:0px!important; text-align:left; border-bottom: 10px solid #d53880}
+#wrapper {padding-bottom:0px!important; text-align:left; border-bottom: 10px solid #d53880;}
 #wrapper.service header.page-header div h1 {padding: 48px 0 0 35px;}
 
-h2#your-details {font-size: 2em; font-weight: bold; margin: 20px 0;}
-
+.article-container.group h2, #complete h2 {font-size: 2em; font-weight: bold; margin: 20px 0;}
+#complete h3.heading-medium.divide {border-top: 1px solid #c2c2c2; padding-top:20px;}
 label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.31579; font-weight: 400; text-transform: none; display: block;}
+.inline .block-label {font-weight:normal;}
 
-input[type=text], input[type="number"], input[type=email], input[type=tel], input[type=date], select[type=text], select[type=email], select[type=tel], select[type=date] {width: 250px; padding: 5px 4px 2px; color: #0b0c0c; border: 1px solid #bfc1c3; margin: 0 0 10px 0;}
+.group label {font-weight:bold; font-size: 1.2em; margin: 1em 0;}
+.group#urn #urn-one, .group#urn #urn-two, .group#urn #urn-four {width:15%; margin:0 6px;}
+.group#urn #urn-three {width:25%;}
+.group #number_of_charges {width:32%;}
+.group #id_date_of_hearing_day, .group #id_date_of_hearing_month, .group #id_date_of_hearing_year, 
+.group #id_date_of_hearing_hour, .group #id_date_of_hearing_min {width:15%; margin:0 10px 0 0px;}
+.group #id_understand_checkbox {font-weight:normal; margin-right: 0px; font-size: 1em;}
+.group #id_understand_checkbox span {font-weight:bold;}
+
+details {margin: 1em 0;}
+
+input[type=text], input[type="number"], input[type=email], input[type=tel], input[type=date], select[type=text], select[type=email], select[type=tel], select[type=date] {width: 100%; padding: 5px 4px 2px; color: #0b0c0c; border: 1px solid #bfc1c3; margin: 0 0 10px 0;}
 
 input, select {font-family: "nta", Arial, sans-serif;font-size: 19px; line-height: 1.31579; font-weight: 400;text-transform:none; margin: 0;}
-
+input#name {width:80%;}
 select {border-color: #bfc1c3;}
 
 section .info-notice {background: none; border-left: 10px #dee0e2 solid; margin-bottom: 1em;margin-top: 2em;}
 section .info-notice p{line-height: 1.31579;}
 section .application-notice {padding: 0.1em 0 0.1em 1em;}
-
+table {clear:both;margin: 2em 0;}
+table tr, table td, table th {padding:8px; font-size:1em;width:45%;}
+table th a.review{font-weight:normal; float: right;}
+table th.header {font-size: 1.2em;}
 .get-started-intro a.button.button-get-started {font-size: 135%; font-weight: normal;}
 #before-you-start {margin-top:2em;}
 #before-you-start h2 {font-size:1.2em; font-weight:bold;}
