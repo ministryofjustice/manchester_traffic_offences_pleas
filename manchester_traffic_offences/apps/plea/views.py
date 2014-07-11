@@ -1,7 +1,10 @@
+from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import RequestContext
 from django.views.generic import TemplateView
+
+from brake.decorators import ratelimit
 
 from .forms import PleaOnlineForms
 
@@ -16,6 +19,7 @@ class PleaOnlineViews(TemplateView):
         form = PleaOnlineForms(stage, "plea_form_step", request.session)
         return form.load(RequestContext(request))
 
+    @method_decorator(ratelimit(block=True, rate="10/m"))
     def post(self, request, stage):
         next = request.GET.get("next", None)
         form = PleaOnlineForms(stage, "plea_form_step", request.session)
