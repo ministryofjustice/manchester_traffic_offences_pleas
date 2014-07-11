@@ -142,7 +142,6 @@ INSTALLED_APPS = (
 )
 
 PROJECT_APPS = (
-    'testing',
     'govuk_utils',
     'moj_template',
     'defendant',
