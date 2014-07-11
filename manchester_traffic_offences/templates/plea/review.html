@@ -1,57 +1,92 @@
 {% extends "plea/base.html" %}
 
 {% block content %}
+    <hgroup>
+        <div><h1><span>Service</span>asdMake your plea online</h1></div>
+    </hgroup>
+</header>
+<div class="inner" id="complete">
+            <form method=POST>
+                {% csrf_token %}
+                {{ wizard.management_form }}
+                <h2>Confirm your plea</h2>
 
-<style>
-/*Sorry Vera, hacking this in for now! */
-h1 {
-    font-size:2em;
-    margin-top:0.5em;
-}
+                <table id="your-details">
+                    <thead>
+                        <tr>
+                            <th class="header">Your details</th>
+                            <th><a href="{% url "plea_form_step" "about" %}" class="review">Change my details</a></th>
+                        </tr>
+                    </thead>
+                        <tbody>
+                            <tr>
+                                <td>Full name</td>
+                                <td>Joe Bloggs</td>
+                            </tr>
+                            <tr>
+                                <td>Unique reference number (URN)</td>
+                                <td>00 / AA / 0000000 / 00</td>
+                            </tr>
+                            <tr>
+                                <td>Court hearing date and time</td>
+                                <td>22 05 2014 at 09:30</td>
+                            </tr>
+                            <tr>
+                                <td>Number of charges against you</td>
+                                <td>1</td>
+                          </tr>
+                        </tbody>
+                      </table>
 
-h2 {
-    font-size:1.5em;
-    margin-top:0.5em;
-}
+                        <table id="your-plea">
+                            <thead>
+                            <tr>
+                                <th class="header">Your plea</th>
+                                <th><a href="{% url "plea_form_step" "plea" %}" class="review">Change your plea</a></th>
+                            </tr>
+                            </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Your plea</td>
+                                        <td>Guilty</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Special circumstances</td>
+                                        <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras justo turpis, malesuada et leo in, auctor tincidunt dolor. Integer laoreet nunc massa, ac ultricies dolor euismod id. Sed non fringilla eros.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Confirmation</td>
+                                        <td>I have read and understand the charge against me.</td>
+                                    </tr>
+                                </tbody>
+                         </table>
+                        
+                        <button type="submit" class="button">Make your plea</button>
 
-dt {
-    font-weight:bold;
-}
-dd {
-    margin-left:1em;
-}
+               <!--  
 
-</style>
+                 <dl>
+                    <dt>Date of hearing</dt>
+                    <dd>{{ about.date_of_hearing }}</dd>
+                    <dt>Name</dt>
+                    <dd>{{ about.name }}</dd>
+                    <dt>URN</dt>
+                    <dd>{{ about.urn }}</dd>
+                </dl> 
 
-<form method=POST>
-    {% csrf_token %}
-    {{ wizard.management_form }}
-    <h1>Confirm</h1>
-    <h2>About</h2>
-    <dl>
-        <dt>Date of hearing</dt>
-        <dd>{{ about.date_of_hearing }}</dd>
-        <dt>Name</dt>
-        <dd>{{ about.name }}</dd>
-        <dt>URN</dt>
-        <dd>{{ about.urn }}</dd>
-    </dl>
-    <a class="button" href="{% url "plea_form_step" "about" %}?next=review">Edit</a>
-    
-    <h2>Pleas</h2>
-    <dl>
-        {%  for plea_info in plea.PleaForms %}
-            <dt>Plea {{ forloop.counter }}</dt>
-            <dd>{{ plea_info.guilty }}</dd>
-            <dt>Plea {{ forloop.counter }} Mitigations</dt>
-            <dd>{{ plea_info.mitigations }}</dd>
-        {% endfor %}
-        <dt>Understand?</dt>
-        <dd>{{ plea.understand }}</dd>
-    </dl>
-    <a class="button" href="{% url "plea_form_step" "plea" %}">Edit</a>
-    
-    <p><button type="submit" class="button">Submit your plea</button></p>
-    
-</form>
+               <dl>
+                    {%  for plea_info in plea.PleaForms %}
+                        <dt>Plea {{ forloop.counter }}</dt>
+                        <dd>{{ plea_info.guilty }}</dd>
+                        <dt>Plea {{ forloop.counter }} Mitigations</dt>
+                        <dd>{{ plea_info.mitigations }}</dd>
+                    {% endfor %}
+                    <dt>Understand?</dt>
+                    <dd>{{ plea.understand }}</dd>
+                </dl> -->
+                
+
+                
+            </form>
+        </div>
 {% endblock content %}

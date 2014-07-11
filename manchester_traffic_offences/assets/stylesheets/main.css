@@ -1050,29 +1050,29 @@ fieldset {
       font-size: 14px;
       line-height: 1.14286; } }
 
-.date-of-hearing label {
+.date-of-birth label {
   display: block;
   margin-bottom: 5px; }
 
-.date-of-hearing .group input {
+.date-of-birth .form-group {
   width: 50px;
   float: left;
   margin-right: 20px;
   clear: none; }
 
-.date-of-hearing .form-group-year {
+.date-of-birth .form-group-year {
   width: 70px; }
 
-.date-of-hearing .form-group input {
+.date-of-birth .form-group input {
   width: 100%; }
 
-.touch .date-of-hearing {
+.touch .date-of-birth {
   display: none; }
 
-.no-touch .native-date-of-hearing {
+.no-touch .native-date-of-birth {
   display: none; }
 
-.touch .native-date-of-hearing {
+.touch .native-date-of-birth {
   display: block; }
 
 .touch input[type="date"] {
@@ -1493,6 +1493,29 @@ ol li {
   margin: 0 auto;
   padding: 0.5em 15px; }
 
+.article-container {
+  background-color: #fff;
+  margin-right: 22.25em;
+  min-height: 25em;
+  max-width: 38em; }
+
+#wrapper {
+  padding-bottom: 0px !important;
+  text-align: left;
+  border-bottom: 10px solid #d53880; }
+
+#wrapper.service header.page-header div h1 {
+  padding: 48px 0 0 35px; }
+
+.article-container.group h2, #complete h2 {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 20px 0; }
+
+#complete h3.heading-medium.divide {
+  border-top: 1px solid #c2c2c2;
+  padding-top: 20px; }
+
 label {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
@@ -1501,8 +1524,45 @@ label {
   text-transform: none;
   display: block; }
 
+.inline .block-label {
+  font-weight: normal; }
+
+.group label {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin: 1em 0; }
+
+.group#urn input {
+  margin: 0.2em; }
+
+.group#urn #id_urn_0, .group#urn #id_urn_1, .group#urn #id_urn_3 {
+  width: 15%;
+  margin: 0 6px; }
+
+.group#urn #id_urn_2 {
+  width: 25%; }
+
+.group #number_of_charges {
+  width: 32%; }
+
+.group #id_date_of_hearing_day, .group #id_date_of_hearing_month, .group #id_date_of_hearing_year,
+.group #id_date_of_hearing_hour, .group #id_date_of_hearing_min {
+  width: 15%;
+  margin: 0 10px 0 0px; }
+
+.group #id_understand_checkbox {
+  font-weight: normal;
+  margin-right: 0px;
+  font-size: 1em; }
+
+.group #id_understand_checkbox span {
+  font-weight: bold; }
+
+details {
+  margin: 1em 0; }
+
 input[type=text], input[type="number"], input[type=email], input[type=tel], input[type=date], select[type=text], select[type=email], select[type=tel], select[type=date] {
-  width: 250px;
+  width: 100%;
   padding: 5px 4px 2px;
   color: #0b0c0c;
   border: 1px solid #bfc1c3;
@@ -1515,6 +1575,9 @@ input, select {
   font-weight: 400;
   text-transform: none;
   margin: 0; }
+
+input#name {
+  width: 80%; }
 
 select {
   border-color: #bfc1c3; }
@@ -1531,6 +1594,59 @@ section .info-notice p {
 section .application-notice {
   padding: 0.1em 0 0.1em 1em; }
 
-form .datefield {float:left; width:50px; margin-right: 20px;}
-form .datefield input { display: block;}
+table {
+  clear: both;
+  margin: 2em 0; }
 
+table tr, table td, table th {
+  padding: 8px;
+  font-size: 1em;
+  width: 45%; }
+
+table th a.review {
+  font-weight: normal;
+  float: right; }
+
+table th.header {
+  font-size: 1.2em; }
+
+.get-started-intro a.button.button-get-started {
+  font-size: 135%;
+  font-weight: normal; }
+
+#before-you-start {
+  margin-top: 2em; }
+
+#before-you-start h2 {
+  font-size: 1.2em;
+  font-weight: bold; }
+
+.related-positioning {
+  height: 0;
+  left: 0;
+  position: absolute;
+  top: 9.5em;
+  width: 100%;
+  z-index: 0; }
+
+.related-positioning .related-container {
+  position: relative;
+  height: 0;
+  margin: 0 auto;
+  max-width: 1020px;
+  z-index: 50; }
+
+.related {
+  position: absolute;
+  right: 1.75em;
+  margin: 3em 0 0 0;
+  width: 15.75em;
+  border-top: 10px solid #d53880; }
+
+.related #stat {
+  font-size: 5em;
+  font-weight: bold;
+  margin-left: 20%; }
+
+.js-enabled .related-positioning {
+  top: 8em; }
