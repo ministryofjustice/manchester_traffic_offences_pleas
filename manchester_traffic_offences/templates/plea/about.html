@@ -1,4 +1,5 @@
 {% extends "plea/base.html" %}
+{% load staticfiles %}
 {% block content %}
     <hgroup>
         <div><h1><span>Service</span>Make your plea online</h1></div>
@@ -13,97 +14,50 @@
 				<form method=POST class="pleaform">
 					{% csrf_token %}
 				    {%  with forms.0 as form %}
+
+				    {{ form.errors }}
 					<fieldset>
 						<div class="group">
 							<span class="validation-message">{{ form.name.errors }}</span>
-						    <label for="{{ form.name.name }}">Enter your full name</label>
+						    <label for="{{ form.name.name }}">Full name</label>
 							<p class="form-hint datefield-hint" id="">As shown on the pack we sent you</p>
 							<input type="text" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}" id="{{ form.name.name }}">
 						</div>
 						
-						<div class="group">
-						<legend>Enter the date of your court hearing</legend>
-						<div class="date-of-hearing">
-							<p class="form-hint datefield-hint" id="">You’ll find the court hearing date on page 1 of the pack we sent you.
-				</p>
-							<div class="group">
-								
-								<span class="validation-message">{{ form.date_of_hearing.errors }}</span>
-								<label for="{{ form.date_of_hearing.name }}">{{ form.date_of_hearing.label }}</label>
-								{{form.date_of_hearing }}
-							</div>
-			<!-- <div class="datefield form-group form-group-month">
-				<span class="validation-message">{{ form.name.errors }}</span>
-				<label for="{{ form.date_of_hearing.name }}">{{ form.name.label }}</label>
-				<input type="text" name="about-{{ form.date_of_hearing.name }}" value="{{ form.date_of_hearing.value|default_if_none:"" }}" id="{{ form.date_of_hearing.name }}" type="text" value="11">
-			</div>
-			<div class="datefield form-group form-group-year">
-				<span class="validation-message">{{ form.name.errors }}</span>
-				<label for="{{ form.date_of_hearing.name }}">{{ form.name.label }}</label>
-				<input type="text" name="about-{{ form.date_of_hearing.name }}" value="{{ form.date_of_hearing.value|default_if_none:"" }}" id="{{ form.date_of_hearing.name }}" type="text" value="11">
-			</div> -->
-			</div>
-		</div>
-		<div class="group">
-			<legend>Enter your unique reference number (URN)</legend>
-			<p class="form-hint datefield-hint" id="">You’ll find your URN in the top right corner of page 1 of the pack we sent you</p>
-			<span class="validation-message">{{ form.urn.errors }}</span>
-		    <label for="{{ form.urn.name }}">{{ form.urn.label }}</label>
-		    <input type="text" name="{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}">
-		</div>
-		<div class="group">
-			<legend>Confirm the number of charges against you</legend>
-			<p class="form-hint datefield-hint" id="">You’ll find the charges on page 2 of the pack we sent you.</p>
-			<label for="{{ form.number_of_charges.name }}">{{ form.number_of_charges.label }}</label>
-            {{ form.number_of_charges }}
-
-		</div>
-
-						<fieldset>
-							<legend>Enter your full name</legend>
-							<div class="group">
-								<p class="form-hint datefield-hint" id="">As shown on the pack we sent you</p>
-								<span class="validation-message">{{ form.name.errors }}</span>
-							    <label for="{{ form.name.name }}">{{ form.name.label }}</label>
-							    <input type="text" name="about-{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}" id="{{ form.name.name }}">
-							</div>
+						<div class="group" id="urn">
+							<span class="validation-message">{{ form.urn.errors }}</span>
+						    <label for="{{ form.name.name }}">Unique reference number (URN)</label>
+							<p class="form-hint datefield-hint" id="">It's on page 1 of the pack, in the top right corner</p>
+							<input type="text" id="urn-one" name="{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}"> / 
+							<input type="text" id="urn-two" name="{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}"> / 
+							<input type="text" id="urn-three" name="{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}"> / 
+							<input type="text" id="urn-four" name="{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}">
+						</div>
+							<div id="urn-loc"><img src="{% static "images/img-urn.png" %}" alt="Location of URN"></div>
 							
 							<div class="group">
-							<legend>Enter the date of your court hearing</legend>
-							<div class="date-of-hearing">
-								<p class="form-hint datefield-hint" id="">You’ll find the court hearing date on page 1 of the pack we sent you.
-					</p>
-								<div class="group">
-									
-									<span class="validation-message">{{ form.date_of_hearing.errors }}</span>
-									<label for="{{ form.date_of_hearing.name }}">{{ form.date_of_hearing.label }}</label>
-									{{form.date_of_hearing }}
-								</div>
-								<!-- <div class="datefield form-group form-group-month">
-									<span class="validation-message">{{ form.name.errors }}</span>
-									<label for="{{ form.date_of_hearing.name }}">{{ form.name.label }}</label>
-									<input type="text" name="about-{{ form.date_of_hearing.name }}" value="{{ form.date_of_hearing.value|default_if_none:"" }}" id="{{ form.date_of_hearing.name }}" type="text" value="11">
-								</div>
-								<div class="datefield form-group form-group-year">
-									<span class="validation-message">{{ form.name.errors }}</span>
-									<label for="{{ form.date_of_hearing.name }}">{{ form.name.label }}</label>
-									<input type="text" name="about-{{ form.date_of_hearing.name }}" value="{{ form.date_of_hearing.value|default_if_none:"" }}" id="{{ form.date_of_hearing.name }}" type="text" value="11">
-								</div> -->
-								</div>
+								<span class="validation-message">{{ form.date_of_hearing.errors }}</span>
+								<label for="{{ form.date_of_hearing.name }}">Court hearing date and time</label>
+								<p class="form-hint datefield-hint" id="">It's on page 1 of the pack<br />
+For example, 08/04/2014 at 09:30</p>{{form.date_of_hearing }} at [ hour ] : [ minute ]
 							</div>
+
 							<div class="group">
-								<legend>Enter your unique reference number (URN)</legend>
-								<p class="form-hint datefield-hint" id="">You’ll find your URN in the top right corner of page 1 of the pack we sent you</p>
-								<span class="validation-message">{{ form.urn.errors }}</span>
-							    <label for="{{ form.urn.name }}">{{ form.urn.label }}</label>
-							    <input type="text" name="about-{{ form.urn.name }}" value="{{ form.urn.value|default_if_none:"" }}" id="{{ form.urn.name }}">
-							</div>
-							<div class="group">
-								<legend>Confirm the number of charges against you</legend>
-								<p class="form-hint datefield-hint" id="">You’ll find the charges on page 2 of the pack we sent you.</p>
-								<label for="{{ form.number_of_charges.name }}">{{ form.number_of_charges.label }}</label>
-								<input type="number" name="about-{{ form.number_of_charges.name }}" value="{{ form.number_of_charges.value|default_if_none:"" }}" id="{{ form.number_of_charges.name }}">
-									
+								<label for="{{ form.number_of_charges.name }}">Number of charges against you</label>
+								<p class="form-hint datefield-hint" id="">It's on page 2 of the pack we sent you.</p>
+								<select name="{{ form.number_of_charges.name }}" value="{{ form.number_of_charges.value|default_if_none:"" }}" id="{{ form.number_of_charges.name }}">
+					                <option value="">Please select…</option>
+					                <option value="0">1</option>
+					                <option value="1">2</option>
+					                <option value="2">3</option>
+					                <option value="3">4</option>
+					                <option value="4">5</option>
+					                <option value="5">6</option>
+					                <option value="6">7</option>
+					                <option value="7">8</option>
+					                <option value="8">9</option>
+					                <option value="9">10</option>
+					              </select>
 							</div>
 
 							<details>
@@ -118,12 +72,7 @@
 							</div>
 
 						</fieldset>
-
-	</fieldset>
-    {% endwith %}
-	
-
-						
+    					{% endwith %}
 
 					</form>
             </section>
