@@ -1532,11 +1532,14 @@ label {
   font-size: 1.2em;
   margin: 1em 0; }
 
-.group#urn #urn-one, .group#urn #urn-two, .group#urn #urn-four {
+.group#urn input {
+  margin: 0.2em; }
+
+.group#urn #id_urn_0, .group#urn #id_urn_1, .group#urn #id_urn_3 {
   width: 15%;
   margin: 0 6px; }
 
-.group#urn #urn-three {
+.group#urn #id_urn_2 {
   width: 25%; }
 
 .group #number_of_charges {

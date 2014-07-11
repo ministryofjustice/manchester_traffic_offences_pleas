@@ -68,8 +68,9 @@ label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.3
 .inline .block-label {font-weight:normal;}
 
 .group label {font-weight:bold; font-size: 1.2em; margin: 1em 0;}
-.group#urn #urn-one, .group#urn #urn-two, .group#urn #urn-four {width:15%; margin:0 6px;}
-.group#urn #urn-three {width:25%;}
+.group#urn input {margin:0.2em;}
+.group#urn #id_urn_0, .group#urn #id_urn_1, .group#urn #id_urn_3 {width:15%; margin:0 6px;}
+.group#urn #id_urn_2 {width:25%;}
 .group #number_of_charges {width:32%;}
 .group #id_date_of_hearing_day, .group #id_date_of_hearing_month, .group #id_date_of_hearing_year, 
 .group #id_date_of_hearing_hour, .group #id_date_of_hearing_min {width:15%; margin:0 10px 0 0px;}

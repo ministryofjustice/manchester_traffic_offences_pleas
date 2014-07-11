@@ -15,10 +15,10 @@ from email import send_plea_email
 
 class URNWidget(MultiWidget):
     def __init__(self, attrs=None):
-        widgets = [forms.TextInput(),
-                   forms.TextInput(),
-                   forms.TextInput(),
-                   forms.TextInput(),
+        widgets = [forms.NumberInput(attrs={'maxlength': '2'}),
+                   forms.TextInput(attrs={'maxlength': '7'}),
+                   forms.NumberInput(attrs={'maxlength': '2'}),
+                   forms.NumberInput(attrs={'maxlength': '2'}),
                    ]
         super(URNWidget, self).__init__(widgets, attrs)
 
@@ -27,6 +27,9 @@ class URNWidget(MultiWidget):
             return value.split('/')
         else:
             return ['', '', '', '']
+
+    def format_output(self, rendered_widgets):
+        return '/'.join(rendered_widgets)
 
 
 class URNField(forms.MultiValueField):

@@ -2,6 +2,7 @@
 
 {% block content %}
 
+<header class="page-header group">
     <hgroup>
         <div><h1><span>Service</span>Make your plea online</h1></div>
     </hgroup>
@@ -10,38 +11,33 @@
 <div class="article-container group">
     <article role="article" class="group">
         <div class="inner">
-          <section>
-        	<h2>Your plea</h2>
-            <form method=POST>
+            <section>
+            <h2>Your plea</h2>
+                <form method=POST>
+                    {% for form in forms %}
 
-                {% for form in forms %}
-                <h2>Charge {{forloop.counter}}</h2>
+                    <h2>Charge {{forloop.counter}}</h2>
+                    <fieldset class="inline">
+                        <div class="group">
+                            <label for="radio-inline-1" class="block-label"><input id="id_form-0-guilty_0" type="radio" name="radio-inline-group" value="Yes">Guilty</label>
+                            <label for="radio-inline-2" class="block-label"><input id="id_form-0-guilty_1" type="radio" name="radio-inline-group" value="No">Not Guilty</label>
+                        </div>
+                        
+                        <div class="group">
+                            <label for="{{ form.name.name }}">Special circumstances</label>
+                            <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
+                            <span class="validation-message">{{ form.name.errors }}</span>
+                            <textarea rows="4" cols="50" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}" id="id_form-0-mitigations {{ form.name.name }}"></textarea>
+                        </div>
+                    </fieldset>
+                    {% endfor %}
 
-                
-                {{ form }}
-            	
-                <fieldset class="inline">
-                <div class="group">
-                      <label for="radio-inline-1" class="block-label"><input id="id_form-0-guilty_0" type="radio" name="radio-inline-group" value="Yes">Guilty</label>
-                      <label for="radio-inline-2" class="block-label"><input id="id_form-0-guilty_1" type="radio" name="radio-inline-group" value="No">Not Guilty</label>
-                </div>
-                <div class="group">
-                    <label for="{{ form.name.name }}">Special circumstances</label>
-            			<p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
-            			<span class="validation-message">{{ form.name.errors }}</span>
-            		    <textarea rows="4" cols="50" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}" id="id_form-0-mitigations {{ form.name.name }}"></textarea>
-            	</div>
-                <div class="group">
-                    <label for="checkbox" id="id_understand_checkbox" class="block-label"><input id="id_understand" type="checkbox" class="block-label" value="checkbox-"><span>I confirm</span> that I have read and understand the charge against me.</label>
-                </div>
+                    <div class="group">
+                        <label for="checkbox" id="id_understand_checkbox" class="block-label"><input id="id_understand" type="checkbox" class="block-label" value="checkbox-"><span>I confirm</span> that I have read and understand the charge against me.</label>
+                    </div>
 
-
-                {% endfor %}
-
-
-
-                	{% csrf_token %}
-                	<button class="button" type=submit>Continue</button> <a href="/about/" id="submit-btn">Back</a>
+                    {% csrf_token %}
+                    <button class="button" type=submit>Continue</button> <a href="/about/" id="submit-btn">Back</a>
                 </form>
            </section>
         </div>
