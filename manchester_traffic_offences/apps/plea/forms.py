@@ -2,22 +2,51 @@ import smtplib
 import socket
 
 from django import forms
+from django.forms.widgets import MultiWidget
 from django.core.urlresolvers import reverse_lazy
 from django.forms.formsets import formset_factory
 from django.forms.widgets import Textarea, RadioSelect
 
-from manchester_traffic_offences.apps.govuk_utils.forms import GovUkDateWidget, FormStage, MultiStageForm
+from manchester_traffic_offences.apps.govuk_utils.forms import \
+    GovUkDateWidget, FormStage, MultiStageForm
 from manchester_traffic_offences.apps.defendant.utils import is_valid_urn_format
 from email import send_plea_email
 
 
-class URNField(forms.CharField):
+class URNWidget(MultiWidget):
+    def __init__(self, attrs=None):
+        widgets = [forms.TextInput(),
+                   forms.TextInput(),
+                   forms.TextInput(),
+                   forms.TextInput(),
+                   ]
+        super(URNWidget, self).__init__(widgets, attrs)
+
+    def decompress(self, value):
+        if value:
+            return value.split('/')
+        else:
+            return ['', '', '', '']
+
+
+class URNField(forms.MultiValueField):
+    def __init__(self, *args, **kwargs):
+            list_fields = [forms.fields.CharField(max_length=2),
+                           forms.fields.CharField(max_length=2),
+                           forms.fields.CharField(max_length=7),
+                           forms.fields.CharField(max_length=2)]
+            super(URNField, self).__init__(list_fields, *args, **kwargs)
+
+    def compress(self, values):
+        return "/".join(values)
+
     default_validators = [is_valid_urn_format, ]
+    widget = URNWidget()
 
 
 class BasePleaStepForm(forms.Form):
     """
-    Note that names in these forms can't be the same, otherwise they will get 
+    Note that names in these forms can't be the same, otherwise they will get
     merged in to the last value used.
     """
     pass
@@ -25,9 +54,10 @@ class BasePleaStepForm(forms.Form):
 
 class AboutForm(BasePleaStepForm):
     date_of_hearing = forms.DateField(widget=GovUkDateWidget())
-    urn = URNField(max_length=255, required=True)
+    urn = URNField(required=True)
     name = forms.CharField(max_length=255, required=True)
-    number_of_charges = forms.IntegerField(widget=forms.Select(choices=[(i, i) for i in range(1, 11)]))
+    number_of_charges = forms.IntegerField(
+        widget=forms.Select(choices=[(i, i) for i in range(1, 11)]))
 
 
 class PleaInfoForm(BasePleaStepForm):
@@ -40,7 +70,8 @@ class PleaForm(BasePleaStepForm):
         ('not_guilty', 'Not Guilty'),
     )
 
-    guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect(), required=True)
+    guilty = forms.ChoiceField(
+        choices=PLEA_CHOICES, widget=RadioSelect(), required=True)
     mitigations = forms.CharField(widget=Textarea(), required=False)
 
 
@@ -94,7 +125,8 @@ class ReviewStage(FormStage):
             send_plea_email(self.all_data)
             next_step = reverse_lazy("plea_form_step", args=("complete", ))
         except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
-            next_step = reverse_lazy('plea_form_step', args=('review_send_error', ))
+            next_step = reverse_lazy(
+                'plea_form_step', args=('review_send_error', ))
 
         self.next = next_step
         return form_data
