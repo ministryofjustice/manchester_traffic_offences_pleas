@@ -20,14 +20,14 @@
                     <fieldset>
                         <div class="group">
                             <label for="{{ form.name.name }}">Full name</label>
-                            <p class="form-hint datefield-hint">As shown on the pack we sent you</p>
+                            <p class="form-hint datefield-hint">On page 1 of the pack we sent you.</p>
                             <span class="validation-message">{{ form.name.errors }}</span>
                             <input type="text" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}" id="{{ form.name.name }}">
                         </div>
                         
                         <div class="group" id="urn">
                             <label for="{{ form.urn.name }}">Unique reference number (URN)</label>
-                            <p class="form-hint datefield-hint" id="">It's on page 1 of the pack, in the top right corner</p>
+                            <p class="form-hint datefield-hint" id="">On page 1 of the pack, in the top right corner.</p>
                             {#  Django handles the output of the URN field #}
                             <span class="validation-message">{{ form.urn.errors }}</span>
                             {{ form.urn }}
@@ -36,7 +36,7 @@
 
                         <div class="group">
                             <label for="{{ form.date_of_hearing.name }}">Court hearing date and time</label>
-                            <p class="form-hint datefield-hint" id="">It's on page 1 of the pack<br />
+                            <p class="form-hint datefield-hint" id="">On page 1 of the pack, near the top on the left.<br />
                             For example, 08/04/2014 at 09:30</p>
                             <span class="validation-message">{{ form.date_of_hearing.errors }}</span>
                             {{form.date_of_hearing }} at [ hour ] : [ minute ]
@@ -44,7 +44,7 @@
 
                         <div class="group">
                             <label for="{{ form.number_of_charges.name }}">Number of charges against you</label>
-                            <p class="form-hint datefield-hint" id="">It's on page 2 of the pack we sent you.</p>
+                            <p class="form-hint datefield-hint" id="">On page 2 of the pack, in numbered boxes.</p>
                             <span class="validation-message">{{ form.number_of_charges.errors }}</span>
                             <select name="{{ form.number_of_charges.name }}" value="{{ form.number_of_charges.value|default_if_none:"" }}" id="{{ form.number_of_charges.name }}">
                                 <option value="">Please select…</option>
