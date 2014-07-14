@@ -13,6 +13,8 @@ ADMINS = (
 MANAGERS = ADMINS
 
 
+ALLOWED_HOSTS = ["pleaonline.dsd.io", ]
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
