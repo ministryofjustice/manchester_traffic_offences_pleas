@@ -34,7 +34,7 @@
                                     <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances</label>
                                     <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
                                     <span class="validation-message">{{ form.mitigations.errors }}</span>
-                                    <textarea rows="4" cols="50" name="{{ form.mitigations.html_name }}" value="{{ form.mitigations.value|default_if_none:"" }}" id="{{ form.mitigations.id_for_label }}"></textarea>
+                                    <textarea rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}">{{ form.mitigations.value|default_if_none:"" }}</textarea>
                                 </div>
                             </fieldset>
                         {% endfor %}

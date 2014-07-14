@@ -2,6 +2,7 @@ from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import RequestContext
+from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
 
 from brake.decorators import ratelimit
@@ -10,8 +11,9 @@ from .forms import PleaOnlineForms
 
 
 class PleaOnlineViews(TemplateView):
+    @never_cache
     def get(self, request, stage=None):
-
+        print {k: v for k, v in request.session.items()}
         if not stage:
             stage = PleaOnlineForms.stage_classes[0].name
             return HttpResponseRedirect(reverse_lazy("plea_form_step", args=(stage,)))

@@ -53,7 +53,7 @@ class FormStage(object):
         self.load_forms(form_data)
 
         for form in self.forms:
-            all_valid = all_valid and form.is_valid()
+            all_valid = form.is_valid() and all_valid
 
         if all_valid:
             clean_data.update(self.save_forms())
@@ -74,6 +74,7 @@ class MultiStageForm(object):
     def __init__(self, current_stage, url_name, storage_dict):
         self.urls = OrderedDict()
         self.current_stage_class = None
+        self.current_stage = None
         self.storage_dict = storage_dict
         self.all_data = {}
         self.url_name = url_name
@@ -103,21 +104,21 @@ class MultiStageForm(object):
 
     def load(self, request_context):
         # TODO validate previous stages?
-        stage = self.current_stage_class(self.urls, self.all_data)
-        stage.load()
-        return stage.render(request_context)
+        self.current_stage = self.current_stage_class(self.urls, self.all_data)
+        self.current_stage.load()
+        return self.current_stage.render(request_context)
 
     def save(self, form_data, request_context, next=None):
         next_url = None
         if next:
             next_url = reverse(self.url_name, args=(next, ))
 
-        stage = self.current_stage_class(self.urls, self.all_data)
-        if stage.name not in self.all_data:
-            self.all_data[stage.name] = {}
-        self.all_data[stage.name].update(stage.save(form_data, next=next_url))
+        self.current_stage = self.current_stage_class(self.urls, self.all_data)
+        if self.current_stage.name not in self.all_data:
+            self.all_data[self.current_stage.name] = {}
+        self.all_data[self.current_stage.name].update(self.current_stage.save(form_data, next=next_url))
         self.save_to_storage()
-        return stage.render(request_context)
+        return self.current_stage.render(request_context)
 
 
 class GovUkDateWidget(SelectDateWidget):
