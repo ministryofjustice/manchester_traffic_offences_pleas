@@ -63,7 +63,7 @@ class TestMultiPleaForms(TestCase):
         form.save(mgmt_data, self.request_context)
 
         self.assertEqual(len(form.current_stage.forms[0].errors), 1)
-        self.assertEqual(len(form.current_stage.forms[1].errors[0]), 2)
+        self.assertEqual(len(form.current_stage.forms[1].errors[0]), 1)
 
     def test_plea_stage_good_data_single_charge(self):
         self.session.update(self.plea_stage_pre_data_1_charge)
@@ -96,7 +96,8 @@ class TestMultiPleaForms(TestCase):
         response = form.save(mgmt_data, self.request_context)
 
         self.assertEqual(len(form.current_stage.forms[1].errors[0]), 0)
-        self.assertEqual(len(form.current_stage.forms[1].errors[1]), 2)
+        self.assertEqual(len(form.current_stage.forms[1].errors[1]), 1)
+
 
     def test_plea_stage_good_data_multiple_charges(self):
         self.session.update(self.plea_stage_pre_data_1_charge)
