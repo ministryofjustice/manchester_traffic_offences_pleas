@@ -2,6 +2,7 @@ import smtplib
 import socket
 
 from django import forms
+from django.forms.formsets import BaseFormSet
 from django.forms.widgets import MultiWidget
 from django.core.urlresolvers import reverse_lazy
 from django.forms.formsets import formset_factory
@@ -11,6 +12,13 @@ from manchester_traffic_offences.apps.govuk_utils.forms import \
     GovUkDateWidget, FormStage, MultiStageForm
 from manchester_traffic_offences.apps.defendant.utils import is_valid_urn_format
 from email import send_plea_email
+
+
+class RequiredFormSet(BaseFormSet):
+    def __init__(self, *args, **kwargs):
+        super(RequiredFormSet, self).__init__(*args, **kwargs)
+        for form in self.forms:
+            form.empty_permitted = False
 
 
 class URNWidget(MultiWidget):
@@ -108,7 +116,8 @@ class PleaStage(FormStage):
         else:
             extra_forms = forms_wanted
 
-        PleaForms = formset_factory(PleaForm, extra=extra_forms)
+        PleaForms = formset_factory(PleaForm, formset=RequiredFormSet, extra=extra_forms)
+
         if initial:
             initial_plea_data = self.all_data[self.name].get("PleaForms", [])
             initial_info_data = self.all_data[self.name]
