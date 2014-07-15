@@ -9,7 +9,6 @@ from manchester_traffic_offences.apps.govuk_utils.forms import \
     GovUkDateWidget, FormStage, MultiStageForm
 from manchester_traffic_offences.apps.defendant.utils import is_valid_urn_format
 from .email import send_plea_email
-from .models import CourtEmailPlea
 
 
 class RequiredFormSet(BaseFormSet):
@@ -148,6 +147,7 @@ class ReviewStage(FormStage):
         email_result = send_plea_email(self.all_data)
         if email_result:
             next_step = reverse_lazy("plea_form_step", args=("complete", ))
+
         else:
             next_step = reverse_lazy(
                 'plea_form_step', args=('review_send_error', ))
