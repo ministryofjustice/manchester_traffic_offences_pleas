@@ -2,14 +2,9 @@
 
 {% load staticfiles %}
 {% block stylesheets %}
-	<link rel="stylesheet" type="text/css" href="{% static "stylesheets/main.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "stylesheets/main.css" %}">
 {% endblock %}
 
 {% block footer_top %}
-{% if debug %}
-<pre>
-	{{ request.session.plea|pprint }}
-</pre>
-{% endif %}
 
 {% endblock footer_top %}

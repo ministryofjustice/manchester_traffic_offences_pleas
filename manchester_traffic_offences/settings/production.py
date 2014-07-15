@@ -7,10 +7,13 @@ TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     ('Sym Roe', 'sym.roe@digital.justice.gov.uk'),
+    ('Ian George', 'ian.george@digital.justice.gov.uk'),
 )
 
 MANAGERS = ADMINS
 
+
+ALLOWED_HOSTS = ["pleaonline.dsd.io", ]
 
 DATABASES = {
     'default': {
