@@ -63,6 +63,7 @@ def send_plea_email(context_data, plea_email_to=settings.PLEA_EMAIL_TO):
                         settings.PLEA_EMAIL_BODY)
     except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
         email_audit.status = "network_error"
+        email_audit.status_info = unicode(e)
         email_audit.save()
         return False
 
