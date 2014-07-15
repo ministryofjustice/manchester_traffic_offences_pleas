@@ -1650,3 +1650,8 @@ table th.header {
 
 .js-enabled .related-positioning {
   top: 8em; }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0; }
