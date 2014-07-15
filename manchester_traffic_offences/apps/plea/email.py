@@ -24,7 +24,7 @@ class TemplateAttachmentEmail(object):
 
     def send(self, to_address, subject, body):
         self.attachment_content = render_to_string(self.attachment_template,
-                                              self.attachment_data)
+                                                   self.attachment_data)
 
         self.email = EmailMessage(subject, body, self.from_address,
                                   to_address)
@@ -41,21 +41,21 @@ def send_plea_email(context_data, plea_email_to=settings.PLEA_EMAIL_TO):
     context_data: dict populated by form  fields
     """
 
-    email_audit = CourtEmailPlea()
-    email_audit.process_form_data(context_data)
-    email_audit.address_from = settings.PLEA_EMAIL_FROM
-    email_audit.address_to = settings.PLEA_EMAIL_TO
-    email_audit.attachment_text = ""
-    email_audit.body_text = settings.PLEA_EMAIL_BODY
-    email_audit.subject = settings.PLEA_EMAIL_SUBJECT.format(**context_data)
-    email_audit.status = "created_not_sent"
-    email_audit.save()
-
     plea_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
                                          settings.PLEA_EMAIL_ATTACHMENT_NAME,
                                          settings.PLEA_EMAIL_TEMPLATE,
                                          context_data,
                                          "text/html")
+
+    email_audit = CourtEmailPlea()
+    email_audit.process_form_data(context_data)
+    email_audit.address_from = settings.PLEA_EMAIL_FROM
+    email_audit.address_to = settings.PLEA_EMAIL_TO
+    email_audit.attachment_text = plea_email.attachment_content
+    email_audit.body_text = settings.PLEA_EMAIL_BODY
+    email_audit.subject = settings.PLEA_EMAIL_SUBJECT.format(**context_data)
+    email_audit.status = "created_not_sent"
+    email_audit.save()
 
     try:
         plea_email.send((plea_email_to, ),
