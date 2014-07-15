@@ -38,13 +38,14 @@ class EmailAuditTests(unittest.TestCase):
 
     @patch("plea.email.TemplateAttachmentEmail.send")
     def test_email_failure_audit(self, send):
-        send.side_effect = socket.error
+        send.side_effect = socket.error("Email failed to send, socket error")
         result = send_plea_email(self.context_data)
         data = json.dumps(self.context_data, cls=DjangoJSONEncoder)
         self.assertFalse(result)
 
         audit = CourtEmailPlea.objects.latest('date_sent')
         self.assertEqual(audit.status, "network_error")
+        self.assertEqual(audit.status_info, u"Email failed to send, socket error")
         self.assertEqual(audit.dict_sent, data)
         self.assertEqual(audit.subject, settings.PLEA_EMAIL_SUBJECT.format(**self.context_data))
 
