@@ -5,7 +5,7 @@ from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
 
-from .models import CourtEmailPlea
+from .models import CourtEmailPlea, CourtEmailCount
 
 
 class TemplateAttachmentEmail(object):
@@ -68,5 +68,9 @@ def send_plea_email(context_data, plea_email_to=settings.PLEA_EMAIL_TO):
 
     email_audit.status = "sent"
     email_audit.save()
+
+    email_count = CourtEmailCount()
+    email_count.get_from_context(context_data)
+    email_count.save()
 
     return True
