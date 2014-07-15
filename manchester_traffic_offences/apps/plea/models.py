@@ -27,5 +27,40 @@ class CourtEmailPlea(models.Model):
                                                      self.date_sent)
 
     def process_form_data(self, form_data):
-        #TODO make this into some sort of JSON thing.
         self.dict_sent = json.dumps(form_data, cls=DjangoJSONEncoder)
+
+
+class CourtEmailCount(models.Model):
+    date_sent = models.DateTimeField(auto_now_add=True)
+    total_pleas = models.IntegerField()
+    total_guilty = models.IntegerField()
+    total_not_guilty = models.IntegerField()
+    hearing_date = models.DateTimeField()
+
+    def get_from_context(self, context):
+        if not "plea" in context:
+            return
+        if not "PleaForms" in context["plea"]:
+            return
+        if not "about" in context:
+            return
+
+        if self.total_pleas is None:
+            self.total_pleas = 0
+
+        if self.total_guilty is None:
+            self.total_guilty = 0
+
+        if self.total_not_guilty is None:
+            self.total_not_guilty = 0
+
+        self.hearing_date = context["about"]["date_of_hearing"]
+
+        for plea_data in context["plea"]["PleaForms"]:
+            self.total_pleas += 1
+
+            if plea_data["guilty"] == "guilty":
+                self.total_guilty += 1
+
+            if plea_data["guilty"] == "not_guilty":
+                self.total_not_guilty += 1

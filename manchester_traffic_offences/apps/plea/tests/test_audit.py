@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 
 from plea.email import send_plea_email
-from ..models import CourtEmailPlea
+from ..models import CourtEmailPlea, CourtEmailCount
 
 
 class EmailAuditTests(unittest.TestCase):
@@ -47,3 +47,11 @@ class EmailAuditTests(unittest.TestCase):
         self.assertEqual(audit.status, "network_error")
         self.assertEqual(audit.dict_sent, data)
         self.assertEqual(audit.subject, settings.PLEA_EMAIL_SUBJECT.format(**self.context_data))
+
+    def test_management_data_is_stored(self):
+        result = send_plea_email(self.context_data)
+
+        count = CourtEmailCount.objects.latest('date_sent')
+        self.assertEqual(count.total_pleas, 2)
+        self.assertEqual(count.total_guilty, 1)
+        self.assertEqual(count.total_not_guilty, 1)
