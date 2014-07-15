@@ -33,7 +33,7 @@ class TemplateAttachmentEmail(object):
         self.email.send(fail_silently=False)
 
 
-def send_plea_email(context_data):
+def send_plea_email(context_data, plea_email_to=settings.PLEA_EMAIL_TO):
     """
     Sends a plea email. All addresses, content etc. are defined in
     settings.
@@ -58,7 +58,7 @@ def send_plea_email(context_data):
                                          "text/html")
 
     try:
-        plea_email.send((settings.PLEA_EMAIL_TO, ),
+        plea_email.send((plea_email_to, ),
                         settings.PLEA_EMAIL_SUBJECT.format(**context_data),
                         settings.PLEA_EMAIL_BODY)
     except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
