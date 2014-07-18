@@ -1,7 +1,19 @@
+from datetime import datetime
 import json
 
 from django.db import models
 from django.core.serializers.json import DjangoJSONEncoder
+
+
+class CourtEmailPleaManager(models.Manager):
+    @staticmethod
+    def delete_old_emails():
+        today = datetime.today()
+        today_start = datetime(today.year, today.month, today.day)
+        old_records = CourtEmailPlea.objects.filter(hearing_date__lt=today_start)
+        count = old_records.count()
+        old_records.delete()
+        return count
 
 
 class CourtEmailPlea(models.Model):
@@ -17,6 +29,9 @@ class CourtEmailPlea(models.Model):
     address_to = models.EmailField()
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default="not_sent")
     status_info = models.TextField(null=True, blank=True)
+    hearing_date = models.DateTimeField()
+
+    objects = CourtEmailPleaManager()
 
     class Meta:
         ordering = ['-date_sent', ]
