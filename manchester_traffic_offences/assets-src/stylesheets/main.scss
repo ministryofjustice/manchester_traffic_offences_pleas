@@ -101,3 +101,9 @@ table th.header {font-size: 1.2em;}
 .related {position: absolute; right: 1.75em; margin: 3em 0 0 0; width: 15.75em; border-top: 10px solid #d53880;}
 .related #stat {font-size:5em; font-weight:bold; margin-left: 20%;}
 .js-enabled .related-positioning {top: 8em;}
+
+label.datetime {font-weight:normal; display:inline-block;}
+label.datetime-day {width:4.75em;}
+label.datetime-month {width:4.75em;}
+label.datetime-year {width:5em;}
+label.datetime-time {display:block;}

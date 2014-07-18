@@ -1650,3 +1650,19 @@ table th.header {
 
 .js-enabled .related-positioning {
   top: 8em; }
+
+label.datetime {
+  font-weight: normal;
+  display: inline-block; }
+
+label.datetime-day {
+  width: 4.75em; }
+
+label.datetime-month {
+  width: 4.75em; }
+
+label.datetime-year {
+  width: 5em; }
+
+label.datetime-time {
+  display: block; }
