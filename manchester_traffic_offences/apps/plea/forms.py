@@ -1,14 +1,118 @@
+from __future__ import unicode_literals
+
+from dateutil.parser import parse
+import datetime
+import six
+
 from django import forms
 from django.forms.formsets import BaseFormSet
 from django.forms.widgets import MultiWidget
 from django.core.urlresolvers import reverse_lazy
 from django.forms.formsets import formset_factory
-from django.forms.widgets import Textarea, RadioSelect
+from django.forms.widgets import Textarea, RadioSelect, NumberInput, RadioFieldRenderer
+from django.forms.extras.widgets import Widget
+from django.template.loader import render_to_string
+from django.utils.encoding import force_str, force_text
+from django.utils.safestring import mark_safe
 
-from manchester_traffic_offences.apps.govuk_utils.forms import \
-    GovUkDateWidget, FormStage, MultiStageForm
-from manchester_traffic_offences.apps.defendant.utils import is_valid_urn_format
-from .email import send_plea_email
+from govuk_utils.forms import FormStage, MultiStageForm
+from defendant.utils import is_valid_urn_format
+from email import send_plea_email
+
+
+class DSRadioFieldRenderer(RadioFieldRenderer):
+    def render(self):
+        """
+        Outputs a <ul> for this set of choice fields.
+        If an id was given to the field, it is applied to the <ul> (each
+        item in the list will get an id of `$id_$i`).
+        """
+        id_ = self.attrs.get('id', None)
+
+        context = {"id": id_, "renderer": self, "inputs": [force_text(widget) for widget in self]}
+
+        return render_to_string("widgets/RadioSelect.html", context)
+
+
+class FixedTimeDateWidget(Widget):
+    year_field = "%s_year"
+    month_field = "%s_month"
+    day_field = "%s_day"
+    time_field = "%s_time"
+    times = [(00, 00, "Midnight"), (12, 00, "Midday")]
+
+    def get_time_choices(self):
+        return (("{0}:{1}".format(*time), time[2]) for time in self.times)
+
+    def get_time_from_val(self, val):
+        return "{0}:{1}".format(*val)
+
+    def create_input(self, name, field, value, val, **attrs):
+        if "id" in self.attrs:
+            id_ = self.attrs["id"]
+        else:
+            id_ = "id_%s" % name
+
+        local_attrs = self.build_attrs(id=field % id_, **attrs)
+
+        i = NumberInput()
+        input_html = i.render(field % name, val, local_attrs)
+        return input_html
+
+    def create_radio(self, name, field, value, val):
+        if "id" in self.attrs:
+            id_ = self.attrs["id"]
+        else:
+            id_ = "id_%s" % name
+
+        local_attrs = self.build_attrs(id=field % id_)
+
+        r = RadioSelect(choices=self.get_time_choices(), renderer=DSRadioFieldRenderer)
+        radio_html = r.render(field % name, val, local_attrs)
+        return radio_html
+
+    def value_from_datadict(self, data, files, name):
+        y = data.get(self.year_field % name)
+        m = data.get(self.month_field % name)
+        d = data.get(self.day_field % name)
+        t = data.get(self.time_field % name)
+        if t:
+            hr = t.split(":")[0]
+            mn = t.split(":")[1]
+        else:
+            hr, mn = None, None
+
+        if y == m == d == hr == mn == "0":
+            return None
+        if y and m and d and t:
+            datetime_value = datetime.datetime(int(y), int(m), int(d), int(hr), int(mn))
+            return str(datetime_value)
+
+        return data.get(name, None)
+
+    def render(self, name, value, attrs=None):
+        try:
+            year_val, month_val, day_val, hour_val, minute_val = value.year, value.month, value.day, value.hour, value.minute
+        except AttributeError:
+            year_val, month_val, day_val, hour_val, minute_val = (None, None, None, None, None)
+            if isinstance(value, six.string_types):
+                try:
+                    v = parse(force_str(value))
+                    year_val, month_val, day_val, hour_val, minute_val = v.year, v.month, v.day, v.hour, v.minute
+                except ValueError:
+                    pass
+
+        year_html = self.create_input(name, self.year_field, value, year_val)
+        month_html = self.create_input(name, self.month_field, value, month_val, min=1, max=12)
+        day_html = self.create_input(name, self.day_field, value, day_val, min=1, max=31)
+        time_html = self.create_radio(name, self.time_field, value, self.get_time_from_val((hour_val, minute_val)))
+
+        context = {"year": year_html, "month": month_html, "day": day_html, "time": time_html}
+        return render_to_string("widgets/FixedDateTimeWidget.html", context)
+
+
+class HearingDateTimeWidget(FixedTimeDateWidget):
+    times = [(9, 15, "9:15am"), (13, 15, "1:15pm")]
 
 
 class RequiredFormSet(BaseFormSet):
@@ -61,7 +165,7 @@ class BasePleaStepForm(forms.Form):
 
 
 class AboutForm(BasePleaStepForm):
-    date_of_hearing = forms.DateField(widget=GovUkDateWidget())
+    date_of_hearing = forms.DateTimeField(widget=HearingDateTimeWidget())
     urn = URNField(required=True)
     name = forms.CharField(max_length=255, required=True)
     number_of_charges = forms.IntegerField(
