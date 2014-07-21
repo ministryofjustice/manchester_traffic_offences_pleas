@@ -3,7 +3,6 @@ import datetime
 from django.test import TestCase
 
 from plea.views import PleaOnlineForms
-from plea.forms import PleaForm
 
 
 class TestMultiPleaForms(TestCase):
@@ -97,7 +96,6 @@ class TestMultiPleaForms(TestCase):
 
         self.assertEqual(len(form.current_stage.forms[1].errors[0]), 0)
         self.assertEqual(len(form.current_stage.forms[1].errors[1]), 1)
-
 
     def test_plea_stage_good_data_multiple_charges(self):
         self.session.update(self.plea_stage_pre_data_1_charge)
