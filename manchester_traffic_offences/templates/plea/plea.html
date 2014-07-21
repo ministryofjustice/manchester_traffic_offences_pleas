@@ -7,19 +7,19 @@
         <div><h1><span>Service</span>Make your plea online</h1></div>
     </hgroup>
 </header>
-
+{% with request.session.about.number_of_charges as charges %}
 <div class="article-container group">
     <article role="article" class="group">
         <div class="inner">
             <section>
-            <h2>Your plea</h2>
+            <h2>Your plea{{ charges|pluralize }}</h2>
                 <form method=POST>
                     {% csrf_token %}
                     {% with forms.1 as formset %}
                         {{ formset.management_form }}
                         {% for form in formset %}
-                            <h2>Charge {{ forloop.counter }}</h2>
-                            <fieldset class="inline">
+                            <label>Your plea for charge {{ forloop.counter }}</label>
+                            <fieldset class="inline charge-section">
                                 <div class="group">
                                     {% for choice in form.guilty %}
                                         <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
@@ -43,7 +43,8 @@
                     {% with forms.0 as form %}
                         <div class="group">
                             <label for="{{ form.understand.id_for_label }}" class="block-label">
-                                <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" class="block-label" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}><span>I confirm</span> that I have read and understand the charge against me.
+                                <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" class="block-label" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
+                                <strong>I confirm</strong> that I have read and understand the charge{{ charges|pluralize }} against me.
                             </label>
                             <span class="validation-message">{{ form.understand.errors }}</span>
                         </div>
@@ -54,5 +55,5 @@
         </div>
     </article>
 </div>
-
+{% endwith %}
 {% endblock content %}
