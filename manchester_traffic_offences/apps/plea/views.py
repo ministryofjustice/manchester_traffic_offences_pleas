@@ -13,7 +13,6 @@ from .forms import PleaOnlineForms
 class PleaOnlineViews(TemplateView):
     @never_cache
     def get(self, request, stage=None):
-        print {k: v for k, v in request.session.items()}
         if not stage:
             stage = PleaOnlineForms.stage_classes[0].name
             return HttpResponseRedirect(reverse_lazy("plea_form_step", args=(stage,)))
@@ -23,6 +22,6 @@ class PleaOnlineViews(TemplateView):
 
     @method_decorator(ratelimit(block=True, rate="10/m"))
     def post(self, request, stage):
-        next = request.GET.get("next", None)
+        nxt = request.GET.get("next", None)
         form = PleaOnlineForms(stage, "plea_form_step", request.session)
-        return form.save(request.POST, RequestContext(request), next)
+        return form.save(request.POST, RequestContext(request), nxt)
