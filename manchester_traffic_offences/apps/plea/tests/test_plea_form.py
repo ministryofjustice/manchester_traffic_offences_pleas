@@ -169,7 +169,7 @@ class TestMultiPleaForms(TestCase):
         form = PleaOnlineForms("complete", "plea_form_step", fake_session)
         response = form.load(request_context)
 
-        self.assertEqual(fake_session["about"]["date_of_hearing"], datetime.date(2015, 1, 1, 0, 0))
+        self.assertEqual(fake_session["about"]["date_of_hearing"], datetime.datetime(2015, 1, 1, 0, 0))
         self.assertEqual(fake_session["about"]["urn"], "00/AA/0000000/00")
         self.assertEqual(fake_session["about"]["name"], "Charlie Brown")
         self.assertEqual(fake_session["about"]["number_of_charges"], 1)
@@ -221,7 +221,7 @@ class TestMultiPleaForms(TestCase):
         form = PleaOnlineForms("complete", "plea_form_step", fake_session)
         response = form.load(request_context)
 
-        self.assertEqual(fake_session["about"]["date_of_hearing"], datetime.date(2015, 1, 1, 0, 0))
+        self.assertEqual(fake_session["about"]["date_of_hearing"], datetime.datetime(2015, 1, 1, 0, 0))
         self.assertEqual(fake_session["about"]["urn"], "00/AA/0000000/00")
         self.assertEqual(fake_session["about"]["name"], "Charlie Brown")
         self.assertEqual(fake_session["about"]["number_of_charges"], 2)
