@@ -271,6 +271,13 @@ class CompleteStage(FormStage):
     template = "plea/complete.html"
     form_classes = []
 
+    def render(self, request_context):
+        for form_data in self.all_data["plea"]["PleaForms"]:
+            if form_data["guilty"] == "guilty":
+                request_context["some_guilty"] = True
+
+        return super(CompleteStage, self).render(request_context)
+
 
 class PleaOnlineForms(MultiStageForm):
     stage_classes = [AboutStage,
