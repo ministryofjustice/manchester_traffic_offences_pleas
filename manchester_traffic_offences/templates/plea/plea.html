@@ -17,8 +17,30 @@
                     {% csrf_token %}
                     {% with forms.1 as formset %}
                         {{ formset.management_form }}
+                        {% if formset|length > 1 %}
                         {% for form in formset %}
                             <label>Your plea for charge {{ forloop.counter }}</label>
+                            <fieldset class="inline charge-section">
+                                <div class="group">
+                                    {% for choice in form.guilty %}
+                                        <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
+                                            <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
+                                            {{ choice.choice_label }}
+                                        </label>
+                                    {% endfor %}
+                                    <span class="validation-message">{{ form.guilty.errors }}</span>
+                                </div>
+
+                                <div class="group">
+                                    <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances for charge {{ forloop.counter }} <span class="form-hint datefield-hint">(optional)</span></label>
+                                    <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
+                                    <span class="validation-message">{{ form.mitigations.errors }}</span>
+                                    <textarea rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}">{{ form.mitigations.value|default_if_none:"" }}</textarea>
+                                </div>
+                            </fieldset>
+                        {% endfor %}
+                        {% else %}
+                        {% for form in formset %}
                             <fieldset class="inline charge-section">
                                 <div class="group">
                                     {% for choice in form.guilty %}
@@ -38,6 +60,7 @@
                                 </div>
                             </fieldset>
                         {% endfor %}
+                        {% endif %}
                     {% endwith %}
 
                     {% with forms.0 as form %}
