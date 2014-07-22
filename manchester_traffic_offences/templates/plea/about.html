@@ -7,8 +7,8 @@
         </hgroup>
     </header>
 
-    <div class="article-container group">
-        <article role="article" class="group">
+    <div class="full-width group">
+        <!-- <article role="article" class="group"> -->
             <div class="inner">
                 <section>
                     <h2 id="your-details">Your details</h2>
@@ -16,27 +16,26 @@
                     <form method=POST class="pleaform">
                         {% csrf_token %}
                         {% with forms.0 as form %}
-                            <fieldset>
+                             <fieldset class="inline">
                                 <div class="group">
                                     <label for="{{ form.name.name }}">Full name</label>
-
                                     <p class="form-hint datefield-hint">On page 1 of the pack we sent you.</p>
                                     <span class="validation-message">{{ form.name.errors }}</span>
                                     <input type="text" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}" id="{{ form.name.name }}">
                                 </div>
+                                 <section id="group-urn">
+	                               		<div id="enter-urn">
+	                                    <label for="{{ form.urn.name }}">Unique reference number (URN)</label>
 
-                                <div class="group" id="urn">
-                                    <label for="{{ form.urn.name }}">Unique reference number (URN)</label>
-
-                                    <p class="form-hint datefield-hint" id="">On page 1 of the pack, in the top right
-                                        corner.</p>
-                                    {#  Django handles the output of the URN field #}
-                                    <span class="validation-message">{{ form.urn.errors }}</span>
-                                    {{ form.urn }}
-                                    <div id="urn-loc"><img src="{% static "images/img-urn.png" %}" alt="Location of URN"></div>
-                                </div>
-                            </fieldset>
-                            <fieldset class="inline">
+	                                    <p class="form-hint datefield-hint" id="">On page 1 of the pack, in the top right
+	                                        corner.</p>
+	                                    {#  Django handles the output of the URN field #}
+	                                    <span class="validation-message">{{ form.urn.errors }}</span>{{ form.urn }}
+	                                </div>
+	                                    <div id="urn-loc">
+	                                    	<img src="{% static "images/img-urn.png" %}" alt="Location of URN">
+	                                	</div>
+	                              </section>
                                 <div class="group">
                                     <label for="{{ form.date_of_hearing.name }}">Court hearing date and time</label>
 
@@ -47,30 +46,24 @@
                                 </div>
 
                                 <div class="group">
-                                    <label for="{{ form.number_of_charges.name }}">Number of charges against you</label>
-
-                                    <p class="form-hint datefield-hint" id="">On page 2 of the pack, in numbered boxes.</p>
-                                    <span class="validation-message">{{ form.number_of_charges.errors }}</span>
-                                    <select name="{{ form.number_of_charges.name }}" value="{{ form.number_of_charges.value|default_if_none:"" }}"
-                                            id="{{ form.number_of_charges.name }}">
-                                        <option value="">Please select…</option>
-                                        {% for x in "oooooooooo" %}
-                                            <option value="{{ forloop.counter }}" {% if form.number_of_charges.value == forloop.counter %}selected{% endif %}>
-                                            {{ forloop.counter }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
+                                	 <section id="charges">
+	                                    	<div id="enter-charges">
+	                                    	 <label for="{{ form.number_of_charges.name }}">Number of charges against you</label>
+		                                    <p class="form-hint datefield-hint" id="">On page 2 of the pack, in numbered boxes.</p>
+		                                    <span class="validation-message">{{ form.number_of_charges.errors }}</span>
+		                                    <select name="{{ form.number_of_charges.name }}" value="{{ form.number_of_charges.value|default_if_none:"" }}"
+		                                            id="{{ form.number_of_charges.name }}">
+		                                        <option value="">Please select…</option>
+		                                        {% for x in "oooooooooo" %}
+		                                            <option value="{{ forloop.counter }}" {% if form.number_of_charges.value == forloop.counter %}selected{% endif %}>
+		                                            {{ forloop.counter }}
+		                                            </option>
+		                                        {% endfor %}
+		                                    </select>
+		                                </div>
+		                                <div id="charge-loc"><img src="{% static "images/img-charge.png" %}" alt="Location of URN"></div>
+	                                </section>
                                 </div>
-
-                                <details>
-                                    <summary role="button" aria-expanded="false">Don’t have all these details?</summary>
-                                    <p>Check the pack we posted to you.</p>
-
-                                    <p>If you can’t find these details, you must:</p>
-
-                                    <p>fill in the information in the pack and return it by post. You can’t make your
-                                        plea online without these details</p>
-                                </details>
 
                                 <button class="button" type=submit>Continue</button>
                             </fieldset>
@@ -78,7 +71,7 @@
                     </form>
                 </section>
             </div>
-        </article>
+        <!-- </article> -->
     </div>
 
 {% endblock content %}
