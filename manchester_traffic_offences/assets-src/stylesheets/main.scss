@@ -118,6 +118,10 @@ table th.header {font-size: 1.2em;}
 .related #stat {font-size:5em; font-weight:bold; color:#000;}
 .js-enabled .related-positioning {top: 8em;}
 
+.charge-section {margin-bottom: 3em;}
+.charge-section .form-hint {display:inline;}
+label[for=id_understand] {font-weight: normal;}
+label[for=id_understand] strong {font-weight: bold;}
 label.datetime {font-weight:normal; display:inline-block;}
 label.datetime-day {width:4.5em;}
 label.datetime-month {width:4.75em;}
