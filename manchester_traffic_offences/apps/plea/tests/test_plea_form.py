@@ -185,7 +185,7 @@ class TestMultiPleaForms(TestCase):
         fake_session = {}
         fake_request = Mock()
         fake_request.META = {}
-        request_context = RequestContext(fake_request)        
+        request_context = RequestContext(fake_request)
 
         form = PleaOnlineForms("about", "plea_form_step", fake_session)
         response = form.load(request_context)
