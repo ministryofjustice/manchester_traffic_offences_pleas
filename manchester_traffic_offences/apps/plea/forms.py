@@ -125,8 +125,8 @@ class RequiredFormSet(BaseFormSet):
 class URNWidget(MultiWidget):
     def __init__(self, attrs=None):
         widgets = [forms.NumberInput(attrs={'maxlength': '2'}),
-                   forms.TextInput(attrs={'maxlength': '7'}),
-                   forms.NumberInput(attrs={'maxlength': '2'}),
+                   forms.TextInput(attrs={'maxlength': '2'}),
+                   forms.NumberInput(attrs={'maxlength': '7'}),
                    forms.NumberInput(attrs={'maxlength': '2'}),
                    ]
         super(URNWidget, self).__init__(widgets, attrs)
