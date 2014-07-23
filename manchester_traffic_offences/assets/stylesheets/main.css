@@ -1587,6 +1587,9 @@ section#group-urn #id_understand_checkbox span {
 details {
   margin: 1em 0; }
 
+button.large, .button.large {
+  font-size: 24px; }
+
 input[type=text], input[type="number"], input[type=email], input[type=tel], input[type=date], select[type=text], select[type=email], select[type=tel], select[type=date] {
   width: 100%;
   padding: 5px 4px 2px;
@@ -1718,3 +1721,28 @@ label.datetime-year {
 label.datetime-time {
   display: block;
   margin: 0; }
+
+table#your-details td, table#your-plea td {
+  border: none;
+  padding: 10px 8px; }
+table#your-details th, table#your-plea th {
+  border: none;
+  padding-bottom: 10px; }
+table#your-details tbody, table#your-plea tbody {
+  border-top: solid 1px #c2c2c2;
+  border-bottom: solid 1px #c2c2c2; }
+table#your-details tbody, table#your-plea tbody {
+  border-top: solid 1px #c2c2c2;
+  border-bottom: solid 1px #c2c2c2; }
+table#your-details td.label, table#your-plea td.label {
+  color: #6F777B;
+  vertical-align: top; }
+table#your-details h3, table#your-plea h3 {
+  font-weight: bold; }
+
+div.indent {
+  margin-left: 20px; }
+
+div.statement-understand {
+  padding: 2em 0;
+  color: #990099; }
