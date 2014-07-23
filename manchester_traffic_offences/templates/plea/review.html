@@ -12,7 +12,7 @@
                 {{ wizard.management_form }}
                 <h2>Confirm your plea{{ about.number_of_charges|pluralize }}</h2>
                 <p>Review the information you’ve given before making your plea{{ about.number_of_charges|pluralize }}.</p>
-
+            <div class="indent">
                 <table id="your-details">
                     <thead>
                         <tr>
@@ -22,19 +22,19 @@
                     </thead>
                         <tbody>
                             <tr>
-                                <td>Full name</td>
+                                <th class="label">Full name</th>
                                 <td>{{ about.name }}</td>
                             </tr>
                             <tr>
-                                <td>Unique reference number</td>
+                                <th class="label">Unique reference number</th>
                                 <td>{{ about.urn }}</td>
                             </tr>
                             <tr>
-                                <td>Court hearing date and time</td>
+                                <th class="label">Court hearing date and time</th>
                                 <td>{{ about.date_of_hearing }}</td>
                             </tr>
                             <tr>
-                                <td>Number of charges against you</td>
+                                <th class="label">Number of charges against you</th>
                                 <td>{{ about.number_of_charges }}</td>
                           </tr>
                         </tbody>
@@ -55,7 +55,7 @@
                                     </tr>
                                     {% endif %}
                                     <tr>
-                                        <td>Your plea</td>
+                                        <th class="label">Your plea</th>
                                         <td>
                                             {% if plea.guilty == "guilty" %}
                                             Guilty
@@ -65,17 +65,15 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Special circumstances</td>
+                                        <th class="label">Special circumstances</th>
                                         <td>{{ plea.mitigations|linebreaks }}</td>
                                     </tr>
                                 {% endfor %}
-                                    <tr>
-                                        <td>Confirmation</td>
-                                        <td>I have read and understand the charge{{ about.number_of_charges|pluralize }} against me.</td>
-                                    </tr>
                                 </tbody>
                          </table>
-                        <button type="submit" class="button">Make your plea{{ about.number_of_charges|pluralize }}</button>
+                <div class="statement-understand">I have read and understand the charge{{ about.number_of_charges|pluralize }} against me.</div>
+                <button type="submit" class="button primary large left">Make your plea{{ about.number_of_charges|pluralize }}</button>
+            </div>
             </form>
         </div>
 {% endblock page_content %}
