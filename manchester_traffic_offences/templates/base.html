@@ -5,6 +5,12 @@
     <link rel="stylesheet" type="text/css" href="{% static "stylesheets/main.css" %}">
 {% endblock %}
 
+{% block content %}
+  {% block right %}{% endblock %}
+  {% block page_content %}{% endblock %}
+{% endblock %}
+
+
 {% block footer_top %}
 
 {% endblock footer_top %}
