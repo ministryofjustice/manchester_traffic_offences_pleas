@@ -1731,10 +1731,7 @@ table#your-details th, table#your-plea th {
 table#your-details tbody, table#your-plea tbody {
   border-top: solid 1px #c2c2c2;
   border-bottom: solid 1px #c2c2c2; }
-table#your-details tbody, table#your-plea tbody {
-  border-top: solid 1px #c2c2c2;
-  border-bottom: solid 1px #c2c2c2; }
-table#your-details td.label, table#your-plea td.label {
+table#your-details th.label, table#your-plea th.label {
   color: #6F777B;
   vertical-align: top; }
 table#your-details h3, table#your-plea h3 {
