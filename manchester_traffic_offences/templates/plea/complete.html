@@ -8,15 +8,19 @@
 </header>
 
 <div class="inner" id="complete">
-	<h2>Your plea has been sent to the court</h2>
+	<h2 class="ticked-heading">Your plea{{ about.number_of_charges|pluralize:" has,s have" }} been sent to the court</h2>
 	<h3 class="heading-medium">What happens next?</h3>
-
-	<p>We’ll send you a letter with the court’s decision on <strong>4th July 2014</strong>.
-	<br>
-	The letter will also explain what you need to do next.<p>
+    {% if some_guilty %}
+        <p>By law, you must fill in leaflet MC100 and send it back to us (it's in the pack we sent you).
+            <br>
+        The court will check your financial details when considering your fine.</p>
+    {% endif %}
+    <p>We’ll send you a letter with the court’s decision on <strong>{{ about.date_of_hearing }}</strong>.
+        <br>
+        The letter will also explain what you need to do next.<p>
 		
-	<p>There’s no need to come to court on the date shown in the pack we sent you by post.</p>
+    <p>There’s no need to come to court on the date shown in the pack we sent you by post.</p>
 		
-        <p>Complete our <a href="">satisfaction survey</a>. Your feedback helps us improve the service.</p>
+    <p>Complete our <a href="">satisfaction survey</a>. Your feedback helps us improve the service.</p>
 </div>
 {% endblock page_content %}
