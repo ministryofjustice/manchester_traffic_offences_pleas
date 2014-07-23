@@ -1698,10 +1698,13 @@ table th.header {
   margin-bottom: 3em; }
 
 .charge-section .form-hint {
-  display: inline; }
+  display: inline;
+  font-weight: normal; }
 
 label[for=id_understand] {
-  font-weight: normal; }
+  font-weight: normal;
+  font-size: 1em;
+  white-space: nowrap; }
 
 label[for=id_understand] strong {
   font-weight: bold; }
