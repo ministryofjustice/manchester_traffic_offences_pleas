@@ -1,6 +1,8 @@
 import datetime
+from mock import Mock
 
 from django.test import TestCase
+from django.template.context import RequestContext
 
 from plea.views import PleaOnlineForms
 
@@ -129,7 +131,9 @@ class TestMultiPleaForms(TestCase):
 
     def test_successful_completion_single_charge(self):
         fake_session = {}
-        request_context = {}
+        fake_request = Mock()
+        fake_request.META = {}
+        request_context = RequestContext(fake_request)
 
         form = PleaOnlineForms("about", "plea_form_step", fake_session)
         response = form.load(request_context)
@@ -179,7 +183,9 @@ class TestMultiPleaForms(TestCase):
 
     def test_successful_completion_multiple_charges(self):
         fake_session = {}
-        request_context = {}
+        fake_request = Mock()
+        fake_request.META = {}
+        request_context = RequestContext(fake_request)
 
         form = PleaOnlineForms("about", "plea_form_step", fake_session)
         response = form.load(request_context)
