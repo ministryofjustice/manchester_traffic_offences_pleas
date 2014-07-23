@@ -1529,33 +1529,59 @@ label {
 
 .group label {
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 1.3em;
   margin: 1em 0; }
 
-.group#urn input {
-  margin: 0.2em; }
+section#group-urn {
+  clear: both;
+  width: 75%; }
 
-.group#urn #id_urn_0, .group#urn #id_urn_1, .group#urn #id_urn_3 {
-  width: 15%;
-  margin: 0 6px; }
+section#group-urn #enter-urn {
+  width: 70%;
+  float: left;
+  margin-bottom: 3em;
+  clear: both; }
 
-.group#urn #id_urn_2 {
-  width: 25%; }
+section#group-urn #urn-loc {
+  width: 30%;
+  float: right;
+  margin-top: 1.5em; }
 
-.group #number_of_charges {
+section#group-urn #enter-urn #id_urn_0 {
+  width: 10%;
+  margin-left: 0;
+  margin-right: 10px; }
+
+section#group-urn #enter-urn #id_urn_1, section#group-urn #enter-urn #id_urn_3 {
+  width: 10%;
+  margin: 0 10px; }
+
+section#group-urn #enter-urn #id_urn_2 {
+  width: 25%;
+  margin: 0 10px; }
+
+section#group-urn #number_of_charges {
   width: 32%; }
 
-.group #id_date_of_hearing_day, .group #id_date_of_hearing_month, .group #id_date_of_hearing_year,
-.group #id_date_of_hearing_hour, .group #id_date_of_hearing_min {
-  width: 15%;
-  margin: 0 10px 0 0px; }
+#id_date_of_hearing_month, #id_date_of_hearing_year, #id_date_of_hearing_hour,
+#id_date_of_hearing_min {
+  width: 5%;
+  margin: 0 10px 0 10px; }
 
-.group #id_understand_checkbox {
+#id_date_of_hearing_day {
+  margin-left: 0;
+  margin-right: 10px;
+  width: 5%; }
+
+.group label.datetime {
+  font-size: 1em; }
+
+section#group-urn #id_understand_checkbox {
   font-weight: normal;
   margin-right: 0px;
   font-size: 1em; }
 
-.group #id_understand_checkbox span {
+section#group-urn #id_understand_checkbox span {
   font-weight: bold; }
 
 details {
@@ -1577,10 +1603,23 @@ input, select {
   margin: 0; }
 
 input#name {
-  width: 80%; }
+  width: 32%; }
 
 select {
   border-color: #bfc1c3; }
+
+section#charges {
+  clear: both;
+  width: 75%; }
+
+section#charges #enter-charges {
+  float: left;
+  width: 70%; }
+
+section#charges #charge-loc {
+  float: right;
+  width: 30%;
+  margin: 1em 0; }
 
 section .info-notice {
   background: none;
@@ -1641,12 +1680,12 @@ table th.header {
   right: 1.75em;
   margin: 3em 0 0 0;
   width: 15.75em;
-  border-top: 10px solid #d53880; }
+  /*border-top: 10px solid #d53880;*/ }
 
 .related #stat {
   font-size: 5em;
   font-weight: bold;
-  margin-left: 20%; }
+  color: #000; }
 
 .js-enabled .related-positioning {
   top: 8em; }
@@ -1668,13 +1707,14 @@ label.datetime {
   display: inline-block; }
 
 label.datetime-day {
-  width: 4.75em; }
+  width: 4.5em; }
 
 label.datetime-month {
   width: 4.75em; }
 
 label.datetime-year {
-  width: 5em; }
+  width: 3.75em; }
 
 label.datetime-time {
-  display: block; }
+  display: block;
+  margin: 0; }

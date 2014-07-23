@@ -67,27 +67,43 @@
 label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.31579; font-weight: 400; text-transform: none; display: block;}
 .inline .block-label {font-weight:normal;}
 
-.group label {font-weight:bold; font-size: 1.2em; margin: 1em 0;}
-.group#urn input {margin:0.2em;}
-.group#urn #id_urn_0, .group#urn #id_urn_1, .group#urn #id_urn_3 {width:15%; margin:0 6px;}
-.group#urn #id_urn_2 {width:25%;}
-.group #number_of_charges {width:32%;}
-.group #id_date_of_hearing_day, .group #id_date_of_hearing_month, .group #id_date_of_hearing_year, 
-.group #id_date_of_hearing_hour, .group #id_date_of_hearing_min {width:15%; margin:0 10px 0 0px;}
-.group #id_understand_checkbox {font-weight:normal; margin-right: 0px; font-size: 1em;}
-.group #id_understand_checkbox span {font-weight:bold;}
+.group label {font-weight:bold; font-size: 1.3em; margin: 1em 0;}
+section#group-urn {clear:both; width: 75%;}
+section#group-urn #enter-urn {width:70%; float: left; margin-bottom:3em; clear: both;}
+section#group-urn #urn-loc {width:30%; float: right; margin-top: 1.5em;}
+
+section#group-urn #enter-urn #id_urn_0 {width:10%; margin-left: 0; margin-right: 10px;}
+section#group-urn #enter-urn #id_urn_1, section#group-urn #enter-urn #id_urn_3 {width:10%; margin:0 10px;}
+section#group-urn #enter-urn #id_urn_2 {width:25%; margin:0 10px;}
+
+section#group-urn #number_of_charges {width:32%;}
+
+#id_date_of_hearing_month, #id_date_of_hearing_year, #id_date_of_hearing_hour, 
+#id_date_of_hearing_min {width:5%; margin:0 10px 0 10px;}
+#id_date_of_hearing_day {margin-left:0; margin-right: 10px; width: 5%;}
+.group label.datetime {font-size: 1em;}
+
+section#group-urn #id_understand_checkbox {font-weight:normal; margin-right: 0px; font-size: 1em;}
+section#group-urn #id_understand_checkbox span {font-weight:bold;}
 
 details {margin: 1em 0;}
 
 input[type=text], input[type="number"], input[type=email], input[type=tel], input[type=date], select[type=text], select[type=email], select[type=tel], select[type=date] {width: 100%; padding: 5px 4px 2px; color: #0b0c0c; border: 1px solid #bfc1c3; margin: 0 0 10px 0;}
 
 input, select {font-family: "nta", Arial, sans-serif;font-size: 19px; line-height: 1.31579; font-weight: 400;text-transform:none; margin: 0;}
-input#name {width:80%;}
+input#name {width:32%;}
 select {border-color: #bfc1c3;}
+
+section#charges {clear: both; width: 75%;}
+section#charges #enter-charges {float:left; width:70%;}
+section#charges #charge-loc {float: right; width:30%; margin: 1em 0;}
 
 section .info-notice {background: none; border-left: 10px #dee0e2 solid; margin-bottom: 1em;margin-top: 2em;}
 section .info-notice p{line-height: 1.31579;}
 section .application-notice {padding: 0.1em 0 0.1em 1em;}
+
+
+
 table {clear:both;margin: 2em 0;}
 table tr, table td, table th {padding:8px; font-size:1em;width:45%;}
 table th a.review{font-weight:normal; float: right;}
@@ -98,8 +114,8 @@ table th.header {font-size: 1.2em;}
 
 .related-positioning { height: 0; left: 0; position: absolute; top: 9.5em; width: 100%; z-index: 0;}
 .related-positioning .related-container { position: relative; height: 0; margin: 0 auto; max-width: 1020px; z-index: 50;}
-.related {position: absolute; right: 1.75em; margin: 3em 0 0 0; width: 15.75em; border-top: 10px solid #d53880;}
-.related #stat {font-size:5em; font-weight:bold; margin-left: 20%;}
+.related {position: absolute; right: 1.75em; margin: 3em 0 0 0; width: 15.75em; /*border-top: 10px solid #d53880;*/}
+.related #stat {font-size:5em; font-weight:bold; color:#000;}
 .js-enabled .related-positioning {top: 8em;}
 
 .charge-section {margin-bottom: 3em;}
@@ -107,7 +123,7 @@ table th.header {font-size: 1.2em;}
 label[for=id_understand] {font-weight: normal;}
 label[for=id_understand] strong {font-weight: bold;}
 label.datetime {font-weight:normal; display:inline-block;}
-label.datetime-day {width:4.75em;}
+label.datetime-day {width:4.5em;}
 label.datetime-month {width:4.75em;}
-label.datetime-year {width:5em;}
-label.datetime-time {display:block;}
+label.datetime-year {width:3.75em;}
+label.datetime-time {display:block; margin:0;}
