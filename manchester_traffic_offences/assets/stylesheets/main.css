@@ -1722,6 +1722,8 @@ label.datetime-time {
   display: block;
   margin: 0; }
 
+table#your-details tr, table#your-details th, table#your-details td, table#your-plea tr, table#your-plea th, table#your-plea td {
+  width: inherit; }
 table#your-details td, table#your-plea td {
   border: none;
   padding: 10px 8px; }
@@ -1733,7 +1735,10 @@ table#your-details tbody, table#your-plea tbody {
   border-bottom: solid 1px #c2c2c2; }
 table#your-details th.label, table#your-plea th.label {
   color: #6F777B;
-  vertical-align: top; }
+  vertical-align: top;
+  font-weight: normal; }
+table#your-details th.header, table#your-plea th.header {
+  width: 35%; }
 table#your-details h3, table#your-plea h3 {
   font-weight: bold; }
 
@@ -1741,5 +1746,4 @@ div.indent {
   margin-left: 20px; }
 
 div.statement-understand {
-  padding: 2em 0;
-  color: #990099; }
+  padding: 2em 0; }
