@@ -22,19 +22,19 @@
                     </thead>
                         <tbody>
                             <tr>
-                                <td class="label">Full name</td>
+                                <th class="label">Full name</th>
                                 <td>{{ about.name }}</td>
                             </tr>
                             <tr>
-                                <td class="label">Unique reference number</td>
+                                <th class="label">Unique reference number</th>
                                 <td>{{ about.urn }}</td>
                             </tr>
                             <tr>
-                                <td class="label">Court hearing date and time</td>
+                                <th class="label">Court hearing date and time</th>
                                 <td>{{ about.date_of_hearing }}</td>
                             </tr>
                             <tr>
-                                <td class="label">Number of charges against you</td>
+                                <th class="label">Number of charges against you</th>
                                 <td>{{ about.number_of_charges }}</td>
                           </tr>
                         </tbody>
@@ -55,7 +55,7 @@
                                     </tr>
                                     {% endif %}
                                     <tr>
-                                        <td class="label">Your plea</td>
+                                        <th class="label">Your plea</th>
                                         <td>
                                             {% if plea.guilty == "guilty" %}
                                             Guilty
@@ -65,7 +65,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="label">Special circumstances</td>
+                                        <th class="label">Special circumstances</th>
                                         <td>{{ plea.mitigations|linebreaks }}</td>
                                     </tr>
                                 {% endfor %}
