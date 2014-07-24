@@ -102,12 +102,14 @@ class FixedTimeDateWidget(Widget):
                 except ValueError:
                     pass
 
-        day_val = "{num:02d}".format(num=day_val)
-        month_val = "{num:02d}".format(num=month_val)
+        if isinstance(day_val, (int, long, float, complex)):
+            day_val = "{num:02d}".format(num=day_val)
+        if isinstance(day_val, (int, long, float, complex)):
+            month_val = "{num:02d}".format(num=month_val)
 
-        year_html = self.create_input(name, self.year_field, value, year_val, placeholder="YYYY", pattern="[0-9]{4}")
-        month_html = self.create_input(name, self.month_field, value, month_val, placeholder="MM", pattern="[0-9]{2}")
-        day_html = self.create_input(name, self.day_field, value, day_val, placeholder="DD", pattern="[0-9]{2}")
+        year_html = self.create_input(name, self.year_field, value, year_val, placeholder="YYYY", pattern="[0-9]*")
+        month_html = self.create_input(name, self.month_field, value, month_val, placeholder="MM", pattern="[0-9]*")
+        day_html = self.create_input(name, self.day_field, value, day_val, placeholder="DD", pattern="[0-9]*")
         time_html = self.create_radio(name, self.time_field, value, self.get_time_from_val((hour_val, minute_val)))
 
         context = {"year": year_html, "month": month_html, "day": day_html, "time": time_html}
@@ -127,10 +129,10 @@ class RequiredFormSet(BaseFormSet):
 
 class URNWidget(MultiWidget):
     def __init__(self, attrs=None):
-        widgets = [forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]{2}'}),
+        widgets = [forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]*'}),
                    forms.TextInput(attrs={'maxlength': '2'}),
-                   forms.TextInput(attrs={'maxlength': '7', 'pattern': '[0-9]{2}'}),
-                   forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]{2}'}),
+                   forms.TextInput(attrs={'maxlength': '7', 'pattern': '[0-9]*'}),
+                   forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]*'}),
                    ]
         super(URNWidget, self).__init__(widgets, attrs)
 
