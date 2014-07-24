@@ -9,7 +9,7 @@ from django.forms.formsets import BaseFormSet
 from django.forms.widgets import MultiWidget
 from django.core.urlresolvers import reverse_lazy
 from django.forms.formsets import formset_factory
-from django.forms.widgets import Textarea, RadioSelect, NumberInput, RadioFieldRenderer
+from django.forms.widgets import Textarea, RadioSelect, TextInput, RadioFieldRenderer
 from django.forms.extras.widgets import Widget
 from django.template.loader import render_to_string
 from django.utils.encoding import force_str, force_text
@@ -55,7 +55,7 @@ class FixedTimeDateWidget(Widget):
 
         local_attrs = self.build_attrs(id=field % id_, **attrs)
 
-        i = NumberInput()
+        i = TextInput()
         input_html = i.render(field % name, val, local_attrs)
         return input_html
 
@@ -102,9 +102,14 @@ class FixedTimeDateWidget(Widget):
                 except ValueError:
                     pass
 
-        year_html = self.create_input(name, self.year_field, value, year_val)
-        month_html = self.create_input(name, self.month_field, value, month_val, min=1, max=12)
-        day_html = self.create_input(name, self.day_field, value, day_val, min=1, max=31)
+        if isinstance(day_val, (int, long, float, complex)):
+            day_val = "{num:02d}".format(num=day_val)
+        if isinstance(day_val, (int, long, float, complex)):
+            month_val = "{num:02d}".format(num=month_val)
+
+        year_html = self.create_input(name, self.year_field, value, year_val, placeholder="YYYY", pattern="[0-9]+")
+        month_html = self.create_input(name, self.month_field, value, month_val, placeholder="MM", pattern="[0-9]+")
+        day_html = self.create_input(name, self.day_field, value, day_val, placeholder="DD", pattern="[0-9]+")
         time_html = self.create_radio(name, self.time_field, value, self.get_time_from_val((hour_val, minute_val)))
 
         context = {"year": year_html, "month": month_html, "day": day_html, "time": time_html}
@@ -124,10 +129,10 @@ class RequiredFormSet(BaseFormSet):
 
 class URNWidget(MultiWidget):
     def __init__(self, attrs=None):
-        widgets = [forms.NumberInput(attrs={'maxlength': '2'}),
+        widgets = [forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]+'}),
                    forms.TextInput(attrs={'maxlength': '2'}),
-                   forms.NumberInput(attrs={'maxlength': '7'}),
-                   forms.NumberInput(attrs={'maxlength': '2'}),
+                   forms.TextInput(attrs={'maxlength': '7', 'pattern': '[0-9]+'}),
+                   forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]+'}),
                    ]
         super(URNWidget, self).__init__(widgets, attrs)
 
