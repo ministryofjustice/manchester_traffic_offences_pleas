@@ -104,7 +104,7 @@ class FixedTimeDateWidget(Widget):
 
         if isinstance(day_val, (int, long, float, complex)):
             day_val = "{num:02d}".format(num=day_val)
-        if isinstance(day_val, (int, long, float, complex)):
+        if isinstance(month_val, (int, long, float, complex)):
             month_val = "{num:02d}".format(num=month_val)
 
         year_html = self.create_input(name, self.year_field, value, year_val,  pattern="[0-9]+")
