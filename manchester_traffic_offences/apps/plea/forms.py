@@ -102,6 +102,9 @@ class FixedTimeDateWidget(Widget):
                 except ValueError:
                     pass
 
+        day_val = "{num:02d}".format(num=day_val)
+        month_val = "{num:02d}".format(num=month_val)
+
         year_html = self.create_input(name, self.year_field, value, year_val, placeholder="YYYY", pattern="[0-9]{4}")
         month_html = self.create_input(name, self.month_field, value, month_val, placeholder="MM", pattern="[0-9]{2}")
         day_html = self.create_input(name, self.day_field, value, day_val, placeholder="DD", pattern="[0-9]{2}")
@@ -124,10 +127,10 @@ class RequiredFormSet(BaseFormSet):
 
 class URNWidget(MultiWidget):
     def __init__(self, attrs=None):
-        widgets = [forms.TextInput(attrs={'maxlength': '2'}),
+        widgets = [forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]{2}'}),
                    forms.TextInput(attrs={'maxlength': '2'}),
-                   forms.TextInput(attrs={'maxlength': '7'}),
-                   forms.TextInput(attrs={'maxlength': '2'}),
+                   forms.TextInput(attrs={'maxlength': '7', 'pattern': '[0-9]{2}'}),
+                   forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]{2}'}),
                    ]
         super(URNWidget, self).__init__(widgets, attrs)
 
