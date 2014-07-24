@@ -1507,7 +1507,7 @@ ol li {
 #wrapper.service header.page-header div h1 {
   padding: 48px 0 0 35px; }
 
-.article-container.group h2, #complete h2 {
+.article-container.group h2, #complete h2, .full-width h2 {
   font-size: 2em;
   font-weight: bold;
   margin: 20px 0; }
