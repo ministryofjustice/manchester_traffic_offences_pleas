@@ -28,6 +28,10 @@ DATABASES = {
     }
 }
 
+RAVEN_CONFIG = {
+    'dsn': 'https://bec1584e479a4bc0b694b7fbcb4c632d:4ef91764e1ea4d2cbbd50a4d4bdcf4a5@app.getsentry.com/28000',
+}
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
@@ -141,6 +145,7 @@ INSTALLED_APPS = (
     'south',
     'django_extensions',
     'lettuce.django',
+    'raven.contrib.django.raven_compat',
 )
 
 PROJECT_APPS = (
