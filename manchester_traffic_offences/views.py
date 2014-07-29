@@ -1,4 +1,5 @@
 from django.views.generic import TemplateView
+from django.shortcuts import render
 
 
 class HomeView(TemplateView):
@@ -13,3 +14,9 @@ class HomeView(TemplateView):
     def get(self, request, *args, **kwargs):
         request.session.clear()
         return super(HomeView, self).get(request, *args, **kwargs)
+
+
+def server_error(request):
+    response = render(request, "500.html")
+    response.status_code = 500
+    return response
