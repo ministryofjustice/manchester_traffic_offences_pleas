@@ -1,6 +1,5 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render
-from django.template import RequestContext
 
 
 class HomeView(TemplateView):
