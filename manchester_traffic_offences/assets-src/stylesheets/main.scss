@@ -57,6 +57,8 @@
 
 // MoJ Styles
 
+b, strong {font-weight: 600;}
+
 #global-header .header-wrapper {max-width: 990px; margin: 0 auto; padding: 0.5em 15px;}
 .article-container {background-color: #fff; margin-right: 22.25em; min-height: 25em; max-width: 38em;}
 #wrapper {padding-bottom:0px!important; text-align:left; border-bottom: 10px solid #d53880;}
@@ -140,3 +142,11 @@ table#your-details, table#your-plea {
 }
 div.indent {margin-left:20px;}
 div.statement-understand {padding: 2em 0;}
+
+p.lead {
+  font-size: 24px;
+  padding-right: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2em;
+}
