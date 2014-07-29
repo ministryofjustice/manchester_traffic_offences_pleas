@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block page_content %}
+<header class="page-header group">
+	<hgroup>
+		<h1>Send feedback</h1>
+	</hgroup>
+</header>
+<div class="article-container group">
+    <article role="article" class="group">
+        <div class="inner">
+            <p>Use this form to report a problem or ask us a question.</p>
+            <p>If you need to cancel or change a plea, please xxxxxxx</p>
+            <p><strong>Please don't include any sensitive information (eg. URN number or court date)</strong></p>
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset>
+                    <span class="validation-message">{{ form.question.errors }}</span>
+                    {{ form.question.label_tag }}
+                    {{ form.question }}
+                </fieldset>
+                <fieldset>
+                    <legend>Do you want a reply?</legend>
+                    <p>If you'd like us to get back to you, please leave your details below.</p>
+                    <span class="validation-message">{{ form.email.errors }}</span>
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                    <div class="group__help">We'll only use this to reply to your message.</div>
+                </fieldset>
+                <div class="actions">
+                    <input class="button button-primary js-SumbitOnce" data-alt="Please wait…" id="submit-button" name="commit" type="submit" value="Send">
+                </div>
+            </form>
+        </div>
+    </article>
+</div>
+
+{% endblock page_content %}
