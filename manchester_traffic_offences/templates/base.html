@@ -6,6 +6,13 @@
 {% endblock %}
 
 {% block content %}
+  {%  if messages %}
+    <section class="flash success">
+      {% for message in messages %}
+        <h2>{{ message }}</h2>
+      {% endfor %}
+    </section>
+  {% endif %}
   {% block right %}{% endblock %}
   {% block page_content %}{% endblock %}
 {% endblock %}
