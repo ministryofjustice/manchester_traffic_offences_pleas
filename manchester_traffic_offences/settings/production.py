@@ -15,6 +15,8 @@ MANAGERS = ADMINS
 
 ALLOWED_HOSTS = ["pleaonline.dsd.io", ]
 
+INSTALLED_APPS += ('raven.contrib.django.raven_compat', )
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
