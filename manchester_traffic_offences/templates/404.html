@@ -2,6 +2,13 @@
 
 {% block title %}Page Not found{% endblock %}
 
-{% block content %}
-<p>This is not the page you were looking for.</p>
-{% endblock content %}
+{% block page_content %}
+    <header class="page-header group">
+        <div><h1><span>Service</span>Make your plea online</h1></div>
+    </header>
+
+    <section class="confirmation">
+        <p class="lead"><strong>This page cannot be found.</strong></p>
+        <p>You can <a href="/">start a new plea</a> or go to <a href="http://www.gov.uk/">GOV.UK</a>.</p>
+    </section>
+{% endblock page_content %}
