@@ -7,14 +7,18 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
 
-from .views import HomeView
+import views
 
 admin.autodiscover()
 
+handler500 = "manchester_traffic_offences.views.server_error"
+
 urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
-                       url(r'^$', HomeView.as_view()),
+                       url(r'^$', views.HomeView.as_view()),
                        url(r'^plea/', include('plea.urls', )),
+                       # temporary url for testing the 500 page, should be removed before launch
+                       url(r'^500/', views.server_error),
                        url(r'^feedback/', TemplateView.as_view(
                            template_name="feedback.html"),
                            name="feedback"),
