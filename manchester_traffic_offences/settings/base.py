@@ -146,7 +146,6 @@ INSTALLED_APPS = (
     'south',
     'django_extensions',
     'lettuce.django',
-    'raven.contrib.django.raven_compat',
 )
 
 PROJECT_APPS = (
