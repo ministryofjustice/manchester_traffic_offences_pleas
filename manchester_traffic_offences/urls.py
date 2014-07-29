@@ -15,7 +15,5 @@ urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^$', HomeView.as_view()),
                        url(r'^plea/', include('plea.urls', )),
-                       url(r'^feedback/', TemplateView.as_view(
-                           template_name="feedback.html"),
-                           name="feedback"),
+                       url(r'^feedback/', include('feedback.urls'))
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
