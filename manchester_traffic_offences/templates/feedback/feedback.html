@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block page_content %}
+{% block content %}
 <header class="page-header group">
 	<hgroup>
 		<h1>Send feedback</h1>
@@ -8,9 +8,8 @@
 <div class="article-container group">
     <article role="article" class="group">
         <div class="inner">
-            <p>Use this form to report a problem or ask us a question.</p>
-            <p>If you need to cancel or change a plea, please xxxxxxx</p>
-            <p><strong>Please don't include any sensitive information (eg. URN number or court date)</strong></p>
+            <p>Use this form to report a problem or ask us a question about the Make a Plea service.</p>
+            <p><strong>Please don't include any sensitive information (eg. your financial details).</strong></p>
             <form method="POST">
                 {% csrf_token %}
                 <fieldset>
@@ -24,14 +23,14 @@
                     <span class="validation-message">{{ form.email.errors }}</span>
                     {{ form.email.label_tag }}
                     {{ form.email }}
-                    <div class="group__help">We'll only use this to reply to your message.</div>
+                    <p>We'll only use this to reply to your message.</p>
                 </fieldset>
                 <div class="actions">
-                    <input class="button button-primary js-SumbitOnce" data-alt="Please wait…" id="submit-button" name="commit" type="submit" value="Send">
+                    <button class="button" type="submit">Submit</button>
                 </div>
             </form>
         </div>
     </article>
 </div>
 
-{% endblock page_content %}
+{% endblock content %}

@@ -141,15 +141,23 @@ table#your-details, table#your-plea {
 div.indent {margin-left:20px;}
 div.statement-understand {padding: 2em 0;}
 
-section.flash {
-  border: 3px solid #6f777b;
-  background-color: #f8f8f8;
-  padding: 20px;
-  margin-bottom: 40px;
-  max-width: 798px;
-}
+section {
+  .flash {
+    border: 3px solid #6f777b;
+    background-color: #f8f8f8;
+    padding: 20px;
+    margin: 40px 0;
+    max-width: 798px;
+  }
 
-section.flash.success {
-  border-color: #85994b;
-  background-color: #e7ebda;
+  .success {
+    border-color: #85994b;
+    background-color: #e7ebda;
+  }
+
+  h2 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.3em;
+  }
 }
