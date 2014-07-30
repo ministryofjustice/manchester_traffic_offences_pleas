@@ -103,6 +103,26 @@ section .info-notice {background: none; border-left: 10px #dee0e2 solid; margin-
 section .info-notice p{line-height: 1.31579;}
 section .application-notice {padding: 0.1em 0 0.1em 1em;}
 
+section {
+  .flash {
+    border: 3px solid #6f777b;
+    background-color: #f8f8f8;
+    padding: 20px;
+    margin: 40px 0;
+    max-width: 798px;
+  }
+
+  .success {
+    border-color: #85994b;
+    background-color: #e7ebda;
+  }
+
+  h2 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.3em;
+  }
+}
 
 
 table {clear:both;margin: 2em 0;}
@@ -141,23 +161,4 @@ table#your-details, table#your-plea {
 div.indent {margin-left:20px;}
 div.statement-understand {padding: 2em 0;}
 
-section {
-  .flash {
-    border: 3px solid #6f777b;
-    background-color: #f8f8f8;
-    padding: 20px;
-    margin: 40px 0;
-    max-width: 798px;
-  }
-
-  .success {
-    border-color: #85994b;
-    background-color: #e7ebda;
-  }
-
-  h2 {
-    margin: 0;
-    font-weight: bold;
-    font-size: 1.3em;
-  }
-}
+#id_feedback_email {width: 32%;}
