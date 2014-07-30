@@ -26,6 +26,9 @@ DATABASES = {
     }
 }
 
+PLEA_EMAIL_FROM = ["makeaplea@digital.justice.gov.uk"]
+PLEA_EMAIL_TO = ["ian.george@digital.justice.gov.uk", "cpo@gmp.pnn.police.uk"]
+
 EMAIL_HOST = os.environ['SENDGRID_EMAIL_HOST']
 EMAIL_PORT = os.environ['SENDGRID_EMAIL_PORT']
 EMAIL_HOST_USER = os.environ['SENDGRID_EMAIL_HOST_USERNAME']
