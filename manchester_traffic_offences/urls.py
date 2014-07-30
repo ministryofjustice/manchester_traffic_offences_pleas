@@ -7,13 +7,15 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
 
-from .views import HomeView
+import views
 
 admin.autodiscover()
 
+handler500 = "manchester_traffic_offences.views.server_error"
+
 urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
-                       url(r'^$', HomeView.as_view(), name="home"),
+                       url(r'^$', views.HomeView.as_view()),
                        url(r'^plea/', include('plea.urls', )),
                        url(r'^feedback/', include('feedback.urls'))
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
