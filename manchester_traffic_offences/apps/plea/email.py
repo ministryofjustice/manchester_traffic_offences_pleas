@@ -12,7 +12,7 @@ def send_plea_email(context_data, plea_email_to=settings.PLEA_EMAIL_TO):
     Sends a plea email. All addresses, content etc. are defined in
     settings.
 
-    context_data: dict populated by form  fields
+    context_data: dict populated by form fields
     """
 
     plea_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
@@ -33,7 +33,7 @@ def send_plea_email(context_data, plea_email_to=settings.PLEA_EMAIL_TO):
     email_audit.save()
 
     try:
-        plea_email.send((plea_email_to, ),
+        plea_email.send(plea_email_to,
                         settings.PLEA_EMAIL_SUBJECT.format(**context_data),
                         settings.PLEA_EMAIL_BODY)
     except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
