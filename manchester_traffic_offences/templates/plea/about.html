@@ -45,25 +45,6 @@
                                     {{ form.date_of_hearing }}
                                 </div>
 
-                                <div class="group">
-                                	 <section id="charges">
-	                                    	<div id="enter-charges">
-	                                    	 <label for="{{ form.number_of_charges.name }}">Number of charges against you</label>
-		                                    <p class="form-hint datefield-hint" id="">On page 2 of the pack, in numbered boxes.</p>
-		                                    <span class="validation-message">{{ form.number_of_charges.errors }}</span>
-		                                    <select name="{{ form.number_of_charges.name }}" value="{{ form.number_of_charges.value|default_if_none:"" }}"
-		                                            id="{{ form.number_of_charges.name }}">
-		                                        <option value="">Please select…</option>
-		                                        {% for x in "oooooooooo" %}
-		                                            <option value="{{ forloop.counter }}" {% if form.number_of_charges.value == forloop.counter %}selected{% endif %}>
-		                                            {{ forloop.counter }}
-		                                            </option>
-		                                        {% endfor %}
-		                                    </select>
-		                                </div>
-		                                <div id="charge-loc"><img src="{% static "images/img-charge.png" %}" alt="Location of URN"></div>
-	                                </section>
-                                </div>
 
                                 <button class="button" type=submit>Continue</button>
                             </fieldset>
