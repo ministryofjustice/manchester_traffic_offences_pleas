@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.conf import settings
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.core.urlresolvers import reverse, NoReverseMatch
@@ -32,8 +33,8 @@ def feedback_form(request):
             email = EmailMessage("Feedback from makeaplea.justice.gov.uk",
                                  render_to_string("feedback/email.html",
                                                   email_context),
-                                 "ian.george@digital.justice.gov.uk",
-                                 ("ian.george@digital.justice.gov.uk", ))
+                                 settings.FEEDBACK_EMAIL_FROM,
+                                 settings.FEEDBACK_EMAIL_TO)
             email.content_subtype = "html"
             email.send()
             messages.add_message(request, messages.INFO, "Thanks for your feedback.")
