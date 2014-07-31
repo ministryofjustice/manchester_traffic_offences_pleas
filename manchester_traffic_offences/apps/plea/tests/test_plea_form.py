@@ -2,6 +2,7 @@ import datetime
 from mock import Mock
 
 from django.test import TestCase
+from django.test.client import RequestFactory
 from django.template.context import RequestContext
 
 from plea.views import PleaOnlineForms
@@ -27,6 +28,17 @@ class TestMultiPleaForms(TestCase):
                                                        "urn_3": "00",
                                                        "name": "Charlie Brown",
                                                        "number_of_charges": "3"}}
+
+        self.request_factory = RequestFactory()
+
+    def get_request_mock(self, url, url_name="", url_kwargs=None):
+        if not url_kwargs:
+            url_kwargs = {}
+        request = self.request_factory.get(url)
+        request.resolver_match = Mock()
+        request.resolver_match.url_name = url_name
+        request.resolver_match.kwargs = url_kwargs
+        return request
 
     def test_about_stage_bad_data(self):
         form = PleaOnlineForms("about", "plea_form_step", self.session)
@@ -131,8 +143,7 @@ class TestMultiPleaForms(TestCase):
 
     def test_successful_completion_single_charge(self):
         fake_session = {}
-        fake_request = Mock()
-        fake_request.META = {}
+        fake_request = self.get_request_mock("/plea/about")
         request_context = RequestContext(fake_request)
 
         form = PleaOnlineForms("about", "plea_form_step", fake_session)
@@ -183,8 +194,8 @@ class TestMultiPleaForms(TestCase):
 
     def test_successful_completion_multiple_charges(self):
         fake_session = {}
-        fake_request = Mock()
-        fake_request.META = {}
+        fake_request = self.get_request_mock("/plea/about/")
+
         request_context = RequestContext(fake_request)
 
         form = PleaOnlineForms("about", "plea_form_step", fake_session)
