@@ -1,6 +1,5 @@
 import json
 from dateutil import parser
-from time import mktime
 
 from django.core.serializers.json import DjangoJSONEncoder
 
@@ -9,9 +8,9 @@ def load_with_datetime(pairs):
     d = {}
 
     for k, v in pairs:
-        if isinstance(v, basestring):
+        if isinstance(v, basestring) and len(v.strip()) >= 10:
             try:
-                d[k] = parser.parse(v)
+                d[k] = parser.parse(v, fuzzy=False)
                 continue
             except TypeError:
                 pass

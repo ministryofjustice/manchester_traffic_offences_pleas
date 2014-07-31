@@ -1,25 +1,47 @@
 {% extends "plea/base.html" %}
 
-{% block content %}
+{% block page_content %}
 
 <header class="page-header group">
     <hgroup>
         <div><h1><span>Service</span>Make your plea online</h1></div>
     </hgroup>
 </header>
-
+{% with request.session.about.number_of_charges as charges %}
 <div class="article-container group">
     <article role="article" class="group">
         <div class="inner">
             <section>
-            <h2>Your plea</h2>
+            <h2>Your plea{{ charges|pluralize }}</h2>
                 <form method=POST>
                     {% csrf_token %}
                     {% with forms.1 as formset %}
                         {{ formset.management_form }}
+                        {% if formset|length > 1 %}
                         {% for form in formset %}
-                            <h2>Charge {{ forloop.counter }}</h2>
-                            <fieldset class="inline">
+                            <label>Your plea for charge {{ forloop.counter }}</label>
+                            <fieldset class="inline charge-section">
+                                <div class="group">
+                                    {% for choice in form.guilty %}
+                                        <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
+                                            <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
+                                            {{ choice.choice_label }}
+                                        </label>
+                                    {% endfor %}
+                                    <span class="validation-message">{{ form.guilty.errors }}</span>
+                                </div>
+
+                                <div class="group">
+                                    <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances for charge {{ forloop.counter }} <span class="form-hint sc-hint">(optional)</span></label>
+                                    <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
+                                    <span class="validation-message">{{ form.mitigations.errors }}</span>
+                                    <textarea rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}">{{ form.mitigations.value|default_if_none:"" }}</textarea>
+                                </div>
+                            </fieldset>
+                        {% endfor %}
+                        {% else %}
+                        {% for form in formset %}
+                            <fieldset class="inline charge-section">
                                 <div class="group">
                                     {% for choice in form.guilty %}
                                         <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
@@ -38,21 +60,24 @@
                                 </div>
                             </fieldset>
                         {% endfor %}
+                        {% endif %}
                     {% endwith %}
 
                     {% with forms.0 as form %}
                         <div class="group">
                             <label for="{{ form.understand.id_for_label }}" class="block-label">
-                                <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" class="block-label" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}><span>I confirm</span> that I have read and understand the charge against me.
+                                <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" class="block-label" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
+                                <strong>I confirm</strong> that I have read and understand the charge{{ charges|pluralize }} against me.
                             </label>
                             <span class="validation-message">{{ form.understand.errors }}</span>
                         </div>
                     {% endwith %}
-                    <button class="button" type=submit>Continue</button> <a href="{% url "plea_form_step" "about" %}" id="submit-btn">Back</a>
+                    <button class="button" type=submit>Continue</button>
                 </form>
            </section>
         </div>
     </article>
 </div>
 
-{% endblock content %}
+{% endwith %}
+{% endblock page_content %}

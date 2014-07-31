@@ -1,6 +1,6 @@
 {% extends "plea/base.html" %}
 
-{% block content %}
+{% block page_content %}
 <header class="page-header group">
     <hgroup>
         <div><h1><span>Service</span>Make your plea online</h1></div>
@@ -10,9 +10,9 @@
             <form method=POST>
                 {% csrf_token %}
                 {{ wizard.management_form }}
-                <h2>Confirm your plea</h2>
-                <p>Review the information you’ve given before making your plea.</p>
-
+                <h2>Confirm your plea{{ about.number_of_charges|pluralize }}</h2>
+                <p>Review the information you’ve given before making your plea{{ about.number_of_charges|pluralize }}.</p>
+            <div class="indent">
                 <table id="your-details">
                     <thead>
                         <tr>
@@ -22,20 +22,20 @@
                     </thead>
                         <tbody>
                             <tr>
-                                <td>Full name</td>
-                                <td>Joe Bloggs</td>
+                                <th class="label">Full name</th>
+                                <td>{{ about.name }}</td>
                             </tr>
                             <tr>
-                                <td>Unique reference number</td>
-                                <td>00 / AA / 0000000 / 00</td>
+                                <th class="label">Unique reference number</th>
+                                <td>{{ about.urn }}</td>
                             </tr>
                             <tr>
-                                <td>Court hearing date and time</td>
-                                <td>22 05 2014 at 09:30</td>
+                                <th class="label">Court hearing date and time</th>
+                                <td>{{ about.date_of_hearing }}</td>
                             </tr>
                             <tr>
-                                <td>Number of charges against you</td>
-                                <td>1</td>
+                                <th class="label">Number of charges against you</th>
+                                <td>{{ about.number_of_charges }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -43,52 +43,37 @@
                         <table id="your-plea">
                             <thead>
                             <tr>
-                                <th class="header">Your plea</th>
-                                <th><a href="{% url "plea_form_step" "plea" %}" class="review">Change your plea</a></th>
+                                <th class="header">Your plea{{ about.number_of_charges|pluralize }}</th>
+                                <th><a href="{% url "plea_form_step" "plea" %}" class="review">Change your plea{{ about.number_of_charges|pluralize }}</a></th>
                             </tr>
                             </thead>
                                 <tbody>
+                                {%  for plea in plea.PleaForms %}
+                                    {% if about.number_of_charges > 1 %}
                                     <tr>
-                                        <td>Your plea</td>
-                                        <td>Guilty</td>
+                                        <td colspan="2"><h3>Charge {{ forloop.counter }}</h3></td>
+                                    </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <th class="label">Your plea</th>
+                                        <td>
+                                            {% if plea.guilty == "guilty" %}
+                                            Guilty
+                                            {% elif plea.guilty == "not_guilty" %}
+                                            Not guilty
+                                            {% endif %}
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td>Special circumstances</td>
-                                        <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras justo turpis, malesuada et leo in, auctor tincidunt dolor. Integer laoreet nunc massa, ac ultricies dolor euismod id. Sed non fringilla eros.</td>
+                                        <th class="label">Special circumstances</th>
+                                        <td>{{ plea.mitigations|linebreaks }}</td>
                                     </tr>
-                                    <tr>
-                                        <td>Confirmation</td>
-                                        <td>I have read and understand the charge against me.</td>
-                                    </tr>
+                                {% endfor %}
                                 </tbody>
                          </table>
-                        
-                        <button type="submit" class="button">Make your plea</button>
-
-               <!--  
-
-                 <dl>
-                    <dt>Date of hearing</dt>
-                    <dd>{{ about.date_of_hearing }}</dd>
-                    <dt>Name</dt>
-                    <dd>{{ about.name }}</dd>
-                    <dt>URN</dt>
-                    <dd>{{ about.urn }}</dd>
-                </dl> 
-
-               <dl>
-                    {%  for plea_info in plea.PleaForms %}
-                        <dt>Plea {{ forloop.counter }}</dt>
-                        <dd>{{ plea_info.guilty }}</dd>
-                        <dt>Plea {{ forloop.counter }} Mitigations</dt>
-                        <dd>{{ plea_info.mitigations }}</dd>
-                    {% endfor %}
-                    <dt>Understand?</dt>
-                    <dd>{{ plea.understand }}</dd>
-                </dl> -->
-                
-
-                
+                <div class="statement-understand">I have read and understand the charge{{ about.number_of_charges|pluralize }} against me.</div>
+                <button type="submit" class="button primary large left">Make your plea{{ about.number_of_charges|pluralize }}</button>
+            </div>
             </form>
         </div>
-{% endblock content %}
+{% endblock page_content %}

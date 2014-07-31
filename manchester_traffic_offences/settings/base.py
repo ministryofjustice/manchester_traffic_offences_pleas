@@ -28,6 +28,10 @@ DATABASES = {
     }
 }
 
+RAVEN_CONFIG = {
+    'dsn': 'https://bec1584e479a4bc0b694b7fbcb4c632d:4ef91764e1ea4d2cbbd50a4d4bdcf4a5@app.getsentry.com/28000',
+}
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
@@ -53,7 +57,7 @@ USE_I18N = False
 USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
+USE_TZ = False
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
@@ -109,6 +113,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'manchester_traffic_offences.urls'
 
 SESSION_SERIALIZER = 'manchester_traffic_offences.apps.govuk_utils.serializers.DateAwareSerializer'
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'manchester_traffic_offences.wsgi.application'
@@ -141,6 +146,7 @@ INSTALLED_APPS = (
     'south',
     'django_extensions',
     'lettuce.django',
+    'raven.contrib.django.raven_compat',
 )
 
 PROJECT_APPS = (
