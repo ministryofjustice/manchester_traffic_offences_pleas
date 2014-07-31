@@ -1639,6 +1639,20 @@ section .info-notice p {
 section .application-notice {
   padding: 0.1em 0 0.1em 1em; }
 
+section .flash {
+  border: 3px solid #6f777b;
+  background-color: #f8f8f8;
+  padding: 20px;
+  margin: 40px 0;
+  max-width: 798px; }
+section .success {
+  border-color: #85994b;
+  background-color: #e7ebda; }
+section h2 {
+  margin: 0;
+  font-weight: bold;
+  font-size: 1.3em; }
+
 table {
   clear: both;
   margin: 2em 0; }
@@ -1761,3 +1775,6 @@ p.lead {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 2em; }
+
+#id_feedback_email {
+  width: 32%; }

@@ -10,10 +10,7 @@ def globals(request):
     'phase': 'alpha', 
     
     # Product Type (Adds class to body based on service type). Presumed values: information, service
-    'product_type': 'service', 
-    
-    # Feedback URL (URL for feedback link in phase banner)
-    'feedback_url': '/feedback', 
+    'product_type': 'service',
     
     # Google Analytics ID (Tracking ID for the service)
     'ga_id': '' 

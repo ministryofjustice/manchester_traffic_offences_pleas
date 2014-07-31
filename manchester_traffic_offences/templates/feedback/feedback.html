@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<header class="page-header group">
+	<hgroup>
+		<h1>Send feedback</h1>
+	</hgroup>
+</header>
+<div class="full-width group">
+    <div class="inner">
+        <p>Use this form to report a problem or ask us a question about the Make a Plea service.</p>
+        <p><strong>Please don't include any sensitive information (eg. your financial details).</strong></p>
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset>
+                <span class="validation-message">{{ form.question.errors }}</span>
+                {{ form.feedback_question.label_tag }}
+                {{ form.feedback_question }}
+            </fieldset>
+            <fieldset>
+                <legend>Do you want a reply?</legend>
+                <p>If you'd like us to get back to you, please leave your details below.</p>
+                <span class="validation-message">{{ form.email.errors }}</span>
+                {{ form.feedback_email.label_tag }}
+                {{ form.feedback_email }}
+                <p>We'll only use this to reply to your message.</p>
+            </fieldset>
+            <div class="actions">
+                <button class="button" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
