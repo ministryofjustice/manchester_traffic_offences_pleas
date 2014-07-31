@@ -15,7 +15,7 @@ handler500 = "manchester_traffic_offences.views.server_error"
 
 urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
-                       url(r'^$', views.HomeView.as_view()),
+                       url(r'^$', views.HomeView.as_view(), name="home"),
                        url(r'^plea/', include('plea.urls', )),
                        url(r'^feedback/', include('feedback.urls'))
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
