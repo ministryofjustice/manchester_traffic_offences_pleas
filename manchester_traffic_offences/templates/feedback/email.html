@@ -1,0 +1,16 @@
+<table>
+    <tr>
+        <th valign="top" align="right">Question</th>
+        <td>{{ question|linebreaksbr }}</td>
+    </tr>
+    <tr>
+        <th valign="top" align="right">Email</th>
+        <td>{{ email }}</td>
+    </tr>
+</table>
+
+<p>
+    <strong>Sent on:</strong> {{ date_sent }}<br>
+    <strong>Source:</strong> {{ referrer }}<br>
+    <strong>User agent:</strong> {{ user_agent }}
+</p>
