@@ -1,39 +1,52 @@
-<h1>Case Reference: {{ urn }}</h1>
-
+<h1 style="font-family: nta, Arial, sans-serif">Case Reference: {{ about.urn }}</h1>
 <table>
+    <thead>
     <tr>
-        <td colspan="2"><h2>Details</h2></td>
+        <td colspan="2" style="font-family: nta, Arial, sans-serif" align="center"><h2>Details</h2><hr></td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td width="20%" valign="top" align="right" style="font-family: nta, Arial, sans-serif; font-weight:bold; padding-right:20px;">URN</td>
+        <td width="80%" valign="top"  style="font-family: nta, Arial, sans-serif">{{ about.urn }}</td>
     </tr>
     <tr>
-        <td>URN</td>
-        <td>{{ about.urn }}</td>
+        <td valign="top" align="right" style="font-family: nta, Arial, sans-serif; font-weight:bold; padding-right:20px;">Date of hearing</td>
+        <td valign="top" style="font-family: nta, Arial, sans-serif">{{ about.date_of_hearing }}</td>
     </tr>
     <tr>
-        <td>Date of hearing</td>
-        <td>{{ about.date_of_hearing }}</td>
+        <td valign="top" align="right" style="font-family: nta, Arial, sans-serif; font-weight:bold; padding-right:20px;">Name</td>
+        <td valign="top"  style="font-family: nta, Arial, sans-serif">{{ about.name }}</td>
     </tr>
     <tr>
-        <td>Name</td>
-        <td>{{ about.name }}</td>
+        <td valign="top" align="right" style="font-family: nta, Arial, sans-serif; font-weight: bold; padding-right:20px;">I understand and accept <br>the charges against me</td>
+        <td valign="top"  style="font-family: nta, Arial, sans-serif">{{ plea.understand }}</td>
     </tr>
     <tr>
-        <td>I understand ...</td>
-        <td>{{ plea.understand }}</td>
+        <td colspan="2">&nbsp;</td>
     </tr>
     <tr>
-        <td colspan="2"><h2>Charges</h2></td>
+        <td align="center" style="font-family: nta, Arial, sans-serif" colspan="2"><h2>Charges</h2><hr></td>
     </tr>
     {%  for plea_item in plea.PleaForms %}
         <tr>
-            <td colspan="2"><h3>Charge {{ forloop.counter }}</h3></td>
+            <td>&nbsp;</td>
+            <td valign="top" style="font-family: nta, Arial, sans-serif; padding-top:20px;"><h3>Charge {{ forloop.counter }}</h3></td>
         </tr>
         <tr>
-            <td>Plea</td>
-            <td>{{ plea_item.guilty }}</td>
+            <td valign="top" align="right" style="font-family: nta, Arial, sans-serif; font-weight: bold; padding-right:20px;">Plea</td>
+            <td valign="top" style="font-family: nta, Arial, sans-serif">
+                {% if plea_item.guilty == "guilty" %}
+                    Guilty
+                {% elif plea_item.guilty == "not_guilty" %}
+                    Not guilty
+                {% endif %}
+            </td>
         </tr>
         <tr>
-            <td>Mitigating circumstances</td>
-            <td>{{ plea_item.mitigations|linebreaks }}</td>
+            <td valign="top" align="right" style="font-family: nta, Arial, sans-serif; font-weight: bold; padding-right:20px;">Mitigation</td>
+            <td valign="top" style="font-family: nta, Arial, sans-serif">{{ plea_item.mitigations|linebreaks }}</td>
         </tr>
     {%  endfor %}
+    </tbody>
 </table>
