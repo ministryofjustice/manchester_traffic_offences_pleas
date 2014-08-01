@@ -1,41 +1,63 @@
-<h1 style="font-family: nta, Arial, sans-serif">Case Reference: {{ about.urn }}</h1>
+<!doctype html>
+<html>
+<head>
+    <title>{{ about.urn }}</title>
+    <style>
+        body, td {
+            font-family: nta, Arial, sans-serif;
+        }
+        td {vertical-align: top;}
+        th {
+            width: 20%;
+            text-align: right;
+            font-weight:bold;
+            padding-right:20px;
+        }
+        td.heading {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<h1>Case Reference: {{ about.urn }}</h1>
 <table>
     <thead>
     <tr>
-        <td colspan="2" style="font-family: nta, Arial, sans-serif" align="center"><h2>Details</h2><hr></td>
+        <td colspan="2" class="heading"><h2>Details</h2><hr></td>
     </tr>
     </thead>
     <tbody>
     <tr>
-        <td width="20%" valign="top" align="right" style="font-family: nta, Arial, sans-serif; font-weight:bold; padding-right:20px;">URN</td>
-        <td width="80%" valign="top"  style="font-family: nta, Arial, sans-serif">{{ about.urn }}</td>
+        <th>URN</th>
+        <td>{{ about.urn }}</td>
     </tr>
     <tr>
-        <td valign="top" align="right" style="font-family: nta, Arial, sans-serif; font-weight:bold; padding-right:20px;">Date of hearing</td>
-        <td valign="top" style="font-family: nta, Arial, sans-serif">{{ about.date_of_hearing }}</td>
+        <th>Date of hearing</th>
+        <td>{{ about.date_of_hearing }}</td>
     </tr>
     <tr>
-        <td valign="top" align="right" style="font-family: nta, Arial, sans-serif; font-weight:bold; padding-right:20px;">Name</td>
-        <td valign="top"  style="font-family: nta, Arial, sans-serif">{{ about.name }}</td>
+        <th>Name</th>
+        <td>{{ about.name }}</td>
     </tr>
     <tr>
-        <td valign="top" align="right" style="font-family: nta, Arial, sans-serif; font-weight: bold; padding-right:20px;">I understand and accept <br>the charges against me</td>
-        <td valign="top"  style="font-family: nta, Arial, sans-serif">{{ plea.understand }}</td>
+        <th>I understand and accept <br>the charges against me</th>
+        <td>{{ plea.understand }}</td>
     </tr>
     <tr>
-        <td colspan="2">&nbsp;</td>
+        <td colspan="2"> </td>
     </tr>
     <tr>
-        <td align="center" style="font-family: nta, Arial, sans-serif" colspan="2"><h2>Charges</h2><hr></td>
+        <td class="heading" colspan="2"><h2>Charges</h2><hr></td>
     </tr>
     {%  for plea_item in plea.PleaForms %}
         <tr>
-            <td>&nbsp;</td>
-            <td valign="top" style="font-family: nta, Arial, sans-serif; padding-top:20px;"><h3>Charge {{ forloop.counter }}</h3></td>
+            <td> </td>
+            <td class="label"><h3>Charge {{ forloop.counter }}</h3></td>
         </tr>
         <tr>
-            <td valign="top" align="right" style="font-family: nta, Arial, sans-serif; font-weight: bold; padding-right:20px;">Plea</td>
-            <td valign="top" style="font-family: nta, Arial, sans-serif">
+            <th>Plea</th>
+            <td>
                 {% if plea_item.guilty == "guilty" %}
                     Guilty
                 {% elif plea_item.guilty == "not_guilty" %}
@@ -44,9 +66,11 @@
             </td>
         </tr>
         <tr>
-            <td valign="top" align="right" style="font-family: nta, Arial, sans-serif; font-weight: bold; padding-right:20px;">Mitigation</td>
-            <td valign="top" style="font-family: nta, Arial, sans-serif">{{ plea_item.mitigations|linebreaks }}</td>
+            <th>Mitigation</th>
+            <td>{{ plea_item.mitigations|linebreaks }}</td>
         </tr>
     {%  endfor %}
     </tbody>
 </table>
+</body>
+</html>
