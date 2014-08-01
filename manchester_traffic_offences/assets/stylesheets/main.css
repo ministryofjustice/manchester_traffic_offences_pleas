@@ -1522,7 +1522,7 @@ b, strong {
 #complete h2.ticked {
   display: inline-block;
   padding: 40px 40px 40px 80px;
-  background: #28a197 url(http://localhost:8000/static/images/icons/tick.png) no-repeat 35px 50px;
+  background: #28a197 url(../images/icons/tick.png) no-repeat 35px 50px;
   color: white; }
 
 label {
