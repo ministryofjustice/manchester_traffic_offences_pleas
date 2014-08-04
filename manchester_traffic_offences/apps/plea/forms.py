@@ -2,9 +2,11 @@ from __future__ import unicode_literals
 
 from dateutil.parser import parse
 import datetime
+import re
 import six
 
 from django import forms
+from django.core import exceptions
 from django.forms.formsets import BaseFormSet
 from django.forms.widgets import MultiWidget
 from django.core.urlresolvers import reverse_lazy
@@ -13,11 +15,40 @@ from django.forms.widgets import Textarea, RadioSelect, TextInput, RadioFieldRen
 from django.forms.extras.widgets import Widget
 from django.template.loader import render_to_string
 from django.utils.encoding import force_str, force_text
-from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
 
 from govuk_utils.forms import FormStage, MultiStageForm
-from defendant.utils import is_valid_urn_format
 from email import send_plea_email
+
+
+ERROR_MESSAGES = {
+    "FULL_NAME_REQUIRED": "Full name cannot be blank",
+    "URN_REQUIRED": "Unique reference number (URN) cannot be blank",
+    "URN_INVALID": "Unique reference number (URN) is invalid URN. Please enter the URN exactly as it appears on page 1 of the pack",
+    "HEARING_DATE_REQUIRED": "Court hearing date cannot be blank",
+    "HEARING_DATE_INVALID": "Court hearing date is invalid date and/or time",
+    "HEARING_DATE_PASSED": "Court hearing date cannot be before the current date",
+    "NUMBER_OF_CHARGES_REQUIRED": "Number of charges against you must be selected",
+    "PLEA_REQUIRED": "Your plea must be selected",
+    "UNDERSTAND_REQUIRED": "I confirm that I have read and understand the charges against me must be selected"
+}
+
+
+def is_valid_urn_format(urn):
+    """
+    URN is 11 or 13 characters long in the following format:
+
+    00/AA/0000000/00
+    or
+    00/AA/00000/00
+    """
+
+    pattern = r"[0-9]{2}/[a-zA-Z]{2}/(?:[0-9]{5}|[0-9]{7})/[0-9]{2}"
+
+    if not re.match(pattern, urn):
+        raise exceptions.ValidationError(_(ERROR_MESSAGES["URN_INVALID"]))
+
+    return True
 
 
 class DSRadioFieldRenderer(RadioFieldRenderer):
@@ -72,21 +103,27 @@ class FixedTimeDateWidget(Widget):
         return radio_html
 
     def value_from_datadict(self, data, files, name):
-        y = data.get(self.year_field % name)
-        m = data.get(self.month_field % name)
-        d = data.get(self.day_field % name)
-        t = data.get(self.time_field % name)
+        y = data.get(self.year_field % name, None)
+        m = data.get(self.month_field % name, None)
+        d = data.get(self.day_field % name, None)
+        t = data.get(self.time_field % name, None)
         if t:
             hr = t.split(":")[0]
             mn = t.split(":")[1]
         else:
             hr, mn = None, None
 
-        if y == m == d == hr == mn == "0":
+        if y == m == d == hr == mn == None:
             return None
+
         if y and m and d and t:
-            datetime_value = datetime.datetime(int(y), int(m), int(d), int(hr), int(mn))
+            try:
+                datetime_value = datetime.datetime(int(y), int(m), int(d), int(hr), int(mn))
+            except ValueError:
+                return "{0}-{1}-{2} {3}:{4}:00".format(y, m, d, hr, mn)
             return str(datetime_value)
+
+        import ipdb; ipdb.set_trace()
 
         return data.get(name, None)
 
@@ -170,15 +207,19 @@ class BasePleaStepForm(forms.Form):
 
 
 class AboutForm(BasePleaStepForm):
-    date_of_hearing = forms.DateTimeField(widget=HearingDateTimeWidget())
-    urn = URNField(required=True)
-    name = forms.CharField(max_length=255, required=True)
+    name = forms.CharField(max_length=100, required=True,
+                           error_messages={"required": ERROR_MESSAGES["FULL_NAME_REQUIRED"]})
+    urn = URNField(required=True, error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]})
+    date_of_hearing = forms.DateTimeField(widget=HearingDateTimeWidget(), error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"],
+                                                                                          "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
     number_of_charges = forms.IntegerField(
-        widget=forms.Select(choices=[(i, i) for i in range(1, 11)]))
+        widget=forms.Select(choices=[("", "Please select ...")] + [(i, i) for i in range(1, 21)]),
+        error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]})
 
 
 class PleaInfoForm(BasePleaStepForm):
-    understand = forms.BooleanField(required=True)
+    understand = forms.BooleanField(required=True,
+                                    error_messages={"required": "I confirm that I have read and understand the charges against me must be selected"})
 
 
 class PleaForm(BasePleaStepForm):
@@ -187,9 +228,9 @@ class PleaForm(BasePleaStepForm):
         ('not_guilty', 'Not Guilty'),
     )
 
-    guilty = forms.ChoiceField(
-        choices=PLEA_CHOICES, widget=RadioSelect(), required=True)
-    mitigations = forms.CharField(widget=Textarea(), required=False)
+    guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect(), required=True,
+                               error_messages={"required": "Your plea must be selected"})
+    mitigations = forms.CharField(max_length=5000, widget=Textarea(), required=False)
 
 
 ###### Form stage classes #######
@@ -232,6 +273,10 @@ class PleaStage(FormStage):
         else:
             self.forms.append(PleaInfoForm(data))
             self.forms.append(PleaForms(data))
+
+        for form in self.forms:
+            if form.errors:
+                self.context["formset_has_errors"] = True
 
     def save_forms(self):
         form_data = {}

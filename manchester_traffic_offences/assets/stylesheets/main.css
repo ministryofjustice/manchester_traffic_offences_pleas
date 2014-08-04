@@ -1491,6 +1491,9 @@ ol li {
 b, strong {
   font-weight: 600; }
 
+.clear {
+  clear: both; }
+
 #global-header .header-wrapper {
   max-width: 990px;
   margin: 0 auto;
@@ -1639,19 +1642,44 @@ section .info-notice p {
 section .application-notice {
   padding: 0.1em 0 0.1em 1em; }
 
-section .flash {
+section.flash {
   border: 3px solid #6f777b;
   background-color: #f8f8f8;
   padding: 20px;
   margin: 40px 0;
   max-width: 798px; }
-section .success {
-  border-color: #85994b;
-  background-color: #e7ebda; }
-section h2 {
-  margin: 0;
-  font-weight: bold;
-  font-size: 1.3em; }
+  section.flash h2 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.3em; }
+  section.flash h3 {
+    margin: 0 0 10px; }
+  section.flash ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0; }
+  section.flash li {
+    list-style-type: none; }
+  section.flash.error-summary {
+    border-color: #e12d2d;
+    background-color: #faebec; }
+    section.flash.error-summary h2 {
+      margin: 0 0 10px; }
+    section.flash.error-summary li {
+      color: #e12d2d; }
+      section.flash.error-summary li a {
+        color: #e12d2d; }
+        section.flash.error-summary li a :hover {
+          text-decoration: none; }
+  section.flash.success {
+    border-color: #85994b;
+    background-color: #e7ebda; }
+
+div.error, section.error {
+  background-color: #faebec;
+  border-left: 3px solid #e12d2d;
+  margin: 10px -23px 10px -20px;
+  padding: 0 0 10px 20px; }
 
 table {
   clear: both;
