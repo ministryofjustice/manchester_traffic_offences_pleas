@@ -13,6 +13,7 @@ class FormStage(object):
         self.all_data = all_data or {}
         self.forms = []
         self.next = ""
+        self.context = {}
 
     def get_next(self, next):
         if next:
@@ -65,7 +66,8 @@ class FormStage(object):
         if self.next:
             return HttpResponseRedirect(self.next)
         else:
-            context = {k: v for (k, v) in self.all_data.items()}
+            context = self.context
+            context.update({k: v for (k, v) in self.all_data.items()})
             context["forms"] = self.forms
             return render_to_response(self.template, context, request_context)
 

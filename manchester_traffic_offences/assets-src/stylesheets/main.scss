@@ -58,6 +58,9 @@
 // MoJ Styles
 
 b, strong {font-weight: 600;}
+.clear {clear: both;}
+$errorcolour: #e12d2d;
+$errorbgcolour: #faebec;
 
 #global-header .header-wrapper {max-width: 990px; margin: 0 auto; padding: 0.5em 15px;}
 .article-container {background-color: #fff; margin-right: 22.25em; min-height: 25em; max-width: 38em;}
@@ -105,31 +108,63 @@ section .info-notice {background: none; border-left: 10px #dee0e2 solid; margin-
 section .info-notice p{line-height: 1.31579;}
 section .application-notice {padding: 0.1em 0 0.1em 1em;}
 
-section {
-  .flash {
-    border: 3px solid #6f777b;
-    background-color: #f8f8f8;
-    padding: 20px;
-    margin: 40px 0;
-    max-width: 798px;
-  }
 
-  .success {
-    border-color: #85994b;
-    background-color: #e7ebda;
-  }
+section.flash {
+  border: 3px solid $grey-1;
+  background-color: $grey-4;
+  padding: 20px;
+  margin: 40px 0;
+  max-width: 798px;
 
   h2 {
     margin: 0;
     font-weight: bold;
     font-size: 1.3em;
   }
+  h3 {
+    margin: 0 0 10px;
+  }
+  ul {
+    list-style-type: none; padding:0; margin:0;
+  }
+  li {
+    list-style-type: none;
+  }
+
+  &.error-summary {
+    border-color: $errorcolour;
+    background-color: $errorbgcolour;
+    h2 {
+      margin: 0 0 10px;
+    }
+    li {
+      color: $errorcolour;
+      a {
+        color: $errorcolour;
+        & :hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  &.success {
+    border-color: $grass-green;
+    background-color: $grass-green-25;
+  }
+}
+
+div.error, section.error {
+  background-color: $errorbgcolour;
+  border-left: 3px solid $errorcolour;
+  margin: 10px -23px 10px -20px;
+  padding: 0 0 10px 20px;
 }
 
 
 table {clear:both;margin: 2em 0;}
 table tr, table td, table th {padding:8px; font-size:1em;width:45%;}
-table th a.review{font-weight:normal; float: right;}
+table th a.review {font-weight:normal; float: right;}
 table th.header {font-size: 1.2em;}
 .get-started-intro a.button.button-get-started {font-size: 135%; font-weight: normal;}
 #before-you-start {margin-top:2em;}

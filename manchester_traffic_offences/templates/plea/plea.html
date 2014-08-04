@@ -11,6 +11,30 @@
 <div class="article-container group">
     <article role="article" class="group">
         <div class="inner">
+            {% if formset_has_errors %}
+            <section class="flash error-summary">
+                <h2 id="error-heading">You need to fix the errors on this page before continuing.</h2>
+                <p>See highlighted errors below.</p>
+                <ul>
+                {% with forms.1 as formset %}
+                    {% for form in formset %}
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <li><a class="error-link"
+                                       href="#section_{{ field.name }}_{{ forloop.parentloop.counter }}">{{ field.errors|striptags }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    {% for field in forms.0 %}
+                        {% if field.errors %}
+                            <li><a class="error-link"
+                                   href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+                </ul>
+            </section>
+            {% endif %}
             <section>
             <h2>Your plea{{ charges|pluralize }}</h2>
                 <form method=POST>
@@ -19,6 +43,7 @@
                         {{ formset.management_form }}
                         {% if formset|length > 1 %}
                         {% for form in formset %}
+                            <a id="section_guilty_{{ forloop.counter }}" name="section_guilty_{{ forloop.counter }}"></a>
                             <label>Your plea for charge {{ forloop.counter }}</label>
                             <fieldset class="inline charge-section">
                                 <div class="group">
@@ -31,6 +56,7 @@
                                     <span class="validation-message">{{ form.guilty.errors }}</span>
                                 </div>
 
+                                <a id="section_mitigations_{{ forloop.counter }}" name="section_mitigations_{{ forloop.counter }}"></a>
                                 <div class="group">
                                     <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances for charge {{ forloop.counter }} <span class="form-hint sc-hint">(optional)</span></label>
                                     <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
@@ -42,6 +68,7 @@
                         {% else %}
                         {% for form in formset %}
                             <fieldset class="inline charge-section">
+                                <a id="section_guilty_{{ forloop.counter }}" name="section_guilty_{{ forloop.counter }}"></a>
                                 <div class="group">
                                     {% for choice in form.guilty %}
                                         <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
@@ -52,6 +79,7 @@
                                     <span class="validation-message">{{ form.guilty.errors }}</span>
                                 </div>
 
+                                <a id="section_mitigations_{{ forloop.counter }}" name="section_mitigations_{{ forloop.counter }}"></a>
                                 <div class="group">
                                     <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint datefield-hint">(optional)</span></label>
                                     <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
@@ -64,6 +92,7 @@
                     {% endwith %}
 
                     {% with forms.0 as form %}
+                        <a id="section_understand" name="section_understand"></a>
                         <div class="group">
                             <label for="{{ form.understand.id_for_label }}" class="block-label">
                                 <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" class="block-label" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
