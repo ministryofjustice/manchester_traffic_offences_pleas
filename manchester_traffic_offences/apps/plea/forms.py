@@ -217,7 +217,7 @@ class AboutForm(BasePleaStepForm):
 
 class PleaInfoForm(BasePleaStepForm):
     understand = forms.BooleanField(required=True,
-                                    error_messages={"required": "I confirm that I have read and understand the charges against me must be selected"})
+                                    error_messages={"required": ERROR_MESSAGES["UNDERSTAND_REQUIRED"]})
 
 
 class PleaForm(BasePleaStepForm):
