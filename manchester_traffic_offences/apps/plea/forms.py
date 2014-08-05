@@ -123,8 +123,6 @@ class FixedTimeDateWidget(Widget):
                 return "{0}-{1}-{2} {3}:{4}:00".format(y, m, d, hr, mn)
             return str(datetime_value)
 
-        import ipdb; ipdb.set_trace()
-
         return data.get(name, None)
 
     def render(self, name, value, attrs=None):
