@@ -70,16 +70,15 @@ $errorbgcolour: #faebec;
 .article-container.group h2, #complete h2, .full-width h2 {font-size: 2em; font-weight: bold; margin: 20px 0;}
 #complete h3.heading-medium.divide {border-top: 1px solid #c2c2c2; padding-top:20px;}
 label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.31579; font-weight: 400; text-transform: none; display: block;}
-.inline .block-label {font-weight:normal;}
+.inline .block-label {font-weight:normal; margin-top: 0.5em;}
 
-.group label {font-weight:bold; font-size: 1.3em; margin: 1em 0;}
-section#group-urn {clear:both; width: 75%;}
-section#group-urn #enter-urn {width:70%; float: left; margin-bottom:3em; clear: both;}
-section#group-urn #urn-loc {width:30%; float: right; margin-top: 1.5em;}
+.group label {font-weight:bold; font-size: 1.3em; margin: 1em 0 0.5em;}
+.with-help-image {width:70%; float: left;}
+.help-image {width:30%; float: right; margin-top: 1.5em;}
 
-section#group-urn #enter-urn #id_urn_0 {width:10%; margin-left: 0; margin-right: 10px;}
-section#group-urn #enter-urn #id_urn_1, section#group-urn #enter-urn #id_urn_3 {width:10%; margin:0 10px;}
-section#group-urn #enter-urn #id_urn_2 {width:25%; margin:0 10px;}
+#enter-urn #id_urn_0 {width:5%; margin-left: 0; margin-right: 10px;}
+#enter-urn #id_urn_1, #enter-urn #id_urn_3 {width:5%; margin:0 10px;}
+#enter-urn #id_urn_2 {width:10%; margin:0 10px;}
 
 section#group-urn #number_of_charges {width:32%;}
 
@@ -97,8 +96,11 @@ button.large, .button.large {font-size: 24px;}
 input[type=text], input[type="number"], input[type=email], input[type=tel], input[type=date], select[type=text], select[type=email], select[type=tel], select[type=date] {width: 100%; padding: 5px 4px 2px; color: #0b0c0c; border: 1px solid #bfc1c3; margin: 0 0 10px 0;}
 
 input, select {font-family: "nta", Arial, sans-serif;font-size: 19px; line-height: 1.31579; font-weight: 400;text-transform:none; margin: 0;}
-input#name {width:32%;}
+input#name {width: 32%;}
 select {border-color: #bfc1c3;}
+
+.section {margin-bottom: 3em;}
+.actions {clear: both;}
 
 section#charges {clear: both; width: 75%;}
 section#charges #enter-charges {float:left; width:70%;}
@@ -107,7 +109,6 @@ section#charges #charge-loc {float: right; width:30%; margin: 1em 0;}
 section .info-notice {background: none; border-left: 10px #dee0e2 solid; margin-bottom: 1em;margin-top: 2em;}
 section .info-notice p{line-height: 1.31579;}
 section .application-notice {padding: 0.1em 0 0.1em 1em;}
-
 
 section.flash {
   border: 3px solid $grey-1;
@@ -155,10 +156,9 @@ section.flash {
 }
 
 div.error, section.error {
-  background-color: $errorbgcolour;
   border-left: 3px solid $errorcolour;
-  margin: 10px -23px 10px -20px;
-  padding: 0 0 10px 20px;
+  margin: 10px -33px 10px -30px;
+  padding: 0 0 10px 30px;
 }
 
 
@@ -176,8 +176,7 @@ table th.header {font-size: 1.2em;}
 .related #stat {font-size:5em; font-weight:bold; color:#000; line-height:0.75em;}
 .js-enabled .related-positioning {top: 8em;}
 
-.charge-section {margin-bottom: 3em;}
-.charge-section .form-hint {display:inline; font-weight: normal;}
+.charges .form-hint {display:inline; font-weight: normal;}
 label[for=id_understand] {font-weight: normal; font-size: 1em; white-space: nowrap;}
 label[for=id_understand] strong {font-weight: bold;}
 label.datetime {font-weight:normal; display:inline-block;}
