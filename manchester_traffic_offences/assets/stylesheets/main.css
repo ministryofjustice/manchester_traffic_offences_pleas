@@ -1531,39 +1531,34 @@ label {
   display: block; }
 
 .inline .block-label {
-  font-weight: normal; }
+  font-weight: normal;
+  margin-top: 0.5em; }
 
 .group label {
   font-weight: bold;
   font-size: 1.3em;
-  margin: 1em 0; }
+  margin: 1em 0 0.5em; }
 
-section#group-urn {
-  clear: both;
-  width: 75%; }
-
-section#group-urn #enter-urn {
+.with-help-image {
   width: 70%;
-  float: left;
-  margin-bottom: 3em;
-  clear: both; }
+  float: left; }
 
-section#group-urn #urn-loc {
+.help-image {
   width: 30%;
   float: right;
   margin-top: 1.5em; }
 
-section#group-urn #enter-urn #id_urn_0 {
-  width: 10%;
+#enter-urn #id_urn_0 {
+  width: 5%;
   margin-left: 0;
   margin-right: 10px; }
 
-section#group-urn #enter-urn #id_urn_1, section#group-urn #enter-urn #id_urn_3 {
-  width: 10%;
+#enter-urn #id_urn_1, #enter-urn #id_urn_3 {
+  width: 5%;
   margin: 0 10px; }
 
-section#group-urn #enter-urn #id_urn_2 {
-  width: 25%;
+#enter-urn #id_urn_2 {
+  width: 10%;
   margin: 0 10px; }
 
 section#group-urn #number_of_charges {
@@ -1616,6 +1611,12 @@ input#name {
 
 select {
   border-color: #bfc1c3; }
+
+.section {
+  margin-bottom: 3em; }
+
+.actions {
+  clear: both; }
 
 section#charges {
   clear: both;
@@ -1676,10 +1677,9 @@ section.flash {
     background-color: #e7ebda; }
 
 div.error, section.error {
-  background-color: #faebec;
   border-left: 3px solid #e12d2d;
-  margin: 10px -23px 10px -20px;
-  padding: 0 0 10px 20px; }
+  margin: 10px -33px 10px -30px;
+  padding: 0 0 10px 30px; }
 
 table {
   clear: both;
@@ -1739,10 +1739,7 @@ table th.header {
 .js-enabled .related-positioning {
   top: 8em; }
 
-.charge-section {
-  margin-bottom: 3em; }
-
-.charge-section .form-hint {
+.charges .form-hint {
   display: inline;
   font-weight: normal; }
 
