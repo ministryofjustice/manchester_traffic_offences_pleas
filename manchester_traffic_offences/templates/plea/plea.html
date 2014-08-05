@@ -64,7 +64,7 @@
                                     <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances for charge {{ forloop.counter }} <span class="form-hint sc-hint">(optional)</span></label>
                                     <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
                                     <span class="validation-message">{{ form.mitigations.errors }}</span>
-                                    <textarea rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}">{{ form.mitigations.value|default_if_none:"" }}</textarea>
+                                    <textarea maxlength="5000" rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}">{{ form.mitigations.value|default_if_none:"" }}</textarea>
                                 </div>
                             </section>
                         {% endfor %}
@@ -89,7 +89,7 @@
                                     <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint datefield-hint">(optional)</span></label>
                                     <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
                                     <span class="validation-message">{{ form.mitigations.errors }}</span>
-                                    <textarea rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}">{{ form.mitigations.value|default_if_none:"" }}</textarea>
+                                    <textarea maxlength="5000" rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}">{{ form.mitigations.value|default_if_none:"" }}</textarea>
                                 </div>
                             </section>
                         {% endfor %}

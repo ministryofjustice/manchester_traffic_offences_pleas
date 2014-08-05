@@ -142,9 +142,9 @@ class FixedTimeDateWidget(Widget):
         if isinstance(month_val, (int, long, float, complex)):
             month_val = "{num:02d}".format(num=month_val)
 
-        year_html = self.create_input(name, self.year_field, value, year_val,  pattern="[0-9]+")
-        month_html = self.create_input(name, self.month_field, value, month_val, pattern="[0-9]+")
-        day_html = self.create_input(name, self.day_field, value, day_val, pattern="[0-9]+")
+        year_html = self.create_input(name, self.year_field, value, year_val,  pattern="[0-9]+", maxlength=4)
+        month_html = self.create_input(name, self.month_field, value, month_val, pattern="[0-9]+", maxlength=2)
+        day_html = self.create_input(name, self.day_field, value, day_val, pattern="[0-9]+", maxlength=2)
         time_html = self.create_radio(name, self.time_field, value, self.get_time_from_val((hour_val, minute_val)))
 
         context = {"year": year_html, "month": month_html, "day": day_html, "time": time_html}
