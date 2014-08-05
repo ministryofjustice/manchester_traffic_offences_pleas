@@ -8,7 +8,7 @@
     </hgroup>
 </header>
 {% with request.session.about.number_of_charges as charges %}
-<div class="article-container group">
+<div class="full-width group">
     <article role="article" class="group">
         <div class="inner">
             {% if formset_has_errors %}
@@ -46,14 +46,14 @@
                             <a id="section_guilty_{{ forloop.counter }}" name="section_guilty_{{ forloop.counter }}"></a>
                             <label>Your plea for charge {{ forloop.counter }}</label>
                             <fieldset class="inline charge-section">
-                                <div class="group">
+                                <div class="group{%  if form.guilty.errors %} error{% endif %}">
+                                    <span class="validation-message">{{ form.guilty.errors }}</span>
                                     {% for choice in form.guilty %}
                                         <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
                                             <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
                                             {{ choice.choice_label }}
                                         </label>
                                     {% endfor %}
-                                    <span class="validation-message">{{ form.guilty.errors }}</span>
                                 </div>
 
                                 <a id="section_mitigations_{{ forloop.counter }}" name="section_mitigations_{{ forloop.counter }}"></a>
@@ -69,14 +69,15 @@
                         {% for form in formset %}
                             <fieldset class="inline charge-section">
                                 <a id="section_guilty_{{ forloop.counter }}" name="section_guilty_{{ forloop.counter }}"></a>
-                                <div class="group">
+                                <div class="group{%  if form.guilty.errors %} error{% endif %}">
+                                    <span class="validation-message">{{ form.guilty.errors }}</span>
                                     {% for choice in form.guilty %}
                                         <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
                                             <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
                                             {{ choice.choice_label }}
                                         </label>
                                     {% endfor %}
-                                    <span class="validation-message">{{ form.guilty.errors }}</span>
+
                                 </div>
 
                                 <a id="section_mitigations_{{ forloop.counter }}" name="section_mitigations_{{ forloop.counter }}"></a>
@@ -91,14 +92,16 @@
                         {% endif %}
                     {% endwith %}
 
+                <div class="clear"></div>
+
                     {% with forms.0 as form %}
                         <a id="section_understand" name="section_understand"></a>
-                        <div class="group">
+                        <div class="group{%  if form.understand.errors %} error{% endif %}">
+                            <span class="validation-message">{{ form.understand.errors }}</span>
                             <label for="{{ form.understand.id_for_label }}" class="block-label">
                                 <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" class="block-label" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
                                 <strong>I confirm</strong> that I have read and understand the charge{{ charges|pluralize }} against me.
                             </label>
-                            <span class="validation-message">{{ form.understand.errors }}</span>
                         </div>
                     {% endwith %}
                     <button class="button" type=submit>Continue</button>
