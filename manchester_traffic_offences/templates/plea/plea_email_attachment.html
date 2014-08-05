@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>{{ about.urn }}</title>
+    <title>Online plea</title>
     <style>
         body, td {
             font-family: nta, Arial, sans-serif;
@@ -9,18 +9,16 @@
         td {vertical-align: top;}
         th {
             width: 20%;
-            text-align: right;
+            text-align: left;
             font-weight:bold;
             padding-right:20px;
-        }
-        td.heading {
-            text-align: center;
+            vertical-align: top;
         }
     </style>
 </head>
 
 <body>
-<h1>Case Reference: {{ about.urn }}</h1>
+<h1>Online plea</h1>
 <table>
     <thead>
     <tr>
@@ -29,28 +27,25 @@
     </thead>
     <tbody>
     <tr>
+        <th>Full name</th>
+        <td>{{ about.name }}</td>
+    </tr>
+    <tr>
         <th>URN</th>
         <td>{{ about.urn }}</td>
     </tr>
     <tr>
-        <th>Date of hearing</th>
+        <th>Court hearing</th>
         <td>{{ about.date_of_hearing }}</td>
     </tr>
-    <tr>
-        <th>Name</th>
-        <td>{{ about.name }}</td>
-    </tr>
-    <tr>
-        <th>I understand and accept <br>the charges against me</th>
-        <td>{{ plea.understand }}</td>
-    </tr>
+
     <tr>
         <td colspan="2"> </td>
     </tr>
     <tr>
         <td class="heading" colspan="2"><h2>Charges</h2><hr></td>
     </tr>
-    {%  for plea_item in plea.PleaForms %}
+    {% for plea_item in plea.PleaForms %}
         <tr>
             <td> </td>
             <td class="label"><h3>Charge {{ forloop.counter }}</h3></td>
@@ -65,10 +60,12 @@
                 {% endif %}
             </td>
         </tr>
+        {% if plea_item.mitigations %}
         <tr>
-            <th>Mitigation</th>
-            <td>{{ plea_item.mitigations|linebreaks }}</td>
+            <th>Special circumstances</th>
+            <td>{{ plea_item.mitigations|linebreaksbr }}</td>
         </tr>
+        {% endif %}
     {%  endfor %}
     </tbody>
 </table>
