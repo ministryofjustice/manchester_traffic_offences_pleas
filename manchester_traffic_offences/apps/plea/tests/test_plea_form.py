@@ -62,8 +62,6 @@ class TestMultiPleaForms(TestCase):
                               "number_of_charges": "1"},
                              self.request_context)
 
-        print response.content
-
         self.assertEqual(response.status_code, 302)
 
     def test_plea_stage_bad_data_single_charge(self):
