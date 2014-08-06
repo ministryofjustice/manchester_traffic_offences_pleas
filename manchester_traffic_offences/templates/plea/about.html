@@ -8,70 +8,87 @@
     </header>
 
     <div class="full-width group">
-        <!-- <article role="article" class="group"> -->
-            <div class="inner">
-                <section>
+        <div class="inner">
+            <form method=POST class="pleaform">
+                {% csrf_token %}
+                {% with forms.0 as form %}
+                    {% if form.errors %}
+                        <section class="flash error-summary">
+                            <h2 id="error-heading">You need to fix the errors on this page before continuing.</h2>
+                            <p>See highlighted errors below.</p>
+                            <ul>
+                                {% for field in form %}
+                                    {% if field.errors %}
+                                        <li><a class="error-link"
+                                               href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </section>
+                    {% endif %}
+
                     <h2 id="your-details">Your details</h2>
 
-                    <form method=POST class="pleaform">
-                        {% csrf_token %}
-                        {% with forms.0 as form %}
-                             <fieldset class="inline">
-                                <div class="group">
-                                    <label for="{{ form.name.name }}">Full name</label>
-                                    <p class="form-hint datefield-hint">On page 1 of the pack we sent you.</p>
-                                    <span class="validation-message">{{ form.name.errors }}</span>
-                                    <input type="text" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}" id="{{ form.name.name }}">
-                                </div>
-                                 <section id="group-urn">
-	                               		<div id="enter-urn">
-	                                    <label for="{{ form.urn.name }}">Unique reference number (URN)</label>
+                    <section>
+                        <a id="section_name" name="section_name"></a>
+                        <div class="section{%  if form.name.errors %} error{% endif %}">
+                            <label for="{{ form.name.name }}">Full name</label>
+                            <span class="validation-message">{{ form.name.errors }}</span>
+                            <p class="form-hint datefield-hint">On page 1 of the pack we sent you.</p>
+                            <input type="text" name="{{ form.name.name }}" maxlength="100"
+                                   value="{{ form.name.value|default_if_none:"" }}" id="{{ form.name.name }}">
+                        </div>
+                    </section>
 
-	                                    <p class="form-hint datefield-hint" id="">On page 1 of the pack, in the top right
-	                                        corner.</p>
-	                                    {#  Django handles the output of the URN field #}
-	                                    <span class="validation-message">{{ form.urn.errors }}</span>{{ form.urn }}
-	                                </div>
-	                                    <div id="urn-loc">
-	                                    	<img src="{% static "images/img-urn.png" %}" alt="Location of URN">
-	                                	</div>
-	                              </section>
-                                <div class="group">
-                                    <label for="{{ form.date_of_hearing.name }}">Court hearing date and time</label>
+                    <div class="help-image">
+                        <img src="{% static "images/img-urn.png" %}" alt="Location of URN">
+                    </div>
+                    <section>
+                        <div class="section">
+                            <a id="section_urn" name="section_urn"></a>
+                            <div id="enter-urn" class="section{% if form.urn.errors %} error{% endif %}">
+                                <label for="{{ form.urn.name }}">Unique reference number (URN)</label>
+                                <span class="validation-message">{{ form.urn.errors }}</span>
+                                <p class="form-hint datefield-hint" id="">On page 1 of the pack, in the top right
+                                    corner.</p>
+                                {#  Django handles the output of the URN field #}
+                                {{ form.urn }}
+                            </div>
+                        </div>
+                    </section>
 
-                                    <p class="form-hint datefield-hint" id="">On page 1 of the pack, near the top on the left.<br/>
-                                        For example, 01/04/2014 at 09:15am</p>
-                                    <span class="validation-message">{{ form.date_of_hearing.errors }}</span>
-                                    {{ form.date_of_hearing }}
-                                </div>
+                    <section>
+                        <a id="section_date_of_hearing" name="section_date_of_hearing"></a>
+                        <div class="section{% if form.date_of_hearing.errors %} error{% endif %}">
+                            <label for="{{ form.date_of_hearing.name }}">Court hearing date and time</label>
+                            <span class="validation-message">{{ form.date_of_hearing.errors }}</span>
+                            <p class="form-hint datefield-hint" id="">On page 1 of the pack, near the top on the left.<br/>
+                                For example, 01/04/2014 at 09:15am</p>
+                            {{ form.date_of_hearing }}
+                            <div class="clear"></div>
+                        </div>
+                    </section>
 
-                                <div class="group">
-                                	 <section id="charges">
-	                                    	<div id="enter-charges">
-	                                    	 <label for="{{ form.number_of_charges.name }}">Number of charges against you</label>
-		                                    <p class="form-hint datefield-hint" id="">On page 2 of the pack, in numbered boxes.</p>
-		                                    <span class="validation-message">{{ form.number_of_charges.errors }}</span>
-		                                    <select name="{{ form.number_of_charges.name }}" value="{{ form.number_of_charges.value|default_if_none:"" }}"
-		                                            id="{{ form.number_of_charges.name }}">
-		                                        <option value="">Please select…</option>
-		                                        {% for x in "oooooooooo" %}
-		                                            <option value="{{ forloop.counter }}" {% if form.number_of_charges.value == forloop.counter %}selected{% endif %}>
-		                                            {{ forloop.counter }}
-		                                            </option>
-		                                        {% endfor %}
-		                                    </select>
-		                                </div>
-		                                <div id="charge-loc"><img src="{% static "images/img-charge.png" %}" alt="Location of URN"></div>
-	                                </section>
-                                </div>
-
-                                <button class="button" type=submit>Continue</button>
-                            </fieldset>
-                        {% endwith %}
-                    </form>
-                </section>
-            </div>
-        <!-- </article> -->
+                    <div class="help-image">
+                        <img src="{% static "images/img-charge.png" %}" alt="Location of URN">
+                    </div>
+                    <section>
+                        <a id="section_number_of_charges" name="section_number_of_charges"></a>
+                        <div class="section with-help-image">
+                            <div id="enter-charges" class="section{% if form.number_of_charges.errors %} error{% endif %}">
+                                <label for="{{ form.number_of_charges.name }}">Number of charges against you</label>
+                                <span class="validation-message">{{ form.number_of_charges.errors }}</span>
+                                <p class="form-hint datefield-hint" id="">On page 2 of the pack, in numbered boxes.</p>
+                                {{ form.number_of_charges }}
+                            </div>
+                        </div>
+                    </section>
+                    <div class="actions">
+                        <button class="button" type=submit>Continue</button>
+                    </div>
+                {% endwith %}
+            </form>
+        </div>
     </div>
 
 {% endblock page_content %}

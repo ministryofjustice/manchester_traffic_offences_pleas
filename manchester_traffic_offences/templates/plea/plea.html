@@ -1,83 +1,122 @@
 {% extends "plea/base.html" %}
 
 {% block page_content %}
+    <header class="page-header group">
+        <hgroup>
+            <div><h1><span>Service</span>Make your plea online</h1></div>
+        </hgroup>
+    </header>
 
-<header class="page-header group">
-    <hgroup>
-        <div><h1><span>Service</span>Make your plea online</h1></div>
-    </hgroup>
-</header>
 {% with request.session.about.number_of_charges as charges %}
-<div class="article-container group">
-    <article role="article" class="group">
+    <div class="full-width group">
         <div class="inner">
-            <section>
-            <h2>Your plea{{ charges|pluralize }}</h2>
-                <form method=POST>
-                    {% csrf_token %}
-                    {% with forms.1 as formset %}
-                        {{ formset.management_form }}
-                        {% if formset|length > 1 %}
-                        {% for form in formset %}
-                            <label>Your plea for charge {{ forloop.counter }}</label>
-                            <fieldset class="inline charge-section">
-                                <div class="group">
-                                    {% for choice in form.guilty %}
-                                        <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
-                                            <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
-                                            {{ choice.choice_label }}
-                                        </label>
+            <form method=POST>
+                {% csrf_token %}
+                {% if formset_has_errors %}
+                    <section class="flash error-summary">
+                        <h2 id="error-heading">You need to fix the errors on this page before continuing.</h2>
+                        <p>See highlighted errors below.</p>
+                        <ul>
+                            {% with forms.1 as formset %}
+                                {% for form in formset %}
+                                    {% for field in form %}
+                                        {% if field.errors %}
+                                            <li><a class="error-link"
+                                                   href="#section_{{ field.name }}_{{ forloop.parentloop.counter }}">{{ field.errors|striptags }}</a></li>
+                                        {% endif %}
                                     {% endfor %}
+                                {% endfor %}
+                                {% for field in forms.0 %}
+                                    {% if field.errors %}
+                                        <li><a class="error-link"
+                                               href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endwith %}
+                        </ul>
+                    </section>
+                {% endif %}
+
+                <h2>Your plea{{ charges|pluralize }}</h2>
+
+                {% with forms.1 as formset %}
+                    {{ formset.management_form }}
+                    {% if formset|length > 1 %}
+                        {% for form in formset %}
+                            <section>
+                                <a id="section_guilty_{{ forloop.counter }}" name="section_guilty_{{ forloop.counter }}"></a>
+                                <div class="section{%  if form.guilty.errors %} error{% endif %}">
+                                    <label>Your plea for charge {{ forloop.counter }}</label>
                                     <span class="validation-message">{{ form.guilty.errors }}</span>
+                                    <fieldset class="inline">
+                                        {% for choice in form.guilty %}
+                                            <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
+                                                <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
+                                                {{ choice.choice_label }}
+                                            </label>
+                                        {% endfor %}
+                                    </fieldset>
+                                    <div class="clear"></div>
                                 </div>
 
-                                <div class="group">
+                                <a id="section_mitigations_{{ forloop.counter }}" name="section_mitigations_{{ forloop.counter }}"></a>
+                                <div class="section charges">
                                     <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances for charge {{ forloop.counter }} <span class="form-hint sc-hint">(optional)</span></label>
                                     <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
                                     <span class="validation-message">{{ form.mitigations.errors }}</span>
-                                    <textarea rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}">{{ form.mitigations.value|default_if_none:"" }}</textarea>
+                                    <textarea maxlength="5000" rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}">{{ form.mitigations.value|default_if_none:"" }}</textarea>
                                 </div>
-                            </fieldset>
+                            </section>
                         {% endfor %}
                         {% else %}
                         {% for form in formset %}
-                            <fieldset class="inline charge-section">
-                                <div class="group">
-                                    {% for choice in form.guilty %}
-                                        <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
-                                            <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
-                                            {{ choice.choice_label }}
-                                        </label>
-                                    {% endfor %}
+                            <section>
+                                <a id="section_guilty_{{ forloop.counter }}" name="section_guilty_{{ forloop.counter }}"></a>
+                                <div class="section{%  if form.guilty.errors %} error{% endif %}">
                                     <span class="validation-message">{{ form.guilty.errors }}</span>
+                                    <fieldset class="inline charge-section">
+                                        {% for choice in form.guilty %}
+                                            <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
+                                                <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
+                                                {{ choice.choice_label }}
+                                            </label>
+                                        {% endfor %}
+                                    </fieldset>
                                 </div>
 
-                                <div class="group">
+                                <a id="section_mitigations_{{ forloop.counter }}" name="section_mitigations_{{ forloop.counter }}"></a>
+                                <div class="section charges">
                                     <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint datefield-hint">(optional)</span></label>
                                     <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
                                     <span class="validation-message">{{ form.mitigations.errors }}</span>
-                                    <textarea rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}">{{ form.mitigations.value|default_if_none:"" }}</textarea>
+                                    <textarea maxlength="5000" rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}">{{ form.mitigations.value|default_if_none:"" }}</textarea>
                                 </div>
-                            </fieldset>
+                            </section>
                         {% endfor %}
-                        {% endif %}
-                    {% endwith %}
+                    {% endif %}
+                {% endwith %}
 
+                <div class="clear"></div>
+
+                <section>
                     {% with forms.0 as form %}
-                        <div class="group">
+                        <a id="section_understand" name="section_understand"></a>
+                        <div class="group{%  if form.understand.errors %} error{% endif %}">
+                            <span class="validation-message">{{ form.understand.errors }}</span>
                             <label for="{{ form.understand.id_for_label }}" class="block-label">
                                 <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" class="block-label" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
                                 <strong>I confirm</strong> that I have read and understand the charge{{ charges|pluralize }} against me.
                             </label>
-                            <span class="validation-message">{{ form.understand.errors }}</span>
                         </div>
                     {% endwith %}
+                </section>
+
+                <div class="actions">
                     <button class="button" type=submit>Continue</button>
-                </form>
-           </section>
+                </div>
+            </form>
         </div>
-    </article>
-</div>
+    </div>
 
 {% endwith %}
 {% endblock page_content %}
