@@ -50,7 +50,10 @@ class TestMultiPleaForms(TestCase):
     def test_about_stage_good_data(self):
         form = PleaOnlineForms("about", "plea_form_step", self.session)
         response = form.load(self.request_context)
-        response = form.save({"date_of_hearing": "2015-01-01",
+        response = form.save({"date_of_hearing_day": "01",
+                              "date_of_hearing_month": "01",
+                              "date_of_hearing_year": "2015",
+                              "date_of_hearing_time": "09:15",
                               "urn_0": "00",
                               "urn_1": "AA",
                               "urn_2": "0000000",
@@ -148,7 +151,10 @@ class TestMultiPleaForms(TestCase):
 
         form = PleaOnlineForms("about", "plea_form_step", fake_session)
         response = form.load(request_context)
-        response = form.save({"date_of_hearing": "2015-01-01",
+        response = form.save({"date_of_hearing_day": "01",
+                              "date_of_hearing_month": "01",
+                              "date_of_hearing_year": "2015",
+                              "date_of_hearing_time": "09:15",
                               "urn_0": "00",
                               "urn_1": "AA",
                               "urn_2": "0000000",
@@ -184,7 +190,7 @@ class TestMultiPleaForms(TestCase):
         form = PleaOnlineForms("complete", "plea_form_step", fake_session)
         response = form.load(request_context)
 
-        self.assertEqual(fake_session["about"]["date_of_hearing"], datetime.datetime(2015, 1, 1, 0, 0))
+        self.assertEqual(fake_session["about"]["date_of_hearing"], datetime.datetime(2015, 1, 1, 9, 15))
         self.assertEqual(fake_session["about"]["urn"], "00/AA/0000000/00")
         self.assertEqual(fake_session["about"]["name"], "Charlie Brown")
         self.assertEqual(fake_session["about"]["number_of_charges"], 1)
@@ -200,7 +206,10 @@ class TestMultiPleaForms(TestCase):
 
         form = PleaOnlineForms("about", "plea_form_step", fake_session)
         response = form.load(request_context)
-        response = form.save({"date_of_hearing": "2015-01-01",
+        response = form.save({"date_of_hearing_day": "01",
+                              "date_of_hearing_month": "01",
+                              "date_of_hearing_year": "2015",
+                              "date_of_hearing_time": "09:15",
                               "urn_0": "00",
                               "urn_1": "AA",
                               "urn_2": "0000000",
@@ -238,7 +247,7 @@ class TestMultiPleaForms(TestCase):
         form = PleaOnlineForms("complete", "plea_form_step", fake_session)
         response = form.load(request_context)
 
-        self.assertEqual(fake_session["about"]["date_of_hearing"], datetime.datetime(2015, 1, 1, 0, 0))
+        self.assertEqual(fake_session["about"]["date_of_hearing"], datetime.datetime(2015, 1, 1, 9, 15))
         self.assertEqual(fake_session["about"]["urn"], "00/AA/0000000/00")
         self.assertEqual(fake_session["about"]["name"], "Charlie Brown")
         self.assertEqual(fake_session["about"]["number_of_charges"], 2)
