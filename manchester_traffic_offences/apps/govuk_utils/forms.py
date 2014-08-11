@@ -25,6 +25,12 @@ class FormStage(object):
 
         return self.all_urls.values()[-1]
 
+    def check_dependencies(self):
+        for dependency in self.dependencies:
+            if not (self.all_data[dependency].get("complete", False) is True):
+                return False
+        return True
+
     def load_forms(self, data=None, initial=False):
         if initial:
             initial_data = self.all_data.get(self.name, None)
@@ -58,6 +64,7 @@ class FormStage(object):
 
         if all_valid:
             clean_data.update(self.save_forms())
+            clean_data["complete"] = True
             self.next = self.get_next(next)
 
         return clean_data
@@ -105,8 +112,10 @@ class MultiStageForm(object):
         self.storage_dict.update({key: val for (key, val) in self.all_data.items()})
 
     def load(self, request_context):
-        # TODO validate previous stages?
         self.current_stage = self.current_stage_class(self.urls, self.all_data)
+        if not self.current_stage.check_dependencies():
+            return HttpResponseRedirect(self.urls[self.stage_classes[0].name])
+
         self.current_stage.load()
         return self.current_stage.render(request_context)
 
