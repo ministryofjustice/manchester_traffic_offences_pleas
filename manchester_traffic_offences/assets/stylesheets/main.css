@@ -1637,6 +1637,10 @@ section#charges #charge-loc {
   width: 30%;
   margin: 1em 0; }
 
+.charge-radios {
+  overflow: auto;
+  margin-bottom: 1em; }
+
 section .info-notice {
   background: none;
   border-left: 10px #dee0e2 solid;
