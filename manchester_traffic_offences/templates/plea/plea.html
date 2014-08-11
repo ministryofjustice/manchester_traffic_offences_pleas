@@ -48,7 +48,7 @@
                                 <div class="section{%  if form.guilty.errors %} error{% endif %}">
                                     <label>Your plea for charge {{ forloop.counter }}</label>
                                     <span class="validation-message">{{ form.guilty.errors }}</span>
-                                    <fieldset class="inline">
+                                    <fieldset class="inline charge-radios">
                                         {% for choice in form.guilty %}
                                             <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
                                                 <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
@@ -56,7 +56,6 @@
                                             </label>
                                         {% endfor %}
                                     </fieldset>
-                                    <div class="clear"></div>
                                 </div>
 
                                 <a id="section_mitigations_{{ forloop.counter }}" name="section_mitigations_{{ forloop.counter }}"></a>
@@ -74,7 +73,7 @@
                                 <a id="section_guilty_{{ forloop.counter }}" name="section_guilty_{{ forloop.counter }}"></a>
                                 <div class="section{%  if form.guilty.errors %} error{% endif %}">
                                     <span class="validation-message">{{ form.guilty.errors }}</span>
-                                    <fieldset class="inline charge-section">
+                                    <fieldset class="inline charge-radios">
                                         {% for choice in form.guilty %}
                                             <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
                                                 <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
@@ -82,7 +81,6 @@
                                             </label>
                                         {% endfor %}
                                     </fieldset>
-                                    <div class="clear"></div>
                                 </div>
 
                                 <a id="section_mitigations_{{ forloop.counter }}" name="section_mitigations_{{ forloop.counter }}"></a>
