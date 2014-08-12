@@ -1637,6 +1637,10 @@ section#charges #charge-loc {
   width: 30%;
   margin: 1em 0; }
 
+.charge-radios {
+  overflow: auto;
+  margin-bottom: 1em; }
+
 section .info-notice {
   background: none;
   border-left: 10px #dee0e2 solid;
@@ -1685,7 +1689,8 @@ section.flash {
 div.error, section.error {
   border-left: 3px solid #e12d2d;
   margin: 10px -33px 10px -30px;
-  padding: 0 0 10px 30px; }
+  padding: 0 0 10px 30px;
+  overflow: auto; }
 
 table {
   clear: both;
