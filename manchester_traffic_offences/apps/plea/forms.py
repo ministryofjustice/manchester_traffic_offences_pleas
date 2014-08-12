@@ -237,12 +237,14 @@ class AboutStage(FormStage):
     name = "about"
     template = "plea/about.html"
     form_classes = [AboutForm, ]
+    dependencies = []
 
 
 class PleaStage(FormStage):
     name = "plea"
     template = "plea/plea.html"
     form_classes = [PleaInfoForm, PleaForm]
+    dependencies = ["about", ]
 
     def load_forms(self, data=None, initial=False):
         forms_wanted = self.all_data["about"].get("number_of_charges", 1)
@@ -292,6 +294,7 @@ class ReviewStage(FormStage):
     name = "review"
     template = "plea/review.html"
     form_classes = []
+    dependencies = ["about", "plea"]
 
     def save(self, form_data, next=None):
         response = super(ReviewStage, self).save(form_data)
@@ -312,12 +315,14 @@ class ReviewSendErrorStage(FormStage):
     name = "send_error"
     template = "plea/review_send_error.html"
     form_classes = []
+    dependencies = ["about", "plea"]
 
 
 class CompleteStage(FormStage):
     name = "complete"
     template = "plea/complete.html"
     form_classes = []
+    dependencies = ["about", "plea"]
 
     def render(self, request_context):
         for form_data in self.all_data["plea"]["PleaForms"]:
