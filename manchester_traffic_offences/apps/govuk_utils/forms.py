@@ -15,6 +15,9 @@ class FormStage(object):
         self.next = ""
         self.context = {}
 
+        if not hasattr(self, "dependencies"):
+            self.dependencies = []
+
     def get_next(self, next):
         if next:
             return next
