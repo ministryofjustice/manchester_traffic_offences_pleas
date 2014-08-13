@@ -23,10 +23,10 @@ DATABASES = {
 
 
 ALLOWED_HOSTS = ["makeaplea.dsd.io", ]
-EMAIL_HOST = os.environ['SENDGRID_EMAIL_HOST']
-EMAIL_PORT = os.environ['SENDGRID_EMAIL_PORT']
+EMAIL_HOST = os.environ.get('SENDGRID_EMAIL_HOST', '587')
+EMAIL_PORT = os.environ('SENDGRID_EMAIL_PORT', 'smtp.sendgrid.net')
 EMAIL_HOST_USER = os.environ['SENDGRID_EMAIL_HOST_USERNAME']
 EMAIL_HOST_PASSWORD = os.environ['SENDGRID_EMAIL_HOST_PASSWORD']
 
-PLEA_EMAIL_FROM = "makeaplea@digital.justice.gov.uk"
-PLEA_EMAIL_TO = ["makeaplea@digital.justice.gov.uk", ]
+PLEA_EMAIL_FROM = os.environ['PLEA_EMAIL_FROM']
+PLEA_EMAIL_TO = [os.environ['PLEA_EMAIL_TO'], ]
