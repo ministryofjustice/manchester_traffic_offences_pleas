@@ -1729,7 +1729,10 @@ table th.header {
     margin-right: auto; } }
 @media (max-width: 500px) {
   input#name {
-    width: 97%; } }
+    width: 97%; }
+
+  textarea {
+    width: 98%; } }
 .related-positioning {
   height: 0;
   left: 0;
