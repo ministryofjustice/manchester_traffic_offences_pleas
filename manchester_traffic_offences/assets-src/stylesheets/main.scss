@@ -82,15 +82,15 @@ label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.3
 .with-help-image {width:70%; float: left;}
 .help-image {width:30%; float: right; margin-top: 1.5em;}
 
-#enter-urn #id_urn_0 {width:5%; margin-left: 0; margin-right: 10px;}
-#enter-urn #id_urn_1, #enter-urn #id_urn_3 {width:5%; margin:0 10px;}
-#enter-urn #id_urn_2 {width:10%; margin:0 10px;}
+#enter-urn #id_urn_0 {width:25px; margin-left: 0; margin-right: 5px;}
+#enter-urn #id_urn_1, #enter-urn #id_urn_3 {width:25px; margin:0 5px;}
+#enter-urn #id_urn_2 {width:85px; margin:0 5px;}
 
 section#group-urn #number_of_charges {width:32%;}
 
-#id_date_of_hearing_month, #id_date_of_hearing_year, #id_date_of_hearing_hour, 
-#id_date_of_hearing_min {width:5%; margin:0 10px 0 10px;}
-#id_date_of_hearing_day {margin-left:0; margin-right: 10px; width: 5%;}
+#id_date_of_hearing_month, #id_date_of_hearing_hour, #id_date_of_hearing_min {width:25px; margin-right: 5px }
+#id_date_of_hearing_year { width: 50px; }
+#id_date_of_hearing_day {margin-left:0; margin-right: 5px; width: 25px;}
 .group label.datetime {font-size: 1em;}
 
 section#group-urn #id_understand_checkbox {font-weight:normal; margin-right: 0px; font-size: 1em;}
@@ -178,6 +178,15 @@ table th.header {font-size: 1.2em;}
 #before-you-start {margin-top:2em;}
 #before-you-start h2 {font-size:1.2em; font-weight:bold;}
 
+@media (max-width: 700px ) {
+  .related-positioning, .help-image { display: none }
+  .article-container { margin-right: auto }
+}
+@media (max-width: 500px ) {
+  input#name { width: 97% }
+}
+
+
 .related-positioning { height: 0; left: 0; position: absolute; top: 9.5em; width: 100%; z-index: 0;}
 .related-positioning .related-container { position: relative; height: 0; margin: 0 auto; max-width: 1020px; z-index: 50;}
 .related {position: absolute; right: 1.75em; margin: 3em 0 0 0; width: 15.75em; /*border-top: 10px solid #d53880;*/}
@@ -188,8 +197,8 @@ table th.header {font-size: 1.2em;}
 label[for=id_understand] {font-weight: normal; font-size: 1em; white-space: nowrap;}
 label[for=id_understand] strong {font-weight: bold;}
 label.datetime {font-weight:normal; display:inline-block;}
-label.datetime-day {width:4.5em;}
-label.datetime-month {width:4.75em;}
+label.datetime-day {width:2.4em;}
+label.datetime-month {width:3.5em;}
 label.datetime-year {width:3.75em;}
 label.datetime-time {display:block; margin:0;}
 
