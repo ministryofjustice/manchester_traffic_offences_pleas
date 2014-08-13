@@ -38,10 +38,10 @@ class FormStage(object):
         if initial:
             initial_data = self.all_data.get(self.name, None)
             for form_class in self.form_classes:
-                self.forms.append(form_class(initial=initial_data))
+                self.forms.append(form_class(initial=initial_data, label_suffix=""))
             return
 
-        self.forms = [form(data) for form in self.form_classes]
+        self.forms = [form(data, label_suffix="") for form in self.form_classes]
 
     def save_forms(self):
         form_data = {}
@@ -116,8 +116,8 @@ class MultiStageForm(object):
 
     def load(self, request_context):
         self.current_stage = self.current_stage_class(self.urls, self.all_data)
-        if not self.current_stage.check_dependencies():
-            return HttpResponseRedirect(self.urls[self.stage_classes[0].name])
+        #if not self.current_stage.check_dependencies():
+        #    return HttpResponseRedirect(self.urls[self.stage_classes[0].name])
 
         self.current_stage.load()
         return self.current_stage.render(request_context)

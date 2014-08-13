@@ -22,13 +22,15 @@ from email import send_plea_email
 
 
 ERROR_MESSAGES = {
-    "FULL_NAME_REQUIRED": "Full name cannot be blank",
     "URN_REQUIRED": "Unique reference number (URN) cannot be blank",
     "URN_INVALID": "Unique reference number (URN) is invalid URN. Please enter the URN exactly as it appears on page 1 of the pack",
     "HEARING_DATE_REQUIRED": "Court hearing date cannot be blank",
     "HEARING_DATE_INVALID": "Court hearing date is invalid date and/or time",
     "HEARING_DATE_PASSED": "Court hearing date cannot be before the current date",
     "NUMBER_OF_CHARGES_REQUIRED": "Number of charges against you must be selected",
+    "FULL_NAME_REQUIRED": "Full name cannot be blank",
+    "EMAIL_ADDRESS_REQUIRED": "Email address cannot be blank",
+    "CONTACT_NUMBER_REQUIRED": "Contact number cannot be blank",
     "PLEA_REQUIRED": "Your plea must be selected",
     "UNDERSTAND_REQUIRED": "I confirm that I have read and understand the charges against me must be selected"
 }
@@ -197,22 +199,41 @@ class URNField(forms.MultiValueField):
 
 
 class BasePleaStepForm(forms.Form):
-    """
-    Note that names in these forms can't be the same, otherwise they will get
-    merged in to the last value used.
-    """
     pass
 
 
-class AboutForm(BasePleaStepForm):
-    name = forms.CharField(max_length=100, required=True,
-                           error_messages={"required": ERROR_MESSAGES["FULL_NAME_REQUIRED"]})
-    urn = URNField(required=True, error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]})
-    date_of_hearing = forms.DateTimeField(widget=HearingDateTimeWidget(), error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"],
-                                                                                          "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
+class CaseForm(BasePleaStepForm):
+    urn = URNField(required=True, help_text="On page 1 of the pack, in the top right corner",
+                   error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]})
+    date_of_hearing = forms.DateTimeField(widget=HearingDateTimeWidget(),
+                                          help_text="On page 1 of the pack, near the top on the left<br>For example, 30/07/2014",
+                                          error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"],
+                                                          "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
     number_of_charges = forms.IntegerField(
         widget=forms.Select(choices=[("", "Please select ...")] + [(i, i) for i in range(1, 21)]),
+        help_text="On page 2 of the pack, in numbered boxes.<br>For example 1",
         error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]})
+
+
+class YourDetailsForm(BasePleaStepForm):
+    name = forms.CharField(max_length=100, required=True, label="Full name",
+                           help_text="On page 1 of the pack we sent you",
+                           error_messages={"required": ERROR_MESSAGES["FULL_NAME_REQUIRED"]})
+    contact_number = forms.CharField(max_length=30, required=True, label="Contact number",
+                                     help_text="Home or mobile number.",
+                                     error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"]})
+    email = forms.EmailField(required=True, label="Email", help_text="",
+                             error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"]})
+
+    national_insurance_number = forms.CharField(max_length=20, label="National Insurance number",
+                                                help_text="It's on your National Insurance card, benefit letter, payslip or P60<br>For example, 'QQ 12 34 56 C'.",
+                                                required=False)
+    driving_licence_number = forms.CharField(max_length=20, label="UK driving licence number",
+                                             help_text="Starts with the first five letters from your last name",
+                                             required=False)
+    registration_number = forms.CharField(max_length=10, label="Registration number",
+                                          help_text="Of the vehicle you were driving when charged.",
+                                          required=False)
 
 
 class PleaInfoForm(BasePleaStepForm):
@@ -233,10 +254,17 @@ class PleaForm(BasePleaStepForm):
 
 ###### Form stage classes #######
 
-class AboutStage(FormStage):
-    name = "about"
+class CaseStage(FormStage):
+    name = "case"
+    template = "plea/case.html"
+    form_classes = [CaseForm, ]
+    dependencies = []
+
+
+class YourDetailsStage(FormStage):
+    name = "your_details"
     template = "plea/about.html"
-    form_classes = [AboutForm, ]
+    form_classes = [YourDetailsForm]
     dependencies = []
 
 
@@ -244,10 +272,10 @@ class PleaStage(FormStage):
     name = "plea"
     template = "plea/plea.html"
     form_classes = [PleaInfoForm, PleaForm]
-    dependencies = ["about", ]
+    dependencies = []
 
     def load_forms(self, data=None, initial=False):
-        forms_wanted = self.all_data["about"].get("number_of_charges", 1)
+        forms_wanted = self.all_data["case"].get("number_of_charges", 1)
         extra_forms = 0
         # truncate forms data if the count has changed
         if "PleaForms" in self.all_data["plea"]:
@@ -294,7 +322,7 @@ class ReviewStage(FormStage):
     name = "review"
     template = "plea/review.html"
     form_classes = []
-    dependencies = ["about", "plea"]
+    dependencies = []
 
     def save(self, form_data, next=None):
         response = super(ReviewStage, self).save(form_data)
@@ -315,14 +343,14 @@ class ReviewSendErrorStage(FormStage):
     name = "send_error"
     template = "plea/review_send_error.html"
     form_classes = []
-    dependencies = ["about", "plea"]
+    dependencies = []
 
 
 class CompleteStage(FormStage):
     name = "complete"
     template = "plea/complete.html"
     form_classes = []
-    dependencies = ["about", "plea"]
+    dependencies = []
 
     def render(self, request_context):
         for form_data in self.all_data["plea"]["PleaForms"]:
@@ -333,7 +361,8 @@ class CompleteStage(FormStage):
 
 
 class PleaOnlineForms(MultiStageForm):
-    stage_classes = [AboutStage,
+    stage_classes = [CaseStage,
+                     YourDetailsStage,
                      PleaStage,
                      ReviewStage,
                      ReviewSendErrorStage,

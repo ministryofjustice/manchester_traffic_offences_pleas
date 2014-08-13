@@ -1,0 +1,82 @@
+{% extends "plea/base.html" %}
+{% load staticfiles %}
+{% block page_content %}
+    <header class="page-header group">
+        <hgroup>
+            <div><h1><span>Service</span>Make your plea online</h1></div>
+        </hgroup>
+    </header>
+
+    <div class="full-width group">
+        <div class="inner">
+            <form method=POST class="pleaform">
+                {% csrf_token %}
+                {% with forms.0 as form %}
+                    {% if form.errors %}
+                        <section class="flash error-summary">
+                            <h2 id="error-heading">You need to fix the errors on this page before continuing.</h2>
+                            <p>See highlighted errors below.</p>
+                            <ul>
+                                {% for field in form %}
+                                    {% if field.errors %}
+                                        <li><a class="error-link"
+                                               href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </section>
+                    {% endif %}
+
+                    <h2 id="your-details">Case details</h2>
+
+                    <div class="help-image">
+                        <img src="{% static "images/img-urn.png" %}" alt="Location of URN">
+                    </div>
+                    <section>
+                        <div class="section">
+                            <a id="section_urn" name="section_urn"></a>
+                            <div id="enter-urn" class="section{% if form.urn.errors %} error{% endif %}">
+                                <label for="{{ form.urn.name }}">Unique reference number (URN)</label>
+                                <span class="validation-message">{{ form.urn.errors }}</span>
+                                <p class="form-hint datefield-hint" id="">On page 1 of the pack, in the top right
+                                    corner.</p>
+                                {#  Django handles the output of the URN field #}
+                                {{ form.urn }}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <a id="section_date_of_hearing" name="section_date_of_hearing"></a>
+                        <div class="section{% if form.date_of_hearing.errors %} error{% endif %}">
+                            <label for="{{ form.date_of_hearing.name }}">Court hearing date and time</label>
+                            <span class="validation-message">{{ form.date_of_hearing.errors }}</span>
+                            <p class="form-hint datefield-hint" id="">On page 1 of the pack, near the top on the left.<br/>
+                                For example, 30/07/2014 at 09:15am</p>
+                            {{ form.date_of_hearing }}
+                        </div>
+                    </section>
+
+                    <div class="help-image">
+                        <img src="{% static "images/img-charge.png" %}" alt="Location of URN">
+                    </div>
+                    <section>
+                        <a id="section_number_of_charges" name="section_number_of_charges"></a>
+                        <div class="section with-help-image">
+                            <div id="enter-charges" class="section{% if form.number_of_charges.errors %} error{% endif %}">
+                                <label for="{{ form.number_of_charges.name }}">Number of charges against you</label>
+                                <span class="validation-message">{{ form.number_of_charges.errors }}</span>
+                                <p class="form-hint datefield-hint" id="">On page 2 of the pack, in numbered boxes.</p>
+                                {{ form.number_of_charges }}
+                            </div>
+                        </div>
+                    </section>
+                    <div class="actions">
+                        <button class="button" type=submit>Continue</button>
+                    </div>
+                {% endwith %}
+            </form>
+        </div>
+    </div>
+
+{% endblock page_content %}
