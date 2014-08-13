@@ -178,6 +178,12 @@ table th.header {font-size: 1.2em;}
 #before-you-start {margin-top:2em;}
 #before-you-start h2 {font-size:1.2em; font-weight:bold;}
 
+@media (max-width: 700px ) {
+  .related-positioning { display: none }
+  .article-container { margin-right: auto }
+}
+
+
 .related-positioning { height: 0; left: 0; position: absolute; top: 9.5em; width: 100%; z-index: 0;}
 .related-positioning .related-container { position: relative; height: 0; margin: 0 auto; max-width: 1020px; z-index: 50;}
 .related {position: absolute; right: 1.75em; margin: 3em 0 0 0; width: 15.75em; /*border-top: 10px solid #d53880;*/}
