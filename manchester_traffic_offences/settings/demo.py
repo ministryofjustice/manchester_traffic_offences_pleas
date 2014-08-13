@@ -24,7 +24,7 @@ DATABASES = {
 
 ALLOWED_HOSTS = ["makeaplea.dsd.io", ]
 EMAIL_HOST = os.environ.get('SENDGRID_EMAIL_HOST', '587')
-EMAIL_PORT = os.environ('SENDGRID_EMAIL_PORT', 'smtp.sendgrid.net')
+EMAIL_PORT = os.environ.get('SENDGRID_EMAIL_PORT', 'smtp.sendgrid.net')
 EMAIL_HOST_USER = os.environ['SENDGRID_EMAIL_HOST_USERNAME']
 EMAIL_HOST_PASSWORD = os.environ['SENDGRID_EMAIL_HOST_PASSWORD']
 
