@@ -57,7 +57,7 @@ class CourtEmailCount(models.Model):
             return
         if not "PleaForms" in context["plea"]:
             return
-        if not "about" in context:
+        if not "your_details" in context:
             return
         if not "case" in context:
             return
