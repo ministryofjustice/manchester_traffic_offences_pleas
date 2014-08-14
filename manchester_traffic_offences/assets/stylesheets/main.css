@@ -1540,6 +1540,13 @@ label {
   font-weight: normal;
   margin-top: 0.5em; }
 
+.block-label input {
+  position: static;
+  margin-right: 0.5em; }
+
+.block-label {
+  padding-left: 1em; }
+
 .group label {
   font-weight: bold;
   font-size: 1.3em;
@@ -1750,7 +1757,10 @@ table th.header {
     margin-right: auto; } }
 @media (max-width: 500px) {
   input#name {
-    width: 97%; } }
+    width: 97%; }
+
+  textarea {
+    width: 98%; } }
 .related-positioning {
   height: 0;
   left: 0;
@@ -1793,8 +1803,7 @@ h2 span.form-hint {
 
 label[for=id_understand] {
   font-weight: normal;
-  font-size: 1em;
-  white-space: nowrap; }
+  font-size: 1em; }
 
 label[for=id_understand] strong {
   font-weight: bold; }
