@@ -23,16 +23,16 @@ from email import send_plea_email
 
 ERROR_MESSAGES = {
     "URN_REQUIRED": "You must enter your unique reference number (URN)",
-    "URN_INVALID": "The unique reference number (URN) isn’t valid. Enter the number exactly as it appears on page 1 of the pack",
+    "URN_INVALID": "The unique reference number (URN) isn't valid. Enter the number exactly as it appears on page 1 of the pack",
     "HEARING_DATE_REQUIRED": "You must provide the court hearing date ",
     "HEARING_DATE_INVALID": "The court hearing date and/or time isn't a valid format",
     "HEARING_DATE_PASSED": "The court hearing date must be after today",
     "NUMBER_OF_CHARGES_REQUIRED": "You must select the number of charges against you",
     "FULL_NAME_REQUIRED": "Please enter your full name",
     "EMAIL_ADDRESS_REQUIRED": "You must provide an email address",
-    "EMAIL_ADDRESS_INVALUD": "Email address isn’t a valid format",
+    "EMAIL_ADDRESS_INVALID": "Email address isn't a valid format",
     "CONTACT_NUMBER_REQUIRED": "You must provide a contact number",
-    "CONTACT_NUMBER_INVALID": "The contact number isn’t a valid format",
+    "CONTACT_NUMBER_INVALID": "The contact number isn't a valid format",
     "PLEA_REQUIRED": "Your plea must be selected",
     "UNDERSTAND_REQUIRED": "You must tick the box to confirm the legal statements"
 }
@@ -223,9 +223,11 @@ class YourDetailsForm(BasePleaStepForm):
                            error_messages={"required": ERROR_MESSAGES["FULL_NAME_REQUIRED"]})
     contact_number = forms.CharField(max_length=30, required=True, label="Contact number",
                                      help_text="Home or mobile number.",
-                                     error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"]})
+                                     error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"],
+                                                     "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
     email = forms.EmailField(required=True, label="Email", help_text="",
-                             error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"]})
+                             error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
+                                             "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
     national_insurance_number = forms.CharField(max_length=20, label="National Insurance number",
                                                 help_text="It's on your National Insurance card, benefit letter, payslip or P60<br>For example, 'QQ 12 34 56 C'.",
