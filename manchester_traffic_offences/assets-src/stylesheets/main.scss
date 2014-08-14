@@ -224,7 +224,7 @@ table th.header {font-size: 1.2em;}
   .article-container { margin-right: auto }
 }
 @media (max-width: 500px ) {
-  input#name { width: 97% }
+  #id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number { width: 97% }
   textarea { width: 98% }
 }
 
