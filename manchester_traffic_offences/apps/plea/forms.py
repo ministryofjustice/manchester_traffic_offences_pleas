@@ -265,14 +265,14 @@ class YourDetailsStage(FormStage):
     name = "your_details"
     template = "plea/about.html"
     form_classes = [YourDetailsForm]
-    dependencies = []
+    dependencies = ["case"]
 
 
 class PleaStage(FormStage):
     name = "plea"
     template = "plea/plea.html"
     form_classes = [PleaInfoForm, PleaForm]
-    dependencies = []
+    dependencies = ["case", "your_details"]
 
     def load_forms(self, data=None, initial=False):
         forms_wanted = self.all_data["case"].get("number_of_charges", 1)
@@ -322,35 +322,34 @@ class ReviewStage(FormStage):
     name = "review"
     template = "plea/review.html"
     form_classes = []
-    dependencies = []
+    dependencies = ["case", "your_details", "plea"]
 
-    def save(self, form_data, next=None):
-        response = super(ReviewStage, self).save(form_data)
+    def save(self, form_data, next_step=None):
+        clean_data = super(ReviewStage, self).save(form_data, next_step)
 
         email_result = send_plea_email(self.all_data)
         if email_result:
             next_step = reverse_lazy("plea_form_step", args=("complete", ))
-
         else:
             next_step = reverse_lazy(
                 'plea_form_step', args=('review_send_error', ))
 
-        self.next = next_step
-        return form_data
+        self.next_step = next_step
+        return clean_data
 
 
 class ReviewSendErrorStage(FormStage):
     name = "send_error"
     template = "plea/review_send_error.html"
     form_classes = []
-    dependencies = []
+    dependencies = ["case", "your_details", "plea"]
 
 
 class CompleteStage(FormStage):
     name = "complete"
     template = "plea/complete.html"
     form_classes = []
-    dependencies = []
+    dependencies = ["case", "your_details", "plea", "review"]
 
     def render(self, request_context):
         request_context["some_not_guilty"] = False
