@@ -12,15 +12,15 @@ class FormStage(object):
         self.all_urls = all_urls
         self.all_data = all_data or {}
         self.forms = []
-        self.next = ""
+        self.next_step = ""
         self.context = {}
 
         if not hasattr(self, "dependencies"):
             self.dependencies = []
 
-    def get_next(self, next):
-        if next:
-            return next
+    def get_next(self, next_step):
+        if next_step:
+            return next_step
 
         current = self.all_urls.keys().index(self.name)
         if current <= len(self.all_urls.keys()):
@@ -53,7 +53,7 @@ class FormStage(object):
     def load(self):
         self.load_forms(initial=True)
 
-    def save(self, form_data, next=None):
+    def save(self, form_data, next_step=None):
         all_valid = True
         clean_data = {}
 
@@ -68,13 +68,13 @@ class FormStage(object):
         if all_valid:
             clean_data.update(self.save_forms())
             clean_data["complete"] = True
-            self.next = self.get_next(next)
+            self.next_step = self.get_next(next_step)
 
         return clean_data
 
     def render(self, request_context):
-        if self.next:
-            return HttpResponseRedirect(self.next)
+        if self.next_step:
+            return HttpResponseRedirect(self.next_step)
         else:
             context = self.context
             context.update({k: v for (k, v) in self.all_data.items()})
@@ -116,21 +116,21 @@ class MultiStageForm(object):
 
     def load(self, request_context):
         self.current_stage = self.current_stage_class(self.urls, self.all_data)
-        #if not self.current_stage.check_dependencies():
-        #    return HttpResponseRedirect(self.urls[self.stage_classes[0].name])
+        if not self.current_stage.check_dependencies():
+            return HttpResponseRedirect(self.urls[self.stage_classes[0].name])
 
         self.current_stage.load()
         return self.current_stage.render(request_context)
 
-    def save(self, form_data, request_context, next=None):
+    def save(self, form_data, request_context, next_step=None):
         next_url = None
-        if next:
-            next_url = reverse(self.url_name, args=(next, ))
+        if next_step:
+            next_url = reverse(self.url_name, args=(next_step, ))
 
         self.current_stage = self.current_stage_class(self.urls, self.all_data)
         if self.current_stage.name not in self.all_data:
             self.all_data[self.current_stage.name] = {}
-        self.all_data[self.current_stage.name].update(self.current_stage.save(form_data, next=next_url))
+        self.all_data[self.current_stage.name].update(self.current_stage.save(form_data, next_step=next_url))
         self.save_to_storage()
         return self.current_stage.render(request_context)
 
