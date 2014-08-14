@@ -1694,6 +1694,27 @@ div.error, section.error {
   padding: 0 0 10px 30px;
   overflow: auto; }
 
+#complete ol {
+  padding: 0;
+  counter-reset: item; }
+#complete ol > li {
+  padding-bottom: 1em;
+  list-style-type: none;
+  counter-increment: item; }
+#complete ol > li:before {
+  font-weight: bold;
+  padding-right: 0.5em;
+  display: inline-block;
+  width: 0.7em;
+  content: counter(item) "."; }
+#complete address {
+  font-style: normal;
+  border-left: solid 10px #bfc1c3;
+  margin: 0.5em 0;
+  padding: 1em; }
+  #complete address p {
+    margin: 0.5em 0; }
+
 table {
   clear: both;
   margin: 2em 0; }
