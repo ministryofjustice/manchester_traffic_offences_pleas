@@ -1540,6 +1540,13 @@ label {
   font-weight: normal;
   margin-top: 0.5em; }
 
+.block-label input {
+  position: static;
+  margin-right: 0.5em; }
+
+.block-label {
+  padding-left: 1em; }
+
 .group label {
   font-weight: bold;
   font-size: 1.3em;
@@ -1770,8 +1777,7 @@ table th.header {
 
 label[for=id_understand] {
   font-weight: normal;
-  font-size: 1em;
-  white-space: nowrap; }
+  font-size: 1em; }
 
 label[for=id_understand] strong {
   font-weight: bold; }
