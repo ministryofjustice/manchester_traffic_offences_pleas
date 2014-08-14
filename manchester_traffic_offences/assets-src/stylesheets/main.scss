@@ -169,6 +169,35 @@ div.error, section.error {
   overflow: auto;
 }
 
+#complete {
+  ol {
+    padding: 0;
+    counter-reset: item;
+  }
+
+  ol > li {
+    padding-bottom: 1em;
+    list-style-type: none;
+    counter-increment: item;
+  }
+
+  ol > li:before {
+    font-weight: bold;
+    padding-right: 0.5em;
+    display:inline-block;
+    width: 0.7em;
+    content: counter(item) ".";
+  }
+
+  address {
+    font-style: normal;
+    border-left: solid 10px $grey-2;
+    margin: 0.5em 0;
+    padding: 1em;
+
+    p {margin:0.5em 0;}
+  }
+}
 
 table {clear:both;margin: 2em 0;}
 table tr, table td, table th {padding:8px; font-size:1em;width:45%;}
