@@ -1755,7 +1755,7 @@ table th.header {
   .article-container {
     margin-right: auto; } }
 @media (max-width: 500px) {
-  input#name {
+  #id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number {
     width: 97%; }
 
   textarea {
