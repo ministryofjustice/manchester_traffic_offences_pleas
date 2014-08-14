@@ -14,7 +14,6 @@ def send_plea_email(context_data, plea_email_to=settings.PLEA_EMAIL_TO):
 
     context_data: dict populated by form fields
     """
-    import ipdb; ipdb.set_trace()
     plea_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
                                          settings.PLEA_EMAIL_ATTACHMENT_NAME,
                                          settings.PLEA_EMAIL_TEMPLATE,

@@ -14,10 +14,10 @@ from ..models import CourtEmailPlea, CourtEmailCount
 class EmailAuditTests(unittest.TestCase):
     def setUp(self):
         self.context_data = {
-            'about': {u'urn': u'00/AA/0000000/00',
+            'case': {u'urn': u'00/AA/0000000/00',
                       u'date_of_hearing': datetime.datetime(2015, 1, 1, 0, 0),
-                      u'number_of_charges': 2,
-                      u'name': u'maverick cobain'},
+                      u'number_of_charges': 2},
+            'your_details': {u'name': u'maverick cobain'},
             'complete': {},
             'review': {u'csrfmiddlewaretoken': [u'z6Pz8e3M1rX2c31M0YpZtGnIv1V74ml7']},
             'send_error': {},
