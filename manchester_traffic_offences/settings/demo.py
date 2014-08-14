@@ -21,6 +21,13 @@ DATABASES = {
     }
 }
 
+ADMINS = (
+    ('Sym Roe', 'sym.roe@digital.justice.gov.uk'),
+    ('Ian George', 'ian.george@digital.justice.gov.uk'),
+)
+
+MANAGERS = ADMINS
+
 
 ALLOWED_HOSTS = ["makeaplea.dsd.io", ]
 EMAIL_HOST = os.environ.get('SENDGRID_EMAIL_HOST', '587')
