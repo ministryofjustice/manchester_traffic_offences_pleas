@@ -102,10 +102,12 @@
                             {% endif %}
                         </td>
                     </tr>
+                    {% if plea.mitigations %}
                     <tr>
                         <th class="label">Special circumstances</th>
                         <td>{{ plea.mitigations|linebreaks }}</td>
                     </tr>
+                    {% endif %}
                 {% endfor %}
                 </tbody>
             </table>
