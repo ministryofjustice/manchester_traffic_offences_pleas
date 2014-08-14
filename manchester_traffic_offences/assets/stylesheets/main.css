@@ -399,14 +399,6 @@ blockquote {
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-.example-highlight-grid .grid-wrapper {
-  background: #bfc1c3; }
-.example-highlight-grid .grid {
-  background: #f8f8f8; }
-.example-highlight-grid .is-inner-block-highlight {
-  background: #dee0e2;
-  width: 100%; }
-
 .example-back-link {
   display: -moz-inline-stack;
   display: inline-block;
