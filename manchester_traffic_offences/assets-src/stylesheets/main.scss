@@ -77,6 +77,8 @@ $errorbgcolour: #faebec;
 }
 label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.31579; font-weight: 400; text-transform: none; display: block;}
 .inline .block-label {font-weight:normal; margin-top: 0.5em;}
+.block-label input { position: static; margin-right: .5em }
+.block-label { padding-left: 1em }
 
 .group label {font-weight:bold; font-size: 1.3em; margin: 1em 0 0.5em;}
 .with-help-image {width:70%; float: left;}
@@ -213,6 +215,7 @@ table th.header {font-size: 1.2em;}
 }
 @media (max-width: 500px ) {
   input#name { width: 97% }
+  textarea { width: 98% }
 }
 
 
@@ -224,7 +227,7 @@ table th.header {font-size: 1.2em;}
 
 .charges .form-hint {display:inline; font-weight: normal;}
 h2 span.form-hint {display: inline; font-weight: normal; font-size: 0.7em;}
-label[for=id_understand] {font-weight: normal; font-size: 1em; white-space: nowrap;}
+label[for=id_understand] {font-weight: normal; font-size: 1em; }
 label[for=id_understand] strong {font-weight: bold;}
 label.datetime {font-weight:normal; display:inline-block;}
 label.datetime-day {width:2.4em;}
