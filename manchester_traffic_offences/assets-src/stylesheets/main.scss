@@ -201,6 +201,16 @@ div.error, section.error {
   }
 }
 
+#review {
+  .important {
+    background:url(../images/icons/icon-important.png) no-repeat top left;
+    padding-top: 0.3em;
+    padding-left: 40px;
+    height:34px;
+    margin: 1em 0;
+  }
+}
+
 table {clear:both;margin: 2em 0;}
 table tr, table td, table th {padding:8px; font-size:1em;width:45%;}
 table th a.review {font-weight:normal; float: right;}
