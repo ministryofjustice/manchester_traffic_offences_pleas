@@ -1,4 +1,5 @@
 {% extends "plea/base.html" %}
+{% load date %}
 
 {% block page_content %}
 <header class="page-header group">
@@ -7,73 +8,112 @@
     </hgroup>
 </header>
 <div class="inner" id="complete">
-            <form method=POST>
-                {% csrf_token %}
-                {{ wizard.management_form }}
-                <h2>Confirm your plea{{ about.number_of_charges|pluralize }}</h2>
-                <p>Review the information you’ve given before making your plea{{ about.number_of_charges|pluralize }}.</p>
-            <div class="indent">
-                <table id="your-details">
-                    <thead>
-                        <tr>
-                            <th class="header">Your details</th>
-                            <th><a href="{% url "plea_form_step" "about" %}" class="review">Change your details</a></th>
-                        </tr>
-                    </thead>
-                        <tbody>
-                            <tr>
-                                <th class="label">Full name</th>
-                                <td>{{ about.name }}</td>
-                            </tr>
-                            <tr>
-                                <th class="label">Unique reference number</th>
-                                <td>{{ about.urn }}</td>
-                            </tr>
-                            <tr>
-                                <th class="label">Court hearing date and time</th>
-                                <td>{{ about.date_of_hearing }}</td>
-                            </tr>
-                            <tr>
-                                <th class="label">Number of charges against you</th>
-                                <td>{{ about.number_of_charges }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
+    <form method=POST>
+        {% csrf_token %}
+        {{ wizard.management_form }}
+        <h2>Confirm your plea{{ case.number_of_charges|pluralize }}</h2>
+        <p>Review the information you’ve given before making your plea{{ case.number_of_charges|pluralize }}.</p>
+        <div class="indent">
+            <table id="case-details">
+                <thead>
+                <tr>
+                    <th class="header">Case details</th>
+                    <th><a href="{% url "plea_form_step" "case" %}" class="review">Change your details</a></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th class="label">Unique reference number</th>
+                    <td>{{ case.urn }}</td>
+                </tr>
+                <tr>
+                    <th class="label">Court hearing date and time</th>
+                    <td>{{ case.date_of_hearing|string_date }}</td>
+                </tr>
+                <tr>
+                    <th class="label">Number of charges against you</th>
+                    <td>{{ case.number_of_charges }}</td>
+                </tr>
+                </tbody>
+            </table>
 
-                        <table id="your-plea">
-                            <thead>
-                            <tr>
-                                <th class="header">Your plea{{ about.number_of_charges|pluralize }}</th>
-                                <th><a href="{% url "plea_form_step" "plea" %}" class="review">Change your plea{{ about.number_of_charges|pluralize }}</a></th>
-                            </tr>
-                            </thead>
-                                <tbody>
-                                {% for plea in plea.PleaForms %}
-                                    {% if about.number_of_charges > 1 %}
-                                    <tr>
-                                        <td colspan="2"><h3>Charge {{ forloop.counter }}</h3></td>
-                                    </tr>
-                                    {% endif %}
-                                    <tr>
-                                        <th class="label">Your plea</th>
-                                        <td>
-                                            {% if plea.guilty == "guilty" %}
-                                            Guilty
-                                            {% elif plea.guilty == "not_guilty" %}
-                                            Not guilty
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="label">Special circumstances</th>
-                                        <td>{{ plea.mitigations|linebreaks }}</td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                         </table>
-                <div class="statement-understand">I have read and understand the charge{{ about.number_of_charges|pluralize }} against me.</div>
-                <button type="submit" class="button primary large left">Make your plea{{ about.number_of_charges|pluralize }}</button>
-            </div>
-            </form>
+            <table id="your-details">
+                <thead>
+                <tr>
+                    <th class="header">Your details</th>
+                    <th><a href="{% url "plea_form_step" "your_details" %}" class="review">Change your details</a></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th class="label">Full name</th>
+                    <td>{{ your_details.name }}</td>
+                </tr>
+                <tr>
+                    <th class="label">Contact number</th>
+                    <td>{{ your_details.contact_number }}</td>
+                </tr>
+                <tr>
+                    <th class="label">Email</th>
+                    <td>{{ your_details.email }}</td>
+                </tr>
+                {% if your_details.national_insurance_number %}
+                    <tr>
+                        <th class="label">National Insurance number</th>
+                        <td>{{ your_details.national_insurance_number }}</td>
+                    </tr>
+                {% endif %}
+                {% if your_details.driving_licence_number %}
+                    <tr>
+                        <th class="label">UK driving licence number</th>
+                        <td>{{ your_details.driving_licence_number }}</td>
+                    </tr>
+                {% endif %}
+                {% if your_details.registration_number %}
+                    <tr>
+                        <th class="label">Registration number</th>
+                        <td>{{ your_details.registration_number }}</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+
+            <table id="your-plea">
+                <thead>
+                <tr>
+                    <th class="header">Your plea{{ case.number_of_charges|pluralize }}</th>
+                    <th><a href="{% url "plea_form_step" "plea" %}" class="review">Change your plea{{ case.number_of_charges|pluralize }}</a></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for plea in plea.PleaForms %}
+                    {% if case.number_of_charges > 1 %}
+                        <tr>
+                            <td colspan="2"><h3>Charge {{ forloop.counter }}</h3></td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <th class="label">Your plea</th>
+                        <td>
+                            {% if plea.guilty == "guilty" %}
+                                Guilty
+                            {% elif plea.guilty == "not_guilty" %}
+                                Not guilty
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% if plea.mitigations %}
+                    <tr>
+                        <th class="label">Special circumstances</th>
+                        <td>{{ plea.mitigations|linebreaks }}</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="statement-understand">I have read and understand the charge{{ case.number_of_charges|pluralize }} against me.</div>
+            <button type="submit" class="button primary large left">Make your plea{{ case.number_of_charges|pluralize }}</button>
         </div>
+    </form>
+</div>
 {% endblock page_content %}
