@@ -326,8 +326,14 @@ class CompleteStage(FormStage):
 
     def render(self, request_context):
         for form_data in self.all_data["plea"]["PleaForms"]:
-            if form_data["guilty"] == "guilty":
-                request_context["some_guilty"] = True
+            if form_data["guilty"] == "not_guilty":
+                request_context["some_not_guilty"] = True
+            else:
+                request_context["some_not_guilty"] = False
+
+            court_date = self.all_data["about"]["date_of_hearing"]
+            request_context["days_before_hearing"] = (court_date - datetime.datetime.today()).days
+            request_context["will_hear_by"] = court_date + datetime.timedelta(days=3)
 
         return super(CompleteStage, self).render(request_context)
 
