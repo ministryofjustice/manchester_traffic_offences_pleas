@@ -1614,7 +1614,7 @@ input, select {
   text-transform: none;
   margin: 0; }
 
-input#name {
+#id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number {
   width: 32%; }
 
 select {
@@ -1764,6 +1764,11 @@ table th.header {
 .charges .form-hint {
   display: inline;
   font-weight: normal; }
+
+h2 span.form-hint {
+  display: inline;
+  font-weight: normal;
+  font-size: 0.7em; }
 
 label[for=id_understand] {
   font-weight: normal;
