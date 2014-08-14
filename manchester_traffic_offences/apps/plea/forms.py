@@ -240,7 +240,7 @@ class YourDetailsForm(BasePleaStepForm):
                                           required=False)
 
 
-class PleaInfoForm(BasePleaStepForm):
+class ConfirmationForm(BasePleaStepForm):
     understand = forms.BooleanField(required=True,
                                     error_messages={"required": ERROR_MESSAGES["UNDERSTAND_REQUIRED"]})
 
@@ -275,7 +275,7 @@ class YourDetailsStage(FormStage):
 class PleaStage(FormStage):
     name = "plea"
     template = "plea/plea.html"
-    form_classes = [PleaInfoForm, PleaForm]
+    form_classes = [PleaForm, ]
     dependencies = ["case", "your_details"]
 
     def load_forms(self, data=None, initial=False):
@@ -299,11 +299,8 @@ class PleaStage(FormStage):
 
         if initial:
             initial_plea_data = self.all_data[self.name].get("PleaForms", [])
-            initial_info_data = self.all_data[self.name]
-            self.forms.append(PleaInfoForm(initial=initial_info_data))
             self.forms.append(PleaForms(initial=initial_plea_data))
         else:
-            self.forms.append(PleaInfoForm(data))
             self.forms.append(PleaForms(data))
 
         for form in self.forms:
@@ -325,20 +322,21 @@ class PleaStage(FormStage):
 class ReviewStage(FormStage):
     name = "review"
     template = "plea/review.html"
-    form_classes = []
+    form_classes = [ConfirmationForm, ]
     dependencies = ["case", "your_details", "plea"]
 
     def save(self, form_data, next_step=None):
         clean_data = super(ReviewStage, self).save(form_data, next_step)
 
-        email_result = send_plea_email(self.all_data)
-        if email_result:
-            next_step = reverse_lazy("plea_form_step", args=("complete", ))
-        else:
-            next_step = reverse_lazy(
-                'plea_form_step', args=('review_send_error', ))
+        if clean_data.get("complete", False):
+            email_result = send_plea_email(self.all_data)
+            if email_result:
+                next_step = reverse_lazy("plea_form_step", args=("complete", ))
+            else:
+                next_step = reverse_lazy('plea_form_step', args=('review_send_error', ))
 
-        self.next_step = next_step
+            self.next_step = next_step
+
         return clean_data
 
 
