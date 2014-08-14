@@ -92,14 +92,12 @@ class TestMultiPleaForms(TestCase):
                      "form-INITIAL_FORMS": "0",
                      "form-MAX_NUM_FORMS": "1000"}
         mgmt_data.update({"form-0-guilty": "",
-                          "form-0-mitigations": "",
-                          "understand": ""})
+                          "form-0-mitigations": ""})
 
         # no form data, just the management stuff
         form.save(mgmt_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 1)
-        self.assertEqual(len(form.current_stage.forms[1].errors[0]), 1)
+        self.assertEqual(len(form.current_stage.forms[0].errors[0]), 1)
 
     def test_plea_stage_good_data_single_charge(self):
         self.session.update(self.plea_stage_pre_data_1_charge)
@@ -110,8 +108,7 @@ class TestMultiPleaForms(TestCase):
                      "form-MAX_NUM_FORMS": "1"}
 
         mgmt_data.update({"form-0-guilty": "guilty",
-                          "form-0-mitigations": "lorem ipsum 1",
-                          "understand": "True"})
+                          "form-0-mitigations": "lorem ipsum 1"})
 
         response = form.save(mgmt_data, self.request_context)
 
@@ -126,13 +123,12 @@ class TestMultiPleaForms(TestCase):
                      "form-MAX_NUM_FORMS": "1000"}
 
         mgmt_data.update({"form-0-guilty": "guilty",
-                          "form-0-mitigations": "lorem ipsum 1",
-                          "understand": "True"})
+                          "form-0-mitigations": "lorem ipsum 1"})
 
         response = form.save(mgmt_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[1].errors[0]), 0)
-        self.assertEqual(len(form.current_stage.forms[1].errors[1]), 1)
+        self.assertEqual(len(form.current_stage.forms[0].errors[0]), 0)
+        self.assertEqual(len(form.current_stage.forms[0].errors[1]), 1)
 
     def test_plea_stage_good_data_multiple_charges(self):
         self.session.update(self.plea_stage_pre_data_1_charge)
@@ -145,8 +141,7 @@ class TestMultiPleaForms(TestCase):
         mgmt_data.update({"form-0-guilty": "guilty",
                           "form-0-mitigations": "lorem ipsum 1",
                           "form-1-guilty": "guilty",
-                          "form-1-mitigations": "lorem ipsum 1",
-                          "understand": "True"})
+                          "form-1-mitigations": "lorem ipsum 1"})
 
         response = form.save(mgmt_data, self.request_context)
 
@@ -201,8 +196,7 @@ class TestMultiPleaForms(TestCase):
                      "form-MAX_NUM_FORMS": "1000"}
 
         mgmt_data.update({"form-0-guilty": "guilty",
-                          "form-0-mitigations": "lorem ipsum 1",
-                          "understand": "True"})
+                          "form-0-mitigations": "lorem ipsum 1"})
 
         response = form.save(mgmt_data, request_context)
 
@@ -210,7 +204,7 @@ class TestMultiPleaForms(TestCase):
 
         form = PleaOnlineForms("review", "plea_form_step", fake_session)
         response = form.load(request_context)
-        response = form.save({},
+        response = form.save({"understand": "True"},
                              request_context)
 
         self.assertEqual(response.status_code, 302)
@@ -226,7 +220,7 @@ class TestMultiPleaForms(TestCase):
         self.assertEqual(fake_session["your_details"]["email"], "test@example.org")
         self.assertEqual(fake_session["plea"]["PleaForms"][0]["guilty"], "guilty")
         self.assertEqual(fake_session["plea"]["PleaForms"][0]["mitigations"], "lorem ipsum 1")
-        self.assertEqual(fake_session["plea"]["understand"], True)
+        self.assertEqual(fake_session["review"]["understand"], True)
 
     def test_successful_completion_multiple_charges(self):
         fake_session = {}
@@ -266,8 +260,7 @@ class TestMultiPleaForms(TestCase):
         mgmt_data.update({"form-0-guilty": "guilty",
                           "form-0-mitigations": "lorem ipsum 1",
                           "form-1-guilty": "guilty",
-                          "form-1-mitigations": "lorem ipsum 2",
-                          "understand": "True"})
+                          "form-1-mitigations": "lorem ipsum 2"})
 
         response = form.save(mgmt_data, request_context)
 
@@ -275,7 +268,7 @@ class TestMultiPleaForms(TestCase):
 
         form = PleaOnlineForms("review", "plea_form_step", fake_session)
         response = form.load(request_context)
-        response = form.save({},
+        response = form.save({"understand": "True"},
                              request_context)
 
         self.assertEqual(response.status_code, 302)
@@ -293,4 +286,4 @@ class TestMultiPleaForms(TestCase):
         self.assertEqual(fake_session["plea"]["PleaForms"][0]["mitigations"], "lorem ipsum 1")
         self.assertEqual(fake_session["plea"]["PleaForms"][1]["guilty"], "guilty")
         self.assertEqual(fake_session["plea"]["PleaForms"][1]["mitigations"], "lorem ipsum 2")
-        self.assertEqual(fake_session["plea"]["understand"], True)
+        self.assertEqual(fake_session["review"]["understand"], True)
