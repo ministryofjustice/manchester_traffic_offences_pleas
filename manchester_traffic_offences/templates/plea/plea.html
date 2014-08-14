@@ -103,7 +103,7 @@
                         <div class="group{%  if form.understand.errors %} error{% endif %}">
                             <span class="validation-message">{{ form.understand.errors }}</span>
                             <label for="{{ form.understand.id_for_label }}" class="block-label">
-                                <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" class="block-label" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
+                                <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
                                 <strong>I confirm</strong> that I have read and understand the charge{{ charges|pluralize }} against me.
                             </label>
                         </div>
