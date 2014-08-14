@@ -13,21 +13,25 @@ class TestMultiPleaForms(TestCase):
         self.session = {}
         self.request_context = {}
 
-        self.plea_stage_pre_data_1_charge = {"about": {"date_of_hearing": "2015-01-01",
-                                                       "urn_0": "00",
-                                                       "urn_1": "AA",
-                                                       "urn_2": "0000000",
-                                                       "urn_3": "00",
-                                                       "name": "Charlie Brown",
-                                                       "number_of_charges": "1"}}
+        self.plea_stage_pre_data_1_charge = {"case": {"date_of_hearing": "2015-01-01",
+                                                      "urn_0": "00",
+                                                      "urn_1": "AA",
+                                                      "urn_2": "0000000",
+                                                      "urn_3": "00",
+                                                      "number_of_charges": "1"},
+                                             "your_details": {"name": "Charlie Brown",
+                                                              "contact_number": "012345678",
+                                                              "email": "charliebrown@example.org"}}
 
-        self.plea_stage_pre_data_3_charges = {"about": {"date_of_hearing": "2015-01-01",
+        self.plea_stage_pre_data_3_charges = {"case": {"date_of_hearing": "2015-01-01",
                                                        "urn_0": "00",
                                                        "urn_1": "AA",
                                                        "urn_2": "0000000",
                                                        "urn_3": "00",
-                                                       "name": "Charlie Brown",
-                                                       "number_of_charges": "3"}}
+                                                       "number_of_charges": "3"},
+                                              "your_details": {"name": "Charlie Brown",
+                                                               "contact_number": "012345678",
+                                                               "email": "charliebrown@example.org"}}
 
         self.request_factory = RequestFactory()
 
@@ -40,15 +44,15 @@ class TestMultiPleaForms(TestCase):
         request.resolver_match.kwargs = url_kwargs
         return request
 
-    def test_about_stage_bad_data(self):
-        form = PleaOnlineForms("about", "plea_form_step", self.session)
+    def test_case_stage_bad_data(self):
+        form = PleaOnlineForms("case", "plea_form_step", self.session)
         response = form.load(self.request_context)
         response = form.save({}, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 4)
+        self.assertEqual(len(form.current_stage.forms[0].errors), 3)
 
-    def test_about_stage_good_data(self):
-        form = PleaOnlineForms("about", "plea_form_step", self.session)
+    def test_case_stage_good_data(self):
+        form = PleaOnlineForms("case", "plea_form_step", self.session)
         response = form.load(self.request_context)
         response = form.save({"date_of_hearing_day": "01",
                               "date_of_hearing_month": "01",
@@ -58,8 +62,24 @@ class TestMultiPleaForms(TestCase):
                               "urn_1": "AA",
                               "urn_2": "0000000",
                               "urn_3": "00",
-                              "name": "Charlie Brown",
                               "number_of_charges": "1"},
+                             self.request_context)
+
+        self.assertEqual(response.status_code, 302)
+
+    def test_your_details_stage_bad_data(self):
+        form = PleaOnlineForms("your_details", "plea_form_step", self.session)
+        response = form.load(self.request_context)
+        response = form.save({}, self.request_context)
+
+        self.assertEqual(len(form.current_stage.forms[0].errors), 3)
+
+    def test_your_details_stage_good_data(self):
+        form = PleaOnlineForms("your_details", "plea_form_step", self.session)
+        response = form.load(self.request_context)
+        response = form.save({"name": "Test man",
+                              "contact_number": "012345678",
+                              "email": "test.man@example.org"},
                              self.request_context)
 
         self.assertEqual(response.status_code, 302)
@@ -146,10 +166,10 @@ class TestMultiPleaForms(TestCase):
 
     def test_successful_completion_single_charge(self):
         fake_session = {}
-        fake_request = self.get_request_mock("/plea/about")
+        fake_request = self.get_request_mock("/plea/case")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("about", "plea_form_step", fake_session)
+        form = PleaOnlineForms("case", "plea_form_step", fake_session)
         response = form.load(request_context)
         response = form.save({"date_of_hearing_day": "01",
                               "date_of_hearing_month": "01",
@@ -159,8 +179,16 @@ class TestMultiPleaForms(TestCase):
                               "urn_1": "AA",
                               "urn_2": "0000000",
                               "urn_3": "00",
-                              "name": "Charlie Brown",
                               "number_of_charges": "1"},
+                             request_context)
+
+        self.assertEqual(response.status_code, 302)
+
+        form = PleaOnlineForms("your_details", "plea_form_step", fake_session)
+        response = form.load(request_context)
+        response = form.save({"name": "Charlie Brown",
+                              "contact_number": "07802639892",
+                              "email": "test@example.org"},
                              request_context)
 
         self.assertEqual(response.status_code, 302)
@@ -190,21 +218,23 @@ class TestMultiPleaForms(TestCase):
         form = PleaOnlineForms("complete", "plea_form_step", fake_session)
         response = form.load(request_context)
 
-        self.assertEqual(fake_session["about"]["date_of_hearing"], datetime.datetime(2015, 1, 1, 9, 15))
-        self.assertEqual(fake_session["about"]["urn"], "00/AA/0000000/00")
-        self.assertEqual(fake_session["about"]["name"], "Charlie Brown")
-        self.assertEqual(fake_session["about"]["number_of_charges"], 1)
+        self.assertEqual(fake_session["case"]["date_of_hearing"], datetime.datetime(2015, 1, 1, 9, 15))
+        self.assertEqual(fake_session["case"]["urn"], "00/AA/0000000/00")
+        self.assertEqual(fake_session["case"]["number_of_charges"], 1)
+        self.assertEqual(fake_session["your_details"]["name"], "Charlie Brown")
+        self.assertEqual(fake_session["your_details"]["contact_number"], "07802639892")
+        self.assertEqual(fake_session["your_details"]["email"], "test@example.org")
         self.assertEqual(fake_session["plea"]["PleaForms"][0]["guilty"], "guilty")
         self.assertEqual(fake_session["plea"]["PleaForms"][0]["mitigations"], "lorem ipsum 1")
         self.assertEqual(fake_session["plea"]["understand"], True)
 
     def test_successful_completion_multiple_charges(self):
         fake_session = {}
-        fake_request = self.get_request_mock("/plea/about/")
+        fake_request = self.get_request_mock("/plea/case/")
 
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("about", "plea_form_step", fake_session)
+        form = PleaOnlineForms("case", "plea_form_step", fake_session)
         response = form.load(request_context)
         response = form.save({"date_of_hearing_day": "01",
                               "date_of_hearing_month": "01",
@@ -214,11 +244,17 @@ class TestMultiPleaForms(TestCase):
                               "urn_1": "AA",
                               "urn_2": "0000000",
                               "urn_3": "00",
-                              "name": "Charlie Brown",
                               "number_of_charges": "2"},
                              request_context)
 
         self.assertEqual(response.status_code, 302)
+
+        form = PleaOnlineForms("your_details", "plea_form_step", fake_session)
+        response = form.load(request_context)
+        response = form.save({"name": "Charlie Brown",
+                              "contact_number": "07802639892",
+                              "email": "test@example.org"},
+                             request_context)
 
         form = PleaOnlineForms("plea", "plea_form_step", fake_session)
         response = form.load(request_context)
@@ -247,10 +283,12 @@ class TestMultiPleaForms(TestCase):
         form = PleaOnlineForms("complete", "plea_form_step", fake_session)
         response = form.load(request_context)
 
-        self.assertEqual(fake_session["about"]["date_of_hearing"], datetime.datetime(2015, 1, 1, 9, 15))
-        self.assertEqual(fake_session["about"]["urn"], "00/AA/0000000/00")
-        self.assertEqual(fake_session["about"]["name"], "Charlie Brown")
-        self.assertEqual(fake_session["about"]["number_of_charges"], 2)
+        self.assertEqual(fake_session["case"]["date_of_hearing"], datetime.datetime(2015, 1, 1, 9, 15))
+        self.assertEqual(fake_session["case"]["urn"], "00/AA/0000000/00")
+        self.assertEqual(fake_session["case"]["number_of_charges"], 2)
+        self.assertEqual(fake_session["your_details"]["name"], "Charlie Brown")
+        self.assertEqual(fake_session["your_details"]["contact_number"], "07802639892")
+        self.assertEqual(fake_session["your_details"]["email"], "test@example.org")
         self.assertEqual(fake_session["plea"]["PleaForms"][0]["guilty"], "guilty")
         self.assertEqual(fake_session["plea"]["PleaForms"][0]["mitigations"], "lorem ipsum 1")
         self.assertEqual(fake_session["plea"]["PleaForms"][1]["guilty"], "guilty")

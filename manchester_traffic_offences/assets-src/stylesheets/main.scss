@@ -104,7 +104,7 @@ button.large, .button.large {font-size: 24px;}
 input[type=text], input[type="number"], input[type=email], input[type=tel], input[type=date], select[type=text], select[type=email], select[type=tel], select[type=date] {width: 100%; padding: 5px 4px 2px; color: #0b0c0c; border: 1px solid #bfc1c3; margin: 0 0 10px 0;}
 
 input, select {font-family: "nta", Arial, sans-serif;font-size: 19px; line-height: 1.31579; font-weight: 400;text-transform:none; margin: 0;}
-input#name {width: 32%;}
+#id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number {width: 32%;}
 select {border-color: #bfc1c3;}
 
 .section {margin-bottom: 3em;}
@@ -226,6 +226,7 @@ table th.header {font-size: 1.2em;}
 .js-enabled .related-positioning {top: 8em;}
 
 .charges .form-hint {display:inline; font-weight: normal;}
+h2 span.form-hint {display: inline; font-weight: normal; font-size: 0.7em;}
 label[for=id_understand] {font-weight: normal; font-size: 1em; }
 label[for=id_understand] strong {font-weight: bold;}
 label.datetime {font-weight:normal; display:inline-block;}
@@ -234,7 +235,7 @@ label.datetime-month {width:3.5em;}
 label.datetime-year {width:3.75em;}
 label.datetime-time {display:block; margin:0;}
 
-table#your-details, table#your-plea {
+table#your-details, table#your-plea, table#case-details {
   tr, th, td {width: inherit;}
   td {border: none; padding: 10px 8px;}
   th {border: none; padding-bottom: 10px;}

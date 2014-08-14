@@ -1621,7 +1621,7 @@ input, select {
   text-transform: none;
   margin: 0; }
 
-input#name {
+#id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number {
   width: 32%; }
 
 select {
@@ -1796,6 +1796,11 @@ table th.header {
   display: inline;
   font-weight: normal; }
 
+h2 span.form-hint {
+  display: inline;
+  font-weight: normal;
+  font-size: 0.7em; }
+
 label[for=id_understand] {
   font-weight: normal;
   font-size: 1em; }
@@ -1820,24 +1825,24 @@ label.datetime-time {
   display: block;
   margin: 0; }
 
-table#your-details tr, table#your-details th, table#your-details td, table#your-plea tr, table#your-plea th, table#your-plea td {
+table#your-details tr, table#your-details th, table#your-details td, table#your-plea tr, table#your-plea th, table#your-plea td, table#case-details tr, table#case-details th, table#case-details td {
   width: inherit; }
-table#your-details td, table#your-plea td {
+table#your-details td, table#your-plea td, table#case-details td {
   border: none;
   padding: 10px 8px; }
-table#your-details th, table#your-plea th {
+table#your-details th, table#your-plea th, table#case-details th {
   border: none;
   padding-bottom: 10px; }
-table#your-details tbody, table#your-plea tbody {
+table#your-details tbody, table#your-plea tbody, table#case-details tbody {
   border-top: solid 1px #c2c2c2;
   border-bottom: solid 1px #c2c2c2; }
-table#your-details th.label, table#your-plea th.label {
+table#your-details th.label, table#your-plea th.label, table#case-details th.label {
   color: #6F777B;
   vertical-align: top;
   font-weight: normal; }
-table#your-details th.header, table#your-plea th.header {
+table#your-details th.header, table#your-plea th.header, table#case-details th.header {
   width: 35%; }
-table#your-details h3, table#your-plea h3 {
+table#your-details h3, table#your-plea h3, table#case-details h3 {
   font-weight: bold; }
 
 div.indent {
