@@ -1714,6 +1714,13 @@ div.error, section.error {
   #complete address p {
     margin: 0.5em 0; }
 
+#review .important {
+  background: url(../images/icons/icon-important.png) no-repeat top left;
+  padding-top: 0.3em;
+  padding-left: 40px;
+  height: 34px;
+  margin: 1em 0; }
+
 table {
   clear: both;
   margin: 2em 0; }

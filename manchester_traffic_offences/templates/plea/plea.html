@@ -7,7 +7,7 @@
         </hgroup>
     </header>
 
-{% with request.session.about.number_of_charges as charges %}
+{% with request.session.case.number_of_charges as charges %}
     <div class="full-width group">
         <div class="inner">
             <form method=POST class="form">
@@ -39,7 +39,7 @@
 
                 <h2>Your plea{{ charges|pluralize }}</h2>
 
-                {% with forms.1 as formset %}
+                {% with forms.0 as formset %}
                     {{ formset.management_form }}
                     {% if formset|length > 1 %}
                         {% for form in formset %}
@@ -96,19 +96,6 @@
                 {% endwith %}
 
                 <div class="clear"></div>
-
-                <section>
-                    {% with forms.0 as form %}
-                        <a id="section_understand" name="section_understand"></a>
-                        <div class="group{%  if form.understand.errors %} error{% endif %}">
-                            <span class="validation-message">{{ form.understand.errors }}</span>
-                            <label for="{{ form.understand.id_for_label }}" class="block-label">
-                                <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
-                                <strong>I confirm</strong> that I have read and understand the charge{{ charges|pluralize }} against me.
-                            </label>
-                        </div>
-                    {% endwith %}
-                </section>
 
                 <div class="actions">
                     <button class="button" type=submit>Continue</button>

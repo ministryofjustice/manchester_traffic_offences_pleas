@@ -11,4 +11,4 @@ def string_date(value):
         dt = parser.parse(value)
     else:
         dt = value
-    return "{:%d %B %Y at %H:%I%p}".format(dt)
+    return "{:%d %B %Y at %H:%M%p}".format(dt)
