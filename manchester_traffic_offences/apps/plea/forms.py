@@ -207,7 +207,7 @@ class MoneyFieldWidget(forms.MultiWidget):
                       ("a month", "a month"))
 
     def __init__(self, attrs=None):
-        widgets = [TextInput(attrs={'maxlength': '7', 'pattern': '[0-9]+'}),
+        widgets = [TextInput(attrs={"maxlength": "7", "pattern": "[0-9]+", "class": "amount"}),
                    RadioSelect(choices=self.PERIOD_CHOICES)]
 
         super(MoneyFieldWidget, self).__init__(widgets, attrs)
@@ -288,10 +288,10 @@ class YourMoneyForm(BasePleaStepForm):
                                        widget=forms.Textarea, error_messages={"required": ERROR_MESSAGES["EMPLOYERS_ADDRESS_REQUIRED"]})
     employer_phone = forms.CharField(required=False, max_length=100, label="Employer's phone",
                                      error_messages={"required": ERROR_MESSAGES["EMPLOYERS_PHONE_REQUIRED"]})
-    take_home_pay = MoneyField(required=False,
+    take_home_pay = MoneyField(required=False, label="Your take home pay (after tax)",
                                error_messages={"required": ERROR_MESSAGES["PAY_REQUIRED"],
                                                "incomplete": ERROR_MESSAGES["PAY_REQUIRED"]})
-    benefits = MoneyField(required=False,
+    benefits = MoneyField(required=False, label="Total benefits",
                           error_messages={"required": ERROR_MESSAGES["BENEFITS_REQUIRED"],
                                           "incomplete": ERROR_MESSAGES["BENEFITS_REQUIRED"]})
 

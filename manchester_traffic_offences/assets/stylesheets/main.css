@@ -1620,14 +1620,15 @@ input, select {
   text-transform: none;
   margin: 0; }
 
-#id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number {
+#id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number,
+#id_employer_name, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0 {
   width: 32%; }
 
 select {
   border-color: #bfc1c3; }
 
 .section {
-  margin-bottom: 3em; }
+  margin-bottom: 2em; }
 
 .actions {
   clear: both; }
@@ -1728,6 +1729,22 @@ div.error, section.error {
   min-height: 34px;
   margin: 1em 0; }
 
+#your-money #employed, #your-money #benefits {
+  border-top: solid 1px #c2c2c2;
+  padding-top: 1em; }
+#your-money .full {
+  overflow: auto; }
+#your-money .amount {
+  float: left; }
+#your-money .money ul {
+  overflow: auto; }
+#your-money .money li {
+  float: left;
+  margin-left: 1em; }
+#your-money .money ul li label {
+  font-weight: normal;
+  margin: 0; }
+
 table {
   clear: both;
   margin: 2em 0; }
@@ -1762,7 +1779,8 @@ table th.header {
   .article-container {
     margin-right: auto; } }
 @media (max-width: 500px) {
-  #id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number {
+  #id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number,
+  #id_employer_name, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0 {
     width: 97%; }
 
   textarea {
@@ -1828,24 +1846,24 @@ label.datetime-time {
   display: block;
   margin: 0; }
 
-table#your-details tr, table#your-details th, table#your-details td, table#your-plea tr, table#your-plea th, table#your-plea td, table#case-details tr, table#case-details th, table#case-details td {
+table#your-details tr, table#your-details th, table#your-details td, table#your-plea tr, table#your-plea th, table#your-plea td, table#case-details tr, table#case-details th, table#case-details td, table#your-money tr, table#your-money th, table#your-money td {
   width: inherit; }
-table#your-details td, table#your-plea td, table#case-details td {
+table#your-details td, table#your-plea td, table#case-details td, table#your-money td {
   border: none;
   padding: 10px 8px; }
-table#your-details th, table#your-plea th, table#case-details th {
+table#your-details th, table#your-plea th, table#case-details th, table#your-money th {
   border: none;
   padding-bottom: 10px; }
-table#your-details tbody, table#your-plea tbody, table#case-details tbody {
+table#your-details tbody, table#your-plea tbody, table#case-details tbody, table#your-money tbody {
   border-top: solid 1px #c2c2c2;
   border-bottom: solid 1px #c2c2c2; }
-table#your-details th.label, table#your-plea th.label, table#case-details th.label {
+table#your-details th.label, table#your-plea th.label, table#case-details th.label, table#your-money th.label {
   color: #6F777B;
   vertical-align: top;
   font-weight: normal; }
-table#your-details th.header, table#your-plea th.header, table#case-details th.header {
+table#your-details th.header, table#your-plea th.header, table#case-details th.header, table#your-money th.header {
   width: 35%; }
-table#your-details h3, table#your-plea h3, table#case-details h3 {
+table#your-details h3, table#your-plea h3, table#case-details h3, table#your-money h3 {
   font-weight: bold; }
 
 div.indent {
