@@ -31,6 +31,16 @@
                     <p>We need this information to make sure you can afford to pay a fine.<br>
                         Your information is stored securely then deleted as soon as your case is over.</p>
 
+                    <section>
+                        <a id="section_{{ form.you_are.name }}" name="section_{{ form.you_are.name }}"></a>
+                        <div class="section{%  if form.you_are.errors %} error{% endif %}">
+                            {{ form.you_are.label_tag }}
+                            <span class="validation-message">{{ form.you_are.errors }}</span>
+                            <p class="form-hint datefield-hint">{{ form.you_are.help_text|safe }}</p>
+                            {{ form.you_are }}
+                        </div>
+                    </section>
+
                     <p>
                         <strong>If you are employed, please complete the following:</strong><br>
                         We’ll only contact your employer if you don’t pay any fine the court gives you.
@@ -48,21 +58,12 @@
                         {% include "widgets/std_field.html" %}
                     {% endwith %}
 
-                    {% with form.take_home_pay_amount as field %}
-                        {% include "widgets/std_field.html" %}
-                    {% endwith %}
-
-                    {% with form.take_home_pay_period as field %}
+                    {% with form.take_home_pay as field %}
                         {% include "widgets/std_field.html" %}
                     {% endwith %}
 
 
-
-                    {% with form.benefits_amount as field %}
-                        {% include "widgets/std_field.html" %}
-                    {% endwith %}
-
-                    {% with form.benefits_period as field %}
+                    {% with form.benefits as field %}
                         {% include "widgets/std_field.html" %}
                     {% endwith %}
 
