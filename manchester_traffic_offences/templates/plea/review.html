@@ -112,6 +112,48 @@
                     </tbody>
                 </table>
 
+                <table id="your-money">
+                    <thead>
+                    <tr>
+                        <th class="header">Your money</th>
+                        <th><a href="{% url "plea_form_step" "your_money" %}" class="review">Change your money</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if your_money.employer_name %}
+                        <tr>
+                            <th class="label">Employer's name</th>
+                            <td>{{ your_money.employer_name }}</td>
+                        </tr>
+                    {% endif %}
+                    {% if your_money.employer_address %}
+                        <tr>
+                            <th class="label">Employer's full address</th>
+                            <td>{{ your_money.employer_address|linebreaksbr }}</td>
+                        </tr>
+                    {% endif %}
+                    {% if your_money.employer_phone %}
+                        <tr>
+                            <th class="label">Employer's phone</th>
+                            <td>{{ your_money.employer_phone }}</td>
+                        </tr>
+                    {% endif %}
+                    {% if your_money.take_home_pay_amount %}
+                        <tr>
+                            <th class="label">Your take home pay</th>
+                            <td>£{{ your_money.take_home_pay_amount }} {{ your_money.take_home_pay_period }}</td>
+                        </tr>
+                    {% endif %}
+                    {% if your_money.benefits_amount %}
+                        <tr>
+                            <th class="label">Your benefits</th>
+                            <td>£{{ your_money.benefits_amount }} {{ your_money.benefits_period }}</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+
+
                 <section>
                     {% with forms.0 as form %}
                         <a id="section_understand" name="section_understand"></a>
