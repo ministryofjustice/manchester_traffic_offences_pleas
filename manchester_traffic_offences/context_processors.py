@@ -1,10 +1,10 @@
 def globals(request):
   return {
     # Application Title (Populates <title>)
-    'app_title': 'Plea online',
+    'app_title': 'Make your plea: Traffic offences',
 
     # Proposition Title (Populates proposition header)
-    'proposition_title': 'Traffic offences: Plea online',
+    'proposition_title': 'Make your plea: Traffic offences',
 
     # Current Phase (Sets the current phase and the colour of phase tags). Presumed values: alpha, beta, live
     'phase': 'alpha',
