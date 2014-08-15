@@ -118,7 +118,7 @@
                         <a id="section_understand" name="section_understand"></a>
                         <div class="group{%  if form.understand.errors %} error{% endif %}">
                             <span class="validation-message">{{ form.understand.errors }}</span>
-                            <label for="{{ form.understand.id_for_label }}" class="block-label">
+                            <label for="{{ form.understand.name }}" class="block-label" id="{{ form.understand.name }}">
                                 <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
                                 <strong>I confirm</strong> that I have read and understand the charge against me and that I am the person named on the charge sheet. The facts stated here are correct to the best of my knowledge.
                             </label>
