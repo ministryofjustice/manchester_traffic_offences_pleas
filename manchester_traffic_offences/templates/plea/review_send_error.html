@@ -1,5 +1,5 @@
 {% extends "plea/base.html" %}
-
+{% block page_title %}Plea online: Error{% endblock %}
 {% block page_content %}
 
 <style>
@@ -23,7 +23,7 @@ dd {
 
 </style>
 
-<form method=POST>
+<form method=POST class="form">
     {% csrf_token %}
     {{ wizard.management_form }}
     <h1>Confirm</h1>

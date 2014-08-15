@@ -7,17 +7,11 @@ var paths = {
   dest_dir: 'manchester_traffic_offences/assets/',
   src_dir: 'manchester_traffic_offences/assets-src/',
   styles: 'manchester_traffic_offences/assets-src/stylesheets/**/*.scss',
-  templates: 'manchester_traffic_offences/assets-src/javascripts/templates/*.hbs',
   scripts: [
     // vendor scripts
-    'manchester_traffic_offences/assets-src/vendor/lodash/dist/lodash.min.js',
     'manchester_traffic_offences/assets-src/vendor/jquery-details/jquery.details.js',
-    'manchester_traffic_offences/assets-src/vendor/handlebars/handlebars.js',
-    // templates
-    'manchester_traffic_offences/assets-src/javascripts/templates.js',
-    // CLA
-    'manchester_traffic_offences/assets-src/javascripts/moj.Helpers.js',
-    'manchester_traffic_offences/assets-src/javascripts/modules/*'
+    // Application
+    'manchester_traffic_offences/assets-src/javascripts/application.js',
   ],
   vendor_scripts: 'manchester_traffic_offences/assets-src/javascripts/vendor/*',
   images: 'manchester_traffic_offences/assets-src/images/**/*'
@@ -40,20 +34,8 @@ gulp.task('sass', function() {
     .pipe(gulp.dest(paths.dest_dir + 'stylesheets'));
 });
 
-// js templates
-gulp.task('templates', function(){
-  gulp.src(paths.templates)
-    .pipe(plugins.handlebars())
-    .pipe(plugins.defineModule('plain'))
-    .pipe(plugins.declare({
-      namespace: 'CLA.templates'
-    }))
-    .pipe(plugins.concat('templates.js'))
-    .pipe(gulp.dest(paths.src_dir + 'javascripts'));
-});
-
 // default js task
-gulp.task('js', ['templates'], function() {
+gulp.task('js', function() {
   var prod = paths.scripts.slice(0);
 
   // ignore debug files
@@ -61,7 +43,7 @@ gulp.task('js', ['templates'], function() {
   // create concatinated js file
   gulp
     .src(prod)
-    .pipe(plugins.concat('cla.main.js'))
+    .pipe(plugins.concat('application.js'))
     .pipe(gulp.dest(paths.dest_dir + 'javascripts'));
   // copy static vendor files
   gulp
@@ -70,7 +52,7 @@ gulp.task('js', ['templates'], function() {
   // create debug js file
   gulp
     .src(paths.src_dir + 'javascripts/**/*debug*')
-    .pipe(plugins.concat('cla.debug.js'))
+    .pipe(plugins.concat('debug.js'))
     .pipe(gulp.dest(paths.dest_dir + 'javascripts/'));
 });
 
@@ -81,7 +63,6 @@ gulp.task('lint', function() {
   // files to ignore from linting
   files.push('!manchester_traffic_offences/assets-src/vendor/**');
   files.push('!manchester_traffic_offences/assets-src/javascripts/vendor/**');
-  files.push('!manchester_traffic_offences/assets-src/javascripts/templates.js');
 
   gulp
     .src(files)
@@ -108,5 +89,5 @@ gulp.task('watch', function() {
 gulp.task('default', ['build']);
 // run build
 gulp.task('build', function() {
-  runSequence('clean', ['lint', 'templates', 'js', 'images', 'sass']);
+  runSequence('clean', ['lint', 'js', 'images', 'sass']);
 });

@@ -57,7 +57,9 @@ class CourtEmailCount(models.Model):
             return
         if not "PleaForms" in context["plea"]:
             return
-        if not "about" in context:
+        if not "your_details" in context:
+            return
+        if not "case" in context:
             return
 
         if self.total_pleas is None:
@@ -69,7 +71,7 @@ class CourtEmailCount(models.Model):
         if self.total_not_guilty is None:
             self.total_not_guilty = 0
 
-        self.hearing_date = context["about"]["date_of_hearing"]
+        self.hearing_date = context["case"]["date_of_hearing"]
 
         for plea_data in context["plea"]["PleaForms"]:
             self.total_pleas += 1
