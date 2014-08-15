@@ -9,16 +9,11 @@ from django import forms
 from django.core import exceptions
 from django.forms.formsets import BaseFormSet
 from django.forms.widgets import MultiWidget
-from django.core.urlresolvers import reverse_lazy
-from django.forms.formsets import formset_factory
 from django.forms.widgets import Textarea, RadioSelect, TextInput, RadioFieldRenderer
 from django.forms.extras.widgets import Widget
 from django.template.loader import render_to_string
 from django.utils.encoding import force_str, force_text
 from django.utils.translation import ugettext_lazy as _
-
-from govuk_utils.forms import FormStage, MultiStageForm
-from email import send_plea_email
 
 
 ERROR_MESSAGES = {
@@ -34,6 +29,11 @@ ERROR_MESSAGES = {
     "CONTACT_NUMBER_REQUIRED": "You must provide a contact number",
     "CONTACT_NUMBER_INVALID": "The contact number isn't a valid format",
     "PLEA_REQUIRED": "Your plea must be selected",
+    "EMPLOYERS_NAME_REQUIRED": "Please enter your employer's full name",
+    "EMPLOYERS_ADDRESS_REQUIRED": "You must provide your employer's full address",
+    "EMPLOYERS_PHONE_REQUIRED": "Please enter your employer's phone number",
+    "PAY_REQUIRED": "Please enter your take home pay and how often you're paid",
+    "BENEFITS_REQUIRED": "Please enter total benefits and how often you receive them",
     "UNDERSTAND_REQUIRED": "You must tick the box to confirm the legal statements"
 }
 
@@ -240,6 +240,21 @@ class YourDetailsForm(BasePleaStepForm):
                                           required=False)
 
 
+class YourMoneyForm(BasePleaStepForm):
+    PERIOD_CHOICES = (("a week", "a week"),
+                      ("a fortnight", "a fortnight"),
+                      ("a month", "a month"))
+    employer_name = forms.CharField(max_length=100, label="Employer's name")
+    employer_address = forms.CharField(max_length=500, label="Employer's full address",
+                                       widget=forms.Textarea)
+    employer_phone = forms.CharField(max_length=100, label="Employer's phone")
+    take_home_pay_amount = forms.CharField(max_length=7, label="Your take home pay <span>(after tax)</span>")
+    take_home_pay_period = forms.ChoiceField(choices=PERIOD_CHOICES, widget=forms.RadioSelect)
+
+    benefits_amount = forms.CharField(max_length=7, label="Total benefits")
+    benefits_period = forms.ChoiceField(choices=PERIOD_CHOICES, widget=forms.RadioSelect)
+
+
 class ConfirmationForm(BasePleaStepForm):
     understand = forms.BooleanField(required=True,
                                     error_messages={"required": ERROR_MESSAGES["UNDERSTAND_REQUIRED"]})
@@ -258,121 +273,3 @@ class PleaForm(BasePleaStepForm):
 
 ###### Form stage classes #######
 
-class CaseStage(FormStage):
-    name = "case"
-    template = "plea/case.html"
-    form_classes = [CaseForm, ]
-    dependencies = []
-
-
-class YourDetailsStage(FormStage):
-    name = "your_details"
-    template = "plea/about.html"
-    form_classes = [YourDetailsForm]
-    dependencies = ["case"]
-
-
-class PleaStage(FormStage):
-    name = "plea"
-    template = "plea/plea.html"
-    form_classes = [PleaForm, ]
-    dependencies = ["case", "your_details"]
-
-    def load_forms(self, data=None, initial=False):
-        forms_wanted = self.all_data["case"].get("number_of_charges", 1)
-        extra_forms = 0
-        # truncate forms data if the count has changed
-        if "PleaForms" in self.all_data["plea"]:
-            forms_count = len(self.all_data["plea"]["PleaForms"])
-            # truncate data if the count is changed
-            if forms_count > forms_wanted:
-                self.all_data["plea"]["PleaForms"] = self.all_data["plea"]["PleaForms"][:forms_wanted]
-                forms_count = forms_wanted
-
-            if forms_count < forms_wanted:
-                extra_forms = forms_wanted - forms_count
-
-        else:
-            extra_forms = forms_wanted
-
-        PleaForms = formset_factory(PleaForm, formset=RequiredFormSet, extra=extra_forms)
-
-        if initial:
-            initial_plea_data = self.all_data[self.name].get("PleaForms", [])
-            self.forms.append(PleaForms(initial=initial_plea_data))
-        else:
-            self.forms.append(PleaForms(data))
-
-        for form in self.forms:
-            if form.errors:
-                self.context["formset_has_errors"] = True
-
-    def save_forms(self):
-        form_data = {}
-
-        for form in self.forms:
-            if hasattr(form, "management_form"):
-                form_data["PleaForms"] = form.cleaned_data
-            else:
-                form_data.update(form.cleaned_data)
-
-        return form_data
-
-
-class ReviewStage(FormStage):
-    name = "review"
-    template = "plea/review.html"
-    form_classes = [ConfirmationForm, ]
-    dependencies = ["case", "your_details", "plea"]
-
-    def save(self, form_data, next_step=None):
-        clean_data = super(ReviewStage, self).save(form_data, next_step)
-
-        if clean_data.get("complete", False):
-            email_result = send_plea_email(self.all_data)
-            if email_result:
-                next_step = reverse_lazy("plea_form_step", args=("complete", ))
-            else:
-                next_step = reverse_lazy('plea_form_step', args=('review_send_error', ))
-
-            self.next_step = next_step
-
-        return clean_data
-
-
-class ReviewSendErrorStage(FormStage):
-    name = "send_error"
-    template = "plea/review_send_error.html"
-    form_classes = []
-    dependencies = ["case", "your_details", "plea"]
-
-
-class CompleteStage(FormStage):
-    name = "complete"
-    template = "plea/complete.html"
-    form_classes = []
-    dependencies = ["case", "your_details", "plea", "review"]
-
-    def render(self, request_context):
-        request_context["some_not_guilty"] = False
-        for form_data in self.all_data["plea"]["PleaForms"]:
-            if form_data["guilty"] == "not_guilty":
-                request_context["some_not_guilty"] = True
-
-        if isinstance(self.all_data["case"]["date_of_hearing"], basestring):
-            court_date = parse(self.all_data["case"]["date_of_hearing"])
-        else:
-            court_date = self.all_data["case"]["date_of_hearing"]
-        request_context["days_before_hearing"] = (court_date - datetime.datetime.today()).days
-        request_context["will_hear_by"] = court_date + datetime.timedelta(days=3)
-
-        return super(CompleteStage, self).render(request_context)
-
-
-class PleaOnlineForms(MultiStageForm):
-    stage_classes = [CaseStage,
-                     YourDetailsStage,
-                     PleaStage,
-                     ReviewStage,
-                     ReviewSendErrorStage,
-                     CompleteStage]

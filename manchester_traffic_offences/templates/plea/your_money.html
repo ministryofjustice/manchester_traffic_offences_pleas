@@ -1,0 +1,77 @@
+{% extends "plea/base.html" %}
+{% load staticfiles %}
+{% block page_content %}
+    <header class="page-header group">
+        <hgroup>
+            <div><h1><span>Service</span>Make your plea online</h1></div>
+        </hgroup>
+    </header>
+
+    <div class="full-width group">
+        <div class="inner">
+            <form method=POST class="pleaform form">
+                {% csrf_token %}
+                {% with forms.0 as form %}
+                    {% if form.errors %}
+                        <section class="flash error-summary">
+                            <h2 id="error-heading">You need to fix the errors on this page before continuing.</h2>
+                            <p>See highlighted errors below.</p>
+                            <ul>
+                                {% for field in form %}
+                                    {% if field.errors %}
+                                        <li><a class="error-link"
+                                               href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </section>
+                    {% endif %}
+
+                    <h2 id="your-details">Your money</h2>
+                    <p>We need this information to make sure you can afford to pay a fine.<br>
+                        Your information is stored securely then deleted as soon as your case is over.</p>
+
+                    <p>
+                        <strong>If you are employed, please complete the following:</strong><br>
+                        We’ll only contact your employer if you don’t pay any fine the court gives you.
+                    </p>
+
+                    {% with form.employer_name as field %}
+                        {% include "widgets/std_field.html" %}
+                    {% endwith %}
+
+                    {% with form.employer_address as field %}
+                        {% include "widgets/std_field.html" %}
+                    {% endwith %}
+
+                    {% with form.employer_phone as field %}
+                        {% include "widgets/std_field.html" %}
+                    {% endwith %}
+
+                    {% with form.take_home_pay_amount as field %}
+                        {% include "widgets/std_field.html" %}
+                    {% endwith %}
+
+                    {% with form.take_home_pay_period as field %}
+                        {% include "widgets/std_field.html" %}
+                    {% endwith %}
+
+
+
+                    {% with form.benefits_amount as field %}
+                        {% include "widgets/std_field.html" %}
+                    {% endwith %}
+
+                    {% with form.benefits_period as field %}
+                        {% include "widgets/std_field.html" %}
+                    {% endwith %}
+
+                {% endwith %}
+                <div class="actions">
+                    <button class="button" type=submit>Continue</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock page_content %}
