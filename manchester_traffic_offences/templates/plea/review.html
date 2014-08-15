@@ -120,34 +120,32 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% if your_money.employer_name %}
+                    <tr>
+                        <th class="label">You are</th>
+                        <td>{{ your_money.you_are }}</td>
+                    </tr>
+                    {% if your_money.you_are == "employed" %}
                         <tr>
                             <th class="label">Employer's name</th>
                             <td>{{ your_money.employer_name }}</td>
                         </tr>
-                    {% endif %}
-                    {% if your_money.employer_address %}
                         <tr>
                             <th class="label">Employer's full address</th>
                             <td>{{ your_money.employer_address|linebreaksbr }}</td>
                         </tr>
-                    {% endif %}
-                    {% if your_money.employer_phone %}
                         <tr>
                             <th class="label">Employer's phone</th>
                             <td>{{ your_money.employer_phone }}</td>
                         </tr>
-                    {% endif %}
-                    {% if your_money.take_home_pay_amount %}
                         <tr>
                             <th class="label">Your take home pay</th>
-                            <td>£{{ your_money.take_home_pay_amount }} {{ your_money.take_home_pay_period }}</td>
+                            <td>£{{ your_money.take_home_pay }}</td>
                         </tr>
                     {% endif %}
-                    {% if your_money.benefits_amount %}
+                    {% if your_money.you_are == "receiving benefits" %}
                         <tr>
                             <th class="label">Your benefits</th>
-                            <td>£{{ your_money.benefits_amount }} {{ your_money.benefits_period }}</td>
+                            <td>£{{ your_money.benefits }}</td>
                         </tr>
                     {% endif %}
                     </tbody>

@@ -8,8 +8,8 @@ import six
 from django import forms
 from django.core import exceptions
 from django.forms.formsets import BaseFormSet
-from django.forms.widgets import MultiWidget
-from django.forms.widgets import Textarea, RadioSelect, TextInput, RadioFieldRenderer
+from django.forms.widgets import (Select, MultiWidget, Textarea, RadioSelect,
+                                  TextInput, RadioFieldRenderer)
 from django.forms.extras.widgets import Widget
 from django.template.loader import render_to_string
 from django.utils.encoding import force_str, force_text
@@ -29,6 +29,7 @@ ERROR_MESSAGES = {
     "CONTACT_NUMBER_REQUIRED": "You must provide a contact number",
     "CONTACT_NUMBER_INVALID": "The contact number isn't a valid format",
     "PLEA_REQUIRED": "Your plea must be selected",
+    "YOU_ARE_REQUIRED": "You must let us know if you're employed, receiving benefits or other",
     "EMPLOYERS_NAME_REQUIRED": "Please enter your employer's full name",
     "EMPLOYERS_ADDRESS_REQUIRED": "You must provide your employer's full address",
     "EMPLOYERS_PHONE_REQUIRED": "Please enter your employer's phone number",
@@ -200,6 +201,40 @@ class URNField(forms.MultiValueField):
     widget = URNWidget()
 
 
+class MoneyFieldWidget(forms.MultiWidget):
+    PERIOD_CHOICES = (("a week", "a week"),
+                      ("a fortnight", "a fortnight"),
+                      ("a month", "a month"))
+
+    def __init__(self, attrs=None):
+        widgets = [TextInput(attrs={'maxlength': '7', 'pattern': '[0-9]+'}),
+                   RadioSelect(choices=self.PERIOD_CHOICES)]
+
+        super(MoneyFieldWidget, self).__init__(widgets, attrs)
+
+    def decompress(self, value):
+        if value:
+            return value.split(" ", 1)
+        else:
+            return ["", ""]
+
+    def format_output(self, rendered_widgets):
+        return ' '.join(rendered_widgets)
+
+
+class MoneyField(forms.MultiValueField):
+    widget = MoneyFieldWidget()
+
+    def __init__(self, *args, **kwargs):
+        list_fields = [forms.CharField(required=False, max_length=7, label="Total benefits"),
+                       forms.CharField(required=False)]
+
+        super(MoneyField, self).__init__(list_fields, *args, **kwargs)
+
+    def compress(self, data_list):
+        return " ".join(data_list)
+
+
 class BasePleaStepForm(forms.Form):
     pass
 
@@ -241,18 +276,41 @@ class YourDetailsForm(BasePleaStepForm):
 
 
 class YourMoneyForm(BasePleaStepForm):
-    PERIOD_CHOICES = (("a week", "a week"),
-                      ("a fortnight", "a fortnight"),
-                      ("a month", "a month"))
-    employer_name = forms.CharField(max_length=100, label="Employer's name")
-    employer_address = forms.CharField(max_length=500, label="Employer's full address",
-                                       widget=forms.Textarea)
-    employer_phone = forms.CharField(max_length=100, label="Employer's phone")
-    take_home_pay_amount = forms.CharField(max_length=7, label="Your take home pay <span>(after tax)</span>")
-    take_home_pay_period = forms.ChoiceField(choices=PERIOD_CHOICES, widget=forms.RadioSelect)
+    YOU_ARE_CHOICES = (("employed", "employed"),
+                       ("receiving benefits", "receiving benefits"),
+                       ("other", "other"))
+    you_are = forms.ChoiceField(label="Are you", choices=YOU_ARE_CHOICES,
+                                widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
+                                error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
+    employer_name = forms.CharField(required=False, max_length=100, label="Employer's name",
+                                    error_messages={"required": ERROR_MESSAGES["EMPLOYERS_NAME_REQUIRED"]})
+    employer_address = forms.CharField(required=False, max_length=500, label="Employer's full address",
+                                       widget=forms.Textarea, error_messages={"required": ERROR_MESSAGES["EMPLOYERS_ADDRESS_REQUIRED"]})
+    employer_phone = forms.CharField(required=False, max_length=100, label="Employer's phone",
+                                     error_messages={"required": ERROR_MESSAGES["EMPLOYERS_PHONE_REQUIRED"]})
+    take_home_pay = MoneyField(required=False,
+                               error_messages={"required": ERROR_MESSAGES["PAY_REQUIRED"],
+                                               "incomplete": ERROR_MESSAGES["PAY_REQUIRED"]})
+    benefits = MoneyField(required=False,
+                          error_messages={"required": ERROR_MESSAGES["BENEFITS_REQUIRED"],
+                                          "incomplete": ERROR_MESSAGES["BENEFITS_REQUIRED"]})
 
-    benefits_amount = forms.CharField(max_length=7, label="Total benefits")
-    benefits_period = forms.ChoiceField(choices=PERIOD_CHOICES, widget=forms.RadioSelect)
+    def __init__(self, *args, **kwargs):
+        super(YourMoneyForm, self).__init__(*args, **kwargs)
+        try:
+            data = args[0]
+        except IndexError:
+            data = {}
+
+        if "you_are" in data:
+            if data["you_are"] == "employed":
+                self.fields["employer_name"].required = True
+                self.fields["employer_address"].required = True
+                self.fields["employer_phone"].required = True
+                self.fields["take_home_pay"].required = True
+
+            if data["you_are"] == "receiving benefits":
+                    self.fields["benefits"].required = True
 
 
 class ConfirmationForm(BasePleaStepForm):
