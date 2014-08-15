@@ -1725,7 +1725,7 @@ div.error, section.error {
   background: url(../images/icons/icon-important.png) no-repeat top left;
   padding-top: 0.3em;
   padding-left: 40px;
-  height: 34px;
+  min-height: 34px;
   margin: 1em 0; }
 
 table {
