@@ -1555,34 +1555,38 @@ label {
 
 #enter-urn #id_urn_0 {
   width: 25px;
-  margin-left: 0;
-  margin-right: 5px; }
+  margin: 0 5px 0 0; }
 
-#enter-urn #id_urn_1, #enter-urn #id_urn_3 {
+#enter-urn #id_urn_1 {
   width: 25px;
-  margin: 0 5px; }
+  margin: 0 5px 0 5px; }
 
 #enter-urn #id_urn_2 {
   width: 85px;
-  margin: 0 5px; }
+  margin: 0 5px 0 5px; }
+
+#enter-urn #id_urn_3 {
+  width: 25px;
+  margin: 0 5px 0 5px; }
 
 section#group-urn #number_of_charges {
   width: 32%; }
 
 #id_date_of_hearing_month, #id_date_of_hearing_hour, #id_date_of_hearing_min {
   width: 25px;
-  margin-right: 5px; }
+  margin: 0 5px 0px 0; }
 
 #id_date_of_hearing_year {
-  width: 50px; }
+  width: 50px;
+  margin: 0 5px 0px 0; }
 
 #id_date_of_hearing_day {
-  margin-left: 0;
-  margin-right: 5px;
+  margin: 0 5px 0px 0;
   width: 25px; }
 
 .group label.datetime {
-  font-size: 1em; }
+  font-size: 1em;
+  margin-top: 1em; }
 
 section#group-urn #id_understand_checkbox {
   font-weight: normal;
@@ -1597,6 +1601,9 @@ details {
 
 button.large, .button.large {
   font-size: 24px; }
+
+.list-bullet li {
+  margin-left: 1em; }
 
 input[type=text], input[type="number"], input[type=email], input[type=tel], input[type=date], select[type=text], select[type=email], select[type=tel], select[type=date] {
   width: 100%;
