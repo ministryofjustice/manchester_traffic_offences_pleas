@@ -1807,12 +1807,9 @@ h2 span.form-hint {
   font-weight: normal;
   font-size: 0.7em; }
 
-label[for=id_understand] {
+#understand {
   font-weight: normal;
   font-size: 1em; }
-
-label[for=id_understand] strong {
-  font-weight: bold; }
 
 label.datetime {
   font-weight: normal;
