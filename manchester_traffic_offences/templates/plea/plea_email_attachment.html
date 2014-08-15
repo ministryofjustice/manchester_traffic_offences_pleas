@@ -2,6 +2,7 @@
 <!doctype html>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Online plea</title>
     <style>
         body, td {
@@ -100,6 +101,39 @@
         </tr>
         {% endif %}
     {%  endfor %}
+    <tr>
+        <td class="heading" colspan="2"><h2>Your money</h2></td>
+    </tr>
+    {% if your_money.employer_name %}
+        <tr>
+            <th>Employer's name</th>
+            <td>{{ your_money.employer_name }}</td>
+        </tr>
+    {% endif %}
+    {% if your_money.employer_address %}
+        <tr>
+            <th>Employer's full address</th>
+            <td>{{ your_money.employer_address|linebreaksbr }}</td>
+        </tr>
+    {% endif %}
+    {% if your_money.employer_phone %}
+        <tr>
+            <th>Employer's phone</th>
+            <td>{{ your_money.employer_phone }}</td>
+        </tr>
+    {% endif %}
+    {% if your_money.take_home_pay_amount %}
+        <tr>
+            <th>Your take home pay</th>
+            <td>£{{ your_money.take_home_pay_amount }} {{ your_money.take_home_pay_period }}</td>
+        </tr>
+    {% endif %}
+    {% if your_money.benefits_amount %}
+        <tr>
+            <th>Your benefits</th>
+            <td>£{{ your_money.benefits_amount }} {{ your_money.benefits_period }}</td>
+        </tr>
+    {% endif %}
     </tbody>
 </table>
 </body>
