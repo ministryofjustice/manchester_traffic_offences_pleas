@@ -7,7 +7,19 @@ from django.views.generic import TemplateView
 
 from brake.decorators import ratelimit
 
-from .forms import PleaOnlineForms
+from govuk_utils.forms import MultiStageForm
+from stages import (CaseStage, YourDetailsStage, PleaStage, YourMoneyStage,
+                    ReviewStage, ReviewSendErrorStage, CompleteStage)
+
+
+class PleaOnlineForms(MultiStageForm):
+    stage_classes = [CaseStage,
+                     YourDetailsStage,
+                     PleaStage,
+                     YourMoneyStage,
+                     ReviewStage,
+                     ReviewSendErrorStage,
+                     CompleteStage]
 
 
 class PleaOnlineViews(TemplateView):
