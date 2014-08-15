@@ -1602,6 +1602,9 @@ details {
 button.large, .button.large {
   font-size: 24px; }
 
+.list-bullet li {
+  margin-left: 1em; }
+
 input[type=text], input[type="number"], input[type=email], input[type=tel], input[type=date], select[type=text], select[type=email], select[type=tel], select[type=date] {
   width: 100%;
   padding: 5px 4px 2px;
