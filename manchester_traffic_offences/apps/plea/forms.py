@@ -22,15 +22,19 @@ from email import send_plea_email
 
 
 ERROR_MESSAGES = {
-    "FULL_NAME_REQUIRED": "Full name cannot be blank",
-    "URN_REQUIRED": "Unique reference number (URN) cannot be blank",
-    "URN_INVALID": "Unique reference number (URN) is invalid URN. Please enter the URN exactly as it appears on page 1 of the pack",
-    "HEARING_DATE_REQUIRED": "Court hearing date cannot be blank",
-    "HEARING_DATE_INVALID": "Court hearing date is invalid date and/or time",
-    "HEARING_DATE_PASSED": "Court hearing date cannot be before the current date",
-    "NUMBER_OF_CHARGES_REQUIRED": "Number of charges against you must be selected",
+    "URN_REQUIRED": "You must enter your unique reference number (URN)",
+    "URN_INVALID": "The unique reference number (URN) isn't valid. Enter the number exactly as it appears on page 1 of the pack",
+    "HEARING_DATE_REQUIRED": "You must provide the court hearing date ",
+    "HEARING_DATE_INVALID": "The court hearing date and/or time isn't a valid format",
+    "HEARING_DATE_PASSED": "The court hearing date must be after today",
+    "NUMBER_OF_CHARGES_REQUIRED": "You must select the number of charges against you",
+    "FULL_NAME_REQUIRED": "Please enter your full name",
+    "EMAIL_ADDRESS_REQUIRED": "You must provide an email address",
+    "EMAIL_ADDRESS_INVALID": "Email address isn't a valid format",
+    "CONTACT_NUMBER_REQUIRED": "You must provide a contact number",
+    "CONTACT_NUMBER_INVALID": "The contact number isn't a valid format",
     "PLEA_REQUIRED": "Your plea must be selected",
-    "UNDERSTAND_REQUIRED": "I confirm that I have read and understand the charges against me must be selected"
+    "UNDERSTAND_REQUIRED": "You must tick the box to confirm the legal statements"
 }
 
 
@@ -197,25 +201,46 @@ class URNField(forms.MultiValueField):
 
 
 class BasePleaStepForm(forms.Form):
-    """
-    Note that names in these forms can't be the same, otherwise they will get
-    merged in to the last value used.
-    """
     pass
 
 
-class AboutForm(BasePleaStepForm):
-    name = forms.CharField(max_length=100, required=True,
-                           error_messages={"required": ERROR_MESSAGES["FULL_NAME_REQUIRED"]})
-    urn = URNField(required=True, error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]})
-    date_of_hearing = forms.DateTimeField(widget=HearingDateTimeWidget(), error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"],
-                                                                                          "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
+class CaseForm(BasePleaStepForm):
+    urn = URNField(required=True, help_text="On page 1 of the pack, in the top right corner",
+                   error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]})
+    date_of_hearing = forms.DateTimeField(widget=HearingDateTimeWidget(),
+                                          help_text="On page 1 of the pack, near the top on the left<br>For example, 30/07/2014",
+                                          error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"],
+                                                          "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
     number_of_charges = forms.IntegerField(
         widget=forms.Select(choices=[("", "Please select ...")] + [(i, i) for i in range(1, 21)]),
+        help_text="On page 2 of the pack, in numbered boxes.<br>For example 1",
         error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]})
 
 
-class PleaInfoForm(BasePleaStepForm):
+class YourDetailsForm(BasePleaStepForm):
+    name = forms.CharField(max_length=100, required=True, label="Full name",
+                           help_text="On page 1 of the pack we sent you",
+                           error_messages={"required": ERROR_MESSAGES["FULL_NAME_REQUIRED"]})
+    contact_number = forms.CharField(max_length=30, required=True, label="Contact number",
+                                     help_text="Home or mobile number.",
+                                     error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"],
+                                                     "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
+    email = forms.EmailField(required=True, label="Email", help_text="",
+                             error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
+                                             "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
+
+    national_insurance_number = forms.CharField(max_length=20, label="National Insurance number",
+                                                help_text="It's on your National Insurance card, benefit letter, payslip or P60<br>For example, 'QQ 12 34 56 C'.",
+                                                required=False)
+    driving_licence_number = forms.CharField(max_length=20, label="UK driving licence number",
+                                             help_text="Starts with the first five letters from your last name",
+                                             required=False)
+    registration_number = forms.CharField(max_length=10, label="Registration number",
+                                          help_text="Of the vehicle you were driving when charged.",
+                                          required=False)
+
+
+class ConfirmationForm(BasePleaStepForm):
     understand = forms.BooleanField(required=True,
                                     error_messages={"required": ERROR_MESSAGES["UNDERSTAND_REQUIRED"]})
 
@@ -233,21 +258,28 @@ class PleaForm(BasePleaStepForm):
 
 ###### Form stage classes #######
 
-class AboutStage(FormStage):
-    name = "about"
-    template = "plea/about.html"
-    form_classes = [AboutForm, ]
+class CaseStage(FormStage):
+    name = "case"
+    template = "plea/case.html"
+    form_classes = [CaseForm, ]
     dependencies = []
+
+
+class YourDetailsStage(FormStage):
+    name = "your_details"
+    template = "plea/about.html"
+    form_classes = [YourDetailsForm]
+    dependencies = ["case"]
 
 
 class PleaStage(FormStage):
     name = "plea"
     template = "plea/plea.html"
-    form_classes = [PleaInfoForm, PleaForm]
-    dependencies = ["about", ]
+    form_classes = [PleaForm, ]
+    dependencies = ["case", "your_details"]
 
     def load_forms(self, data=None, initial=False):
-        forms_wanted = self.all_data["about"].get("number_of_charges", 1)
+        forms_wanted = self.all_data["case"].get("number_of_charges", 1)
         extra_forms = 0
         # truncate forms data if the count has changed
         if "PleaForms" in self.all_data["plea"]:
@@ -267,11 +299,8 @@ class PleaStage(FormStage):
 
         if initial:
             initial_plea_data = self.all_data[self.name].get("PleaForms", [])
-            initial_info_data = self.all_data[self.name]
-            self.forms.append(PleaInfoForm(initial=initial_info_data))
             self.forms.append(PleaForms(initial=initial_plea_data))
         else:
-            self.forms.append(PleaInfoForm(data))
             self.forms.append(PleaForms(data))
 
         for form in self.forms:
@@ -293,36 +322,36 @@ class PleaStage(FormStage):
 class ReviewStage(FormStage):
     name = "review"
     template = "plea/review.html"
-    form_classes = []
-    dependencies = ["about", "plea"]
+    form_classes = [ConfirmationForm, ]
+    dependencies = ["case", "your_details", "plea"]
 
-    def save(self, form_data, next=None):
-        response = super(ReviewStage, self).save(form_data)
+    def save(self, form_data, next_step=None):
+        clean_data = super(ReviewStage, self).save(form_data, next_step)
 
-        email_result = send_plea_email(self.all_data)
-        if email_result:
-            next_step = reverse_lazy("plea_form_step", args=("complete", ))
+        if clean_data.get("complete", False):
+            email_result = send_plea_email(self.all_data)
+            if email_result:
+                next_step = reverse_lazy("plea_form_step", args=("complete", ))
+            else:
+                next_step = reverse_lazy('plea_form_step', args=('review_send_error', ))
 
-        else:
-            next_step = reverse_lazy(
-                'plea_form_step', args=('review_send_error', ))
+            self.next_step = next_step
 
-        self.next = next_step
-        return form_data
+        return clean_data
 
 
 class ReviewSendErrorStage(FormStage):
     name = "send_error"
     template = "plea/review_send_error.html"
     form_classes = []
-    dependencies = ["about", "plea"]
+    dependencies = ["case", "your_details", "plea"]
 
 
 class CompleteStage(FormStage):
     name = "complete"
     template = "plea/complete.html"
     form_classes = []
-    dependencies = ["about", "plea"]
+    dependencies = ["case", "your_details", "plea", "review"]
 
     def render(self, request_context):
         request_context["some_not_guilty"] = False
@@ -330,7 +359,10 @@ class CompleteStage(FormStage):
             if form_data["guilty"] == "not_guilty":
                 request_context["some_not_guilty"] = True
 
-        court_date = self.all_data["about"]["date_of_hearing"]
+        if isinstance(self.all_data["case"]["date_of_hearing"], basestring):
+            court_date = parse(self.all_data["case"]["date_of_hearing"])
+        else:
+            court_date = self.all_data["case"]["date_of_hearing"]
         request_context["days_before_hearing"] = (court_date - datetime.datetime.today()).days
         request_context["will_hear_by"] = court_date + datetime.timedelta(days=3)
 
@@ -338,7 +370,8 @@ class CompleteStage(FormStage):
 
 
 class PleaOnlineForms(MultiStageForm):
-    stage_classes = [AboutStage,
+    stage_classes = [CaseStage,
+                     YourDetailsStage,
                      PleaStage,
                      ReviewStage,
                      ReviewSendErrorStage,

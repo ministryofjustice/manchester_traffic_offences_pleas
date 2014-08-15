@@ -14,7 +14,6 @@ def send_plea_email(context_data, plea_email_to=settings.PLEA_EMAIL_TO):
 
     context_data: dict populated by form fields
     """
-
     plea_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
                                          settings.PLEA_EMAIL_ATTACHMENT_NAME,
                                          settings.PLEA_EMAIL_TEMPLATE,
@@ -29,7 +28,7 @@ def send_plea_email(context_data, plea_email_to=settings.PLEA_EMAIL_TO):
     email_audit.body_text = settings.PLEA_EMAIL_BODY
     email_audit.subject = settings.PLEA_EMAIL_SUBJECT.format(**context_data)
     email_audit.status = "created_not_sent"
-    email_audit.hearing_date = context_data["about"]["date_of_hearing"]
+    email_audit.hearing_date = context_data["case"]["date_of_hearing"]
     email_audit.save()
 
     try:
