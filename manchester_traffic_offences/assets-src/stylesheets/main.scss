@@ -242,8 +242,7 @@ table th.header {font-size: 1.2em;}
 
 .charges .form-hint {display:inline; font-weight: normal;}
 h2 span.form-hint {display: inline; font-weight: normal; font-size: 0.7em;}
-label[for=id_understand] {font-weight: normal; font-size: 1em; }
-label[for=id_understand] strong {font-weight: bold;}
+#understand {font-weight: normal; font-size: 1em;}
 label.datetime {font-weight:normal; display:inline-block;}
 label.datetime-day {width:2.4em;}
 label.datetime-month {width:3.5em;}
