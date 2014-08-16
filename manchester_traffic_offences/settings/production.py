@@ -30,8 +30,8 @@ MANAGERS = ADMINS
 
 
 ALLOWED_HOSTS = ["www.makeaplea.justice.gov.uk", ]
-EMAIL_HOST = os.environ.get('EMAIL_PORT', 'email-smtp.eu-west-1.amazonaws.com')
-EMAIL_PORT = os.environ.get('EMAIL_HOST', '587')
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'email-smtp.eu-west-1.amazonaws.com')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
 EMAIL_HOST_USER = os.environ['EMAIL_HOST_USERNAME']
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 
