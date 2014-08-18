@@ -8,14 +8,12 @@ import six
 from django import forms
 from django.core import exceptions
 from django.forms.formsets import BaseFormSet
-from django.forms.widgets import (Select, MultiWidget, Textarea, RadioSelect,
+from django.forms.widgets import (MultiWidget, Textarea, RadioSelect,
                                   TextInput, RadioFieldRenderer)
-from django.forms.extras.widgets import Widget, SelectDateWidget
+from django.forms.extras.widgets import Widget
 from django.template.loader import render_to_string
 from django.utils.encoding import force_str, force_text
 from django.utils.translation import ugettext_lazy as _
-
-from govuk_utils.forms import GovUkDateWidget
 
 
 ERROR_MESSAGES = {
@@ -98,23 +96,23 @@ class HearingDateWidget(MultiWidget):
 
         try:
             day = int(day)
-        except ValueError:
+        except (ValueError, TypeError):
             day = None
 
         try:
             month = int(month)
-        except ValueError:
+        except (ValueError, TypeError):
             try:
                 month = datetime.datetime.strptime(month, "%b").month
-            except ValueError:
+            except (ValueError, TypeError):
                 try:
                     month = datetime.datetime.strptime(month, "%B").month
-                except ValueError:
+                except (ValueError, TypeError):
                     month = None
 
         try:
             year = int(year)
-        except ValueError:
+        except (ValueError, TypeError):
             year = None
 
         try:
