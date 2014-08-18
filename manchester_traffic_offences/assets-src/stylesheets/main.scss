@@ -77,21 +77,24 @@ $errorbgcolour: #faebec;
 }
 label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.31579; font-weight: 400; text-transform: none; display: block;}
 .inline .block-label {font-weight:normal; margin-top: 0.5em;}
+.block-label input { position: static; margin-right: .5em }
+.block-label { padding-left: 1em }
 
 .group label {font-weight:bold; font-size: 1.3em; margin: 1em 0 0.5em;}
 .with-help-image {width:70%; float: left;}
 .help-image {width:30%; float: right; margin-top: 1.5em;}
 
-#enter-urn #id_urn_0 {width:25px; margin-left: 0; margin-right: 5px;}
-#enter-urn #id_urn_1, #enter-urn #id_urn_3 {width:25px; margin:0 5px;}
-#enter-urn #id_urn_2 {width:85px; margin:0 5px;}
+#enter-urn #id_urn_0 {width:25px; margin: 0 5px 0 0}
+#enter-urn #id_urn_1 {width:25px; margin: 0 5px 0 5px}
+#enter-urn #id_urn_2 {width:85px; margin: 0 5px 0 5px}
+#enter-urn #id_urn_3 {width:25px; margin: 0 5px 0 5px}
 
 section#group-urn #number_of_charges {width:32%;}
 
-#id_date_of_hearing_month, #id_date_of_hearing_hour, #id_date_of_hearing_min {width:25px; margin-right: 5px }
-#id_date_of_hearing_year { width: 50px; }
-#id_date_of_hearing_day {margin-left:0; margin-right: 5px; width: 25px;}
-.group label.datetime {font-size: 1em;}
+#id_date_of_hearing_month, #id_date_of_hearing_hour, #id_date_of_hearing_min {width:25px; margin: 0 5px 0px 0 }
+#id_date_of_hearing_year { width: 50px;  margin: 0 5px 0px 0 }
+#id_date_of_hearing_day { margin: 0 5px 0px 0; width: 25px;}
+.group label.datetime {font-size: 1em; margin-top: 1em}
 
 section#group-urn #id_understand_checkbox {font-weight:normal; margin-right: 0px; font-size: 1em;}
 section#group-urn #id_understand_checkbox span {font-weight:bold;}
@@ -99,13 +102,18 @@ section#group-urn #id_understand_checkbox span {font-weight:bold;}
 details {margin: 1em 0;}
 button.large, .button.large {font-size: 24px;}
 
+.list-bullet li {
+  margin-left: 1em;
+}
+
 input[type=text], input[type="number"], input[type=email], input[type=tel], input[type=date], select[type=text], select[type=email], select[type=tel], select[type=date] {width: 100%; padding: 5px 4px 2px; color: #0b0c0c; border: 1px solid #bfc1c3; margin: 0 0 10px 0;}
 
 input, select {font-family: "nta", Arial, sans-serif;font-size: 19px; line-height: 1.31579; font-weight: 400;text-transform:none; margin: 0;}
-input#name {width: 32%;}
+#id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number,
+#id_employer_name, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0 {width: 32%;}
 select {border-color: #bfc1c3;}
 
-.section {margin-bottom: 3em;}
+.section {margin-bottom: 2em;}
 .actions {clear: both;}
 
 section#charges {clear: both; width: 75%;}
@@ -169,6 +177,65 @@ div.error, section.error {
   overflow: auto;
 }
 
+#complete {
+  ol {
+    padding: 0;
+    counter-reset: item;
+  }
+
+  ol > li {
+    padding-bottom: 1em;
+    list-style-type: none;
+    counter-increment: item;
+  }
+
+  ol > li:before {
+    font-weight: bold;
+    padding-right: 0.5em;
+    display:inline-block;
+    width: 0.7em;
+    content: counter(item) ".";
+  }
+
+  address {
+    font-style: normal;
+    border-left: solid 10px $grey-2;
+    margin: 0.5em 0;
+    padding: 1em;
+
+    p {margin:0.5em 0;}
+  }
+}
+
+#review {
+  .important {
+    background:url(../images/icons/icon-important.png) no-repeat top left;
+    padding-top: 0.3em;
+    padding-left: 40px;
+    min-height:34px;
+    margin: 1em 0;
+  }
+}
+
+#your-money {
+  #employed, #benefits {
+    border-top: solid 1px #c2c2c2;
+    padding-top: 1em;
+  }
+
+  .full {
+    overflow: auto;
+  }
+
+  .amount {float: left;}
+
+  .money {
+    ul { overflow: auto; }
+    li { float:left; margin-left: 1em; }
+    ul li label { font-weight:normal; margin: 0;}
+  }
+
+}
 
 table {clear:both;margin: 2em 0;}
 table tr, table td, table th {padding:8px; font-size:1em;width:45%;}
@@ -183,7 +250,9 @@ table th.header {font-size: 1.2em;}
   .article-container { margin-right: auto }
 }
 @media (max-width: 500px ) {
-  input#name { width: 97% }
+  #id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number,
+  #id_employer_name, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0 { width: 97% }
+  textarea { width: 98% }
 }
 
 
@@ -194,15 +263,15 @@ table th.header {font-size: 1.2em;}
 .js-enabled .related-positioning {top: 8em;}
 
 .charges .form-hint {display:inline; font-weight: normal;}
-label[for=id_understand] {font-weight: normal; font-size: 1em; white-space: nowrap;}
-label[for=id_understand] strong {font-weight: bold;}
+h2 span.form-hint {display: inline; font-weight: normal; font-size: 0.7em;}
+#understand {font-weight: normal; font-size: 1em;}
 label.datetime {font-weight:normal; display:inline-block;}
 label.datetime-day {width:2.4em;}
 label.datetime-month {width:3.5em;}
 label.datetime-year {width:3.75em;}
 label.datetime-time {display:block; margin:0;}
 
-table#your-details, table#your-plea {
+table#your-details, table#your-plea, table#case-details, table#your-money {
   tr, th, td {width: inherit;}
   td {border: none; padding: 10px 8px;}
   th {border: none; padding-bottom: 10px;}

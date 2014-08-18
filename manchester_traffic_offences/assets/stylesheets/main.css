@@ -399,14 +399,6 @@ blockquote {
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-.example-highlight-grid .grid-wrapper {
-  background: #bfc1c3; }
-.example-highlight-grid .grid {
-  background: #f8f8f8; }
-.example-highlight-grid .is-inner-block-highlight {
-  background: #dee0e2;
-  width: 100%; }
-
 .example-back-link {
   display: -moz-inline-stack;
   display: inline-block;
@@ -1540,6 +1532,13 @@ label {
   font-weight: normal;
   margin-top: 0.5em; }
 
+.block-label input {
+  position: static;
+  margin-right: 0.5em; }
+
+.block-label {
+  padding-left: 1em; }
+
 .group label {
   font-weight: bold;
   font-size: 1.3em;
@@ -1556,34 +1555,38 @@ label {
 
 #enter-urn #id_urn_0 {
   width: 25px;
-  margin-left: 0;
-  margin-right: 5px; }
+  margin: 0 5px 0 0; }
 
-#enter-urn #id_urn_1, #enter-urn #id_urn_3 {
+#enter-urn #id_urn_1 {
   width: 25px;
-  margin: 0 5px; }
+  margin: 0 5px 0 5px; }
 
 #enter-urn #id_urn_2 {
   width: 85px;
-  margin: 0 5px; }
+  margin: 0 5px 0 5px; }
+
+#enter-urn #id_urn_3 {
+  width: 25px;
+  margin: 0 5px 0 5px; }
 
 section#group-urn #number_of_charges {
   width: 32%; }
 
 #id_date_of_hearing_month, #id_date_of_hearing_hour, #id_date_of_hearing_min {
   width: 25px;
-  margin-right: 5px; }
+  margin: 0 5px 0px 0; }
 
 #id_date_of_hearing_year {
-  width: 50px; }
+  width: 50px;
+  margin: 0 5px 0px 0; }
 
 #id_date_of_hearing_day {
-  margin-left: 0;
-  margin-right: 5px;
+  margin: 0 5px 0px 0;
   width: 25px; }
 
 .group label.datetime {
-  font-size: 1em; }
+  font-size: 1em;
+  margin-top: 1em; }
 
 section#group-urn #id_understand_checkbox {
   font-weight: normal;
@@ -1598,6 +1601,9 @@ details {
 
 button.large, .button.large {
   font-size: 24px; }
+
+.list-bullet li {
+  margin-left: 1em; }
 
 input[type=text], input[type="number"], input[type=email], input[type=tel], input[type=date], select[type=text], select[type=email], select[type=tel], select[type=date] {
   width: 100%;
@@ -1614,14 +1620,15 @@ input, select {
   text-transform: none;
   margin: 0; }
 
-input#name {
+#id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number,
+#id_employer_name, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0 {
   width: 32%; }
 
 select {
   border-color: #bfc1c3; }
 
 .section {
-  margin-bottom: 3em; }
+  margin-bottom: 2em; }
 
 .actions {
   clear: both; }
@@ -1694,6 +1701,50 @@ div.error, section.error {
   padding: 0 0 10px 30px;
   overflow: auto; }
 
+#complete ol {
+  padding: 0;
+  counter-reset: item; }
+#complete ol > li {
+  padding-bottom: 1em;
+  list-style-type: none;
+  counter-increment: item; }
+#complete ol > li:before {
+  font-weight: bold;
+  padding-right: 0.5em;
+  display: inline-block;
+  width: 0.7em;
+  content: counter(item) "."; }
+#complete address {
+  font-style: normal;
+  border-left: solid 10px #bfc1c3;
+  margin: 0.5em 0;
+  padding: 1em; }
+  #complete address p {
+    margin: 0.5em 0; }
+
+#review .important {
+  background: url(../images/icons/icon-important.png) no-repeat top left;
+  padding-top: 0.3em;
+  padding-left: 40px;
+  min-height: 34px;
+  margin: 1em 0; }
+
+#your-money #employed, #your-money #benefits {
+  border-top: solid 1px #c2c2c2;
+  padding-top: 1em; }
+#your-money .full {
+  overflow: auto; }
+#your-money .amount {
+  float: left; }
+#your-money .money ul {
+  overflow: auto; }
+#your-money .money li {
+  float: left;
+  margin-left: 1em; }
+#your-money .money ul li label {
+  font-weight: normal;
+  margin: 0; }
+
 table {
   clear: both;
   margin: 2em 0; }
@@ -1728,8 +1779,12 @@ table th.header {
   .article-container {
     margin-right: auto; } }
 @media (max-width: 500px) {
-  input#name {
-    width: 97%; } }
+  #id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number,
+  #id_employer_name, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0 {
+    width: 97%; }
+
+  textarea {
+    width: 98%; } }
 .related-positioning {
   height: 0;
   left: 0;
@@ -1765,13 +1820,14 @@ table th.header {
   display: inline;
   font-weight: normal; }
 
-label[for=id_understand] {
+h2 span.form-hint {
+  display: inline;
   font-weight: normal;
-  font-size: 1em;
-  white-space: nowrap; }
+  font-size: 0.7em; }
 
-label[for=id_understand] strong {
-  font-weight: bold; }
+#understand {
+  font-weight: normal;
+  font-size: 1em; }
 
 label.datetime {
   font-weight: normal;
@@ -1790,24 +1846,24 @@ label.datetime-time {
   display: block;
   margin: 0; }
 
-table#your-details tr, table#your-details th, table#your-details td, table#your-plea tr, table#your-plea th, table#your-plea td {
+table#your-details tr, table#your-details th, table#your-details td, table#your-plea tr, table#your-plea th, table#your-plea td, table#case-details tr, table#case-details th, table#case-details td, table#your-money tr, table#your-money th, table#your-money td {
   width: inherit; }
-table#your-details td, table#your-plea td {
+table#your-details td, table#your-plea td, table#case-details td, table#your-money td {
   border: none;
   padding: 10px 8px; }
-table#your-details th, table#your-plea th {
+table#your-details th, table#your-plea th, table#case-details th, table#your-money th {
   border: none;
   padding-bottom: 10px; }
-table#your-details tbody, table#your-plea tbody {
+table#your-details tbody, table#your-plea tbody, table#case-details tbody, table#your-money tbody {
   border-top: solid 1px #c2c2c2;
   border-bottom: solid 1px #c2c2c2; }
-table#your-details th.label, table#your-plea th.label {
+table#your-details th.label, table#your-plea th.label, table#case-details th.label, table#your-money th.label {
   color: #6F777B;
   vertical-align: top;
   font-weight: normal; }
-table#your-details th.header, table#your-plea th.header {
+table#your-details th.header, table#your-plea th.header, table#case-details th.header, table#your-money th.header {
   width: 35%; }
-table#your-details h3, table#your-plea h3 {
+table#your-details h3, table#your-plea h3, table#case-details h3, table#your-money h3 {
   font-weight: bold; }
 
 div.indent {

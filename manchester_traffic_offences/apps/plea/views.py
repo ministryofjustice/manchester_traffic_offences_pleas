@@ -7,7 +7,19 @@ from django.views.generic import TemplateView
 
 from brake.decorators import ratelimit
 
-from .forms import PleaOnlineForms
+from govuk_utils.forms import MultiStageForm
+from stages import (CaseStage, YourDetailsStage, PleaStage, YourMoneyStage,
+                    ReviewStage, ReviewSendErrorStage, CompleteStage)
+
+
+class PleaOnlineForms(MultiStageForm):
+    stage_classes = [CaseStage,
+                     YourDetailsStage,
+                     PleaStage,
+                     YourMoneyStage,
+                     ReviewStage,
+                     ReviewSendErrorStage,
+                     CompleteStage]
 
 
 class PleaOnlineViews(TemplateView):
@@ -18,10 +30,12 @@ class PleaOnlineViews(TemplateView):
             return HttpResponseRedirect(reverse_lazy("plea_form_step", args=(stage,)))
 
         form = PleaOnlineForms(stage, "plea_form_step", request.session)
+
         return form.load(RequestContext(request))
 
     @method_decorator(ratelimit(block=True, rate="10/m"))
     def post(self, request, stage):
         nxt = request.GET.get("next", None)
         form = PleaOnlineForms(stage, "plea_form_step", request.session)
-        return form.save(request.POST, RequestContext(request), nxt)
+        response = form.save(request.POST, RequestContext(request), nxt)
+        return response

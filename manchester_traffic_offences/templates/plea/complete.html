@@ -1,26 +1,40 @@
 {% extends "base.html" %}
-
+{% block page_title %}Plea online: Sent{% endblock %}
 {% block page_content %}
 <header class="page-header group">
     <hgroup>
-        <div><h1><span>Service</span>Make your plea online</h1></div>
+        <div><h1><span>Service</span>Make your plea</h1></div>
     </hgroup>
 </header>
 
 <div class="inner" id="complete">
-	<h2 class="ticked">Your plea{{ about.number_of_charges|pluralize:" has,s have" }} been sent to the court</h2>
+	<h2 class="ticked">Your plea{{ case.number_of_charges|pluralize:" has,s have" }} been sent to the court</h2>
 	<h3 class="heading-medium">What happens next?</h3>
-    {% if some_guilty %}
-        <p>By law, you must fill in leaflet MC100 and send it back to us (it's in the pack we sent you).
-            <br>
-        The court will check your financial details when considering your fine.</p>
+
+    {% if some_not_guilty and days_before_hearing > 3 %}
+        <ol>
+            <li>There’s <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.</li>
+            <li>You must post your evidence to the court below to arrive by <strong>{{ case.date_of_hearing|date:"d M Y" }}</strong>.
+                <address>
+                    Manchester and Salford Magistrates’ Court<br>
+                    Crown Square<br>
+                    Manchester<br>
+                    M60 1PR<br>
+                    <p>Evidence must be <strong>copies</strong>, not originals, eg copy of your vehicle insurance document,
+                        vehicle sale receipt or your vehicle registration V5C document.</p>
+                </address>
+            </li>
+            <li>We’ll send you a letter with the court’s decision on <strong>{{ will_hear_by|date:"d M Y" }}</strong>.</li>
+        </ol>
+    {% else %}
+        <p>There’s <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.</p>
+
+        <p>We’ll send you a letter with the court’s decision on <strong>{{ will_hear_by|date:"d M Y" }}</strong>.</p>
     {% endif %}
-    <p>We’ll send you a letter with the court’s decision on <strong>{{ about.date_of_hearing|date:"jS F Y" }}</strong>.
-        <br>
-        The letter will also explain what you need to do next.<p>
-		
-    <p>There’s no need to come to court on the date shown in the pack we sent you by post.</p>
-		
-    <p class="font-xsmall">Complete our <a href="">satisfaction survey</a>. Your feedback helps us improve the service.</p>
+
+    <p>Quote your URN <strong>{{ case.urn }}</strong> if you <a class="external" href="https://courttribunalfinder.service.gov.uk/courts/manchester-and-salford-magistrates-court">contact the court</a> about your case.</p>
+
+    <p class="font-xsmall">This is a new service &#x2014; please give us <a class="external" href="/feedback/?next=home">feedback</a> so we can make it better.</p>
+
 </div>
 {% endblock page_content %}
