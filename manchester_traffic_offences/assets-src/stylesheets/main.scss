@@ -109,10 +109,11 @@ button.large, .button.large {font-size: 24px;}
 input[type=text], input[type="number"], input[type=email], input[type=tel], input[type=date], select[type=text], select[type=email], select[type=tel], select[type=date] {width: 100%; padding: 5px 4px 2px; color: #0b0c0c; border: 1px solid #bfc1c3; margin: 0 0 10px 0;}
 
 input, select {font-family: "nta", Arial, sans-serif;font-size: 19px; line-height: 1.31579; font-weight: 400;text-transform:none; margin: 0;}
-#id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number {width: 32%;}
+#id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number,
+#id_employer_name, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0 {width: 32%;}
 select {border-color: #bfc1c3;}
 
-.section {margin-bottom: 3em;}
+.section {margin-bottom: 2em;}
 .actions {clear: both;}
 
 section#charges {clear: both; width: 75%;}
@@ -216,6 +217,26 @@ div.error, section.error {
   }
 }
 
+#your-money {
+  #employed, #benefits {
+    border-top: solid 1px #c2c2c2;
+    padding-top: 1em;
+  }
+
+  .full {
+    overflow: auto;
+  }
+
+  .amount {float: left;}
+
+  .money {
+    ul { overflow: auto; }
+    li { float:left; margin-left: 1em; }
+    ul li label { font-weight:normal; margin: 0;}
+  }
+
+}
+
 table {clear:both;margin: 2em 0;}
 table tr, table td, table th {padding:8px; font-size:1em;width:45%;}
 table th a.review {font-weight:normal; float: right;}
@@ -229,7 +250,8 @@ table th.header {font-size: 1.2em;}
   .article-container { margin-right: auto }
 }
 @media (max-width: 500px ) {
-  #id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number { width: 97% }
+  #id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number,
+  #id_employer_name, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0 { width: 97% }
   textarea { width: 98% }
 }
 
@@ -249,7 +271,7 @@ label.datetime-month {width:3.5em;}
 label.datetime-year {width:3.75em;}
 label.datetime-time {display:block; margin:0;}
 
-table#your-details, table#your-plea, table#case-details {
+table#your-details, table#your-plea, table#case-details, table#your-money {
   tr, th, td {width: inherit;}
   td {border: none; padding: 10px 8px;}
   th {border: none; padding-bottom: 10px;}
