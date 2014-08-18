@@ -8,17 +8,12 @@ import six
 from django import forms
 from django.core import exceptions
 from django.forms.formsets import BaseFormSet
-from django.forms.widgets import MultiWidget
-from django.core.urlresolvers import reverse_lazy
-from django.forms.formsets import formset_factory
-from django.forms.widgets import Textarea, RadioSelect, TextInput, RadioFieldRenderer
+from django.forms.widgets import (Select, MultiWidget, Textarea, RadioSelect,
+                                  TextInput, RadioFieldRenderer)
 from django.forms.extras.widgets import Widget
 from django.template.loader import render_to_string
 from django.utils.encoding import force_str, force_text
 from django.utils.translation import ugettext_lazy as _
-
-from govuk_utils.forms import FormStage, MultiStageForm
-from email import send_plea_email
 
 
 ERROR_MESSAGES = {
@@ -34,6 +29,12 @@ ERROR_MESSAGES = {
     "CONTACT_NUMBER_REQUIRED": "You must provide a contact number",
     "CONTACT_NUMBER_INVALID": "The contact number isn't a valid format",
     "PLEA_REQUIRED": "Your plea must be selected",
+    "YOU_ARE_REQUIRED": "You must let us know if you're employed, receiving benefits or other",
+    "EMPLOYERS_NAME_REQUIRED": "Please enter your employer's full name",
+    "EMPLOYERS_ADDRESS_REQUIRED": "You must provide your employer's full address",
+    "EMPLOYERS_PHONE_REQUIRED": "Please enter your employer's phone number",
+    "PAY_REQUIRED": "Please enter your take home pay and how often you're paid",
+    "BENEFITS_REQUIRED": "Please enter total benefits and how often you receive them",
     "UNDERSTAND_REQUIRED": "You must tick the box to confirm the legal statements"
 }
 
@@ -200,6 +201,40 @@ class URNField(forms.MultiValueField):
     widget = URNWidget()
 
 
+class MoneyFieldWidget(forms.MultiWidget):
+    PERIOD_CHOICES = (("a week", "a week"),
+                      ("a fortnight", "a fortnight"),
+                      ("a month", "a month"))
+
+    def __init__(self, attrs=None):
+        widgets = [TextInput(attrs={"maxlength": "7", "pattern": "[0-9]+", "class": "amount"}),
+                   RadioSelect(choices=self.PERIOD_CHOICES)]
+
+        super(MoneyFieldWidget, self).__init__(widgets, attrs)
+
+    def decompress(self, value):
+        if value:
+            return value.split(" ", 1)
+        else:
+            return ["", ""]
+
+    def format_output(self, rendered_widgets):
+        return ' '.join(rendered_widgets)
+
+
+class MoneyField(forms.MultiValueField):
+    widget = MoneyFieldWidget()
+
+    def __init__(self, *args, **kwargs):
+        list_fields = [forms.CharField(required=False, max_length=7, label="Total benefits"),
+                       forms.CharField(required=False)]
+
+        super(MoneyField, self).__init__(list_fields, *args, **kwargs)
+
+    def compress(self, data_list):
+        return " ".join(data_list)
+
+
 class BasePleaStepForm(forms.Form):
     pass
 
@@ -240,6 +275,44 @@ class YourDetailsForm(BasePleaStepForm):
                                           required=False)
 
 
+class YourMoneyForm(BasePleaStepForm):
+    YOU_ARE_CHOICES = (("employed", "employed"),
+                       ("receiving benefits", "receiving benefits"),
+                       ("other", "other"))
+    you_are = forms.ChoiceField(label="Are you", choices=YOU_ARE_CHOICES,
+                                widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
+                                error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
+    employer_name = forms.CharField(required=False, max_length=100, label="Employer's name",
+                                    error_messages={"required": ERROR_MESSAGES["EMPLOYERS_NAME_REQUIRED"]})
+    employer_address = forms.CharField(required=False, max_length=500, label="Employer's full address",
+                                       widget=forms.Textarea, error_messages={"required": ERROR_MESSAGES["EMPLOYERS_ADDRESS_REQUIRED"]})
+    employer_phone = forms.CharField(required=False, max_length=100, label="Employer's phone",
+                                     error_messages={"required": ERROR_MESSAGES["EMPLOYERS_PHONE_REQUIRED"]})
+    take_home_pay = MoneyField(required=False, label="Your take home pay (after tax)",
+                               error_messages={"required": ERROR_MESSAGES["PAY_REQUIRED"],
+                                               "incomplete": ERROR_MESSAGES["PAY_REQUIRED"]})
+    benefits = MoneyField(required=False, label="Total benefits",
+                          error_messages={"required": ERROR_MESSAGES["BENEFITS_REQUIRED"],
+                                          "incomplete": ERROR_MESSAGES["BENEFITS_REQUIRED"]})
+
+    def __init__(self, *args, **kwargs):
+        super(YourMoneyForm, self).__init__(*args, **kwargs)
+        try:
+            data = args[0]
+        except IndexError:
+            data = {}
+
+        if "you_are" in data:
+            if data["you_are"] == "employed":
+                self.fields["employer_name"].required = True
+                self.fields["employer_address"].required = True
+                self.fields["employer_phone"].required = True
+                self.fields["take_home_pay"].required = True
+
+            if data["you_are"] == "receiving benefits":
+                    self.fields["benefits"].required = True
+
+
 class ConfirmationForm(BasePleaStepForm):
     understand = forms.BooleanField(required=True,
                                     error_messages={"required": ERROR_MESSAGES["UNDERSTAND_REQUIRED"]})
@@ -258,121 +331,3 @@ class PleaForm(BasePleaStepForm):
 
 ###### Form stage classes #######
 
-class CaseStage(FormStage):
-    name = "case"
-    template = "plea/case.html"
-    form_classes = [CaseForm, ]
-    dependencies = []
-
-
-class YourDetailsStage(FormStage):
-    name = "your_details"
-    template = "plea/about.html"
-    form_classes = [YourDetailsForm]
-    dependencies = ["case"]
-
-
-class PleaStage(FormStage):
-    name = "plea"
-    template = "plea/plea.html"
-    form_classes = [PleaForm, ]
-    dependencies = ["case", "your_details"]
-
-    def load_forms(self, data=None, initial=False):
-        forms_wanted = self.all_data["case"].get("number_of_charges", 1)
-        extra_forms = 0
-        # truncate forms data if the count has changed
-        if "PleaForms" in self.all_data["plea"]:
-            forms_count = len(self.all_data["plea"]["PleaForms"])
-            # truncate data if the count is changed
-            if forms_count > forms_wanted:
-                self.all_data["plea"]["PleaForms"] = self.all_data["plea"]["PleaForms"][:forms_wanted]
-                forms_count = forms_wanted
-
-            if forms_count < forms_wanted:
-                extra_forms = forms_wanted - forms_count
-
-        else:
-            extra_forms = forms_wanted
-
-        PleaForms = formset_factory(PleaForm, formset=RequiredFormSet, extra=extra_forms)
-
-        if initial:
-            initial_plea_data = self.all_data[self.name].get("PleaForms", [])
-            self.forms.append(PleaForms(initial=initial_plea_data))
-        else:
-            self.forms.append(PleaForms(data))
-
-        for form in self.forms:
-            if form.errors:
-                self.context["formset_has_errors"] = True
-
-    def save_forms(self):
-        form_data = {}
-
-        for form in self.forms:
-            if hasattr(form, "management_form"):
-                form_data["PleaForms"] = form.cleaned_data
-            else:
-                form_data.update(form.cleaned_data)
-
-        return form_data
-
-
-class ReviewStage(FormStage):
-    name = "review"
-    template = "plea/review.html"
-    form_classes = [ConfirmationForm, ]
-    dependencies = ["case", "your_details", "plea"]
-
-    def save(self, form_data, next_step=None):
-        clean_data = super(ReviewStage, self).save(form_data, next_step)
-
-        if clean_data.get("complete", False):
-            email_result = send_plea_email(self.all_data)
-            if email_result:
-                next_step = reverse_lazy("plea_form_step", args=("complete", ))
-            else:
-                next_step = reverse_lazy('plea_form_step', args=('review_send_error', ))
-
-            self.next_step = next_step
-
-        return clean_data
-
-
-class ReviewSendErrorStage(FormStage):
-    name = "send_error"
-    template = "plea/review_send_error.html"
-    form_classes = []
-    dependencies = ["case", "your_details", "plea"]
-
-
-class CompleteStage(FormStage):
-    name = "complete"
-    template = "plea/complete.html"
-    form_classes = []
-    dependencies = ["case", "your_details", "plea", "review"]
-
-    def render(self, request_context):
-        request_context["some_not_guilty"] = False
-        for form_data in self.all_data["plea"]["PleaForms"]:
-            if form_data["guilty"] == "not_guilty":
-                request_context["some_not_guilty"] = True
-
-        if isinstance(self.all_data["case"]["date_of_hearing"], basestring):
-            court_date = parse(self.all_data["case"]["date_of_hearing"])
-        else:
-            court_date = self.all_data["case"]["date_of_hearing"]
-        request_context["days_before_hearing"] = (court_date - datetime.datetime.today()).days
-        request_context["will_hear_by"] = court_date + datetime.timedelta(days=3)
-
-        return super(CompleteStage, self).render(request_context)
-
-
-class PleaOnlineForms(MultiStageForm):
-    stage_classes = [CaseStage,
-                     YourDetailsStage,
-                     PleaStage,
-                     ReviewStage,
-                     ReviewSendErrorStage,
-                     CompleteStage]

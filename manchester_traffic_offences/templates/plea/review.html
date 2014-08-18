@@ -113,6 +113,45 @@
                     </tbody>
                 </table>
 
+                <table id="your-money">
+                    <thead>
+                    <tr>
+                        <th class="header">Your money</th>
+                        <th><a href="{% url "plea_form_step" "your_money" %}" class="review">Change your money</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th class="label">You are</th>
+                        <td>{{ your_money.you_are }}</td>
+                    </tr>
+                    {% if your_money.you_are == "employed" %}
+                        <tr>
+                            <th class="label">Employer's name</th>
+                            <td>{{ your_money.employer_name }}</td>
+                        </tr>
+                        <tr>
+                            <th class="label">Employer's full address</th>
+                            <td>{{ your_money.employer_address|linebreaksbr }}</td>
+                        </tr>
+                        <tr>
+                            <th class="label">Employer's phone</th>
+                            <td>{{ your_money.employer_phone }}</td>
+                        </tr>
+                        <tr>
+                            <th class="label">Your take home pay</th>
+                            <td>£{{ your_money.take_home_pay }}</td>
+                        </tr>
+                    {% endif %}
+                    {% if your_money.you_are == "receiving benefits" %}
+                        <tr>
+                            <th class="label">Your benefits</th>
+                            <td>£{{ your_money.benefits }}</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+
                 <section>
                     {% with forms.0 as form %}
                         <a id="section_understand" name="section_understand"></a>
