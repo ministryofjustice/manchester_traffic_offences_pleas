@@ -22,6 +22,7 @@ ERROR_MESSAGES = {
     "URN_REQUIRED": "You must enter your unique reference number (URN)",
     "URN_INVALID": "The unique reference number (URN) isn't valid. Enter the number exactly as it appears on page 1 of the pack",
     "HEARING_DATE_REQUIRED": "You must provide the court hearing date ",
+    "HEARING_TIME_REQUIRED": "You must provide the court hearing time ",
     "HEARING_DATE_INVALID": "The court hearing date and/or time isn't a valid format",
     "HEARING_DATE_PASSED": "The court hearing date must be after today",
     "NUMBER_OF_CHARGES_REQUIRED": "You must select the number of charges against you",
@@ -58,6 +59,11 @@ def is_valid_urn_format(urn):
     return True
 
 
+def is_date_in_future(date):
+    if date <= datetime.datetime.today().date():
+        raise exceptions.ValidationError(ERROR_MESSAGES["HEARING_DATE_PASSED"])
+
+
 class DSRadioFieldRenderer(RadioFieldRenderer):
     def render(self):
         """
@@ -72,8 +78,56 @@ class DSRadioFieldRenderer(RadioFieldRenderer):
         return render_to_string("widgets/RadioSelect.html", context)
 
 
-class HearingDateWidget(SelectDateWidget):
-    pass
+class HearingDateWidget(MultiWidget):
+    def __init__(self, attrs=None):
+        widgets = [forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]+'}),
+                   forms.TextInput(),
+                   forms.TextInput(attrs={'maxlength': '4', 'pattern': '[0-9]+'}),
+                   ]
+        super(HearingDateWidget, self).__init__(widgets, attrs)
+
+    def decompress(self, value):
+        if value:
+            year, month, day = value.split("-")
+            return [day, month, year]
+        else:
+            return ["", "", ""]
+
+    def value_from_datadict(self, data, files, name):
+        day, month, year = [widget.value_from_datadict(data, files, name + '_%s' % i) for i, widget in enumerate(self.widgets)]
+
+        try:
+            day = int(day)
+        except ValueError:
+            day = None
+
+        try:
+            month = int(month)
+        except ValueError:
+            try:
+                month = datetime.datetime.strptime(month, "%b").month
+            except ValueError:
+                try:
+                    month = datetime.datetime.strptime(month, "%B").month
+                except ValueError:
+                    month = None
+
+        try:
+            year = int(year)
+        except ValueError:
+            year = None
+
+        try:
+            return str(datetime.date(day=day, month=month, year=year))
+        except (ValueError, TypeError):
+            return [widget.value_from_datadict(data, files, name + '_%s' % i) for i, widget in enumerate(self.widgets)]
+
+    def format_output(self, rendered_widgets):
+        return '/'.join(rendered_widgets)
+
+
+class HearingDateField(forms.DateField):
+    widget = HearingDateWidget
 
 
 class FixedTimeWidget(Widget):
@@ -125,9 +179,7 @@ class FixedTimeWidget(Widget):
                     pass
 
         time_html = self.create_radio(name, value, self.get_time_from_val((hour_val, minute_val)))
-
-        context = {"time": time_html}
-        return render_to_string("widgets/FixedTimeWidget.html", context)
+        return time_html
 
 
 class HearingTimeWidget(FixedTimeWidget):
@@ -216,11 +268,13 @@ class BasePleaStepForm(forms.Form):
 class CaseForm(BasePleaStepForm):
     urn = URNField(required=True, help_text="On page 1 of the pack, in the top right corner",
                    error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]})
-    date_of_hearing = forms.DateField(widget=HearingDateWidget,
+    date_of_hearing = forms.DateField(widget=HearingDateWidget, validators=[is_date_in_future],
                                       help_text="On page 1 of the pack, near the top on the left<br>For example, 30/07/2014",
                                       error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"],
                                                       "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
-    time_of_hearing = forms.TimeField(widget=HearingTimeWidget)
+    time_of_hearing = forms.TimeField(widget=HearingTimeWidget, label="Time",
+                                      error_messages={"required": ERROR_MESSAGES["HEARING_TIME_REQUIRED"],
+                                                      "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
     number_of_charges = forms.IntegerField(
         widget=forms.Select(choices=[("", "Please select ...")] + [(i, i) for i in range(1, 21)]),
         help_text="On page 2 of the pack, in numbered boxes.<br>For example 1",
