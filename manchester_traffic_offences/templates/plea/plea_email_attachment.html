@@ -1,6 +1,8 @@
+{% load date %}
 <!doctype html>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Online plea</title>
     <style>
         body, td {
@@ -14,6 +16,11 @@
             padding-right:20px;
             vertical-align: top;
         }
+        td.heading h2 {
+            padding-top: 20px;
+            border-bottom: solid 1px black;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 
@@ -22,28 +29,55 @@
 <table>
     <thead>
     <tr>
-        <td colspan="2" class="heading"><h2>Details</h2><hr></td>
+        <td colspan="2" class="heading"><h2>Case Details</h2></td>
     </tr>
     </thead>
     <tbody>
     <tr>
-        <th>Full name</th>
-        <td>{{ about.name }}</td>
-    </tr>
-    <tr>
         <th>URN</th>
-        <td>{{ about.urn }}</td>
+        <td>{{ case.urn }}</td>
     </tr>
     <tr>
         <th>Court hearing</th>
-        <td>{{ about.date_of_hearing }}</td>
+        <td>{{ case.date_of_hearing|string_date }}</td>
     </tr>
 
     <tr>
-        <td colspan="2"> </td>
+        <td colspan="2" class="heading"><h2>Defendant details</h2></td>
     </tr>
     <tr>
-        <td class="heading" colspan="2"><h2>Charges</h2><hr></td>
+        <th>Full name</th>
+        <td>{{ your_details.name }}</td>
+    </tr>
+    <tr>
+        <th>Contact number</th>
+        <td>{{ your_details.contact_number }}</td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td>{{ your_details.email }}</td>
+    </tr>
+    {% if your_details.national_insurance_number %}
+        <tr>
+            <th>National Insurance number</th>
+            <td>{{ your_details.national_insurance_number }}</td>
+        </tr>
+    {% endif %}
+    {% if your_details.driving_licence_number %}
+        <tr>
+            <th>UK driving licence number</th>
+            <td>{{ your_details.driving_licence_number }}</td>
+        </tr>
+    {% endif %}
+    {% if your_details.registration_number %}
+        <tr>
+            <th>Registration number</th>
+            <td>{{ your_details.registration_number }}</td>
+        </tr>
+    {% endif %}
+
+    <tr>
+        <td class="heading" colspan="2"><h2>Charges</h2></td>
     </tr>
     {% for plea_item in plea.PleaForms %}
         <tr>
@@ -67,6 +101,37 @@
         </tr>
         {% endif %}
     {%  endfor %}
+    <tr>
+        <td class="heading" colspan="2"><h2>Your money</h2></td>
+    </tr>
+    <tr>
+        <th>Status</th>
+        <td>{{ your_money.you_are }}</td>
+    </tr>
+    {% if your_money.you_are == "employed" %}
+        <tr>
+            <th>Employer's name</th>
+            <td>{{ your_money.employer_name }}</td>
+        </tr>
+        <tr>
+            <th>Employer's full address</th>
+            <td>{{ your_money.employer_address|linebreaksbr }}</td>
+        </tr>
+        <tr>
+            <th>Employer's phone</th>
+            <td>{{ your_money.employer_phone }}</td>
+        </tr>
+        <tr>
+            <th>Your take home pay</th>
+            <td>£{{ your_money.take_home_pay }}</td>
+        </tr>
+    {% endif %}
+    {% if your_money.you_are == "receiving benefits" %}
+        <tr>
+            <th>Your benefits</th>
+            <td>£{{ your_money.benefits }}</td>
+        </tr>
+    {% endif %}
     </tbody>
 </table>
 </body>

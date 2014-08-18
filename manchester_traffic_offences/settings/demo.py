@@ -30,10 +30,11 @@ MANAGERS = ADMINS
 
 
 ALLOWED_HOSTS = ["makeaplea.dsd.io", ]
-EMAIL_HOST = os.environ.get('SENDGRID_EMAIL_HOST', '587')
-EMAIL_PORT = os.environ.get('SENDGRID_EMAIL_PORT', 'smtp.sendgrid.net')
-EMAIL_HOST_USER = os.environ['SENDGRID_EMAIL_HOST_USERNAME']
-EMAIL_HOST_PASSWORD = os.environ['SENDGRID_EMAIL_HOST_PASSWORD']
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'email-smtp.eu-west-1.amazonaws.com')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USERNAME']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_USE_TLS = True
 
 PLEA_EMAIL_FROM = os.environ['PLEA_EMAIL_FROM']
 PLEA_EMAIL_TO = [os.environ['PLEA_EMAIL_TO'], ]
