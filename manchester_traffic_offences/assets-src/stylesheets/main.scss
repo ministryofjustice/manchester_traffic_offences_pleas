@@ -91,10 +91,16 @@ label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.3
 
 section#group-urn #number_of_charges {width:32%;}
 
-#id_date_of_hearing_month, #id_date_of_hearing_hour, #id_date_of_hearing_min {width:25px; margin: 0 5px 0px 0 }
-#id_date_of_hearing_year { width: 50px;  margin: 0 5px 0px 0 }
-#id_date_of_hearing_day { margin: 0 5px 0px 0; width: 25px;}
+#id_date_of_hearing_1  { width:50px; margin: 0 5px; }
+#id_date_of_hearing_2 { width: 50px;  margin: 0 5px; }
+#id_date_of_hearing_0 { width: 25px; margin: 0 5px 0 0; }
 .group label.datetime {font-size: 1em; margin-top: 1em}
+
+label.datetime {font-weight:normal; display:inline-block;}
+label.datetime-day {width:2.5em;}
+label.datetime-month {width:3.9em;}
+label.datetime-year {width:3.75em;}
+label.datetime-time {display:block; margin:0;}
 
 section#group-urn #id_understand_checkbox {font-weight:normal; margin-right: 0px; font-size: 1em;}
 section#group-urn #id_understand_checkbox span {font-weight:bold;}
@@ -265,11 +271,6 @@ table th.header {font-size: 1.2em;}
 .charges .form-hint {display:inline; font-weight: normal;}
 h2 span.form-hint {display: inline; font-weight: normal; font-size: 0.7em;}
 #understand {font-weight: normal; font-size: 1em;}
-label.datetime {font-weight:normal; display:inline-block;}
-label.datetime-day {width:2.4em;}
-label.datetime-month {width:3.5em;}
-label.datetime-year {width:3.75em;}
-label.datetime-time {display:block; margin:0;}
 
 table#your-details, table#your-plea, table#case-details, table#your-money {
   tr, th, td {width: inherit;}
