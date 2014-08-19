@@ -39,8 +39,7 @@
                             <div id="enter-urn" class="section{% if form.urn.errors %} error{% endif %}">
                                 <label for="{{ form.urn.name }}">Unique reference number (URN)</label>
                                 <span class="validation-message">{{ form.urn.errors }}</span>
-                                <p class="form-hint datefield-hint" id="">On page 1 of the pack, in the top right
-                                    corner.</p>
+                                <p class="form-hint datefield-hint" id="">{{ form.urn.help_text|safe }}</p>
                                 {#  Django handles the output of the URN field #}
                                 {{ form.urn }}
                             </div>
@@ -52,8 +51,7 @@
                         <div class="section{% if form.date_of_hearing.errors %} error{% endif %}">
                             <label for="{{ form.date_of_hearing.name }}">Court hearing date and time</label>
                             <span class="validation-message">{{ form.date_of_hearing.errors }}</span>
-                            <p class="form-hint datefield-hint" id="">On page 1 of the pack, on the left below<br>
-                                your name and address. For example, 30/07/2014 at 09:15am</p>
+                            <p class="form-hint datefield-hint" id="">{{ form.date_of_hearing.help_text|safe }}</p>
                             {{ form.date_of_hearing }}
                         </div>
                     </section>
@@ -67,7 +65,7 @@
                             <div id="enter-charges" class="section{% if form.number_of_charges.errors %} error{% endif %}">
                                 <label for="{{ form.number_of_charges.name }}">Number of charges against you</label>
                                 <span class="validation-message">{{ form.number_of_charges.errors }}</span>
-                                <p class="form-hint datefield-hint" id="">On page 2 of the pack, in numbered boxes.</p>
+                                <p class="form-hint datefield-hint" id="">{{ form.number_of_charges.help_text|safe }}</p>
                                 {{ form.number_of_charges }}
                             </div>
                         </div>
