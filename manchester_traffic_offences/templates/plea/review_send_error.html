@@ -2,54 +2,17 @@
 {% block page_title %}Plea online: Error{% endblock %}
 {% block page_content %}
 
-<style>
-/*Sorry Vera, hacking this in for now! */
-h1 {
-    font-size:2em;
-    margin-top:0.5em;
-}
-
-h2 {
-    font-size:1.5em;
-    margin-top:0.5em;
-}
-
-dt {
-    font-weight:bold;
-}
-dd {
-    margin-left:1em;
-}
-
-</style>
-
 <form method=POST class="form">
     {% csrf_token %}
-    {{ wizard.management_form }}
-    <h1>Confirm</h1>
-    <h2>About</h2>
+    <section class="flash error-summary">
+        <h2 id="error-heading">There was a problem sending your plea to the court</h2>
+        <p>Submit your plea again below.</p>
+        <p>If this problem persists please try again later.</p>
+    </section>
 
-    <h2 style="color:red; border: solid 2px red">There was a problem sending your plea, please try again</h2>
-    <dl>
-        <dt>Date of hearing</dt>
-        <dd>{{ all_data.date_of_hearing }}</dd>
-        <dt>Name</dt>
-        <dd>{{ all_data.name }}</dd>
-        <dt>URN</dt>
-        <dd>{{ all_data.urn }}</dd>
-    </dl>
-
-    <h2>Plea</h2>
-    <dl>
-        <dt>Plea</dt>
-        <dd>{{ all_data.guilty }}</dd>
-        <dt>Mitigations</dt>
-        <dd>{{ all_data.mitigations }}</dd>
-        <dt>Understand?</dt>
-        <dd>{{ all_data.understand }}</dd>
-    </dl>
-
-    <p><button type="submit" class="button">Submit your plea</button></p>
+    <div class="actions">
+        <button type="submit" class="button">Submit your plea</button>
+    </div>
     
 </form>
 {% endblock page_content %}
