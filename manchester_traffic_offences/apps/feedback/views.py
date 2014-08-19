@@ -36,7 +36,7 @@ def feedback_form(request):
                                  settings.FEEDBACK_EMAIL_FROM,
                                  settings.FEEDBACK_EMAIL_TO)
             email.content_subtype = "html"
-            email.send()
+            email.send(fail_silently=False)
             messages.add_message(request, messages.INFO, "Thanks for your feedback.")
             return HttpResponseRedirect(nxt_url)
         else:

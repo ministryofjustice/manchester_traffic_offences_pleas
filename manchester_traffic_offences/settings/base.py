@@ -197,8 +197,8 @@ PLEA_EMAIL_TO = ["plea_to@example.org", ]
 PLEA_EMAIL_SUBJECT = "ONLINE PLEA: {case[urn]} - DOH:{case[date_of_hearing]} - {your_details[name]}"
 PLEA_EMAIL_BODY = ""
 
-FEEDBACK_EMAIL_FROM = "makeaplea.digital.justice.gov.uk"
-FEEDBACK_EMAIL_TO = ("makeaplea.digital.justice.gov.uk", )
+FEEDBACK_EMAIL_FROM = "makeaplea@digital.justice.gov.uk"
+FEEDBACK_EMAIL_TO = ("makeaplea@digital.justice.gov.uk", )
 
 # .local.py overrides all the common settings.
 try:
