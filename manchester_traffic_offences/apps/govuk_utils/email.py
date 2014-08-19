@@ -1,8 +1,6 @@
 from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 
-import socket
-
 
 class TemplateAttachmentEmail(object):
     """
