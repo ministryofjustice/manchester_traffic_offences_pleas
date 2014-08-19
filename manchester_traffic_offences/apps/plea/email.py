@@ -1,10 +1,14 @@
 import smtplib
 import socket
+import logging
 
 from django.conf import settings
 
 from govuk_utils.email import TemplateAttachmentEmail
 from .models import CourtEmailPlea, CourtEmailCount
+
+
+logger = logging.getLogger(__name__)
 
 
 def send_plea_email(context_data, plea_email_to=None):
@@ -62,6 +66,6 @@ def send_plea_email(context_data, plea_email_to=None):
                        settings.PLP_EMAIL_SUBJECT.format(**context_data),
                        settings.PLEA_EMAIL_BODY)
     except (smtplib.SMTPException, socket.error, socket.gaierror):
-        pass
+        logger.error("Error sending email")
 
     return True
