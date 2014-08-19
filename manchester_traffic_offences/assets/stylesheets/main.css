@@ -1572,21 +1572,38 @@ label {
 #id_number_of_charges {
   width: 50px; }
 
-#id_date_of_hearing_month, #id_date_of_hearing_hour, #id_date_of_hearing_min {
-  width: 25px;
-  margin: 0 5px 0px 0; }
-
-#id_date_of_hearing_year {
+#id_date_of_hearing_1 {
   width: 50px;
-  margin: 0 5px 0px 0; }
+  margin: 0 5px; }
 
-#id_date_of_hearing_day {
-  margin: 0 5px 0px 0;
-  width: 25px; }
+#id_date_of_hearing_2 {
+  width: 50px;
+  margin: 0 5px; }
+
+#id_date_of_hearing_0 {
+  width: 25px;
+  margin: 0 5px 0 0; }
 
 .group label.datetime {
   font-size: 1em;
   margin-top: 1em; }
+
+label.datetime {
+  font-weight: normal;
+  display: inline-block; }
+
+label.datetime-day {
+  width: 2.5em; }
+
+label.datetime-month {
+  width: 3.9em; }
+
+label.datetime-year {
+  width: 3.75em; }
+
+label.datetime-time {
+  display: block;
+  margin: 0; }
 
 section#group-urn #id_understand_checkbox {
   font-weight: normal;
@@ -1828,23 +1845,6 @@ h2 span.form-hint {
 #understand {
   font-weight: normal;
   font-size: 1em; }
-
-label.datetime {
-  font-weight: normal;
-  display: inline-block; }
-
-label.datetime-day {
-  width: 2.4em; }
-
-label.datetime-month {
-  width: 3.5em; }
-
-label.datetime-year {
-  width: 3.75em; }
-
-label.datetime-time {
-  display: block;
-  margin: 0; }
 
 table#your-details tr, table#your-details th, table#your-details td, table#your-plea tr, table#your-plea th, table#your-plea td, table#case-details tr, table#case-details th, table#case-details td, table#your-money tr, table#your-money th, table#your-money td {
   width: inherit; }
