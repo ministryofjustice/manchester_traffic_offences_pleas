@@ -1569,8 +1569,8 @@ label {
   width: 25px;
   margin: 0 5px 0 5px; }
 
-section#group-urn #number_of_charges {
-  width: 32%; }
+#id_number_of_charges {
+  width: 50px; }
 
 #id_date_of_hearing_month, #id_date_of_hearing_hour, #id_date_of_hearing_min {
   width: 25px;
