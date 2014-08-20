@@ -41,3 +41,4 @@ PLEA_EMAIL_TO = [os.environ['PLEA_EMAIL_TO'], ]
 PLP_EMAIL_TO = [os.environ["PLP_EMAIL_TO"], ]
 
 FEEDBACK_EMAIL_TO = [os.environ["FEEDBACK_EMAIL_TO"], ]
+FEEDBACK_EMAIL_FROM = os.environ["FEEDBACK_EMAIL_TO"]
