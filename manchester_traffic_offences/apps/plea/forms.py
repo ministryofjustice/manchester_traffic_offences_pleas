@@ -273,10 +273,10 @@ class CaseForm(BasePleaStepForm):
     time_of_hearing = forms.TimeField(widget=HearingTimeWidget, label="Time",
                                       error_messages={"required": ERROR_MESSAGES["HEARING_TIME_REQUIRED"],
                                                       "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
-    number_of_charges = forms.IntegerField(
-        widget=forms.Select(choices=[("", "Please select ...")] + [(i, i) for i in range(1, 21)]),
-        help_text="On page 2 of the pack, in numbered boxes.<br>For example 1",
-        error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]})
+    number_of_charges = forms.IntegerField(widget=forms.TextInput(attrs={"maxlength": "7", "pattern": "[0-9]+"}),
+                                           help_text="On page 2 of the pack, in numbered boxes.<br>For example, 1",
+                                           min_value=1, max_value=10,
+                                           error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]})
 
 
 class YourDetailsForm(BasePleaStepForm):
