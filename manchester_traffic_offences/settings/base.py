@@ -201,8 +201,8 @@ PLP_EMAIL_TO = ["plp_to@example.org", ]
 PLP_EMAIL_TEMPLATE = "plea/plp_email_attachment.html"
 PLP_EMAIL_SUBJECT = PLEA_EMAIL_SUBJECT
 
-FEEDBACK_EMAIL_FROM = "makeaplea.digital.justice.gov.uk"
-FEEDBACK_EMAIL_TO = ("makeaplea.digital.justice.gov.uk", )
+FEEDBACK_EMAIL_FROM = "makeaplea@digital.justice.gov.uk"
+FEEDBACK_EMAIL_TO = ("makeaplea@digital.justice.gov.uk", )
 
 # .local.py overrides all the common settings.
 try:
