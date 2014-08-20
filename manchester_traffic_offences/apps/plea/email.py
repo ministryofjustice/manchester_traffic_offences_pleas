@@ -1,5 +1,6 @@
 import smtplib
 import socket
+import logging
 
 from django.conf import settings
 
@@ -7,18 +8,30 @@ from govuk_utils.email import TemplateAttachmentEmail
 from .models import CourtEmailPlea, CourtEmailCount
 
 
-def send_plea_email(context_data, plea_email_to=settings.PLEA_EMAIL_TO):
+logger = logging.getLogger(__name__)
+
+
+def send_plea_email(context_data, plea_email_to=None):
     """
     Sends a plea email. All addresses, content etc. are defined in
     settings.
 
     context_data: dict populated by form fields
     """
+    if plea_email_to is None:
+        plea_email_to = settings.PLEA_EMAIL_TO
+
     plea_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
                                          settings.PLEA_EMAIL_ATTACHMENT_NAME,
                                          settings.PLEA_EMAIL_TEMPLATE,
                                          context_data,
                                          "text/html")
+
+    plp_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
+                                        settings.PLEA_EMAIL_ATTACHMENT_NAME,
+                                        settings.PLP_EMAIL_TEMPLATE,
+                                        context_data,
+                                        "text/html")
 
     email_audit = CourtEmailPlea()
     email_audit.process_form_data(context_data)
@@ -48,5 +61,12 @@ def send_plea_email(context_data, plea_email_to=settings.PLEA_EMAIL_TO):
     email_count = CourtEmailCount()
     email_count.get_from_context(context_data)
     email_count.save()
+
+    try:
+        plp_email.send(settings.PLP_EMAIL_TO,
+                       settings.PLP_EMAIL_SUBJECT.format(**context_data),
+                       settings.PLEA_EMAIL_BODY)
+    except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
+        logger.error("Error sending email: {0}".format(e.message))
 
     return True
