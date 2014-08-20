@@ -92,7 +92,7 @@ class ReviewStage(FormStage):
             if email_result:
                 next_step = reverse_lazy("plea_form_step", args=("complete", ))
             else:
-                next_step = reverse_lazy('plea_form_step', args=('review_send_error', ))
+                next_step = reverse_lazy('plea_form_step', args=('send_error', ))
 
             self.next_step = next_step
 
@@ -104,6 +104,13 @@ class ReviewSendErrorStage(FormStage):
     template = "plea/review_send_error.html"
     form_classes = []
     dependencies = ["case", "your_details", "plea", "your_money"]
+
+    def save(self, form_data, next_step=None):
+        clean_data = super(ReviewSendErrorStage, self).save(form_data, next_step)
+
+        self.next_step = reverse_lazy("plea_form_step", args=("review", ))
+
+        return clean_data
 
 
 class CompleteStage(FormStage):
