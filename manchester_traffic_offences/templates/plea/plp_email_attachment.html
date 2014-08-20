@@ -1,0 +1,108 @@
+{% load date %}
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Online plea</title>
+    <style>
+        body, td {
+            font-family: nta, Arial, sans-serif;
+        }
+        td {vertical-align: top;}
+        th {
+            width: 20%;
+            text-align: left;
+            font-weight:bold;
+            padding-right:20px;
+            vertical-align: top;
+        }
+        td.heading h2 {
+            padding-top: 20px;
+            border-bottom: solid 1px black;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<h1>Online plea</h1>
+<table>
+    <thead>
+    <tr>
+        <td colspan="2" class="heading"><h2>Case Details</h2></td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>URN</th>
+        <td>{{ case.urn }}</td>
+    </tr>
+    <tr>
+        <th>Court hearing</th>
+        <td>{{ case.date_of_hearing|string_date }}</td>
+    </tr>
+
+    <tr>
+        <td colspan="2" class="heading"><h2>Defendant details</h2></td>
+    </tr>
+    <tr>
+        <th>Full name</th>
+        <td>{{ your_details.name }}</td>
+    </tr>
+    {% comment %}
+    <tr>
+        <th>Contact number</th>
+        <td>{{ your_details.contact_number }}</td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td>{{ your_details.email }}</td>
+    </tr>
+    {% if your_details.national_insurance_number %}
+        <tr>
+            <th>National Insurance number</th>
+            <td>{{ your_details.national_insurance_number }}</td>
+        </tr>
+    {% endif %}
+    {% if your_details.driving_licence_number %}
+        <tr>
+            <th>UK driving licence number</th>
+            <td>{{ your_details.driving_licence_number }}</td>
+        </tr>
+    {% endif %}
+    {% if your_details.registration_number %}
+        <tr>
+            <th>Registration number</th>
+            <td>{{ your_details.registration_number }}</td>
+        </tr>
+    {% endif %}
+    {% endcomment %}
+    <tr>
+        <td class="heading" colspan="2"><h2>Charges</h2></td>
+    </tr>
+    {% for plea_item in plea.PleaForms %}
+        <tr>
+            <td> </td>
+            <td class="label"><h3>Charge {{ forloop.counter }}</h3></td>
+        </tr>
+        <tr>
+            <th>Plea</th>
+            <td>
+                {% if plea_item.guilty == "guilty" %}
+                    Guilty
+                {% elif plea_item.guilty == "not_guilty" %}
+                    Not guilty
+                {% endif %}
+            </td>
+        </tr>
+        {% if plea_item.mitigations %}
+        <tr>
+            <th>Special circumstances</th>
+            <td>{{ plea_item.mitigations|linebreaksbr }}</td>
+        </tr>
+        {% endif %}
+    {%  endfor %}
+    </tbody>
+</table>
+</body>
+</html>

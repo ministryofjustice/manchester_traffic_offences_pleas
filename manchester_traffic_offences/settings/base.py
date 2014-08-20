@@ -197,6 +197,10 @@ PLEA_EMAIL_TO = ["plea_to@example.org", ]
 PLEA_EMAIL_SUBJECT = "ONLINE PLEA: {case[urn]} - DOH:{case[date_of_hearing]} - {your_details[name]}"
 PLEA_EMAIL_BODY = ""
 
+PLP_EMAIL_TO = ["plp_to@example.org", ]
+PLP_EMAIL_TEMPLATE = "plea/plp_email_attachment.html"
+PLP_EMAIL_SUBJECT = PLEA_EMAIL_SUBJECT
+
 FEEDBACK_EMAIL_FROM = "makeaplea@digital.justice.gov.uk"
 FEEDBACK_EMAIL_TO = ("makeaplea@digital.justice.gov.uk", )
 
