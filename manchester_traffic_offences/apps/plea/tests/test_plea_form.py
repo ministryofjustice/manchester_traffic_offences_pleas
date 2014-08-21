@@ -49,15 +49,15 @@ class TestMultiPleaForms(TestCase):
         response = form.load(self.request_context)
         response = form.save({}, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 3)
+        self.assertEqual(len(form.current_stage.forms[0].errors), 4)
 
     def test_case_stage_good_data(self):
         form = PleaOnlineForms("case", "plea_form_step", self.session)
         response = form.load(self.request_context)
-        response = form.save({"date_of_hearing_day": "01",
-                              "date_of_hearing_month": "01",
-                              "date_of_hearing_year": "2015",
-                              "date_of_hearing_time": "09:15",
+        response = form.save({"date_of_hearing_0": "01",
+                              "date_of_hearing_1": "01",
+                              "date_of_hearing_2": "2015",
+                              "time_of_hearing": "09:15",
                               "urn_0": "00",
                               "urn_1": "AA",
                               "urn_2": "0000000",
@@ -166,10 +166,10 @@ class TestMultiPleaForms(TestCase):
 
         form = PleaOnlineForms("case", "plea_form_step", fake_session)
         response = form.load(request_context)
-        response = form.save({"date_of_hearing_day": "01",
-                              "date_of_hearing_month": "01",
-                              "date_of_hearing_year": "2015",
-                              "date_of_hearing_time": "09:15",
+        response = form.save({"date_of_hearing_0": "01",
+                              "date_of_hearing_1": "01",
+                              "date_of_hearing_2": "2015",
+                              "time_of_hearing": "09:15",
                               "urn_0": "00",
                               "urn_1": "AA",
                               "urn_2": "0000000",
@@ -212,7 +212,8 @@ class TestMultiPleaForms(TestCase):
         form = PleaOnlineForms("complete", "plea_form_step", fake_session)
         response = form.load(request_context)
 
-        self.assertEqual(fake_session["case"]["date_of_hearing"], datetime.datetime(2015, 1, 1, 9, 15))
+        self.assertEqual(fake_session["case"]["date_of_hearing"], datetime.date(2015, 1, 1))
+        self.assertEqual(fake_session["case"]["time_of_hearing"], datetime.time(9, 15))
         self.assertEqual(fake_session["case"]["urn"], "00/AA/0000000/00")
         self.assertEqual(fake_session["case"]["number_of_charges"], 1)
         self.assertEqual(fake_session["your_details"]["name"], "Charlie Brown")
@@ -230,10 +231,10 @@ class TestMultiPleaForms(TestCase):
 
         form = PleaOnlineForms("case", "plea_form_step", fake_session)
         response = form.load(request_context)
-        response = form.save({"date_of_hearing_day": "01",
-                              "date_of_hearing_month": "01",
-                              "date_of_hearing_year": "2015",
-                              "date_of_hearing_time": "09:15",
+        response = form.save({"date_of_hearing_0": "01",
+                              "date_of_hearing_1": "01",
+                              "date_of_hearing_2": "2015",
+                              "time_of_hearing": "09:15",
                               "urn_0": "00",
                               "urn_1": "AA",
                               "urn_2": "0000000",
@@ -276,7 +277,8 @@ class TestMultiPleaForms(TestCase):
         form = PleaOnlineForms("complete", "plea_form_step", fake_session)
         response = form.load(request_context)
 
-        self.assertEqual(fake_session["case"]["date_of_hearing"], datetime.datetime(2015, 1, 1, 9, 15))
+        self.assertEqual(fake_session["case"]["date_of_hearing"], datetime.date(2015, 1, 1))
+        self.assertEqual(fake_session["case"]["time_of_hearing"], datetime.time(9, 15))
         self.assertEqual(fake_session["case"]["urn"], "00/AA/0000000/00")
         self.assertEqual(fake_session["case"]["number_of_charges"], 2)
         self.assertEqual(fake_session["your_details"]["name"], "Charlie Brown")

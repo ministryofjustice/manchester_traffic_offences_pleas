@@ -29,7 +29,7 @@
                     </tr>
                     <tr>
                         <th class="label">Court hearing date and time</th>
-                        <td>{{ case.date_of_hearing|string_date }}</td>
+                        <td>{{ case.date_of_hearing|string_date }} at {{ case.time_of_hearing|string_time }}</td>
                     </tr>
                     <tr>
                         <th class="label">Number of charges against you</th>
