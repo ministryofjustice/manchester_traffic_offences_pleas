@@ -36,7 +36,10 @@ def send_plea_email(context_data, plea_email_to=None):
                                         "text/html")
 
     # add DOH / name to the email subject for compliance with the current format
-    date_of_hearing = parser.parse(context_data["case"]["date_of_hearing"])
+    if isinstance(context_data["case"]["date_of_hearing"], basestring):
+        date_of_hearing = parser.parse(context_data["case"]["date_of_hearing"])
+    else:
+        date_of_hearing = context_data["case"]["date_of_hearing"]
     names = [context_data["your_details"]["name"].rsplit(" ", 1)[-1].upper()]
     first_names = " ".join(context_data["your_details"]["name"].rsplit(" ", 1)[:-1])
     if first_names:
