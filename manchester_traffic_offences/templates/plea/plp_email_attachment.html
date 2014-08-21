@@ -39,7 +39,7 @@
     </tr>
     <tr>
         <th>Court hearing</th>
-        <td>{{ case.date_of_hearing|string_date }} at {{ case.time_of_hearing|string_time }}</td>
+        <td>{{ case.date_of_hearing|string_date }}</td>
     </tr>
 
     <tr>
@@ -49,6 +49,7 @@
         <th>Full name</th>
         <td>{{ your_details.name }}</td>
     </tr>
+    {% comment %}
     <tr>
         <th>Contact number</th>
         <td>{{ your_details.contact_number }}</td>
@@ -75,7 +76,7 @@
             <td>{{ your_details.registration_number }}</td>
         </tr>
     {% endif %}
-
+    {% endcomment %}
     <tr>
         <td class="heading" colspan="2"><h2>Charges</h2></td>
     </tr>
@@ -101,37 +102,6 @@
         </tr>
         {% endif %}
     {%  endfor %}
-    <tr>
-        <td class="heading" colspan="2"><h2>Your money</h2></td>
-    </tr>
-    <tr>
-        <th>Status</th>
-        <td>{{ your_money.you_are }}</td>
-    </tr>
-    {% if your_money.you_are == "employed" %}
-        <tr>
-            <th>Employer's name</th>
-            <td>{{ your_money.employer_name }}</td>
-        </tr>
-        <tr>
-            <th>Employer's full address</th>
-            <td>{{ your_money.employer_address|linebreaksbr }}</td>
-        </tr>
-        <tr>
-            <th>Employer's phone</th>
-            <td>{{ your_money.employer_phone }}</td>
-        </tr>
-        <tr>
-            <th>Your take home pay</th>
-            <td>£{{ your_money.take_home_pay }}</td>
-        </tr>
-    {% endif %}
-    {% if your_money.you_are == "receiving benefits" %}
-        <tr>
-            <th>Your benefits</th>
-            <td>£{{ your_money.benefits }}</td>
-        </tr>
-    {% endif %}
     </tbody>
 </table>
 </body>
