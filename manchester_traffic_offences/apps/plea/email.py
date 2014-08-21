@@ -1,6 +1,8 @@
+from dateutil import parser
+import logging
 import smtplib
 import socket
-import logging
+
 
 from django.conf import settings
 
@@ -32,6 +34,16 @@ def send_plea_email(context_data, plea_email_to=None):
                                         settings.PLP_EMAIL_TEMPLATE,
                                         context_data,
                                         "text/html")
+
+    # add DOH / name to the email subject for compliance with the current format
+    date_of_hearing = parser.parse(context_data["case"]["date_of_hearing"])
+    names = [context_data["your_details"]["name"].rsplit(" ", 1)[-1].upper()]
+    first_names = " ".join(context_data["your_details"]["name"].rsplit(" ", 1)[:-1])
+    if first_names:
+        names.append(first_names)
+
+    context_data["email_name"] = " ".join(names)
+    context_data["email_date_of_hearing"] = date_of_hearing.strftime("%d/%m/%y")
 
     email_audit = CourtEmailPlea()
     email_audit.process_form_data(context_data)
