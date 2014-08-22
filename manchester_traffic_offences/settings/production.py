@@ -27,7 +27,6 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-
 ALLOWED_HOSTS = ["www.makeaplea.justice.gov.uk", ]
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'email-smtp.eu-west-1.amazonaws.com')
 EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
@@ -40,4 +39,4 @@ PLEA_EMAIL_TO = [os.environ['PLEA_EMAIL_TO'], ]
 PLP_EMAIL_TO = [os.environ["PLP_EMAIL_TO"], ]
 
 FEEDBACK_EMAIL_TO = [os.environ["FEEDBACK_EMAIL_TO"], ]
-FEEDBACK_EMAIL_FROM = [os.environ["FEEDBACK_EMAIL_FROM"], ]
+FEEDBACK_EMAIL_FROM = os.environ["FEEDBACK_EMAIL_FROM"]
