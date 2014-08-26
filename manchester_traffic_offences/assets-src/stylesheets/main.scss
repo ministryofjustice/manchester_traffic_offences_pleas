@@ -240,7 +240,13 @@ div.error, section.error {
     li { float:left; margin-left: 1em; }
     ul li label { font-weight:normal; margin: 0;}
   }
+}
 
+#terms {
+  h2 { font-size: 32px; font-weight:bold; }
+  h3 { font-weight: bold; margin-top: 1em; }
+  ul { list-style-type: circle; padding-left:2em; }
+  table td.name { width: 70px; }
 }
 
 table {clear:both;margin: 2em 0;}
