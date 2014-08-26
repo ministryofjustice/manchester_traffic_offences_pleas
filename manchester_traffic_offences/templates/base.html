@@ -36,8 +36,8 @@
 
     ga('create', 'UA-53811587-1', {'cookieDomain': 'none'});
     ga('require', 'linkid', 'linkid.js');
-    {% if about.urn %}
-    ga('set', '&uid', '{{about.urn}}'); // Set the user ID using signed-in user_id.
+    {% if case.urn %}
+    ga('set', '&uid', '{{case.urn}}'); // Set the user ID using signed-in user_id.
     {% endif %}
     ga('send', 'pageview');
 
