@@ -264,7 +264,8 @@ class BasePleaStepForm(forms.Form):
 
 
 class CaseForm(BasePleaStepForm):
-    urn = URNField(required=True, help_text="On page 1 of the pack, in the top right corner",
+    urn = URNField(label="Unique reference number (URN)",
+                   required=True, help_text="On page 1 of the pack, in the top right corner",
                    error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]})
     date_of_hearing = forms.DateField(widget=HearingDateWidget, validators=[is_date_in_future],
                                       help_text="On page 1 of the pack, near the top on the left<br>For example, 30/07/2014",
@@ -273,7 +274,8 @@ class CaseForm(BasePleaStepForm):
     time_of_hearing = forms.TimeField(widget=HearingTimeWidget, label="Time",
                                       error_messages={"required": ERROR_MESSAGES["HEARING_TIME_REQUIRED"],
                                                       "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
-    number_of_charges = forms.IntegerField(widget=forms.TextInput(attrs={"maxlength": "7", "pattern": "[0-9]+"}),
+    number_of_charges = forms.IntegerField(label="Number of charges against you",
+                                           widget=forms.TextInput(attrs={"maxlength": "7", "pattern": "[0-9]+"}),
                                            help_text="On page 2 of the pack, in numbered boxes.<br>For example, 1",
                                            min_value=1, max_value=10,
                                            error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]})
