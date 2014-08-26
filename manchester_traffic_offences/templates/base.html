@@ -22,7 +22,7 @@
 {% endblock %}
 
 {% block footer_top %}
-
+    <a href="{% url "terms" %}">Terms and Conditions and Privacy Policy</a>
 {% endblock footer_top %}
 {% block body_end %}
 {% if request.META.HTTP_HOST == "www.makeaplea.justice.gov.uk" %}
