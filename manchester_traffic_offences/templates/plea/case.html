@@ -3,14 +3,15 @@
 {% load staticfiles %}
 {% block page_content %}
     <header class="page-header group">
-        <hgroup>
-            <div><h1><span>Service</span>Make your plea online</h1></div>
-        </hgroup>
+        <div><h1><span>Service</span>Make your plea online</h1></div>
     </header>
+
+    <p class="mandatory">All fields are mandatory unless stated otherwise</p>
 
     <div class="full-width group">
         <div class="inner">
             <form method=POST class="pleaform form">
+
                 {% csrf_token %}
                 {% with forms.0 as form %}
                     {% if form.errors %}
@@ -30,25 +31,15 @@
 
                     <h2 id="your-details">Case details</h2>
 
-                    <section>
-                        <div class="section with-help-image">
-                            <a id="section_urn" name="section_urn"></a>
-                            <div id="enter-urn" class="section{% if form.urn.errors %} error{% endif %}">
-                                <label for="{{ form.urn.name }}">Unique reference number (URN)</label>
-                                <span class="validation-message">{{ form.urn.errors }}</span>
-                                <p class="form-hint datefield-hint" id="">{{ form.urn.help_text|safe }}</p>
-                                {#  Django handles the output of the URN field #}
-                                {{ form.urn }}
-                            </div>
-                        </div>
-                    </section>
+                    {% with form.urn as field %}
+                        {% include "widgets/std_field_with_image.html" %}
+                    {% endwith %}
                     <div class="help-image">
                         <img src="{% static "images/img-urn.png" %}" alt="Location of URN">
                     </div>
 
                     <section>
                         <a id="section_date_of_hearing" name="section_date_of_hearing"></a>
-                        <a id="section_time_of_hearing" name="section_time_of_hearing"></a>
                         <div class="section with-help-image{% if form.date_of_hearing.errors %} error{% endif %}">
                             <label for="{{ form.date_of_hearing.name }}">Court hearing date and time</label>
                             <span class="validation-message">{{ form.date_of_hearing.errors }}</span>
@@ -64,17 +55,9 @@
                         </div>
                     </section>
 
-                    <section>
-                        <a id="section_number_of_charges" name="section_number_of_charges"></a>
-                        <div class="section with-help-image">
-                            <div id="enter-charges" class="section{% if form.number_of_charges.errors %} error{% endif %}">
-                                <label for="{{ form.number_of_charges.name }}">Number of charges against you</label>
-                                <span class="validation-message">{{ form.number_of_charges.errors }}</span>
-                                <p class="form-hint datefield-hint" id="">{{ form.number_of_charges.help_text|safe }}</p>
-                                {{ form.number_of_charges }}
-                            </div>
-                        </div>
-                    </section>
+                    {% with form.number_of_charges as field %}
+                        {% include "widgets/std_field_with_image.html" %}
+                    {% endwith %}
                     <div class="help-image">
                         <img src="{% static "images/img-charge.png" %}" alt="The number of charges is found on page 2 of the pack">
                     </div>
