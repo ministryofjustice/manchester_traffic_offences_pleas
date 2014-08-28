@@ -12,6 +12,7 @@ handler500 = "manchester_traffic_offences.views.server_error"
 
 urlpatterns = patterns('',
                        url(r'^$', views.HomeView.as_view(), name="home"),
+                       url(r'^terms-and-conditions-and-privacy-policy$', TemplateView.as_view(template_name="terms.html"), name="terms"),
                        url(r'^plea/', include('plea.urls', )),
                        url(r'^feedback/', include('feedback.urls'))
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

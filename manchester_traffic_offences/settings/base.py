@@ -114,6 +114,9 @@ ROOT_URLCONF = 'manchester_traffic_offences.urls'
 
 SESSION_SERIALIZER = 'manchester_traffic_offences.apps.govuk_utils.serializers.DateAwareSerializer'
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_COOKIE_HTTPONLY = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 3600
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'manchester_traffic_offences.wsgi.application'
@@ -190,6 +193,11 @@ INTERNAL_IPS = ['127.0.0.1']
 
 
 # EMAILS
+SMTP_ROUTES = {"GSI": {"HOST": "localhost",
+                       "PORT": 25},
+               "GMP": {"HOST": "localhost",
+                       "PORT": 25}}
+
 PLEA_EMAIL_FROM = "plea_from@example.org"
 PLEA_EMAIL_ATTACHMENT_NAME = "plea.html"
 PLEA_EMAIL_TEMPLATE = "plea/plea_email_attachment.html"
@@ -199,10 +207,10 @@ PLEA_EMAIL_BODY = ""
 
 PLP_EMAIL_TO = ["plp_to@example.org", ]
 PLP_EMAIL_TEMPLATE = "plea/plp_email_attachment.html"
-PLP_EMAIL_SUBJECT = PLEA_EMAIL_SUBJECT
+PLP_EMAIL_SUBJECT = "POLICE %s" % PLEA_EMAIL_SUBJECT
 
-FEEDBACK_EMAIL_FROM = "ian.george@digital.justice.gov.uk"
-FEEDBACK_EMAIL_TO = ("makeaplea@digital.justice.gov.uk", )
+FEEDBACK_EMAIL_FROM = "makeaplea@digital.justice.gov.uk"
+FEEDBACK_EMAIL_TO = ("ian.george@digital.justice.gov.uk", )
 
 # .local.py overrides all the common settings.
 try:

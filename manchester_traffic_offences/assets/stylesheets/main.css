@@ -1553,19 +1553,19 @@ label {
   float: right;
   margin-top: 1.5em; }
 
-#enter-urn #id_urn_0 {
+#id_urn_0 {
   width: 25px;
   margin: 0 5px 0 0; }
 
-#enter-urn #id_urn_1 {
+#id_urn_1 {
   width: 25px;
   margin: 0 5px 0 5px; }
 
-#enter-urn #id_urn_2 {
+#id_urn_2 {
   width: 85px;
   margin: 0 5px 0 5px; }
 
-#enter-urn #id_urn_3 {
+#id_urn_3 {
   width: 25px;
   margin: 0 5px 0 5px; }
 
@@ -1720,7 +1720,13 @@ div.error, section.error {
 
 #complete ol {
   padding: 0;
-  counter-reset: item; }
+  counter-reset: item;
+  font-style: normal;
+  border-left: solid 7px #bfc1c3;
+  margin: 0.5em 0;
+  padding: 0.5em 1em 0 1em; }
+  #complete ol p {
+    margin: 0.5em 0; }
 #complete ol > li {
   padding-bottom: 1em;
   list-style-type: none;
@@ -1732,12 +1738,8 @@ div.error, section.error {
   width: 0.7em;
   content: counter(item) "."; }
 #complete address {
-  font-style: normal;
-  border-left: solid 10px #bfc1c3;
-  margin: 0.5em 0;
-  padding: 1em; }
-  #complete address p {
-    margin: 0.5em 0; }
+  margin-left: 1em;
+  font-style: normal; }
 
 #review .important {
   background: url(../images/icons/icon-important.png) no-repeat top left;
@@ -1761,6 +1763,18 @@ div.error, section.error {
 #your-money .money ul li label {
   font-weight: normal;
   margin: 0; }
+
+#terms h2 {
+  font-size: 32px;
+  font-weight: bold; }
+#terms h3 {
+  font-weight: bold;
+  margin-top: 1em; }
+#terms ul {
+  list-style-type: circle;
+  padding-left: 2em; }
+#terms table td.name {
+  width: 70px; }
 
 table {
   clear: both;

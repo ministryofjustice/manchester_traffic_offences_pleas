@@ -84,10 +84,10 @@ label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.3
 .with-help-image {width:70%; float: left;}
 .help-image {width:30%; float: right; margin-top: 1.5em;}
 
-#enter-urn #id_urn_0 {width:25px; margin: 0 5px 0 0}
-#enter-urn #id_urn_1 {width:25px; margin: 0 5px 0 5px}
-#enter-urn #id_urn_2 {width:85px; margin: 0 5px 0 5px}
-#enter-urn #id_urn_3 {width:25px; margin: 0 5px 0 5px}
+#id_urn_0 {width:25px; margin: 0 5px 0 0}
+#id_urn_1 {width:25px; margin: 0 5px 0 5px}
+#id_urn_2 {width:85px; margin: 0 5px 0 5px}
+#id_urn_3 {width:25px; margin: 0 5px 0 5px}
 
 #id_number_of_charges {width:50px;}
 
@@ -187,6 +187,12 @@ div.error, section.error {
   ol {
     padding: 0;
     counter-reset: item;
+    font-style: normal;
+    border-left: solid 7px $grey-2;
+    margin: 0.5em 0;
+    padding: 0.5em 1em 0 1em;
+
+    p {margin:0.5em 0;}
   }
 
   ol > li {
@@ -204,12 +210,8 @@ div.error, section.error {
   }
 
   address {
-    font-style: normal;
-    border-left: solid 10px $grey-2;
-    margin: 0.5em 0;
-    padding: 1em;
-
-    p {margin:0.5em 0;}
+    margin-left: 1em;
+    font-style:normal;
   }
 }
 
@@ -240,7 +242,13 @@ div.error, section.error {
     li { float:left; margin-left: 1em; }
     ul li label { font-weight:normal; margin: 0;}
   }
+}
 
+#terms {
+  h2 { font-size: 32px; font-weight:bold; }
+  h3 { font-weight: bold; margin-top: 1em; }
+  ul { list-style-type: circle; padding-left:2em; }
+  table td.name { width: 70px; }
 }
 
 table {clear:both;margin: 2em 0;}
