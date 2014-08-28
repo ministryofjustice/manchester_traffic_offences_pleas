@@ -3,7 +3,6 @@ import logging
 import smtplib
 import socket
 
-
 from django.conf import settings
 
 from govuk_utils.email import TemplateAttachmentEmail
@@ -63,7 +62,8 @@ def send_plea_email(context_data, plea_email_to=None):
     try:
         plea_email.send(plea_email_to,
                         settings.PLEA_EMAIL_SUBJECT.format(**context_data),
-                        settings.PLEA_EMAIL_BODY)
+                        settings.PLEA_EMAIL_BODY,
+                        route="GSI")
     except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
         email_audit.status = "network_error"
         email_audit.status_info = unicode(e)
@@ -80,7 +80,8 @@ def send_plea_email(context_data, plea_email_to=None):
     try:
         plp_email.send(settings.PLP_EMAIL_TO,
                        settings.PLP_EMAIL_SUBJECT.format(**context_data),
-                       settings.PLEA_EMAIL_BODY)
+                       settings.PLEA_EMAIL_BODY,
+                       route="GSI")
     except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
         logger.error("Error sending email: {0}".format(e.message))
 
