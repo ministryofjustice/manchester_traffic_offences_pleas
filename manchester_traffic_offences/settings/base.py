@@ -196,7 +196,7 @@ INTERNAL_IPS = ['127.0.0.1']
 SMTP_ROUTES = {"GSI": {"HOST": "localhost",
                        "PORT": 25},
                "GMP": {"HOST": "localhost",
-                          "PORT": 25}}
+                       "PORT": 25}}
 
 PLEA_EMAIL_FROM = "plea_from@example.org"
 PLEA_EMAIL_ATTACHMENT_NAME = "plea.html"
@@ -207,7 +207,7 @@ PLEA_EMAIL_BODY = ""
 
 PLP_EMAIL_TO = ["plp_to@example.org", ]
 PLP_EMAIL_TEMPLATE = "plea/plp_email_attachment.html"
-PLP_EMAIL_SUBJECT = PLEA_EMAIL_SUBJECT
+PLP_EMAIL_SUBJECT = "POLICE %s" % PLEA_EMAIL_SUBJECT
 
 FEEDBACK_EMAIL_FROM = "makeaplea@digital.justice.gov.uk"
 FEEDBACK_EMAIL_TO = ("ian.george@digital.justice.gov.uk", )
