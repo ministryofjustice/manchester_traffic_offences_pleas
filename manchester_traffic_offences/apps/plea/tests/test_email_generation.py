@@ -35,5 +35,5 @@ class EmailGenerationTests(unittest.TestCase):
 
         send_plea_email(context_data)
 
-        # expecting 2 emails, one for the court, one for the PLP
-        self.assertEqual(len(mail.outbox), 2)
+        # only expecting 1 email for now, PLP email cancelled for the time being
+        self.assertEqual(len(mail.outbox), 1)
