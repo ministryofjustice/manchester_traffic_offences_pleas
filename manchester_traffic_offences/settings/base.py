@@ -193,6 +193,11 @@ INTERNAL_IPS = ['127.0.0.1']
 
 
 # EMAILS
+SMTP_ROUTES = {"GSI": {"HOST": "localhost",
+                       "PORT": 25},
+               "GMP": {"HOST": "localhost",
+                          "PORT": 25}}
+
 PLEA_EMAIL_FROM = "plea_from@example.org"
 PLEA_EMAIL_ATTACHMENT_NAME = "plea.html"
 PLEA_EMAIL_TEMPLATE = "plea/plea_email_attachment.html"
