@@ -187,6 +187,12 @@ div.error, section.error {
   ol {
     padding: 0;
     counter-reset: item;
+    font-style: normal;
+    border-left: solid 7px $grey-2;
+    margin: 0.5em 0;
+    padding: 0.5em 1em 0 1em;
+
+    p {margin:0.5em 0;}
   }
 
   ol > li {
@@ -204,12 +210,8 @@ div.error, section.error {
   }
 
   address {
-    font-style: normal;
-    border-left: solid 10px $grey-2;
-    margin: 0.5em 0;
-    padding: 1em;
-
-    p {margin:0.5em 0;}
+    margin-left: 1em;
+    font-style:normal;
   }
 }
 
