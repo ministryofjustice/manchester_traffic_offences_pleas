@@ -3,14 +3,15 @@
 {% load staticfiles %}
 {% block page_content %}
     <header class="page-header group">
-        <hgroup>
-            <div><h1><span>Service</span>Make your plea online</h1></div>
-        </hgroup>
+        <div><h1><span>Service</span>Make your plea online</h1></div>
     </header>
+
+    <p class="mandatory">All fields are mandatory unless stated otherwise</p>
 
     <div class="full-width group">
         <div class="inner">
             <form method=POST class="pleaform form">
+
                 {% csrf_token %}
                 {% with forms.0 as form %}
                     {% if form.errors %}
