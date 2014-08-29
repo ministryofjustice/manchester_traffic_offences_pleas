@@ -28,6 +28,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 ALLOWED_HOSTS = ["www.makeaplea.justice.gov.uk", ]
+SESSION_COOKIE_SECURE = True
 
 # Emails
 SMTP_ROUTES["GSI"]["HOST"] = os.environ.get('GSI_EMAIL_HOST', '')
