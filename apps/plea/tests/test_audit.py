@@ -7,7 +7,7 @@ import unittest
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 
-from plea.email import send_plea_email
+from ..email import send_plea_email
 from ..models import CourtEmailPlea, CourtEmailCount
 
 
@@ -37,7 +37,7 @@ class EmailAuditTests(unittest.TestCase):
         self.assertEqual(audit.dict_sent, data)
         self.assertEqual(audit.subject, settings.PLEA_EMAIL_SUBJECT.format(**self.context_data))
 
-    @patch("plea.email.TemplateAttachmentEmail.send")
+    @patch("apps.plea.email.TemplateAttachmentEmail.send")
     def test_email_failure_audit(self, send):
         send.side_effect = socket.error("Email failed to send, socket error")
         result = send_plea_email(self.context_data)

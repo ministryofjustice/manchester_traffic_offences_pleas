@@ -4,7 +4,7 @@ import datetime
 from django.core.urlresolvers import reverse_lazy
 from django.forms.formsets import formset_factory
 
-from govuk_utils.forms import FormStage
+from apps.govuk_utils.forms import FormStage
 from email import send_plea_email
 from forms import (CaseForm, YourDetailsForm, YourMoneyForm,
                    PleaForm, ConfirmationForm, RequiredFormSet)

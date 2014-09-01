@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from django.test import TestCase
 
-from plea.models import CourtEmailPlea
+from ..models import CourtEmailPlea
 
 
 class TestClearOldEmailAudit(TestCase):
