@@ -2,8 +2,8 @@ from django.core.management.base import BaseCommand
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
-from defendant.tests.test_data import TEST_DEFENDANTS
-from plea.email import send_plea_email
+from apps.plea.tests.test_data import TEST_DEFENDANTS
+from apps.plea.email import send_plea_email
 
 
 class Command(BaseCommand):
