@@ -151,7 +151,6 @@ INSTALLED_APPS = (
 PROJECT_APPS = (
     'apps.govuk_utils',
     'moj_template',
-    'apps.defendant',
     'apps.plea',
     'apps.feedback',
 )
