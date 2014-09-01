@@ -135,7 +135,7 @@ TEMPLATE_CONTEXT_PROCESSORS =  (
     "django.contrib.messages.context_processors.messages",
     "django.contrib.auth.context_processors.auth",
     'manchester_traffic_offences.context_processors.globals',
-    'manchester_traffic_offences.apps.feedback.context_processors.feedback',
+    'apps.feedback.context_processors.feedback',
 )
 
 INSTALLED_APPS = (
