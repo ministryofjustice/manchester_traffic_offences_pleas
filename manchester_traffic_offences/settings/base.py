@@ -7,7 +7,7 @@ here = lambda *x: join(abspath(dirname(__file__)), *x)
 PROJECT_ROOT = here("..")
 root = lambda *x: join(abspath(PROJECT_ROOT), *x)
 
-sys.path.insert(0, root('apps'))
+#sys.path.insert(0, root('apps'))
 
 
 DEBUG = True
@@ -152,10 +152,10 @@ INSTALLED_APPS = (
 )
 
 PROJECT_APPS = (
-    'govuk_utils',
+    'apps.govuk_utils',
     'moj_template',
-    'defendant',
-    'plea',
+    'apps.defendant',
+    'apps.plea',
 )
 
 INSTALLED_APPS += PROJECT_APPS
