@@ -45,7 +45,7 @@ def send_plea_email(context_data, plea_email_to=None):
         names.append(first_names)
 
     context_data["email_name"] = " ".join(names)
-    context_data["email_date_of_hearing"] = date_of_hearing.strftime("%d/%m/%y")
+    context_data["email_date_of_hearing"] = date_of_hearing.strftime("%y-%m-%d")
 
     email_audit = CourtEmailPlea()
     email_audit.process_form_data(context_data)
