@@ -10,7 +10,7 @@
     {% with request.session.case.number_of_charges as charges %}
     <div class="full-width group">
         <div class="inner">
-            <form method=POST class="form">
+            <form method=POST class="form" autocomplete="off">
 
                 {% csrf_token %}
                 {% if formset_has_errors %}
