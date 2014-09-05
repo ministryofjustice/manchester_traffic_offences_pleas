@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from django.template.context import RequestContext
 
-from plea.views import PleaOnlineForms
+from ..views import PleaOnlineForms
 
 
 class TestMultiPleaForms(TestCase):

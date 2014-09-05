@@ -5,7 +5,7 @@ import socket
 
 from django.conf import settings
 
-from govuk_utils.email import TemplateAttachmentEmail
+from apps.govuk_utils.email import TemplateAttachmentEmail
 from .models import CourtEmailPlea, CourtEmailCount
 
 

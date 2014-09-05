@@ -2,13 +2,9 @@ import sys
 from os.path import join, abspath, dirname
 
 # PATH vars
-
 here = lambda *x: join(abspath(dirname(__file__)), *x)
 PROJECT_ROOT = here("..")
 root = lambda *x: join(abspath(PROJECT_ROOT), *x)
-
-sys.path.insert(0, root('apps'))
-
 
 DEBUG = True
 template_DEBUG = DEBUG
@@ -95,8 +91,8 @@ SECRET_KEY = 'CHANGE THIS!!!'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
+    'django.template.loaders.filesystem.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -112,7 +108,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'manchester_traffic_offences.urls'
 
-SESSION_SERIALIZER = 'manchester_traffic_offences.apps.govuk_utils.serializers.DateAwareSerializer'
+SESSION_SERIALIZER = 'apps.govuk_utils.serializers.DateAwareSerializer'
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 SESSION_COOKIE_HTTPONLY = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -122,10 +118,11 @@ SESSION_COOKIE_AGE = 3600
 WSGI_APPLICATION = 'manchester_traffic_offences.wsgi.application'
 
 TEMPLATE_DIRS = (
+    "templates",
     root('templates'),
 )
 
-TEMPLATE_CONTEXT_PROCESSORS =  (
+TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
@@ -135,7 +132,7 @@ TEMPLATE_CONTEXT_PROCESSORS =  (
     "django.contrib.messages.context_processors.messages",
     "django.contrib.auth.context_processors.auth",
     'manchester_traffic_offences.context_processors.globals',
-    'manchester_traffic_offences.apps.feedback.context_processors.feedback',
+    'apps.feedback.context_processors.feedback',
 )
 
 INSTALLED_APPS = (
@@ -152,10 +149,10 @@ INSTALLED_APPS = (
 )
 
 PROJECT_APPS = (
-    'govuk_utils',
+    'apps.govuk_utils',
     'moj_template',
-    'defendant',
-    'plea',
+    'apps.plea',
+    'apps.feedback',
 )
 
 INSTALLED_APPS += PROJECT_APPS
