@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 
-from plea.models import CourtEmailPlea
+from apps.plea.models import CourtEmailPlea
 
 
 class Command(BaseCommand):

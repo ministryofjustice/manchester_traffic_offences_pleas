@@ -1,4 +1,4 @@
-- Move apps/ out to root and remove the bit in manage.py that adds apps to the path
-- Move feedback app templates in to the app itself
+- xx Move apps/ out to root and remove the bit in manage.py that adds apps to the path
+- xx Move feedback app templates in to the app itself
 - Move defendant URN validator tests into plea and see if it's possible to remove the defendant app
 -
