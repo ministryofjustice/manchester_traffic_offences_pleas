@@ -18,7 +18,7 @@ class TestMultiPleaForms(TestCase):
                                                       "urn_1": "AA",
                                                       "urn_2": "0000000",
                                                       "urn_3": "00",
-                                                      "number_of_charges": "1"},
+                                                      "number_of_charges": 1},
                                              "your_details": {"name": "Charlie Brown",
                                                               "contact_number": "012345678",
                                                               "email": "charliebrown@example.org"}}
@@ -28,7 +28,7 @@ class TestMultiPleaForms(TestCase):
                                                        "urn_1": "AA",
                                                        "urn_2": "0000000",
                                                        "urn_3": "00",
-                                                       "number_of_charges": "3"},
+                                                       "number_of_charges": 3},
                                               "your_details": {"name": "Charlie Brown",
                                                                "contact_number": "012345678",
                                                                "email": "charliebrown@example.org"}}
@@ -62,7 +62,7 @@ class TestMultiPleaForms(TestCase):
                               "urn_1": "AA",
                               "urn_2": "0000000",
                               "urn_3": "00",
-                              "number_of_charges": "1"},
+                              "number_of_charges": 1},
                              self.request_context)
 
         self.assertEqual(response.status_code, 302)
@@ -114,11 +114,11 @@ class TestMultiPleaForms(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-    def test_plea_stage_bad_data_multiple_charges(self):
-        self.session.update(self.plea_stage_pre_data_1_charge)
+    def test_plea_stage_missing_data_multiple_charges(self):
+        self.session.update(self.plea_stage_pre_data_3_charges)
         form = PleaOnlineForms("plea", "plea_form_step", self.session)
 
-        mgmt_data = {"form-TOTAL_FORMS": "2",
+        mgmt_data = {"form-TOTAL_FORMS": "3",
                      "form-INITIAL_FORMS": "0",
                      "form-MAX_NUM_FORMS": "1000"}
 
@@ -129,6 +129,22 @@ class TestMultiPleaForms(TestCase):
 
         self.assertEqual(len(form.current_stage.forms[0].errors[0]), 0)
         self.assertEqual(len(form.current_stage.forms[0].errors[1]), 1)
+        self.assertEqual(len(form.current_stage.forms[0].errors[2]), 1)
+
+    def test_plea_stage_bad_data_multiple_charges(self):
+        self.session.update(self.plea_stage_pre_data_1_charge)
+        form = PleaOnlineForms("plea", "plea_form_step", self.session)
+
+        mgmt_data = {"form-TOTAL_FORMS": "2",
+                     "form-INITIAL_FORMS": "2",
+                     "form-MAX_NUM_FORMS": "1000"}
+
+        mgmt_data.update({"form-0-guilty": "guilty",
+                          "form-0-mitigations": "lorem ipsum 1"})
+
+        response = form.save(mgmt_data, self.request_context)
+
+        self.assertEqual(len(form.current_stage.forms[0].forms), 1)
 
     def test_plea_stage_good_data_multiple_charges(self):
         self.session.update(self.plea_stage_pre_data_1_charge)
@@ -174,7 +190,7 @@ class TestMultiPleaForms(TestCase):
                               "urn_1": "AA",
                               "urn_2": "0000000",
                               "urn_3": "00",
-                              "number_of_charges": "1"},
+                              "number_of_charges": 1},
                              request_context)
 
         self.assertEqual(response.status_code, 302)
@@ -239,7 +255,7 @@ class TestMultiPleaForms(TestCase):
                               "urn_1": "AA",
                               "urn_2": "0000000",
                               "urn_3": "00",
-                              "number_of_charges": "2"},
+                              "number_of_charges": 2},
                              request_context)
 
         self.assertEqual(response.status_code, 302)
