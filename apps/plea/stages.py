@@ -32,6 +32,10 @@ class PleaStage(FormStage):
 
     def load_forms(self, data=None, initial=False):
         forms_wanted = self.all_data["case"].get("number_of_charges", 1)
+        if data:
+            data["form-TOTAL_FORMS"] = forms_wanted
+            data["form-MAX_NUM_FORMS"] = forms_wanted
+
         extra_forms = 0
         # truncate forms data if the count has changed
         if "PleaForms" in self.all_data["plea"]:
@@ -47,7 +51,7 @@ class PleaStage(FormStage):
         else:
             extra_forms = forms_wanted
 
-        PleaForms = formset_factory(PleaForm, formset=RequiredFormSet, extra=extra_forms)
+        PleaForms = formset_factory(PleaForm, formset=RequiredFormSet, extra=extra_forms, max_num=forms_wanted)
 
         if initial:
             initial_plea_data = self.all_data[self.name].get("PleaForms", [])
