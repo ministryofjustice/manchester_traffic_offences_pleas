@@ -184,6 +184,15 @@ class HearingTimeWidget(FixedTimeWidget):
     times = [(9, 15, "9:15am"), (13, 15, "1:15pm")]
 
 
+class HearingTimeField(forms.TimeField):
+    widget = HearingTimeWidget
+
+    def validate(self, value):
+        super(HearingTimeField, self).validate(value)
+        if not (value.hour, value.minute) in ((v[0], v[1]) for v in self.widget.times):
+            raise forms.ValidationError(self.error_messages['required'], code='required')
+
+
 class RequiredFormSet(BaseFormSet):
     def __init__(self, *args, **kwargs):
         super(RequiredFormSet, self).__init__(*args, **kwargs)
@@ -271,9 +280,9 @@ class CaseForm(BasePleaStepForm):
                                       help_text="On page 1 of the pack, near the top on the left<br>For example, 30/07/2014",
                                       error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"],
                                                       "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
-    time_of_hearing = forms.TimeField(widget=HearingTimeWidget, label="Time",
-                                      error_messages={"required": ERROR_MESSAGES["HEARING_TIME_REQUIRED"],
-                                                      "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
+    time_of_hearing = HearingTimeField(label="Time",
+                                       error_messages={"required": ERROR_MESSAGES["HEARING_TIME_REQUIRED"],
+                                                       "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
     number_of_charges = forms.IntegerField(label="Number of charges against you",
                                            widget=forms.TextInput(attrs={"maxlength": "7", "pattern": "[0-9]+"}),
                                            help_text="On page 2 of the pack, in numbered boxes.<br>For example, 1",
