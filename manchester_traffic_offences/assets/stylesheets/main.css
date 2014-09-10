@@ -1703,9 +1703,9 @@ section.flash {
     section.flash.error-summary h2 {
       margin: 0 0 10px; }
     section.flash.error-summary li {
-      color: #e12d2d; }
+      color: black; }
       section.flash.error-summary li a {
-        color: #e12d2d; }
+        color: black; }
         section.flash.error-summary li a :hover {
           text-decoration: none; }
   section.flash.success {
