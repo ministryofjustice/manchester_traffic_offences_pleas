@@ -160,9 +160,9 @@ section.flash {
       margin: 0 0 10px;
     }
     li {
-      color: $errorcolour;
+      color: black;
       a {
-        color: $errorcolour;
+        color: black;
         & :hover {
           text-decoration: none;
         }
