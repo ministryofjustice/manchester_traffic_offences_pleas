@@ -46,42 +46,42 @@ class TestMultiPleaForms(TestCase):
 
     def test_case_stage_bad_data(self):
         form = PleaOnlineForms("case", "plea_form_step", self.session)
-        response = form.load(self.request_context)
-        response = form.save({}, self.request_context)
+        form.load(self.request_context)
+        form.save({}, self.request_context)
 
         self.assertEqual(len(form.current_stage.forms[0].errors), 4)
 
     def test_case_stage_good_data(self):
         form = PleaOnlineForms("case", "plea_form_step", self.session)
-        response = form.load(self.request_context)
-        response = form.save({"date_of_hearing_0": "01",
-                              "date_of_hearing_1": "01",
-                              "date_of_hearing_2": "2015",
-                              "time_of_hearing": "09:15",
-                              "urn_0": "00",
-                              "urn_1": "AA",
-                              "urn_2": "0000000",
-                              "urn_3": "00",
-                              "number_of_charges": 1},
-                             self.request_context)
-
+        form.load(self.request_context)
+        form.save({"date_of_hearing_0": "01",
+                   "date_of_hearing_1": "01",
+                   "date_of_hearing_2": "2015",
+                   "time_of_hearing": "09:15",
+                   "urn_0": "00",
+                   "urn_1": "AA",
+                   "urn_2": "0000000",
+                   "urn_3": "00",
+                   "number_of_charges": 1},
+                  self.request_context)
+        response = form.render()
         self.assertEqual(response.status_code, 302)
 
     def test_your_details_stage_bad_data(self):
         form = PleaOnlineForms("your_details", "plea_form_step", self.session)
-        response = form.load(self.request_context)
-        response = form.save({}, self.request_context)
+        form.load(self.request_context)
+        form.save({}, self.request_context)
 
         self.assertEqual(len(form.current_stage.forms[0].errors), 3)
 
     def test_your_details_stage_good_data(self):
         form = PleaOnlineForms("your_details", "plea_form_step", self.session)
-        response = form.load(self.request_context)
-        response = form.save({"name": "Test man",
-                              "contact_number": "012345678",
-                              "email": "test.man@example.org"},
-                             self.request_context)
-
+        form.load(self.request_context)
+        form.save({"name": "Test man",
+                   "contact_number": "012345678",
+                   "email": "test.man@example.org"},
+                  self.request_context)
+        response = form.render()
         self.assertEqual(response.status_code, 302)
 
     def test_plea_stage_bad_data_single_charge(self):
@@ -110,7 +110,8 @@ class TestMultiPleaForms(TestCase):
         mgmt_data.update({"form-0-guilty": "guilty",
                           "form-0-mitigations": "lorem ipsum 1"})
 
-        response = form.save(mgmt_data, self.request_context)
+        form.save(mgmt_data, self.request_context)
+        response = form.render()
 
         self.assertEqual(response.status_code, 302)
 
@@ -125,7 +126,7 @@ class TestMultiPleaForms(TestCase):
         mgmt_data.update({"form-0-guilty": "guilty",
                           "form-0-mitigations": "lorem ipsum 1"})
 
-        response = form.save(mgmt_data, self.request_context)
+        form.save(mgmt_data, self.request_context)
 
         self.assertEqual(len(form.current_stage.forms[0].errors[0]), 0)
         self.assertEqual(len(form.current_stage.forms[0].errors[1]), 1)
@@ -142,7 +143,7 @@ class TestMultiPleaForms(TestCase):
         mgmt_data.update({"form-0-guilty": "guilty",
                           "form-0-mitigations": "lorem ipsum 1"})
 
-        response = form.save(mgmt_data, self.request_context)
+        form.save(mgmt_data, self.request_context)
 
         self.assertEqual(len(form.current_stage.forms[0].forms), 1)
 
@@ -159,7 +160,8 @@ class TestMultiPleaForms(TestCase):
                           "form-1-guilty": "guilty",
                           "form-1-mitigations": "lorem ipsum 1"})
 
-        response = form.save(mgmt_data, self.request_context)
+        form.save(mgmt_data, self.request_context)
+        response = form.render()
 
         self.assertEqual(response.status_code, 302)
 
@@ -181,31 +183,31 @@ class TestMultiPleaForms(TestCase):
         request_context = RequestContext(fake_request)
 
         form = PleaOnlineForms("case", "plea_form_step", fake_session)
-        response = form.load(request_context)
-        response = form.save({"date_of_hearing_0": "01",
-                              "date_of_hearing_1": "01",
-                              "date_of_hearing_2": "2015",
-                              "time_of_hearing": "09:15",
-                              "urn_0": "00",
-                              "urn_1": "AA",
-                              "urn_2": "0000000",
-                              "urn_3": "00",
-                              "number_of_charges": 1},
-                             request_context)
-
+        form.load(request_context)
+        form.save({"date_of_hearing_0": "01",
+                   "date_of_hearing_1": "01",
+                   "date_of_hearing_2": "2015",
+                   "time_of_hearing": "09:15",
+                   "urn_0": "00",
+                   "urn_1": "AA",
+                   "urn_2": "0000000",
+                   "urn_3": "00",
+                   "number_of_charges": 1},
+                  request_context)
+        response = form.render()
         self.assertEqual(response.status_code, 302)
 
         form = PleaOnlineForms("your_details", "plea_form_step", fake_session)
-        response = form.load(request_context)
-        response = form.save({"name": "Charlie Brown",
-                              "contact_number": "07802639892",
-                              "email": "test@example.org"},
-                             request_context)
-
+        form.load(request_context)
+        form.save({"name": "Charlie Brown",
+                   "contact_number": "07802639892",
+                   "email": "test@example.org"},
+                  request_context)
+        response = form.render()
         self.assertEqual(response.status_code, 302)
 
         form = PleaOnlineForms("plea", "plea_form_step", fake_session)
-        response = form.load(request_context)
+        form.load(request_context)
 
         mgmt_data = {"form-TOTAL_FORMS": "1",
                      "form-INITIAL_FORMS": "0",
@@ -214,19 +216,20 @@ class TestMultiPleaForms(TestCase):
         mgmt_data.update({"form-0-guilty": "guilty",
                           "form-0-mitigations": "lorem ipsum 1"})
 
-        response = form.save(mgmt_data, request_context)
+        form.save(mgmt_data, request_context)
+        response = form.render()
 
         self.assertEqual(response.status_code, 302)
 
         form = PleaOnlineForms("review", "plea_form_step", fake_session)
-        response = form.load(request_context)
-        response = form.save({"understand": "True"},
-                             request_context)
-
+        form.load(request_context)
+        form.save({"understand": "True"},
+                  request_context)
+        response = form.render()
         self.assertEqual(response.status_code, 302)
 
         form = PleaOnlineForms("complete", "plea_form_step", fake_session)
-        response = form.load(request_context)
+        form.load(request_context)
 
         self.assertEqual(fake_session["case"]["date_of_hearing"], datetime.date(2015, 1, 1))
         self.assertEqual(fake_session["case"]["time_of_hearing"], datetime.time(9, 15))
@@ -246,29 +249,29 @@ class TestMultiPleaForms(TestCase):
         request_context = RequestContext(fake_request)
 
         form = PleaOnlineForms("case", "plea_form_step", fake_session)
-        response = form.load(request_context)
-        response = form.save({"date_of_hearing_0": "01",
-                              "date_of_hearing_1": "01",
-                              "date_of_hearing_2": "2015",
-                              "time_of_hearing": "09:15",
-                              "urn_0": "00",
-                              "urn_1": "AA",
-                              "urn_2": "0000000",
-                              "urn_3": "00",
-                              "number_of_charges": 2},
-                             request_context)
-
+        form.load(request_context)
+        form.save({"date_of_hearing_0": "01",
+                   "date_of_hearing_1": "01",
+                   "date_of_hearing_2": "2015",
+                   "time_of_hearing": "09:15",
+                   "urn_0": "00",
+                   "urn_1": "AA",
+                   "urn_2": "0000000",
+                   "urn_3": "00",
+                   "number_of_charges": 2},
+                  request_context)
+        response = form.render()
         self.assertEqual(response.status_code, 302)
 
         form = PleaOnlineForms("your_details", "plea_form_step", fake_session)
-        response = form.load(request_context)
-        response = form.save({"name": "Charlie Brown",
-                              "contact_number": "07802639892",
-                              "email": "test@example.org"},
-                             request_context)
+        form.load(request_context)
+        form.save({"name": "Charlie Brown",
+                   "contact_number": "07802639892",
+                   "email": "test@example.org"},
+                  request_context)
 
         form = PleaOnlineForms("plea", "plea_form_step", fake_session)
-        response = form.load(request_context)
+        form.load(request_context)
 
         mgmt_data = {"form-TOTAL_FORMS": "2",
                      "form-INITIAL_FORMS": "0",
@@ -279,19 +282,20 @@ class TestMultiPleaForms(TestCase):
                           "form-1-guilty": "guilty",
                           "form-1-mitigations": "lorem ipsum 2"})
 
-        response = form.save(mgmt_data, request_context)
+        form.save(mgmt_data, request_context)
+        response = form.render()
 
         self.assertEqual(response.status_code, 302)
 
         form = PleaOnlineForms("review", "plea_form_step", fake_session)
-        response = form.load(request_context)
-        response = form.save({"understand": "True"},
-                             request_context)
-
+        form.load(request_context)
+        form.save({"understand": "True"},
+                  request_context)
+        response = form.render()
         self.assertEqual(response.status_code, 302)
 
         form = PleaOnlineForms("complete", "plea_form_step", fake_session)
-        response = form.load(request_context)
+        form.load(request_context)
 
         self.assertEqual(fake_session["case"]["date_of_hearing"], datetime.date(2015, 1, 1))
         self.assertEqual(fake_session["case"]["time_of_hearing"], datetime.time(9, 15))
