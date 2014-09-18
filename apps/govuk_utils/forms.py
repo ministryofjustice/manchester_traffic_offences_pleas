@@ -88,6 +88,7 @@ class MultiStageForm(object):
         self.current_stage_class = None
         self.current_stage = None
         self.storage_dict = storage_dict
+        self.request_context = {}
         self.all_data = {}
         self.url_name = url_name
 
@@ -115,14 +116,15 @@ class MultiStageForm(object):
         self.storage_dict.update({key: val for (key, val) in self.all_data.items()})
 
     def load(self, request_context):
+        self.request_context = request_context
         self.current_stage = self.current_stage_class(self.urls, self.all_data)
         if not self.current_stage.check_dependencies():
             return HttpResponseRedirect(self.urls[self.stage_classes[0].name])
 
         self.current_stage.load()
-        return self.current_stage.render(request_context)
 
     def save(self, form_data, request_context, next_step=None):
+        self.request_context = request_context
         next_url = None
         if next_step:
             next_url = reverse(self.url_name, args=(next_step, ))
@@ -132,7 +134,9 @@ class MultiStageForm(object):
             self.all_data[self.current_stage.name] = {}
         self.all_data[self.current_stage.name].update(self.current_stage.save(form_data, next_step=next_url))
         self.save_to_storage()
-        return self.current_stage.render(request_context)
+
+    def render(self):
+        return self.current_stage.render(self.request_context)
 
 
 class GovUkDateWidget(SelectDateWidget):
