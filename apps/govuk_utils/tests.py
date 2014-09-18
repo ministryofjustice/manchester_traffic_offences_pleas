@@ -1,7 +1,8 @@
 from datetime import datetime, date
-from mock import patch
+from mock import patch, MagicMock
 
 from django import forms
+from django.contrib import messages
 from django.forms.formsets import formset_factory
 from django.http import Http404
 from django.test import TestCase
@@ -11,6 +12,10 @@ from .serializers import DateAwareSerializer
 
 def reverse(url_name, args=None):
     return "/path/to/" + url_name + "/" + args[0]
+
+
+def add_message(request, importance, message):
+    pass
 
 
 class TestForm1(forms.Form):
@@ -65,6 +70,8 @@ class Stage3(FormStage):
                 form_data["Factory"] = form.cleaned_data
             else:
                 form_data.update(form.cleaned_data)
+
+        self.add_message(messages.INFO, "This is a test message")
 
         return form_data
 
@@ -146,6 +153,25 @@ class TestMultiStageForm(TestCase):
                      "field5": True}
         form_data.update(mgmt_data)
         msf.save(form_data, request_context)
+
+    @patch("apps.govuk_utils.forms.reverse", reverse)
+    @patch("apps.govuk_utils.forms.messages.add_message")
+    def test_form_stage3_messages(self, add_message):
+        request_context = {}
+        msf = MultiStageFormTest("stage_3", "msf_url", {})
+        msf.all_data["field2"] = 2
+        mgmt_data = {"form-TOTAL_FORMS": "2",
+                     "form-INITIAL_FORMS": "0",
+                     "form-MAX_NUM_FORMS": "1000"}
+        form_data = {"form-0-field3": "Jim Smith",
+                     "form-0-field4": "jim.smith@example.org",
+                     "form-1-field3": "Jill Smith",
+                     "form-1-field4": "jill.smith@example.org",
+                     "field5": True}
+        form_data.update(mgmt_data)
+        msf.save(form_data, request_context)
+        msf.process_messages({})
+        add_message.assert_called_once_with({}, 20, "This is a test message")
 
     @patch("apps.govuk_utils.forms.reverse", reverse)
     def test_form_review_loads(self):
