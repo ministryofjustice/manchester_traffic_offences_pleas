@@ -1,5 +1,6 @@
 import datetime
-from mock import Mock
+from mock import Mock, MagicMock, patch
+import socket
 
 from django.test import TestCase
 from django.test.client import RequestFactory
@@ -171,11 +172,30 @@ class TestMultiPleaForms(TestCase):
     def test_complete_stage_loads(self):
         pass
 
-    def test_reviewsenderror_stage_loads(self):
-        pass
+    @patch("apps.plea.email.TemplateAttachmentEmail.send")
+    @patch("apps.govuk_utils.forms.messages.add_message")
+    def test_email_error_adds_message(self, add_message, send):
+        send.side_effect = socket.error("Email failed to send, socket error")
 
-    def test_email_error_redirects_to_reviewsenderror_stage(self):
-        pass
+        fake_session = {"case": {}, "your_details": {}, "plea": {"PleaForms": [{}]}, "review": {}}
+        fake_session["case"]["date_of_hearing"] = datetime.date(2015, 1, 1)
+        fake_session["case"]["time_of_hearing"] = datetime.time(9, 15)
+        fake_session["case"]["urn"] = "00/AA/0000000/00"
+        fake_session["case"]["number_of_charges"] = 1
+        fake_session["your_details"]["name"] = "Charlie Brown"
+        fake_session["your_details"]["contact_number"] = "07802639892"
+        fake_session["your_details"]["email"] = "test@example.org"
+        fake_session["plea"]["PleaForms"][0]["guilty"] = "guilty"
+        fake_session["plea"]["PleaForms"][0]["mitigations"] = "lorem ipsum 1"
+
+        form = PleaOnlineForms("review", "plea_form_step", fake_session)
+        form.load(self.request_context)
+        form.save({"understand": True}, self.request_context)
+        form.process_messages({})
+        self.assertEqual(add_message.call_count, 1)
+        self.assertEqual(add_message.call_args[0][0], {})
+        self.assertEqual(add_message.call_args[0][1], 40)
+        self.assertTrue(isinstance(add_message.call_args[0][2], basestring))
 
     def test_successful_completion_single_charge(self):
         fake_session = {}
