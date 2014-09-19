@@ -1,6 +1,7 @@
 from dateutil.parser import parse
 import datetime
 
+from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 from django.forms.formsets import formset_factory
 
@@ -96,7 +97,8 @@ class ReviewStage(FormStage):
             if email_result:
                 next_step = reverse_lazy("plea_form_step", args=("complete", ))
             else:
-                next_step = reverse_lazy('plea_form_step', args=('send_error', ))
+                self.add_message(messages.ERROR, "<h2>Submission Error</h2>Oops there seems to have been a problem submitting your plea. Please try again.")
+                next_step = reverse_lazy('plea_form_step', args=('review', ))
 
             self.next_step = next_step
 
