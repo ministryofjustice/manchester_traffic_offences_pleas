@@ -31,6 +31,7 @@ class PleaOnlineViews(TemplateView):
 
         form = PleaOnlineForms(stage, "plea_form_step", request.session)
         form.load(RequestContext(request))
+        form.process_messages(request)
         return form.render()
 
     @never_cache
@@ -40,4 +41,5 @@ class PleaOnlineViews(TemplateView):
 
         form = PleaOnlineForms(stage, "plea_form_step", request.session)
         form.save(request.POST, RequestContext(request), nxt)
+        form.process_messages(request)
         return form.render()
