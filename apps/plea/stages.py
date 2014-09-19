@@ -105,20 +105,6 @@ class ReviewStage(FormStage):
         return clean_data
 
 
-class ReviewSendErrorStage(FormStage):
-    name = "send_error"
-    template = "plea/review_send_error.html"
-    form_classes = []
-    dependencies = ["case", "your_details", "plea", "your_money"]
-
-    def save(self, form_data, next_step=None):
-        clean_data = super(ReviewSendErrorStage, self).save(form_data, next_step)
-
-        self.next_step = reverse_lazy("plea_form_step", args=("review", ))
-
-        return clean_data
-
-
 class CompleteStage(FormStage):
     name = "complete"
     template = "plea/complete.html"
