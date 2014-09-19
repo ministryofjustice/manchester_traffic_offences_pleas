@@ -9,7 +9,7 @@ from brake.decorators import ratelimit
 
 from apps.govuk_utils.forms import MultiStageForm
 from stages import (CaseStage, YourDetailsStage, PleaStage, YourMoneyStage,
-                    ReviewStage, ReviewSendErrorStage, CompleteStage)
+                    ReviewStage, CompleteStage)
 
 
 class PleaOnlineForms(MultiStageForm):
@@ -18,7 +18,6 @@ class PleaOnlineForms(MultiStageForm):
                      PleaStage,
                      YourMoneyStage,
                      ReviewStage,
-                     ReviewSendErrorStage,
                      CompleteStage]
 
 
