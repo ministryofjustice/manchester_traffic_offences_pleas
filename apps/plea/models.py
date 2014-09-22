@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime as dt
 import json
 
 from django.db import models
@@ -8,8 +8,8 @@ from django.core.serializers.json import DjangoJSONEncoder
 class CourtEmailPleaManager(models.Manager):
     @staticmethod
     def delete_old_emails():
-        today = datetime.today()
-        today_start = datetime(today.year, today.month, today.day)
+        today = dt.datetime.today()
+        today_start = dt.datetime(today.year, today.month, today.day)
         old_records = CourtEmailPlea.objects.filter(hearing_date__lt=today_start)
         count = old_records.count()
         old_records.delete()
@@ -71,7 +71,17 @@ class CourtEmailCount(models.Model):
         if self.total_not_guilty is None:
             self.total_not_guilty = 0
 
-        self.hearing_date = context["case"]["date_of_hearing"]
+        if isinstance(context["case"]["date_of_hearing"], dt.date):
+            date_part = context["case"]["date_of_hearing"]
+        else:
+            date_part = dt.datetime.strptime(context["case"]["date_of_hearing"], '%Y-%m-%d')
+
+        if isinstance(context["case"]["time_of_hearing"], dt.time):
+            time_part = context["case"]["time_of_hearing"]
+        else:
+            time_part = dt.datetime.strptime(context["case"]["time_of_hearing"], '%H:%M:%S').time()
+
+        self.hearing_date = dt.datetime.combine(date_part, time_part)
 
         for plea_data in context["plea"]["PleaForms"]:
             self.total_pleas += 1
