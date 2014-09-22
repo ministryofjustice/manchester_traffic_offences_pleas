@@ -4,4 +4,21 @@
 
 This is a standard django install.  Use `virtualenv` and `pip install requirements/local.txt` for local dev.
 
-TODO Make this better ;)
+To build the front end please install following:
+- Ruby
+- Node
+- Sass
+- NPM
+  - gulp
+  - gulp-concat
+  - gulp-jshint
+  - gulp-rimraf
+  - govuk_frontend_toolkit
+  - gulp-imagemin
+  - gulp-load-plugins
+  - gulp-ruby-sass
+  - jshint-stylish
+
+The content in manchester_traffic_offences/assets-src/stylesheets/elements/ is from https://github.com/alphagov/govuk_elements/tree/master/public/sass/elements and should be updated regularly.
+
+TODO: fix the node / NPM side of the installation :)

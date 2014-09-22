@@ -38,18 +38,3 @@
     background-image: url("../images/icons/icon-pointer-2x.png");
   }
 }
-
-// Show & hide links
-details,
-summary {
-  display: block;
-}
-
-/*details summary {
-  @extend .button-link;
-}*/
-
-details summary:focus {
-  outline: 3px solid $yellow;
-}
-
