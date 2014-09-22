@@ -1519,7 +1519,6 @@ section#charges #charge-loc {
   margin: 1em 0; }
 
 .charge-radios {
-  overflow: auto;
   margin-bottom: 1em; }
 
 section .info-notice {
@@ -1607,7 +1606,8 @@ div.error, section.error {
   border-top: solid 1px #c2c2c2;
   padding-top: 1em; }
 #your-money .full {
-  overflow: auto; }
+  overflow: auto;
+  padding-left: 3px; }
 #your-money .amount {
   float: left; }
 #your-money .money ul {
