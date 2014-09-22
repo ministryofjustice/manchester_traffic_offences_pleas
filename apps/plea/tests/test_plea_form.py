@@ -34,6 +34,7 @@ class TestMultiPleaForms(TestCase):
                                                                "contact_number": "012345678",
                                                                "email": "charliebrown@example.org"}}
 
+
         self.request_factory = RequestFactory()
 
     def get_request_mock(self, url, url_name="", url_kwargs=None):
@@ -167,7 +168,35 @@ class TestMultiPleaForms(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_review_stage_loads(self):
-        pass
+        test_data = {
+            "case": {
+                "complete": True,
+                "date_of_hearing": "2015-01-01",
+                "urn_0": "00",
+                "urn_1": "AA",
+                "urn_2": "0000000",
+                "urn_3": "00",
+                "number_of_charges": 1
+            },
+            "your_details": {
+                "complete": True
+            },
+            "plea": {
+                "complete": True
+            },
+            "your_money":  {
+                "complete": True
+            }
+        }
+
+        form = PleaOnlineForms("review", "plea_form_step", test_data)
+
+        response = form.load(self.request_context)
+
+        self.assertTemplateUsed(response, "plea/review.html")
+
+        # NOTE: This is still WIP. Need to check specific values are in
+        # the resulting rendered template
 
     def test_complete_stage_loads(self):
         pass
