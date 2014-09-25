@@ -146,17 +146,20 @@ class CourtEmailCount(models.Model):
         if self.total_not_guilty is None:
             self.total_not_guilty = 0
 
-        if isinstance(context["case"]["date_of_hearing"], dt.date):
-            date_part = context["case"]["date_of_hearing"]
-        else:
-            date_part = date_parse(context["case"]["date_of_hearing"])
+        try:
+            if isinstance(context["case"]["date_of_hearing"], dt.date):
+                date_part = context["case"]["date_of_hearing"]
+            else:
+                date_part = date_parse(context["case"]["date_of_hearing"])
 
-        if isinstance(context["case"]["time_of_hearing"], dt.time):
-            time_part = context["case"]["time_of_hearing"]
-        else:
-            time_part = date_parse(context["case"]["time_of_hearing"]).time()
+            if isinstance(context["case"]["time_of_hearing"], dt.time):
+                time_part = context["case"]["time_of_hearing"]
+            else:
+                time_part = date_parse(context["case"]["time_of_hearing"]).time()
 
-        self.hearing_date = dt.datetime.combine(date_part, time_part)
+            self.hearing_date = dt.datetime.combine(date_part, time_part)
+        except KeyError:
+            pass
 
         for plea_data in context["plea"]["PleaForms"]:
             self.total_pleas += 1
