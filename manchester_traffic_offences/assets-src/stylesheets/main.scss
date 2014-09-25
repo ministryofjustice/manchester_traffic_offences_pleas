@@ -8,7 +8,9 @@
 @import "govuk_frontend_toolkit/stylesheets/measurements";
 @import "govuk_frontend_toolkit/stylesheets/shims";
 @import "govuk_frontend_toolkit/stylesheets/typography";
+@import "govuk_frontend_toolkit/stylesheets/grid_layout";
 @import "govuk_frontend_toolkit/stylesheets/design-patterns/buttons";
+@import "govuk_frontend_toolkit/stylesheets/design-patterns/alpha-beta";
 
 // Extras
 @import "mixins";
@@ -19,15 +21,14 @@
 @import "icons";
 @import "utilities";
 @import "icons";
-@import "govuk-sass/measurements";
-@import "govuk-sass/grid_layout";
-@import "govuk-sass/colours";
-@import "govuk-sass/conditionals";
-@import "govuk-sass/shims";
-@import "govuk-sass/typography";
-@import "govuk-sass/font_stack";
-@import "govuk-sass/url-helpers";
-@import "elements/shame";
+//@import "govuk-sass/measurements";
+//@import "govuk-sass/grid_layout";
+//@import "govuk-sass/colours";
+//@import "govuk-sass/conditionals";
+//@import "govuk-sass/shims";
+//@import "govuk-sass/typography";
+//@import "govuk-sass/font_stack";
+//@import "govuk-sass/url-helpers";
 // Helpers
 @import "elements/helpers";
 // Reset
@@ -49,8 +50,6 @@
 @import "elements/lists";
 // Panels
 @import "elements/panels";
-// Colours
-@import "elements/colours";
 // Icons
 @import "elements/icons";
 
@@ -125,7 +124,7 @@ select {border-color: #bfc1c3;}
 section#charges {clear: both; width: 75%;}
 section#charges #enter-charges {float:left; width:70%;}
 section#charges #charge-loc {float: right; width:30%; margin: 1em 0;}
-.charge-radios {overflow: auto; margin-bottom:1em;}
+.charge-radios {margin-bottom: 1em;}
 
 section .info-notice {background: none; border-left: 10px #dee0e2 solid; margin-bottom: 1em;margin-top: 2em;}
 section .info-notice p{line-height: 1.31579;}
@@ -233,6 +232,7 @@ div.error, section.error {
 
   .full {
     overflow: auto;
+    padding-left:3px;
   }
 
   .amount {float: left;}
