@@ -186,6 +186,17 @@ LOGGING = {
     }
 }
 
+# Django-rest-framework throttling config
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.AnonRateThrottle',
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/day',
+    }
+}
+
 INTERNAL_IPS = ['127.0.0.1']
 
 

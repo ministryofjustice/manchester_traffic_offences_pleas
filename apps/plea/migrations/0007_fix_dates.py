@@ -8,6 +8,7 @@ from django.db import models
 
 from apps.plea.models import CourtEmailCount
 
+
 class Migration(DataMigration):
 
     def forwards(self, orm):
