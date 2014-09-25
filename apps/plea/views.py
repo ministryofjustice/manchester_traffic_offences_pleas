@@ -7,6 +7,12 @@ from django.views.generic import TemplateView
 
 from brake.decorators import ratelimit
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from dateutil.parser import parse
+
+from .models import CourtEmailCount
+
 from apps.govuk_utils.forms import MultiStageForm
 from stages import (CaseStage, YourDetailsStage, PleaStage, YourMoneyStage,
                     ReviewStage, CompleteStage)
@@ -42,3 +48,20 @@ class PleaOnlineViews(TemplateView):
         form.save(request.POST, RequestContext(request), nxt)
         form.process_messages(request)
         return form.render()
+
+
+class StatsBasicView(APIView):
+
+    def get(self, request):
+        stats = CourtEmailCount.objects.get_stats()
+
+        return Response(stats)
+
+
+class StatsByHearingDateView(APIView):
+
+    def get(self, request):
+
+        stats = CourtEmailCount.objects.get_stats_by_hearing_date()
+
+        return Response(stats)
