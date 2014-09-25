@@ -7,9 +7,15 @@ from django.views.generic import TemplateView
 
 from brake.decorators import ratelimit
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from dateutil.parser import parse
+
+from .models import CourtEmailCount
+
 from apps.govuk_utils.forms import MultiStageForm
 from stages import (CaseStage, YourDetailsStage, PleaStage, YourMoneyStage,
-                    ReviewStage, ReviewSendErrorStage, CompleteStage)
+                    ReviewStage, CompleteStage)
 
 
 class PleaOnlineForms(MultiStageForm):
@@ -18,7 +24,6 @@ class PleaOnlineForms(MultiStageForm):
                      PleaStage,
                      YourMoneyStage,
                      ReviewStage,
-                     ReviewSendErrorStage,
                      CompleteStage]
 
 
@@ -30,13 +35,33 @@ class PleaOnlineViews(TemplateView):
             return HttpResponseRedirect(reverse_lazy("plea_form_step", args=(stage,)))
 
         form = PleaOnlineForms(stage, "plea_form_step", request.session)
-
-        return form.load(RequestContext(request))
+        form.load(RequestContext(request))
+        form.process_messages(request)
+        return form.render()
 
     @never_cache
     @method_decorator(ratelimit(block=True, rate="10/m"))
     def post(self, request, stage):
         nxt = request.GET.get("next", None)
+
         form = PleaOnlineForms(stage, "plea_form_step", request.session)
-        response = form.save(request.POST, RequestContext(request), nxt)
-        return response
+        form.save(request.POST, RequestContext(request), nxt)
+        form.process_messages(request)
+        return form.render()
+
+
+class StatsBasicView(APIView):
+
+    def get(self, request):
+        stats = CourtEmailCount.objects.get_stats()
+
+        return Response(stats)
+
+
+class StatsByHearingDateView(APIView):
+
+    def get(self, request):
+
+        stats = CourtEmailCount.objects.get_stats_by_hearing_date()
+
+        return Response(stats)

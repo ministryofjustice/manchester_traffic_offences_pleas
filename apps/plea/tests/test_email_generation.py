@@ -26,7 +26,7 @@ class EmailGenerationTests(unittest.TestCase):
 
     def test_plea_email_sends(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
-                                 "time_of_hearing": "12:00",
+                                 "time_of_hearing": "12:00:00",
                                  "urn": "cvxcvx89"},
                         "your_details": {"name": "vcx"},
                         "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},

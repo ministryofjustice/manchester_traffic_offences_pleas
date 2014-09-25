@@ -2,37 +2,13 @@
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-/* CSS 3 Mixins
-
-  Add them as you need them. This should let us manage vendor prefixes in one place.
- */
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-/* Cross-browser shims
-
-  Ways of normalising properties across browsers.
- */
 @-ms-viewport {
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-/* Usage:
-   @include inline-block
-
-   or
-
-   @include inline-block("250px")
-
-   which gives a min-height to the inline-block elements.
-*/
-/* Contain floats usage:
-
-   .this-has-floated-children {
-     @extend %contain-floats;
-   }
-
-*/
 #content:after {
   content: "";
   display: block;
@@ -45,62 +21,61 @@
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-/* Cross-browser shims
-
-  Ways of normalising properties across browsers.
- */
 @-ms-viewport {
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-/* Usage:
-   @include inline-block
-
-   or
-
-   @include inline-block("250px")
-
-   which gives a min-height to the inline-block elements.
-*/
-/* Contain floats usage:
-
-   .this-has-floated-children {
-     @extend %contain-floats;
-   }
-
-*/
+@-ms-viewport {
+  width: device-width; }
+@-o-viewport {
+  width: device-width; }
 #content:after {
   content: "";
   display: block;
   clear: both; }
 
-/* CSS 3 Mixins
-
-  Add them as you need them. This should let us manage vendor prefixes in one place.
- */
 @-ms-viewport {
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-/*
+#content:after {
+  content: "";
+  display: block;
+  clear: both; }
 
-Mixin and defaults for making buttons on GOV.UK services.
+@-ms-viewport {
+  width: device-width; }
+@-o-viewport {
+  width: device-width; }
+@font-face {
+  font-family: GDS-Logo;
+  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+@-ms-viewport {
+  width: device-width; }
+@-o-viewport {
+  width: device-width; }
+@-ms-viewport {
+  width: device-width; }
+@-o-viewport {
+  width: device-width; }
+#content:after {
+  content: "";
+  display: block;
+  clear: both; }
 
-For guidance, see: https://www.gov.uk/service-manual/design-and-content/resources/buttons.html
+@-ms-viewport {
+  width: device-width; }
+@-o-viewport {
+  width: device-width; }
+@-ms-viewport {
+  width: device-width; }
+@-o-viewport {
+  width: device-width; }
+#content:after {
+  content: "";
+  display: block;
+  clear: both; }
 
-Example usage:
-
-.button{
-  @include button;
-}
-.button-secondary{
-  @include button($grey-3);
-}
-.button-warning{
-  @include button($red);
-}
-
-*/
 #global-header.with-proposition .header-wrapper .header-global {
   float: left; }
   @media (min-width: 769px) {
@@ -128,104 +103,13 @@ Example usage:
   border-bottom: 0;
   padding: 0 10px; }
 
-h1 {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 48px;
-  line-height: 1.04167;
-  font-weight: 400;
-  text-transform: none;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  font-weight: 700; }
-  @media (max-width: 640px) {
-    h1 {
-      font-size: 32px;
-      line-height: 1.09375; } }
-  @media (min-width: 641px) {
-    h1 {
-      padding-top: 7px;
-      padding-bottom: 13px; } }
-
-h2 {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 36px;
-  line-height: 1.11111;
-  font-weight: 400;
-  text-transform: none;
-  padding-top: 8px;
-  padding-bottom: 7px;
-  font-weight: 700; }
-  @media (max-width: 640px) {
-    h2 {
-      font-size: 24px;
-      line-height: 1.04167; } }
-  @media (min-width: 641px) {
-    h2 {
-      padding-top: 6px;
-      padding-bottom: 9px; } }
-
-h3 {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 36px;
-  line-height: 1.11111;
-  font-weight: 400;
-  text-transform: none; }
-  @media (max-width: 640px) {
-    h3 {
-      font-size: 24px;
-      line-height: 1.04167; } }
-
-h4 {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 24px;
-  line-height: 1.25;
-  font-weight: 400;
-  text-transform: none; }
-  @media (max-width: 640px) {
-    h4 {
-      font-size: 20px;
-      line-height: 1.2; } }
-
-p,
-blockquote {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.25;
-  font-weight: 300;
-  text-transform: none; }
-  @media (max-width: 640px) {
-    p,
-    blockquote {
-      font-size: 14px;
-      line-height: 1.14286; } }
-
-.PageHeader h1 {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 36px;
-  line-height: 1.11111;
-  font-weight: 400;
-  text-transform: none;
-  font-weight: 700;
-  padding-top: 12px;
-  padding-bottom: 9px; }
-  @media (max-width: 640px) {
-    .PageHeader h1 {
-      font-size: 24px;
-      line-height: 1.04167; } }
-.PageHeader p {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 24px;
-  line-height: 1.25;
-  font-weight: 400;
-  text-transform: none; }
-  @media (max-width: 640px) {
-    .PageHeader p {
-      font-size: 20px;
-      line-height: 1.2; } }
-.PageHeader .Button {
-  margin-top: 15px;
-  margin-left: 15px; }
-
+@font-face {
+  font-family: GDS-Logo;
+  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+@-ms-viewport {
+  width: device-width; }
+@-o-viewport {
+  width: device-width; }
 .TextIcon {
   background-repeat: no-repeat;
   background-position: left top; }
@@ -363,42 +247,14 @@ blockquote {
   .svg .IconRow--comments {
     background-image: url("../images/icons/comments.svg"); }
 
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
-#content:after {
-  content: "";
-  display: block;
-  clear: both; }
+.example-highlight-grid .grid-wrapper {
+  background: #bfc1c3; }
+.example-highlight-grid .grid {
+  background: #f8f8f8; }
+.example-highlight-grid .is-inner-block-highlight {
+  background: #dee0e2;
+  width: 100%; }
 
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
-#content:after {
-  content: "";
-  display: block;
-  clear: both; }
-
-@font-face {
-  font-family: GDS-Logo;
-  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
-@font-face {
-  font-family: GDS-Logo;
-  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
 .example-back-link {
   display: -moz-inline-stack;
   display: inline-block;
@@ -413,6 +269,9 @@ blockquote {
   margin: -1px;
   padding: 0;
   border: 0; }
+
+.js-enabled .js-hidden {
+  display: none; }
 
 /* Borrowed from http://meyerweb.com/eric/tools/css/reset/ */
 div, span,
@@ -495,7 +354,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   text-transform: none; }
   @media (max-width: 640px) {
     .font-medium {
-      font-size: 20px;
+      font-size: 18px;
       line-height: 1.2; } }
 
 .font-small {
@@ -513,7 +372,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   font-family: "nta", Arial, sans-serif;
   font-size: 16px;
   line-height: 1.25;
-  font-weight: 300;
+  font-weight: 400;
   text-transform: none; }
   @media (max-width: 640px) {
     .font-xsmall {
@@ -524,9 +383,8 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   font-family: "nta", Arial, sans-serif;
   font-size: 80px;
   line-height: 1;
-  font-weight: 400;
-  text-transform: none;
-  font-weight: 700; }
+  font-weight: 700;
+  text-transform: none; }
   @media (max-width: 640px) {
     .bold-xxlarge {
       font-size: 53px;
@@ -536,9 +394,8 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   font-family: "nta", Arial, sans-serif;
   font-size: 48px;
   line-height: 1.04167;
-  font-weight: 400;
-  text-transform: none;
-  font-weight: 700; }
+  font-weight: 700;
+  text-transform: none; }
   @media (max-width: 640px) {
     .bold-xlarge {
       font-size: 32px;
@@ -548,9 +405,8 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   font-family: "nta", Arial, sans-serif;
   font-size: 36px;
   line-height: 1.11111;
-  font-weight: 400;
-  text-transform: none;
-  font-weight: 700; }
+  font-weight: 700;
+  text-transform: none; }
   @media (max-width: 640px) {
     .bold-large {
       font-size: 24px;
@@ -560,21 +416,19 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   font-family: "nta", Arial, sans-serif;
   font-size: 24px;
   line-height: 1.25;
-  font-weight: 400;
-  text-transform: none;
-  font-weight: 700; }
+  font-weight: 700;
+  text-transform: none; }
   @media (max-width: 640px) {
     .bold-medium {
-      font-size: 20px;
+      font-size: 18px;
       line-height: 1.2; } }
 
 .bold-small {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
-  font-weight: 400;
-  text-transform: none;
-  font-weight: 700; }
+  font-weight: 700;
+  text-transform: none; }
   @media (max-width: 640px) {
     .bold-small {
       font-size: 16px;
@@ -584,9 +438,8 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   font-family: "nta", Arial, sans-serif;
   font-size: 16px;
   line-height: 1.25;
-  font-weight: 300;
-  text-transform: none;
-  font-weight: 700; }
+  font-weight: 700;
+  text-transform: none; }
   @media (max-width: 640px) {
     .bold-xsmall {
       font-size: 14px;
@@ -596,9 +449,8 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   font-family: "nta", Arial, sans-serif;
   font-size: 48px;
   line-height: 1.04167;
-  font-weight: 400;
-  text-transform: none;
   font-weight: 700;
+  text-transform: none;
   margin-top: 0.46875em;
   margin-bottom: 0.9375em; }
   @media (max-width: 640px) {
@@ -615,20 +467,25 @@ table, caption, tbody, tfoot, thead, tr, th, td {
     line-height: 1.11111;
     font-weight: 400;
     text-transform: none;
+    padding-top: 8px;
+    padding-bottom: 7px;
     display: block;
     color: #6f777b; }
     @media (max-width: 640px) {
       .heading-xlarge .heading-secondary {
-        font-size: 18px;
+        font-size: 20px;
         line-height: 1.11111; } }
+    @media (min-width: 641px) {
+      .heading-xlarge .heading-secondary {
+        padding-top: 4px;
+        padding-bottom: 6px; } }
 
 .heading-large {
   font-family: "nta", Arial, sans-serif;
   font-size: 36px;
   line-height: 1.11111;
-  font-weight: 400;
-  text-transform: none;
   font-weight: 700;
+  text-transform: none;
   margin-top: 1.04167em;
   margin-bottom: 0.41667em; }
   @media (max-width: 640px) {
@@ -639,19 +496,36 @@ table, caption, tbody, tfoot, thead, tr, th, td {
     .heading-large {
       margin-top: 1.25em;
       margin-bottom: 0.55556em; } }
+  .heading-large .heading-secondary {
+    font-family: "nta", Arial, sans-serif;
+    font-size: 24px;
+    line-height: 1.25;
+    font-weight: 400;
+    text-transform: none;
+    padding-top: 9px;
+    padding-bottom: 6px;
+    display: block;
+    color: #6f777b; }
+    @media (max-width: 640px) {
+      .heading-large .heading-secondary {
+        font-size: 18px;
+        line-height: 1.2; } }
+    @media (min-width: 641px) {
+      .heading-large .heading-secondary {
+        padding-top: 6px;
+        padding-bottom: 4px; } }
 
 .heading-medium {
   font-family: "nta", Arial, sans-serif;
   font-size: 24px;
   line-height: 1.25;
-  font-weight: 400;
-  text-transform: none;
   font-weight: 700;
+  text-transform: none;
   margin-top: 1.25em;
   margin-bottom: 0.5em; }
   @media (max-width: 640px) {
     .heading-medium {
-      font-size: 20px;
+      font-size: 18px;
       line-height: 1.2; } }
   @media (min-width: 641px) {
     .heading-medium {
@@ -662,9 +536,8 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
-  font-weight: 400;
-  text-transform: none;
   font-weight: 700;
+  text-transform: none;
   margin-top: 0.625em;
   margin-bottom: 0.3125em; }
   @media (max-width: 640px) {
@@ -691,11 +564,14 @@ p {
   text-transform: none; }
   @media (max-width: 640px) {
     .lede {
-      font-size: 20px;
+      font-size: 18px;
       line-height: 1.2; } }
 
 .text {
   max-width: 30em; }
+
+.text-secondary {
+  color: #6f777b; }
 
 pre,
 code {
@@ -747,7 +623,7 @@ code {
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
-    font-weight: 300;
+    font-weight: 400;
     text-transform: none; }
     @media (max-width: 640px) {
       .phase-banner p {
@@ -762,9 +638,8 @@ code {
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
-    font-weight: 300;
-    text-transform: none;
     font-weight: 700;
+    text-transform: none;
     text-transform: uppercase;
     letter-spacing: 1px;
     text-decoration: none;
@@ -898,14 +773,13 @@ fieldset {
   font-family: "nta", Arial, sans-serif;
   font-size: 24px;
   line-height: 1.25;
-  font-weight: 400;
-  text-transform: none;
   font-weight: 700;
+  text-transform: none;
   display: block;
   margin-bottom: 0; }
   @media (max-width: 640px) {
     .form-label-bold {
-      font-size: 20px;
+      font-size: 18px;
       line-height: 1.2; } }
   .form-label-bold .form-hint {
     font-family: "nta", Arial, sans-serif;
@@ -995,9 +869,6 @@ fieldset {
   .form .button {
     width: 100%; } }
 
-.js-enabled .toggle-content {
-  display: none; }
-
 .validation-summary {
   border: 3px solid #df3034;
   padding: 15px 30px;
@@ -1011,7 +882,7 @@ fieldset {
   font-family: "nta", Arial, sans-serif;
   font-size: 16px;
   line-height: 1.25;
-  font-weight: 300;
+  font-weight: 400;
   text-transform: none; }
   @media (max-width: 640px) {
     .validation-summary li,
@@ -1034,7 +905,7 @@ fieldset {
   font-family: "nta", Arial, sans-serif;
   font-size: 16px;
   line-height: 1.25;
-  font-weight: 300;
+  font-weight: 400;
   text-transform: none;
   color: #df3034; }
   @media (max-width: 640px) {
@@ -1042,29 +913,30 @@ fieldset {
       font-size: 14px;
       line-height: 1.14286; } }
 
-.date-of-birth label {
+.form-date label {
   display: block;
   margin-bottom: 5px; }
 
-.date-of-birth .form-group {
+.form-date .form-group {
   width: 50px;
   float: left;
   margin-right: 20px;
+  margin-bottom: 0;
   clear: none; }
 
-.date-of-birth .form-group-year {
+.form-date .form-group-year {
   width: 70px; }
 
-.date-of-birth .form-group input {
+.form-date .form-group input {
   width: 100%; }
 
-.touch .date-of-birth {
+.touch .form-date {
   display: none; }
 
-.no-touch .native-date-of-birth {
+.no-touch .native-date-picker {
   display: none; }
 
-.touch .native-date-of-birth {
+.touch .native-date-picker {
   display: block; }
 
 .touch input[type="date"] {
@@ -1086,29 +958,27 @@ fieldset {
       float: left;
       margin-top: 5px;
       margin-bottom: 5px; } }
-
-.block-label:hover {
-  border-color: #0b0c0c; }
-
-.block-label input {
-  position: absolute;
-  top: 18px;
-  left: 15px;
-  cursor: pointer; }
+  .block-label input {
+    position: absolute;
+    top: 18px;
+    left: 15px;
+    cursor: pointer; }
+  .block-label:hover {
+    border-color: #0b0c0c; }
 
 .inline .block-label {
   clear: none;
   margin-right: 15px; }
 
-.js-enabled .add-focus {
-  outline: 3px solid #ffbf47; }
-
-.js-enabled .block-label input:focus {
-  outline: none; }
-
 .js-enabled .selected {
   background: white;
   border-color: #0b0c0c; }
+
+.js-enabled label.focused {
+  outline: 3px solid #ffbf47; }
+
+.js-enabled .focused input:focus {
+  outline: none; }
 
 table {
   border-collapse: collapse;
@@ -1120,7 +990,7 @@ table td {
   font-family: "nta", Arial, sans-serif;
   font-size: 16px;
   line-height: 1.25;
-  font-weight: 300;
+  font-weight: 400;
   text-transform: none;
   padding: 0.73684em 1.05263em 0.52632em 0;
   text-align: left;
@@ -1140,7 +1010,7 @@ table th {
   position: relative;
   display: -moz-inline-stack;
   display: inline-block;
-  padding: 0.35em 0.5em 0.15em 0.5em;
+  padding: 0.3em 0.6em 0.2em 0.6em;
   border: none;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
@@ -1179,7 +1049,7 @@ table th {
       -webkit-box-shadow: 0 2px 0 #003518;
       -moz-box-shadow: 0 2px 0 #003518;
       box-shadow: 0 2px 0 #003518; }
-  .button:hover, .button:focus, .button:visited {
+  .button:link, .button:hover, .button:focus, .button:visited {
     color: white; }
   .button:before {
     content: "";
@@ -1212,31 +1082,20 @@ table th {
   font-family: "nta", Arial, sans-serif;
   font-size: 24px;
   line-height: 1.25;
-  font-weight: 400;
-  text-transform: none;
   font-weight: 700;
+  text-transform: none;
   background-image: url("../images/icons/icon-pointer.png");
   background-repeat: no-repeat;
   background-position: 100% 50%;
   padding: 0.36842em 2.15789em 0.21053em 0.84211em; }
   @media (max-width: 640px) {
     .button-get-started {
-      font-size: 20px;
+      font-size: 18px;
       line-height: 1.2; } }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .button-get-started {
       background-image: url("../images/icons/icon-pointer-2x.png");
       background-size: 30px 19px; } }
-
-details,
-summary {
-  display: block; }
-
-/*details summary {
-  @extend .button-link;
-}*/
-details summary:focus {
-  outline: 3px solid #ffbf47; }
 
 menu,
 ol,
@@ -1263,23 +1122,19 @@ ol li {
 
 .panel-indent {
   clear: both;
-  border-left: 5px solid #dee0e2;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 15px;
+  border-left: 4px solid #bfc1c3;
+  padding: 10px 0 10px 15px;
   margin: 30px 15px 45px 0; }
   .panel-indent:after {
     content: "";
     display: block;
     clear: both; }
-  @media (min-width: 641px) {
-    .panel-indent {
-      padding-left: 20px; } }
 
 .panel-indent legend {
   margin-top: 0; }
 
-.panel-indent p:only-child {
+.panel-indent p:only-child,
+.panel-indent p:last-child {
   margin-bottom: 0; }
 
 .panel-indent .form-group:last-child {
@@ -1664,7 +1519,6 @@ section#charges #charge-loc {
   margin: 1em 0; }
 
 .charge-radios {
-  overflow: auto;
   margin-bottom: 1em; }
 
 section .info-notice {
@@ -1752,7 +1606,8 @@ div.error, section.error {
   border-top: solid 1px #c2c2c2;
   padding-top: 1em; }
 #your-money .full {
-  overflow: auto; }
+  overflow: auto;
+  padding-left: 3px; }
 #your-money .amount {
   float: left; }
 #your-money .money ul {
