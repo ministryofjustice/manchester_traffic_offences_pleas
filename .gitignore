@@ -71,3 +71,7 @@ node_modules/
 # bower packages
 manchester_traffic_offences/assets-src/vendor/
 .sass-cache/
+
+# vim swp files
+*.swp
+
