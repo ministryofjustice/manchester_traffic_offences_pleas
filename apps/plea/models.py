@@ -159,7 +159,7 @@ class CourtEmailCount(models.Model):
 
             self.hearing_date = dt.datetime.combine(date_part, time_part)
         except KeyError:
-            pass
+            return False
 
         for plea_data in context["plea"]["PleaForms"]:
             self.total_pleas += 1
@@ -169,3 +169,5 @@ class CourtEmailCount(models.Model):
 
             if plea_data["guilty"] == "not_guilty":
                 self.total_not_guilty += 1
+
+        return True
