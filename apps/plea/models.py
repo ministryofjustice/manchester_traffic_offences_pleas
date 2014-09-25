@@ -1,15 +1,18 @@
-from datetime import datetime
+import datetime as dt
 import json
 
 from django.db import models
+from django.db.models import Sum, Count
 from django.core.serializers.json import DjangoJSONEncoder
+
+from dateutil.parser import parse as date_parse
 
 
 class CourtEmailPleaManager(models.Manager):
     @staticmethod
     def delete_old_emails():
-        today = datetime.today()
-        today_start = datetime(today.year, today.month, today.day)
+        today = dt.datetime.today()
+        today_start = dt.datetime(today.year, today.month, today.day)
         old_records = CourtEmailPlea.objects.filter(hearing_date__lt=today_start)
         count = old_records.count()
         old_records.delete()
@@ -45,12 +48,84 @@ class CourtEmailPlea(models.Model):
         self.dict_sent = json.dumps(form_data, cls=DjangoJSONEncoder)
 
 
+class CourtEmailCountManager(models.Manager):
+
+    def get_stats(self):
+        """
+        Return some basic stats
+        """
+
+        def _get_totals(qs):
+            totals = qs.aggregate(Sum('total_pleas'), Sum('total_guilty'), Sum('total_not_guilty'))
+
+            return {
+                'total': totals['total_pleas__sum'] or 0,
+                'guilty': totals['total_guilty__sum'] or 0,
+                'not_guilty': totals['total_not_guilty__sum'] or 0
+            }
+
+        stats = {
+            'submissions': {
+
+            },
+            'pleas': {
+
+            }
+        }
+
+        now = dt.datetime.now()
+
+        yesterday_filter = {
+            "date_sent__gte": dt.datetime.combine(now-dt.timedelta(1), dt.time.min),
+            "date_sent__lte": dt.datetime.combine(now-dt.timedelta(1), dt.time.max)
+        }
+
+        last_week_filter = {
+            "date_sent__gte": dt.datetime.combine(now-dt.timedelta(now.weekday()+7), dt.time.min),
+            "date_sent__lte": dt.datetime.combine(now-dt.timedelta(now.weekday()+1), dt.time.max)
+        }
+
+        to_date = self.all()
+        last_week = self.filter(**last_week_filter)
+        yesterday = self.filter(**yesterday_filter)
+
+        stats['submissions']['to_date'] = to_date.count()
+        stats['submissions']['last_week'] = last_week.count()
+        stats['submissions']['yesterday'] = yesterday.count()
+
+        stats['pleas']['to_date'] = _get_totals(to_date)
+        stats['pleas']['last_week'] = _get_totals(last_week)
+        stats['pleas']['yesterday'] = _get_totals(yesterday)
+
+        return stats
+
+    def get_stats_by_hearing_date(self, days=3):
+        """
+        Return stats grouped by hearing date starting from today
+        for the number of days specified by days.
+        """
+
+        results = CourtEmailCount.objects\
+            .filter(hearing_date__gte=dt.datetime.now())\
+            .extra({'hearing_day': "date(hearing_date)"})\
+            .values('hearing_day')\
+            .order_by('hearing_day')\
+            .annotate(pleas=Sum('total_pleas'),
+                      guilty=Sum('total_guilty'),
+                      not_guilty=Sum('total_not_guilty'),
+                      submissions=Count('hearing_date'))[:days]
+
+        return results
+
+
 class CourtEmailCount(models.Model):
     date_sent = models.DateTimeField(auto_now_add=True)
     total_pleas = models.IntegerField()
     total_guilty = models.IntegerField()
     total_not_guilty = models.IntegerField()
     hearing_date = models.DateTimeField()
+
+    objects = CourtEmailCountManager()
 
     def get_from_context(self, context):
         if not "plea" in context:
@@ -71,7 +146,17 @@ class CourtEmailCount(models.Model):
         if self.total_not_guilty is None:
             self.total_not_guilty = 0
 
-        self.hearing_date = context["case"]["date_of_hearing"]
+        if isinstance(context["case"]["date_of_hearing"], dt.date):
+            date_part = context["case"]["date_of_hearing"]
+        else:
+            date_part = date_parse(context["case"]["date_of_hearing"])
+
+        if isinstance(context["case"]["time_of_hearing"], dt.time):
+            time_part = context["case"]["time_of_hearing"]
+        else:
+            time_part = date_parse(context["case"]["time_of_hearing"]).time()
+
+        self.hearing_date = dt.datetime.combine(date_part, time_part)
 
         for plea_data in context["plea"]["PleaForms"]:
             self.total_pleas += 1
