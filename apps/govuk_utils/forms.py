@@ -1,10 +1,14 @@
-from collections import OrderedDict
+from collections import OrderedDict, namedtuple
 
 from django.core.urlresolvers import reverse
+from django.contrib import messages
 from django.forms.extras.widgets import SelectDateWidget
 from django.forms.widgets import NumberInput
 from django.http import Http404, HttpResponseRedirect, QueryDict
 from django.shortcuts import render_to_response
+
+
+StageMessage = namedtuple("StageMessage", ["importance", "message"])
 
 
 class FormStage(object):
@@ -14,6 +18,7 @@ class FormStage(object):
         self.forms = []
         self.next_step = ""
         self.context = {}
+        self.messages = []
 
         if not hasattr(self, "dependencies"):
             self.dependencies = []
@@ -33,6 +38,9 @@ class FormStage(object):
             if not (self.all_data[dependency].get("complete", False) is True):
                 return False
         return True
+
+    def add_message(self, importance, message):
+        self.messages.append(StageMessage(importance=importance, message=message))
 
     def load_forms(self, data=None, initial=False):
         if initial:
@@ -88,6 +96,7 @@ class MultiStageForm(object):
         self.current_stage_class = None
         self.current_stage = None
         self.storage_dict = storage_dict
+        self.request_context = {}
         self.all_data = {}
         self.url_name = url_name
 
@@ -115,14 +124,15 @@ class MultiStageForm(object):
         self.storage_dict.update({key: val for (key, val) in self.all_data.items()})
 
     def load(self, request_context):
+        self.request_context = request_context
         self.current_stage = self.current_stage_class(self.urls, self.all_data)
         if not self.current_stage.check_dependencies():
             return HttpResponseRedirect(self.urls[self.stage_classes[0].name])
 
         self.current_stage.load()
-        return self.current_stage.render(request_context)
 
     def save(self, form_data, request_context, next_step=None):
+        self.request_context = request_context
         next_url = None
         if next_step:
             next_url = reverse(self.url_name, args=(next_step, ))
@@ -132,7 +142,16 @@ class MultiStageForm(object):
             self.all_data[self.current_stage.name] = {}
         self.all_data[self.current_stage.name].update(self.current_stage.save(form_data, next_step=next_url))
         self.save_to_storage()
-        return self.current_stage.render(request_context)
+
+    def process_messages(self, request):
+        if self.current_stage is None:
+            raise Exception("Current stage is not set")
+
+        for msg in self.current_stage.messages:
+            messages.add_message(request, msg.importance, msg.message)
+
+    def render(self):
+        return self.current_stage.render(self.request_context)
 
 
 class GovUkDateWidget(SelectDateWidget):
