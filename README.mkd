@@ -4,21 +4,9 @@
 
 This is a standard django install.  Use `virtualenv` and `pip install requirements/local.txt` for local dev.
 
-To build the front end please install following:
-- Ruby
-- Node
-- Sass
-- NPM
-  - gulp
-  - gulp-concat
-  - gulp-jshint
-  - gulp-rimraf
-  - govuk_frontend_toolkit
-  - gulp-imagemin
-  - gulp-load-plugins
-  - gulp-ruby-sass
-  - jshint-stylish
+Install node and npm: `brew install node`
+
+Then from the root of this project run: `npm install` to install the dependencies in package.json.
 
 The content in manchester_traffic_offences/assets-src/stylesheets/elements/ is from https://github.com/alphagov/govuk_elements/tree/master/public/sass/elements and should be updated regularly.
 
-TODO: fix the node / NPM side of the installation :)

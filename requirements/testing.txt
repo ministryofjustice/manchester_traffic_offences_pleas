@@ -7,3 +7,5 @@ model-mommy
 cssselect
 splinter
 lettuce_webdriver
+
+coverage==3.7.1
