@@ -66,7 +66,7 @@ $errorbgcolour: #faebec;
 #wrapper {padding-bottom:0px!important; text-align:left; border-bottom: 10px solid #d53880;}
 #wrapper.service header.page-header div h1 {padding: 48px 0 0 35px;}
 
-.article-container.group h2, #complete h2, .full-width h2 {font-size: 2em; font-weight: bold; margin: 20px 0;}
+.article-container.group h2, #complete h2, .full-width h2 {font-size: 2em; font-weight: bold; mxargin: 20px 0;}
 #complete h3.heading-medium.divide {border-top: 1px solid #c2c2c2; padding-top:20px;}
 #complete h2.ticked {
   display: inline-block;
@@ -115,7 +115,7 @@ input[type=text], input[type="number"], input[type=email], input[type=tel], inpu
 
 input, select {font-family: "nta", Arial, sans-serif;font-size: 19px; line-height: 1.31579; font-weight: 400;text-transform:none; margin: 0;}
 #id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number,
-#id_employer_name, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0 {width: 32%;}
+#id_employer_name, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0, #id_your_job {width: 32%;}
 select {border-color: #bfc1c3;}
 
 .section {margin-bottom: 2em;}
@@ -235,11 +235,19 @@ div.error, section.error {
     padding-left:3px;
   }
 
-  .amount {float: left;}
+  .amount {border-left:none; width:29%}
+  .input-type-hint {
+    display: inline-block;
+    padding: 6px 10px 3px 10px;
+    line-height: 24px;
+    background-color: $grey-2;
+    border: solid 1px $grey-1;
+  }
 
   .money {
     ul { overflow: auto; }
     li { float:left; margin-left: 1em; }
+    li:first-child {margin-left:3px;}
     ul li label { font-weight:normal; margin: 0;}
   }
 }
