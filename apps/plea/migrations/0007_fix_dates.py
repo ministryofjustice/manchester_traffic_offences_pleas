@@ -19,9 +19,10 @@ class Migration(DataMigration):
         for obj in orm.CourtEmailPlea.objects.all():
             data = json.loads(obj.dict_sent)
             email_count = CourtEmailCount()
-            email_count.get_from_context(data)
+            
+            if email_count.get_from_context(data):
+                email_count.save()
 
-            email_count.save()
 
     def backwards(self, orm):
         raise RuntimeError("Cannot reverse this migration.")
