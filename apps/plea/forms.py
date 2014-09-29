@@ -35,8 +35,11 @@ ERROR_MESSAGES = {
     "EMPLOYERS_ADDRESS_REQUIRED": "You must provide your employer's full address",
     "EMPLOYERS_PHONE_REQUIRED": "Please enter your employer's phone number",
     "PAY_REQUIRED": "Please enter your take home pay and how often you're paid",
+    "YOUR_JOB_REQUIRED": "Please tell us what your job is",
+    "SELF_EMPLOYED_PAY_REQUIRED": "Please enter your take home pay and how often you're paid",
     "BENEFITS_REQUIRED": "Please enter total benefits and how often you receive them",
-    "UNDERSTAND_REQUIRED": "You must tick the box to confirm the legal statements"
+    "UNDERSTAND_REQUIRED": "You must tick the box to confirm the legal statements",
+    "OTHER_INFO_REQUIRED": "Please let us know how you earn your money"
 }
 
 
@@ -238,11 +241,16 @@ class MoneyFieldWidget(forms.MultiWidget):
     PERIOD_CHOICES = (("a week", "a week"),
                       ("a fortnight", "a fortnight"),
                       ("a month", "a month"))
+    period_label = "How often do you get paid?"
+    amount_label = "Your take home pay (after tax)"
 
-    def __init__(self, attrs=None):
+    def __init__(self, attrs=None, amount_label=None, period_label=None):
+        if amount_label:
+            self.amount_label = amount_label
+        if period_label:
+            self.period_label = period_label
         widgets = [TextInput(attrs={"maxlength": "7", "pattern": "[0-9]+", "class": "amount"}),
-                   RadioSelect(choices=self.PERIOD_CHOICES)]
-
+                   RadioSelect(choices=self.PERIOD_CHOICES), ]
         super(MoneyFieldWidget, self).__init__(widgets, attrs)
 
     def decompress(self, value):
@@ -252,7 +260,14 @@ class MoneyFieldWidget(forms.MultiWidget):
             return ["", ""]
 
     def format_output(self, rendered_widgets):
-        return ' '.join(rendered_widgets)
+        render_format = """
+        <label>{0}</label>{1}
+        <label>{2}</label><span class="input-type-hint">&pound;</span>{3}"""
+
+        return render_format.format(self.period_label,
+                                    rendered_widgets[1],
+                                    self.amount_label,
+                                    rendered_widgets[0])
 
 
 class MoneyField(forms.MultiValueField):
@@ -314,9 +329,10 @@ class YourDetailsForm(BasePleaStepForm):
 
 
 class YourMoneyForm(BasePleaStepForm):
-    YOU_ARE_CHOICES = (("employed", "employed"),
-                       ("receiving benefits", "receiving benefits"),
-                       ("other", "other"))
+    YOU_ARE_CHOICES = (("Employed", "Employed"),
+                       ("self employed", "Self employed"),
+                       ("receiving benefits", "Receiving benefits"),
+                       ("other", "Other"))
     you_are = forms.ChoiceField(label="Are you", choices=YOU_ARE_CHOICES,
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
@@ -329,9 +345,21 @@ class YourMoneyForm(BasePleaStepForm):
     take_home_pay = MoneyField(required=False, label="Your take home pay (after tax)",
                                error_messages={"required": ERROR_MESSAGES["PAY_REQUIRED"],
                                                "incomplete": ERROR_MESSAGES["PAY_REQUIRED"]})
+
+    your_job = forms.CharField(required=False, max_length=100, label="What's your job?",
+                               error_messages={"required": ERROR_MESSAGES["YOUR_JOB_REQUIRED"]})
+    self_employed_pay = MoneyField(required=False, label="Your take home pay",
+                                   widget=MoneyFieldWidget(amount_label="What is your average take home pay?"),
+                                   error_messages={"required": ERROR_MESSAGES["PAY_REQUIRED"],
+                                   "incomplete": ERROR_MESSAGES["SELF_EMPLOYED_PAY_REQUIRED"]})
+
     benefits = MoneyField(required=False, label="Total benefits",
+                          widget=MoneyFieldWidget(amount_label="Total benefits", period_label="When do you get your benefits paid?"),
                           error_messages={"required": ERROR_MESSAGES["BENEFITS_REQUIRED"],
                                           "incomplete": ERROR_MESSAGES["BENEFITS_REQUIRED"]})
+
+    other_info = forms.CharField(required=False, max_length=500, label="", help_text="Please provide additional information",
+                                 widget=forms.Textarea, error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
 
     def __init__(self, *args, **kwargs):
         super(YourMoneyForm, self).__init__(*args, **kwargs)
@@ -347,8 +375,15 @@ class YourMoneyForm(BasePleaStepForm):
                 self.fields["employer_phone"].required = True
                 self.fields["take_home_pay"].required = True
 
+            if data["you_are"] == "self employed":
+                self.fields["your_job"].required = True
+                self.fields["self_employed_pay"].required = True
+
             if data["you_are"] == "receiving benefits":
                     self.fields["benefits"].required = True
+
+            if data["you_are"] == "other":
+                self.fields["other_info"].required = True
 
 
 class ConfirmationForm(BasePleaStepForm):
