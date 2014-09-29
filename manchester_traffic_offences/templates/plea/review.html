@@ -156,10 +156,26 @@
                                 <td>£{{ your_money.take_home_pay }}</td>
                             </tr>
                         {% endif %}
+                        {% if your_money.you_are == "self employed" %}
+                            <tr>
+                                <th class="label">Your Job</th>
+                                <td>{{ your_money.your_job }}</td>
+                            </tr>
+                            <tr>
+                                <th class="label">Your pay</th>
+                                <td>£{{ your_money.self_employed_pay }}</td>
+                            </tr>
+                        {% endif %}
                         {% if your_money.you_are == "receiving benefits" %}
                             <tr>
                                 <th class="label">Your benefits</th>
                                 <td>£{{ your_money.benefits }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if your_money.you_are == "other" %}
+                            <tr>
+                                <th class="label">More information</th>
+                                <td>{{ your_money.other_info|linebreaks }}</td>
                             </tr>
                         {% endif %}
                         </tbody>

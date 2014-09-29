@@ -1363,7 +1363,7 @@ b, strong {
 .article-container.group h2, #complete h2, .full-width h2 {
   font-size: 2em;
   font-weight: bold;
-  margin: 20px 0; }
+  mxargin: 20px 0; }
 
 #complete h3.heading-medium.divide {
   border-top: 1px solid #c2c2c2;
@@ -1493,7 +1493,7 @@ input, select {
   margin: 0; }
 
 #id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number,
-#id_employer_name, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0 {
+#id_employer_name, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0, #id_your_job {
   width: 32%; }
 
 select {
@@ -1609,12 +1609,21 @@ div.error, section.error {
   overflow: auto;
   padding-left: 3px; }
 #your-money .amount {
-  float: left; }
+  border-left: none;
+  width: 29%; }
+#your-money .input-type-hint {
+  display: inline-block;
+  padding: 6px 10px 3px 10px;
+  line-height: 24px;
+  background-color: #bfc1c3;
+  border: solid 1px #6f777b; }
 #your-money .money ul {
   overflow: auto; }
 #your-money .money li {
   float: left;
   margin-left: 1em; }
+#your-money .money li:first-child {
+  margin-left: 3px; }
 #your-money .money ul li label {
   font-weight: normal;
   margin: 0; }
