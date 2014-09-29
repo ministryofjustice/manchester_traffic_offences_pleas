@@ -75,3 +75,5 @@ manchester_traffic_offences/assets-src/vendor/
 # vim swp files
 *.swp
 
+/reports
+coverage.xml
