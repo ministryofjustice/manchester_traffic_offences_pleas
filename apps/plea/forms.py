@@ -244,7 +244,11 @@ class MoneyFieldWidget(forms.MultiWidget):
     period_label = "How often do you get paid?"
     amount_label = "Your take home pay (after tax)"
 
-    def __init__(self, attrs=None):
+    def __init__(self, attrs=None, amount_label=None, period_label=None):
+        if amount_label:
+            self.amount_label = amount_label
+        if period_label:
+            self.period_label = period_label
         widgets = [TextInput(attrs={"maxlength": "7", "pattern": "[0-9]+", "class": "amount"}),
                    RadioSelect(choices=self.PERIOD_CHOICES), ]
         super(MoneyFieldWidget, self).__init__(widgets, attrs)
@@ -345,10 +349,12 @@ class YourMoneyForm(BasePleaStepForm):
     your_job = forms.CharField(required=False, max_length=100, label="What's your job?",
                                error_messages={"required": ERROR_MESSAGES["YOUR_JOB_REQUIRED"]})
     self_employed_pay = MoneyField(required=False, label="Your take home pay",
+                                   widget=MoneyFieldWidget(amount_label="What is your average take home pay?"),
                                    error_messages={"required": ERROR_MESSAGES["PAY_REQUIRED"],
                                    "incomplete": ERROR_MESSAGES["SELF_EMPLOYED_PAY_REQUIRED"]})
 
     benefits = MoneyField(required=False, label="Total benefits",
+                          widget=MoneyFieldWidget(amount_label="Total benefits", period_label="When do you get your benefits paid?"),
                           error_messages={"required": ERROR_MESSAGES["BENEFITS_REQUIRED"],
                                           "incomplete": ERROR_MESSAGES["BENEFITS_REQUIRED"]})
 
