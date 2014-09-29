@@ -41,7 +41,7 @@
                     <section>
                         <a id="section_date_of_hearing" name="section_date_of_hearing"></a>
                         <div class="section with-help-image{% if form.date_of_hearing.errors %} error{% endif %}">
-                            <label for="{{ form.date_of_hearing.name }}">Court hearing date and time</label>
+                            <label for="{{ form.date_of_hearing.name }}">Court hearing date</label>
                             <span class="validation-message">{{ form.date_of_hearing.errors }}</span>
                             <p class="form-hint datefield-hint" id="">{{ form.date_of_hearing.help_text|safe }}</p>
                             <label for="{{ day.attrs }}" class="datetime datetime-day">Day</label>

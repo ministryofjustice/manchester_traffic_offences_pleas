@@ -35,17 +35,18 @@
 
                     <section>
                         <a id="section_{{ form.you_are.name }}" name="section_{{ form.you_are.name }}"></a>
+                        {{ form.you_are.label_tag }}
                         <div class="section full{%  if form.you_are.errors %} error{% endif %}">
-                            {{ form.you_are.label_tag }}
+                            Select one of the following options<br>
                             <span class="validation-message">{{ form.you_are.errors }}</span>
                             <p class="form-hint datefield-hint">{{ form.you_are.help_text|safe }}</p>
                             {{ form.you_are }}
                         </div>
                     </section>
 
-                    <div id="employed">
+                    <div class="panel-indent js-hidden" id="section-employed">
                         <p>
-                            <strong>If you're employed, please complete the following</strong><br>
+                            <strong class="js-hidden">If you're employed, please complete the following<br></strong>
                             We’ll only contact your employer if you don’t pay any fine the court gives you.
                         </p>
 
@@ -60,17 +61,35 @@
                         {% with form.employer_phone as field %}
                             {% include "widgets/std_field.html" %}
                         {% endwith %}
-
+                        <hr>
                         {% with form.take_home_pay as field %}
                             {% include "widgets/money_field.html" %}
                         {% endwith %}
                     </div>
 
-                    <div id="benefits">
-                        <p><strong>If you're receiving benefits, please complete the following</strong></p>
+                    <div class="panel-indent js-hidden" id="section-receiving-benefits">
+                        <strong class="js-hidden">If you're receiving benefits, please complete the following</strong>
 
                         {% with form.benefits as field %}
                             {% include "widgets/money_field.html" %}
+                        {% endwith %}
+                    </div>
+
+                    <div class="panel-indent js-hidden" id="section-self-employed">
+                        <strong class="js-hidden">If you're self employed, please complete the following</strong>
+
+                        {% with form.your_job as field %}
+                            {% include "widgets/std_field.html" %}
+                        {% endwith %}
+
+                        {% with form.self_employed_pay as field %}
+                            {% include "widgets/money_field.html" %}
+                        {% endwith %}
+                    </div>
+
+                    <div class="panel-indent js-hidden" id="section-other">
+                        {% with form.other_info as field %}
+                            {% include "widgets/std_field.html" %}
                         {% endwith %}
                     </div>
 
