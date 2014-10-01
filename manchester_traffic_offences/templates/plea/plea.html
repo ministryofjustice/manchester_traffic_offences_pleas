@@ -1,4 +1,5 @@
 {% extends "plea/base.html" %}
+{% load debug %}
 {% block page_title %}{{ block.super }} Your plea{% endblock %}
 {% block page_content %}
     <header class="page-header group">
@@ -18,7 +19,7 @@
                         <h2 id="error-heading">You need to fix the errors on this page before continuing.</h2>
                         <p>See highlighted errors below.</p>
                         <ul>
-                            {% with forms.1 as formset %}
+                            {% with forms.0 as formset %}
                                 {% for form in formset %}
                                     {% for field in form %}
                                         {% if field.errors %}
@@ -26,12 +27,6 @@
                                                    href="#section_{{ field.name }}_{{ forloop.parentloop.counter }}">{{ field.errors|striptags }}</a></li>
                                         {% endif %}
                                     {% endfor %}
-                                {% endfor %}
-                                {% for field in forms.0 %}
-                                    {% if field.errors %}
-                                        <li><a class="error-link"
-                                               href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
-                                    {% endif %}
                                 {% endfor %}
                             {% endwith %}
                         </ul>
