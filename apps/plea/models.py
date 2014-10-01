@@ -104,9 +104,12 @@ class CourtEmailCountManager(models.Manager):
         Return stats grouped by hearing date starting from today
         for the number of days specified by days.
         """
+        now = dt.datetime.now()
+
+        start_date = now - dt.timedelta(now.weekday())
 
         results = CourtEmailCount.objects\
-            .filter(hearing_date__gte=dt.datetime.now())\
+            .filter(hearing_date__gte=start_date)\
             .extra({'hearing_day': "date(hearing_date)"})\
             .values('hearing_day')\
             .order_by('hearing_day')\
