@@ -249,7 +249,7 @@ class MoneyFieldWidget(forms.MultiWidget):
             self.amount_label = amount_label
         if period_label:
             self.period_label = period_label
-        widgets = [TextInput(attrs={"maxlength": "7", "pattern": "[0-9]+", "class": "amount"}),
+        widgets = [TextInput(attrs={"maxlength": "7", "class": "amount"}),
                    RadioSelect(choices=self.PERIOD_CHOICES), ]
         super(MoneyFieldWidget, self).__init__(widgets, attrs)
 
@@ -329,7 +329,7 @@ class YourDetailsForm(BasePleaStepForm):
 
 
 class YourMoneyForm(BasePleaStepForm):
-    YOU_ARE_CHOICES = (("Employed", "Employed"),
+    YOU_ARE_CHOICES = (("employed", "Employed"),
                        ("self employed", "Self employed"),
                        ("receiving benefits", "Receiving benefits"),
                        ("other", "Other"))
