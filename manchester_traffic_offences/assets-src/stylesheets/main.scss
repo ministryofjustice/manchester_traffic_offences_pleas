@@ -78,6 +78,7 @@ label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.3
 .inline .block-label {font-weight:normal; margin-top: 0.5em;}
 .block-label input { position: static; margin-right: .5em }
 .block-label { padding-left: 1em }
+.inline .radio-label { float: left; font-weight: normal; margin: 0 1em 1em 0; }
 
 .group label {font-weight:bold; font-size: 1.3em; margin: 1em 0 0.5em;}
 .with-help-image {width:70%; float: left;}

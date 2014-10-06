@@ -98,7 +98,7 @@ function showSingleRadioContent() {
         return target.split(' ').map(function(x){ return '#'+x; }).join(',');
     };
 
-    $(".block-label input[type='radio']").each(function () {
+    $(".block-label input[type='radio'], .radio-label input[type='radio']").each(function () {
         var $radio = $(this);
         var $radioGroupName = $(this).attr('name');
         var $radioLabel = $(this).parent();
@@ -114,9 +114,9 @@ function showSingleRadioContent() {
             allTargets[$radioGroupName] = [targetSel];
         }
 
-
         $radio.on('click', function () {
-            $(".block-label input[name=" + $radioGroupName + "]").each(function () {
+            $(".block-label input[name=" + $radioGroupName + "],  .radio-label input[name=" + $radioGroupName + "]").each(function () {
+                console.log(this);
                 // hide radio button content and reset aria values
                 var groupDataTarget = $(this).parent().attr('data-target');
 
