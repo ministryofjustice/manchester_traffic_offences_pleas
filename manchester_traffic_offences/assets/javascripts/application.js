@@ -94,7 +94,7 @@ function showSingleRadioContent() {
 
     // convert the aria id list, e.g. aria-controls="first_elem second_elem ..." to
     // a jQuery compatible selector, e.g. #first_elem,#second_elem ...
-    var idListToSel = function(target){
+    var prefixHash = function(target){
         return target.split(' ').map(function(x){ return '#'+x; }).join(',');
     };
 
@@ -105,7 +105,7 @@ function showSingleRadioContent() {
 
         var $dataTarget = $radioLabel.attr('data-target');
 
-        var targetSel = idListToSel($dataTarget);
+        var targetSel = prefixHash($dataTarget);
 
         if ($radioGroupName in allTargets){
             allTargets[$radioGroupName].push(targetSel);
@@ -116,33 +116,29 @@ function showSingleRadioContent() {
 
 
         $radio.on('click', function () {
-            // Hide toggled content
-            for(var target in allTargets[$radioGroupName]) {
-                $(allTargets[$radioGroupName][target]).hide();
-            }
-
             $(".block-label input[name=" + $radioGroupName + "]").each(function () {
+                // hide radio button content and reset aria values
                 var groupDataTarget = $(this).parent().attr('data-target');
 
-                var groupTargetSel = idListToSel(groupDataTarget);
+                var groupTargetSel = prefixHash(groupDataTarget);
 
-                if($dataTarget == groupDataTarget){
-                    // Update aria-expanded and aria-hidden attributes
-                    $(targetSel).show();
-
-                    if ($(this).attr('aria-controls')) {
-                        $(this).attr('aria-expanded', 'true');
-                    }
-
-                    $($dataTarget).attr('aria-hidden', 'false');
-                }else {
-                    // Update aria-expanded and aria-hidden attributes
-                    if ($(this).attr('aria-controls')) {
-                        $(this).attr('aria-expanded', 'false');
-                    }
-                    $(groupTargetSel).attr('aria-hidden', 'true');
+                // Update aria-expanded and aria-hidden attributes
+                if ($(this).attr('aria-controls')) {
+                    $(this).attr('aria-expanded', 'false');
                 }
-            });
+                $(groupTargetSel).attr('aria-hidden', 'true');
+                $(groupTargetSel).hide();
+            }); 
+
+            selected = $(".block-label[data-target='" + $dataTarget + "'] input[name=" + $radioGroupName + "]");
+
+            if (selected.attr('aria-controls')) {
+                selected.attr('aria-expanded', 'true');
+            }
+
+            $(targetSel).show();
+            $(targetSel).attr('aria-hidden', 'false');
+
         });
     });
 
