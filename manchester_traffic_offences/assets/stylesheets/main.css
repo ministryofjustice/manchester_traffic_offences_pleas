@@ -1,19 +1,14 @@
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 #content:after {
   content: "";
   display: block;
@@ -22,25 +17,18 @@
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 #content:after {
   content: "";
   display: block;
@@ -48,10 +36,8 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 #content:after {
   content: "";
   display: block;
@@ -59,26 +45,19 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 #content:after {
   content: "";
   display: block;
@@ -86,16 +65,12 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 #content:after {
   content: "";
   display: block;
@@ -131,13 +106,10 @@
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 .TextIcon {
   background-repeat: no-repeat;
   background-position: left top; }
@@ -1422,6 +1394,11 @@ label {
 .block-label {
   padding-left: 1em; }
 
+.inline .radio-label {
+  float: left;
+  font-weight: normal;
+  margin: 0 1em 1em 0; }
+
 .group label {
   font-weight: bold;
   font-size: 1.3em;
@@ -1435,6 +1412,10 @@ label {
   width: 30%;
   float: right;
   margin-top: 1.5em; }
+
+.panel-indent {
+  padding-top: 0;
+  padding-bottom: 0; }
 
 #id_urn_0 {
   width: 25px;
@@ -1636,6 +1617,10 @@ div.error, section.error {
 #your-money .full {
   overflow: auto;
   padding-left: 3px; }
+#your-money .panel-indent section:first-of-type label {
+  margin-top: 0; }
+#your-money .panel-indent section:last-of-type .section {
+  margin-bottom: 0; }
 #your-money .amount {
   border-left: none;
   width: 29%; }
@@ -1655,6 +1640,10 @@ div.error, section.error {
 #your-money .money ul li label {
   font-weight: normal;
   margin: 0; }
+#your-money .first {
+  margin-top: 0; }
+#your-money .last {
+  margin-bottom: 0; }
 
 #terms h2 {
   font-size: 32px;
