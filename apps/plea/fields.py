@@ -5,7 +5,6 @@ import six
 
 from django.core import exceptions
 from django import forms
-from django.forms.formsets import BaseFormSet
 from django.forms.widgets import (MultiWidget, RadioSelect,
                                   TextInput, RadioFieldRenderer)
 from django.forms.extras.widgets import Widget
@@ -32,7 +31,8 @@ ERROR_MESSAGES = {
     "EMPLOYERS_NAME_REQUIRED": "Please enter your employer's full name",
     "EMPLOYERS_ADDRESS_REQUIRED": "You must provide your employer's full address",
     "EMPLOYERS_PHONE_REQUIRED": "Please enter your employer's phone number",
-    "PAY_REQUIRED": "Please enter your take home pay and how often you're paid",
+    "PAY_PERIOD_REQUIRED": "Please enter how often you get paid",
+    "PAY_AMOUNT_REQUIRED": "Please enter your take home pay",
     "YOUR_JOB_REQUIRED": "Please tell us what your job is",
     "SELF_EMPLOYED_PAY_REQUIRED": "Please enter your take home pay and how often you're paid",
     "BENEFITS_REQUIRED": "Please enter total benefits and how often you receive them",
@@ -63,7 +63,7 @@ def is_date_in_future(date):
         raise exceptions.ValidationError(ERROR_MESSAGES["HEARING_DATE_PASSED"])
 
 
-class DSRadioFieldRenderer(RadioFieldRenderer):
+class RadioFieldRenderer(RadioFieldRenderer):
     def render(self):
         """
         Outputs a <ul> for this set of choice fields.
@@ -75,6 +75,20 @@ class DSRadioFieldRenderer(RadioFieldRenderer):
         context = {"id": id_, "renderer": self, "inputs": [force_text(widget) for widget in self]}
 
         return render_to_string("widgets/RadioSelect.html", context)
+
+
+class DSRadioFieldRenderer(RadioFieldRenderer):
+    def render(self):
+        """
+        Outputs a <ul> for this set of choice fields.
+        If an id was given to the field, it is applied to the <ul> (each
+        item in the list will get an id of `$id_$i`).
+        """
+        id_ = self.attrs.get('id', None)
+
+        context = {"id": id_, "renderer": self, "inputs": [force_text(widget) for widget in self]}
+
+        return render_to_string("widgets/DSRadioSelect.html", context)
 
 
 class HearingDateWidget(MultiWidget):
@@ -194,13 +208,6 @@ class HearingTimeField(forms.TimeField):
             raise forms.ValidationError(self.error_messages['required'], code='required')
 
 
-class RequiredFormSet(BaseFormSet):
-    def __init__(self, *args, **kwargs):
-        super(RequiredFormSet, self).__init__(*args, **kwargs)
-        for form in self.forms:
-            form.empty_permitted = False
-
-
 class URNWidget(MultiWidget):
     def __init__(self, attrs=None):
         widgets = [forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]+'}),
@@ -233,60 +240,3 @@ class URNField(forms.MultiValueField):
 
     default_validators = [is_valid_urn_format, ]
     widget = URNWidget()
-
-
-class MoneyFieldWidget(forms.MultiWidget):
-    PERIOD_CHOICES = (("a week", "Weekly"),
-                      ("a fortnight", "Fortnightly"),
-                      ("a month", "Monthly"))
-    period_label = "How often do you get paid?"
-    amount_label = "Your take home pay (after tax)"
-
-    def __init__(self, attrs=None, amount_label=None, period_label=None, choices=None):
-        if amount_label:
-            self.amount_label = amount_label
-        if period_label:
-            self.period_label = period_label
-        if choices:
-            self.choices = choices
-        else:
-            self.choices = self.PERIOD_CHOICES
-        widgets = [TextInput(attrs={"maxlength": "7", "class": "amount"}),
-                   RadioSelect(choices=self.choices, renderer=DSRadioFieldRenderer), ]
-        super(MoneyFieldWidget, self).__init__(widgets, attrs)
-
-    def decompress(self, value):
-        if value:
-            return value.split(" ", 1)
-        else:
-            return ["", ""]
-
-    def format_output(self, rendered_widgets):
-        render_format = """
-        <label>{0}</label>{1}
-        <label>{2}</label><span class="input-type-hint">&pound;</span>{3}"""
-
-        return render_format.format(self.period_label,
-                                    rendered_widgets[1],
-                                    self.amount_label,
-                                    rendered_widgets[0])
-
-
-class SEMoneyFieldWidget(MoneyFieldWidget):
-    PERIOD_CHOICES = (("a week", "Weekly"),
-                      ("a fortnight", "Fortnightly"),
-                      ("a month", "Monthly"),
-                      ("self employed, other", "Other"))
-
-
-class MoneyField(forms.MultiValueField):
-    widget = MoneyFieldWidget()
-
-    def __init__(self, *args, **kwargs):
-        list_fields = [forms.CharField(required=False, max_length=7, label="Total benefits"),
-                       forms.CharField(required=False)]
-
-        super(MoneyField, self).__init__(list_fields, *args, **kwargs)
-
-    def compress(self, data_list):
-        return " ".join(data_list)
