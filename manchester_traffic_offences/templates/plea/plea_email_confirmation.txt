@@ -1,0 +1,25 @@
+
+Dear {{ name }},
+
+{{ urn }}
+
+{{ date_of_hearing }}
+
+{{ time_of_hearing }}
+
+{% with plea_count=pleas|length %}
+    {% for plea in pleas %}
+        Plea {% if plea_count > 1 %}{{ forloop.counter }}{% endif %}
+        ---------
+        {% ifequal plea.guilty "guilty" %}
+            Guilty
+        {% else %}
+            Not Guilty
+        {% endifequal %}
+
+        {{ plea.plea }}
+        Reason
+        ---------
+        {{ plea.mitigation }}
+    {% endfor %}
+{% endwith %}

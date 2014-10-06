@@ -220,6 +220,11 @@ PLP_EMAIL_SUBJECT = "POLICE %s" % PLEA_EMAIL_SUBJECT
 FEEDBACK_EMAIL_FROM = "makeaplea@digital.justice.gov.uk"
 FEEDBACK_EMAIL_TO = ("ian.george@digital.justice.gov.uk", )
 
+PLEA_CONFIRMATION_EMAIL_FROM = "plea_from@example.org"
+PLEA_CONFIRMATION_EMAIL_SUBJECT = "Your online plea was successful {{urn}}"
+PLEA_CONFIRMATION_EMAIL_BCC = ["lyndon.garvey@digital.justice.gov.uk"]
+
+
 # .local.py overrides all the common settings.
 try:
     from .local import *
@@ -227,6 +232,6 @@ except ImportError:
     pass
 
 
-# importing test settings file if necessary (TODO chould be done better)
+# importing test settings file if necessary (TODO could be done better)
 if len(sys.argv) > 1 and 'test' or 'harvest' in sys.argv[1]:
     from .testing import *

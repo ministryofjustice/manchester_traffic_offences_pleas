@@ -4,12 +4,44 @@ import smtplib
 import socket
 
 from django.conf import settings
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
 
 from apps.govuk_utils.email import TemplateAttachmentEmail
 from .models import CourtEmailPlea, CourtEmailCount
 
 
 logger = logging.getLogger(__name__)
+
+
+def send_user_confirmation_email(context_data):
+    """
+    Dispatch an email to the user to confirm that their plea submission
+    was successful.
+    """
+
+    data = {
+        'name': context_data['your_details']['name'],
+        'email': context_data['your_details']['email'],
+        'urn': context_data['case']['urn'],
+        'time_of_hearing': context_data['case']['time_of_hearing'],
+        'date_of_hearing': context_data['case']['date_of_hearing'],
+        'pleas': context_data['plea']['PleaForms']
+    }
+
+    body = render_to_string("plea/plea_email_confirmation.txt", data)
+
+    user_email = EmailMessage(
+        settings.PLEA_CONFIRMATION_EMAIL_SUBJECT.format(data), body,
+        settings.PLEA_CONFIRMATION_EMAIL_FROM, [data['email'], ],
+        settings.PLEA_CONFIRMATION_EMAIL_BCC)
+
+    try:
+        user_email.send(fail_silently=False)
+    except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
+        logger.error("Error sending email: {0}".format(e.message))
+
+    return True
 
 
 def send_plea_email(context_data, plea_email_to=None):
@@ -85,4 +117,10 @@ def send_plea_email(context_data, plea_email_to=None):
     except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
         logger.error("Error sending email: {0}".format(e.message))
 
+    # send a user confirmation email after other processing has completed
+    if getattr(settings, "SEND_PLEA_CONFIRMATION_EMAIL", False):
+        send_user_confirmation_email(context_data)
+
     return True
+
+
