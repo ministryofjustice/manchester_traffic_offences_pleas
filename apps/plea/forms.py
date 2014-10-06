@@ -5,7 +5,7 @@ from django.forms.widgets import Textarea, RadioSelect
 from .fields import (ERROR_MESSAGES, is_date_in_future, DSRadioFieldRenderer,
                      RequiredFormSet,
                      URNField, HearingTimeField, MoneyField,
-                     HearingDateWidget, MoneyFieldWidget, SEMoneyFieldWidget)
+                     HearingDateWidget, MoneyFieldWidget)
 
 
 class BasePleaStepForm(forms.Form):
@@ -74,7 +74,7 @@ class YourMoneyForm(BasePleaStepForm):
     your_job = forms.CharField(required=False, max_length=100, label="What's your job?",
                                error_messages={"required": ERROR_MESSAGES["YOUR_JOB_REQUIRED"]})
     self_employed_pay = MoneyField(required=False, label="Your take home pay",
-                                   widget=SEMoneyFieldWidget(amount_label="What is your average take home pay?"),
+                                   widget=MoneyFieldWidget(amount_label="What is your average take home pay?"),
                                    error_messages={"required": ERROR_MESSAGES["PAY_REQUIRED"],
                                    "incomplete": ERROR_MESSAGES["SELF_EMPLOYED_PAY_REQUIRED"]})
 
