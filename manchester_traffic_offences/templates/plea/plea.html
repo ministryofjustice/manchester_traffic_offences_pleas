@@ -46,7 +46,7 @@
                                     <span class="validation-message">{{ form.guilty.errors }}</span>
                                     <fieldset class="inline charge-radios">
                                         {% for choice in form.guilty %}
-                                            <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
+                                            <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label" data-target="{{ choice.name }}_{{ choice.choice_value }}_extra">
                                                 <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
                                                 {{ choice.choice_label }}
                                             </label>
@@ -56,8 +56,16 @@
 
                                 <a id="section_mitigations_{{ forloop.counter }}" name="section_mitigations_{{ forloop.counter }}"></a>
                                 <div class="section charges">
-                                    <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances for charge {{ forloop.counter }} <span class="form-hint sc-hint">(optional)</span></label>
-                                    <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
+                                    <div class="" id="{{ form.guilty.0.name }}_not_guilty_extra" style="display: none">
+                                        <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Not guilty because?</label>
+                                        <p class="form-hint datefield-hint" id="">Enter details of why you believe you are not guilty.</p>
+                                    </div>
+
+                                    <div class="" id="{{ form.guilty.0.name }}_guilty_extra" style="display: none">
+                                        <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint sc-hint">(optional)</span></label>
+                                        <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
+                                    </div>
+
                                     <span class="validation-message">{{ form.mitigations.errors }}</span>
                                     <textarea maxlength="5000" rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}">{{ form.mitigations.value|default_if_none:"" }}</textarea>
                                 </div>
@@ -71,7 +79,7 @@
                                     <span class="validation-message">{{ form.guilty.errors }}</span>
                                     <fieldset class="inline charge-radios">
                                         {% for choice in form.guilty %}
-                                            <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
+                                            <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label" data-target="{{ choice.name }}_{{ choice.choice_value }}_extra">
                                                 <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
                                                 {{ choice.choice_label }}
                                             </label>
@@ -81,8 +89,14 @@
 
                                 <a id="section_mitigations_{{ forloop.counter }}" name="section_mitigations_{{ forloop.counter }}"></a>
                                 <div class="section charges">
-                                    <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint datefield-hint">(optional)</span></label>
-                                    <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
+                                    <div class="" id="{{ form.guilty.0.name }}_not_guilty_extra" style="display: none">
+                                        <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Not guilty because?</label>
+                                        <p class="form-hint datefield-hint" id="">Enter details of why you believe you are not guilty.</p>
+                                    </div>
+                                    <div class="" id="{{ form.guilty.0.name }}_guilty_extra" style="display: none">
+                                        <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint sc-hint">(optional)</span></label>
+                                        <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
+                                    </div>
                                     <span class="validation-message">{{ form.mitigations.errors }}</span>
                                     <textarea maxlength="5000" rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}">{{ form.mitigations.value|default_if_none:"" }}</textarea>
                                 </div>
