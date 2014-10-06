@@ -116,33 +116,28 @@ function showSingleRadioContent() {
 
 
         $radio.on('click', function () {
-            // Hide toggled content
-            for(var target in allTargets[$radioGroupName]) {
-                $(allTargets[$radioGroupName][target]).hide();
-            }
-
             $(".block-label input[name=" + $radioGroupName + "]").each(function () {
+                // hide radio button content and reset aria values
                 var groupDataTarget = $(this).parent().attr('data-target');
 
                 var groupTargetSel = prefixHash(groupDataTarget);
 
-                if($dataTarget == groupDataTarget){
-                    // Update aria-expanded and aria-hidden attributes
-                    $(targetSel).show();
-
-                    if ($(this).attr('aria-controls')) {
-                        $(this).attr('aria-expanded', 'true');
-                    }
-
-                    $($dataTarget).attr('aria-hidden', 'false');
-                }else {
-                    // Update aria-expanded and aria-hidden attributes
-                    if ($(this).attr('aria-controls')) {
-                        $(this).attr('aria-expanded', 'false');
-                    }
-                    $(groupTargetSel).attr('aria-hidden', 'true');
+                // Update aria-expanded and aria-hidden attributes
+                if ($(this).attr('aria-controls')) {
+                    $(this).attr('aria-expanded', 'false');
                 }
+                $(groupTargetSel).attr('aria-hidden', 'true');
+                $(groupTargetSel).hide();
             });
+
+            selected = $(".block-label[data-target='" + $dataTarget + "'] input[name=" + $radioGroupName + "]");
+
+            if (selected.attr('aria-controls')) {
+                selected.attr('aria-expanded', 'true');
+            }
+
+            $(targetSel).show();
+            $(targetSel).attr('aria-hidden', 'false');
         });
     });
 
