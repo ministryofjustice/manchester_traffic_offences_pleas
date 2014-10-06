@@ -2,7 +2,9 @@
     <a id="section_{{ field.name }}" name="section_{{ field.name }}"></a>
     <div class="section money{%  if field.errors %} error{% endif %}">
         <span class="validation-message">{{ field.errors }}</span>
+        {% if field.help_text %}
         <p class="form-hint datefield-hint">{{ field.help_text|safe }}</p>
+        {% endif %}
         {{ field }}
     </div>
 </section>
