@@ -61,10 +61,10 @@ class YourDetailsForm(BasePleaStepForm):
 
 
 class YourMoneyForm(BasePleaStepForm):
-    YOU_ARE_CHOICES = (("employed", "Employed"),
-                       ("self employed", "Self employed"),
-                       ("receiving benefits", "Receiving benefits"),
-                       ("other", "Other"))
+    YOU_ARE_CHOICES = (("Employed", "Employed"),
+                       ("Self employed", "Self employed"),
+                       ("Receiving benefits", "Receiving benefits"),
+                       ("Other", "Other"))
     PERIOD_CHOICES = (("a week", "Weekly"),
                       ("a fortnight", "Fortnightly"),
                       ("a month", "Monthly"))
@@ -129,23 +129,23 @@ class YourMoneyForm(BasePleaStepForm):
             data = {}
 
         if "you_are" in data:
-            if data["you_are"] == "employed":
+            if data["you_are"] == "Employed":
                 self.fields["employer_name"].required = True
                 self.fields["employer_address"].required = True
                 self.fields["employer_phone"].required = True
                 self.fields["take_home_pay_period"].required = True
                 self.fields["take_home_pay_amount"].required = True
 
-            if data["you_are"] == "self employed":
+            if data["you_are"] == "Self employed":
                 self.fields["your_job"].required = True
                 self.fields["self_employed_pay_period"].required = True
                 self.fields["self_employed_pay_amount"].required = True
 
-            if data["you_are"] == "receiving benefits":
+            if data["you_are"] == "Receiving benefits":
                 self.fields["benefits_period"].required = True
                 self.fields["benefits_amount"].required = True
 
-            if data["you_are"] == "other":
+            if data["you_are"] == "Other":
                 self.fields["other_info"].required = True
 
 
