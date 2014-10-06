@@ -129,20 +129,14 @@ function showSingleRadioContent() {
                 $(groupTargetSel).hide();
             });
 
-            $(".block-label input[name=" + $radioGroupName + "]").each(function () {
-                var groupDataTarget = $(this).parent().attr('data-target');
+            selected = $(".block-label[data-target='" + $dataTarget + "'] input[name=" + $radioGroupName + "]");
 
-                if($dataTarget == groupDataTarget) {
-                    // Update aria-expanded and aria-hidden attributes
-                    $(targetSel).show();
+            if (selected.attr('aria-controls')) {
+                selected.attr('aria-expanded', 'true');
+            }
 
-                    if ($(this).attr('aria-controls')) {
-                        $(this).attr('aria-expanded', 'true');
-                    }
-
-                    $(targetSel).attr('aria-hidden', 'false');
-                }
-            });
+            $(targetSel).show();
+            $(targetSel).attr('aria-hidden', 'false');
         });
     });
 
