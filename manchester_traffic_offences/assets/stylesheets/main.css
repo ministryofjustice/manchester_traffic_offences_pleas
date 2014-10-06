@@ -1408,6 +1408,10 @@ label {
   float: right;
   margin-top: 1.5em; }
 
+.panel-indent {
+  padding-top: 0;
+  padding-bottom: 0; }
+
 #id_urn_0 {
   width: 25px;
   margin: 0 5px 0 0; }
@@ -1608,6 +1612,10 @@ div.error, section.error {
 #your-money .full {
   overflow: auto;
   padding-left: 3px; }
+#your-money .panel-indent section:first-of-type label {
+  margin-top: 0; }
+#your-money .panel-indent section:last-of-type .section {
+  margin-bottom: 0; }
 #your-money .amount {
   border-left: none;
   width: 29%; }
@@ -1627,6 +1635,10 @@ div.error, section.error {
 #your-money .money ul li label {
   font-weight: normal;
   margin: 0; }
+#your-money .first {
+  margin-top: 0; }
+#your-money .last {
+  margin-bottom: 0; }
 
 #terms h2 {
   font-size: 32px;

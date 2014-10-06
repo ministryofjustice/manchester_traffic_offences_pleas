@@ -90,7 +90,7 @@ function showHideRadioToggledContent() {
 
 
 function showSingleRadioContent() {
-    var allTargets = [];
+    var allTargets = {};
 
     $(".block-label input[type='radio']").each(function () {
         var $radio = $(this);
@@ -98,12 +98,19 @@ function showSingleRadioContent() {
         var $radioLabel = $(this).parent();
 
         var $dataTarget = $radioLabel.attr('data-target');
-        allTargets.push($dataTarget);
+
+        if ($radioGroupName in allTargets){
+            allTargets[$radioGroupName].push($dataTarget);
+        }
+        else{
+            allTargets[$radioGroupName] = [$dataTarget];
+        }
+
 
         $radio.on('click', function () {
             // Hide toggled content
-            for(var target in allTargets) {
-                $('#' + allTargets[target]).hide();
+            for(var target in allTargets[$radioGroupName]) {
+                $('#' + allTargets[$radioGroupName][target]).hide();
             }
 
             $(".block-label input[name=" + $radioGroupName + "]").each(function () {

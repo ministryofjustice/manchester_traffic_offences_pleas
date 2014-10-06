@@ -82,6 +82,7 @@ label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.3
 .group label {font-weight:bold; font-size: 1.3em; margin: 1em 0 0.5em;}
 .with-help-image {width:70%; float: left;}
 .help-image {width:30%; float: right; margin-top: 1.5em;}
+.panel-indent { padding-top:0; padding-bottom:0; }
 
 #id_urn_0 {width:25px; margin: 0 5px 0 0}
 #id_urn_1 {width:25px; margin: 0 5px 0 5px}
@@ -235,6 +236,9 @@ div.error, section.error {
     padding-left:3px;
   }
 
+  .panel-indent section:first-of-type label { margin-top:0; }
+  .panel-indent section:last-of-type .section { margin-bottom:0; }
+
   .amount {border-left:none; width:29%}
   .input-type-hint {
     display: inline-block;
@@ -250,6 +254,9 @@ div.error, section.error {
     li:first-child {margin-left:3px;}
     ul li label { font-weight:normal; margin: 0;}
   }
+
+  .first { margin-top:0; }
+  .last { margin-bottom:0; }
 }
 
 #terms {
