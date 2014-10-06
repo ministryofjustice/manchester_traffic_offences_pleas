@@ -272,6 +272,13 @@ class MoneyFieldWidget(forms.MultiWidget):
                                     rendered_widgets[0])
 
 
+class SEMoneyFieldWidget(MoneyFieldWidget):
+    PERIOD_CHOICES = (("a week", "Weekly"),
+                      ("a fortnight", "Fortnightly"),
+                      ("a month", "Monthly"),
+                      ("self employed, other", "Other"))
+
+
 class MoneyField(forms.MultiValueField):
     widget = MoneyFieldWidget()
 
