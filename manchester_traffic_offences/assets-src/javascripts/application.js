@@ -92,6 +92,12 @@ function showHideRadioToggledContent() {
 function showSingleRadioContent() {
     var allTargets = {};
 
+    // convert the aria id list, e.g. aria-controls="first_elem second_elem ..." to
+    // a jQuery compatible selector, e.g. #first_elem,#second_elem ...
+    var prefixHash = function(target){
+        return target.split(' ').map(function(x){ return '#'+x; }).join(',');
+    };
+
     $(".block-label input[type='radio']").each(function () {
         var $radio = $(this);
         var $radioGroupName = $(this).attr('name');
@@ -99,36 +105,42 @@ function showSingleRadioContent() {
 
         var $dataTarget = $radioLabel.attr('data-target');
 
+        var targetSel = prefixHash($dataTarget);
+
         if ($radioGroupName in allTargets){
-            allTargets[$radioGroupName].push($dataTarget);
+            allTargets[$radioGroupName].push(targetSel);
         }
         else{
-            allTargets[$radioGroupName] = [$dataTarget];
+            allTargets[$radioGroupName] = [targetSel];
         }
 
 
         $radio.on('click', function () {
             // Hide toggled content
             for(var target in allTargets[$radioGroupName]) {
-                $('#' + allTargets[$radioGroupName][target]).hide();
+                $(allTargets[$radioGroupName][target]).hide();
             }
 
             $(".block-label input[name=" + $radioGroupName + "]").each(function () {
                 var groupDataTarget = $(this).parent().attr('data-target');
 
+                var groupTargetSel = prefixHash(groupDataTarget);
+
                 if($dataTarget == groupDataTarget){
                     // Update aria-expanded and aria-hidden attributes
-                    $('#' + $dataTarget).show();
+                    $(targetSel).show();
+
                     if ($(this).attr('aria-controls')) {
                         $(this).attr('aria-expanded', 'true');
                     }
-                    $('#' + $dataTarget).attr('aria-hidden', 'false');
+
+                    $($dataTarget).attr('aria-hidden', 'false');
                 }else {
                     // Update aria-expanded and aria-hidden attributes
                     if ($(this).attr('aria-controls')) {
                         $(this).attr('aria-expanded', 'false');
                     }
-                    $('#' + groupDataTarget).attr('aria-hidden', 'true');
+                    $(groupTargetSel).attr('aria-hidden', 'true');
                 }
             });
         });
