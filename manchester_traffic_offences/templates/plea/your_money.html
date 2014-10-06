@@ -86,12 +86,14 @@
                             {% include "widgets/money_field.html" %}
                         {% endwith %}
 
-                        <div class="panel-indent js-hidden" id="section-other">
-                            <h1>HELLO</h1>
+                        <div class="js-hidden" id="section-self-employed-other">
+                            {% with form.self_employed_pay_other as field %}
+                                {% include "widgets/std_field.html" %}
+                            {% endwith %}
                         </div>
                     </div>
 
-                    <div class="panel-indent js-hidden" id="section-self_employed_pay_1">
+                    <div class="panel-indent js-hidden" id="section-other">
                         {% with form.other_info as field %}
                             {% include "widgets/std_field.html" %}
                         {% endwith %}
