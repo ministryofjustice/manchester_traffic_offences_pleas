@@ -56,6 +56,10 @@
 
                                 <a id="section_mitigations_{{ forloop.counter }}" name="section_mitigations_{{ forloop.counter }}"></a>
                                 <div class="section charges">
+                                    <div class="js-hidden">
+                                        <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint sc-hint">(optional)</span></label>
+                                        <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
+                                    </div>
                                     <div class="" id="{{ form.guilty.0.name }}_not_guilty_extra" style="display: none">
                                         <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Not guilty because?</label>
                                         <p class="form-hint datefield-hint" id="">Enter details of why you believe you are not guilty.</p>
@@ -67,7 +71,7 @@
                                     </div>
 
                                     <span class="validation-message">{{ form.mitigations.errors }}</span>
-                                    <textarea maxlength="5000" rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}" style="display: none;">{{ form.mitigations.value|default_if_none:"" }}</textarea>
+                                    <textarea maxlength="5000" rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}" class="js-hidden">{{ form.mitigations.value|default_if_none:"" }}</textarea>
                                 </div>
                             </section>
                         {% endfor %}
