@@ -1,6 +1,7 @@
 import unittest
 
-from ..forms import HearingTimeField, HearingTimeWidget, BasePleaStepForm
+from ..fields import HearingTimeField, HearingTimeWidget
+from ..forms import BasePleaStepForm
 
 
 class TimeForm(BasePleaStepForm):

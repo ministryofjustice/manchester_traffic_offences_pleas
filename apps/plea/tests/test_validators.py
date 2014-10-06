@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django import forms
-from ..forms import is_valid_urn_format
+from ..fields import is_valid_urn_format
 
 
 class UtilsTestCase(TestCase):

@@ -108,7 +108,7 @@
         <th>Status</th>
         <td>{{ your_money.you_are }}</td>
     </tr>
-    {% if your_money.you_are == "employed" %}
+    {% if your_money.you_are == "Employed" %}
         <tr>
             <th>Employer's name</th>
             <td>{{ your_money.employer_name }}</td>
@@ -123,26 +123,26 @@
         </tr>
         <tr>
             <th>Your take home pay</th>
-            <td>£{{ your_money.take_home_pay }}</td>
+            <td>£{{ your_money.take_home_pay_amount }} {{ your_money.take_home_pay_period }}</td>
         </tr>
     {% endif %}
-    {% if your_money.you_are == "self employed" %}
+    {% if your_money.you_are == "Self employed" %}
         <tr>
             <th>Your Job</th>
             <td>{{ your_money.your_job }}</td>
         </tr>
         <tr>
             <th>Your pay</th>
-            <td>£{{ your_money.self_employed_pay }}</td>
+            <td>£{{ your_money.self_employed_pay_amount }} {{ your_money.self_employed_pay_period }}</td>
         </tr>
     {% endif %}
-    {% if your_money.you_are == "receiving benefits" %}
+    {% if your_money.you_are == "Receiving benefits" %}
         <tr>
             <th>Your benefits</th>
-            <td>£{{ your_money.benefits }}</td>
+            <td>£{{ your_money.benefits_amount }} {{  your_money.benefits_period }}</td>
         </tr>
     {% endif %}
-    {% if your_money.you_are == "other" %}
+    {% if your_money.you_are == "Other" %}
         <tr>
             <th>More information</th>
             <td>{{ your_money.other_info|linebreaks }}</td>
