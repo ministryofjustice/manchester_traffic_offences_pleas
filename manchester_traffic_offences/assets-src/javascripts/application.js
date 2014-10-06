@@ -109,7 +109,7 @@ function showSingleRadioContent() {
         $radio.on('click', function () {
             // Hide toggled content
             for(var target in allTargets[$radioGroupName]) {
-                $('#' + allTargets[$radioGroupName][target]).hide();
+                $(allTargets[$radioGroupName][target]).hide();
             }
 
             $(".block-label input[name=" + $radioGroupName + "]").each(function () {
@@ -117,17 +117,17 @@ function showSingleRadioContent() {
 
                 if($dataTarget == groupDataTarget){
                     // Update aria-expanded and aria-hidden attributes
-                    $('#' + $dataTarget).show();
+                    $($dataTarget).show();
                     if ($(this).attr('aria-controls')) {
                         $(this).attr('aria-expanded', 'true');
                     }
-                    $('#' + $dataTarget).attr('aria-hidden', 'false');
+                    $($dataTarget).attr('aria-hidden', 'false');
                 }else {
                     // Update aria-expanded and aria-hidden attributes
                     if ($(this).attr('aria-controls')) {
                         $(this).attr('aria-expanded', 'false');
                     }
-                    $('#' + groupDataTarget).attr('aria-hidden', 'true');
+                    $(groupDataTarget).attr('aria-hidden', 'true');
                 }
             });
         });
