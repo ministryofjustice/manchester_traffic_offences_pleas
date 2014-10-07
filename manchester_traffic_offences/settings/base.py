@@ -221,7 +221,7 @@ FEEDBACK_EMAIL_FROM = "makeaplea@digital.justice.gov.uk"
 FEEDBACK_EMAIL_TO = ("ian.george@digital.justice.gov.uk", )
 
 PLEA_CONFIRMATION_EMAIL_FROM = "plea_from@example.org"
-PLEA_CONFIRMATION_EMAIL_SUBJECT = "Your online plea was successful {{urn}}"
+PLEA_CONFIRMATION_EMAIL_SUBJECT = "Your online plea was successful {urn}"
 PLEA_CONFIRMATION_EMAIL_BCC = ["lyndon.garvey@digital.justice.gov.uk"]
 
 

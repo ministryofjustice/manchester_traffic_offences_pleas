@@ -56,3 +56,4 @@ class EmailGenerationTests(TestCase):
         self.assertEqual(len(mail.outbox), 3)
         self.assertIn(context_data['case']['urn'], mail.outbox[-1].body)
         self.assertIn(context_data['your_details']['email'], mail.outbox[-1].to)
+        self.assertIn(context_data['case']['urn'], mail.outbox[-1].subject)
