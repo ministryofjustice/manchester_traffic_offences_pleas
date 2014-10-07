@@ -97,7 +97,9 @@
         </tr>
         {% if plea_item.mitigations %}
         <tr>
-            <th>Special circumstances</th>
+            <th>
+                {% if plea.guilty == "guilty" %}Special circumstances{% else %}Not guilty because?{% endif %}
+            </th>
             <td>{{ plea_item.mitigations|linebreaksbr }}</td>
         </tr>
         {% endif %}

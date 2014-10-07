@@ -1575,11 +1575,28 @@ section.flash {
     border-color: #85994b;
     background-color: #e7ebda; }
 
+div.field-indent {
+  clear: both;
+  border-left: 4px solid #bfc1c3;
+  padding: 0px 0px 0px 20px;
+  margin: 0px 15px 0px 0; }
+  div.field-indent label {
+    margin-top: 10px; }
+
 div.error, section.error {
-  border-left: 3px solid #e12d2d;
+  border-left: 4px solid #e12d2d;
   margin: 10px -33px 10px -30px;
   padding: 0 0 10px 30px;
   overflow: auto; }
+
+div.indent-error {
+  border-left: 4px solid #e12d2d;
+  margin: 10px -33px 10px 0px;
+  padding: 0 0 0px 20px;
+  overflow: auto; }
+
+div.form-panel {
+  margin-bottom: 1em; }
 
 #complete ol {
   padding: 0;
@@ -1617,10 +1634,8 @@ div.error, section.error {
 #your-money .full {
   overflow: auto;
   padding-left: 3px; }
-#your-money .panel-indent section:first-of-type label {
-  margin-top: 0; }
-#your-money .panel-indent section:last-of-type .section {
-  margin-bottom: 0; }
+#your-money .block {
+  overflow: auto; }
 #your-money .amount {
   border-left: none;
   width: 29%; }
@@ -1640,10 +1655,6 @@ div.error, section.error {
 #your-money .money ul li label {
   font-weight: normal;
   margin: 0; }
-#your-money .first {
-  margin-top: 0; }
-#your-money .last {
-  margin-bottom: 0; }
 
 #terms h2 {
   font-size: 32px;
