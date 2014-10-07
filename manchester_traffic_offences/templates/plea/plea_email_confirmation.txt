@@ -17,7 +17,6 @@ Dear {{ name }},
             Not Guilty
         {% endifequal %}
 
-        {{ plea.plea }}
         Reason
         ---------
         {{ plea.mitigation }}

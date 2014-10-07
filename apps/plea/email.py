@@ -32,7 +32,7 @@ def send_user_confirmation_email(context_data):
     body = render_to_string("plea/plea_email_confirmation.txt", data)
 
     user_email = EmailMessage(
-        settings.PLEA_CONFIRMATION_EMAIL_SUBJECT.format(data), body,
+        settings.PLEA_CONFIRMATION_EMAIL_SUBJECT.format(urn=data['urn']), body,
         settings.PLEA_CONFIRMATION_EMAIL_FROM, [data['email'], ],
         settings.PLEA_CONFIRMATION_EMAIL_BCC)
 
