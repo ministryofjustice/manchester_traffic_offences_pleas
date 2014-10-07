@@ -87,7 +87,7 @@ class YourMoneyForm(BasePleaStepForm):
                                              label="How often do you get paid?",
                                              error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                              "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
-    take_home_pay_amount = forms.CharField(label="Your take home page (after tax)", required=False,
+    take_home_pay_amount = forms.CharField(label="Your take home pay (after tax)", required=False,
                                            widget=forms.TextInput(attrs={"maxlength": "7", "class": "amount"}),
                                            error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                            "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
