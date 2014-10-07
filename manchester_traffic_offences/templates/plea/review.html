@@ -163,7 +163,13 @@
                             </tr>
                             <tr>
                                 <th class="label">Your pay</th>
-                                <td>£{{ your_money.self_employed_pay_amount }} {{ your_money.self_employed_pay_period }}</td>
+                                <td>£{{ your_money.self_employed_pay_amount }}
+                                    {%  if your_money.self_employed_pay_period == "other" %}
+                                        {{ your_money.self_employed_pay_period }}
+                                    {% else %}
+                                        {{ your_money.self_employed_pay_other|linebreaks }}
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endif %}
                         {% if your_money.you_are == "Receiving benefits" %}
