@@ -65,12 +65,12 @@ class YourMoneyForm(BasePleaStepForm):
                        ("Self employed", "Self employed"),
                        ("Receiving benefits", "Receiving benefits"),
                        ("Other", "Other"))
-    PERIOD_CHOICES = (("a week", "Weekly"),
-                      ("a fortnight", "Fortnightly"),
-                      ("a month", "Monthly"))
-    SE_PERIOD_CHOICES = (("a week", "Weekly"),
-                         ("a fortnight", "Fortnightly"),
-                         ("a month", "Monthly"),
+    PERIOD_CHOICES = (("Weekly", "Weekly"),
+                      ("Fortnightly", "Fortnightly"),
+                      ("Monthly", "Monthly"))
+    SE_PERIOD_CHOICES = (("Weekly", "Weekly"),
+                         ("Fortnightly", "Fortnightly"),
+                         ("Monthly", "Monthly"),
                          ("self-employed other", "Other"),)
     you_are = forms.ChoiceField(label="Are you", choices=YOU_ARE_CHOICES,
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
@@ -87,7 +87,7 @@ class YourMoneyForm(BasePleaStepForm):
                                              label="How often do you get paid?",
                                              error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                              "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
-    take_home_pay_amount = forms.CharField(label="Your take home page (after tax)", required=False,
+    take_home_pay_amount = forms.CharField(label="Your take home pay (after tax)", required=False,
                                            widget=forms.TextInput(attrs={"maxlength": "7", "class": "amount"}),
                                            error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                            "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})

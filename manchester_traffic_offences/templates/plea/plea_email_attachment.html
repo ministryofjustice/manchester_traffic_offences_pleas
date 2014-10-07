@@ -96,7 +96,9 @@
         </tr>
         {% if plea_item.mitigations %}
         <tr>
-            <th>Special circumstances</th>
+            <th>
+                {% if plea.guilty == "guilty" %}Special circumstances{% else %}Not guilty because?{% endif %}
+            </th>
             <td>{{ plea_item.mitigations|linebreaksbr }}</td>
         </tr>
         {% endif %}
@@ -122,8 +124,14 @@
             <td>{{ your_money.employer_phone }}</td>
         </tr>
         <tr>
-            <th>Your take home pay</th>
-            <td>£{{ your_money.take_home_pay_amount }} {{ your_money.take_home_pay_period }}</td>
+            <th>You get paid</th>
+            <td>
+                {{ your_money.take_home_pay_period }}
+            </td>
+        </tr>
+        <tr>
+            <th>Amount</th>
+            <td>£{{ your_money.take_home_pay_amount }}</td>
         </tr>
     {% endif %}
     {% if your_money.you_are == "Self employed" %}
@@ -132,26 +140,36 @@
             <td>{{ your_money.your_job }}</td>
         </tr>
         <tr>
-            <th>Your pay</th>
-            <td>£{{ your_money.self_employed_pay_amount }}
-                {%  if your_money.self_employed_pay_period == "other" %}
-                    {{ your_money.self_employed_pay_period }}
+            <th>You get paid</th>
+            <td>
+                {%  if your_money.self_employed_pay_period == "self-employed other" %}
+                    Other - {{ your_money.self_employed_pay_other }}
                 {% else %}
-                    {{ your_money.self_employed_pay_other|linebreaks }}
+                    {{ your_money.self_employed_pay_period }}
                 {% endif %}
             </td>
+        </tr>
+        <tr>
+            <th>Amount</th>
+            <td>£{{ your_money.self_employed_pay_amount }}</td>
         </tr>
     {% endif %}
     {% if your_money.you_are == "Receiving benefits" %}
         <tr>
-            <th>Your benefits</th>
-            <td>£{{ your_money.benefits_amount }} {{  your_money.benefits_period }}</td>
+            <th class="label">You get paid</th>
+            <td>
+                {{ your_money.benefits_period }}
+            </td>
+        </tr>
+        <tr>
+            <th class="label">Amount</th>
+            <td>£{{ your_money.benefits_amount }}</td>
         </tr>
     {% endif %}
     {% if your_money.you_are == "Other" %}
         <tr>
             <th>More information</th>
-            <td>{{ your_money.other_info|linebreaks }}</td>
+            <td>{{ your_money.other_info|linebreaksbr }}</td>
         </tr>
     {% endif %}
     </tbody>
