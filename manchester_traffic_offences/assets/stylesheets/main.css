@@ -1615,8 +1615,7 @@ div.error, section.error {
   border-top: solid 1px #c2c2c2;
   padding-top: 1em; }
 #your-money .full {
-  overflow: auto;
-  padding-left: 3px; }
+  overflow: auto; }
 #your-money .panel-indent section:first-of-type label {
   margin-top: 0; }
 #your-money .panel-indent section:last-of-type .section {

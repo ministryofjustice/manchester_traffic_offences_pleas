@@ -65,12 +65,12 @@ class YourMoneyForm(BasePleaStepForm):
                        ("Self employed", "Self employed"),
                        ("Receiving benefits", "Receiving benefits"),
                        ("Other", "Other"))
-    PERIOD_CHOICES = (("a week", "Weekly"),
-                      ("a fortnight", "Fortnightly"),
-                      ("a month", "Monthly"))
-    SE_PERIOD_CHOICES = (("a week", "Weekly"),
-                         ("a fortnight", "Fortnightly"),
-                         ("a month", "Monthly"),
+    PERIOD_CHOICES = (("Weekly", "Weekly"),
+                      ("Fortnightly", "Fortnightly"),
+                      ("Monthly", "Monthly"))
+    SE_PERIOD_CHOICES = (("Weekly", "Weekly"),
+                         ("Fortnightly", "Fortnightly"),
+                         ("Monthly", "Monthly"),
                          ("self-employed other", "Other"),)
     you_are = forms.ChoiceField(label="Are you", choices=YOU_ARE_CHOICES,
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
