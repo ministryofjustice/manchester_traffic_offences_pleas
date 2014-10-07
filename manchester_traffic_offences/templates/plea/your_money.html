@@ -44,7 +44,7 @@
                         </div>
                     </section>
 
-                    <div class="panel-indent js-hidden" id="section-employed">
+                    <div class="js-hidden" id="section-employed">
                         <p>
                             <strong class="js-hidden">If you're employed, please complete the following<br></strong>
                             We’ll only contact your employer if you don’t pay any fine the court gives you.
@@ -70,7 +70,7 @@
                         {% endwith %}
                     </div>
 
-                    <div class="panel-indent js-hidden" id="section-self-employed">
+                    <div class="js-hidden" id="section-self-employed">
                         <strong class="js-hidden">If you're self employed, please complete the following</strong>
 
                         {% with form.your_job as field %}
@@ -90,7 +90,7 @@
                         {% endwith %}
                     </div>
 
-                    <div class="panel-indent js-hidden" id="section-receiving-benefits">
+                    <div class="js-hidden" id="section-receiving-benefits">
                         <strong class="js-hidden">If you're receiving benefits, please complete the following</strong>
                         {% with form.benefits_period as field %}
                             {% include "widgets/std_field.html" %}
@@ -100,7 +100,7 @@
                         {% endwith %}
                     </div>
 
-                    <div class="panel-indent js-hidden" id="section-other">
+                    <div class="js-hidden" id="section-other">
                         {% with form.other_info as field %}
                             {% include "widgets/std_field.html" %}
                         {% endwith %}
