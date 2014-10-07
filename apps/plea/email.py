@@ -21,23 +21,21 @@ def send_user_confirmation_email(context_data):
     """
 
     data = {
-        'name': context_data['your_details']['name'],
         'email': context_data['your_details']['email'],
-        'urn': context_data['case']['urn'],
-        'time_of_hearing': context_data['case']['time_of_hearing'],
-        'date_of_hearing': context_data['case']['date_of_hearing'],
-        'pleas': context_data['plea']['PleaForms']
+        'urn': context_data['case']['urn']
     }
+
+    user_email = TemplateAttachmentEmail(
+        settings.PLEA_CONFIRMATION_EMAIL_FROM,
+        "plea_details.html",
+        "plea/plea_email_confirmation.html",
+        data,
+        "text/html")
 
     body = render_to_string("plea/plea_email_confirmation.txt", data)
 
-    user_email = EmailMessage(
-        settings.PLEA_CONFIRMATION_EMAIL_SUBJECT.format(urn=data['urn']), body,
-        settings.PLEA_CONFIRMATION_EMAIL_FROM, [data['email'], ],
-        settings.PLEA_CONFIRMATION_EMAIL_BCC)
-
     try:
-        user_email.send(fail_silently=False)
+        user_email.send([data['email'], ], settings.PLEA_CONFIRMATION_EMAIL_SUBJECT.format(**data), body)
     except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
         logger.error("Error sending email: {0}".format(e.message))
 
@@ -122,5 +120,3 @@ def send_plea_email(context_data, plea_email_to=None):
         send_user_confirmation_email(context_data)
 
     return True
-
-
