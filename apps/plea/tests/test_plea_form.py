@@ -167,15 +167,157 @@ class TestMultiPleaForms(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
+    def _get_your_money_stage(self):
+        test_data = {
+            "case": {
+                "complete": True,
+                "date_of_hearing": "2015-01-01",
+                "urn": "00/AA/0000000/00",
+                "number_of_charges": 1
+            },
+            "your_details": {
+                "complete": True
+            },
+            "plea": {
+                "complete": True
+            }
+        }
+
+        form = PleaOnlineForms("your_money", "plea_form_step", test_data)
+
+        form.load(self.request_context)
+
+        return form
+
+    def test_your_money_stage_loads(self):
+
+        form = self._get_your_money_stage()
+
+        response = form.render()
+
+        self.assertEquals(response.status_code, 200)
+
+    def test_your_money_employment_type_required(self):
+
+        form = self._get_your_money_stage()
+
+        form.save({}, self.request_context)
+
+        self.assertEqual(len(form.current_stage.forms[0].errors), 1)
+
+    def test_your_money_employed_option_with_required_fields_missing(self):
+
+        form = self._get_your_money_stage()
+
+        test_data = {
+            "you_are": "Employed"
+        }
+
+        form.save(test_data, self.request_context)
+
+        self.assertEqual(len(form.current_stage.forms[0].errors), 5)
+
+    def test_your_money_employed_option_with_valid_data(self):
+
+        form = self._get_your_money_stage()
+
+        test_data = {
+            "you_are": "Employed",
+            "employer_name": "test",
+            "employer_address": "test",
+            "employer_phone": "test",
+            "take_home_pay_period": "a week",
+            "take_home_pay_amount": "1000"
+        }
+
+        form.save(test_data, self.request_context)
+
+        self.assertTrue(form.current_stage.forms[0].is_valid())
+
+    def test_your_money_self_employed_option_with_required_fields_missing(self):
+
+        form = self._get_your_money_stage()
+
+        test_data = {
+            "you_are": "Self employed"
+        }
+
+        form.save(test_data, self.request_context)
+
+        self.assertEqual(len(form.current_stage.forms[0].errors), 3)
+
+    def test_your_money_self_employed_option_with_valid_data(self):
+
+        form = self._get_your_money_stage()
+
+        test_data = {
+            "you_are": "Self employed",
+            "your_job": "Build trains",
+            "self_employed_pay_period": "a month",
+            "self_employed_pay_amount": "1000"
+        }
+
+        form.save(test_data, self.request_context)
+
+        self.assertTrue(form.current_stage.forms[0].is_valid())
+
+    def test_your_money_benefits_option_with_required_fields_missing(self):
+
+        form = self._get_your_money_stage()
+
+        test_data = {
+            "you_are": "Receiving benefits"
+        }
+
+        form.save(test_data, self.request_context)
+
+        self.assertEqual(len(form.current_stage.forms[0].errors), 2)
+
+    def test_your_money_benefits_option_with_valid_data(self):
+
+        form = self._get_your_money_stage()
+
+        test_data = {
+            "you_are": "Receiving benefits",
+            "benefits_period": "a fortnight",
+            "benefits_amount": "1000"
+        }
+
+        form.save(test_data, self.request_context)
+
+        self.assertTrue(form.current_stage.forms[0].is_valid())
+
+    def test_your_money_other_option_with_required_fields_missing(self):
+
+        form = self._get_your_money_stage()
+
+        test_data = {
+            "you_are": "Other"
+        }
+
+        form.save(test_data, self.request_context)
+
+        self.assertEqual(len(form.current_stage.forms[0].errors), 1)
+
+    def test_your_money_other_option_with_valid_data(self):
+
+        form = self._get_your_money_stage()
+
+        test_data = {
+            "you_are": "Other",
+            "other_info": "woo woo woo"
+            }
+
+        form.save(test_data, self.request_context)
+
+        self.assertTrue(form.current_stage.forms[0].is_valid())
+
     def test_review_stage_loads(self):
         test_data = {
             "case": {
                 "complete": True,
                 "date_of_hearing": "2015-01-01",
-                "urn_0": "00",
-                "urn_1": "AA",
-                "urn_2": "0000000",
-                "urn_3": "00",
+                "urn": "00/AA/0000000/00",
                 "number_of_charges": 1
             },
             "your_details": {
@@ -191,15 +333,57 @@ class TestMultiPleaForms(TestCase):
 
         form = PleaOnlineForms("review", "plea_form_step", test_data)
 
-        response = form.load(self.request_context)
+        form.load(self.request_context)
+        response = form.render()
 
         self.assertTemplateUsed(response, "plea/review.html")
-
-        # NOTE: This is still WIP. Need to check specific values are in
-        # the resulting rendered template
+        self.assertIn("00/AA/0000000/00", response.content)
 
     def test_complete_stage_loads(self):
-        pass
+
+        test_data = {
+            "case": {
+                "complete": True,
+                "date_of_hearing": "2015-01-01",
+                "urn": "00/AA/0000000/00",
+                "number_of_charges": 1
+            },
+            "your_details": {
+                "complete": True
+            },
+            "plea": {
+                "complete": True,
+                "PleaForms": [
+                    {
+                        "guilty": "guilty",
+                        "mitigations": "something"
+                    },
+                    {
+                        "guilty": "guilty",
+                        "mitigations": "something"
+                    },
+                    {
+                        "guilty": "guilty",
+                        "mitigations": "something"
+                    }
+                ]
+            },
+            "your_money":  {
+                "complete": True
+            },
+            "review": {
+                "complete": True
+            }
+        }
+
+        form = PleaOnlineForms("complete", "plea_form_step", test_data)
+        fake_request = self.get_request_mock("/plea/complete")
+        request_context = RequestContext(fake_request)
+
+        form.load(request_context)
+        response = form.render()
+
+        self.assertIn(test_data["case"]["urn"], response.content)
 
     @patch("apps.plea.email.TemplateAttachmentEmail.send")
     @patch("apps.govuk_utils.forms.messages.add_message")
