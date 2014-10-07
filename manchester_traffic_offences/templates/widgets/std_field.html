@@ -1,6 +1,6 @@
 <section>
     <a id="section_{{ field.name }}" name="section_{{ field.name }}"></a>
-    <div class="section{%  if field.errors %} error{% endif %}">
+    <div class="section full{%  if field.errors %} error{% endif %}">
         {{ field.label_tag }}
         <span class="validation-message">{{ field.errors }}</span>
         <p class="form-hint datefield-hint">{{ field.help_text|safe }}</p>
