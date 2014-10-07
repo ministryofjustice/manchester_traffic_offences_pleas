@@ -226,7 +226,7 @@ class TestMultiPleaForms(TestCase):
             "employer_name": "test",
             "employer_address": "test",
             "employer_phone": "test",
-            "take_home_pay_period": "a week",
+            "take_home_pay_period": "Fortnightly",
             "take_home_pay_amount": "1000"
         }
 
@@ -253,7 +253,7 @@ class TestMultiPleaForms(TestCase):
         test_data = {
             "you_are": "Self employed",
             "your_job": "Build trains",
-            "self_employed_pay_period": "a month",
+            "self_employed_pay_period": "Fortnightly",
             "self_employed_pay_amount": "1000"
         }
 
@@ -279,7 +279,7 @@ class TestMultiPleaForms(TestCase):
 
         test_data = {
             "you_are": "Receiving benefits",
-            "benefits_period": "a fortnight",
+            "benefits_period": "Fortnightly",
             "benefits_amount": "1000"
         }
 
