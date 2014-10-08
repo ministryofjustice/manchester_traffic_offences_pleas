@@ -116,7 +116,6 @@ function showSingleRadioContent() {
 
         $radio.on('click', function () {
             $(".block-label input[name=" + $radioGroupName + "],  .radio-label input[name=" + $radioGroupName + "]").each(function () {
-                console.log(this);
                 // hide radio button content and reset aria values
                 var groupDataTarget = $(this).parent().attr('data-target');
 
