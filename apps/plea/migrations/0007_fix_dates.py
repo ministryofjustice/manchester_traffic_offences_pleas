@@ -23,6 +23,10 @@ class Migration(DataMigration):
             if email_count.get_from_context(data):
                 email_count.save()
 
+                # we need to set the date_sent field again
+                # as the column has an auto_add=True 
+                email_count.date_sent = obj.date_sent
+                email_count.save()
 
     def backwards(self, orm):
         raise RuntimeError("Cannot reverse this migration.")
