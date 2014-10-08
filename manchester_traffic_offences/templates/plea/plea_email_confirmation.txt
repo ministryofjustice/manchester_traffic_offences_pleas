@@ -1,0 +1,35 @@
+GOV.UK - Online plea submission confirmation
+
+Your plea has been sent to the court
+
+What happens next?
+
+1. There’s no need to come to court on the hearing date shown in the
+    pack we sent you.
+
+2. The court will tell you if you need to attend for your trial, and what
+    evidence you may need to send to the court in support of your
+    case.
+
+3. We’ll send you a letter with the court’s decision within three working
+    days after your hearing.
+
+4. Quote your URN {{ urn }} if you contact the court about your
+    case.
+
+5. Print off a copy of this confirmation of plea for your records.
+
+If you wish to make changes to your plea you must now contact the court either by post or email quoting your URN requesting permission to do so, before the date of your hearing.
+
+The contact details for the court are:
+
+By Post:
+The Operations Manager
+Manchester & Salford
+Magistrates Court
+Crown Square
+Manchester
+M60 1PR
+
+By email:
+roadtrafficpcr@hmcts.gsi.gov.uk
