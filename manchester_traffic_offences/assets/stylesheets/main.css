@@ -1355,15 +1355,14 @@ b, strong {
 #wrapper {
   padding-bottom: 0px !important;
   text-align: left;
-  border-bottom: 10px solid #d53880; }
+  border-bottom: 10px; }
 
 #wrapper.service header.page-header div h1 {
   padding: 48px 0 0 35px; }
 
 .article-container.group h2, #complete h2, .full-width h2 {
   font-size: 2em;
-  font-weight: bold;
-  mxargin: 20px 0; }
+  font-weight: bold; }
 
 #complete h3.heading-medium.divide {
   border-top: 1px solid #c2c2c2;

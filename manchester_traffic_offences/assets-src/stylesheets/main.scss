@@ -63,10 +63,10 @@ $errorbgcolour: #faebec;
 
 #global-header .header-wrapper {max-width: 990px; margin: 0 auto; padding: 0.5em 15px;}
 .article-container {background-color: #fff; margin-right: 22.25em; min-height: 25em; max-width: 38em;}
-#wrapper {padding-bottom:0px!important; text-align:left; border-bottom: 10px solid #d53880;}
+#wrapper {padding-bottom:0px!important; text-align:left; border-bottom: 10px;}
 #wrapper.service header.page-header div h1 {padding: 48px 0 0 35px;}
 
-.article-container.group h2, #complete h2, .full-width h2 {font-size: 2em; font-weight: bold; mxargin: 20px 0;}
+.article-container.group h2, #complete h2, .full-width h2 {font-size: 2em; font-weight: bold; }
 #complete h3.heading-medium.divide {border-top: 1px solid #c2c2c2; padding-top:20px;}
 #complete h2.ticked {
   display: inline-block;
