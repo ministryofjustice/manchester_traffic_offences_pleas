@@ -78,6 +78,7 @@ def send_plea_email(context_data, plea_email_to=None):
     context_data["email_date_of_hearing"] = date_of_hearing.strftime("%Y-%m-%d")
 
     email_audit = CourtEmailPlea()
+    email_audit.urn = context_data["case"]["urn"].upper()
     email_audit.process_form_data(context_data)
     email_audit.address_from = settings.PLEA_EMAIL_FROM
     email_audit.address_to = settings.PLEA_EMAIL_TO
