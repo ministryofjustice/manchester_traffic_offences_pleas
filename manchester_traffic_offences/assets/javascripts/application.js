@@ -143,6 +143,39 @@ function showSingleRadioContent() {
     $("input[type='radio']:checked").click();
 }
 
+/*
+ * An aria aware toggle function
+ *
+ * Usage:
+ *
+ * onClickToggleContainer('#link', '.target,#target2...');
+ */
+function onClickToggleContainer(toggleSelector, targetSelectors){
+    // an aria aware toggle function
+
+    $(toggleSelector).click(function(event){
+
+        if(!$(this).hasClass('toggled')){
+            $(this).addClass('toggled');
+        }
+        else{
+            $(this).removeClass('toggled');
+        }
+
+        $(targetSelectors).each(function(){
+            $(this).toggle();
+
+            if($(this).is(":visible")){
+                if ($(this).attr('aria-controls')) {
+                    $(this).attr('aria-expanded', 'true');
+                }
+
+                $(this).attr('aria-hidden', 'false');
+            }
+            else{
+                if ($(this).attr('aria-controls')) {
+                    $(this).attr('aria-expanded', 'false');
+                }
 function hashInputFields(){
     var all_values = "";
     $('input').each(function(){
@@ -171,6 +204,15 @@ function hashInputFields(){
             default:
                 val = $field.val();
         }
+
+                $(this).attr('aria-hidden', 'true');
+            }
+        });
+
+        event.preventDefault();
+    });
+}
+
 
         all_values += val;
 
@@ -205,5 +247,6 @@ $(document).ready(function () {
 
     showSingleRadioContent();
 
+    onClickToggleContainer('#case_contact_link a', '#case_contact_details');
     alertIfFieldsChanged();
 });
