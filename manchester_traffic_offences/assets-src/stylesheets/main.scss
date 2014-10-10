@@ -133,6 +133,29 @@ section .info-notice p{line-height: 1.31579;}
 section .application-notice {padding: 0.1em 0 0.1em 1em;}
 
 section.flash {
+
+  /* styling for the 'urn already used' validation message */
+  li#case_contact_link{
+    a {
+      color: #005EA5 !important;
+      font-size: 20px;
+      font-weight: bold;
+      padding-left: 20px;
+      background: url(/static/images/icons/arrow-default.gif) no-repeat left center;
+    }
+  }
+
+  li#case_contact_link{
+    a.toggled{
+      background: url(/static/images/icons/arrow-down.gif) no-repeat left center;
+    }
+  }
+
+  li#case_contact_details{
+    margin-top: 20px;
+    display: none;
+  }
+
   border: 3px solid $grey-1;
   background-color: $grey-4;
   padding: 20px;

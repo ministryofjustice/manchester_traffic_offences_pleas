@@ -9,7 +9,7 @@ from brake.decorators import ratelimit
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from dateutil.parser import parse
+
 
 from .models import CourtEmailCount
 
