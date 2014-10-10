@@ -3,6 +3,7 @@ import json
 
 from django.db import models
 from django.db.models import Sum, Count
+from django.db.models import Q
 from django.core.serializers.json import DjangoJSONEncoder
 
 from dateutil.parser import parse as date_parse
@@ -97,6 +98,24 @@ class CourtEmailCountManager(models.Manager):
         stats['pleas']['last_week'] = _get_totals(last_week)
         stats['pleas']['yesterday'] = _get_totals(yesterday)
 
+        stats['additional'] = {}
+
+        total_optional = to_date.filter(Q(national_insurance_char_count__gte=8) |
+                                        Q(driving_licence_char_count__gte=8) |
+                                        Q(registration_char_count__gte=8)).count()
+
+        pc_optional = total_optional / (stats['submissions']['to_date'] / 100.0)
+
+        stats['additional']['subs_with_optional_fields_percentage'] = pc_optional
+
+        stats['additional']['sc_field_completed'] = {}
+
+        stats['additional']['sc_field_completed']['guilty'] = \
+            to_date.filter(sc_guilty_char_count__gte=1).count()
+
+        stats['additional']['sc_field_completed']['not_guilty'] = \
+            to_date.filter(sc_not_guilty_char_count__gte=1).count()
+
         return stats
 
     def get_stats_by_hearing_date(self, days=3):
@@ -127,6 +146,14 @@ class CourtEmailCount(models.Model):
     total_guilty = models.IntegerField()
     total_not_guilty = models.IntegerField()
     hearing_date = models.DateTimeField()
+
+    # special circumbstances char counts
+    sc_guilty_char_count = models.PositiveIntegerField(default=0)
+    sc_not_guilty_char_count = models.PositiveIntegerField(default=0)
+
+    national_insurance_char_count = models.PositiveIntegerField(default=0)
+    driving_licence_char_count = models.PositiveIntegerField(default=0)
+    registration_char_count = models.PositiveIntegerField(default=0)
 
     objects = CourtEmailCountManager()
 
@@ -172,5 +199,18 @@ class CourtEmailCount(models.Model):
 
             if plea_data["guilty"] == "not_guilty":
                 self.total_not_guilty += 1
+
+        # extra anon information
+        self.sc_guilty_char_count, self.sc_not_guilty_char_count = 0, 0
+
+        for plea in context['plea']['PleaForms']:
+            if plea['guilty'] == "guilty":
+                self.sc_guilty_char_count += len(plea['mitigations'])
+            else:
+                self.sc_not_guilty_char_count += len(plea['mitigations'])
+
+        self.national_insurance_char_count = len(context['your_details']['national_insurance_number'])
+        self.driving_licence_char_count = len(context['your_details']['driving_licence_number'])
+        self.registration_char_count = len(context['your_details']['registration_number'])
 
         return True

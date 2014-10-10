@@ -12,6 +12,10 @@ from apps.plea.models import CourtEmailCount
 class Migration(DataMigration):
 
     def forwards(self, orm):
+        # NOTE: This is a duplicate of the migration 0007_fix_dates, as all of the data generation
+        # is done in CourtEmailCount.get_from_context().  However, we still needed a separate migration
+        # to reset the CourtEmailCount data.
+
         # remove all count data
         orm.CourtEmailCount.objects.all().delete()
 
@@ -19,7 +23,7 @@ class Migration(DataMigration):
         for obj in orm.CourtEmailPlea.objects.all():
             data = json.loads(obj.dict_sent)
             email_count = CourtEmailCount()
-            
+
             if email_count.get_from_context(data):
                 email_count.save()
 
@@ -29,14 +33,19 @@ class Migration(DataMigration):
                 email_count.save()
 
     def backwards(self, orm):
-        raise RuntimeError("Cannot reverse this migration.")
+        "Write your backwards methods here."
 
     models = {
         u'plea.courtemailcount': {
             'Meta': {'object_name': 'CourtEmailCount'},
+            'car_reg_char_count': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'date_sent': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'driver_char_count': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'hearing_date': ('django.db.models.fields.DateTimeField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'ni_char_count': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            'sc_chars_count_not_guilty': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            'sc_chars_guilty': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'total_guilty': ('django.db.models.fields.IntegerField', [], {}),
             'total_not_guilty': ('django.db.models.fields.IntegerField', [], {}),
             'total_pleas': ('django.db.models.fields.IntegerField', [], {})

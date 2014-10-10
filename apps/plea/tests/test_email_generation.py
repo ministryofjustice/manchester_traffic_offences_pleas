@@ -30,7 +30,8 @@ class EmailGenerationTests(TestCase):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
                                  "urn": "cvxcvx89"},
-                        "your_details": {"name": "vcx"},
+                        "your_details": {"name": "vcx", "national_insurance_number": "xxx",
+                                         "driving_licence_number": "xxx", "registration_number": "xxx"},
                         "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
                                                {"mitigations": "test2", "guilty": "guilty"}],
                                  "understand": True}}
@@ -45,7 +46,8 @@ class EmailGenerationTests(TestCase):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
                                  "urn": "cvxcvx89"},
-                        "your_details": {"name": "vcx", "email": "lyndon@antlyn.com"},
+                        "your_details": {"name": "vcx", "email": "lyndon@antlyn.com", "national_insurance_number": "xxx",
+                                         "driving_licence_number": "xxx", "registration_number": "xxx"},
                         "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
                                                {"mitigations": "test2", "guilty": "guilty"}],
                                  "understand": True}}
