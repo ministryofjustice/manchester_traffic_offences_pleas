@@ -143,6 +143,63 @@ function showSingleRadioContent() {
     $("input[type='radio']:checked").click();
 }
 
+
+function hashInputFields(){
+    var all_values = "";
+    $('input').each(function(){
+        var $field = $(this);
+        var val;
+        var type = $field.attr('type');
+
+        if ($field.is('select')) {
+            type = 'select';
+        }
+
+        switch (type) {
+            case 'checkbox':
+            case 'radio':
+                val = $field.is(':checked');
+                break;
+            case 'select':
+                val = '';
+                $field.find('option').each(function(o) {
+                    var $option = $(this);
+                    if ($option.is(':selected')) {
+                        val += $option.val();
+                    }
+                });
+                break;
+            default:
+                val = $field.val();
+        }
+
+        all_values += val;
+
+    });
+
+    return all_values;
+}
+
+
+function alertIfFieldsChanged(){
+    GOVUK.form_hash = hashInputFields();
+    GOVUK.form_check = true;
+
+    $("form").on("submit", function(){
+        GOVUK.form_check = false;
+    });
+
+    $(window).on("beforeunload", function () {
+        if(GOVUK.form_check) {
+            var form_state = hashInputFields();
+            if (form_state != GOVUK.form_hash) {
+                return "You have changed data!";
+            }
+        }
+    });
+}
+
+
 /*
  * An aria aware toggle function
  *
@@ -176,34 +233,6 @@ function onClickToggleContainer(toggleSelector, targetSelectors){
                 if ($(this).attr('aria-controls')) {
                     $(this).attr('aria-expanded', 'false');
                 }
-function hashInputFields(){
-    var all_values = "";
-    $('input').each(function(){
-        var $field = $(this);
-        var val;
-        var type = $field.attr('type');
-
-        if ($field.is('select')) {
-            type = 'select';
-        }
-
-        switch (type) {
-            case 'checkbox':
-            case 'radio':
-                val = $field.is(':checked');
-                break;
-            case 'select':
-                val = '';
-                $field.find('option').each(function(o) {
-                    var $option = $(this);
-                    if ($option.is(':selected')) {
-                        val += $option.val();
-                    }
-                });
-                break;
-            default:
-                val = $field.val();
-        }
 
                 $(this).attr('aria-hidden', 'true');
             }
@@ -214,31 +243,6 @@ function hashInputFields(){
 }
 
 
-        all_values += val;
-
-    });
-
-    return all_values;
-}
-
-function alertIfFieldsChanged(){
-    GOVUK.form_hash = hashInputFields();
-    GOVUK.form_check = true;
-
-    $("form").on("submit", function(){
-        GOVUK.form_check = false;
-    });
-
-    $(window).on("beforeunload", function () {
-        if(GOVUK.form_check) {
-            var form_state = hashInputFields();
-            if (form_state != GOVUK.form_hash) {
-                return "You have changed data!";
-            }
-        }
-    });
-}
-
 $(document).ready(function () {
     jQuery.fx.off = true;
 
@@ -248,5 +252,6 @@ $(document).ready(function () {
     showSingleRadioContent();
 
     onClickToggleContainer('#case_contact_link a', '#case_contact_details');
+
     alertIfFieldsChanged();
 });
