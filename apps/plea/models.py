@@ -1,3 +1,4 @@
+from dateutil.parser import parse as date_parse
 import datetime as dt
 import json
 
@@ -5,8 +6,6 @@ from django.db import models
 from django.db.models import Sum, Count
 from django.db.models import Q
 from django.core.serializers.json import DjangoJSONEncoder
-
-from dateutil.parser import parse as date_parse
 
 
 class CourtEmailPleaManager(models.Manager):
