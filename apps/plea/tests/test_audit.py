@@ -18,7 +18,11 @@ class EmailAuditTests(unittest.TestCase):
                       u'date_of_hearing': datetime.date(2015, 1, 1),
                       u'time_of_hearing': datetime.time(9, 15),
                       u'number_of_charges': 2},
-            'your_details': {u'name': u'maverick cobain'},
+            'your_details': {
+                u'name': u'maverick cobain',
+                u"national_insurance_number": u"test ni number",
+                u"driving_licence_number": u"test driving license number",
+                u"registration_number": u"reg number"},
             'complete': {},
             'review': {u'csrfmiddlewaretoken': [u'z6Pz8e3M1rX2c31M0YpZtGnIv1V74ml7']},
             'send_error': {},

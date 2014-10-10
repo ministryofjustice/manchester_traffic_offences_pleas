@@ -13,7 +13,11 @@ class CourtEmailCountModelTestCase(TestCase):
             "plea": {
                 "PleaForms": {},
             },
-            "your_details": {},
+            "your_details": {
+                "national_insurance_number": "xxx",
+                "driving_licence_number": "xxx",
+                "registration_number": "xxx"
+            },
             "case": {
                 "date_of_hearing": "2014-09-22",
                 "time_of_hearing": "09:15:00"
@@ -140,3 +144,69 @@ class CourtEmailCountModelTestCase(TestCase):
         self.assertEquals(stats[0]['submissions'], 2)
         self.assertEquals(stats[0]['guilty'], 2)
         self.assertEquals(stats[0]['not_guilty'], 2)
+
+    def test_court_email_plea__get_from_context__sc_char_count(self):
+
+        context = {
+            "plea": {
+                "PleaForms": [
+                    {
+                        "mitigations": "13 chars long",
+                        "guilty": "guilty"
+                    },
+                    {
+                        "mitigations": "16 chars long xx",
+                        "guilty": "not_guilty"
+                    }
+                ],
+            },
+            "your_details": {
+                "national_insurance_number": "xxx",
+                "driving_licence_number": "xxx",
+                "registration_number": "xxx"
+            },
+            "case": {
+                "date_of_hearing": "2014-09-22",
+                "time_of_hearing": "09:15:00"
+            },
+        }
+
+        email_count = CourtEmailCount()
+
+        email_count.get_from_context(context)
+
+        self.assertEquals(email_count.sc_guilty_char_count, 13)
+        self.assertEquals(email_count.sc_not_guilty_char_count, 16)
+
+    def test_court_email_plea__get_from_context__field_counts(self):
+        context = {
+            "plea": {
+                "PleaForms": [
+                    {
+                        "mitigations": "13 chars long",
+                        "guilty": "guilty"
+                    },
+                    {
+                        "mitigations": "16 chars long xx",
+                        "guilty": "not_guilty"
+                    }
+                ],
+            },
+            "your_details": {
+                "national_insurance_number": "xxxxxx",
+                "driving_licence_number": "xxx",
+                "registration_number": "x"
+            },
+            "case": {
+                "date_of_hearing": "2014-09-22",
+                "time_of_hearing": "09:15:00"
+            },
+        }
+
+        email_count = CourtEmailCount()
+
+        email_count.get_from_context(context)
+
+        self.assertEquals(email_count.national_insurance_char_count, 6)
+        self.assertEquals(email_count.driving_licence_char_count, 3)
+        self.assertEquals(email_count.registration_char_count, 1)
