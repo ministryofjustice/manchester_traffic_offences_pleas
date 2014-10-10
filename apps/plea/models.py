@@ -1,3 +1,4 @@
+from dateutil.parser import parse as date_parse
 import datetime as dt
 import json
 
@@ -5,8 +6,6 @@ from django.db import models
 from django.db.models import Sum, Count
 from django.db.models import Q
 from django.core.serializers.json import DjangoJSONEncoder
-
-from dateutil.parser import parse as date_parse
 
 
 class CourtEmailPleaManager(models.Manager):
@@ -24,6 +23,7 @@ class CourtEmailPlea(models.Model):
     STATUS_CHOICES = (("created_not_sent", "Created but not sent"),
                       ("sent", "Sent"),
                       ("network_error", "Network error"))
+    urn = models.CharField(max_length=16, db_index=True)
     date_sent = models.DateTimeField(auto_now_add=True)
     dict_sent = models.TextField(null=True, blank=True)
     subject = models.CharField(max_length=200)

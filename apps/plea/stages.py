@@ -10,12 +10,21 @@ from email import send_plea_email
 from forms import (CaseForm, YourDetailsForm, YourMoneyForm,
                    PleaForm, ConfirmationForm, RequiredFormSet)
 
+from .fields import ERROR_MESSAGES
+
 
 class CaseStage(FormStage):
     name = "case"
     template = "plea/case.html"
     form_classes = [CaseForm, ]
     dependencies = []
+
+    def render(self, request_context):
+
+        if 'urn' in self.forms[0].errors and ERROR_MESSAGES['URN_ALREADY_USED'] in self.forms[0].errors['urn']:
+            self.context['urn_already_used'] = True
+
+        return super(CaseStage, self).render(request_context)
 
 
 class YourDetailsStage(FormStage):

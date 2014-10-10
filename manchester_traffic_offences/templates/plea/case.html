@@ -1,6 +1,6 @@
 {% extends "plea/base.html" %}
 {% block page_title %}{{ block.super }} Case details{% endblock %}
-{% load staticfiles %}
+{% load staticfiles pdb %}
 {% block page_content %}
     <header class="page-header group">
         <div><h1><span>Service</span>Make your plea online</h1></div>
@@ -15,7 +15,35 @@
                 {% csrf_token %}
                 {% with forms.0 as form %}
                     {% if form.errors %}
+
                         <section class="flash error-summary">
+                            {% if urn_already_used %}
+                            <h2 id="error-heading">This URN has already been used to make a plea</h2>
+
+                            <p>If you wish to make changes to your plea you must now contact the court either by post or email quoting your URN, before the date of hearing.</q></p>
+
+                            <ul>
+                                <li id="case_contact_link"><a href="/contact">View contact details</a></li>
+                                <li id="case_contact_details">
+
+                                <p>The contact details for the court are:</p>
+
+                                <h2>By Post:</h2>
+                                <p>The Operations Manager<br>
+                                Manchester & Salford<br>
+                                Magistrates Court<br>
+                                Crown Square<br>
+                                Manchester<br>
+                                M60 1PR</p>
+
+                                <p><h2>By email:</h2>
+                                <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">roadtrafficpcr@hmcts.gsi.gov.uk</a></p>
+
+                                </li>
+                            </ul>
+
+                            {% else %}
+
                             <h2 id="error-heading">You need to fix the errors on this page before continuing.</h2>
                             <p>See highlighted errors below.</p>
                             <ul>
@@ -26,6 +54,7 @@
                                     {% endif %}
                                 {% endfor %}
                             </ul>
+                            {% endif %}
                         </section>
                     {% endif %}
 
