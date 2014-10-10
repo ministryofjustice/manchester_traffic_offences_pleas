@@ -12,10 +12,13 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_str, force_text
 from django.utils.translation import ugettext_lazy as _
 
+from .models import CourtEmailPlea
+
 
 ERROR_MESSAGES = {
     "URN_REQUIRED": "You must enter your unique reference number (URN)",
     "URN_INVALID": "The unique reference number (URN) isn't valid. Enter the number exactly as it appears on page 1 of the pack",
+    "URN_ALREADY_USED": "The URN has already been used to make a plea",
     "HEARING_DATE_REQUIRED": "You must provide the court hearing date ",
     "HEARING_TIME_REQUIRED": "You must provide the court hearing time ",
     "HEARING_DATE_INVALID": "The court hearing date and/or time isn't a valid format",
@@ -61,6 +64,17 @@ def is_valid_urn_format(urn):
 def is_date_in_future(date):
     if date <= datetime.datetime.today().date():
         raise exceptions.ValidationError(ERROR_MESSAGES["HEARING_DATE_PASSED"])
+
+
+def is_urn_not_used(urn):
+    """
+    Check that the urn hasn't already been used in a previous submission
+    """
+
+    if CourtEmailPlea.objects.filter(urn=urn.upper(), status="sent").exists():
+        raise exceptions.ValidationError(ERROR_MESSAGES["URN_ALREADY_USED"])
+
+    return True
 
 
 class RadioFieldRenderer(RadioFieldRenderer):

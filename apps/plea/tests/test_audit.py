@@ -14,7 +14,7 @@ from ..models import CourtEmailPlea, CourtEmailCount
 class EmailAuditTests(unittest.TestCase):
     def setUp(self):
         self.context_data = {
-            'case': {u'urn': u'00/AA/0000000/00',
+            'case': {u'urn': u'00/aa/0000000/00',
                       u'date_of_hearing': datetime.date(2015, 1, 1),
                       u'time_of_hearing': datetime.time(9, 15),
                       u'number_of_charges': 2},
@@ -61,3 +61,12 @@ class EmailAuditTests(unittest.TestCase):
         self.assertEqual(count.total_pleas, 2)
         self.assertEqual(count.total_guilty, 1)
         self.assertEqual(count.total_not_guilty, 1)
+
+    def test_uppercase_url_is_stored(self):
+
+        send_plea_email(self.context_data)
+
+        plea = CourtEmailPlea.objects.latest('date_sent')
+
+        self.assertEqual(plea.urn, self.context_data['case']['urn'].upper())
+
