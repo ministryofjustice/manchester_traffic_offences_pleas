@@ -1,16 +1,58 @@
 # -*- coding: utf-8 -*-
+import datetime as dt
+from dateutil.parser import parse as date_parse
 import json
 
-from south.utils import datetime_utils as datetime
-from south.db import db
 from south.v2 import DataMigration
-from django.db import models
 
-from apps.plea.models import CourtEmailCount
+
+def populate_from_context(email, context):
+    if not "plea" in context:
+        return
+    if not "PleaForms" in context["plea"]:
+        return
+    if not "your_details" in context:
+        return
+    if not "case" in context:
+        return
+
+    if email.total_pleas is None:
+        email.total_pleas = 0
+
+    if email.total_guilty is None:
+        email.total_guilty = 0
+
+    if email.total_not_guilty is None:
+        email.total_not_guilty = 0
+
+    try:
+        if isinstance(context["case"]["date_of_hearing"], dt.date):
+            date_part = context["case"]["date_of_hearing"]
+        else:
+            date_part = date_parse(context["case"]["date_of_hearing"])
+
+        if isinstance(context["case"]["time_of_hearing"], dt.time):
+            time_part = context["case"]["time_of_hearing"]
+        else:
+            time_part = date_parse(context["case"]["time_of_hearing"]).time()
+
+        email.hearing_date = dt.datetime.combine(date_part, time_part)
+    except KeyError:
+        return
+
+    for plea_data in context["plea"]["PleaForms"]:
+        email.total_pleas += 1
+
+        if plea_data["guilty"] == "guilty":
+            email.total_guilty += 1
+
+        if plea_data["guilty"] == "not_guilty":
+            email.total_not_guilty += 1
+
+    return email
 
 
 class Migration(DataMigration):
-
     def forwards(self, orm):
         # remove all count data
         orm.CourtEmailCount.objects.all().delete()
@@ -18,9 +60,10 @@ class Migration(DataMigration):
         # rebuild CourtEmailCount data from CourtEmailPlea.dict_sent
         for obj in orm.CourtEmailPlea.objects.all():
             data = json.loads(obj.dict_sent)
-            email_count = CourtEmailCount()
-            
-            if email_count.get_from_context(data):
+            email_count = orm.CourtEmailCount()
+            email_count = populate_from_context(email_count, data)
+
+            if email_count:
                 email_count.save()
 
                 # we need to set the date_sent field again
