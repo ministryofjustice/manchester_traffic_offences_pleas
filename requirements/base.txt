@@ -20,3 +20,5 @@ django-brake==1.3.1
 python-dateutil
 
 djangorestframework==2.4.3
+
+git+https://github.com/charlierguo/gmail.git

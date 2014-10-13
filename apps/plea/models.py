@@ -22,7 +22,10 @@ class CourtEmailPleaManager(models.Manager):
 class CourtEmailPlea(models.Model):
     STATUS_CHOICES = (("created_not_sent", "Created but not sent"),
                       ("sent", "Sent"),
-                      ("network_error", "Network error"))
+                      ("network_error", "Network error"),
+                      ("receipt_success", "Processed successfully"),
+                      ("receipt_failure", "Processing failed"))
+
     urn = models.CharField(max_length=16, db_index=True)
     date_sent = models.DateTimeField(auto_now_add=True)
     dict_sent = models.TextField(null=True, blank=True)

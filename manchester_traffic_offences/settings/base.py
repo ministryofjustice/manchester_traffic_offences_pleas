@@ -1,5 +1,7 @@
 import sys
+import os
 from os.path import join, abspath, dirname
+
 
 # PATH vars
 here = lambda *x: join(abspath(dirname(__file__)), *x)
@@ -153,6 +155,7 @@ PROJECT_APPS = (
     'moj_template',
     'apps.plea',
     'apps.feedback',
+    'apps.receipt'
 )
 
 INSTALLED_APPS += PROJECT_APPS
@@ -224,6 +227,10 @@ PLEA_CONFIRMATION_EMAIL_FROM = "plea_from@example.org"
 PLEA_CONFIRMATION_EMAIL_SUBJECT = "Online plea submission confirmation"
 PLEA_CONFIRMATION_EMAIL_BCC = ["lyndon.garvey@digital.justice.gov.uk"]
 
+RECEIPT_INBOX_FROM_EMAIL = "lyndon.garvey@digital.justice.gov.uk"
+RECEIPT_INBOX_USERNAME = "lyndon@antlyn.com"
+RECEIPT_INBOX_PASSWORD = os.environ['RECEIPT_GMAIL_PASSWORD']
+RECEIPT_INBOX_OAUTH_API_KEY = ""
 
 # .local.py overrides all the common settings.
 try:
