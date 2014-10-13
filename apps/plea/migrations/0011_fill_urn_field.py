@@ -14,9 +14,11 @@ class Migration(DataMigration):
         for plea in orm.CourtEmailPlea.objects.all():
             data = json.loads(plea.dict_sent)
 
-            plea.urn = data['case']['urn']
+            if 'case' in data:
+                if 'urn' in data['case']:
+                    plea.urn = data['case']['urn']
 
-            plea.save()
+                    plea.save()
 
     def backwards(self, orm):
         "Write your backwards methods here."
