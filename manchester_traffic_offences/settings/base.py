@@ -229,7 +229,7 @@ PLEA_CONFIRMATION_EMAIL_BCC = ["lyndon.garvey@digital.justice.gov.uk"]
 
 RECEIPT_INBOX_FROM_EMAIL = "lyndon.garvey@digital.justice.gov.uk"
 RECEIPT_INBOX_USERNAME = "lyndon@antlyn.com"
-RECEIPT_INBOX_PASSWORD = os.environ['RECEIPT_GMAIL_PASSWORD']
+RECEIPT_INBOX_PASSWORD = os.environ.get('RECEIPT_GMAIL_PASSWORD', '')
 RECEIPT_INBOX_OAUTH_API_KEY = ""
 
 # .local.py overrides all the common settings.
