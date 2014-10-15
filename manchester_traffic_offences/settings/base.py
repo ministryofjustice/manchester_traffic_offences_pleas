@@ -214,7 +214,6 @@ PLEA_EMAIL_ATTACHMENT_NAME = "plea.html"
 PLEA_EMAIL_TEMPLATE = "plea/plea_email_attachment.html"
 PLEA_EMAIL_TO = ["plea_to@example.org", ]
 PLEA_EMAIL_SUBJECT = "ONLINE PLEA: {case[urn]} DOH: {email_date_of_hearing} {email_name}"
-PLEA_EMAIL_BODY = ""
 
 PLP_EMAIL_TO = ["plp_to@example.org", ]
 PLP_EMAIL_TEMPLATE = "plea/plp_email_attachment.html"
@@ -231,6 +230,8 @@ RECEIPT_INBOX_FROM_EMAIL = "lyndon.garvey@digital.justice.gov.uk"
 RECEIPT_INBOX_USERNAME = "lyndon@antlyn.com"
 RECEIPT_INBOX_PASSWORD = os.environ.get('RECEIPT_GMAIL_PASSWORD', '')
 RECEIPT_INBOX_OAUTH_API_KEY = ""
+RECEIPT_ADMIN_EMAIL_ENABLED = True
+RECEIPT_ADMIN_EMAIL_SUBJECT = "Makeaplea receipt processing script"
 
 # .local.py overrides all the common settings.
 try:

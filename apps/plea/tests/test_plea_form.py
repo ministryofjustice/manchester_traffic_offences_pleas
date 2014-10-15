@@ -6,6 +6,7 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from django.template.context import RequestContext
 
+from ..models import CourtEmailPlea
 from ..views import PleaOnlineForms
 
 
@@ -54,8 +55,30 @@ class TestMultiPleaForms(TestCase):
         self.assertEqual(len(form.current_stage.forms[0].errors), 4)
 
     def test_case_stage_urn_already_submitted(self):
-        pass
 
+        email_audit = CourtEmailPlea()
+        email_audit.urn = "00/aa/0000000/00"
+        email_audit.hearing_date = datetime.datetime.now()
+        email_audit.status = "sent"
+        email_audit.save()
+
+        form = PleaOnlineForms("case", "plea_form_step", self.session)
+        form.load(self.request_context)
+        form.save({"date_of_hearing_0": "01",
+                   "date_of_hearing_1": "01",
+                   "date_of_hearing_2": "2015",
+                   "time_of_hearing": "09:15",
+                   "urn_0": "00",
+                   "urn_1": "AA",
+                   "urn_2": "0000000",
+                   "urn_3": "00",
+                   "number_of_charges": 1},
+                  self.request_context)
+
+        response = form.render()
+
+        self.assertEquals(form.current_stage.forms[0].errors.keys()[0], 'urn')
+        self.assertEquals(response.status_code, 200)
 
     def test_case_stage_good_data(self):
         form = PleaOnlineForms("case", "plea_form_step", self.session)
@@ -402,6 +425,9 @@ class TestMultiPleaForms(TestCase):
         fake_session["your_details"]["name"] = "Charlie Brown"
         fake_session["your_details"]["contact_number"] = "07802639892"
         fake_session["your_details"]["email"] = "test@example.org"
+        fake_session['your_details']["national_insurance_number"] = "test NI number"
+        fake_session['your_details']["driving_licence_number"] = "test driving number"
+        fake_session['your_details']["registration_number"] = "test registration number"
         fake_session["plea"]["PleaForms"][0]["guilty"] = "guilty"
         fake_session["plea"]["PleaForms"][0]["mitigations"] = "lorem ipsum 1"
 
