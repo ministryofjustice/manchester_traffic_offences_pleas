@@ -1,5 +1,6 @@
 from dateutil import parser
 import logging
+import json
 import smtplib
 import socket
 
@@ -90,6 +91,10 @@ def send_plea_email(context_data, plea_email_to=None):
                                                 context_data["case"]["time_of_hearing"])
     email_audit.save()
 
+    email_count = CourtEmailCount()
+    email_count.get_from_context(context_data)
+    email_count.save()
+
     try:
         plea_email.send(plea_email_to,
                         settings.PLEA_EMAIL_SUBJECT.format(**context_data),
@@ -104,14 +109,12 @@ def send_plea_email(context_data, plea_email_to=None):
     email_audit.status = "sent"
     email_audit.save()
 
-    email_count = CourtEmailCount()
-    email_count.get_from_context(context_data)
-    email_count.save()
+    email_body = "<<makeaplea-ref: {}/{}>>".format(email_audit.id, email_count.id)
 
     try:
         plp_email.send(settings.PLP_EMAIL_TO,
                        settings.PLP_EMAIL_SUBJECT.format(**context_data),
-                       settings.PLEA_EMAIL_BODY,
+                       email_body,
                        route="GSI")
     except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
         logger.error("Error sending email: {0}".format(e.message))

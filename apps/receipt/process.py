@@ -1,16 +1,20 @@
 import contextlib
 import datetime as dt
 import re
+import sys
+import traceback
 
 from django.conf import settings
+from django.core.mail import mail_admins
+from django.template.loader import render_to_string
 
-from apps.plea.models import CourtEmailPlea
+from apps.plea.models import CourtEmailPlea, CourtEmailCount
 from .models import ReceiptLog
 
 import gmail
 
-
-gmp_email_re = re.compile("^Receipt \((Failed|Passed)\) RE:(?:.*?)ONLINE PLEA: (\d{2}/\w{2}/\d{7}/\d{2}) DOH: (\d{4}-\d{2}-\d{2})")
+hmcts_body_re = re.compile("<<makeaplea-ref:\s*(\d+)/(\d+)>>")
+hmcts_subject_re = re.compile("^Receipt \((Failed|Passed)\) RE:(?:.*?)ONLINE PLEA: (\d{2}/\w{2}/\d{5,7}/\d{2}) DOH: (\d{4}-\d{2}-\d{2})")
 
 
 class InvalidFormatError(Exception):
@@ -27,23 +31,35 @@ def get_receipt_emails(query_from):
     """
     g = gmail.login(settings.RECEIPT_INBOX_USERNAME, settings.RECEIPT_INBOX_PASSWORD)
 
-    emails = g.inbox().mail(after=query_from) #, before=xxx, unread=True, sender=settings.RECEIPT_INBOX_FROM_EMAIL)
+    emails = g.inbox().mail(after=query_from, sender=settings.RECEIPT_INBOX_FROM_EMAIL) #, before=xxx, unread=True, )
 
     yield emails
 
     g.logout()
 
 
-def get_status_from_subject(subject):
-    matches = gmp_email_re.search(subject)
+def extract_data_from_email(email):
+    """
+    Extract data from a HMCTS/GMP receipt email
+    """
+
+    matches = hmcts_subject_re.search(email.subject)
 
     try:
         status, urn, doh = matches.groups()
-    except (AttributeError, InvalidFormatError):
+    except AttributeError:
         raise InvalidFormatError(
-            "Cannot process email subject: {}".format(subject))
+            "Cannot process email subject: {}".format(email.subject))
 
-    return status, urn, doh
+    matches = hmcts_body_re.search(email.body)
+
+    try:
+        plea_id, count_id = matches.groups()
+    except AttributeError:
+        raise InvalidFormatError(
+            "Cannot get makeaplea ref from email body: {}".format(email.body))
+
+    return int(plea_id), int(count_id), status, urn, doh
 
 
 def process_receipts(query_from=None):
@@ -71,11 +87,19 @@ def process_receipts(query_from=None):
     try:
         _process_receipts(log_entry)
     except Exception as ex:
-        log_entry.status_detail += "\n An exception has occured: {}".format(unicode(ex))
+        ex_type, ex, tb = sys.exc_info()
+        log_entry.status_detail = "An exception has occured: {}\n\n{}"\
+            .format(ex, traceback.format_tb(tb))
         log_entry.status = ReceiptLog.STATUS_ERROR
 
     log_entry.run_time = (dt.datetime.now() - start_time).seconds
     log_entry.save()
+
+    if settings.RECEIPT_ADMIN_EMAIL_ENABLED:
+        body = render_to_string('email/admin_receipt_email.txt', {'log': log_entry})
+        mail_admins(settings.RECEIPT_ADMIN_EMAIL_SUBJECT, body)
+
+    return log_entry
 
 
 def _process_receipts(log_entry):
@@ -91,44 +115,57 @@ def _process_receipts(log_entry):
             email.fetch()
 
             try:
-                urn, status, doh = get_status_from_subject(email.subject)
+                plea_id, count_id, status, urn, doh = \
+                    extract_data_from_email(email)
+
             except InvalidFormatError as ex:
-                status_text.append(str(ex))
+                status_text.append(unicode(ex))
+
                 log_entry.total_errors += 1
 
                 continue
 
             try:
-                plea_audit = CourtEmailPlea.objects.get(urn=urn.upper())
+                plea_obj = CourtEmailPlea.objects.get(id=plea_id)
             except CourtEmailPlea.DoesNotExist:
-                status_text.append('Unmatched URN: {} email subject: {}'.format(urn, email.subject))
+                status_text.append('Cannot find CourtEmailPlea(<{}>)'
+                                   .format(plea_id))
 
                 log_entry.total_errors += 1
 
                 continue
 
-            # has the plea already been processed?
+            try:
+                count_obj = CourtEmailCount.objects.get(id=count_id)
+            except CourtEmailCount.DoesNotExist:
+                status_text.append('Cannot find CourtEmailCount(<{}>)'
+                                   .format(count_id))
 
-            if status == "success":
-                plea_audit.status = "receipt_success"
+                log_entry.total_errors += 1
+
+                continue
+
+            if status == "Passed":
+                plea_obj.status = "receipt_success"
 
                 log_entry.total_success += 1
+
+                status_text.append('Passed: {}'.format(urn))
 
                 #
                 # do outbound actions, e.g. send an email to a user.
                 #
 
-                # mark as read
-                email.read()
             else:
-                plea_audit.status = "receipt_failure"
+                plea_obj.status = "receipt_failure"
+
+                status_text.append('Failed: {}'.format(urn))
 
                 log_entry.total_failed += 1
+
+            # mark as read
+            email.read()
 
     log_entry.status = log_entry.STATUS_COMPLETE
 
     log_entry.status_detail = "\n".join(status_text)
-
-
-
-

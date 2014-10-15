@@ -71,7 +71,7 @@ def is_urn_not_used(urn):
     Check that the urn hasn't already been used in a previous submission
     """
 
-    if CourtEmailPlea.objects.filter(urn=urn.upper(), status="sent").exists():
+    if CourtEmailPlea.objects.filter(urn__iexact=urn, status="sent").exists():
         raise exceptions.ValidationError(ERROR_MESSAGES["URN_ALREADY_USED"])
 
     return True
