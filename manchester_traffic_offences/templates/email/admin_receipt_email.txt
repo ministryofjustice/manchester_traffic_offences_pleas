@@ -1,0 +1,17 @@
+
+Log entry: ReceiptLog(<{{ log.id }}>)
+Started: {{ log.started }}; Took: {{ log.run_time }} seconds
+
+Status: {% if log.status == log.STATUS_ERROR %}ERROR!{% else %}Completed{% endif %}
+
+Total emails:   {{ log.total_emails }}
+Total passed:   {{ log.total_success }}  (recorded as failed by hmcts)
+Total failed:   {{ log.total_failed }}   (recorded as passed by hmcts)
+Total errors:   {{ log.total_errors }}   (a processing error occured)
+
+Query from/to:  {{ log.query_from }} / {{ log.query_to }}
+
+Status detail:
+--------------
+
+{{ log.status_detail }}
