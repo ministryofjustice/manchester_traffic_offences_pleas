@@ -94,7 +94,7 @@ def process_receipts(query_from=None):
     insert the relevant IDs into the body of the outbound email in the
     following format:
 
-    <<makeaplea-ref: {CourtEmailPleaId}, {CourtEmailCountId}>>
+    <<<makeaplea-ref: {CourtEmailPleaId}, {CourtEmailCountId}>>>
 
     HMCTS receipt emails include the reference enabling us to
     know which CourtEmailPlea and CourtEmailCount data needs
