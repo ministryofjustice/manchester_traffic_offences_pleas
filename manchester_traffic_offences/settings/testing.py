@@ -1,6 +1,8 @@
 from .base import *
 
-
+ADMINS = (
+    ('Lyndon Garvey', 'lyndon.garvey@digital.justice.gov.uk')
+)
 
 LETTUCE_AVOID_APPS = (
     'south',
