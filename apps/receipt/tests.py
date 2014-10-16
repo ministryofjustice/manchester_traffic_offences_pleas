@@ -1,9 +1,10 @@
 import datetime as dt
+import json
 
 from django.core import mail
 from django.test import TestCase
 
-from mock import Mock, MagicMock, patch
+from mock import Mock, patch
 
 from apps.plea.models import CourtEmailCount, CourtEmailPlea
 from apps.receipt.models import ReceiptLog
@@ -20,7 +21,7 @@ class TestEmailSubjectProcessing(TestCase):
 
         self.email_body_valid = """
         Random content.
-        <<makeaplea-ref: 1/1>>
+        <<<makeaplea-ref: 1/1>>>
         Random content.
         """
 
@@ -73,10 +74,17 @@ class TestProcessReceipts(TestCase):
         self.urn = "00/AA/0000000/00"
         self.doh = dt.datetime.now()+dt.timedelta(5)
 
+        context_data = {
+            'case': {
+                'urn': self.urn
+            }
+        }
+
         self.email_audit = CourtEmailPlea.objects.create(
             urn=self.urn,
             hearing_date=self.doh,
-            status="sent"
+            status="sent",
+            dict_sent=json.dumps(context_data)
         )
 
         self.email_count = CourtEmailCount.objects.create(
@@ -130,7 +138,7 @@ class TestProcessReceipts(TestCase):
 
     def test_success_responses_are_recorded(self):
 
-        ref = "<<makeaplea-ref: {}/{}>>"\
+        ref = "<<<makeaplea-ref: {}/{}>>>"\
             .format(self.email_audit.id, self.email_count.id)
 
         subject = "Receipt (Passed) RE: FILED! ONLINE PLEA: {} DOH: {}"\
@@ -150,7 +158,7 @@ class TestProcessReceipts(TestCase):
         self.assertEquals(log.total_failed, 0)
 
     def test_failed_responses_are_recorded(self):
-        ref = "<<makeaplea-ref: {}/{}>>"\
+        ref = "<<<makeaplea-ref: {}/{}>>>"\
             .format(self.email_audit.id, self.email_count.id)
 
         subject = "Receipt (Failed) RE: ONLINE PLEA: {} DOH: {}"\
@@ -170,16 +178,79 @@ class TestProcessReceipts(TestCase):
         self.assertEquals(log.total_failed, 1)
 
     def test_mismatched_ref_id(self):
-        pass
+        ref = "<<<makeaplea-ref: {}/{}>>>"\
+            .format(self.email_audit.id, self.email_count.id+1)
+
+        subject = "Receipt (Failed) RE: ONLINE PLEA: {} DOH: {}"\
+            .format(self.urn, self.doh.strftime("%G-%m-%d"))
+
+        email_obj_mock = self._get_email_mock(ref, subject)
+
+        self.get_emails_mock.return_value = \
+        self._get_context_mock(return_value=[email_obj_mock])
+
+        process_receipts()
+
+        log = ReceiptLog.objects.latest('id')
+
+        self.assertEquals(log.total_emails, 1)
+        self.assertEquals(log.total_failed, 0)
+        self.assertEquals(log.total_errors, 1)
 
     def test_invalid_email_subjects_are_ignored_but_logged(self):
-        pass
+        ref = "<<<makeaplea-ref: {}/{}>>>"\
+            .format(self.email_audit.id, self.email_count.id+1)
+
+        subject = "gibberish"
+
+        email_obj_mock = self._get_email_mock(ref, subject)
+
+        self.get_emails_mock.return_value = \
+        self._get_context_mock(return_value=[email_obj_mock])
+
+        process_receipts()
+
+        log = ReceiptLog.objects.latest('id')
+
+        self.assertEquals(log.total_emails, 1)
+        self.assertEquals(log.total_failed, 0)
+        self.assertEquals(log.total_errors, 1)
 
     def test_records_changed_on_changed_doh(self):
-        pass
+        """
+        We can't complete this test due to missing hearing times in
+        the HMCTS receipt emails
+        """
 
     def test_records_changed_on_changed_urn(self):
-        pass
+        updated_urn = "00/BB/0000000/00"
+
+        ref = "<<<makeaplea-ref: {}/{}>>>"\
+            .format(self.email_audit.id, self.email_count.id)
+
+        subject = "Receipt (Passed) RE: FILED! ONLINE PLEA: {} DOH: {}"\
+            .format(updated_urn, self.doh.strftime("%G-%m-%d"))
+
+        email_obj_mock = self._get_email_mock(ref, subject)
+
+        self.get_emails_mock.return_value = \
+        self._get_context_mock(return_value=[email_obj_mock])
+
+        process_receipts()
+
+        log = ReceiptLog.objects.latest('id')
+        self.assertEquals(log.total_emails, 1)
+        self.assertEquals(log.total_success, 1)
+
+        email_audit = CourtEmailPlea.objects.get(pk=self.email_audit.id)
+
+        self.assertEquals(email_audit.urn, updated_urn)
+
+        self.assertIn(self.urn, email_audit.status_info)
+        self.assertIn("URN CHANGED!", email_audit.status_info)
+
+        data = json.loads(email_audit.dict_sent)
+        self.assertEquals(data['case']['urn'], updated_urn)
 
     def test_monitoring_email_is_sent_when_enabled(self):
 

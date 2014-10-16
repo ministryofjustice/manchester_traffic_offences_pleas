@@ -36,7 +36,10 @@ def send_user_confirmation_email(context_data):
     body = render_to_string("plea/plea_email_confirmation.txt", data)
 
     try:
-        user_email.send([data['email'], ], settings.PLEA_CONFIRMATION_EMAIL_SUBJECT.format(**data), body)
+        user_email.send([data['email'], ],
+                        settings.PLEA_CONFIRMATION_EMAIL_SUBJECT.format(**data),
+                        body)
+
     except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
         logger.error("Error sending email: {0}".format(e.message))
 
@@ -109,7 +112,7 @@ def send_plea_email(context_data, plea_email_to=None):
     email_audit.status = "sent"
     email_audit.save()
 
-    email_body = "<<makeaplea-ref: {}/{}>>".format(email_audit.id, email_count.id)
+    email_body = "<<<makeaplea-ref: {}/{}>>>".format(email_audit.id, email_count.id)
 
     try:
         plp_email.send(settings.PLP_EMAIL_TO,
