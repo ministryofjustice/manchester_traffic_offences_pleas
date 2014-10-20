@@ -1,7 +1,7 @@
 from .base import *
 
 ADMINS = (
-    ('Lyndon Garvey', 'lyndon.garvey@digital.justice.gov.uk')
+    ('Lyndon Garvey', 'lyndon.garvey@digital.justice.gov.uk'),
 )
 
 LETTUCE_AVOID_APPS = (
