@@ -29,11 +29,13 @@ def get_receipt_emails(query_from, query_to):
     """
     Retrieve emails from gmail
     """
+
     g = gmail.login(settings.RECEIPT_INBOX_USERNAME, settings.RECEIPT_INBOX_PASSWORD)
 
     emails = g.inbox().mail(after=query_from,
+                            before=query_to,
                             sender=settings.RECEIPT_INBOX_FROM_EMAIL,
-                            before=query_to, unread=True)
+                            unread=True)
 
     yield emails
 
@@ -188,6 +190,10 @@ def _process_receipts(log_entry):
                 continue
 
             if status == "Passed":
+                if plea_obj.status == "receipt_success":
+                    status_text.append("{} already processed. Skipping.").format(urn)
+                    continue
+
                 plea_obj.status = "receipt_success"
 
                 log_entry.total_success += 1
@@ -238,4 +244,4 @@ def _process_receipts(log_entry):
 
     log_entry.status = log_entry.STATUS_COMPLETE
 
-    log_entry.status_detail = json.dumps(status_text)
+    log_entry.status_detail = "\n".join(status_text)

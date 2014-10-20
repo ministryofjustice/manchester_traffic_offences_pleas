@@ -59,9 +59,12 @@ class EmailGenerationTests(TestCase):
         plea_obj = CourtEmailPlea.objects.latest('date_sent')
         count_obj = CourtEmailCount.objects.latest('date_sent')
 
-        matches = re.search("<<makeaplea-ref:\s*(\d+)/(\d+)>>", mail.outbox[-1].body)
+        matches = re.search("<<<makeaplea-ref:\s*(\d+)/(\d+)>>>", mail.outbox[0].body)
 
-        self.assertEquals(len(matches.groups()), 2)
+        try:
+            matches.groups()
+        except AttributeError:
+            self.fail('Body makeaplea-ref tag not found!')
 
         plea_id, count_id = matches.groups()
 
