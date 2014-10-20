@@ -204,6 +204,8 @@ INTERNAL_IPS = ['127.0.0.1']
 
 
 # EMAILS
+SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "")
+
 SMTP_ROUTES = {"GSI": {"HOST": "localhost",
                        "PORT": 25},
                "GMP": {"HOST": "localhost",
@@ -223,12 +225,12 @@ PLP_EMAIL_SUBJECT = "POLICE %s" % PLEA_EMAIL_SUBJECT
 FEEDBACK_EMAIL_FROM = "makeaplea@digital.justice.gov.uk"
 FEEDBACK_EMAIL_TO = ("ian.george@digital.justice.gov.uk", )
 
-PLEA_CONFIRMATION_EMAIL_FROM = "plea_from@example.org"
+PLEA_CONFIRMATION_EMAIL_FROM = os.environ.get("PLEA_CONFIRMATION_EMAIL_FROM", "")
 PLEA_CONFIRMATION_EMAIL_SUBJECT = "Online plea submission confirmation"
-PLEA_CONFIRMATION_EMAIL_BCC = ["lyndon.garvey@digital.justice.gov.uk"]
+PLEA_CONFIRMATION_EMAIL_BCC = []
 
-RECEIPT_INBOX_FROM_EMAIL = "lyndon.garvey@digital.justice.gov.uk"
-RECEIPT_INBOX_USERNAME = "lyndon@antlyn.com"
+RECEIPT_INBOX_FROM_EMAIL = os.environ.get("RECEIPT_INBOX_FROM_EMAIL", "")
+RECEIPT_INBOX_USERNAME = os.environ.get("RECEIPT_INBOX_USERNAME", "")
 RECEIPT_INBOX_PASSWORD = os.environ.get('RECEIPT_GMAIL_PASSWORD', '')
 RECEIPT_INBOX_OAUTH_API_KEY = ""
 RECEIPT_ADMIN_EMAIL_ENABLED = True
