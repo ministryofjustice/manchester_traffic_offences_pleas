@@ -193,7 +193,7 @@ function alertIfFieldsChanged(){
         if(GOVUK.form_check) {
             var form_state = hashInputFields();
             if (form_state != GOVUK.form_hash) {
-                return "You have changed data!";
+                return "You have entered some information";
             }
         }
     });
