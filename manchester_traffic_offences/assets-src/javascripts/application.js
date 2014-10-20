@@ -95,7 +95,11 @@ function showSingleRadioContent() {
     // convert the aria id list, e.g. aria-controls="first_elem second_elem ..." to
     // a jQuery compatible selector, e.g. #first_elem,#second_elem ...
     var prefixHash = function(target){
-        return target.split(' ').map(function(x){ return '#'+x; }).join(',');
+        var targets = target.split(' ');
+        for (var idx in targets){
+            targets[idx] = '#' + targets[idx];
+        }
+        return targets.join(',');
     };
 
     $(".block-label input[type='radio'], .radio-label input[type='radio']").each(function () {
