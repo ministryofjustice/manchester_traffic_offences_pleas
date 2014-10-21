@@ -27,7 +27,7 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-ALLOWED_HOSTS = ["staging.makeaplea.justice.gov.uk", ]
+ALLOWED_HOSTS = ["staging.makeaplea.dsd.io", ]
 SESSION_COOKIE_SECURE = True
 
 # Emails
