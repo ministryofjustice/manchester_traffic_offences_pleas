@@ -28,8 +28,8 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-ALLOWED_HOSTS = ["makeaplea.dsd.io", ]
-SESSION_COOKIE_SECURE = True
+ALLOWED_HOSTS = ["makeaplea.dsd.io", "dev.makeaplea.dsd.io"]
+SESSION_COOKIE_SECURE = False
 
 # Emails
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'email-smtp.eu-west-1.amazonaws.com')
