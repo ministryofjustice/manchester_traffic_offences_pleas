@@ -35,7 +35,10 @@ class PleaOnlineViews(TemplateView):
             return HttpResponseRedirect(reverse_lazy("plea_form_step", args=(stage,)))
 
         form = PleaOnlineForms(stage, "plea_form_step", request.session)
-        form.load(RequestContext(request))
+        redirect = form.load(RequestContext(request))
+        if redirect:
+            return redirect
+
         form.process_messages(request)
         return form.render()
 

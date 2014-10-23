@@ -126,6 +126,7 @@ class MultiStageForm(object):
     def load(self, request_context):
         self.request_context = request_context
         self.current_stage = self.current_stage_class(self.urls, self.all_data)
+
         if not self.current_stage.check_dependencies():
             return HttpResponseRedirect(self.urls[self.stage_classes[0].name])
 
