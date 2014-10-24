@@ -106,6 +106,12 @@
     <tr>
         <td class="heading" colspan="2"><h2>Your money</h2></td>
     </tr>
+    {% if your_money.skipped %}
+    <tr>
+        <th>Status</th>
+        <td><i>Means information to be obtained at hearing.</i></td>
+    </tr>
+    {% else %}
     <tr>
         <th>Status</th>
         <td>{{ your_money.you_are }}</td>
@@ -171,6 +177,7 @@
             <th>More information</th>
             <td>{{ your_money.other_info|linebreaksbr }}</td>
         </tr>
+    {% endif %}
     {% endif %}
     </tbody>
 </table>
