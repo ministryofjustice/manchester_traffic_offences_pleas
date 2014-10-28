@@ -4,10 +4,6 @@
 {% block page_title %}Make a plea: {% endblock %}
 
 {% block page_content %}
-	<form method=POST>
-		{% csrf_token %}
-		{{ wizard.management_form }}
-		{{ wizard.form }}
-		<button type=submit>Submit</button>
-	</form>
+
+
 {% endblock %}
