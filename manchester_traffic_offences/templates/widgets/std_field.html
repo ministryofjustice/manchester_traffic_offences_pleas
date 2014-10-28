@@ -1,7 +1,8 @@
+{% load debug %}
 <section>
     <a id="section_{{ field.name }}" name="section_{{ field.name }}"></a>
     <div class="section full{%  if field.errors %} error{% endif %}">
-        {{ field.label_tag }}
+        <label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %} <span class="form-hint">(optional)</span>{% endif %}</label>
         <span class="validation-message">{{ field.errors }}</span>
         <p class="form-hint datefield-hint">{{ field.help_text|safe }}</p>
         {{ field }}
