@@ -4,9 +4,7 @@ from .base import *
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (
-    ('Sym Roe', 'sym.roe@digital.justice.gov.uk'),
-)
+ADMINS = ()
 
 MANAGERS = ADMINS
 
