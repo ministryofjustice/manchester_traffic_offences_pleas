@@ -6,7 +6,7 @@
     <header class="page-header group">
         <div><h1><span>Service</span>Make your plea</h1></div>
     </header>
-    <div class="inner" id="review">
+    <div class="main" id="review">
         <form method=POST class="form" autocomplete="off">
             {% csrf_token %}
             {% with forms.0 as form %}
@@ -27,7 +27,7 @@
 
                 <h2>Confirm your plea{{ case.number_of_charges|pluralize }}</h2>
                 <p>Review the information you’ve given before making your plea{{ case.number_of_charges|pluralize }}.</p>
-                <div class="indent">
+
                     <table id="case-details">
                         <thead>
                         <tr>
@@ -222,7 +222,6 @@
                     <div class="actions">
                         <button type="submit" class="button primary large left">Make your plea{{ case.number_of_charges|pluralize }}</button>
                     </div>
-                </div>
             {% endwith %}
 
         </form>

@@ -1816,7 +1816,8 @@ p.lead {
 .legal-help {
   border-top: solid 10px #005ea5;
   padding-top: 10px;
-  margin-right: 20px; }
+  margin-right: 20px;
+  margin-top: 25px; }
   .legal-help h3 {
     font-size: 1.6em;
     line-height: 1.2em;
