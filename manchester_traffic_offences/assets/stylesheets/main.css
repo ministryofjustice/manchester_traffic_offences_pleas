@@ -1401,7 +1401,7 @@ label {
 .group label {
   font-weight: bold;
   font-size: 1.3em;
-  margin: 1em 0 0.5em; }
+  margin: 1em 0 0.3em 0; }
 
 .with-help-image {
   width: 70%;
@@ -1449,7 +1449,7 @@ label {
 
 .group label.datetime {
   font-size: 1em;
-  margin-top: 1em; }
+  margin-top: 0.5em; }
 
 label.datetime {
   font-weight: normal;
@@ -1759,10 +1759,19 @@ table th.header {
   display: inline;
   font-weight: normal; }
 
+p.form-hint {
+  width: 50%;
+  font-size: 0.8em;
+  margin-top: 0;
+  margin-bottom: 0.5em; }
+
 h2 span.form-hint, label span.form-hint {
   display: inline;
   font-weight: normal;
   font-size: 0.7em; }
+
+label span.form-hint {
+  color: black; }
 
 #understand {
   font-weight: normal;

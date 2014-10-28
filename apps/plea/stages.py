@@ -96,7 +96,7 @@ class PleaStage(FormStage):
             self.all_data["your_money"]["complete"] = True
             self.all_data["your_money"]["skipped"] = True
             self.next_step = self.all_urls["review"]
-        else:
+        elif "skipped" in self.all_data["your_money"]:
             del self.all_data["your_money"]["skipped"]
 
         return clean_data
