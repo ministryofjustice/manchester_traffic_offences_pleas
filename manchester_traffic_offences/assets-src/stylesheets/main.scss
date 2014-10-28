@@ -341,7 +341,7 @@ table th.header {font-size: 1.2em;}
 .js-enabled .related-positioning {top: 8em;}
 
 .charges .form-hint {display:inline; font-weight: normal;}
-h2 span.form-hint {display: inline; font-weight: normal; font-size: 0.7em;}
+h2 span.form-hint, label span.form-hint {display: inline; font-weight: normal; font-size: 0.7em;}
 #understand {font-weight: normal; font-size: 1em;}
 
 table#your-details, table#your-plea, table#case-details, table#your-money {
