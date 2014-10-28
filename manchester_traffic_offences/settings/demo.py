@@ -22,7 +22,6 @@ DATABASES = {
 }
 
 ADMINS = (
-    ('Sym Roe', 'sym.roe@digital.justice.gov.uk'),
     ('Ian George', 'ian.george@digital.justice.gov.uk'),
     ('Lyndon Garvey', 'lyndon.garvey@digital.justice.gov.uk')
 )
