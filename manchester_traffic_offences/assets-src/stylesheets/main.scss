@@ -80,7 +80,7 @@ label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.3
 .block-label { padding-left: 1em }
 .inline .radio-label { float: left; font-weight: normal; margin: 0 1em 1em 0; }
 
-.group label {font-weight:bold; font-size: 1.3em; margin: 1em 0 0.5em;}
+.group label {font-weight:bold; font-size: 1.3em; margin: 1em 0 0.3em 0;}
 .with-help-image {width:70%; float: left;}
 .help-image {width:30%; float: right; margin-top: 1.5em;}
 .panel-indent { padding-top:0; padding-bottom:0; }
@@ -95,7 +95,7 @@ label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.3
 #id_date_of_hearing_1  { width:50px; margin: 0 5px; }
 #id_date_of_hearing_2 { width: 50px;  margin: 0 5px; }
 #id_date_of_hearing_0 { width: 25px; margin: 0 5px 0 0; }
-.group label.datetime {font-size: 1em; margin-top: 1em}
+.group label.datetime {font-size: 1em; margin-top: 0.5em}
 
 label.datetime {font-weight:normal; display:inline-block;}
 label.datetime-day {width:2.5em;}
@@ -341,7 +341,9 @@ table th.header {font-size: 1.2em;}
 .js-enabled .related-positioning {top: 8em;}
 
 .charges .form-hint {display:inline; font-weight: normal;}
+p.form-hint {width:50%; font-size:0.8em; margin-top:0; margin-bottom: 0.5em;}
 h2 span.form-hint, label span.form-hint {display: inline; font-weight: normal; font-size: 0.7em;}
+label span.form-hint {color: black;}
 #understand {font-weight: normal; font-size: 1em;}
 
 table#your-details, table#your-plea, table#case-details, table#your-money {
