@@ -208,15 +208,28 @@
                 {% endif %}
                     <section>
                         <a id="section_understand" name="section_understand"></a>
-                        <div class="group{%  if form.understand.errors %} error{% endif %}">
+                        <div class="group{% if form.understand.errors %} error{% endif %}">
                             <span class="validation-message">{{ form.understand.errors }}</span>
                             <label for="{{ form.understand.id_for_label }}" class="block-label" id="{{ form.understand.name }}">
+                                <p class="important">It is an offence to make a false statement or to deliberately fail to disclose any relevant facts.</p>
                                 <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
                                 <strong>I confirm</strong> that I have read and understand the charge against me and that I am the person named on the charge sheet. The facts stated here are correct to the best of my knowledge.
                             </label>
                         </div>
+                    </section>
 
-                        <p class="important">It is an offence to make a false statement or to deliberately fail to disclose any relevant facts.</p>
+                    <section>
+                        <a id="section_receive_email" name="section_receive_email"></a>
+                        <div class="group{% if form.receive_email.errors %} error{% endif %}">
+                            <span class="validation-message">{{ form.receive_email.errors }}</span>
+                            <div id="receive_email" class="clearfix">
+
+                                Would you like to receive confirmation and updates from the court by email?
+
+                                {{ form.receive_email }}
+                                
+                            </label>
+                        </div>
                     </section>
 
                     <div class="actions">

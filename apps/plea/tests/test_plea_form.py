@@ -433,7 +433,7 @@ class TestMultiPleaForms(TestCase):
 
         form = PleaOnlineForms("review", "plea_form_step", fake_session)
         form.load(self.request_context)
-        form.save({"understand": True}, self.request_context)
+        form.save({"understand": True, "receive_email": False}, self.request_context)
         form.process_messages({})
         self.assertEqual(add_message.call_count, 1)
         self.assertEqual(add_message.call_args[0][0], {})
@@ -486,7 +486,7 @@ class TestMultiPleaForms(TestCase):
 
         form = PleaOnlineForms("review", "plea_form_step", fake_session)
         form.load(request_context)
-        form.save({"understand": "True"},
+        form.save({"understand": "True", "receive_email": False},
                   request_context)
         response = form.render()
         self.assertEqual(response.status_code, 302)
@@ -552,7 +552,7 @@ class TestMultiPleaForms(TestCase):
 
         form = PleaOnlineForms("review", "plea_form_step", fake_session)
         form.load(request_context)
-        form.save({"understand": "True"},
+        form.save({"understand": "True", "receive_email": False},
                   request_context)
         response = form.render()
         self.assertEqual(response.status_code, 302)

@@ -118,8 +118,10 @@ class ReviewStage(FormStage):
     def save(self, form_data, next_step=None):
         clean_data = super(ReviewStage, self).save(form_data, next_step)
 
+        send_user_email = bool(clean_data.get('receive_email', False))
+
         if clean_data.get("complete", False):
-            email_result = send_plea_email(self.all_data)
+            email_result = send_plea_email(self.all_data, send_user_email=send_user_email)
             if email_result:
                 next_step = reverse_lazy("plea_form_step", args=("complete", ))
             else:

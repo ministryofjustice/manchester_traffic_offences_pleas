@@ -344,7 +344,32 @@ table th.header {font-size: 1.2em;}
 p.form-hint {width:50%; font-size:0.8em; margin-top:0; margin-bottom: 0.5em;}
 h2 span.form-hint, label span.form-hint {display: inline; font-weight: normal; font-size: 0.7em;}
 label span.form-hint {color: black;}
-#understand {font-weight: normal; font-size: 1em;}
+#understand, #receive_email {font-weight: normal; font-size: 1em; width: 874px;}
+
+#understand{
+  margin-top: 0px;
+
+  p.important{
+    margin-top: 0;
+  }
+}
+
+#receive_email {
+  padding: 18px 18px 15px 20px;
+  margin: 20px 0;
+  background-color: #dee0e2;
+  width: 886px;
+
+  ul{
+    li {
+      label{
+        font-weight: normal !important;
+      }
+      float: left;
+      margin-right: 20px;
+    }
+  }
+}
 
 table#your-details, table#your-plea, table#case-details, table#your-money {
   tr, th, td {width: inherit;}
