@@ -40,7 +40,8 @@ ERROR_MESSAGES = {
     "SELF_EMPLOYED_PAY_REQUIRED": "Please enter your take home pay and how often you're paid",
     "BENEFITS_REQUIRED": "Please enter total benefits and how often you receive them",
     "UNDERSTAND_REQUIRED": "You must tick the box to confirm the legal statements",
-    "OTHER_INFO_REQUIRED": "Please let us know how you earn your money"
+    "OTHER_INFO_REQUIRED": "Please let us know how you earn your money",
+    "RECEIVE_EMAIL": "You must choose whether you want to get emails from the court or not."
 }
 
 
