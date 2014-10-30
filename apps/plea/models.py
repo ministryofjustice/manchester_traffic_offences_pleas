@@ -18,6 +18,11 @@ class CourtEmailPleaManager(models.Manager):
         old_records.delete()
         return count
 
+    def can_use_urn(self, urn):
+        return not self.filter(
+            urn__iexact=urn,
+            status__in=["sent", "receipt_success"]).exists()
+
 
 class CourtEmailPlea(models.Model):
     STATUS_CHOICES = (("created_not_sent", "Created but not sent"),

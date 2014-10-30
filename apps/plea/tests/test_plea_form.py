@@ -1,8 +1,12 @@
 import datetime
 from mock import Mock, MagicMock, patch
+from importlib import import_module
 import socket
 
+from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.test import Client
 from django.test.client import RequestFactory
 from django.template.context import RequestContext
 
@@ -572,3 +576,62 @@ class TestMultiPleaForms(TestCase):
         self.assertEqual(fake_session["plea"]["PleaForms"][1]["guilty"], "guilty")
         self.assertEqual(fake_session["plea"]["PleaForms"][1]["mitigations"], "lorem ipsum 2")
         self.assertEqual(fake_session["review"]["understand"], True)
+
+    def already_used_urn_causes_redirect_to_error_page(self):
+        # temporary skip whilst I fix this issue 
+
+        plea = CourtEmailPlea.objects.create(
+            urn='00/AA/00000/00',
+            status='sent',
+            hearing_date=datetime.datetime.now())
+
+
+        session['case'] = {'urn': '00/AA/00000/00'}
+
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(reverse('urn_already_used'), response.url)
+
+    def test_case_stage_urn_in_session(self):
+
+        urn = "00/aa/0000000/00"
+
+        email_audit = CourtEmailPlea()
+        email_audit.urn = urn
+        email_audit.hearing_date = datetime.datetime.now()
+        email_audit.status = "sent"
+        email_audit.save()
+
+        self.session['case'] = dict(urn=urn)
+
+        stages = ['case', 'your_details', 'plea', 'your_money', 'review', 'complete']
+
+        for stage in stages:
+
+            form = PleaOnlineForms(stage, "plea_form_step", self.session)
+            form.load(self.request_context)
+            form.save({}, self.request_context)
+
+            response = form.render()
+
+            self.assertEquals(response.status_code, 302)
+            self.assertEquals(response.url, reverse('urn_already_used'))
+
+    def test_urn_not_success_is_not_blocked(self):
+        urn = "00/aa/0000000/00"
+
+        email_audit = CourtEmailPlea()
+        email_audit.urn = urn
+        email_audit.hearing_date = datetime.datetime.now()
+        email_audit.status = "failed"
+        email_audit.save()
+
+        self.session['case'] = dict(urn=urn)
+
+        form = PleaOnlineForms("case", "plea_form_step", self.session)
+        form.load(self.request_context)
+        form.save({}, self.request_context)
+
+        response = form.render()
+
+        self.assertEquals(response.status_code, 200)
