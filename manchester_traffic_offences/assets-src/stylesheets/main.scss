@@ -142,6 +142,10 @@ section .application-notice {padding: 0.1em 0 0.1em 1em;}
 
 section.flash {
 
+  body.urn_invalid & {
+    margin-top: 0px;
+  }
+
   /* styling for the 'urn already used' validation message */
   li#case_contact_link{
     a {

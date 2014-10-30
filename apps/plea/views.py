@@ -1,7 +1,7 @@
 from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
-from django.shortcuts import RequestContext
+from django.shortcuts import RequestContext, redirect
 from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
 
@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 
-from .models import CourtEmailCount
+from .models import CourtEmailCount, CourtEmailPlea
 
 from apps.govuk_utils.forms import MultiStageForm
 from stages import (CaseStage, YourDetailsStage, PleaStage, YourMoneyStage,
@@ -26,8 +26,38 @@ class PleaOnlineForms(MultiStageForm):
                      ReviewStage,
                      CompleteStage]
 
+    def __init__(self, *args):
+
+        super(PleaOnlineForms, self).__init__(*args)
+
+        self._urn_invalid = False
+
+    def save(self, *args, **kwargs):
+        """
+        Check that the URN has not already been used.
+        """
+
+        try:
+            saved_urn = self.all_data['case']['urn']
+        except KeyError:
+            saved_urn = None
+
+        if saved_urn and not CourtEmailPlea.objects.can_use_urn(saved_urn):
+            self._urn_invalid = True
+
+            return
+
+        super(PleaOnlineForms, self).save(*args, **kwargs)
+
+    def render(self):
+        if self._urn_invalid:
+            return redirect('urn_already_used')
+
+        return super(PleaOnlineForms, self).render()
+
 
 class PleaOnlineViews(TemplateView):
+
     @never_cache
     def get(self, request, stage=None):
         if not stage:
@@ -48,9 +78,19 @@ class PleaOnlineViews(TemplateView):
         nxt = request.GET.get("next", None)
 
         form = PleaOnlineForms(stage, "plea_form_step", request.session)
-        form.save(request.POST, RequestContext(request), nxt)
-        form.process_messages(request)
+        if form.save(request.POST, RequestContext(request), nxt):
+            form.process_messages(request)
         return form.render()
+
+
+class UrnAlreadyUsedView(TemplateView):
+    template_name = "plea/urn_used.html"
+
+    def post(self, request):
+
+        request.session.flush()
+
+        return redirect('plea_form_step', stage="case")
 
 
 class StatsBasicView(APIView):
