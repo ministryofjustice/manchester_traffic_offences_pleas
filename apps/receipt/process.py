@@ -29,13 +29,14 @@ def get_receipt_emails(query_from, query_to):
     """
     Retrieve emails from gmail
     """
-
     g = gmail.login(settings.RECEIPT_INBOX_USERNAME, settings.RECEIPT_INBOX_PASSWORD)
 
-    emails = g.inbox().mail(after=query_from,
-                            before=query_to,
-                            sender=settings.RECEIPT_INBOX_FROM_EMAIL,
-                            unread=True)
+    # NOTE: the query_from/query_to has been removed.  This script will only
+    # try to process emails that are unread and it'll set them to read after
+    # being processed Maybe later on we need to start querying date ranges,
+    # but given the volume of emails this should be a more robust solution.
+
+    emails = g.inbox().mail(sender=settings.RECEIPT_INBOX_FROM_EMAIL, unread=True)
 
     yield emails
 
@@ -59,7 +60,8 @@ def extract_data_from_email(email):
 
     if not matches:
         raise InvalidFormatError(
-            "Cannot get makeaplea ref from email body")
+            "Cannot get makeaplea ref from email body: {} / {} / {}"
+            .format(status, urn, doh))
     else:
         plea_id, count_id = matches.groups()
 
@@ -167,6 +169,9 @@ def _process_receipts(log_entry):
 
                 log_entry.total_errors += 1
 
+                email.read()
+                email.star()
+
                 continue
 
             try:
@@ -177,6 +182,9 @@ def _process_receipts(log_entry):
 
                 log_entry.total_errors += 1
 
+                email.read()
+                email.star()
+
                 continue
 
             try:
@@ -186,6 +194,9 @@ def _process_receipts(log_entry):
                                    .format(count_id))
 
                 log_entry.total_errors += 1
+
+                email.read()
+                email.star()
 
                 continue
 
@@ -198,7 +209,7 @@ def _process_receipts(log_entry):
 
                 log_entry.total_success += 1
 
-                if urn != plea_obj.urn:
+                if urn.upper() != plea_obj.urn:
                     # HMCTS have changed the URN, update our records and log the change
 
                     old_urn, plea_obj.urn = plea_obj.urn, urn
