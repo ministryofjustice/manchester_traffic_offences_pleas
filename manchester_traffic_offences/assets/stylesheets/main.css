@@ -1583,7 +1583,7 @@ section.flash {
   margin: 40px 0;
   max-width: 798px; }
   body.urn_invalid section.flash {
-    margin-top: 0px; }
+    margin-top: 30px; }
   section.flash li#case_contact_link a {
     color: #005EA5 !important;
     font-size: 20px;
@@ -1733,6 +1733,9 @@ table th.header {
 .get-started-intro a.button.button-get-started {
   font-size: 135%;
   font-weight: normal; }
+
+body.urn_invalid .button-get-started {
+  margin-bottom: 30px; }
 
 #before-you-start {
   margin-top: 2em; }
