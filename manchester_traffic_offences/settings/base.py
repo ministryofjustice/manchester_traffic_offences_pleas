@@ -225,6 +225,11 @@ PLP_EMAIL_SUBJECT = "POLICE %s" % PLEA_EMAIL_SUBJECT
 FEEDBACK_EMAIL_FROM = "makeaplea@digital.justice.gov.uk"
 FEEDBACK_EMAIL_TO = ("ian.george@digital.justice.gov.uk", )
 
+USER_SMTP_EMAIL_HOST = os.environ.get("SENDGRID_EMAIL_HOST", "")
+USER_SMTP_EMAIL_PORT = os.environ.get("SENDGRID_EMAIL_PORT", "")
+USER_SMTP_EMAIL_HOST_USERNAME = os.environ.get("SENDGRID_EMAIL_HOST_USERNAME", "")
+USER_SMTP_EMAIL_HOST_PASSWORD = os.environ.get("SENDGRID_EMAIL_HOST_PASSWORD", "")
+
 PLEA_CONFIRMATION_EMAIL_FROM = os.environ.get("PLEA_CONFIRMATION_EMAIL_FROM", "")
 PLEA_CONFIRMATION_EMAIL_SUBJECT = "Online plea submission confirmation"
 PLEA_CONFIRMATION_EMAIL_BCC = []
@@ -236,6 +241,7 @@ RECEIPT_INBOX_PASSWORD = os.environ.get('RECEIPT_GMAIL_PASSWORD', '')
 RECEIPT_INBOX_OAUTH_API_KEY = ""
 RECEIPT_ADMIN_EMAIL_ENABLED = True
 RECEIPT_ADMIN_EMAIL_SUBJECT = "Makeaplea receipt processing script"
+
 
 # .local.py overrides all the common settings.
 try:

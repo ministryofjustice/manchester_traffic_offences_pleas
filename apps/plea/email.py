@@ -4,9 +4,10 @@ import json
 import smtplib
 import socket
 
+from django.core.mail import EmailMultiAlternatives
+from django.core.mail import get_connection
 from django.conf import settings
 from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
 
 from apps.govuk_utils.email import TemplateAttachmentEmail
 from .models import CourtEmailPlea, CourtEmailCount
@@ -30,8 +31,15 @@ def send_user_confirmation_email(context_data):
     txt_body = render_to_string("plea/plea_email_confirmation.txt", data)
     html_body = render_to_string("plea/plea_email_confirmation.html", data)
 
+    connection = get_connection(host=settings.USER_SMTP_EMAIL_HOST,
+                                port=settings.USER_SMTP_EMAIL_PORT,
+                                username=settings.USER_SMTP_EMAIL_HOST_USERNAME,
+                                password=settings.USER_SMTP_EMAIL_HOST_PASSWORD,
+                                use_tls=True)
+
     email = EmailMultiAlternatives(
-        subject, txt_body, settings.PLEA_CONFIRMATION_EMAIL_FROM, [data['email']])
+        subject, txt_body, settings.PLEA_CONFIRMATION_EMAIL_FROM,
+        [data['email']], connection=connection)
 
     email.attach_alternative(html_body, "text/html")
 
