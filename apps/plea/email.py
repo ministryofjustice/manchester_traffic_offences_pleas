@@ -22,14 +22,20 @@ def send_user_confirmation_email(context_data):
     was successful.
     """
 
+    guilty = any(plea['guilty'] == "guilty" for plea in
+                 context_data['plea']['PleaForms'])
+
     data = {
         'email': context_data['your_details']['email'],
-        'urn': context_data['case']['urn']
+        'urn': context_data['case']['urn'],
+        'name': context_data['your_details']['name'],
+        'guilty': guilty
     }
 
-    subject = settings.PLEA_CONFIRMATION_EMAIL_SUBJECT.format(**data)
-    txt_body = render_to_string("plea/plea_email_confirmation.txt", data)
     html_body = render_to_string("plea/plea_email_confirmation.html", data)
+    txt_body = render_to_string("plea/plea_email_confirmation.txt", data)
+
+    subject = settings.PLEA_CONFIRMATION_EMAIL_SUBJECT.format(**data)
 
     connection = get_connection(host=settings.USER_SMTP_EMAIL_HOST,
                                 port=settings.USER_SMTP_EMAIL_PORT,
