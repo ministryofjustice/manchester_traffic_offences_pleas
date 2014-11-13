@@ -50,16 +50,6 @@ class YourDetailsForm(BasePleaStepForm):
                              error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
                                              "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
-    national_insurance_number = forms.CharField(max_length=20, label="National Insurance number",
-                                                help_text="It's on your National Insurance card, benefit letter, payslip or P60<br>For example, 'QQ 12 34 56 C'.",
-                                                required=False)
-    driving_licence_number = forms.CharField(max_length=20, label="UK driving licence number",
-                                             help_text="Starts with the first five letters from your last name",
-                                             required=False)
-    registration_number = forms.CharField(max_length=10, label="Registration number",
-                                          help_text="Of the vehicle you were driving when charged.",
-                                          required=False)
-
 
 class YourMoneyForm(BasePleaStepForm):
     YOU_ARE_CHOICES = (("Employed", "Employed"),
