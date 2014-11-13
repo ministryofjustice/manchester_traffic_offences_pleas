@@ -159,10 +159,6 @@ class CourtEmailCount(models.Model):
     sc_guilty_char_count = models.PositiveIntegerField(default=0)
     sc_not_guilty_char_count = models.PositiveIntegerField(default=0)
 
-    national_insurance_char_count = models.PositiveIntegerField(default=0)
-    driving_licence_char_count = models.PositiveIntegerField(default=0)
-    registration_char_count = models.PositiveIntegerField(default=0)
-
     objects = CourtEmailCountManager()
 
     def get_from_context(self, context):
@@ -216,9 +212,5 @@ class CourtEmailCount(models.Model):
                 self.sc_guilty_char_count += len(plea['mitigations'])
             else:
                 self.sc_not_guilty_char_count += len(plea['mitigations'])
-
-        self.national_insurance_char_count = len(context['your_details']['national_insurance_number'])
-        self.driving_licence_char_count = len(context['your_details']['driving_licence_number'])
-        self.registration_char_count = len(context['your_details']['registration_number'])
 
         return True

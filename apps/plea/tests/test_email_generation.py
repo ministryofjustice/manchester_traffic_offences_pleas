@@ -85,7 +85,7 @@ class EmailGenerationTests(TestCase):
             send_plea_email(context_data, send_user_email=True)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertIn(context_data['case']['urn'], mail.outbox[-1].body)
+        self.assertIn(context_data['case']['urn'].upper(), mail.outbox[-1].body)
         self.assertIn(context_data['your_details']['email'], mail.outbox[-1].to)
 
     def test_user_confirmation_sends_email_opt_out(self):
