@@ -7,17 +7,16 @@ What happens next?
 
 {% if guilty %}
 
-<li style="margin-bottom: 20px; font-size: 18px;">There’s <b>no need</b> to come
+1. There’s no need to come
     to court on the hearing date shown in the pack we sent you.
-</li>
-<li style="margin-bottom: 20px; font-size: 18px;">We’ll send you a letter with
+
+2. We’ll send you a letter with
     the court’s decision within three working days after your hearing.
-</li>
-<li style="margin-bottom: 20px; font-size: 18px;">Quote your URN <b>{{ urn | upper }}</b> if you contact the court about your case.
-</li>
-<li style="margin-bottom: 20px; font-size: 18px;">Print off a copy of this
+
+3. Quote your URN {{ urn | upper }} if you contact the court about your case.
+
+4. Print off a copy of this
     confirmation of plea for your records.
-</li>
 
 {% else %}
 
