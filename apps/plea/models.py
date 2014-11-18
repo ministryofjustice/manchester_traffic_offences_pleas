@@ -108,14 +108,6 @@ class CourtEmailCountManager(models.Manager):
 
         stats['additional'] = {}
 
-        total_optional = to_date.filter(Q(national_insurance_char_count__gte=8) |
-                                        Q(driving_licence_char_count__gte=8) |
-                                        Q(registration_char_count__gte=8)).count()
-
-        pc_optional = total_optional / (stats['submissions']['to_date'] / 100.0)
-
-        stats['additional']['subs_with_optional_fields_percentage'] = pc_optional
-
         stats['additional']['sc_field_completed'] = {}
 
         stats['additional']['sc_field_completed']['guilty'] = \
@@ -214,3 +206,91 @@ class CourtEmailCount(models.Model):
                 self.sc_not_guilty_char_count += len(plea['mitigations'])
 
         return True
+
+'''
+class Case(models.Model):
+    """
+    The main case object
+    """
+
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField()
+
+    plea_created = models.DateTimeField(blank=True, null=True)
+    decision_added = models.DateTimeField(blank=True, null=True)
+
+    read = models.BooleanField(default=False)
+
+    has_plea_data = models.BooleanField(default=False)
+    has_court_decision = models.BooleanField(default=False)
+
+    # case details
+
+    urn = models.CharField(max_length=16, db_index=True)
+    libra_case_no = models.CharField(10, db_index=True)
+    hearing_date = models.DateTimeField()
+
+    # defendant details
+
+    name = models.CharField()
+    telephone = models.CharField()
+    email = models.EmailField()
+
+    # your money details
+
+    employment_type = models.CharField(choices=EMPLOYMENT_CHOICES, blank=True)
+
+    employer_name = models.CharField()
+    employer_address = models.CharField()
+    employer_phone_number = models.CharField()
+    employer_payment_frequency = models.CharField()
+    employer_take_home_pay = models.DecimalField()
+
+    self_employed_job = models.CharField()
+    self_employed_payment_frequency = models.CharField(choices=SELF_EMPLOYED_PAYMENT_FREQUENCY)
+    self_employed_payment_frequency_other = models.CharField()
+    self_employed_average_take_home_pay = models.DecimalField()
+
+    benefits_payment_frequency = models.CharField(choices=PAYMENT_FREQUENCY)
+    benefits_total = models.DecimalField()
+
+    employment_other = models.TextField(blank=True, null=True)
+
+    email_correspondence = models.BooleanField(blank=True, null=True)
+
+
+
+PLEA_CHOICES = (
+    (0, 'Guilty'),
+    (1, 'Not Guilty')
+)
+
+PAYMENT_FREQUENCY = (
+    ('weekly', 'Weekly'),
+    ('fortnightly', 'Fortnightly'),
+    ('monthly', 'Monthly')
+)
+
+SELF_EMPLOYED_PAYMENT_FREQUENCY = PAYMENT_FREQUENCY + ('other', 'Other')
+
+class Offence(models.Model):
+    """
+
+    """
+
+    case = models.ForeignKey(Case)
+
+    ordering = models.PositiveIntegerField(default=0)
+
+    offence_code = models.CharField()
+    offence_title = models.CharField()
+    offence_wording = models.TextField()
+
+    plea = models.PositiveIntegerField(choices=PLEA_CHOICES)
+
+    mitigation = models.TextField()
+'''
+
+
+
+
