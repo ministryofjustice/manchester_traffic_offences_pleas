@@ -8,6 +8,27 @@ from django.db.models import Q
 from django.core.serializers.json import DjangoJSONEncoder
 
 
+PLEA_CHOICES = (
+    (0, 'Guilty'),
+    (1, 'Not Guilty')
+)
+
+PAYMENT_FREQUENCY = (
+    ('weekly', 'Weekly'),
+    ('fortnightly', 'Fortnightly'),
+    ('monthly', 'Monthly')
+)
+
+EMPLOYMENT_CHOICES = (
+    ('Employed', 'Employed'),
+    ('Self employed', 'Self employed'),
+    ('Receiving benefits', 'Receiving benefits'),
+    ('Other', 'Other')
+)
+
+SELF_EMPLOYED_PAYMENT_FREQUENCY = PAYMENT_FREQUENCY + ('other', 'Other')
+
+
 class CourtEmailPleaManager(models.Manager):
     @staticmethod
     def delete_old_emails():
@@ -207,90 +228,30 @@ class CourtEmailCount(models.Model):
 
         return True
 
-'''
+
+class CaseManager(models.Manager):
+
+    def is_unique(self, urn, hearing_date, name):
+
+        return not self.filter(urn__iexact=urn.strip(),
+                               hearing_date=hearing_date,
+                               name__iexact=name.strip()).exists()
+
+
 class Case(models.Model):
     """
-    The main case object
+    The main case model.
+
+    v0
     """
 
     created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField()
-
-    plea_created = models.DateTimeField(blank=True, null=True)
-    decision_added = models.DateTimeField(blank=True, null=True)
-
-    read = models.BooleanField(default=False)
-
-    has_plea_data = models.BooleanField(default=False)
-    has_court_decision = models.BooleanField(default=False)
-
-    # case details
 
     urn = models.CharField(max_length=16, db_index=True)
-    libra_case_no = models.CharField(10, db_index=True)
     hearing_date = models.DateTimeField()
+    name = models.CharField(max_length=255)
 
-    # defendant details
-
-    name = models.CharField()
-    telephone = models.CharField()
-    email = models.EmailField()
-
-    # your money details
-
-    employment_type = models.CharField(choices=EMPLOYMENT_CHOICES, blank=True)
-
-    employer_name = models.CharField()
-    employer_address = models.CharField()
-    employer_phone_number = models.CharField()
-    employer_payment_frequency = models.CharField()
-    employer_take_home_pay = models.DecimalField()
-
-    self_employed_job = models.CharField()
-    self_employed_payment_frequency = models.CharField(choices=SELF_EMPLOYED_PAYMENT_FREQUENCY)
-    self_employed_payment_frequency_other = models.CharField()
-    self_employed_average_take_home_pay = models.DecimalField()
-
-    benefits_payment_frequency = models.CharField(choices=PAYMENT_FREQUENCY)
-    benefits_total = models.DecimalField()
-
-    employment_other = models.TextField(blank=True, null=True)
-
-    email_correspondence = models.BooleanField(blank=True, null=True)
-
-
-
-PLEA_CHOICES = (
-    (0, 'Guilty'),
-    (1, 'Not Guilty')
-)
-
-PAYMENT_FREQUENCY = (
-    ('weekly', 'Weekly'),
-    ('fortnightly', 'Fortnightly'),
-    ('monthly', 'Monthly')
-)
-
-SELF_EMPLOYED_PAYMENT_FREQUENCY = PAYMENT_FREQUENCY + ('other', 'Other')
-
-class Offence(models.Model):
-    """
-
-    """
-
-    case = models.ForeignKey(Case)
-
-    ordering = models.PositiveIntegerField(default=0)
-
-    offence_code = models.CharField()
-    offence_title = models.CharField()
-    offence_wording = models.TextField()
-
-    plea = models.PositiveIntegerField(choices=PLEA_CHOICES)
-
-    mitigation = models.TextField()
-'''
-
+    objects = CaseManager()
 
 
 
