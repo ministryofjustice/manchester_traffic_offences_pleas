@@ -124,7 +124,7 @@ TEMPLATE_DIRS = (
     root('templates'),
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = (
+TEMPLATE_CONTEXT_PROCESSORS = [
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
@@ -135,7 +135,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
     'manchester_traffic_offences.context_processors.globals',
     'apps.feedback.context_processors.feedback',
-)
+]
 
 INSTALLED_APPS = (
     #'django.contrib.admin',
@@ -155,7 +155,7 @@ PROJECT_APPS = (
     'moj_template',
     'apps.plea',
     'apps.feedback',
-    'apps.receipt'
+    'apps.receipt',
 )
 
 INSTALLED_APPS += PROJECT_APPS
@@ -242,6 +242,16 @@ RECEIPT_INBOX_OAUTH_API_KEY = ""
 RECEIPT_ADMIN_EMAIL_ENABLED = True
 RECEIPT_ADMIN_EMAIL_SUBJECT = "Makeaplea receipt processing script"
 
+
+# set basic authentication
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
 
 # .local.py overrides all the common settings.
 try:

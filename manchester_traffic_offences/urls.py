@@ -7,7 +7,6 @@ from django.conf.urls.static import static
 from django.views.generic import TemplateView
 
 import views
-from apps.plea.views import StatsBasicView, StatsByHearingDateView
 
 handler500 = "manchester_traffic_offences.views.server_error"
 
@@ -18,9 +17,5 @@ urlpatterns = patterns('',
        name="terms"),
     url(r'^plea/', include('apps.plea.urls', )),
     url(r'^feedback/', include('apps.feedback.urls')),
-
-    # api views
-    url(r'^api/v1.0/usage-stats/hearing/$', StatsByHearingDateView.as_view(), name='api_stats_by_hearing'),
-    url(r'^api/v1.0/usage-stats/$', StatsBasicView.as_view(), name='api_usage_stats'),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
