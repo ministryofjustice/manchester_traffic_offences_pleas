@@ -7,10 +7,6 @@ from django.views.generic import TemplateView
 
 from brake.decorators import ratelimit
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-
-
 from .models import CourtEmailCount, CourtEmailPlea
 
 from apps.govuk_utils.forms import MultiStageForm
@@ -75,6 +71,7 @@ class PleaOnlineViews(TemplateView):
     @never_cache
     @method_decorator(ratelimit(block=True, rate="20/m"))
     def post(self, request, stage):
+        import pdb; pdb.set_trace()
         nxt = request.GET.get("next", None)
 
         form = PleaOnlineForms(stage, "plea_form_step", request.session)
@@ -91,20 +88,3 @@ class UrnAlreadyUsedView(TemplateView):
         request.session.flush()
 
         return redirect('plea_form_step', stage="case")
-
-
-class StatsBasicView(APIView):
-
-    def get(self, request):
-        stats = CourtEmailCount.objects.get_stats()
-
-        return Response(stats)
-
-
-class StatsByHearingDateView(APIView):
-
-    def get(self, request):
-
-        stats = CourtEmailCount.objects.get_stats_by_hearing_date()
-
-        return Response(stats)
