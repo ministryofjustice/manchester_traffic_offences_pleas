@@ -34,6 +34,8 @@ class CourtEmailCountModelTestCase(TestCase):
         A blanket unit test to confirm this method is returning the correct stats
         """
 
+        import pdb; pdb.set_trace()
+
         now = dt.datetime.today()
 
         CourtEmailCount(total_pleas=2,
