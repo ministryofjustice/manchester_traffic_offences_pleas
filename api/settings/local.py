@@ -22,6 +22,11 @@ EMAIL_HOST_PASSWORD = 'AijwCCwF0w6U+jULYNV5L2Ujk3nNn88nGH6NOIg8vUpV'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
+SMTP_ROUTES = {"GSI": {"HOST": "localhost",
+                       "PORT": 25},
+               "GMP": {"HOST": "localhost",
+                       "PORT": 25}}
+
 SMTP_ROUTES["GSI"]["HOST"] = "email-smtp.eu-west-1.amazonaws.com"
 SMTP_ROUTES["GSI"]["PORT"] = 587
 SMTP_ROUTES["GSI"]["USERNAME"] = "AKIAJYZQTYYWFQDGROGA"
