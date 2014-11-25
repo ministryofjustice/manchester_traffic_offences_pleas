@@ -242,6 +242,7 @@ RECEIPT_INBOX_OAUTH_API_KEY = ""
 RECEIPT_ADMIN_EMAIL_ENABLED = True
 RECEIPT_ADMIN_EMAIL_SUBJECT = "Makeaplea receipt processing script"
 
+SWITCH_FULL_URN_VALIDATION = False
 
 # set basic authentication
 REST_FRAMEWORK = {
