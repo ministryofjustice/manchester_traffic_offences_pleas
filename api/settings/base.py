@@ -23,11 +23,6 @@ PROJECT_APPS = (
     'api.v0',
 )
 
-SMTP_ROUTES = {"GSI": {"HOST": "localhost",
-                       "PORT": 25},
-               "GMP": {"HOST": "localhost",
-                       "PORT": 25}}
-
 handler500 = 'api.views.api_500'
 
 INSTALLED_APPS = INSTALLED_APPS + PROJECT_APPS
