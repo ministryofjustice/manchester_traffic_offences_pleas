@@ -32,29 +32,29 @@ class EmailGenerationTests(TestCase):
                                  "time_of_hearing": "12:00:00",
                                  "urn": "cvxcvx89"},
                         "your_details": {"name": "vcx", "national_insurance_number": "xxx",
-                                         "driving_licence_number": "xxx", "registration_number": "xxx"},
+                                         "driving_licence_number": "xxx", "registration_number": "xxx",
+                                         "email": "test@test.com"},
                         "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
                                                {"mitigations": "test2", "guilty": "guilty"}],
                                  "understand": True}}
 
-        with self.settings(SEND_PLEA_CONFIRMATION_EMAIL=False):
-            send_plea_email(context_data)
+        send_plea_email(context_data)
 
         # only expecting 1 email for now, PLP email cancelled for the time being
-        self.assertEqual(len(mail.outbox), 2)
+        self.assertEqual(len(mail.outbox), 3)
 
     def test_plea_email_body_contains_plea_and_count_ids(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
                                  "urn": "cvxcvx89"},
                         "your_details": {"name": "vcx", "national_insurance_number": "xxx",
-                                         "driving_licence_number": "xxx", "registration_number": "xxx"},
+                                         "driving_licence_number": "xxx", "registration_number": "xxx",
+                                         "email": "test@test.com"},
                         "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
                                                {"mitigations": "test2", "guilty": "guilty"}],
                                  "understand": True}}
 
-        with self.settings(SEND_PLEA_CONFIRMATION_EMAIL=False):
-            send_plea_email(context_data)
+        send_plea_email(context_data)
 
         plea_obj = CourtEmailPlea.objects.latest('date_sent')
         count_obj = CourtEmailCount.objects.latest('date_sent')
@@ -81,8 +81,7 @@ class EmailGenerationTests(TestCase):
                                                {"mitigations": "test2", "guilty": "guilty"}],
                                  "understand": True}}
 
-        with self.settings(SEND_PLEA_CONFIRMATION_EMAIL=True, PLEA_CONFIRMATION_EMAIL_BCC=[]):
-            send_plea_email(context_data, send_user_email=True)
+        send_plea_email(context_data, send_user_email=True)
 
         self.assertEqual(len(mail.outbox), 3)
         self.assertIn(context_data['case']['urn'].upper(), mail.outbox[-1].body)
@@ -98,7 +97,6 @@ class EmailGenerationTests(TestCase):
                                                {"mitigations": "test2", "guilty": "guilty"}],
                                  "understand": True}}
 
-        with self.settings(SEND_PLEA_CONFIRMATION_EMAIL=True, PLEA_CONFIRMATION_EMAIL_BCC=[]):
-            send_plea_email(context_data, send_user_email=False)
+        send_plea_email(context_data, send_user_email=False)
 
-        self.assertEqual(len(mail.outbox), 2)
+        self.assertEqual(len(mail.outbox), 3)
