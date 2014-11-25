@@ -252,6 +252,3 @@ class Case(models.Model):
     name = models.CharField(max_length=255)
 
     objects = CaseManager()
-
-
-
