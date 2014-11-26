@@ -137,8 +137,8 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     'apps.feedback.context_processors.feedback',
 ]
 
-INSTALLED_APPS = (
-    #'django.contrib.admin',
+INSTALLED_APPS = [
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.formtools',
@@ -148,15 +148,16 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'django_extensions',
-)
+    'waffle',
+]
 
-PROJECT_APPS = (
+PROJECT_APPS = [
     'apps.govuk_utils',
     'moj_template',
     'apps.plea',
     'apps.feedback',
     'apps.receipt',
-)
+]
 
 INSTALLED_APPS += PROJECT_APPS
 
