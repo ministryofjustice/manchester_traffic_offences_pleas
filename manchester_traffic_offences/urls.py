@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib import admin
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
+
+from django.contrib import admin
+admin.autodiscover()
 
 import views
 
@@ -17,5 +21,6 @@ urlpatterns = patterns('',
        name="terms"),
     url(r'^plea/', include('apps.plea.urls', )),
     url(r'^feedback/', include('apps.feedback.urls')),
+    url(r'^admin/', include(admin.site.urls)),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
