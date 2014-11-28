@@ -36,12 +36,3 @@ class PublicStatsViewSet(viewsets.ViewSet):
         stats = CourtEmailCount.objects.get_stats_by_hearing_date()
 
         return Response(stats)
-
-
-def api_500(request):
-    """
-    A 500 handler to suppress the default HTML 500 handler for API calls.
-    """
-
-    return HttpResponse(json.dumps({'detail': 'An error occured'}),
-                        content_type="application/json", status=500)

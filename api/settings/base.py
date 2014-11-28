@@ -20,10 +20,12 @@ PROJECT_APPS = (
     'moj_template',
     'apps.govuk_utils',
     'apps.plea',
+    'api',
     'api.v0',
 )
 
 handler500 = 'api.views.api_500'
+handler404 = 'api.views.api_404'
 
 INSTALLED_APPS = INSTALLED_APPS + PROJECT_APPS
 
