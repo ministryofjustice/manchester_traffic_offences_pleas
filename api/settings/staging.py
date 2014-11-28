@@ -28,7 +28,7 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-ALLOWED_HOSTS = ["api.staging.makeaplea.dsd.io", ]
+ALLOWED_HOSTS = ["api.makeaplea.dsd.io", ]
 
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'email-smtp.eu-west-1.amazonaws.com')
 EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
