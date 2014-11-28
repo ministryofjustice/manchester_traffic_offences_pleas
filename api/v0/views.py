@@ -31,7 +31,7 @@ class PublicStatsViewSet(viewsets.ViewSet):
 
         return Response(stats)
 
-    @list_route
+    @list_route()
     def by_hearing(self, request):
         stats = CourtEmailCount.objects.get_stats_by_hearing_date()
 
