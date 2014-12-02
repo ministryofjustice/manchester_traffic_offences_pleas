@@ -76,6 +76,9 @@ manchester_traffic_offences/assets-src/vendor/
 # vim swp files
 *.swp
 
+# vagrant
+.vagrant
+
 /reports
 coverage.xml
 /htmlcov
