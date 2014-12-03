@@ -6,6 +6,7 @@ sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get --yes install git postgresql build-essential python-dev libxml2-dev libxslt-dev python-setuptools
 sudo apt-get --yes build-dep python-psycopg2
+sudo apt-get -y unoconv default-jre
 sudo easy_install pip
 sudo pip install virtualenvwrapper
 
