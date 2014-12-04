@@ -275,4 +275,8 @@ class EmailTemplateTests(TestCase):
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
         self.assertContains(response, "<tr><th>Plea</th><td>Guilty</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Plea</th><td>Not guilty</td></tr>", count=1, html=True)
-        
+
+class UserConfirmationEmailTestCase(TestCase):
+
+    def setUp(self):
+        self.mail =

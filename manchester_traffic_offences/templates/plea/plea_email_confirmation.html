@@ -219,7 +219,7 @@
 
                                     <h2 style="font-size: 25px; margin-top: 30px;">What happens next?</h2>
 
-                                    {% if guilty %}
+                                    {% if plea_type == "guilty" %}
                                     <ol style="margin-left: 0px;padding-left:25px;">
 
                                         <li style="margin-bottom: 20px; font-size: 18px;">There’s <b>no need</b> to come
@@ -234,7 +234,9 @@
                                             confirmation of plea for your records.
                                         </li>
                                     </ol>
-                                    {% else %}
+                                    {% endif %}
+
+                                    {% if plea_type == "not_guilty" %}
                                     <ol style="margin-left: 0px;padding-left:25px;">
                                         <li style="margin-bottom: 20px; font-size: 18px;">There’s <b>no need</b> to come
                                             to court on the hearing date shown in the pack we
@@ -258,6 +260,27 @@
                                             your records.
                                         </li>
                                     </ol>
+
+                                    {% endif %}
+
+                                    {% if plea_type == "mixed" %}
+
+                                    <ol>
+                                        <li style="margin-bottom: 20px; font-size: 18px;">There’s no need to come to court on the hearing date shown in the pack we sent you.</li>
+
+                                        <li style="margin-bottom: 20px; font-size: 18px;">The court will tell you if you need to attend a trial, and what evidence you may
+                                            need to send to the court in support of your case.</li>
+
+                                        <li style="margin-bottom: 20px; font-size: 18px;">We’ll send you a letter with the court’s decision within three working days after your
+                                            hearing.</li>
+
+                                        <li style="margin-bottom: 20px; font-size: 18px;">Quote your URN  {{ urn }} if you contact the court about your case.</li>
+
+                                        <li style="margin-bottom: 20px; font-size: 18px;">Print a copy of this confirmation of plea for your records.</li>
+
+                                        <li style="margin-bottom: 20px; font-size: 18px;">If you requested email updates you'll be sent a copy of this confirmation of plea.</li>
+                                    </ol>
+
                                     {% endif %}
 
                                     <h2 style="font-size: 25px; margin-top: 30px;">Need to change a plea?</h2>

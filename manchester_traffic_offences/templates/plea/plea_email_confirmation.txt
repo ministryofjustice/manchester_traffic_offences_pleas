@@ -5,7 +5,7 @@ This is confirmation that your plea has been sent to the court
 
 What happens next?
 
-{% if guilty %}
+{% if plea_type == "guilty" %}
 
 1. There’s no need to come
     to court on the hearing date shown in the pack we sent you.
@@ -17,8 +17,9 @@ What happens next?
 
 4. Print off a copy of this
     confirmation of plea for your records.
+{% endif %}
 
-{% else %}
+{% if plea_type == "not_guilty" %}
 
 1. There’s no need to come to court on the hearing date shown in the
     pack we sent you.
@@ -34,6 +35,25 @@ What happens next?
     case.
 
 5. Print off a copy of this confirmation of plea for your records.
+
+{% endif %}
+
+{% if plea_type == "mixed" %}
+
+1. There’s no need to come to court on the hearing date shown in the
+    pack we sent you.
+
+2. The court will tell you if you need to attend a trial, and what
+    evidence you may need to send to the court in support of your
+    case.
+
+3. We’ll send you a letter with the court’s decision within three working
+    days after your hearing.
+
+4. Quote your URN {{ urn }} if you contact the court about
+    your case.
+
+5. Print a copy of this confirmation of plea for your records.
 
 {% endif %}
 

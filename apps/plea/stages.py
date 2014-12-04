@@ -142,10 +142,18 @@ class CompleteStage(FormStage):
     dependencies = ["case", "your_details", "plea", "your_money", "review"]
 
     def render(self, request_context):
-        request_context["some_not_guilty"] = False
-        for form_data in self.all_data["plea"]["PleaForms"]:
-            if form_data["guilty"] == "not_guilty":
-                request_context["some_not_guilty"] = True
+
+        guilty_count = len([plea for plea in self.all_data['plea']['PleaForms']
+                            if plea['guilty'] == "guilty"])
+
+        if guilty_count == 0:
+            plea_type = "not_guilty"
+        elif guilty_count == len(self.all_data['plea']['PleaForms']):
+            plea_type = "guilty"
+        else:
+            plea_type = "mixed"
+
+        request_context['plea_type'] = plea_type
 
         if isinstance(self.all_data["case"]["date_of_hearing"], basestring):
             court_date = parse(self.all_data["case"]["date_of_hearing"])
