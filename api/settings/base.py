@@ -24,9 +24,6 @@ PROJECT_APPS = (
     'api.v0',
 )
 
-handler500 = 'api.views.api_500'
-handler404 = 'api.views.api_404'
-
 INSTALLED_APPS = INSTALLED_APPS + PROJECT_APPS
 
 del TEMPLATE_CONTEXT_PROCESSORS[TEMPLATE_CONTEXT_PROCESSORS.index('apps.feedback.context_processors.feedback')]
