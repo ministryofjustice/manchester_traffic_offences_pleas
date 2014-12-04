@@ -66,7 +66,7 @@ class YourMoneyForm(BasePleaStepForm):
                          ("Fortnightly", "Fortnightly"),
                          ("Monthly", "Monthly"),
                          ("self-employed other", "Other"),)
-    you_are = forms.ChoiceField(label="Are you", choices=YOU_ARE_CHOICES,
+    you_are = forms.ChoiceField(label="Are you...", choices=YOU_ARE_CHOICES,
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
     # Employed
