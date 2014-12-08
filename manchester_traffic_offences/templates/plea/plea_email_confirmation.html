@@ -1,3 +1,4 @@
+{% load testing %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -212,14 +213,15 @@
                                     <h1 style="margin-bottom: 30px; margin-top:0px;">Online plea submission
                                         confirmation</h1>
 
-                                    <p style="font-size: 18px;"><b>Dear {{ name }}</b><br>
-                                        This is confirmation that your plea has been sent to the court
+                                    <p style="font-size: 18px;"><b>{{ name }}</b><br>
+                                        Your online {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea(s) have been sent to the court.
                                     </p>
 
 
                                     <h2 style="font-size: 25px; margin-top: 30px;">What happens next?</h2>
 
-                                    {% if guilty %}
+                                    {% if plea_type == "guilty" %}
+                                        {% add_test_tag "<<GUILTY>>" %}
                                     <ol style="margin-left: 0px;padding-left:25px;">
 
                                         <li style="margin-bottom: 20px; font-size: 18px;">There’s <b>no need</b> to come
@@ -234,7 +236,10 @@
                                             confirmation of plea for your records.
                                         </li>
                                     </ol>
-                                    {% else %}
+                                    {% endif %}
+
+                                    {% if plea_type == "not_guilty" %}
+                                        {% add_test_tag "<<NOTGUILTY>>" %}
                                     <ol style="margin-left: 0px;padding-left:25px;">
                                         <li style="margin-bottom: 20px; font-size: 18px;">There’s <b>no need</b> to come
                                             to court on the hearing date shown in the pack we
@@ -258,15 +263,31 @@
                                             your records.
                                         </li>
                                     </ol>
+
+                                    {% endif %}
+
+                                    {% if plea_type == "mixed" %}
+                                        {% add_test_tag "<<MIXED>>" %}
+                                    <ol>
+                                        <li style="margin-bottom: 20px; font-size: 18px;">There’s no need to come to court on the hearing date shown in the pack we sent you.</li>
+
+                                        <li style="margin-bottom: 20px; font-size: 18px;">The court will tell you if you need to attend a trial, and what evidence you may
+                                            need to send to the court in support of your case.</li>
+
+                                        <li style="margin-bottom: 20px; font-size: 18px;">We’ll send you a letter with the court’s decision within three working days after your
+                                            hearing.</li>
+
+                                        <li style="margin-bottom: 20px; font-size: 18px;">Quote your URN  {{ urn | upper }} if you contact the court about your case.</li>
+
+                                        <li style="margin-bottom: 20px; font-size: 18px;">Print a copy of this confirmation of plea for your records.</li>
+
+                                    </ol>
+
                                     {% endif %}
 
                                     <h2 style="font-size: 25px; margin-top: 30px;">Need to change a plea?</h2>
 
-                                    <p style="font-size: 18px;">If you wish to make changes to your plea you must now
-                                        contact the court either by
-                                        post or
-                                        email quoting your URN requesting permission to do so, before the date of your
-                                        hearing.</p>
+                                    <p style="font-size: 18px;">Contact the court by post or email quoting your URN before the date of your hearing.</p>
 
                                     <p style="font-size: 18px;">The contact details for the court are:</p>
 

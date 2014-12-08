@@ -11,3 +11,5 @@ LETTUCE_AVOID_APPS = (
     'testing',
 )
 LETTUCE_SERVER_PORT = 8100
+
+TESTING = True
