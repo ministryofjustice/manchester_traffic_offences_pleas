@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load testing %}
 {% block page_title %}{{ block.super }} Sent{% endblock %}
 {% block page_content %}
 <header class="page-header group">
@@ -6,30 +7,48 @@
 </header>
 
 <div class="main" id="complete">
-	<h2 class="ticked">Your plea{{ case.number_of_charges|pluralize:" has,s have" }} been sent to the court</h2>
+	<h2 class="ticked">Your {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea(s) have been sent to the court</h2>
 	<h3 class="heading-medium">What happens next?</h3>
 
-    {% if some_not_guilty and days_before_hearing > 3 %}
+    {% if plea_type == "guilty" %}
+        {% add_test_tag "<<GUILTY>>" %}
+        <ol>
+            <li>There’s no need to come to court on the hearing date shown in the pack we sent you.</li>
+            <li>We’ll send you a letter with the court’s decision within three working days after your hearing.</li>
+            <li>Quote your URN <strong>{{ case.urn | upper }}</strong> if you <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">contact</a> the court about your case.</li>
+            <li><a href="javascript:window.print();">Print off a copy</a> of this confirmation of plea for your records.</li>
+            <li>If you requested email updates you'll be sent a copy of this confirmation of plea.</li>
+        </ol>
+    {% endif %}
+
+    {% if plea_type == "not_guilty" %}
+        {% add_test_tag "<<NOTGUILTY>>" %}
         <ol>
             <li>There’s no need to come to court on the hearing date shown in the pack we sent you.</li>
             <li>The court will tell you if you need to attend for your trial, and what evidence you may
                 need to send to the court in support of your case.</li>
             <li>We’ll send you a letter with the court’s decision within three working days after your hearing.</li>
-            <li>Quote your URN <strong>{{ case.urn }}</strong> if you <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">contact</a> the court about your case.</li>
+            <li>Quote your URN <strong>{{ case.urn | upper }}</strong> if you <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">contact</a> the court about your case.</li>
             <li><a href="javascript:window.print();">Print off a copy</a> of this confirmation of plea for your records.</li>
+            <li>If you requested email updates you'll be sent a copy of this confirmation of plea.</li>
         </ol>
-    {% else %}
+    {% endif %}
+
+    {% if plea_type == "mixed" %}
+        {% add_test_tag "<<MIXED>>" %}
         <ol>
             <li>There’s no need to come to court on the hearing date shown in the pack we sent you.</li>
+            <li>The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.</li>
             <li>We’ll send you a letter with the court’s decision within three working days after your hearing.</li>
-            <li>Quote your URN <strong>{{ case.urn }}</strong> if you <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">contact</a> the court about your case.</li>
+            <li>Quote your URN {{ case.urn | upper }} if you contact the court about your case.</li>
             <li><a href="javascript:window.print();">Print off a copy</a> of this confirmation of plea for your records.</li>
+            <li>If you requested email updates you'll be sent a copy of this confirmation of plea.</li>
         </ol>
     {% endif %}
 
     <h3 class="heading-medium">Need to change a plea?</h3>
 
-    <p>If you wish to make changes to your plea you must now contact the court either by post or email quoting your URN requesting permission to do so, before the date of your hearing.</p>
+    <p>Contact the court by post or email quoting your URN before the date of your hearing.</p>
 
     <p>
         By post:<br>

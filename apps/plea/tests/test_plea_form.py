@@ -43,6 +43,46 @@ class TestMultiPleaForms(TestCase):
 
         self.request_factory = RequestFactory()
 
+        self.submission_data = {
+            "case": {
+                "complete": True,
+                "date_of_hearing": "2015-01-01",
+                "urn": "00/AA/0000000/00",
+                "number_of_charges": 3
+            },
+            'your_details': {"name": "Charlie Brown",
+                   "contact_number": "07802639892",
+                   "email": "test@example.org"},
+            "plea": {
+                "complete": True,
+                "PleaForms": [
+                    {
+                        "guilty": "guilty",
+                        "mitigations": "something"
+                    },
+                    {
+                        "guilty": "guilty",
+                        "mitigations": "something"
+                    },
+                    {
+                        "guilty": "guilty",
+                        "mitigations": "something"
+                    }
+                ]
+            },
+            'your_money': {
+                "complete": True,
+                "you_are": "Employed",
+                "employer_name": "test",
+                "employer_address": "test",
+                "employer_phone": "test",
+                "take_home_pay_period": "Fortnightly",
+                "take_home_pay_amount": "1000"},
+            'review': {
+                "complete": True
+            }
+        }
+
     def get_request_mock(self, url, url_name="", url_kwargs=None):
         if not url_kwargs:
             url_kwargs = {}
@@ -577,6 +617,65 @@ class TestMultiPleaForms(TestCase):
         self.assertEqual(fake_session["plea"]["PleaForms"][1]["guilty"], "guilty")
         self.assertEqual(fake_session["plea"]["PleaForms"][1]["mitigations"], "lorem ipsum 2")
         self.assertEqual(fake_session["review"]["understand"], True)
+
+    def test_guilty_pleas_complete_page_content(self):
+
+        fake_request = self.get_request_mock("/plea/complete")
+        request_context = RequestContext(fake_request)
+
+        stage_data = self.submission_data
+
+        form = PleaOnlineForms("complete", "plea_form_step", stage_data)
+        form.load(request_context)
+
+        response = form.render()
+
+        self.assertContains(response, "<<GUILTY>>")
+
+    def test_mixed_pleas_complete_page_content(self):
+
+        fake_request = self.get_request_mock("/plea/complete")
+        request_context = RequestContext(fake_request)
+
+        stage_data = self.submission_data
+
+        stage_data['plea']['PleaForms'][0]['guilty'] = "not_guilty"
+
+        form = PleaOnlineForms("complete", "plea_form_step", stage_data)
+        form.load(request_context)
+
+        response = form.render()
+
+        self.assertContains(response, "<<MIXED>>")
+
+    def test_not_guilty_pleas_complete_page_content(self):
+
+        fake_request = self.get_request_mock("/plea/complete")
+        request_context = RequestContext(fake_request)
+
+        stage_data = self.submission_data
+
+        stage_data['plea']['PleaForms'] = [
+            {
+                'mitigation': 'asdf',
+                'guilty': 'not_guilty'
+            },
+            {
+                'mitigation': 'asdf',
+                'guilty': 'not_guilty'
+            },
+            {
+                'mitigation': 'asdf',
+                'guilty': 'not_guilty'
+            }
+        ]
+
+        form = PleaOnlineForms("complete", "plea_form_step", stage_data)
+        form.load(request_context)
+
+        response = form.render()
+
+        self.assertContains(response, "<<NOTGUILTY>>")
 
     def already_used_urn_causes_redirect_to_error_page(self):
         # temporary skip whilst I fix this issue 
