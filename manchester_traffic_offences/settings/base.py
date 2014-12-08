@@ -2,7 +2,6 @@ import sys
 import os
 from os.path import join, abspath, dirname
 
-
 # PATH vars
 here = lambda *x: join(abspath(dirname(__file__)), *x)
 PROJECT_ROOT = here("..")
@@ -261,7 +260,6 @@ try:
 except ImportError:
     pass
 
-
 # importing test settings file if necessary (TODO could be done better)
-if len(sys.argv) > 1 and 'test' or 'harvest' in sys.argv[1]:
+if 'test' in sys.argv[1] or 'harvest' in sys.argv[1]:
     from .testing import *

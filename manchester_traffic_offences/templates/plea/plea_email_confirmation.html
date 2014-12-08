@@ -1,3 +1,4 @@
+{% load testing %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -220,6 +221,7 @@
                                     <h2 style="font-size: 25px; margin-top: 30px;">What happens next?</h2>
 
                                     {% if plea_type == "guilty" %}
+                                        {% add_test_tag "<<GUILTY>>" %}
                                     <ol style="margin-left: 0px;padding-left:25px;">
 
                                         <li style="margin-bottom: 20px; font-size: 18px;">There’s <b>no need</b> to come
@@ -237,6 +239,7 @@
                                     {% endif %}
 
                                     {% if plea_type == "not_guilty" %}
+                                        {% add_test_tag "<<NOTGUILTY>>" %}
                                     <ol style="margin-left: 0px;padding-left:25px;">
                                         <li style="margin-bottom: 20px; font-size: 18px;">There’s <b>no need</b> to come
                                             to court on the hearing date shown in the pack we
@@ -264,7 +267,7 @@
                                     {% endif %}
 
                                     {% if plea_type == "mixed" %}
-
+                                        {% add_test_tag "<<MIXED>>" %}
                                     <ol>
                                         <li style="margin-bottom: 20px; font-size: 18px;">There’s no need to come to court on the hearing date shown in the pack we sent you.</li>
 
@@ -274,7 +277,7 @@
                                         <li style="margin-bottom: 20px; font-size: 18px;">We’ll send you a letter with the court’s decision within three working days after your
                                             hearing.</li>
 
-                                        <li style="margin-bottom: 20px; font-size: 18px;">Quote your URN  {{ urn }} if you contact the court about your case.</li>
+                                        <li style="margin-bottom: 20px; font-size: 18px;">Quote your URN  {{ urn | upper }} if you contact the court about your case.</li>
 
                                         <li style="margin-bottom: 20px; font-size: 18px;">Print a copy of this confirmation of plea for your records.</li>
 
