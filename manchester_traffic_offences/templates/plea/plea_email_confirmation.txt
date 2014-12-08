@@ -1,3 +1,4 @@
+{% load testing %}
 GOV.UK - Online plea submission confirmation
 
 Dear {{ name }}
@@ -6,6 +7,7 @@ This is confirmation that your plea has been sent to the court
 What happens next?
 
 {% if plea_type == "guilty" %}
+    {% add_test_tag "<<GUILTY>>" %}
 
 1. There’s no need to come
     to court on the hearing date shown in the pack we sent you.
@@ -15,11 +17,12 @@ What happens next?
 
 3. Quote your URN {{ urn | upper }} if you contact the court about your case.
 
-4. Print off a copy of this
-    confirmation of plea for your records.
+4. Print off a copy of this confirmation of plea for your records.
+
 {% endif %}
 
 {% if plea_type == "not_guilty" %}
+    {% add_test_tag "<<NOTGUILTY>>" %}
 
 1. There’s no need to come to court on the hearing date shown in the
     pack we sent you.
@@ -31,7 +34,7 @@ What happens next?
 3. We’ll send you a letter with the court’s decision within three working
     days after your hearing.
 
-4. Quote your URN {{ urn }} if you contact the court about your
+4. Quote your URN {{ urn | upper }} if you contact the court about your
     case.
 
 5. Print off a copy of this confirmation of plea for your records.
@@ -39,6 +42,7 @@ What happens next?
 {% endif %}
 
 {% if plea_type == "mixed" %}
+    {% add_test_tag "<<MIXED>>" %}
 
 1. There’s no need to come to court on the hearing date shown in the
     pack we sent you.
@@ -50,7 +54,7 @@ What happens next?
 3. We’ll send you a letter with the court’s decision within three working
     days after your hearing.
 
-4. Quote your URN {{ urn }} if you contact the court about
+4. Quote your URN {{ urn | upper }} if you contact the court about
     your case.
 
 5. Print a copy of this confirmation of plea for your records.
