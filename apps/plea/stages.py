@@ -13,6 +13,25 @@ from forms import (CaseForm, YourDetailsForm, YourMoneyForm,
 from .fields import ERROR_MESSAGES
 
 
+def get_plea_type(context_data):
+    """
+    Determine if pleas for a submission are
+        all guilty  - returns constants.PLEA_TYPE_GUILTY
+        all not guilty - returns constants.PLEA_TYPE_NOT_GUILTY
+        or mixed - returns constants.PLEA_TYPE_MIXED
+    """
+
+    guilty_count = len([plea for plea in context_data['plea']['PleaForms']
+                        if plea['guilty'] == "guilty"])
+
+    if guilty_count == 0:
+        return "not_guilty"
+    elif guilty_count == len(context_data['plea']['PleaForms']):
+        return "guilty"
+    else:
+        return "mixed"
+
+
 class CaseStage(FormStage):
     name = "case"
     template = "plea/case.html"
@@ -143,17 +162,7 @@ class CompleteStage(FormStage):
 
     def render(self, request_context):
 
-        guilty_count = len([plea for plea in self.all_data['plea']['PleaForms']
-                            if plea['guilty'] == "guilty"])
-
-        if guilty_count == 0:
-            plea_type = "not_guilty"
-        elif guilty_count == len(self.all_data['plea']['PleaForms']):
-            plea_type = "guilty"
-        else:
-            plea_type = "mixed"
-
-        request_context['plea_type'] = plea_type
+        request_context['plea_type'] = get_plea_type(self.all_data)
 
         if isinstance(self.all_data["case"]["date_of_hearing"], basestring):
             court_date = parse(self.all_data["case"]["date_of_hearing"])
