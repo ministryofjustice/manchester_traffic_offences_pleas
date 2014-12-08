@@ -16,9 +16,9 @@ from .fields import ERROR_MESSAGES
 def get_plea_type(context_data):
     """
     Determine if pleas for a submission are
-        all guilty  - returns constants.PLEA_TYPE_GUILTY
-        all not guilty - returns constants.PLEA_TYPE_NOT_GUILTY
-        or mixed - returns constants.PLEA_TYPE_MIXED
+        all guilty  - returns "guilty"
+        all not guilty - returns "not_guilty"
+        or mixed - returns "mixed"
     """
 
     guilty_count = len([plea for plea in context_data['plea']['PleaForms']
