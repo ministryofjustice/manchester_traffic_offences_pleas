@@ -22,21 +22,13 @@ def send_user_confirmation_email(context_data):
     was successful.
     """
 
-    guilty_count = len([plea for plea in context_data['plea']['PleaForms']
-                        if plea['guilty'] == "guilty"])
-
-    if guilty_count == 0:
-        plea_type = "not_guilty"
-    elif guilty_count == len(context_data['plea']['PleaForms']):
-        plea_type = "guilty"
-    else:
-        plea_type = "mixed"
+    from .stages import get_plea_type
 
     data = {
         'email': context_data['your_details']['email'],
         'urn': context_data['case']['urn'],
         'name': context_data['your_details']['name'],
-        'plea_type': plea_type
+        'plea_type': get_plea_type(context_data)
     }
 
     html_body = render_to_string("plea/plea_email_confirmation.html", data)
