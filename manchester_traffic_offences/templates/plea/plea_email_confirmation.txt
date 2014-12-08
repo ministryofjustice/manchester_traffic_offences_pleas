@@ -1,8 +1,8 @@
 {% load testing %}
 GOV.UK - Online plea submission confirmation
 
-Dear {{ name }}
-This is confirmation that your plea has been sent to the court
+{{ name }}
+Your online {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea(s) have been sent to the court.
 
 What happens next?
 
@@ -63,7 +63,7 @@ What happens next?
 
 Need to change a plea?
 
-If you wish to make changes to your plea you must now contact the court either by post or email quoting your URN requesting permission to do so, before the date of your hearing.
+Contact the court by post or email quoting your URN before the date of your hearing.
 
 The contact details for the court are:
 

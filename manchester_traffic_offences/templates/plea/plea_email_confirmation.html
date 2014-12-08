@@ -213,8 +213,8 @@
                                     <h1 style="margin-bottom: 30px; margin-top:0px;">Online plea submission
                                         confirmation</h1>
 
-                                    <p style="font-size: 18px;"><b>Dear {{ name }}</b><br>
-                                        This is confirmation that your plea has been sent to the court
+                                    <p style="font-size: 18px;"><b>{{ name }}</b><br>
+                                        Your online {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea(s) have been sent to the court.
                                     </p>
 
 
@@ -287,11 +287,7 @@
 
                                     <h2 style="font-size: 25px; margin-top: 30px;">Need to change a plea?</h2>
 
-                                    <p style="font-size: 18px;">If you wish to make changes to your plea you must now
-                                        contact the court either by
-                                        post or
-                                        email quoting your URN requesting permission to do so, before the date of your
-                                        hearing.</p>
+                                    <p style="font-size: 18px;">Contact the court by post or email quoting your URN before the date of your hearing.</p>
 
                                     <p style="font-size: 18px;">The contact details for the court are:</p>
 
