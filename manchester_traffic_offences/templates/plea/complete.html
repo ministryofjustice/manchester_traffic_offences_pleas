@@ -13,10 +13,10 @@
     {% if plea_type == "guilty" %}
         {% add_test_tag "<<GUILTY>>" %}
         <ol>
-            <li>There’s no need to come to court on the hearing date shown in the pack we sent you.</li>
+            <li>There’s <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.</li>
             <li>We’ll send you a letter with the court’s decision within three working days after your hearing.</li>
             <li>Quote your URN <strong>{{ case.urn | upper }}</strong> if you <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">contact</a> the court about your case.</li>
-            <li><a href="javascript:window.print();">Print off a copy</a> of this confirmation of plea for your records.</li>
+            <li><a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.</li>
             <li>If you requested email updates you'll be sent a copy of this confirmation of plea.</li>
         </ol>
     {% endif %}
@@ -24,12 +24,12 @@
     {% if plea_type == "not_guilty" %}
         {% add_test_tag "<<NOTGUILTY>>" %}
         <ol>
-            <li>There’s no need to come to court on the hearing date shown in the pack we sent you.</li>
+            <li>There’s <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.</li>
             <li>The court will tell you if you need to attend for your trial, and what evidence you may
                 need to send to the court in support of your case.</li>
             <li>We’ll send you a letter with the court’s decision within three working days after your hearing.</li>
             <li>Quote your URN <strong>{{ case.urn | upper }}</strong> if you <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">contact</a> the court about your case.</li>
-            <li><a href="javascript:window.print();">Print off a copy</a> of this confirmation of plea for your records.</li>
+            <li><a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.</li>
             <li>If you requested email updates you'll be sent a copy of this confirmation of plea.</li>
         </ol>
     {% endif %}
@@ -37,11 +37,11 @@
     {% if plea_type == "mixed" %}
         {% add_test_tag "<<MIXED>>" %}
         <ol>
-            <li>There’s no need to come to court on the hearing date shown in the pack we sent you.</li>
+            <li>There’s <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.</li>
             <li>The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.</li>
             <li>We’ll send you a letter with the court’s decision within three working days after your hearing.</li>
             <li>Quote your URN {{ case.urn | upper }} if you contact the court about your case.</li>
-            <li><a href="javascript:window.print();">Print off a copy</a> of this confirmation of plea for your records.</li>
+            <li><a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.</li>
             <li>If you requested email updates you'll be sent a copy of this confirmation of plea.</li>
         </ol>
     {% endif %}
