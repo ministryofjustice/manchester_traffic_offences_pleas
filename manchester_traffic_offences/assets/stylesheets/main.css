@@ -1727,8 +1727,12 @@ table th a.review {
   font-weight: normal;
   float: right; }
 
-table th.header {
+table th.header, h2.header {
   font-size: 1.2em; }
+
+h2.header {
+  font-weight: bold;
+  margin-bottom: 0.6em; }
 
 .get-started-intro a.button.button-get-started {
   font-size: 135%;
