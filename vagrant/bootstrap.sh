@@ -2,9 +2,10 @@
 rm -f /home/vagrant/.ssh/known_hosts
 ssh-keyscan -t rsa,dsa -H github.com >> /home/vagrant/.ssh/known_hosts
 
+sudo add-apt-repository ppa:chris-lea/node.js
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get --yes install git postgresql build-essential python-dev libxml2-dev libxslt-dev python-setuptools
+sudo apt-get --yes install git postgresql build-essential python-dev libxml2-dev libxslt-dev python-setuptools nodejs
 sudo apt-get --yes build-dep python-psycopg2
 sudo apt-get -y unoconv default-jre
 sudo easy_install pip
@@ -39,3 +40,4 @@ pip install -r requirements/dev.txt
 sudo -u postgres createdb manchester_traffic_offences
 ./manage.py syncdb --noinput
 ./manage.py migrate --noinput
+

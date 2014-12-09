@@ -70,18 +70,14 @@ class YourMoneyForm(BasePleaStepForm):
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
     # Employed
-    employer_name = forms.CharField(required=False, max_length=100, label="Employer's name",
-                                    error_messages={"required": ERROR_MESSAGES["EMPLOYERS_NAME_REQUIRED"]})
-    employer_address = forms.CharField(required=False, max_length=500, label="Employer's full address",
-                                       widget=forms.Textarea, error_messages={"required": ERROR_MESSAGES["EMPLOYERS_ADDRESS_REQUIRED"]})
-    employer_phone = forms.CharField(required=False, max_length=100, label="Employer's phone",
-                                     error_messages={"required": ERROR_MESSAGES["EMPLOYERS_PHONE_REQUIRED"]})
-    take_home_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=RadioFieldRenderer),
+    employed_your_job = forms.CharField(required=False, max_length=500, label="What's your job?",
+                                        error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"]})
+    employed_take_home_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                              choices=PERIOD_CHOICES, required=False,
                                              label="How often do you get paid?",
                                              error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                              "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
-    take_home_pay_amount = forms.CharField(label="Your take home pay (after tax)", required=False,
+    employed_take_home_pay_amount = forms.CharField(label="What's your take home pay (after tax)?", required=False,
                                            widget=forms.TextInput(attrs={"maxlength": "7", "class": "amount"}),
                                            error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                            "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
@@ -124,11 +120,9 @@ class YourMoneyForm(BasePleaStepForm):
 
         if "you_are" in data:
             if data["you_are"] == "Employed":
-                self.fields["employer_name"].required = True
-                self.fields["employer_address"].required = True
-                self.fields["employer_phone"].required = True
-                self.fields["take_home_pay_period"].required = True
-                self.fields["take_home_pay_amount"].required = True
+                self.fields["employed_your_job"].required = True
+                self.fields["employed_take_home_pay_period"].required = True
+                self.fields["employed_take_home_pay_amount"].required = True
 
             if data["you_are"] == "Self employed":
                 self.fields["your_job"].required = True
