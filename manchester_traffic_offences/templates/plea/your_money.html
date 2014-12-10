@@ -83,9 +83,22 @@
 
                 <div class="js-hidden" id="section-receiving-benefits">
                     <strong class="js-hidden">If you're receiving benefits, please complete the following</strong>
+                    {% with form.benefits_details as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
+
+                    {% with form.benefits_dependents as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
+
                     {% with form.benefits_period as field %}
                     {% include "widgets/std_field_panel.html" %}
                     {% endwith %}
+                    <div class="js-hidden" id="section-benefits-other">
+                        {% with form.benefits_pay_other as field %}
+                        {% include "widgets/std_field_panel.html" %}
+                        {% endwith %}
+                    </div>
                     {% with form.benefits_amount as field %}
                     {% include "widgets/money_field.html" %}
                     {% endwith %}
