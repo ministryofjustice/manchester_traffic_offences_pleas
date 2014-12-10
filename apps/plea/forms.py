@@ -122,8 +122,12 @@ class YourMoneyForm(BasePleaStepForm):
                                                       "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
     # Other
-    other_info = forms.CharField(required=False, max_length=500, label="", help_text="Please provide additional information",
-                                 widget=forms.Textarea, error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
+    other_details = forms.CharField(required=False, max_length=500, label="", help_text="Please provide details e.g. retired, student etc.",
+                                    widget=forms.Textarea, error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
+    other_pay_amount = forms.CharField(label="What is your average take home pay?", required=False,
+                                       widget=forms.TextInput(attrs={"maxlength": "7", "class": "amount"}),
+                                       error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
+                                                       "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
     def __init__(self, *args, **kwargs):
         super(YourMoneyForm, self).__init__(*args, **kwargs)
