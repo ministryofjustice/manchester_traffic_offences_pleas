@@ -280,7 +280,7 @@ div.form-panel {
   }
 }
 
-#your-money {
+#your-money, #your-expenses {
   #employed, #benefits {
     border-top: solid 1px #c2c2c2;
     padding-top: 1em;
@@ -309,6 +309,53 @@ div.form-panel {
     li { float:left; margin-left: 1em; }
     li:first-child {margin-left:3px;}
     ul li label { font-weight:normal; margin: 0;}
+  }
+}
+
+#your-expenses{
+  p.mandatory{
+    margin-top: 30px;
+    font-size: 0.9em;
+  }
+
+  hr{
+    clear: both;
+    border: none;
+    border-top: 1px solid #a9a9a9;
+  }
+
+  h3{
+    font-size: 1.3em;
+    font-weight: bold;
+  }
+
+  #id_consideration{
+    width: 450px;
+    height: 150px;
+  }
+
+  .expense-container{
+    width: 710px;
+
+    div.field-indent{
+      border-left: none;
+      padding: 0;
+    }
+
+    & > section {
+
+      float: left;
+      width: 350px;
+
+      p.form-hint{
+        overflow: auto;
+        height: 20px;
+      }
+
+      input{
+        width: 150px;
+      }
+    }
   }
 }
 

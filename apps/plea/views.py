@@ -11,7 +11,7 @@ from .models import CourtEmailCount, CourtEmailPlea
 
 from apps.govuk_utils.forms import MultiStageForm
 from stages import (CaseStage, YourDetailsStage, PleaStage, YourMoneyStage,
-                    ReviewStage, CompleteStage)
+                    YourExpensesStage, ReviewStage, CompleteStage)
 
 
 class PleaOnlineForms(MultiStageForm):
@@ -19,6 +19,7 @@ class PleaOnlineForms(MultiStageForm):
                      YourDetailsStage,
                      PleaStage,
                      YourMoneyStage,
+                     YourExpensesStage,
                      ReviewStage,
                      CompleteStage]
 

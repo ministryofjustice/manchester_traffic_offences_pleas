@@ -114,8 +114,8 @@
                     <table id="your-money">
                         <thead>
                         <tr>
-                            <th class="header">Your money</th>
-                            <th><a href="{% url "plea_form_step" "your_money" %}" class="review">Change your money</a></th>
+                            <th class="header">Your finances</th>
+                            <th><a href="{% url "plea_form_step" "your_money" %}" class="review">Change your finances</a></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -185,6 +185,34 @@
                                 <td>{{ your_money.other_info|linebreaksbr }}</td>
                             </tr>
                         {% endif %}
+
+                            <tr>
+                                <th class="label">Financial hardship</th>
+                                <td>{% if your_expenses.complete %}Yes{% else %}No{% endif %}</td>
+                            </tr>
+                            {% if your_expenses.complete %}
+                            <tr>
+                                <th class="label">Financial hardship details</th>
+                                <td>{{ your_expenses.hardship_details|linebreaksbr }}</td>
+                            </tr>
+                            <tr>
+                                <th class="label">Total household expenses</th>
+                                <td>£{{ your_expenses.total_household_expenses }}</td>
+                            </tr>
+                            <tr>
+                                <th class="label">Other contributors to household bills</th>
+                                <td>{% if your_expenses.other_bill_payers %}Yes{% else %}No{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th class="label">Total other expenses</th>
+                                <td>£{{ your_expenses.total_other_expenses }}</td>
+                            </tr>
+                            <tr>
+                                <th class="label">Total expenses</th>
+                                <td>£{{ your_expenses.total_expenses }}</td>
+                            </tr>
+
+                            {% endif %}
                         </tbody>
                     </table>
                 {% endif %}
@@ -206,7 +234,7 @@
                             <span class="validation-message">{{ form.receive_email.errors }}</span>
                             <div id="receive_email" class="clearfix">
 
-				Do you want to receive an email confirming your plea(s)?
+				                Do you want to receive an email confirming your plea(s)?
 
                                 {{ form.receive_email }}
                                 
