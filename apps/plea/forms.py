@@ -122,9 +122,9 @@ class YourMoneyForm(BasePleaStepForm):
                                                       "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
     # Other
-    other_details = forms.CharField(required=False, max_length=500, label="", help_text="Please provide details e.g. retired, student etc.",
+    other_details = forms.CharField(required=False, max_length=500, label="Please provide details e.g. retired, student etc.",
                                     widget=forms.Textarea, error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
-    other_pay_amount = forms.CharField(label="What is your average take home pay?", required=False,
+    other_pay_amount = forms.CharField(label="What is your monthly disposable income?", required=False,
                                        widget=forms.TextInput(attrs={"maxlength": "7", "class": "amount"}),
                                        error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                        "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
@@ -148,11 +148,14 @@ class YourMoneyForm(BasePleaStepForm):
                 self.fields["self_employed_pay_amount"].required = True
 
             if data["you_are"] == "Receiving benefits":
+                self.fields["benefits_details"].required = True
+                self.fields["benefits_dependents"].required = True
                 self.fields["benefits_period"].required = True
                 self.fields["benefits_amount"].required = True
 
             if data["you_are"] == "Other":
-                self.fields["other_info"].required = True
+                self.fields["other_details"].required = True
+                self.fields["other_pay_amount"].required = True
 
 
 class ConfirmationForm(BasePleaStepForm):
