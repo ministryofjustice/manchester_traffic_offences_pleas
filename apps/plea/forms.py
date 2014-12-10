@@ -66,6 +66,12 @@ class YourMoneyForm(BasePleaStepForm):
                          ("Fortnightly", "Fortnightly"),
                          ("Monthly", "Monthly"),
                          ("self-employed other", "Other"),)
+    BEN_PERIOD_CHOICES = (("Weekly", "Weekly"),
+                         ("Fortnightly", "Fortnightly"),
+                         ("Monthly", "Monthly"),
+                         ("benefits other", "Other"),)
+    YES_NO = (("Yes", "Yes"),
+               ("No", "No"))
     you_are = forms.ChoiceField(label="Are you...", choices=YOU_ARE_CHOICES,
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
@@ -84,7 +90,7 @@ class YourMoneyForm(BasePleaStepForm):
     # Self employed
     your_job = forms.CharField(required=False, max_length=100, label="What's your job?",
                                error_messages={"required": ERROR_MESSAGES["YOUR_JOB_REQUIRED"]})
-    self_employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=RadioFieldRenderer),
+    self_employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                  choices=SE_PERIOD_CHOICES, required=False,
                                                  label="How often do you get paid?",
                                                  error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
@@ -95,14 +101,22 @@ class YourMoneyForm(BasePleaStepForm):
                                                                "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
     self_employed_pay_other = forms.CharField(required=False, max_length=500, label="",
                                               widget=forms.Textarea(attrs={"rows": "2"}),
-                                              help_text="Please provide additional information")
+                                              help_text="Tell us about how often you get paid")
     # On benefits
-    benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=RadioFieldRenderer),
-                                        choices=PERIOD_CHOICES, required=False,
+    benefits_details = forms.CharField(required=False, max_length=500, label="Which benefits do you receive?",
+                                       widget=forms.Textarea(attrs={"rows": "2"}))
+    benefits_dependents = forms.ChoiceField(required=False, widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                            choices=YES_NO,
+                                            label="Does this include payment for dependents?")
+    benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                        choices=BEN_PERIOD_CHOICES, required=False,
                                         label="When do you get your benefits paid?",
                                         error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                         "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
-    benefits_amount = forms.CharField(label="Total benefits", required=False,
+    benefits_pay_other = forms.CharField(required=False, max_length=500, label="",
+                                         widget=forms.Textarea(attrs={"rows": "2"}),
+                                         help_text="Tell us about how often you get paid")
+    benefits_amount = forms.CharField(label="What is your average take home pay?", required=False,
                                       widget=forms.TextInput(attrs={"maxlength": "7", "class": "amount"}),
                                       error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                       "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
