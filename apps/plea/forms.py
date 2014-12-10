@@ -143,6 +143,69 @@ class YourMoneyForm(BasePleaStepForm):
                 self.fields["other_info"].required = True
 
 
+class YourExpensesForm(BasePleaStepForm):
+    hardship_details = forms.CharField(
+        label="How would paying a fine cause you financial hardship?",
+        help_text="What you feel the court should consider "
+                  "when deciding on any possible fine.",
+        widget=forms.Textarea,
+        required=False)
+
+    household_accommodation = forms.DecimalField(
+        initial=0,
+        min_value=0,
+        label="Accomodation",
+        help_text="Rent, mortgage or lodgings")
+    household_utility_bills = forms.DecimalField(
+        initial=0,
+        min_value=0,
+        label="Utility bills",
+        help_text="Gas, water, electricity etc")
+    household_insurance = forms.DecimalField(
+        initial=0,
+        min_value=0,
+        label="Insurance",
+        help_text="Home, life insurance etc")
+    household_council_tax = forms.DecimalField(
+        initial=0,
+        min_value=0,
+        label="Council tax")
+
+    other_bill_payers = forms.ChoiceField(
+        widget=RadioSelect(renderer=DSRadioFieldRenderer),
+        help_text="Does anyone else contribute to these bills?",
+        choices=((True, 'Yes'), (False, 'No')))
+
+    other_tv_subscription = forms.DecimalField(
+        initial=0,
+        min_value=0,
+        label="Television subscription",
+        help_text="TV licence, satellite etc")
+    other_travel_expenses = forms.DecimalField(
+        initial=0,
+        min_value=0,
+        label="Travel expenses",
+        help_text="Fuel, car, public transport etc")
+    other_telephone = forms.DecimalField(
+        initial=0,
+        min_value=0,
+        label="Telephone",
+        help_text="inc. mobile")
+    other_loan_repayments = forms.DecimalField(
+        initial=0,
+        min_value=0,
+        label="Loan repayments",
+        help_text="redit card, bank etc")
+    other_court_payments = forms.DecimalField(
+        initial=0,
+        min_value=0,
+        label="County court orders")
+    other_child_maintenance = forms.DecimalField(
+        initial=0,
+        min_value=0,
+        label="Child maintenance")
+
+
 class ConfirmationForm(BasePleaStepForm):
     understand = forms.BooleanField(required=True,
                                     error_messages={"required": ERROR_MESSAGES["UNDERSTAND_REQUIRED"]})
