@@ -202,6 +202,7 @@
                 {% endif %}
                     <section>
                         <a id="section_understand" name="section_understand"></a>
+                        <h2 class="header">Important</h2>
                         <div class="group{% if form.understand.errors %} error{% endif %}">
                             <span class="validation-message">{{ form.understand.errors }}</span>
                             <label for="{{ form.understand.id_for_label }}" class="block-label" id="{{ form.understand.name }}">
@@ -218,7 +219,7 @@
                             <span class="validation-message">{{ form.receive_email.errors }}</span>
                             <div id="receive_email" class="clearfix">
 
-                                Would you like to receive confirmation and updates from the court by email?
+				Do you want to receive an email confirming your plea(s)?
 
                                 {{ form.receive_email }}
                                 

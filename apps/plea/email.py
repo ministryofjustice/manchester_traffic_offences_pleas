@@ -22,14 +22,13 @@ def send_user_confirmation_email(context_data):
     was successful.
     """
 
-    guilty = any(plea['guilty'] == "guilty" for plea in
-                 context_data['plea']['PleaForms'])
+    from .stages import get_plea_type
 
     data = {
         'email': context_data['your_details']['email'],
         'urn': context_data['case']['urn'],
         'name': context_data['your_details']['name'],
-        'guilty': guilty
+        'plea_type': get_plea_type(context_data)
     }
 
     html_body = render_to_string("plea/plea_email_confirmation.html", data)
