@@ -1,123 +1,126 @@
 {% extends "plea/base.html" %}
 {% load staticfiles %}
-{% block page_title %}{{ block.super }} Your money{% endblock %}
+{% block page_title %}{{ block.super }} Your Finances{% endblock %}
 {% block page_content %}
-    <header class="page-header group">
-        <div><h1><span>Service</span>Make your plea online</h1></div>
-    </header>
+<header class="page-header group">
+    <div><h1><span>Service</span>Make your plea online</h1></div>
+</header>
 
-    <p class="mandatory">All fields are mandatory unless stated otherwise</p>
+<p class="mandatory">All fields are mandatory unless stated otherwise</p>
 
-    <div class="full-width group">
-        <div class="main" id="your-money">
-            <form method=POST class="pleaform form" autocomplete="off">
+<div class="full-width group">
+    <div class="main" id="your-money">
+        <form method=POST class="pleaform form" autocomplete="off">
 
-                {% csrf_token %}
-                {% with forms.0 as form %}
-                    {% if form.errors %}
-                        <section class="flash error-summary">
-                            <h2 id="error-heading">You need to fix the errors on this page before continuing.</h2>
-                            <p>See highlighted errors below.</p>
-                            <ul>
-                                {% for field in form %}
-                                    {% if field.errors %}
-                                        <li><a class="error-link"
-                                               href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </section>
+            {% csrf_token %}
+            {% with forms.0 as form %}
+            {% if form.errors %}
+            <section class="flash error-summary">
+                <h2 id="error-heading">You need to fix the errors on this page before continuing.</h2>
+                <p>See highlighted errors below.</p>
+                <ul>
+                    {% for field in form %}
+                    {% if field.errors %}
+                    <li><a class="error-link"
+                           href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
                     {% endif %}
+                    {% endfor %}
+                </ul>
+            </section>
+            {% endif %}
 
-                    <h2>Your money</h2>
-                    <p>We need this information to make sure you can afford to pay a fine.<br>
-                        Your information is stored securely then deleted as soon as your case is over.</p>
+            <h2>Your Finances</h2>
+            <ul class="list-bullet">
+                <li>For this type of offence the court will normally impose a financial penalty, which is based on your financial situation and the seriousness of the offence.</li>
+                <li>Please provide as much information as possible as the court is obliged to assume a minimum income if none is provided.</li>
+                <li>These details are stored securely and retained only by the court once your case is over.</li>
+            </ul>
 
-                    <section>
-                        <a id="section_{{ form.you_are.name }}" name="section_{{ form.you_are.name }}"></a>
-                        {{ form.you_are.label_tag }}
-                        <div class="section full{%  if form.you_are.errors %} error{% endif %}">
-                            Select one of the following options<br>
-                            <span class="validation-message">{{ form.you_are.errors }}</span>
-                            <p class="form-hint datefield-hint">{{ form.you_are.help_text|safe }}</p>
-                            {{ form.you_are }}
-                        </div>
-                    </section>
+            <section>
+                <a id="section_{{ form.you_are.name }}" name="section_{{ form.you_are.name }}"></a>
+                {{ form.you_are.label_tag }}
+                <div class="section full{%  if form.you_are.errors %} error{% endif %}">
+                    <span class="validation-message">{{ form.you_are.errors }}</span>
+                    <p class="form-hint datefield-hint">{{ form.you_are.help_text|safe }}</p>
+                    {{ form.you_are }}
+                </div>
+            </section>
 
-                    <div class="form-panel">
-                        <div class="js-hidden" id="section-employed">
-                            <p>
-                                <strong class="js-hidden">If you're employed, please complete the following<br></strong>
-                                We’ll only contact your employer if you don’t pay any fine the court gives you.
-                            </p>
+            <div class="form-panel">
+                <div class="js-hidden" id="section-employed">
+                    {% with form.employed_your_job as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
 
-                            {% with form.employer_name as field %}
-                                {% include "widgets/std_field_panel.html" %}
-                            {% endwith %}
+                    {% with form.employed_take_home_pay_period as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
 
-                            {% with form.employer_address as field %}
-                                {% include "widgets/std_field_panel.html" %}
-                            {% endwith %}
-
-                            {% with form.employer_phone as field %}
-                                {% include "widgets/std_field_panel.html" %}
-                            {% endwith %}
-                            <hr>
-                            {% with form.take_home_pay_period as field %}
-                                {% include "widgets/std_field_panel.html" %}
-                            {% endwith %}
-                            {% with form.take_home_pay_amount as field %}
-                                {% include "widgets/money_field.html" %}
-                            {% endwith %}
-                        </div>
-
-                        <div class="js-hidden" id="section-self-employed">
-                            <strong class="js-hidden">If you're self employed, please complete the following</strong>
-
-                            {% with form.your_job as field %}
-                                {% include "widgets/std_field_panel.html" %}
-                            {% endwith %}
-
-                            {% with form.self_employed_pay_period as field %}
-                                {% include "widgets/std_field_panel.html" %}
-                            {% endwith %}
-                            <div class="js-hidden" id="section-self-employed-other">
-                                {% with form.self_employed_pay_other as field %}
-                                    {% include "widgets/std_field_panel.html" %}
-                                {% endwith %}
-                            </div>
-                            {% with form.self_employed_pay_amount as field %}
-                                {% include "widgets/money_field.html" %}
-                            {% endwith %}
-                        </div>
-
-                        <div class="js-hidden" id="section-receiving-benefits">
-                            <strong class="js-hidden">If you're receiving benefits, please complete the following</strong>
-                            {% with form.benefits_period as field %}
-                                {% include "widgets/std_field_panel.html" %}
-                            {% endwith %}
-                            {% with form.benefits_amount as field %}
-                                {% include "widgets/money_field.html" %}
-                            {% endwith %}
-                        </div>
-
-                        <div class="js-hidden" id="section-other">
-                            {% with form.other_info as field %}
-                                {% include "widgets/std_field_panel.html" %}
-                            {% endwith %}
-                        </div>
-
-                        {% with form.hardship as field %}
-                            {% include "widgets/std_field_panel.html" %}
-                        {% endwith %}
-                    </div>
-
-                {% endwith %}
-                <div class="actions">
-                    <button class="button" type=submit>Continue</button>
+                    {% with form.employed_take_home_pay_amount as field %}
+                    {% include "widgets/money_field.html" %}
+                    {% endwith %}
                 </div>
 
-            </form>
-        </div>
+                <div class="js-hidden" id="section-self-employed">
+                    <strong class="js-hidden">If you're self employed, please complete the following</strong>
+
+                    {% with form.your_job as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
+
+                    {% with form.self_employed_pay_period as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
+                    <div class="js-hidden" id="section-self-employed-other">
+                        {% with form.self_employed_pay_other as field %}
+                        {% include "widgets/std_field_panel.html" %}
+                        {% endwith %}
+                    </div>
+                    {% with form.self_employed_pay_amount as field %}
+                    {% include "widgets/money_field.html" %}
+                    {% endwith %}
+                </div>
+
+                <div class="js-hidden" id="section-receiving-benefits">
+                    <strong class="js-hidden">If you're receiving benefits, please complete the following</strong>
+                    {% with form.benefits_details as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
+
+                    {% with form.benefits_dependents as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
+
+                    {% with form.benefits_period as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
+                    <div class="js-hidden" id="section-benefits-other">
+                        {% with form.benefits_pay_other as field %}
+                        {% include "widgets/std_field_panel.html" %}
+                        {% endwith %}
+                    </div>
+                    {% with form.benefits_amount as field %}
+                    {% include "widgets/money_field.html" %}
+                    {% endwith %}
+                </div>
+
+                <div class="js-hidden" id="section-other">
+                    {% with form.other_details as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
+
+                    {% with form.other_pay_amount as field %}
+                    {% include "widgets/money_field.html" %}
+                    {% endwith %}
+                </div>
+            </div>
+
+            {% endwith %}
+            <div class="actions">
+                <button class="button" type=submit>Continue</button>
+            </div>
+
+        </form>
     </div>
+</div>
 {% endblock page_content %}

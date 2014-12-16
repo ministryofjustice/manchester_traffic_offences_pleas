@@ -271,6 +271,26 @@ function calculateExpenses(){
 }
 
 
+function labelTemplateExternal(){
+    $('[data-label-template]').each(function(idx, form_element){
+        var template = $(form_element).data("label-template");
+        var $value_source = $(form_element).data("label-template-value");
+        var $label = $("label[for=" + $(form_element).attr("id") + "]");
+        $(form_element).data("original", $label.text());
+        $("input:radio[name=" + $value_source + "]").click(function(evt){
+            var val = $(evt.target).val().trim().toLowerCase();
+            console.log(val);
+            if(val.indexOf(" ") > 0) {
+                $label.text($(form_element).data("original"));
+            }
+            else {
+                $label.text(template.replace("{0}", val));
+            }
+        });
+    });
+}
+
+
 $(document).ready(function () {
     jQuery.fx.off = true;
 
@@ -285,4 +305,6 @@ $(document).ready(function () {
 
     calculateExpenses();
     $('.expense-container input[type=text]').change(calculateExpenses);
+
+    labelTemplateExternal();
 });
