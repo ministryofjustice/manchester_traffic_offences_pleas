@@ -1,25 +1,64 @@
 # coding=utf-8
 
-from django.test import TestCase
-from django.core import mail
+from datetime import datetime, time
 from mock import Mock
+
+from django.core import mail
+from django.forms.formsets import formset_factory
+from django.test import TestCase
+
 
 from ..email import TemplateAttachmentEmail, send_plea_email
 from ..models import CourtEmailPlea, CourtEmailCount
+from ..forms import CaseForm, YourDetailsForm, PleaForm, YourMoneyForm, RequiredFormSet
 
 
 class EmailTemplateTests(TestCase):
-    def get_context_data(self):
-        return {"case": {"date_of_hearing": "2015-10-30",
-                         "time_of_hearing": "09:15:00",
-                         "urn": "00/AA/00000/00",
-                         "number_of_charges": 1},
-                "your_details": {"name": "Joe Public", "contact_number": "0161 123 2345",
-                                 "email": "test@example.org", "national_insurance_number": "AB001122C",
-                                 "driving_licence_number": "PUB54378493", "registration_number": "JO00 EPU"},
-                "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"}],
-                         "understand": True},
-                "your_money": {}}
+    def get_context_data(self, case_data=None, details_data=None, plea_data=None, money_data=None):
+        if not case_data:
+            case_data = {"urn_0": "00",
+                         "urn_1": "AA",
+                         "urn_2": "00000",
+                         "urn_3": "00",
+                         "date_of_hearing_0": "30",
+                         "date_of_hearing_1": "10",
+                         "date_of_hearing_2": "2015",
+                         "time_of_hearing": "09:15",
+                         "number_of_charges": 1}
+
+        if not details_data:
+            details_data = {"name": "Joe Public",
+                            "contact_number": "0161 123 2345",
+                            "email": "test@example.org"}
+
+        if not plea_data:
+            plea_data = {"form-TOTAL_FORMS": "1",
+                         "form-INITIAL_FORMS": "1",
+                         "form-MAX_NUM_FORMS": "1",
+                         "form-0-guilty": "guilty",
+                         "form-0-mitigations": "IT wasn't me driving!"}
+
+        if not money_data:
+            money_data = {"you_are": "Employed",
+                          "employed_your_job": "Some Job",
+                          "employed_take_home_pay_period": "Weekly",
+                          "employed_take_home_pay_amount": "100"}
+
+        PleaForms = formset_factory(PleaForm, formset=RequiredFormSet, extra=1, max_num=1)
+
+        cf = CaseForm(case_data)
+        df = YourDetailsForm(details_data)
+        pf = PleaForms(plea_data)
+        mf = YourMoneyForm(money_data)
+
+        if all([cf.is_valid(), df.is_valid(), pf.is_valid(), mf.is_valid()]):
+            data = {"case": cf.cleaned_data,
+                    "your_details": df.cleaned_data,
+                    "plea": {"PleaForms": pf.cleaned_data},
+                    "your_money": mf.cleaned_data}
+            return data
+        else:
+            raise Exception(cf.errors, df.errors, pf.errors, mf.errors)
 
     def get_mock_response(self, html):
         response = Mock()
@@ -67,9 +106,6 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>Full name</th><td>Joe Public</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Contact number</th><td>0161 123 2345</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Email</th><td>test@example.org</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>National Insurance number</th><td>AB001122C</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>UK driving licence number</th><td>PUB54378493</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>Registration number</th><td>JO00 EPU</td></tr>", count=1, html=True)
 
     def test_single_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
@@ -119,32 +155,26 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>Plea</th><td>Not guilty</td></tr>", count=1, html=True)
 
     def test_employed_email_money_output(self):
-        context_data = self.get_context_data()
-        context_data["your_money"] = {"you_are": "Employed",
-                                      "employer_name": "Tesco",
-                                      "employer_address": "A big office\nSomewhere central\nAB12 123",
-                                      "employer_phone": "012374384",
-                                      "take_home_pay_period": "Weekly",
-                                      "take_home_pay_amount": "200",
-                                      }
+        context_data_money = {"you_are": "Employed",
+                              "employed_your_job": "Some Job",
+                              "employed_take_home_pay_period": "Weekly",
+                              "employed_take_home_pay_amount": "200"}
+        context_data = self.get_context_data(money_data=context_data_money)
 
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
-        self.assertContains(response, "<tr><th>Employer's name</th><td>Tesco</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>Employer's full address</th><td>A big office<br />Somewhere central<br />AB12 123</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>Employer's phone</th><td>012374384</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Your Job</th><td>Some Job</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>You get paid</th><td>Weekly</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>Amount</th><td>£200</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Take home pay</th><td>£200</td></tr>", count=1, html=True)
 
     def test_self_employed_email_money_output(self):
-        context_data = self.get_context_data()
-        context_data["your_money"] = {"you_are": "Self employed",
-                                      "your_job": "Tesco",
-                                      "self_employed_pay_period": "Weekly",
-                                      "self_employed_pay_amount": "200",
-                                      }
+        context_data_money = {"you_are": "Self employed",
+                              "your_job": "Tesco",
+                              "self_employed_pay_period": "Weekly",
+                              "self_employed_pay_amount": "200"}
+        context_data = self.get_context_data(money_data=context_data_money)
 
         send_plea_email(context_data)
 
@@ -155,13 +185,12 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>Amount</th><td>£200</td></tr>", count=1, html=True)
 
     def test_self_employed_other_email_money_output(self):
-        context_data = self.get_context_data()
-        context_data["your_money"] = {"you_are": "Self employed",
-                                      "your_job": "Window cleaner",
-                                      "self_employed_pay_period": "self-employed other",
-                                      "self_employed_pay_amount": "20",
-                                      "self_employed_pay_other": "by the window"
-                                      }
+        context_data_money = {"you_are": "Self employed",
+                              "your_job": "Window cleaner",
+                              "self_employed_pay_period": "self-employed other",
+                              "self_employed_pay_amount": "20",
+                              "self_employed_pay_other": "by the window"}
+        context_data = self.get_context_data(money_data=context_data_money)
 
         send_plea_email(context_data)
 
@@ -172,27 +201,51 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>Amount</th><td>£20</td></tr>", count=1, html=True)
 
     def test_benefits_email_money_output(self):
-        context_data = self.get_context_data()
-        context_data["your_money"] = {"you_are": "Receiving benefits",
-                                      "benefits_period": "Weekly",
-                                      "benefits_amount": "120"}
+        context_data_money = {"you_are": "Receiving benefits",
+                              "benefits_details": "Housing benefit\nUniversal Credit",
+                              "benefits_dependents": "Yes",
+                              "benefits_period": "Weekly",
+                              "benefits_amount": "120"}
+        context_data = self.get_context_data(money_data=context_data_money)
 
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        self.assertContains(response, "<tr><th>Benefits you receive</th><td>Housing benefit\nUniversal Credit</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>You get paid</th><td>Weekly</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Amount</th><td>£120</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Does this include payment for dependents?</th><td>Yes</td></tr>", count=1, html=True)
+
+
+    def test_benefits_other_email_money_output(self):
+        context_data_money = {"you_are": "Receiving benefits",
+                              "benefits_details": "Housing benefit\nUniversal Credit",
+                              "benefits_dependents": "Yes",
+                              "benefits_period": "benefits other",
+                              "benefits_pay_other": "Other details!",
+                              "benefits_amount": "120"}
+        context_data = self.get_context_data(money_data=context_data_money)
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        self.assertContains(response, "<tr><th>Benefits you receive</th><td>Housing benefit\nUniversal Credit</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>You get paid</th><td>Other - Other details!</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Amount</th><td>£120</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Does this include payment for dependents?</th><td>Yes</td></tr>", count=1, html=True)
+
 
     def test_other_email_money_output(self):
-        context_data = self.get_context_data()
-        context_data["your_money"] = {"you_are": "Other",
-                                      "other_info": "I am a pensioner and I earn\n£500 a month.",
-                                      "benefits_amount": "120"}
+        context_data_money = {"you_are": "Other",
+                              "other_details": "I am a pensioner and I earn\n£500 a month.",
+                              "other_pay_amount": "120"}
+        context_data = self.get_context_data(money_data=context_data_money)
 
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
         self.assertContains(response, "<tr><th>More information</th><td>I am a pensioner and I earn<br />£500 a month.</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Amount</th><td>£120</td></tr>", count=1, html=True)
 
     def test_skipped_email_money_output(self):
         context_data = self.get_context_data()
