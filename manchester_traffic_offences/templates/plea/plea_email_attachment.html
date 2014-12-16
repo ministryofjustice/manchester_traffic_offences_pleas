@@ -117,26 +117,18 @@
     </tr>
     {% if your_money.you_are == "Employed" %}
         <tr>
-            <th>Employer's name</th>
-            <td>{{ your_money.employer_name }}</td>
-        </tr>
-        <tr>
-            <th>Employer's full address</th>
-            <td>{{ your_money.employer_address|linebreaksbr }}</td>
-        </tr>
-        <tr>
-            <th>Employer's phone</th>
-            <td>{{ your_money.employer_phone }}</td>
+            <th>Your Job</th>
+            <td>{{ your_money.employed_your_job }}</td>
         </tr>
         <tr>
             <th>You get paid</th>
             <td>
-                {{ your_money.take_home_pay_period }}
+                {{ your_money.employed_take_home_pay_period }}
             </td>
         </tr>
         <tr>
-            <th>Amount</th>
-            <td>£{{ your_money.take_home_pay_amount }}</td>
+            <th>Take home pay</th>
+            <td>£{{ your_money.employed_take_home_pay_amount }}</td>
         </tr>
     {% endif %}
     {% if your_money.you_are == "Self employed" %}
@@ -161,9 +153,21 @@
     {% endif %}
     {% if your_money.you_are == "Receiving benefits" %}
         <tr>
+            <th>Benefits you receive</th>
+            <td>{{ your_money.benefits_details }}</td>
+        </tr>
+        <tr>
+            <th>Does this include payment for dependents?</th>
+            <td>{{ your_money.benefits_dependents }}</td>
+        </tr>
+        <tr>
             <th>You get paid</th>
             <td>
-                {{ your_money.benefits_period }}
+                {%  if your_money.benefits_period == "benefits other" %}
+                    Other - {{ your_money.benefits_pay_other }}
+                {% else %}
+                    {{ your_money.benefits_period }}
+                {% endif %}
             </td>
         </tr>
         <tr>
@@ -174,7 +178,11 @@
     {% if your_money.you_are == "Other" %}
         <tr>
             <th>More information</th>
-            <td>{{ your_money.other_info|linebreaksbr }}</td>
+            <td>{{ your_money.other_details|linebreaksbr }}</td>
+        </tr>
+        <tr>
+            <th>Amount</th>
+            <td>£{{ your_money.other_pay_amount }}</td>
         </tr>
     {% endif %}
     {% endif %}

@@ -17,7 +17,7 @@ What happens next?
 
 3. Quote your URN {{ urn | upper }} if you contact the court about your case.
 
-4. Print off a copy of this confirmation of plea for your records.
+4. Print a copy of this confirmation of plea for your records.
 
 {% endif %}
 
@@ -37,7 +37,7 @@ What happens next?
 4. Quote your URN {{ urn | upper }} if you contact the court about your
     case.
 
-5. Print off a copy of this confirmation of plea for your records.
+5. Print a copy of this confirmation of plea for your records.
 
 {% endif %}
 
