@@ -13,6 +13,25 @@ from forms import (CaseForm, YourDetailsForm, YourMoneyForm,
 from .fields import ERROR_MESSAGES
 
 
+def get_plea_type(context_data):
+    """
+    Determine if pleas for a submission are
+        all guilty  - returns "guilty"
+        all not guilty - returns "not_guilty"
+        or mixed - returns "mixed"
+    """
+
+    guilty_count = len([plea for plea in context_data['plea']['PleaForms']
+                        if plea['guilty'] == "guilty"])
+
+    if guilty_count == 0:
+        return "not_guilty"
+    elif guilty_count == len(context_data['plea']['PleaForms']):
+        return "guilty"
+    else:
+        return "mixed"
+
+
 class CaseStage(FormStage):
     name = "case"
     template = "plea/case.html"
@@ -142,10 +161,8 @@ class CompleteStage(FormStage):
     dependencies = ["case", "your_details", "plea", "your_money", "review"]
 
     def render(self, request_context):
-        request_context["some_not_guilty"] = False
-        for form_data in self.all_data["plea"]["PleaForms"]:
-            if form_data["guilty"] == "not_guilty":
-                request_context["some_not_guilty"] = True
+
+        request_context['plea_type'] = get_plea_type(self.all_data)
 
         if isinstance(self.all_data["case"]["date_of_hearing"], basestring):
             court_date = parse(self.all_data["case"]["date_of_hearing"])

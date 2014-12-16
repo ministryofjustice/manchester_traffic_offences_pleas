@@ -322,7 +322,8 @@ div.form-panel {
 table {clear:both;margin: 2em 0;}
 table tr, table td, table th {padding:8px; font-size:1em;width:45%;}
 table th a.review {font-weight:normal; float: right;}
-table th.header {font-size: 1.2em;}
+table th.header, h2.header {font-size: 1.2em;}
+h2.header { font-weight: bold; margin-bottom: 0.6em; }
 .get-started-intro a.button.button-get-started {font-size: 135%; font-weight: normal;}
 
 body.urn_invalid {

@@ -1,11 +1,13 @@
+{% load testing %}
 GOV.UK - Online plea submission confirmation
 
-Dear {{ name }}
-This is confirmation that your plea has been sent to the court
+{{ name }}
+Your online {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea(s) have been sent to the court.
 
 What happens next?
 
-{% if guilty %}
+{% if plea_type == "guilty" %}
+    {% add_test_tag "<<GUILTY>>" %}
 
 1. There’s no need to come
     to court on the hearing date shown in the pack we sent you.
@@ -15,10 +17,12 @@ What happens next?
 
 3. Quote your URN {{ urn | upper }} if you contact the court about your case.
 
-4. Print off a copy of this
-    confirmation of plea for your records.
+4. Print a copy of this confirmation of plea for your records.
 
-{% else %}
+{% endif %}
+
+{% if plea_type == "not_guilty" %}
+    {% add_test_tag "<<NOTGUILTY>>" %}
 
 1. There’s no need to come to court on the hearing date shown in the
     pack we sent you.
@@ -30,16 +34,36 @@ What happens next?
 3. We’ll send you a letter with the court’s decision within three working
     days after your hearing.
 
-4. Quote your URN {{ urn }} if you contact the court about your
+4. Quote your URN {{ urn | upper }} if you contact the court about your
     case.
 
-5. Print off a copy of this confirmation of plea for your records.
+5. Print a copy of this confirmation of plea for your records.
+
+{% endif %}
+
+{% if plea_type == "mixed" %}
+    {% add_test_tag "<<MIXED>>" %}
+
+1. There’s no need to come to court on the hearing date shown in the
+    pack we sent you.
+
+2. The court will tell you if you need to attend a trial, and what
+    evidence you may need to send to the court in support of your
+    case.
+
+3. We’ll send you a letter with the court’s decision within three working
+    days after your hearing.
+
+4. Quote your URN {{ urn | upper }} if you contact the court about
+    your case.
+
+5. Print a copy of this confirmation of plea for your records.
 
 {% endif %}
 
 Need to change a plea?
 
-If you wish to make changes to your plea you must now contact the court either by post or email quoting your URN requesting permission to do so, before the date of your hearing.
+Contact the court by post or email quoting your URN before the date of your hearing.
 
 The contact details for the court are:
 
