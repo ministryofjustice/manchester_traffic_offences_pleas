@@ -33,6 +33,7 @@ ERROR_MESSAGES = {
     "CONTACT_NUMBER_INVALID": "The contact number isn't a valid format",
     "PLEA_REQUIRED": "Your plea must be selected",
     "YOU_ARE_REQUIRED": "You must let us know if you're employed, receiving benefits or other",
+    "EMPLOYED_JOB_REQUIRED": "Please tell us what your job is",
     "EMPLOYERS_NAME_REQUIRED": "Please enter your employer's full name",
     "EMPLOYERS_ADDRESS_REQUIRED": "You must provide your employer's full address",
     "EMPLOYERS_PHONE_REQUIRED": "Please enter your employer's phone number",
