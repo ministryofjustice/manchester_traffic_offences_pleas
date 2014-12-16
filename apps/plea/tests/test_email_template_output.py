@@ -328,3 +328,75 @@ class EmailTemplateTests(TestCase):
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
         self.assertContains(response, "<tr><th>Plea</th><td>Guilty</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Plea</th><td>Not guilty</td></tr>", count=1, html=True)
+
+    def test_plea_email_guilty_pleas(self):
+        context_data = self.get_context_data()
+        context_data["case"]['number_of_pleas'] = 3
+        context_data["plea"]["PleaForms"] = [
+            {
+                'guilty': 'guilty',
+                'mitigations': 'asdf'
+            },
+            {
+                'guilty': 'guilty',
+                'mitigations': 'asdf'
+            },
+            {
+                'guilty': 'guilty',
+                'mitigations': 'asdf'
+            }
+        ]
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[2].body)
+
+        self.assertContains(response, '<<GUILTY>>')
+
+    def test_plea_email_not_guilty_pleas(self):
+        context_data = self.get_context_data()
+        context_data["case"]['number_of_pleas'] = 3
+        context_data["plea"]["PleaForms"] = [
+            {
+                'guilty': 'not_guilty',
+                'mitigations': 'asdf'
+            },
+            {
+                'guilty': 'not_guilty',
+                'mitigations': 'asdf'
+            },
+            {
+                'guilty': 'not_guilty',
+                'mitigations': 'asdf'
+            }
+        ]
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[2].body)
+
+        self.assertContains(response, '<<NOTGUILTY>>')
+
+    def test_plea_email_mixed_pleas(self):
+        context_data = self.get_context_data()
+        context_data["case"]['number_of_pleas'] = 3
+        context_data["plea"]["PleaForms"] = [
+            {
+                'guilty': 'not_guilty',
+                'mitigations': 'asdf'
+            },
+            {
+                'guilty': 'guilty',
+                'mitigations': 'asdf'
+            },
+            {
+                'guilty': 'guilty',
+                'mitigations': 'asdf'
+            }
+        ]
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[2].body)
+
+        self.assertContains(response, '<<MIXED>>')
