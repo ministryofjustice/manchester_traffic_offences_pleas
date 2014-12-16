@@ -130,6 +130,16 @@ class YourMoneyStage(FormStage):
     form_classes = [YourMoneyForm]
     dependencies = ["case", "your_details", "plea"]
 
+    def save(self, form_data, next_step=None):
+
+        clean_data = super(YourMoneyStage, self).save(form_data, next_step)
+
+        if not clean_data.get('hardship', False):
+            self.next_step = self.all_urls['review']
+            self.all_data["your_expenses"]["complete"] = True
+
+        return clean_data
+
 
 class YourExpensesStage(FormStage):
     name = "your_expenses"
@@ -153,13 +163,14 @@ class YourExpensesStage(FormStage):
 
         clean_data = super(YourExpensesStage, self).save(form_data, next_step)
 
-        total_household = sum(clean_data[field] for field in household_expense_fields)
-        total_other = sum(clean_data[field] for field in other_expense_fields)
-        total_expenses = total_household + total_other
+        if 'complete' in clean_data:
+            total_household = sum(clean_data[field] for field in household_expense_fields)
+            total_other = sum(clean_data[field] for field in other_expense_fields)
+            total_expenses = total_household + total_other
 
-        clean_data['total_household_expenses'] = total_household
-        clean_data['total_other_expenses'] = total_other
-        clean_data['total_expenses'] = total_expenses
+            clean_data['total_household_expenses'] = total_household
+            clean_data['total_other_expenses'] = total_other
+            clean_data['total_expenses'] = total_expenses
 
         return clean_data
 

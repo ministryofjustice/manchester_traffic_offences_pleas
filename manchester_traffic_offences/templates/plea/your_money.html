@@ -106,6 +106,10 @@
                                 {% include "widgets/std_field_panel.html" %}
                             {% endwith %}
                         </div>
+
+                        {% with form.hardship as field %}
+                            {% include "widgets/std_field_panel.html" %}
+                        {% endwith %}
                     </div>
 
                 {% endwith %}
