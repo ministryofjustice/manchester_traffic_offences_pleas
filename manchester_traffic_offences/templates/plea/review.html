@@ -125,26 +125,18 @@
                         </tr>
                         {% if your_money.you_are == "Employed" %}
                             <tr>
-                                <th class="label">Employer's name</th>
-                                <td>{{ your_money.employer_name }}</td>
-                            </tr>
-                            <tr>
-                                <th class="label">Employer's full address</th>
-                                <td>{{ your_money.employer_address|linebreaksbr }}</td>
-                            </tr>
-                            <tr>
-                                <th class="label">Employer's phone</th>
-                                <td>{{ your_money.employer_phone }}</td>
+                                <th class="label">Your Job</th>
+                                <td>{{ your_money.employed_your_job }}</td>
                             </tr>
                             <tr>
                                 <th class="label">You get paid</th>
                                 <td>
-                                    {{ your_money.take_home_pay_period }}
+                                    {{ your_money.employed_take_home_pay_period }}
                                 </td>
                             </tr>
                             <tr>
-                                <th class="label">Amount</th>
-                                <td>£{{ your_money.take_home_pay_amount }}</td>
+                                <th class="label">Take home pay</th>
+                                <td>£{{ your_money.employed_take_home_pay_amount }}</td>
                             </tr>
                         {% endif %}
                         {% if your_money.you_are == "Self employed" %}
@@ -169,9 +161,25 @@
                         {% endif %}
                         {% if your_money.you_are == "Receiving benefits" %}
                             <tr>
+                                <th class="label">Benefits you receive</th>
+                                <td>
+                                    {{ your_money.benefits_details|linebreaksbr }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="label">Does this include payment for dependents?</th>
+                                <td>
+                                    {{ your_money.benefits_dependents }}
+                                </td>
+                            </tr>
+                            <tr>
                                 <th class="label">You get paid</th>
                                 <td>
+                                    {%  if your_money.benefits_period == "benefits other" %}
+                                    Other - {{ your_money.benefits_pay_other }}
+                                    {% else %}
                                     {{ your_money.benefits_period }}
+                                    {% endif %}
                                 </td>
                             </tr>
                             <tr>
@@ -182,7 +190,11 @@
                         {% if your_money.you_are == "Other" %}
                             <tr>
                                 <th class="label">More information</th>
-                                <td>{{ your_money.other_info|linebreaksbr }}</td>
+                                <td>{{ your_money.other_details|linebreaksbr }}</td>
+                            </tr>
+                            <tr>
+                                <th>Amount</th>
+                                <td>£{{ your_money.other_pay_amount }}</td>
                             </tr>
                         {% endif %}
 
@@ -218,6 +230,7 @@
                 {% endif %}
                     <section>
                         <a id="section_understand" name="section_understand"></a>
+                        <h2 class="header">Important</h2>
                         <div class="group{% if form.understand.errors %} error{% endif %}">
                             <span class="validation-message">{{ form.understand.errors }}</span>
                             <label for="{{ form.understand.id_for_label }}" class="block-label" id="{{ form.understand.name }}">

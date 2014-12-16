@@ -287,7 +287,7 @@ class TestMultiPleaForms(TestCase):
 
         form.save(test_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 5)
+        self.assertEqual(len(form.current_stage.forms[0].errors), 3)
 
     def test_your_money_employed_option_with_valid_data(self):
 
@@ -295,11 +295,9 @@ class TestMultiPleaForms(TestCase):
 
         test_data = {
             "you_are": "Employed",
-            "employer_name": "test",
-            "employer_address": "test",
-            "employer_phone": "test",
-            "take_home_pay_period": "Fortnightly",
-            "take_home_pay_amount": "1000"
+            "employed_your_job": "Window cleaner",
+            "employed_take_home_pay_period": "Fortnightly",
+            "employed_take_home_pay_amount": "1000"
         }
 
         form.save(test_data, self.request_context)
@@ -343,7 +341,7 @@ class TestMultiPleaForms(TestCase):
 
         form.save(test_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 2)
+        self.assertEqual(len(form.current_stage.forms[0].errors), 4)
 
     def test_your_money_benefits_option_with_valid_data(self):
 
@@ -351,6 +349,8 @@ class TestMultiPleaForms(TestCase):
 
         test_data = {
             "you_are": "Receiving benefits",
+            "benefits_details": "Some data about my benefits",
+            "benefits_dependents": "Yes",
             "benefits_period": "Fortnightly",
             "benefits_amount": "1000"
         }
@@ -369,7 +369,7 @@ class TestMultiPleaForms(TestCase):
 
         form.save(test_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 1)
+        self.assertEqual(len(form.current_stage.forms[0].errors), 2)
 
     def test_your_money_other_option_with_valid_data(self):
 
@@ -377,7 +377,8 @@ class TestMultiPleaForms(TestCase):
 
         test_data = {
             "you_are": "Other",
-            "other_info": "woo woo woo"
+            "other_details": "woo woo woo",
+            "other_pay_amount": "100"
             }
 
         form.save(test_data, self.request_context)
