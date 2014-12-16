@@ -1535,7 +1535,7 @@ input, select {
   margin: 0; }
 
 #id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number,
-#id_employer_name, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0, #id_your_job {
+#id_employed_your_job, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0, #id_your_job {
   width: 32%; }
 
 select {
