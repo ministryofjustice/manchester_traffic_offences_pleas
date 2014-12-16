@@ -188,9 +188,9 @@
 
                             <tr>
                                 <th class="label">Financial hardship</th>
-                                <td>{% if your_expenses.complete %}Yes{% else %}No{% endif %}</td>
+                                <td>{% if your_money.hardship %}Yes{% else %}No{% endif %}</td>
                             </tr>
-                            {% if your_expenses.complete %}
+                            {% if your_money.hardship %}
                             <tr>
                                 <th class="label">Financial hardship details</th>
                                 <td>{{ your_expenses.hardship_details|linebreaksbr }}</td>

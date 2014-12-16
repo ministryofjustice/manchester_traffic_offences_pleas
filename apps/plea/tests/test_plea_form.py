@@ -43,7 +43,7 @@ class TestMultiPleaForms(TestCase):
 
         self.request_factory = RequestFactory()
 
-        self.submission_data = {
+        self.test_session_data = {
             "case": {
                 "complete": True,
                 "date_of_hearing": "2015-01-01",
@@ -623,7 +623,7 @@ class TestMultiPleaForms(TestCase):
         fake_request = self.get_request_mock("/plea/complete")
         request_context = RequestContext(fake_request)
 
-        stage_data = self.submission_data
+        stage_data = self.test_session_data
 
         form = PleaOnlineForms("complete", "plea_form_step", stage_data)
         form.load(request_context)
@@ -637,7 +637,7 @@ class TestMultiPleaForms(TestCase):
         fake_request = self.get_request_mock("/plea/complete")
         request_context = RequestContext(fake_request)
 
-        stage_data = self.submission_data
+        stage_data = self.test_session_data
 
         stage_data['plea']['PleaForms'][0]['guilty'] = "not_guilty"
 
@@ -653,7 +653,7 @@ class TestMultiPleaForms(TestCase):
         fake_request = self.get_request_mock("/plea/complete")
         request_context = RequestContext(fake_request)
 
-        stage_data = self.submission_data
+        stage_data = self.test_session_data
 
         stage_data['plea']['PleaForms'] = [
             {
@@ -735,3 +735,45 @@ class TestMultiPleaForms(TestCase):
         response = form.render()
 
         self.assertEquals(response.status_code, 200)
+
+    def test_your_finances_hardship_redirects_to_your_expenses(self):
+
+        form = PleaOnlineForms("your_money", "plea_form_step", self.session)
+
+        session_data = self.test_session_data
+
+        form.load(session_data)
+
+        test_data = {
+            "you_are": "Receiving benefits",
+            "benefits_period": "Fortnightly",
+            "benefits_amount": "1000",
+            "hardship": "True"
+        }
+
+        form.save(test_data, session_data)
+
+        response = form.render()
+
+        self.assertEquals(response.url, '/plea/your_expenses/')
+
+    def test_your_finances_no_hardship_redirects_to_review(self):
+
+        form = PleaOnlineForms("your_money", "plea_form_step", self.session)
+
+        session_data = self.test_session_data
+
+        form.load(session_data)
+
+        test_data = {
+            "you_are": "Receiving benefits",
+            "benefits_period": "Fortnightly",
+            "benefits_amount": "1000",
+            "hardship": "False"
+        }
+
+        form.save(test_data, session_data)
+
+        response = form.render()
+
+        self.assertEquals(response.url, '/plea/review/')

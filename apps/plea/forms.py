@@ -9,6 +9,11 @@ from .fields import (ERROR_MESSAGES, is_date_in_future, DSRadioFieldRenderer, Ra
                      URNField, HearingTimeField,
                      HearingDateWidget, is_urn_not_used)
 
+YESNO_CHOICES = (
+    (True, "Yes"),
+    (False, "No")
+)
+
 
 class RequiredFormSet(BaseFormSet):
     def __init__(self, *args, **kwargs):
@@ -85,6 +90,7 @@ class YourMoneyForm(BasePleaStepForm):
                                            widget=forms.TextInput(attrs={"maxlength": "7", "class": "amount"}),
                                            error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                            "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
+
     # Self employed
     your_job = forms.CharField(required=False, max_length=100, label="What's your job?",
                                error_messages={"required": ERROR_MESSAGES["YOUR_JOB_REQUIRED"]})
@@ -100,6 +106,7 @@ class YourMoneyForm(BasePleaStepForm):
     self_employed_pay_other = forms.CharField(required=False, max_length=500, label="",
                                               widget=forms.Textarea(attrs={"rows": "2"}),
                                               help_text="Please provide additional information")
+
     # On benefits
     benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=RadioFieldRenderer),
                                         choices=PERIOD_CHOICES, required=False,
@@ -114,6 +121,14 @@ class YourMoneyForm(BasePleaStepForm):
     # Other
     other_info = forms.CharField(required=False, max_length=500, label="", help_text="Please provide additional information",
                                  widget=forms.Textarea, error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
+
+    to_bool = lambda x: x == "True"
+
+    hardship = forms.TypedChoiceField(label="Would paying a fine cause you financial hardship?",
+                                      widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                      choices=YESNO_CHOICES,
+                                      coerce=to_bool)
+
 
     def __init__(self, *args, **kwargs):
         super(YourMoneyForm, self).__init__(*args, **kwargs)
@@ -149,61 +164,111 @@ class YourExpensesForm(BasePleaStepForm):
         help_text="What you feel the court should consider "
                   "when deciding on any possible fine.",
         widget=forms.Textarea,
-        required=False)
+        required=True,
+        error_messages={'required': ERROR_MESSAGES['HARDSHIP_DETAILS_REQUIRED']})
 
     household_accommodation = forms.DecimalField(
         initial=0,
         min_value=0,
-        label="Accomodation",
-        help_text="Rent, mortgage or lodgings")
+        label="Accommodation",
+        help_text="Rent, mortgage or lodgings",
+        widget=forms.TextInput,
+        error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_ACCOMMODATION_REQUIRED'],
+                        'invalid': ERROR_MESSAGES['HOUSEHOLD_ACCOMMODATION_INVALID'],
+                        'min_value': ERROR_MESSAGES['HOUSEHOLD_ACCOMMODATION_MIN']})
+
     household_utility_bills = forms.DecimalField(
         initial=0,
         min_value=0,
         label="Utility bills",
-        help_text="Gas, water, electricity etc")
+        help_text="Gas, water, electricity etc",
+        widget=forms.TextInput,
+        error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_UTILITY_BILLS_REQUIRED'],
+                        'invalid': ERROR_MESSAGES['HOUSEHOLD_UTILITY_BILLS_INVALID'],
+                        'min_value': ERROR_MESSAGES['HOUSEHOLD_UTILITY_BILLS_MIN']})
+
     household_insurance = forms.DecimalField(
         initial=0,
         min_value=0,
         label="Insurance",
-        help_text="Home, life insurance etc")
+        help_text="Home, life insurance etc",
+        widget=forms.TextInput,
+        error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_REQUIRED'],
+                        'invalid': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_INVALID'],
+                        'min_value': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_MIN']})
+
     household_council_tax = forms.DecimalField(
         initial=0,
         min_value=0,
-        label="Council tax")
+        label="Council tax",
+        widget=forms.TextInput,
+        error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_REQUIRED'],
+                        'invalid': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_INVALID'],
+                        'min_value': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_MIN']})
 
     other_bill_payers = forms.ChoiceField(
         widget=RadioSelect(renderer=DSRadioFieldRenderer),
         help_text="Does anyone else contribute to these bills?",
-        choices=((True, 'Yes'), (False, 'No')))
+        choices=((True, 'Yes'), (False, 'No')),
+        error_messages={'required': ERROR_MESSAGES['OTHER_BILL_PAYERS_REQUIRED']})
 
     other_tv_subscription = forms.DecimalField(
         initial=0,
         min_value=0,
         label="Television subscription",
-        help_text="TV licence, satellite etc")
+        help_text="TV licence, satellite etc",
+        widget=forms.TextInput,
+        error_messages={'required': ERROR_MESSAGES['OTHER_TV_SUBSCRIPTION_REQUIRED'],
+                        'invalid': ERROR_MESSAGES['OTHER_TV_SUBSCRIPTION_INVALID'],
+                        'min_value': ERROR_MESSAGES['OTHER_TV_SUBSCRIPTION_MIN']})
+
     other_travel_expenses = forms.DecimalField(
         initial=0,
         min_value=0,
         label="Travel expenses",
-        help_text="Fuel, car, public transport etc")
+        help_text="Fuel, car, public transport etc",
+        widget=forms.TextInput,
+        error_messages={'required': ERROR_MESSAGES['OTHER_TRAVEL_EXPENSES_REQUIRED'],
+                        'invalid': ERROR_MESSAGES['OTHER_TRAVEL_EXPENSES_INVALID'],
+                        'min_value': ERROR_MESSAGES['OTHER_TRAVEL_EXPENSES_MIN']})
+
     other_telephone = forms.DecimalField(
         initial=0,
         min_value=0,
         label="Telephone",
-        help_text="inc. mobile")
+        help_text="inc. mobile",
+        widget=forms.TextInput,
+        error_messages={'required': ERROR_MESSAGES['OTHER_TELEPHONE_REQUIRED'],
+                        'invalid': ERROR_MESSAGES['OTHER_TELEPHONE_INVALID'],
+                        'min_value': ERROR_MESSAGES['OTHER_TELEPHONE_MIN']})
+
     other_loan_repayments = forms.DecimalField(
         initial=0,
         min_value=0,
         label="Loan repayments",
-        help_text="redit card, bank etc")
+        help_text="Credit card, bank etc",
+        widget=forms.TextInput,
+        error_messages={'required': ERROR_MESSAGES['OTHER_LOAN_REPAYMENTS_REQUIRED'],
+                        'invalid': ERROR_MESSAGES['OTHER_LOAN_REPAYMENTS_INVALID'],
+                        'min_value': ERROR_MESSAGES['OTHER_LOAN_REPAYMENTS_MIN']})
+
     other_court_payments = forms.DecimalField(
         initial=0,
         min_value=0,
-        label="County court orders")
+        label="County court orders",
+        widget=forms.TextInput,
+        error_messages={'required': ERROR_MESSAGES['OTHER_COURT_PAYMENTS_REQUIRED'],
+                        'invalid': ERROR_MESSAGES['OTHER_COURT_PAYMENTS_INVALID'],
+                        'min_value': ERROR_MESSAGES['OTHER_COURT_PAYMENTS_MIN']})
+
     other_child_maintenance = forms.DecimalField(
         initial=0,
         min_value=0,
-        label="Child maintenance")
+        label="Child maintenance",
+        widget=forms.TextInput,
+        error_messages={'required': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_REQUIRED'],
+                        'invalid': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_INVALID'],
+                        'min_value': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_MIN']})
 
 
 class ConfirmationForm(BasePleaStepForm):
