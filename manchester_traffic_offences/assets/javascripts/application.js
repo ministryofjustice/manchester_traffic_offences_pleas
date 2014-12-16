@@ -246,6 +246,30 @@ function onClickToggleContainer(toggleSelector, targetSelectors){
     });
 }
 
+function calculateTotals(elems){
+    var total = 0;
+
+    $.each(elems, function(key, item){
+
+        var value = parseFloat($(item).val());
+
+        if(value){
+            total += value;
+        }
+    });
+
+    return total >= 0 ? total : 0;
+}
+
+function calculateExpenses(){
+    var household_expenses = calculateTotals($('#household_expenses input[type=text]'));
+    var other_expenses = calculateTotals($('#other_expenses input[type=text]'));
+
+    $('.total_household').html(household_expenses.toFixed(2));
+    $('.total_other').html(other_expenses.toFixed(2));
+    $('.total_expenses').html((household_expenses+other_expenses).toFixed(2));
+}
+
 
 $(document).ready(function () {
     jQuery.fx.off = true;
@@ -258,4 +282,7 @@ $(document).ready(function () {
     onClickToggleContainer('#case_contact_link a', '#case_contact_details');
 
     alertIfFieldsChanged();
+
+    calculateExpenses();
+    $('.expense-container input[type=text]').change(calculateExpenses);
 });

@@ -1713,21 +1713,34 @@ div.form-panel {
   font-size: 1.3em;
   font-weight: bold; }
 #your-expenses #id_consideration {
-  width: 450px;
-  height: 150px; }
+  width: 500px;
+  height: 100px; }
+#your-expenses section.error, #your-expenses div.error {
+  margin: 0; }
 #your-expenses .expense-container {
-  width: 710px; }
+  width: 840px;
+  margin-bottom: 20px; }
   #your-expenses .expense-container div.field-indent {
-    border-left: none;
+    border-color: #fff;
     padding: 0; }
+  #your-expenses .expense-container div.indent-error {
+    border-color: #e12d2d;
+    padding-left: 4px; }
   #your-expenses .expense-container > section {
-    float: left;
-    width: 350px; }
+    display: inline-block;
+    width: 416px; }
     #your-expenses .expense-container > section p.form-hint {
       overflow: auto;
       height: 20px; }
     #your-expenses .expense-container > section input {
       width: 150px; }
+#your-expenses #expense-summary {
+  margin-top: 20px;
+  width: 600px; }
+  #your-expenses #expense-summary td {
+    border: none; }
+#your-expenses .expense-container {
+  margin-bottom: 20px; }
 
 #terms h2 {
   font-size: 32px;

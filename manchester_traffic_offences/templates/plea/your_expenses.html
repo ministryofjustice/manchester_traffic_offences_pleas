@@ -43,7 +43,7 @@
 
                     <p>For those that don't apply enter 0.</p>
 
-                    <div class="expense-container">
+                    <div class="expense-container" id="household_expenses">
                         {% with form.household_accommodation as field %}
                             {% include "widgets/money_field.html" %}
                         {% endwith %}
@@ -59,6 +59,8 @@
                         {% with form.household_council_tax as field %}
                             {% include "widgets/money_field.html" %}
                         {% endwith %}
+
+                        <br class="clear">
                     </div>
 
                     <hr>
@@ -72,7 +74,7 @@
                         {% include "widgets/std_field.html" %}
                     {% endwith %}
 
-                    <div class="expense-container">
+                    <div class="expense-container" id="other_expenses">
                         {% with form.other_tv_subscription as field %}
                             {% include "widgets/money_field.html" %}
                         {% endwith %}
@@ -96,9 +98,28 @@
                         {% with form.other_child_maintenance as field %}
                             {% include "widgets/money_field.html" %}
                         {% endwith %}
+
+                        <br class="clear">
                     </div>
 
                 {% endwith %}
+
+                <hr>
+
+                <table id="expense-summary">
+                    <tr>
+                        <td>Total household expenses</td>
+                        <td>£<span class="total_household"></span>p</td>
+                    </tr>
+                    <tr>
+                        <td>Total other expenses</td>
+                        <td>£<span class="total_other"></span>p</td>
+                    </tr>
+                    <tr class="total">
+                        <td><strong>Total expenses</strong></td>
+                        <td><strong>£<span class="total_expenses"></span>p</strong></td>
+                    </tr>
+                </table>
 
                 <div class="actions">
                     <button class="button" type=submit>Continue</button>

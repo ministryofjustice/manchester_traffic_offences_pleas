@@ -330,22 +330,32 @@ div.form-panel {
   }
 
   #id_consideration{
-    width: 450px;
-    height: 150px;
+    width: 500px;
+    height: 100px;
+  }
+
+  section.error, div.error{
+    margin: 0;
   }
 
   .expense-container{
-    width: 710px;
+    width: 840px;
+    margin-bottom: 20px;
 
     div.field-indent{
-      border-left: none;
+      border-color: #fff;
       padding: 0;
+    }
+
+    div.indent-error{
+      border-color: #e12d2d;
+      padding-left: 4px;
     }
 
     & > section {
 
-      float: left;
-      width: 350px;
+      display: inline-block;
+      width: 416px;
 
       p.form-hint{
         overflow: auto;
@@ -356,6 +366,19 @@ div.form-panel {
         width: 150px;
       }
     }
+  }
+
+  #expense-summary{
+    margin-top: 20px;
+    width: 600px;
+
+    td{
+      border: none;
+    }
+}
+
+  .expense-container{
+    margin-bottom: 20px;
   }
 }
 
