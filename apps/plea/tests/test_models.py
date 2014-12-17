@@ -27,7 +27,7 @@ class CourtEmailCountModelTestCase(TestCase):
         emailcount = CourtEmailCount()
         emailcount.get_from_context(context)
 
-        self.assertEquals(emailcount.hearing_date, dt.datetime(2014, 9, 22, 9, 15, 0))
+        self.assertEqual(emailcount.hearing_date, dt.datetime(2014, 9, 22, 9, 15, 0))
 
     def test_get_stats_yesterday(self):
         """
@@ -63,16 +63,16 @@ class CourtEmailCountModelTestCase(TestCase):
 
         stats = CourtEmailCount.objects.get_stats()
 
-        self.assertEquals(stats['submissions']['to_date'], 3)
-        self.assertEquals(stats['submissions']['yesterday'], 2)
+        self.assertEqual(stats['submissions']['to_date'], 3)
+        self.assertEqual(stats['submissions']['yesterday'], 2)
 
-        self.assertEquals(stats['pleas']['to_date']['guilty'], 3)
-        self.assertEquals(stats['pleas']['to_date']['not_guilty'], 3)
-        self.assertEquals(stats['pleas']['to_date']['total'], 6)
+        self.assertEqual(stats['pleas']['to_date']['guilty'], 3)
+        self.assertEqual(stats['pleas']['to_date']['not_guilty'], 3)
+        self.assertEqual(stats['pleas']['to_date']['total'], 6)
 
-        self.assertEquals(stats['pleas']['yesterday']['guilty'], 2)
-        self.assertEquals(stats['pleas']['yesterday']['not_guilty'], 2)
-        self.assertEquals(stats['pleas']['yesterday']['total'], 4)
+        self.assertEqual(stats['pleas']['yesterday']['guilty'], 2)
+        self.assertEqual(stats['pleas']['yesterday']['not_guilty'], 2)
+        self.assertEqual(stats['pleas']['yesterday']['total'], 4)
 
 
     def test_get_stats_last_week(self):
@@ -103,11 +103,11 @@ class CourtEmailCountModelTestCase(TestCase):
 
         stats = CourtEmailCount.objects.get_stats()
 
-        self.assertEquals(stats['pleas']['last_week']['guilty'], 2)
-        self.assertEquals(stats['pleas']['last_week']['not_guilty'], 2)
-        self.assertEquals(stats['pleas']['last_week']['total'], 4)
+        self.assertEqual(stats['pleas']['last_week']['guilty'], 2)
+        self.assertEqual(stats['pleas']['last_week']['not_guilty'], 2)
+        self.assertEqual(stats['pleas']['last_week']['total'], 4)
 
-        self.assertEquals(stats['submissions']['last_week'], 2)
+        self.assertEqual(stats['submissions']['last_week'], 2)
 
     def test_get_stats_by_hearing_date(self):
         """
@@ -137,12 +137,12 @@ class CourtEmailCountModelTestCase(TestCase):
 
         stats = CourtEmailCount.objects.get_stats_by_hearing_date(days=1)
 
-        self.assertEquals(len(stats), 1)
-        self.assertEquals(stats[0]['hearing_day'], tomorrow.date())
+        self.assertEqual(len(stats), 1)
+        self.assertEqual(stats[0]['hearing_day'], tomorrow.date())
 
-        self.assertEquals(stats[0]['submissions'], 2)
-        self.assertEquals(stats[0]['guilty'], 2)
-        self.assertEquals(stats[0]['not_guilty'], 2)
+        self.assertEqual(stats[0]['submissions'], 2)
+        self.assertEqual(stats[0]['guilty'], 2)
+        self.assertEqual(stats[0]['not_guilty'], 2)
 
     def test_court_email_plea__get_from_context__sc_char_count(self):
 
@@ -174,5 +174,5 @@ class CourtEmailCountModelTestCase(TestCase):
 
         email_count.get_from_context(context)
 
-        self.assertEquals(email_count.sc_guilty_char_count, 13)
-        self.assertEquals(email_count.sc_not_guilty_char_count, 16)
+        self.assertEqual(email_count.sc_guilty_char_count, 13)
+        self.assertEqual(email_count.sc_not_guilty_char_count, 16)

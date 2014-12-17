@@ -77,7 +77,11 @@ class TestMultiPleaForms(TestCase):
                 "employer_address": "test",
                 "employer_phone": "test",
                 "take_home_pay_period": "Fortnightly",
-                "take_home_pay_amount": "1000"},
+                "take_home_pay_amount": "1000",
+                "employer_hardship": True},
+            'your_expenses': {
+                "complete": True
+            },
             'review': {
                 "complete": True
             }
@@ -122,8 +126,8 @@ class TestMultiPleaForms(TestCase):
 
         response = form.render()
 
-        self.assertEquals(form.current_stage.forms[0].errors.keys()[0], 'urn')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(form.current_stage.forms[0].errors.keys()[0], 'urn')
+        self.assertEqual(response.status_code, 200)
 
     def test_case_stage_good_data(self):
         form = PleaOnlineForms("case", "plea_form_step", self.session)
@@ -267,7 +271,7 @@ class TestMultiPleaForms(TestCase):
 
         response = form.render()
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_your_money_employment_type_required(self):
 
@@ -287,7 +291,7 @@ class TestMultiPleaForms(TestCase):
 
         form.save(test_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 3)
+        self.assertEqual(len(form.current_stage.forms[0].errors), 4)
 
     def test_your_money_employed_option_with_valid_data(self):
 
@@ -297,7 +301,8 @@ class TestMultiPleaForms(TestCase):
             "you_are": "Employed",
             "employed_your_job": "Window cleaner",
             "employed_take_home_pay_period": "Fortnightly",
-            "employed_take_home_pay_amount": "1000"
+            "employed_take_home_pay_amount": "1000",
+            "employed_hardship": True
         }
 
         form.save(test_data, self.request_context)
@@ -314,7 +319,7 @@ class TestMultiPleaForms(TestCase):
 
         form.save(test_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 3)
+        self.assertEqual(len(form.current_stage.forms[0].errors), 4)
 
     def test_your_money_self_employed_option_with_valid_data(self):
 
@@ -324,7 +329,8 @@ class TestMultiPleaForms(TestCase):
             "you_are": "Self employed",
             "your_job": "Build trains",
             "self_employed_pay_period": "Fortnightly",
-            "self_employed_pay_amount": "1000"
+            "self_employed_pay_amount": "1000",
+            "self_employed_hardship": False
         }
 
         form.save(test_data, self.request_context)
@@ -341,7 +347,7 @@ class TestMultiPleaForms(TestCase):
 
         form.save(test_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 4)
+        self.assertEqual(len(form.current_stage.forms[0].errors), 5)
 
     def test_your_money_benefits_option_with_valid_data(self):
 
@@ -352,7 +358,8 @@ class TestMultiPleaForms(TestCase):
             "benefits_details": "Some data about my benefits",
             "benefits_dependents": "Yes",
             "benefits_period": "Fortnightly",
-            "benefits_amount": "1000"
+            "benefits_amount": "1000",
+            "receiving_benefits_hardship": False
         }
 
         form.save(test_data, self.request_context)
@@ -369,7 +376,7 @@ class TestMultiPleaForms(TestCase):
 
         form.save(test_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 2)
+        self.assertEqual(len(form.current_stage.forms[0].errors), 3)
 
     def test_your_money_other_option_with_valid_data(self):
 
@@ -378,7 +385,8 @@ class TestMultiPleaForms(TestCase):
         test_data = {
             "you_are": "Other",
             "other_details": "woo woo woo",
-            "other_pay_amount": "100"
+            "other_pay_amount": "100",
+            "other_hardship": False
             }
 
         form.save(test_data, self.request_context)
@@ -715,8 +723,8 @@ class TestMultiPleaForms(TestCase):
 
             response = form.render()
 
-            self.assertEquals(response.status_code, 302)
-            self.assertEquals(response.url, reverse('urn_already_used'))
+            self.assertEqual(response.status_code, 302)
+            self.assertEqual(response.url, reverse('urn_already_used'))
 
     def test_urn_not_success_is_not_blocked(self):
         urn = "00/aa/0000000/00"
@@ -735,46 +743,291 @@ class TestMultiPleaForms(TestCase):
 
         response = form.render()
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
-    def test_your_finances_hardship_redirects_to_your_expenses(self):
-
-        form = PleaOnlineForms("your_money", "plea_form_step", self.session)
+    def test_your_finances_employed_hardship_redirects_to_your_expenses(self):
 
         session_data = self.test_session_data
+        fake_request = self.get_request_mock("/plea/your_expenses")
+        request_context = RequestContext(fake_request)
 
-        form.load(session_data)
+        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+
+        form.load(request_context)
 
         test_data = {
-            "you_are": "Receiving benefits",
-            "benefits_period": "Fortnightly",
-            "benefits_amount": "1000",
-            "hardship": "True"
+            "you_are": "Employed",
+            "employed_your_job": "Window cleaner",
+            "employed_take_home_pay_period": "Fortnightly",
+            "employed_take_home_pay_amount": "1000",
+            "employed_hardship": True
         }
 
-        form.save(test_data, session_data)
+        form.save(test_data, request_context)
 
         response = form.render()
 
-        self.assertEquals(response.url, '/plea/your_expenses/')
+        self.assertEqual(response.url, '/plea/your_expenses/')
 
-    def test_your_finances_no_hardship_redirects_to_review(self):
-
-        form = PleaOnlineForms("your_money", "plea_form_step", self.session)
+    def test_your_finances_employed_no_hardship_redirects_to_review(self):
 
         session_data = self.test_session_data
+        fake_request = self.get_request_mock("/plea/your_money")
+        request_context = RequestContext(fake_request)
 
-        form.load(session_data)
+        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+
+        form.load(request_context)
 
         test_data = {
-            "you_are": "Receiving benefits",
-            "benefits_period": "Fortnightly",
-            "benefits_amount": "1000",
-            "hardship": "False"
+            "you_are": "Employed",
+            "employed_your_job": "Window cleaner",
+            "employed_take_home_pay_period": "Fortnightly",
+            "employed_take_home_pay_amount": "1000",
+            "employed_hardship": False
         }
 
-        form.save(test_data, session_data)
+        form.save(test_data, request_context)
 
         response = form.render()
 
-        self.assertEquals(response.url, '/plea/review/')
+        self.assertEqual(response.url, '/plea/review/')
+
+    def test_your_finances_self_employed_hardship_redirects_to_your_expenses(self):
+
+        session_data = self.test_session_data
+        fake_request = self.get_request_mock("/plea/your_expenses")
+        request_context = RequestContext(fake_request)
+
+        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+
+        form.load(request_context)
+
+        test_data = {
+            "you_are": "Self employed",
+            "your_job": "Build trains",
+            "self_employed_pay_period": "Fortnightly",
+            "self_employed_pay_amount": "1000",
+            "self_employed_hardship": True
+        }
+
+        form.save(test_data, request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.url, '/plea/your_expenses/')
+
+    def test_your_finances_self_employed_no_hardship_redirects_to_review(self):
+
+        session_data = self.test_session_data
+        fake_request = self.get_request_mock("/plea/your_money")
+        request_context = RequestContext(fake_request)
+
+        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+
+        form.load(request_context)
+
+        test_data = {
+            "you_are": "Self employed",
+            "your_job": "Build trains",
+            "self_employed_pay_period": "Fortnightly",
+            "self_employed_pay_amount": "1000",
+            "self_employed_hardship": False
+        }
+
+        form.save(test_data, request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.url, '/plea/review/')
+
+    def test_your_finances_benefits_hardship_redirects_to_your_expenses(self):
+
+        session_data = self.test_session_data
+        fake_request = self.get_request_mock("/plea/your_expenses")
+        request_context = RequestContext(fake_request)
+
+        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+
+        form.load(request_context)
+
+        test_data = {
+            "you_are": "Receiving benefits",
+            "benefits_details": "Some data about my benefits",
+            "benefits_dependents": "Yes",
+            "benefits_period": "Fortnightly",
+            "benefits_amount": "1000",
+            "receiving_benefits_hardship": True
+        }
+
+        form.save(test_data, request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.url, '/plea/your_expenses/')
+
+    def test_your_finances_benefits_no_hardship_redirects_to_review(self):
+
+        session_data = self.test_session_data
+        fake_request = self.get_request_mock("/plea/your_money")
+        request_context = RequestContext(fake_request)
+
+        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+
+        form.load(request_context)
+
+        test_data = {
+            "you_are": "Receiving benefits",
+            "benefits_details": "Some data about my benefits",
+            "benefits_dependents": "Yes",
+            "benefits_period": "Fortnightly",
+            "benefits_amount": "1000",
+            "receiving_benefits_hardship": False
+        }
+
+        form.save(test_data, request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.url, '/plea/review/')
+
+    def test_your_finances_other_hardship_redirects_to_your_expenses(self):
+
+        session_data = self.test_session_data
+        fake_request = self.get_request_mock("/plea/your_expenses")
+        request_context = RequestContext(fake_request)
+
+        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+
+        form.load(request_context)
+
+        test_data = {
+            "you_are": "Other",
+            "other_details": "woo woo woo",
+            "other_pay_amount": "100",
+            "other_hardship": True
+        }
+
+        form.save(test_data, request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.url, '/plea/your_expenses/')
+
+    def test_your_finances_other_no_hardship_redirects_to_review(self):
+
+        session_data = self.test_session_data
+        fake_request = self.get_request_mock("/plea/your_expenses")
+        request_context = RequestContext(fake_request)
+
+        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+
+        form.load(request_context)
+
+        test_data = {
+            "you_are": "Other",
+            "other_details": "woo woo woo",
+            "other_pay_amount": "100",
+            "other_hardship": False
+        }
+
+        form.save(test_data, request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.url, '/plea/review/')
+
+    def test_hardship_calculations_on_review_page(self):
+
+        session_data = self.test_session_data
+        session_data['your_money']['hardship'] = True
+
+        fake_request = self.get_request_mock("/plea/your_money")
+        request_context = RequestContext(fake_request)
+
+        form = PleaOnlineForms("your_expenses", "plea_form_step", session_data)
+
+        form.load(request_context)
+
+        test_data = {
+            "hardship_details": "ra ra ra",
+            "household_accommodation": "0",
+            "household_utility_bills": "0",
+            "household_insurance": "100",
+            "household_council_tax": "50",
+            "other_bill_payers": True,
+            "other_tv_subscription": "0",
+            "other_travel_expenses": "20",
+            "other_telephone": "40",
+            "other_loan_repayments": "60",
+            "other_court_payments": "30",
+            "other_child_maintenance": "50"
+        }
+
+        form.save(test_data, request_context)
+
+        form = PleaOnlineForms("review", "plea_form_step", session_data)
+
+        form.load(request_context)
+
+        response = form.render()
+
+        self.assertContains(response, '150')
+        self.assertContains(response, '200')
+        self.assertContains(response, '350')
+
+    def test_hardship_on_review(self):
+
+        session_data = self.test_session_data
+        fake_request = self.get_request_mock("/plea/your_money")
+        request_context = RequestContext(fake_request)
+
+        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+
+        form.load(request_context)
+
+        test_data = {
+            "you_are": "Other",
+            "other_details": "woo woo woo",
+            "other_pay_amount": "100",
+            "other_hardship": True
+        }
+
+        form.save(test_data, request_context)
+
+        form = PleaOnlineForms("review", "plea_form_step", session_data)
+
+        form.load(request_context)
+
+        response = form.render()
+
+        self.assertContains(response, '<<SHOWINGEXPENSES>>')
+
+    def test_no_hardship_review(self):
+
+        session_data = self.test_session_data
+        fake_request = self.get_request_mock("/plea/your_money")
+        request_context = RequestContext(fake_request)
+
+        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+
+        form.load(request_context)
+
+        test_data = {
+            "you_are": "Other",
+            "other_details": "woo woo woo",
+            "other_pay_amount": "100",
+            "other_hardship": False
+        }
+
+        form.save(test_data, request_context)
+
+        form = PleaOnlineForms("review", "plea_form_step", session_data)
+
+        form.load(request_context)
+
+        response = form.render()
+
+        self.assertNotContains(response, '<<SHOWINGEXPENSES>>')
+
+

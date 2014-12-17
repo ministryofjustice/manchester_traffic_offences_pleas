@@ -68,8 +68,8 @@ class EmailGenerationTests(TestCase):
 
         plea_id, count_id = matches.groups()
 
-        self.assertEquals(int(plea_id), plea_obj.id)
-        self.assertEquals(int(count_id), count_obj.id)
+        self.assertEqual(int(plea_id), plea_obj.id)
+        self.assertEqual(int(count_id), count_obj.id)
 
     def test_user_confirmation_sends_email(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
