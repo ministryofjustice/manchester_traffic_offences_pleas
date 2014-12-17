@@ -75,7 +75,7 @@ $errorbgcolour: #faebec;
   color: white;
 }
 label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.31579; font-weight: 400; text-transform: none; display: block;}
-.inline .block-label {font-weight:normal; margin-top: 0.5em;}
+.inline .block-label {font-weight:normal; margin-top: 0.0em;}
 .block-label input { position: static; margin-right: .5em }
 .block-label { padding-left: 1em }
 .inline .radio-label { float: left; font-weight: normal; margin: 0 1em 1em 0; }
@@ -125,7 +125,7 @@ input[type=text], input[type="number"], input[type=email], input[type=tel], inpu
 
 input, select {font-family: "nta", Arial, sans-serif;font-size: 19px; line-height: 1.31579; font-weight: 400;text-transform:none; margin: 0;}
 #id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number,
-#id_employed_your_job, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0, #id_your_job {width: 32%;}
+#id_employed_your_job, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0, #id_your_job, #id_other_details {width: 32%;}
 select {border-color: #bfc1c3;}
 
 .section {margin-bottom: 2em;}
@@ -214,7 +214,7 @@ section.flash {
 div.field-indent {
   clear: both;
   border-left: 4px solid #bfc1c3;
-  padding: 0px 0px 0px 20px;
+  padding: 0px 0px 15px 20px;
   margin: 0px 15px 0px 0;
 
   label {margin-top:10px;}
