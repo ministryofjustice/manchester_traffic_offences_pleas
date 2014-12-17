@@ -14,6 +14,8 @@ YESNO_CHOICES = (
     (False, "No")
 )
 
+to_bool = lambda x: x == "True"
+
 
 class RequiredFormSet(BaseFormSet):
     def __init__(self, *args, **kwargs):
@@ -94,6 +96,13 @@ class YourMoneyForm(BasePleaStepForm):
                                                                                   "data-label-template": "What's your {0} take home pay (after tax)?"}),
                                                     error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                                     "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
+
+    employed_hardship = forms.TypedChoiceField(label="Would paying a fine cause you financial hardship?",
+                                               widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                               choices=YESNO_CHOICES,
+                                               coerce=to_bool,
+                                               required=False)
+
     # Self employed
     your_job = forms.CharField(required=False, max_length=100, label="What's your job?",
                                error_messages={"required": ERROR_MESSAGES["YOUR_JOB_REQUIRED"]})
@@ -111,6 +120,13 @@ class YourMoneyForm(BasePleaStepForm):
     self_employed_pay_other = forms.CharField(required=False, max_length=500, label="",
                                               widget=forms.Textarea(attrs={"rows": "2"}),
                                               help_text="Tell us about how often you get paid")
+
+    self_employed_hardship = forms.TypedChoiceField(label="Would paying a fine cause you financial hardship?",
+                                                    widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                                    choices=YESNO_CHOICES,
+                                                    coerce=to_bool,
+                                                    required=False)
+
     # On benefits
     benefits_details = forms.CharField(required=False, max_length=500, label="Which benefits do you receive?",
                                        widget=forms.Textarea(attrs={"rows": "2"}))
@@ -132,6 +148,12 @@ class YourMoneyForm(BasePleaStepForm):
                                       error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                       "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
+    receiving_benefits_hardship = forms.TypedChoiceField(label="Would paying a fine cause you financial hardship?",
+                                                         widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                                         choices=YESNO_CHOICES,
+                                                         coerce=to_bool,
+                                                         required=False)
+
     # Other
     other_details = forms.CharField(required=False, max_length=500, label="Please provide details e.g. retired, student etc.",
                                     widget=forms.Textarea, error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
@@ -140,12 +162,11 @@ class YourMoneyForm(BasePleaStepForm):
                                        error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                        "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
-    to_bool = lambda x: x == "True"
-
-    hardship = forms.TypedChoiceField(label="Would paying a fine cause you financial hardship?",
-                                      widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                      choices=YESNO_CHOICES,
-                                      coerce=to_bool)
+    other_hardship = forms.TypedChoiceField(label="Would paying a fine cause you financial hardship?",
+                                            widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                            choices=YESNO_CHOICES,
+                                            coerce=to_bool,
+                                            required=False)
 
 
     def __init__(self, *args, **kwargs):
@@ -160,21 +181,25 @@ class YourMoneyForm(BasePleaStepForm):
                 self.fields["employed_your_job"].required = True
                 self.fields["employed_take_home_pay_period"].required = True
                 self.fields["employed_take_home_pay_amount"].required = True
+                self.fields["employed_hardship"].required = True
 
             if data["you_are"] == "Self employed":
                 self.fields["your_job"].required = True
                 self.fields["self_employed_pay_period"].required = True
                 self.fields["self_employed_pay_amount"].required = True
+                self.fields["self_employed_hardship"].required = True
 
             if data["you_are"] == "Receiving benefits":
                 self.fields["benefits_details"].required = True
                 self.fields["benefits_dependents"].required = True
                 self.fields["benefits_period"].required = True
                 self.fields["benefits_amount"].required = True
+                self.fields["receiving_benefits_hardship"].required = True
 
             if data["you_are"] == "Other":
                 self.fields["other_details"].required = True
                 self.fields["other_pay_amount"].required = True
+                self.fields["other_hardship"].required = True
 
 
 class YourExpensesForm(BasePleaStepForm):

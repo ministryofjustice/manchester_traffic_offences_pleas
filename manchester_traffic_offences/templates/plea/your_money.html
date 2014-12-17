@@ -59,6 +59,15 @@
                     {% with form.employed_take_home_pay_amount as field %}
                     {% include "widgets/money_field.html" %}
                     {% endwith %}
+
+                    {% with form.employed_hardship as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
+
+                    <div class="section field-indent block">
+                        <h4>Note:</h4>
+                        <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
+                    </div>
                 </div>
 
                 <div class="js-hidden" id="section-self-employed">
@@ -79,6 +88,15 @@
                     {% with form.self_employed_pay_amount as field %}
                     {% include "widgets/money_field.html" %}
                     {% endwith %}
+
+                    {% with form.self_employed_hardship as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
+
+                    <div class="section field-indent block">
+                        <h4>Note:</h4>
+                        <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
+                    </div>
                 </div>
 
                 <div class="js-hidden" id="section-receiving-benefits">
@@ -102,6 +120,15 @@
                     {% with form.benefits_amount as field %}
                     {% include "widgets/money_field.html" %}
                     {% endwith %}
+
+                    {% with form.receiving_benefits_hardship as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
+
+                    <div class="section field-indent block">
+                        <h4>Note:</h4>
+                        <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
+                    </div>
                 </div>
 
                 <div class="js-hidden" id="section-other">
@@ -112,6 +139,15 @@
                     {% with form.other_pay_amount as field %}
                     {% include "widgets/money_field.html" %}
                     {% endwith %}
+
+                    {% with form.other_hardship as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
+
+                    <div class="section field-indent block">
+                        <h4>Note:</h4>
+                        <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
+                    </div>
                 </div>
             </div>
 
