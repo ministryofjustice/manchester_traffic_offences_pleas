@@ -1,6 +1,6 @@
 {% extends "plea/base.html" %}
 {% block page_title %}{{ block.super }} Your expenses{% endblock %}
-{% load staticfiles %}
+{% load staticfiles testing %}
 {% block page_content %}
 
     <div class="full-width group">
@@ -59,12 +59,10 @@
                         {% with form.household_council_tax as field %}
                             {% include "widgets/money_field.html" %}
                         {% endwith %}
-
-                        <br class="clear">
                     </div>
 
                     <hr>
-                    <div style="clear: both"></div>
+
                     <h3>Other expenses</h3>
 
                     <p>What are your monthly bills for the following?</p>
@@ -99,7 +97,6 @@
                             {% include "widgets/money_field.html" %}
                         {% endwith %}
 
-                        <br class="clear">
                     </div>
 
                 {% endwith %}

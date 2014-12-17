@@ -134,9 +134,19 @@ class YourMoneyStage(FormStage):
 
         clean_data = super(YourMoneyStage, self).save(form_data, next_step)
 
-        if not clean_data.get('hardship', False):
-            self.next_step = self.all_urls['review']
-            self.all_data["your_expenses"]["complete"] = True
+        you_are = clean_data.get('you_are', None)
+
+        if you_are:
+
+            hardship_field = you_are.replace(' ', '_').lower() + "_hardship"
+
+            hardship = clean_data.get(hardship_field, False)
+
+            self.all_data["your_money"]["hardship"] = hardship
+
+            if not hardship:
+                self.next_step = self.all_urls['review']
+                self.all_data["your_expenses"]["complete"] = True
 
         return clean_data
 
