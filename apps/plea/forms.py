@@ -114,7 +114,7 @@ class YourMoneyForm(BasePleaStepForm):
                                             label="Does this include payment for dependants?")
     benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                         choices=BEN_PERIOD_CHOICES, required=False,
-                                        label="How often do you get your benefits paid?",
+                                        label="How often are your benefits paid?",
                                         error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                         "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
     benefits_pay_other = forms.CharField(required=False, max_length=500, label="",
@@ -129,7 +129,7 @@ class YourMoneyForm(BasePleaStepForm):
 
     # Other
     other_details = forms.CharField(required=False, max_length=500, label="Please provide details",
-                                    help_text="e.g. retired, student etc.",
+                                    help_text="eg retired, student etc.",
                                     widget=forms.TextInput, error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
     other_pay_amount = forms.CharField(label="What is your monthly disposable income?", required=False,
                                        widget=forms.TextInput(attrs={"maxlength": "7", "class": "amount"}),
