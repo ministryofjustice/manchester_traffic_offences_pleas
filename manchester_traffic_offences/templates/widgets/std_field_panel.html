@@ -3,7 +3,9 @@
     <div class="section field-indent block{%  if field.errors %} indent-error{% endif %}">
         {{ field.label_tag }}
         <span class="validation-message">{{ field.errors }}</span>
+        {% if field.help_text %}
         <p class="form-hint datefield-hint">{{ field.help_text|safe }}</p>
+        {% endif %}
         {{ field }}
     </div>
 </section>
