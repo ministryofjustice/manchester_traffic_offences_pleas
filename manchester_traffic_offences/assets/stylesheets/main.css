@@ -1701,6 +1701,9 @@ div.form-panel {
 #your-money .money ul li label, #your-expenses .money ul li label {
   font-weight: normal;
   margin: 0; }
+#your-money h4, #your-expenses h4 {
+  font-size: 1.1em;
+  font-weight: bold; }
 
 #your-expenses p.mandatory {
   margin-top: 30px;
