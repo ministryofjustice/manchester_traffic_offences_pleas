@@ -135,7 +135,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="label">Take home pay</th>
+                                <th class="label">Amount</th>
                                 <td>£{{ your_money.employed_take_home_pay_amount }}</td>
                             </tr>
                         {% endif %}
@@ -147,13 +147,21 @@
                             <tr>
                                 <th class="label">You get paid</th>
                                 <td>
-                                    {%  if your_money.self_employed_pay_period == "self-employed other" %}
-                                        Other - {{ your_money.self_employed_pay_other }}
+                                    {% if your_money.self_employed_pay_period == "self-employed other" %}
+                                    Other
                                     {% else %}
-                                        {{ your_money.self_employed_pay_period }}
+                                    {{ your_money.self_employed_pay_period }}
                                     {% endif %}
                                 </td>
                             </tr>
+                        {% if your_money.self_employed_pay_period == "self-employed other" %}
+                            <tr>
+                                <th class="label">Details</th>
+                                <td>
+                                    {{ your_money.self_employed_pay_other }}
+                                </td>
+                            </tr>
+                        {% endif %}
                             <tr>
                                 <th class="label">Amount</th>
                                 <td>£{{ your_money.self_employed_pay_amount }}</td>
@@ -167,7 +175,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="label">Does this include payment for dependents?</th>
+                                <th class="label">Includes payment for dependents?</th>
                                 <td>
                                     {{ your_money.benefits_dependents }}
                                 </td>
@@ -176,12 +184,20 @@
                                 <th class="label">You get paid</th>
                                 <td>
                                     {%  if your_money.benefits_period == "benefits other" %}
-                                    Other - {{ your_money.benefits_pay_other }}
+                                    Other
                                     {% else %}
                                     {{ your_money.benefits_period }}
                                     {% endif %}
                                 </td>
                             </tr>
+                        {%  if your_money.benefits_period == "benefits other" %}
+                            <tr>
+                                <th class="label">Details</th>
+                                <td>
+                                    {{ your_money.benefits_pay_other|linebreaksbr }}
+                                </td>
+                            </tr>
+                        {% endif %}
                             <tr>
                                 <th class="label">Amount</th>
                                 <td>£{{ your_money.benefits_amount }}</td>
@@ -189,11 +205,11 @@
                         {% endif %}
                         {% if your_money.you_are == "Other" %}
                             <tr>
-                                <th class="label">More information</th>
+                                <th class="label">Details</th>
                                 <td>{{ your_money.other_details|linebreaksbr }}</td>
                             </tr>
                             <tr>
-                                <th>Amount</th>
+                                <th class="label">Amount</th>
                                 <td>£{{ your_money.other_pay_amount }}</td>
                             </tr>
                         {% endif %}
