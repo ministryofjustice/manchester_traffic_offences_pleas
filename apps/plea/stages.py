@@ -8,7 +8,8 @@ from django.forms.formsets import formset_factory
 from apps.govuk_utils.forms import FormStage
 from email import send_plea_email
 from forms import (CaseForm, YourDetailsForm, YourMoneyForm,
-                   PleaForm, ConfirmationForm, RequiredFormSet)
+                   PleaForm, ConfirmationForm, RequiredFormSet,
+                   YourExpensesForm)
 
 from .fields import ERROR_MESSAGES
 
@@ -128,6 +129,60 @@ class YourMoneyStage(FormStage):
     template = "plea/your_money.html"
     form_classes = [YourMoneyForm]
     dependencies = ["case", "your_details", "plea"]
+
+    def save(self, form_data, next_step=None):
+
+        clean_data = super(YourMoneyStage, self).save(form_data, next_step)
+
+        you_are = clean_data.get('you_are', None)
+
+        if you_are:
+
+            hardship_field = you_are.replace(' ', '_').lower() + "_hardship"
+
+            hardship = clean_data.get(hardship_field, False)
+
+            self.all_data["your_money"]["hardship"] = hardship
+
+            if not hardship:
+                self.next_step = self.all_urls['review']
+                self.all_data["your_expenses"]["complete"] = True
+
+        return clean_data
+
+
+class YourExpensesStage(FormStage):
+    name = "your_expenses"
+    template = "plea/your_expenses.html"
+    form_classes = [YourExpensesForm]
+    dependencies = ["case", "your_details", "plea", "your_money"]
+
+    def save(self, form_data, next_step=None):
+
+        household_expense_fields = ['household_accommodation',
+                                    'household_utility_bills',
+                                    'household_insurance',
+                                    'household_council_tax']
+
+        other_expense_fields = ['other_tv_subscription',
+                                'other_travel_expenses',
+                                'other_telephone',
+                                'other_loan_repayments',
+                                'other_court_payments',
+                                'other_child_maintenance']
+
+        clean_data = super(YourExpensesStage, self).save(form_data, next_step)
+
+        if 'complete' in clean_data:
+            total_household = sum(clean_data[field] for field in household_expense_fields)
+            total_other = sum(clean_data[field] for field in other_expense_fields)
+            total_expenses = total_household + total_other
+
+            clean_data['total_household_expenses'] = total_household
+            clean_data['total_other_expenses'] = total_other
+            clean_data['total_expenses'] = total_expenses
+
+        return clean_data
 
 
 class ReviewStage(FormStage):

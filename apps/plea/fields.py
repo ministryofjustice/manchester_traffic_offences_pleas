@@ -19,8 +19,8 @@ from .models import CourtEmailPlea, Case
 ERROR_MESSAGES = {
     "URN_REQUIRED": "You must enter your unique reference number (URN)",
     "URN_INVALID": "The unique reference number (URN) isn't valid. Enter the number exactly as it appears on page 1 of the pack",
-    "URN_ALREADY_USED": "The URN has already been used to make a plea",  # *** added
-    "URN_DOES_NOT_EXIST": "You've entered an invalid URN",  # *** added
+    "URN_ALREADY_USED": "The URN has already been used to make a plea",
+    "URN_DOES_NOT_EXIST": "You've entered an invalid URN",
     "HEARING_DATE_REQUIRED": "You must provide the court hearing date ",
     "HEARING_TIME_REQUIRED": "You must provide the court hearing time ",
     "HEARING_DATE_INVALID": "The court hearing date and/or time isn't a valid format",
@@ -44,7 +44,39 @@ ERROR_MESSAGES = {
     "BENEFITS_REQUIRED": "Please enter total benefits and how often you receive them",
     "UNDERSTAND_REQUIRED": "You must tick the box to confirm the legal statements",
     "OTHER_INFO_REQUIRED": "Please let us know how you earn your money",
-    "RECEIVE_EMAIL": "You must choose whether you want to get emails from the court or not."
+    "RECEIVE_EMAIL": "You must choose whether you want to get emails from the court or not.",
+    "HARDSHIP_DETAILS_REQUIRED": "You must tell us why paying a fine will cause you serious financial problems",
+    "OTHER_BILL_PAYERS_REQUIRED": "You must tell us if anyone else contributes to your household bills.",
+    "HOUSEHOLD_ACCOMMODATION_REQUIRED": "Accommodation is a required field",
+    "HOUSEHOLD_ACCOMMODATION_INVALID": "Accommodation must be a number",
+    "HOUSEHOLD_ACCOMMODATION_MIN": "Accommodation must be a number greater than, or equal to, 0",
+    "HOUSEHOLD_UTILITY_BILLS_REQUIRED": "Utility bills is a required field",
+    "HOUSEHOLD_UTILITY_BILLS_INVALID": "Utility bills must be a number",
+    "HOUSEHOLD_UTILITY_BILLS_MIN": "Utility bills must be a number greater than, or equal to, 0",
+    "HOUSEHOLD_INSURANCE_REQUIRED": "Insurance is a required field",
+    "HOUSEHOLD_INSURANCE_INVALID": "Insurance must be a number",
+    "HOUSEHOLD_INSURANCE_MIN": "Insurance must be a number greater than, or equal to, 0",
+    "HOUSEHOLD_COUNCIL_TAX_REQUIRED": "Council tax is a required field",
+    "HOUSEHOLD_COUNCIL_TAX_INVALID": "Council tax must be a number",
+    "HOUSEHOLD_COUNCIL_TAX_MIN": "Council tax must be a number greater than, or equal to, 0",
+    "OTHER_TV_SUBSCRIPTION_REQUIRED": "TV subscription is a required field",
+    "OTHER_TV_SUBSCRIPTION_INVALID": "TV subscription must be a number",
+    "OTHER_TV_SUBSCRIPTION_MIN": "TV subscription must be a number greater than, or equal to, 0",
+    "OTHER_TRAVEL_EXPENSES_REQUIRED": "Travel expenses is a required field",
+    "OTHER_TRAVEL_EXPENSES_INVALID": "Travel expenses must be a number",
+    "OTHER_TRAVEL_EXPENSES_MIN": "Travel expenses must be a number greater than, or equal to, 0",
+    "OTHER_TELEPHONE_REQUIRED": "Telephone is a required field",
+    "OTHER_TELEPHONE_INVALID": "Telephone must be a number",
+    "OTHER_TELEPHONE_MIN": "Telephone must be a number greater than, or equal to, 0",
+    "OTHER_LOAN_REPAYMENTS_REQUIRED": "Loan repayment is a required field",
+    "OTHER_LOAN_REPAYMENTS_INVALID": "Loan repayment must be a number",
+    "OTHER_LOAN_REPAYMENTS_MIN": "Loan repayment must be a number greater than, or equal to, 0",
+    "OTHER_COURT_PAYMENTS_REQUIRED": "Court payments is a required field",
+    "OTHER_COURT_PAYMENTS_INVALID": "Court payments must be a number",
+    "OTHER_COURT_PAYMENTS_MIN": "Court payments must be a number greater than, or equal to, 0",
+    "OTHER_CHILD_MAINTENANCE_REQUIRED": "Child maintenance is a required field",
+    "OTHER_CHILD_MAINTENANCE_INVALID": "Child maintenance must be a number",
+    "OTHER_CHILD_MAINTENANCE_MIN": "Child maintenance must be a number greater than, or equal to, 0"
 }
 
 

@@ -2,11 +2,6 @@
 {% load staticfiles %}
 {% block page_title %}{{ block.super }} Your Finances{% endblock %}
 {% block page_content %}
-<header class="page-header group">
-    <div><h1><span>Service</span>Make your plea online</h1></div>
-</header>
-
-<p class="mandatory">All fields are mandatory unless stated otherwise</p>
 
 <div class="full-width group">
     <div class="main" id="your-money">
@@ -29,7 +24,8 @@
             </section>
             {% endif %}
 
-            <h2>Your finances</h2>
+            <h1>Your finances</h1>
+
             <ul class="list-bullet">
                 <li>For this type of offence you'll usually have to pay a fine</li>
                 <li>You must provide your income details - the court will decide your fine based on your finances and the seriousness of the offence</li>
@@ -57,8 +53,17 @@
                     {% endwith %}
 
                     {% with form.employed_take_home_pay_amount as field %}
-                    {% include "widgets/money_field.html" %}
+                    {% include "widgets/money_field_panel.html" %}
                     {% endwith %}
+
+                    {% with form.employed_hardship as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
+
+                    <div class="section field-indent block employed_hardship employed_hardship-True">
+                        <h4>Note:</h4>
+                        <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
+                    </div>
                 </div>
 
                 <div class="js-hidden" id="section-self-employed">
@@ -77,8 +82,17 @@
                         {% endwith %}
                     </div>
                     {% with form.self_employed_pay_amount as field %}
-                    {% include "widgets/money_field.html" %}
+                    {% include "widgets/money_field_panel.html" %}
                     {% endwith %}
+
+                    {% with form.self_employed_hardship as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
+
+                    <div class="section field-indent block self_employed_hardship self_employed_hardship-True">
+                        <h4>Note:</h4>
+                        <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
+                    </div>
                 </div>
 
                 <div class="js-hidden" id="section-receiving-benefits">
@@ -100,8 +114,17 @@
                         {% endwith %}
                     </div>
                     {% with form.benefits_amount as field %}
-                    {% include "widgets/money_field.html" %}
+                    {% include "widgets/money_field_panel.html" %}
                     {% endwith %}
+
+                    {% with form.receiving_benefits_hardship as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
+
+                    <div class="section field-indent block receiving_benefits_hardship receiving_benefits_hardship-True">
+                        <h4>Note:</h4>
+                        <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
+                    </div>
                 </div>
 
                 <div class="js-hidden" id="section-other">
@@ -110,8 +133,17 @@
                     {% endwith %}
 
                     {% with form.other_pay_amount as field %}
-                    {% include "widgets/money_field.html" %}
+                    {% include "widgets/money_field_panel.html" %}
                     {% endwith %}
+
+                    {% with form.other_hardship as field %}
+                    {% include "widgets/std_field_panel.html" %}
+                    {% endwith %}
+
+                    <div class="section field-indent block other_hardship other_hardship-True">
+                        <h4>Note:</h4>
+                        <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
+                    </div>
                 </div>
             </div>
 
