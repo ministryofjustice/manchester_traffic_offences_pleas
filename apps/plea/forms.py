@@ -256,9 +256,8 @@ class YourExpensesForm(BasePleaStepForm):
                         'min_value': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_MIN']})
 
     other_bill_payers = forms.ChoiceField(
-        label="",
         widget=RadioSelect(renderer=DSRadioFieldRenderer),
-        help_text="Does anyone else contribute to these bills?",
+        label="Does anyone else contribute to these bills?",
         choices=((True, 'Yes'), (False, 'No')),
         error_messages={'required': ERROR_MESSAGES['OTHER_BILL_PAYERS_REQUIRED']})
 

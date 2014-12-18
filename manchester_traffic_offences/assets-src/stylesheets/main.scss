@@ -53,6 +53,27 @@
 // Icons
 @import "elements/icons";
 
+h1{
+  margin-top: 40px;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+h2{
+  font-size: 36px;
+  font-weight: bold;
+}
+
+h3{
+  font-size: 24px;
+  font-weight: bold;
+}
+
+h4{
+  font-size: 19px;
+  font-weight: bold;
+}
+
 
 // MoJ Styles
 
@@ -320,15 +341,15 @@ div.form-panel {
 #your-expenses{
   margin-top: 40px;
 
+  #id_other_bill_payers_False{
+    clear: both;
+  }
+
   hr{
+    margin: 20px 0;
     clear: both;
     border: none;
     border-top: 1px solid #a9a9a9;
-  }
-
-  h3{
-    font-size: 1.3em;
-    font-weight: bold;
   }
 
   #id_consideration{
@@ -336,9 +357,23 @@ div.form-panel {
     height: 100px;
   }
 
+
+  fieldset.inline{
+    overflow: auto;
+    margin-bottom: 20px;
+  }
+
+  div.section.block{
+    margin-bottom: 0;
+  }
+
+  section.error, div.error {
+    border: none;
+  }
+
   .expense-container {
     width: 840px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 
     & > section {
       ul.errorlist li {
@@ -350,7 +385,6 @@ div.form-panel {
 
       p.form-hint {
         overflow: auto;
-        height: 20px;
       }
 
       input {
@@ -382,10 +416,15 @@ div.form-panel {
     td{
       border: none;
     }
+
+    td.heading{
+      display: inline-block;
+      width: 394px;
+    }
 }
 
   .expense-container{
-    margin-bottom: 20px;
+    margin-bottom: 0;
   }
 }
 
