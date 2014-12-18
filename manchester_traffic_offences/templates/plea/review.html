@@ -213,24 +213,30 @@
                                 <td>£{{ your_money.other_pay_amount }}</td>
                             </tr>
                         {% endif %}
-
-                            <tr>
-                                <th class="label">Financial hardship</th>
-                                <td>{% if your_money.hardship %}Yes{% else %}No{% endif %}</td>
-                            </tr>
-                            {% if your_money.hardship %}
-                                {% add_test_tag "<<SHOWINGEXPENSES>>" %}
+                        </tbody>
+                    </table>
+                {% endif %}
+                {% if your_money.hardship %}
+                    {% add_test_tag "<<SHOWINGEXPENSES>>" %}
+                    <table id="your-money">
+                        <thead>
+                        <tr>
+                            <th class="header">Your expenses</th>
+                            <th><a href="{% url "plea_form_step" "your_expenses" %}" class="review">Change your expenses</a></th>
+                        </tr>
+                        </thead>
+                        <tbody>
                             <tr>
                                 <th class="label">Financial hardship details</th>
                                 <td>{{ your_expenses.hardship_details|linebreaksbr }}</td>
                             </tr>
                             <tr>
-                                <th class="label">Total household expenses</th>
-                                <td>£{{ your_expenses.total_household_expenses }}</td>
-                            </tr>
-                            <tr>
                                 <th class="label">Other contributors to household bills</th>
                                 <td>{% if your_expenses.other_bill_payers %}Yes{% else %}No{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th class="label">Total household expenses</th>
+                                <td>£{{ your_expenses.total_household_expenses }}</td>
                             </tr>
                             <tr>
                                 <th class="label">Total other expenses</th>
@@ -240,8 +246,6 @@
                                 <th class="label">Total expenses</th>
                                 <td>£{{ your_expenses.total_expenses }}</td>
                             </tr>
-
-                            {% endif %}
                         </tbody>
                     </table>
                 {% endif %}
