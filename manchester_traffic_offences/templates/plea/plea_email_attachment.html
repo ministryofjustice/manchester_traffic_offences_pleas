@@ -1,4 +1,4 @@
-{% load date %}
+{% load date testing %}
 <!doctype html>
 <html>
 <head>
@@ -185,6 +185,32 @@
             <td>£{{ your_money.other_pay_amount }}</td>
         </tr>
     {% endif %}
+    {% endif %}
+    {% if your_money.hardship %}
+        {% add_test_tag "<<SHOWEXPENSES>>" %}
+        <tr>
+            <td class="heading" colspan="2"><h2>Your expenses</h2></td>
+        </tr>
+        <tr>
+            <th>Financial hardship details</th>
+            <td>{{ your_expenses.hardship_details|linebreaksbr }}</td>
+        </tr>
+        <tr>
+            <th>Other contributors to household bills</th>
+            <td>{% if your_expenses.other_bill_payers %}Yes{% else %}No{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Total household expenses</th>
+            <td>£{{ your_expenses.total_household_expenses }}</td>
+        </tr>
+        <tr>
+            <th>Total other expenses</th>
+            <td>£{{ your_expenses.total_other_expenses }}</td>
+        </tr>
+        <tr>
+            <th>Total expenses</th>
+            <td>£{{ your_expenses.total_expenses }}</td>
+        </tr>
     {% endif %}
     </tbody>
 </table>
