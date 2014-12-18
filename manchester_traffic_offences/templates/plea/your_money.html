@@ -29,7 +29,7 @@
             </section>
             {% endif %}
 
-            <h2>Your Finances</h2>
+            <h2>Your finances</h2>
             <ul class="list-bullet">
                 <li>For this type of offence the court will normally impose a financial penalty, which is based on your financial situation and the seriousness of the offence.</li>
                 <li>Please provide as much information as possible as the court is obliged to assume a minimum income if none is provided.</li>
@@ -57,14 +57,14 @@
                     {% endwith %}
 
                     {% with form.employed_take_home_pay_amount as field %}
-                    {% include "widgets/money_field.html" %}
+                    {% include "widgets/money_field_panel.html" %}
                     {% endwith %}
 
                     {% with form.employed_hardship as field %}
                     {% include "widgets/std_field_panel.html" %}
                     {% endwith %}
 
-                    <div class="section field-indent block">
+                    <div class="section field-indent block employed_hardship employed_hardship-True">
                         <h4>Note:</h4>
                         <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                     </div>
@@ -86,14 +86,14 @@
                         {% endwith %}
                     </div>
                     {% with form.self_employed_pay_amount as field %}
-                    {% include "widgets/money_field.html" %}
+                    {% include "widgets/money_field_panel.html" %}
                     {% endwith %}
 
                     {% with form.self_employed_hardship as field %}
                     {% include "widgets/std_field_panel.html" %}
                     {% endwith %}
 
-                    <div class="section field-indent block">
+                    <div class="section field-indent block self_employed_hardship self_employed_hardship-True">
                         <h4>Note:</h4>
                         <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                     </div>
@@ -118,14 +118,14 @@
                         {% endwith %}
                     </div>
                     {% with form.benefits_amount as field %}
-                    {% include "widgets/money_field.html" %}
+                    {% include "widgets/money_field_panel.html" %}
                     {% endwith %}
 
                     {% with form.receiving_benefits_hardship as field %}
                     {% include "widgets/std_field_panel.html" %}
                     {% endwith %}
 
-                    <div class="section field-indent block">
+                    <div class="section field-indent block receiving_benefits_hardship receiving_benefits_hardship-True">
                         <h4>Note:</h4>
                         <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                     </div>
@@ -137,14 +137,14 @@
                     {% endwith %}
 
                     {% with form.other_pay_amount as field %}
-                    {% include "widgets/money_field.html" %}
+                    {% include "widgets/money_field_panel.html" %}
                     {% endwith %}
 
                     {% with form.other_hardship as field %}
                     {% include "widgets/std_field_panel.html" %}
                     {% endwith %}
 
-                    <div class="section field-indent block">
+                    <div class="section field-indent block other_hardship other_hardship-True">
                         <h4>Note:</h4>
                         <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                     </div>

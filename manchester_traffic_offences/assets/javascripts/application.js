@@ -119,6 +119,7 @@ function showSingleRadioContent() {
         }
 
         $radio.on('click', function () {
+
             $(".block-label input[name=" + $radioGroupName + "],  .radio-label input[name=" + $radioGroupName + "]").each(function () {
                 // hide radio button content and reset aria values
                 var groupDataTarget = $(this).parent().attr('data-target');
@@ -253,7 +254,7 @@ function calculateTotals(elems){
 
         var value = parseFloat($(item).val());
 
-        if(value){
+        if(value && value > 0){
             total += value;
         }
     });
@@ -290,6 +291,23 @@ function labelTemplateExternal(){
     });
 }
 
+function showHideExtraNotes(elems){
+    $.each(elems, function(index, elem){
+        $('div.' + $(elem).attr('name')).hide();
+
+        $(elem).on('change', function(){
+            $('div.' + $(elem).attr('name')).hide();
+            $('div.' + $(elem).attr('name') + '-' + $(elem).val()).show();
+        });
+    });
+
+    $.each(elems, function(index, elem){
+        if($(elem).is(':checked')) {
+            $('.' + $(elem).attr('name') + '-' + $(elem).val()).show();
+        }
+    });
+}
+
 
 $(document).ready(function () {
     jQuery.fx.off = true;
@@ -302,6 +320,8 @@ $(document).ready(function () {
     onClickToggleContainer('#case_contact_link a', '#case_contact_details');
 
     alertIfFieldsChanged();
+
+    showHideExtraNotes($("input[name=employed_hardship],input[name=self_employed_hardship],input[name=receiving_benefits_hardship],input[name=other_hardship]"));
 
     calculateExpenses();
     $('.expense-container input[type=text]').change(calculateExpenses);
