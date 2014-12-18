@@ -2,11 +2,6 @@
 {% block page_title %}{{ block.super }} Case details{% endblock %}
 {% load staticfiles %}
 {% block page_content %}
-    <header class="page-header group">
-        <div><h1><span>Service</span>Make your plea online</h1></div>
-    </header>
-
-    <p class="mandatory">All fields are mandatory unless stated otherwise</p>
 
     <div class="full-width group">
         <div class="main">
@@ -65,7 +60,7 @@
                         </section>
                     {% endif %}
 
-                    <h2 id="your-details">Case details</h2>
+                    <h1 id="your-details">Case details</h1>
 
                     {% with form.urn as field %}
                         {% include "widgets/std_field_with_image.html" %}
