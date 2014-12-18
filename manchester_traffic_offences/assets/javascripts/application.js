@@ -119,6 +119,7 @@ function showSingleRadioContent() {
         }
 
         $radio.on('click', function () {
+
             $(".block-label input[name=" + $radioGroupName + "],  .radio-label input[name=" + $radioGroupName + "]").each(function () {
                 // hide radio button content and reset aria values
                 var groupDataTarget = $(this).parent().attr('data-target');
@@ -246,6 +247,30 @@ function onClickToggleContainer(toggleSelector, targetSelectors){
     });
 }
 
+function calculateTotals(elems){
+    var total = 0;
+
+    $.each(elems, function(key, item){
+
+        var value = parseFloat($(item).val());
+
+        if(value && value > 0){
+            total += value;
+        }
+    });
+
+    return total >= 0 ? total : 0;
+}
+
+function calculateExpenses(){
+    var household_expenses = calculateTotals($('#household_expenses input[type=text]'));
+    var other_expenses = calculateTotals($('#other_expenses input[type=text]'));
+
+    $('.total_household').html(household_expenses.toFixed(2));
+    $('.total_other').html(other_expenses.toFixed(2));
+    $('.total_expenses').html((household_expenses+other_expenses).toFixed(2));
+}
+
 
 function labelTemplateExternal(){
     $('[data-label-template]').each(function(idx, form_element){
@@ -254,7 +279,7 @@ function labelTemplateExternal(){
         var $label = $("label[for=" + $(form_element).attr("id") + "]");
         $(form_element).data("original", $label.text());
         $("input:radio[name=" + $value_source + "]").click(function(evt){
-            var val = $(evt.target).val().trim().toLowerCase();;
+            var val = $(evt.target).val().trim().toLowerCase();
             console.log(val);
             if(val.indexOf(" ") > 0) {
                 $label.text($(form_element).data("original"));
@@ -263,6 +288,23 @@ function labelTemplateExternal(){
                 $label.text(template.replace("{0}", val));
             }
         });
+    });
+}
+
+function showHideExtraNotes(elems){
+    $.each(elems, function(index, elem){
+        $('div.' + $(elem).attr('name')).hide();
+
+        $(elem).on('change', function(){
+            $('div.' + $(elem).attr('name')).hide();
+            $('div.' + $(elem).attr('name') + '-' + $(elem).val()).show();
+        });
+    });
+
+    $.each(elems, function(index, elem){
+        if($(elem).is(':checked')) {
+            $('.' + $(elem).attr('name') + '-' + $(elem).val()).show();
+        }
     });
 }
 
@@ -278,6 +320,11 @@ $(document).ready(function () {
     onClickToggleContainer('#case_contact_link a', '#case_contact_details');
 
     alertIfFieldsChanged();
+
+    showHideExtraNotes($("input[name=employed_hardship],input[name=self_employed_hardship],input[name=receiving_benefits_hardship],input[name=other_hardship]"));
+
+    calculateExpenses();
+    $('.expense-container input[type=text]').change(calculateExpenses);
 
     labelTemplateExternal();
 });

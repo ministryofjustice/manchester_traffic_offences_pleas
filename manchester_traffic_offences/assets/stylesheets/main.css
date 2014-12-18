@@ -1,63 +1,46 @@
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
-@font-face {
-  font-family: GDS-Logo;
-  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
-#content:after {
-  content: "";
-  display: block;
-  clear: both; }
 
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
+
 #content:after {
   content: "";
   display: block;
   clear: both; }
 
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
-#content:after {
-  content: "";
-  display: block;
-  clear: both; }
-
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
+@-ms-viewport {
+  width: device-width; }
+
+@-o-viewport {
+  width: device-width; }
+
 #content:after {
   content: "";
   display: block;
@@ -65,12 +48,54 @@
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
+#content:after {
+  content: "";
+  display: block;
+  clear: both; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
+@font-face {
+  font-family: GDS-Logo;
+  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
+@-ms-viewport {
+  width: device-width; }
+
+@-o-viewport {
+  width: device-width; }
+
+@-ms-viewport {
+  width: device-width; }
+
+@-o-viewport {
+  width: device-width; }
+
+#content:after {
+  content: "";
+  display: block;
+  clear: both; }
+
+@-ms-viewport {
+  width: device-width; }
+
+@-o-viewport {
+  width: device-width; }
+
+@-ms-viewport {
+  width: device-width; }
+
+@-o-viewport {
+  width: device-width; }
+
 #content:after {
   content: "";
   display: block;
@@ -106,10 +131,13 @@
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .TextIcon {
   background-repeat: no-repeat;
   background-position: left top; }
@@ -619,7 +647,7 @@ code {
       padding-bottom: 10px; } }
   .phase-banner p {
     margin: 0;
-    color: #000;
+    color: black;
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
@@ -819,7 +847,7 @@ fieldset {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   padding: 4px;
-  background-color: #fff;
+  background-color: white;
   border: 1px solid #bfc1c3;
   -webkit-appearance: none;
   border-radius: 0; }
@@ -971,7 +999,7 @@ fieldset {
   margin-right: 15px; }
 
 .js-enabled .selected {
-  background: #fff;
+  background: white;
   border-color: #0b0c0c; }
 
 .js-enabled label.focused {
@@ -1024,7 +1052,7 @@ table th {
   text-decoration: none;
   -webkit-font-smoothing: antialiased;
   cursor: pointer;
-  color: #fff;
+  color: white;
   margin: 0 15px 15px 0;
   padding: 0.52632em 0.78947em 0.26316em 0.78947em;
   vertical-align: top; }
@@ -1050,7 +1078,7 @@ table th {
       -moz-box-shadow: 0 2px 0 #003518;
       box-shadow: 0 2px 0 #003518; }
   .button:link, .button:hover, .button:focus, .button:visited {
-    color: #fff; }
+    color: white; }
   .button:before {
     content: "";
     height: 110%;
@@ -1335,6 +1363,23 @@ ol li {
       background-image: url("../images/icons/icon-steps/icon-step-13-2x.png");
       background-size: 100%; } }
 
+h1 {
+  margin-top: 40px;
+  font-size: 48px;
+  font-weight: bold; }
+
+h2 {
+  font-size: 36px;
+  font-weight: bold; }
+
+h3 {
+  font-size: 24px;
+  font-weight: bold; }
+
+h4 {
+  font-size: 19px;
+  font-weight: bold; }
+
 b, strong {
   font-weight: 600; }
 
@@ -1372,7 +1417,8 @@ b, strong {
   display: inline-block;
   padding: 40px 40px 40px 80px;
   background: #28a197 url(../images/icons/tick.png) no-repeat 35px 50px;
-  color: white; }
+  color: white;
+  margin-top: 40px; }
 
 label {
   font-family: "nta", Arial, sans-serif;
@@ -1673,6 +1719,70 @@ div.form-panel {
 #your-money .money ul li label {
   font-weight: normal;
   margin: 0; }
+#your-money h4 {
+  font-size: 1.1em;
+  font-weight: bold; }
+
+#your-expenses {
+  margin-top: 40px; }
+  #your-expenses #id_other_bill_payers_False {
+    clear: both; }
+  #your-expenses hr {
+    margin: 20px 0;
+    clear: both;
+    border: none;
+    border-top: 1px solid #a9a9a9; }
+  #your-expenses #id_consideration {
+    width: 500px;
+    height: 100px; }
+  #your-expenses fieldset.inline {
+    overflow: auto;
+    margin-bottom: 20px; }
+  #your-expenses div.section.block {
+    margin-bottom: 0; }
+  #your-expenses section.error, #your-expenses div.error {
+    border: none; }
+  #your-expenses .expense-container {
+    width: 840px;
+    margin-bottom: 0px; }
+    #your-expenses .expense-container > section {
+      display: inline-block;
+      width: 416px; }
+      #your-expenses .expense-container > section ul.errorlist li {
+        width: 380px; }
+      #your-expenses .expense-container > section p.form-hint {
+        overflow: auto; }
+      #your-expenses .expense-container > section input {
+        width: 150px; }
+  #your-expenses .amount {
+    border-left: none;
+    width: 29%; }
+  #your-expenses .input-type-hint {
+    display: inline-block;
+    padding: 6px 10px 3px 10px;
+    line-height: 24px;
+    background-color: #bfc1c3;
+    border: solid 1px #6f777b; }
+  #your-expenses .money ul {
+    overflow: auto; }
+  #your-expenses .money li {
+    float: left;
+    margin-left: 1em; }
+  #your-expenses .money li:first-child {
+    margin-left: 3px; }
+  #your-expenses .money ul li label {
+    font-weight: normal;
+    margin: 0; }
+  #your-expenses #expense-summary {
+    margin-top: 20px;
+    width: 600px; }
+    #your-expenses #expense-summary td {
+      border: none; }
+    #your-expenses #expense-summary td.heading {
+      display: inline-block;
+      width: 394px; }
+  #your-expenses .expense-container {
+    margin-bottom: 0; }
 
 #terms h2 {
   font-size: 32px;
@@ -1849,5 +1959,3 @@ p.lead {
     line-height: 1.2em;
     font-weight: bold;
     margin-bottom: 0.5em; }
-
-/*# sourceMappingURL=main.css.map */
