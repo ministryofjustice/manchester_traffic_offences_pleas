@@ -53,6 +53,27 @@
 // Icons
 @import "elements/icons";
 
+h1{
+  margin-top: 40px;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+h2{
+  font-size: 36px;
+  font-weight: bold;
+}
+
+h3{
+  font-size: 24px;
+  font-weight: bold;
+}
+
+h4{
+  font-size: 19px;
+  font-weight: bold;
+}
+
 
 // MoJ Styles
 
@@ -73,6 +94,7 @@ $errorbgcolour: #faebec;
   padding: 40px 40px 40px 80px;
   background: #28a197 url(../images/icons/tick.png) no-repeat 35px 50px;
   color: white;
+  margin-top: 40px;
 }
 label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.31579; font-weight: 400; text-transform: none; display: block;}
 .inline .block-label {font-weight:normal; margin-top: 0.0em;}
@@ -309,6 +331,101 @@ div.form-panel {
     li { float:left; margin-left: 1em; }
     li:first-child {margin-left:3px;}
     ul li label { font-weight:normal; margin: 0;}
+  }
+
+  h4{
+    font-size: 1.1em;
+    font-weight: bold;
+  }
+}
+
+#your-expenses{
+  margin-top: 40px;
+
+  #id_other_bill_payers_False{
+    clear: both;
+  }
+
+  hr{
+    margin: 20px 0;
+    clear: both;
+    border: none;
+    border-top: 1px solid #a9a9a9;
+  }
+
+  #id_consideration{
+    width: 500px;
+    height: 100px;
+  }
+
+
+  fieldset.inline{
+    overflow: auto;
+    margin-bottom: 20px;
+  }
+
+  div.section.block{
+    margin-bottom: 0;
+  }
+
+  section.error, div.error {
+    border: none;
+  }
+
+  .expense-container {
+    width: 840px;
+    margin-bottom: 0px;
+
+    & > section {
+      ul.errorlist li {
+        width: 380px;
+      }
+
+      display: inline-block;
+      width: 416px;
+
+      p.form-hint {
+        overflow: auto;
+      }
+
+      input {
+        width: 150px;
+      }
+    }
+  }
+
+  .amount {border-left:none; width:29%}
+  .input-type-hint {
+    display: inline-block;
+    padding: 6px 10px 3px 10px;
+    line-height: 24px;
+    background-color: $grey-2;
+    border: solid 1px $grey-1;
+  }
+
+  .money {
+    ul { overflow: auto; }
+    li { float:left; margin-left: 1em; }
+    li:first-child {margin-left:3px;}
+    ul li label { font-weight:normal; margin: 0;}
+  }
+
+  #expense-summary{
+    margin-top: 20px;
+    width: 600px;
+
+    td{
+      border: none;
+    }
+
+    td.heading{
+      display: inline-block;
+      width: 394px;
+    }
+}
+
+  .expense-container{
+    margin-bottom: 0;
   }
 }
 

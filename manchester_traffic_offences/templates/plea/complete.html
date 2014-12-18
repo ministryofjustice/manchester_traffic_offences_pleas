@@ -2,9 +2,6 @@
 {% load testing %}
 {% block page_title %}{{ block.super }} Sent{% endblock %}
 {% block page_content %}
-<header class="page-header group">
-    <div><h1><span>Service</span>Make your plea</h1></div>
-</header>
 
 <div class="main" id="complete">
 	<h2 class="ticked">Your {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea(s) have been sent to the court</h2>

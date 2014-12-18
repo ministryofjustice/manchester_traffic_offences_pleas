@@ -34,7 +34,7 @@ class TestEmailSubjectProcessing(TestCase):
         plea_id, count_id, status, urn, doh = \
             extract_data_from_email(self.mock_email)
 
-        self.assertEquals(status, "Failed")
+        self.assertEqual(status, "Failed")
 
     def test_passed_match(self):
         self.mock_email.subject = self.passed_email_subject
@@ -42,7 +42,7 @@ class TestEmailSubjectProcessing(TestCase):
         plea_id, count_id, status, urn, doh = \
             extract_data_from_email(self.mock_email)
 
-        self.assertEquals(status, "Passed")
+        self.assertEqual(status, "Passed")
 
     def test_error_match(self):
 
@@ -55,8 +55,8 @@ class TestEmailSubjectProcessing(TestCase):
         plea_id, count_id, status, urn, doh = \
             extract_data_from_email(self.mock_email)
 
-        self.assertEquals(plea_id, 1)
-        self.assertEquals(count_id, 1)
+        self.assertEqual(plea_id, 1)
+        self.assertEqual(count_id, 1)
 
     def test_email_body_invaild(self):
 
@@ -127,10 +127,10 @@ class TestProcessReceipts(TestCase):
 
         process_receipts()
 
-        self.assertEquals(ReceiptLog.objects.all().count(), 1)
+        self.assertEqual(ReceiptLog.objects.all().count(), 1)
         log = ReceiptLog.objects.latest('id')
 
-        self.assertEquals(log.status, ReceiptLog.STATUS_ERROR)
+        self.assertEqual(log.status, ReceiptLog.STATUS_ERROR)
         self.assertIn('Broken', log.status_detail)
 
     def test_query_to_date_is_previous_query_from_date(self):
@@ -151,11 +151,11 @@ class TestProcessReceipts(TestCase):
 
         process_receipts()
 
-        self.assertEquals(ReceiptLog.objects.all().count(), 1)
+        self.assertEqual(ReceiptLog.objects.all().count(), 1)
         log = ReceiptLog.objects.latest('id')
-        self.assertEquals(log.total_success, 1)
-        self.assertEquals(log.total_emails, 1)
-        self.assertEquals(log.total_failed, 0)
+        self.assertEqual(log.total_success, 1)
+        self.assertEqual(log.total_emails, 1)
+        self.assertEqual(log.total_failed, 0)
 
     def test_failed_responses_are_recorded(self):
         ref = "<<<makeaplea-ref: {}/{}>>>"\
@@ -171,11 +171,11 @@ class TestProcessReceipts(TestCase):
 
         process_receipts()
 
-        self.assertEquals(ReceiptLog.objects.all().count(), 1)
+        self.assertEqual(ReceiptLog.objects.all().count(), 1)
         log = ReceiptLog.objects.latest('id')
-        self.assertEquals(log.total_emails, 1)
-        self.assertEquals(log.total_success, 0)
-        self.assertEquals(log.total_failed, 1)
+        self.assertEqual(log.total_emails, 1)
+        self.assertEqual(log.total_success, 0)
+        self.assertEqual(log.total_failed, 1)
 
     def test_mismatched_ref_id(self):
         ref = "<<<makeaplea-ref: {}/{}>>>"\
@@ -193,9 +193,9 @@ class TestProcessReceipts(TestCase):
 
         log = ReceiptLog.objects.latest('id')
 
-        self.assertEquals(log.total_emails, 1)
-        self.assertEquals(log.total_failed, 0)
-        self.assertEquals(log.total_errors, 1)
+        self.assertEqual(log.total_emails, 1)
+        self.assertEqual(log.total_failed, 0)
+        self.assertEqual(log.total_errors, 1)
 
     def test_invalid_email_subjects_are_ignored_but_logged(self):
         ref = "<<<makeaplea-ref: {}/{}>>>"\
@@ -212,9 +212,9 @@ class TestProcessReceipts(TestCase):
 
         log = ReceiptLog.objects.latest('id')
 
-        self.assertEquals(log.total_emails, 1)
-        self.assertEquals(log.total_failed, 0)
-        self.assertEquals(log.total_errors, 1)
+        self.assertEqual(log.total_emails, 1)
+        self.assertEqual(log.total_failed, 0)
+        self.assertEqual(log.total_errors, 1)
 
     def test_records_changed_on_changed_doh(self):
         """
@@ -239,18 +239,18 @@ class TestProcessReceipts(TestCase):
         process_receipts()
 
         log = ReceiptLog.objects.latest('id')
-        self.assertEquals(log.total_emails, 1)
-        self.assertEquals(log.total_success, 1)
+        self.assertEqual(log.total_emails, 1)
+        self.assertEqual(log.total_success, 1)
 
         email_audit = CourtEmailPlea.objects.get(pk=self.email_audit.id)
 
-        self.assertEquals(email_audit.urn, updated_urn)
+        self.assertEqual(email_audit.urn, updated_urn)
 
         self.assertIn(self.urn, email_audit.status_info)
         self.assertIn("URN CHANGED!", email_audit.status_info)
 
         data = json.loads(email_audit.dict_sent)
-        self.assertEquals(data['case']['urn'], updated_urn)
+        self.assertEqual(data['case']['urn'], updated_urn)
 
     def test_monitoring_email_is_sent_when_enabled(self):
 
@@ -260,4 +260,4 @@ class TestProcessReceipts(TestCase):
         with self.settings(RECEIPT_ADMIN_EMAIL_ENABLED=True):
             process_receipts()
 
-        self.assertEquals(len(mail.outbox), 1)
+        self.assertEqual(len(mail.outbox), 1)
