@@ -1,19 +1,14 @@
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 #content:after {
   content: "";
   display: block;
@@ -22,25 +17,18 @@
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 #content:after {
   content: "";
   display: block;
@@ -48,10 +36,8 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 #content:after {
   content: "";
   display: block;
@@ -59,26 +45,19 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 #content:after {
   content: "";
   display: block;
@@ -86,16 +65,12 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 #content:after {
   content: "";
   display: block;
@@ -131,13 +106,10 @@
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 .TextIcon {
   background-repeat: no-repeat;
   background-position: left top; }
@@ -647,7 +619,7 @@ code {
       padding-bottom: 10px; } }
   .phase-banner p {
     margin: 0;
-    color: black;
+    color: #000;
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
@@ -847,7 +819,7 @@ fieldset {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   padding: 4px;
-  background-color: white;
+  background-color: #fff;
   border: 1px solid #bfc1c3;
   -webkit-appearance: none;
   border-radius: 0; }
@@ -999,7 +971,7 @@ fieldset {
   margin-right: 15px; }
 
 .js-enabled .selected {
-  background: white;
+  background: #fff;
   border-color: #0b0c0c; }
 
 .js-enabled label.focused {
@@ -1052,7 +1024,7 @@ table th {
   text-decoration: none;
   -webkit-font-smoothing: antialiased;
   cursor: pointer;
-  color: white;
+  color: #fff;
   margin: 0 15px 15px 0;
   padding: 0.52632em 0.78947em 0.26316em 0.78947em;
   vertical-align: top; }
@@ -1078,7 +1050,7 @@ table th {
       -moz-box-shadow: 0 2px 0 #003518;
       box-shadow: 0 2px 0 #003518; }
   .button:link, .button:hover, .button:focus, .button:visited {
-    color: white; }
+    color: #fff; }
   .button:before {
     content: "";
     height: 110%;
@@ -1412,7 +1384,7 @@ label {
 
 .inline .block-label {
   font-weight: normal;
-  margin-top: 0.5em; }
+  margin-top: 0.0em; }
 
 .block-label input {
   position: static;
@@ -1535,7 +1507,7 @@ input, select {
   margin: 0; }
 
 #id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number,
-#id_employed_your_job, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0, #id_your_job {
+#id_employed_your_job, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0, #id_your_job, #id_other_details {
   width: 32%; }
 
 select {
@@ -1624,7 +1596,7 @@ section.flash {
 div.field-indent {
   clear: both;
   border-left: 4px solid #bfc1c3;
-  padding: 0px 0px 0px 20px;
+  padding: 0px 0px 15px 20px;
   margin: 0px 15px 0px 0; }
   div.field-indent label {
     margin-top: 10px; }
@@ -1932,3 +1904,5 @@ p.lead {
     line-height: 1.2em;
     font-weight: bold;
     margin-bottom: 0.5em; }
+
+/*# sourceMappingURL=main.css.map */

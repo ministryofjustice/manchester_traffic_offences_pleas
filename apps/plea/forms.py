@@ -79,7 +79,7 @@ class YourMoneyForm(BasePleaStepForm):
                          ("benefits other", "Other"),)
     YES_NO = (("Yes", "Yes"),
               ("No", "No"))
-    you_are = forms.ChoiceField(label="Are you...", choices=YOU_ARE_CHOICES,
+    you_are = forms.ChoiceField(label="Are you?", choices=YOU_ARE_CHOICES,
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
     # Employed
@@ -134,10 +134,10 @@ class YourMoneyForm(BasePleaStepForm):
                                        widget=forms.Textarea(attrs={"rows": "2"}))
     benefits_dependents = forms.ChoiceField(required=False, widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YES_NO,
-                                            label="Does this include payment for dependents?")
+                                            label="Does this include payment for dependants?")
     benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                         choices=BEN_PERIOD_CHOICES, required=False,
-                                        label="When do you get your benefits paid?",
+                                        label="How often are your benefits paid?",
                                         error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                         "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
     benefits_pay_other = forms.CharField(required=False, max_length=500, label="",
@@ -158,8 +158,9 @@ class YourMoneyForm(BasePleaStepForm):
                                                          required=False)
 
     # Other
-    other_details = forms.CharField(required=False, max_length=500, label="Please provide details e.g. retired, student etc.",
-                                    widget=forms.Textarea, error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
+    other_details = forms.CharField(required=False, max_length=500, label="Please provide details",
+                                    help_text="eg retired, student etc.",
+                                    widget=forms.TextInput, error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
     other_pay_amount = forms.CharField(label="What is your monthly disposable income?", required=False,
                                        widget=forms.TextInput(attrs={"maxlength": "7", "class": "amount"}),
                                        error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
