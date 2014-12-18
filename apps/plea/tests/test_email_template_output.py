@@ -42,7 +42,8 @@ class EmailTemplateTests(TestCase):
             money_data = {"you_are": "Employed",
                           "employed_your_job": "Some Job",
                           "employed_take_home_pay_period": "Weekly",
-                          "employed_take_home_pay_amount": "100"}
+                          "employed_take_home_pay_amount": "100",
+                          "employed_hardship": False}
 
         PleaForms = formset_factory(PleaForm, formset=RequiredFormSet, extra=1, max_num=1)
 
@@ -158,7 +159,8 @@ class EmailTemplateTests(TestCase):
         context_data_money = {"you_are": "Employed",
                               "employed_your_job": "Some Job",
                               "employed_take_home_pay_period": "Weekly",
-                              "employed_take_home_pay_amount": "200"}
+                              "employed_take_home_pay_amount": "200",
+                              "employed_hardship": False}
         context_data = self.get_context_data(money_data=context_data_money)
 
         send_plea_email(context_data)
@@ -173,7 +175,8 @@ class EmailTemplateTests(TestCase):
         context_data_money = {"you_are": "Self employed",
                               "your_job": "Tesco",
                               "self_employed_pay_period": "Weekly",
-                              "self_employed_pay_amount": "200"}
+                              "self_employed_pay_amount": "200",
+                              "self_employed_hardship": False}
         context_data = self.get_context_data(money_data=context_data_money)
 
         send_plea_email(context_data)
@@ -189,7 +192,8 @@ class EmailTemplateTests(TestCase):
                               "your_job": "Window cleaner",
                               "self_employed_pay_period": "self-employed other",
                               "self_employed_pay_amount": "20",
-                              "self_employed_pay_other": "by the window"}
+                              "self_employed_pay_other": "by the window",
+                              "self_employed_hardship": False}
         context_data = self.get_context_data(money_data=context_data_money)
 
         send_plea_email(context_data)
@@ -205,7 +209,8 @@ class EmailTemplateTests(TestCase):
                               "benefits_details": "Housing benefit\nUniversal Credit",
                               "benefits_dependents": "Yes",
                               "benefits_period": "Weekly",
-                              "benefits_amount": "120"}
+                              "benefits_amount": "120",
+                              "receiving_benefits_hardship": False}
         context_data = self.get_context_data(money_data=context_data_money)
 
         send_plea_email(context_data)
@@ -223,7 +228,8 @@ class EmailTemplateTests(TestCase):
                               "benefits_dependents": "Yes",
                               "benefits_period": "benefits other",
                               "benefits_pay_other": "Other details!",
-                              "benefits_amount": "120"}
+                              "benefits_amount": "120",
+                              "receiving_benefits_hardship": False}
         context_data = self.get_context_data(money_data=context_data_money)
 
         send_plea_email(context_data)
@@ -237,8 +243,9 @@ class EmailTemplateTests(TestCase):
 
     def test_other_email_money_output(self):
         context_data_money = {"you_are": "Other",
-                              "other_details": "I am a pensioner and I earn\n£500 a month.",
-                              "other_pay_amount": "120"}
+                              "other_details": u"I am a pensioner and I earn\n£500 a month.",
+                              "other_pay_amount": "120",
+                              "other_hardship": False}
         context_data = self.get_context_data(money_data=context_data_money)
 
         send_plea_email(context_data)
@@ -400,3 +407,31 @@ class EmailTemplateTests(TestCase):
         response = self.get_mock_response(mail.outbox[2].body)
 
         self.assertContains(response, '<<MIXED>>')
+
+    def test_plea_email_no_hardship(self):
+        context_data = self.get_context_data()
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        self.assertNotContains(response, '<<SHOWEXPENSES>>')
+
+    def test_plea_email_with_hardship(self):
+        context_data = self.get_context_data()
+
+        context_data['your_money']['hardship'] = True
+        context_data['your_expenses'] = {}
+        context_data['your_expenses']['other_bill_pays'] = True
+        context_data['your_expenses']['complete'] = True
+        context_data['your_expenses']['total_household_expenses'] = "101"
+        context_data['your_expenses']['total_other_expenses'] = "202"
+        context_data['your_expenses']['total_expenses'] = "303"
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        self.assertContains(response, '101')
+        self.assertContains(response, '202')
+        self.assertContains(response, '303')
