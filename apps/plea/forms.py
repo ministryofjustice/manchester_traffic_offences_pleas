@@ -97,7 +97,8 @@ class YourMoneyForm(BasePleaStepForm):
                                                     error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                                     "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
-    employed_hardship = forms.TypedChoiceField(label="Would paying a fine cause you financial hardship?",
+    employed_hardship = forms.TypedChoiceField(label="Would paying a fine cause you serious financial problems?",
+                                               help_text="eg you would become homeless",
                                                widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                choices=YESNO_CHOICES,
                                                coerce=to_bool,
@@ -121,7 +122,8 @@ class YourMoneyForm(BasePleaStepForm):
                                               widget=forms.Textarea(attrs={"rows": "2"}),
                                               help_text="Tell us about how often you get paid")
 
-    self_employed_hardship = forms.TypedChoiceField(label="Would paying a fine cause you financial hardship?",
+    self_employed_hardship = forms.TypedChoiceField(label="Would paying a fine cause you serious financial problems?",
+                                                    help_text="eg you would become homeless",
                                                     widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                     choices=YESNO_CHOICES,
                                                     coerce=to_bool,
@@ -148,7 +150,8 @@ class YourMoneyForm(BasePleaStepForm):
                                       error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                       "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
-    receiving_benefits_hardship = forms.TypedChoiceField(label="Would paying a fine cause you financial hardship?",
+    receiving_benefits_hardship = forms.TypedChoiceField(label="Would paying a fine cause you serious financial problems?",
+                                                         help_text="eg you would become homeless",
                                                          widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                          choices=YESNO_CHOICES,
                                                          coerce=to_bool,
@@ -162,7 +165,8 @@ class YourMoneyForm(BasePleaStepForm):
                                        error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                        "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
-    other_hardship = forms.TypedChoiceField(label="Would paying a fine cause you financial hardship?",
+    other_hardship = forms.TypedChoiceField(label="Would paying a fine cause you serious financial problems?",
+                                            help_text="eg you would become homeless",
                                             widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YESNO_CHOICES,
                                             coerce=to_bool,
@@ -204,10 +208,10 @@ class YourMoneyForm(BasePleaStepForm):
 
 class YourExpensesForm(BasePleaStepForm):
     hardship_details = forms.CharField(
-        label="How would paying a fine cause you financial hardship?",
+        label="How would paying a fine cause you serious financial problems?",
         help_text="What you feel the court should consider "
                   "when deciding on any possible fine.",
-        widget=forms.Textarea,
+        widget=forms.Textarea(attrs={'cols': 45, 'rows': 5}),
         required=True,
         error_messages={'required': ERROR_MESSAGES['HARDSHIP_DETAILS_REQUIRED']})
 
@@ -251,6 +255,7 @@ class YourExpensesForm(BasePleaStepForm):
                         'min_value': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_MIN']})
 
     other_bill_payers = forms.ChoiceField(
+        label="",
         widget=RadioSelect(renderer=DSRadioFieldRenderer),
         help_text="Does anyone else contribute to these bills?",
         choices=((True, 'Yes'), (False, 'No')),

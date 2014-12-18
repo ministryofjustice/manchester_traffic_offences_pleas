@@ -6,8 +6,6 @@
     <div class="full-width group">
         <div class="main" id="your-expenses">
 
-            <p class="mandatory">All fields are mandatory unless stated otherwise</p>
-
             <form method=POST class="pleaform form" autocomplete="off">
                 {% csrf_token %}
                 {% with forms.0 as form %}
@@ -29,7 +27,7 @@
 
                     <h2>Your expenses</h2>
 
-                    <p>You are required to provide information about your expenses to help the court with their decision about your fine.</p>
+                    <p>To help the court decide your fine, you must provide information about your expenses.</p>
 
                     <hr>
 
@@ -40,8 +38,6 @@
                     <h3>Household expenses</h3>
 
                     <p>What are your monthly household bills for the following?</p>
-
-                    <p>For those that don't apply enter 0.</p>
 
                     <div class="expense-container" id="household_expenses">
                         {% with form.household_accommodation as field %}
@@ -66,7 +62,6 @@
                     <h3>Other expenses</h3>
 
                     <p>What are your monthly bills for the following?</p>
-                    <p>For those that don't apply enter 0.</p>
 
                     {% with form.other_bill_payers as field %}
                         {% include "widgets/std_field.html" %}
@@ -101,20 +96,20 @@
 
                 {% endwith %}
 
-                <hr>
+                <hr class="js-enabled">
 
-                <table id="expense-summary">
+                <table id="expense-summary" class="js-enabled">
                     <tr>
                         <td>Total household expenses</td>
-                        <td>£<span class="total_household"></span>p</td>
+                        <td>£<span class="total_household"></span></td>
                     </tr>
                     <tr>
                         <td>Total other expenses</td>
-                        <td>£<span class="total_other"></span>p</td>
+                        <td>£<span class="total_other"></span></td>
                     </tr>
                     <tr class="total">
                         <td><strong>Total expenses</strong></td>
-                        <td><strong>£<span class="total_expenses"></span>p</strong></td>
+                        <td><strong>£<span class="total_expenses"></span></strong></td>
                     </tr>
                 </table>
 

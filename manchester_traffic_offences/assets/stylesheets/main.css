@@ -1674,76 +1674,88 @@ div.form-panel {
   min-height: 34px;
   margin: 1em 0; }
 
-#your-money #employed, #your-money #benefits, #your-expenses #employed, #your-expenses #benefits {
+#your-money #employed, #your-money #benefits {
   border-top: solid 1px #c2c2c2;
   padding-top: 1em; }
-#your-money .full, #your-expenses .full {
+#your-money .full {
   overflow: auto;
   padding-left: 3px; }
-#your-money .block, #your-expenses .block {
+#your-money .block {
   overflow: auto; }
-#your-money .amount, #your-expenses .amount {
+#your-money .amount {
   border-left: none;
   width: 29%; }
-#your-money .input-type-hint, #your-expenses .input-type-hint {
+#your-money .input-type-hint {
   display: inline-block;
   padding: 6px 10px 3px 10px;
   line-height: 24px;
   background-color: #bfc1c3;
   border: solid 1px #6f777b; }
-#your-money .money ul, #your-expenses .money ul {
+#your-money .money ul {
   overflow: auto; }
-#your-money .money li, #your-expenses .money li {
+#your-money .money li {
   float: left;
   margin-left: 1em; }
-#your-money .money li:first-child, #your-expenses .money li:first-child {
+#your-money .money li:first-child {
   margin-left: 3px; }
-#your-money .money ul li label, #your-expenses .money ul li label {
+#your-money .money ul li label {
   font-weight: normal;
   margin: 0; }
-#your-money h4, #your-expenses h4 {
+#your-money h4 {
   font-size: 1.1em;
   font-weight: bold; }
 
-#your-expenses p.mandatory {
-  margin-top: 30px;
-  font-size: 0.9em; }
-#your-expenses hr {
-  clear: both;
-  border: none;
-  border-top: 1px solid #a9a9a9; }
-#your-expenses h3 {
-  font-size: 1.3em;
-  font-weight: bold; }
-#your-expenses #id_consideration {
-  width: 500px;
-  height: 100px; }
-#your-expenses section.error, #your-expenses div.error {
-  margin: 0; }
-#your-expenses .expense-container {
-  width: 840px;
-  margin-bottom: 20px; }
-  #your-expenses .expense-container div.field-indent {
-    border-color: #fff;
-    padding: 0; }
-  #your-expenses .expense-container div.indent-error {
-    border-color: #e12d2d;
-    padding-left: 4px; }
-  #your-expenses .expense-container > section {
+#your-expenses {
+  margin-top: 40px; }
+  #your-expenses hr {
+    clear: both;
+    border: none;
+    border-top: 1px solid #a9a9a9; }
+  #your-expenses h3 {
+    font-size: 1.3em;
+    font-weight: bold; }
+  #your-expenses #id_consideration {
+    width: 500px;
+    height: 100px; }
+  #your-expenses .expense-container {
+    width: 840px;
+    margin-bottom: 20px; }
+    #your-expenses .expense-container > section {
+      display: inline-block;
+      width: 416px; }
+      #your-expenses .expense-container > section ul.errorlist li {
+        width: 380px; }
+      #your-expenses .expense-container > section p.form-hint {
+        overflow: auto;
+        height: 20px; }
+      #your-expenses .expense-container > section input {
+        width: 150px; }
+  #your-expenses .amount {
+    border-left: none;
+    width: 29%; }
+  #your-expenses .input-type-hint {
     display: inline-block;
-    width: 416px; }
-    #your-expenses .expense-container > section p.form-hint {
-      overflow: auto;
-      height: 20px; }
-    #your-expenses .expense-container > section input {
-      width: 150px; }
-#your-expenses #expense-summary {
-  margin-top: 20px;
-  width: 600px; }
-  #your-expenses #expense-summary td {
-    border: none; }
-#your-expenses .expense-container {
-  margin-bottom: 20px; }
+    padding: 6px 10px 3px 10px;
+    line-height: 24px;
+    background-color: #bfc1c3;
+    border: solid 1px #6f777b; }
+  #your-expenses .money ul {
+    overflow: auto; }
+  #your-expenses .money li {
+    float: left;
+    margin-left: 1em; }
+  #your-expenses .money li:first-child {
+    margin-left: 3px; }
+  #your-expenses .money ul li label {
+    font-weight: normal;
+    margin: 0; }
+  #your-expenses #expense-summary {
+    margin-top: 20px;
+    width: 600px; }
+    #your-expenses #expense-summary td {
+      border: none; }
+  #your-expenses .expense-container {
+    margin-bottom: 20px; }
 
 #terms h2 {
   font-size: 32px;

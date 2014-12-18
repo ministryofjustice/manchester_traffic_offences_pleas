@@ -280,7 +280,7 @@ div.form-panel {
   }
 }
 
-#your-money, #your-expenses {
+#your-money {
   #employed, #benefits {
     border-top: solid 1px #c2c2c2;
     padding-top: 1em;
@@ -318,10 +318,7 @@ div.form-panel {
 }
 
 #your-expenses{
-  p.mandatory{
-    margin-top: 30px;
-    font-size: 0.9em;
-  }
+  margin-top: 40px;
 
   hr{
     clear: both;
@@ -339,38 +336,43 @@ div.form-panel {
     height: 100px;
   }
 
-  section.error, div.error{
-    margin: 0;
-  }
-
-  .expense-container{
+  .expense-container {
     width: 840px;
     margin-bottom: 20px;
 
-    div.field-indent{
-      border-color: #fff;
-      padding: 0;
-    }
-
-    div.indent-error{
-      border-color: #e12d2d;
-      padding-left: 4px;
-    }
-
     & > section {
+      ul.errorlist li {
+        width: 380px;
+      }
 
       display: inline-block;
       width: 416px;
 
-      p.form-hint{
+      p.form-hint {
         overflow: auto;
         height: 20px;
       }
 
-      input{
+      input {
         width: 150px;
       }
     }
+  }
+
+  .amount {border-left:none; width:29%}
+  .input-type-hint {
+    display: inline-block;
+    padding: 6px 10px 3px 10px;
+    line-height: 24px;
+    background-color: $grey-2;
+    border: solid 1px $grey-1;
+  }
+
+  .money {
+    ul { overflow: auto; }
+    li { float:left; margin-left: 1em; }
+    li:first-child {margin-left:3px;}
+    ul li label { font-weight:normal; margin: 0;}
   }
 
   #expense-summary{
