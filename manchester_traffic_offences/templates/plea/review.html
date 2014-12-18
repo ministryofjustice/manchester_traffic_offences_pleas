@@ -3,9 +3,7 @@
 {% load date testing %}
 
 {% block page_content %}
-    <header class="page-header group">
-        <div><h1><span>Service</span>Make your plea</h1></div>
-    </header>
+
     <div class="main" id="review">
         <form method=POST class="form" autocomplete="off">
             {% csrf_token %}
@@ -25,7 +23,7 @@
                     </section>
                 {% endif %}
 
-                <h2>Confirm your plea{{ case.number_of_charges|pluralize }}</h2>
+                <h1>Confirm your plea{{ case.number_of_charges|pluralize }}</h1>
                 <p>Review the information you’ve given before making your plea{{ case.number_of_charges|pluralize }}.</p>
 
                     <table id="case-details">
