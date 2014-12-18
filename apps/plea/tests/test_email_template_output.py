@@ -407,3 +407,31 @@ class EmailTemplateTests(TestCase):
         response = self.get_mock_response(mail.outbox[2].body)
 
         self.assertContains(response, '<<MIXED>>')
+
+    def test_plea_email_no_hardship(self):
+        context_data = self.get_context_data()
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        self.assertNotContains(response, '<<SHOWEXPENSES>>')
+
+    def test_plea_email_with_hardship(self):
+        context_data = self.get_context_data()
+
+        context_data['your_money']['hardship'] = True
+        context_data['your_expenses'] = {}
+        context_data['your_expenses']['other_bill_pays'] = True
+        context_data['your_expenses']['complete'] = True
+        context_data['your_expenses']['total_household_expenses'] = "101"
+        context_data['your_expenses']['total_other_expenses'] = "202"
+        context_data['your_expenses']['total_expenses'] = "303"
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        self.assertContains(response, '101')
+        self.assertContains(response, '202')
+        self.assertContains(response, '303')
