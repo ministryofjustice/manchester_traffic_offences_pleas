@@ -29,15 +29,16 @@
                 {% endif %}
 
                 <h1>Your plea{{ charges|pluralize }}</h1>
+                <p>This is your opportunity to present your case to the court.</p>
 
                 {% with formset=forms.0 form_count=forms.0|length %}
                     {{ formset.management_form }}
-
+                    <h3>Enter {% if charges > 1 %}{{ form_count }}{% else %}a{% endif %} plea{{ charges|pluralize}} for the charge{{ charges|pluralize}} below</h3>
                         {% for form in formset %}
                             <section>
                                 <a id="section_guilty_{{ forloop.counter }}" name="section_guilty_{{ forloop.counter }}"></a>
                                 <div class="section{%  if form.guilty.errors %} error{% endif %}">
-                                    <label>Your plea{% if form_count > 1 %} for charge {{ forloop.counter }}{% endif %}</label>
+                                    <label class="nobold">Your plea{% if form_count > 1 %} for charge [{{ forloop.counter }}]{% endif %}</label>
                                     <span class="validation-message">{{ form.guilty.errors }}</span>
                                     <fieldset class="inline charge-radios">
                                         {% for choice in form.guilty %}
@@ -50,7 +51,7 @@
                                 </div>
 
                                 <a id="section_mitigations_{{ forloop.counter }}" name="section_mitigations_{{ forloop.counter }}"></a>
-                                <div class="section charges">
+                                <div class="section charges panel-indent">
                                     <div class="js-hidden">
                                         <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint sc-hint">(optional)</span></label>
                                         <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
