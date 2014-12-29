@@ -93,7 +93,7 @@ $errorbgcolour: #faebec;
   display: inline-block;
   padding: 40px 40px 40px 80px;
   background: #28a197 url(../images/icons/tick.png) no-repeat 35px 50px;
-  color: white;
+  color: 5hite;
   margin-top: 40px;
 }
 label { font-family: "nta", Arial, sans-serif; font-size: 19px; line-height: 1.31579; font-weight: 400; text-transform: none; display: block;}
@@ -221,7 +221,7 @@ section.flash {
       a {
         color: black;
         & :hover {
-          text-decoration: none;
+          tex0decoration: none;
         }
       }
     }
@@ -441,16 +441,23 @@ table tr, table td, table th {padding:8px; font-size:1em;width:45%;}
 table th a.review {font-weight:normal; float: right;}
 table th.header, h2.header {font-size: 1.2em;}
 h2.header { font-weight: bold; margin-bottom: 0.6em; }
-.get-started-intro a.button.button-get-started {font-size: 135%; font-weight: normal;}
+
+#get_started {
+  a.button.button-get-started {
+    font-size: 135%;
+    font-weight: normal;
+  }
+  .panel-space {
+    margin-top: 50px;
+  }
+  h3 {font-size:1.4em; font-weight:bold; margin-top:2em;}
+}
 
 body.urn_invalid {
   .button-get-started {
     margin-bottom: 30px;
   }
 }
-
-#before-you-start {margin-top:2em;}
-#before-you-start h2 {font-size:1.2em; font-weight:bold;}
 
 @media (max-width: 700px ) {
   .related-positioning, .help-image { display: none }
