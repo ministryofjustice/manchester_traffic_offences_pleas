@@ -151,7 +151,7 @@ input, select {font-family: "nta", Arial, sans-serif;font-size: 19px; line-heigh
 select {border-color: #bfc1c3;}
 
 .section {margin-bottom: 2em;}
-.actions {clear: both;}
+.actions {clear: both; margin-top: 20px;}
 
 section#charges {clear: both; width: 75%;}
 section#charges #enter-charges {float:left; width:70%;}
@@ -480,6 +480,7 @@ body.urn_invalid {
 p.form-hint {width:50%; font-size:0.8em; margin-top:0; margin-bottom: 0.5em;}
 h2 span.form-hint, label span.form-hint {display: inline; font-weight: normal; font-size: 0.7em;}
 label span.form-hint {color: black;}
+label.nobold {font-weight: normal;}
 #understand, #receive_email {font-weight: normal; font-size: 1em; width: 874px;}
 
 #understand{
