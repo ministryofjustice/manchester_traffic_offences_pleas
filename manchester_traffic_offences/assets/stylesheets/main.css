@@ -1535,7 +1535,8 @@ select {
   margin-bottom: 2em; }
 
 .actions {
-  clear: both; }
+  clear: both;
+  margin-top: 20px; }
 
 section#charges {
   clear: both;
@@ -1862,6 +1863,9 @@ h2 span.form-hint, label span.form-hint {
 
 label span.form-hint {
   color: black; }
+
+label.nobold {
+  font-weight: normal; }
 
 #understand, #receive_email {
   font-weight: normal;
