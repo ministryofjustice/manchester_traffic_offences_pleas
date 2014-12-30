@@ -27,6 +27,7 @@ def send_user_confirmation_email(context_data):
     data = {
         'email': context_data['your_details']['email'],
         'urn': context_data['case']['urn'],
+        'number_of_charges': context_data['case']['number_of_charges'],
         'name': context_data['your_details']['name'],
         'plea_type': get_plea_type(context_data)
     }
@@ -48,10 +49,10 @@ def send_user_confirmation_email(context_data):
 
     email.attach_alternative(html_body, "text/html")
 
-    try:
-        email.send(fail_silently=False)
-    except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
-        logger.error("Error sending email: {0}".format(e.message))
+    #try:
+    email.send(fail_silently=False)
+    #except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
+    #    logger.error("Error sending email: {0}".format(e))
 
     return True
 
