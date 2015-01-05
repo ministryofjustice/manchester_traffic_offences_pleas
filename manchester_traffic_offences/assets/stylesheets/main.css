@@ -1607,7 +1607,7 @@ section.flash {
       section.flash.error-summary li a {
         color: black; }
         section.flash.error-summary li a :hover {
-          tex0decoration: none; }
+          text-decoration: none; }
   section.flash.success {
     border-color: #85994b;
     background-color: #e7ebda; }
