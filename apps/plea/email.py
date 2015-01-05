@@ -49,10 +49,10 @@ def send_user_confirmation_email(context_data):
 
     email.attach_alternative(html_body, "text/html")
 
-    #try:
-    email.send(fail_silently=False)
-    #except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
-    #    logger.error("Error sending email: {0}".format(e))
+    try:
+        email.send(fail_silently=False)
+    except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
+        logger.error("Error sending email: {0}".format(e))
 
     return True
 
