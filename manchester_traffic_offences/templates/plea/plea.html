@@ -38,7 +38,7 @@
                             <section>
                                 <a id="section_guilty_{{ forloop.counter }}" name="section_guilty_{{ forloop.counter }}"></a>
                                 <div class="section{%  if form.guilty.errors %} error{% endif %}">
-                                    <label class="nobold">Your plea{% if form_count > 1 %} for charge [{{ forloop.counter }}]{% endif %}</label>
+                                    {% if form_count > 1 %}<label class="nobold">Your plea for charge [{{ forloop.counter }}]</label>{% endif %}
                                     <span class="validation-message">{{ form.guilty.errors }}</span>
                                     <fieldset class="inline charge-radios">
                                         {% for choice in form.guilty %}
