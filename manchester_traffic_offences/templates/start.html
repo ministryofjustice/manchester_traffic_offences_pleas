@@ -1,37 +1,34 @@
 {% extends 'base.html' %}
 {% block page_title %}Traffic offences: Plea online{% endblock %}
 {% block page_content %}
-<header class="page-header group">
-    <div><h1><span>Service</span>Make your plea</h1></div>
-</header>
+<h1>Make your plea online</h1>
 
 <div class="article-container group">
     <article role="article" class="group">
-        <div class="main">
+        <div id="get_started" class="main">
             <section class="intro">
-                <div class="get-started-intro">
+                <div>
+                    <h3>Use this service to:</h3>
+                    <p>Plead guilty or not guilty to your driving offence(s) being considered by the <a href="https://courttribunalfinder.service.gov.uk/courts/manchester-and-salford-magistrates-court" target="_blank" rel="external">Manchester and Salford Magistrates’ Court</a>.</p>
 
-                    <p>You can only use this service to enter your guilty or not guilty plea(s) for the driving offence(s) being considered by the <a href="https://courttribunalfinder.service.gov.uk/courts/manchester-and-salford-magistrates-court" target="_blank" rel="external">Manchester and Salford Magistrates’ Court</a>.</p>
-                
-                    <p>You can make your plea at any time up to the day before the court makes a decision.</p>
-
-                    <p>For cases being heard for other types of offence or at any other other court, check the information sent to you to find out what to do next.</p>
-
-                    <a class="button button-get-started" href="{% url "plea_form" %}" role=button>Start now</a>
-
-                    <section class="more">
-                        <div id="before-you-start">
-                            <h2>Before you start</h2>
-                            <p>You must be the person named on the charge sheet. It is against the law to enter a plea for anyone else.</p>
-                            <p>Entering your plea takes about 10 minutes.</p>
-                            <p>You’ll need:</p>
-                            <ul class="list-bullet text">
-                                <li>the pack we sent you by post (with details of charges, any witness statements and police report)</li>
-                                <li>your national insurance number and driving licence details (if you have them)</li>
-                            </ul>
-                        </div>
-                    </section>
+                    <h3>By making your plea(s) online:</h3>
+                    <p>There's no need to come to court on your hearing date.</p>
                 </div>
+                <div class="panel-space">
+                    <a class="button button-get-started" href="{% url "plea_form" %}" role=button>Start now</a>
+                </div>
+                <section class="more">
+                    <h3>Before you start</h3>
+                    <div class="panel-indent">
+                        <ul class="list-bullet text">
+                            <li>you'll need the 'Postal Requisition' pack we sent to you</li>
+                            <li>you'll need the 'Notice of intention to prosecute' we sent to you (if you have one)</li>
+                            <li>you can make your plea at any time up to the day before the court makes a decision</li>
+                            <li>you must be the person named on the charge sheet. It is against the law to enter a plea for anyone else</li>
+                            <li>entering your plea takes about 10 minutes</li>
+                        </ul>
+                    </div>
+                </section>
             </section>
         </div>
     </article>
