@@ -30,7 +30,8 @@ class EmailGenerationTests(TestCase):
     def test_plea_email_sends(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
-                                 "urn": "cvxcvx89"},
+                                 "urn": "cvxcvx89",
+                                 "number_of_charges": 2},
                         "your_details": {"name": "vcx", "national_insurance_number": "xxx",
                                          "driving_licence_number": "xxx", "registration_number": "xxx",
                                          "email": "test@test.com"},
@@ -46,7 +47,8 @@ class EmailGenerationTests(TestCase):
     def test_plea_email_body_contains_plea_and_count_ids(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
-                                 "urn": "cvxcvx89"},
+                                 "urn": "cvxcvx89",
+                                 "number_of_charges": 2},
                         "your_details": {"name": "vcx", "national_insurance_number": "xxx",
                                          "driving_licence_number": "xxx", "registration_number": "xxx",
                                          "email": "test@test.com"},
@@ -74,7 +76,8 @@ class EmailGenerationTests(TestCase):
     def test_user_confirmation_sends_email(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
-                                 "urn": "cvxcvx89"},
+                                 "urn": "cvxcvx89",
+                                 "number_of_charges": 2},
                         "your_details": {"name": "vcx", "email": "lyndon@antlyn.com", "national_insurance_number": "xxx",
                                          "driving_licence_number": "xxx", "registration_number": "xxx"},
                         "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
@@ -90,7 +93,8 @@ class EmailGenerationTests(TestCase):
     def test_user_confirmation_sends_email_opt_out(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
-                                 "urn": "cvxcvx89"},
+                                 "urn": "cvxcvx89",
+                                 "number_of_charges": 2},
                         "your_details": {"name": "vcx", "email": "lyndon@antlyn.com", "national_insurance_number": "xxx",
                                          "driving_licence_number": "xxx", "registration_number": "xxx"},
                         "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
