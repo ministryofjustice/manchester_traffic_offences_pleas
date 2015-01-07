@@ -1,5 +1,7 @@
 import datetime
+from glob import glob
 import json
+import os
 from mock import patch
 import socket
 import unittest
@@ -8,10 +10,11 @@ from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 
 from ..email import send_plea_email
-from ..models import CourtEmailPlea, CourtEmailCount
+from ..models import CourtEmailCount, Case
+from ..encrypt import clear_user_data, gpg
 
 
-class EmailAuditTests(unittest.TestCase):
+class CaseCreationTests(unittest.TestCase):
     def setUp(self):
         self.context_data = {
             'case': {u'urn': u'00/aa/0000000/00',
@@ -32,15 +35,42 @@ class EmailAuditTests(unittest.TestCase):
                                     {u'mitigations': u'fdsfd\r\nsf\r\n\r\n',
                                      u'guilty': u'not_guilty'}], u'understand': True}}
 
-    def test_email_audit_is_created(self):
+
+    def test_user_data_is_persisted(self):
+        """
+        Verify that the data is written to the user data folder.
+        """
+
+        clear_user_data()
         result = send_plea_email(self.context_data)
-        data = json.dumps(self.context_data, cls=DjangoJSONEncoder)
+
         self.assertTrue(result)
 
-        audit = CourtEmailPlea.objects.latest('date_sent')
-        self.assertEqual(audit.status, "sent")
-        self.assertEqual(audit.dict_sent, data)
-        self.assertEqual(audit.subject, settings.PLEA_EMAIL_SUBJECT.format(**self.context_data))
+        self.assertEqual(Case.objects.all().count(), 1)
+
+        case = Case.objects.all()[0]
+        self.assertEqual(Case.objects.all()[0].urn, self.context_data['case']['urn'].upper())
+        self.assertEqual(case.status, "sent")
+
+        file_glob = '{}*.gpg'.format(self.context_data['case']['urn'].replace('/', '-').upper())
+
+        path = os.path.join(settings.USER_DATA_DIRECTORY, file_glob)
+
+        files = glob(path)
+
+        if not files:
+            self.fail('Encrypted user data file not found')
+        elif len(files) > 1:
+            self.fail('More than one data file found for URN')
+
+        file = open(files[0], "r")
+        decrypt = gpg.decrypt_file(file)
+
+        self.assertEquals(decrypt.status, "decryption ok")
+
+        data = json.loads(str(decrypt))
+
+        self.assertEquals(self.context_data['case']['urn'], data['case']['urn'])
 
     @patch("apps.plea.email.TemplateAttachmentEmail.send")
     def test_email_failure_audit(self, send):
@@ -49,25 +79,6 @@ class EmailAuditTests(unittest.TestCase):
         data = json.dumps(self.context_data, cls=DjangoJSONEncoder)
         self.assertFalse(result)
 
-        audit = CourtEmailPlea.objects.latest('date_sent')
-        self.assertEqual(audit.status, "network_error")
-        self.assertEqual(audit.status_info, u"Email failed to send, socket error")
-        self.assertEqual(audit.dict_sent, data)
-        self.assertEqual(audit.subject, settings.PLEA_EMAIL_SUBJECT.format(**self.context_data))
-
-    def test_management_data_is_stored(self):
-        result = send_plea_email(self.context_data)
-
-        count = CourtEmailCount.objects.latest('date_sent')
-        self.assertEqual(count.total_pleas, 2)
-        self.assertEqual(count.total_guilty, 1)
-        self.assertEqual(count.total_not_guilty, 1)
-
-    def test_uppercase_url_is_stored(self):
-
-        send_plea_email(self.context_data)
-
-        plea = CourtEmailPlea.objects.latest('date_sent')
-
-        self.assertEqual(plea.urn, self.context_data['case']['urn'].upper())
-
+        case = Case.objects.all().order_by('-id')[0]
+        self.assertEqual(case.status, "network_error")
+        self.assertEqual(case.status_info, u"Email failed to send, socket error")
