@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.core import mail
 
 from ..email import TemplateAttachmentEmail, send_plea_email
-from ..models import CourtEmailPlea, CourtEmailCount
+from ..models import Case, CourtEmailCount
 
 
 class EmailGenerationTests(TestCase):
@@ -56,7 +56,7 @@ class EmailGenerationTests(TestCase):
 
         send_plea_email(context_data)
 
-        plea_obj = CourtEmailPlea.objects.latest('date_sent')
+        case_obj = Case.objects.all().order_by('-id')[0]
         count_obj = CourtEmailCount.objects.latest('date_sent')
 
         matches = re.search("<<<makeaplea-ref:\s*(\d+)/(\d+)>>>", mail.outbox[0].body)
@@ -66,9 +66,9 @@ class EmailGenerationTests(TestCase):
         except AttributeError:
             self.fail('Body makeaplea-ref tag not found!')
 
-        plea_id, count_id = matches.groups()
+        case_id, count_id = matches.groups()
 
-        self.assertEqual(int(plea_id), plea_obj.id)
+        self.assertEqual(int(case_id), case_obj.id)
         self.assertEqual(int(count_id), count_obj.id)
 
     def test_user_confirmation_sends_email(self):
