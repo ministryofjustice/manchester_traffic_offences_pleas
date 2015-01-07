@@ -1,6 +1,5 @@
 import contextlib
 import datetime as dt
-import json
 import re
 import sys
 import traceback
@@ -9,7 +8,7 @@ from django.conf import settings
 from django.core.mail import mail_admins
 from django.template.loader import render_to_string
 
-from apps.plea.models import CourtEmailPlea, CourtEmailCount
+from apps.plea.models import CourtEmailCount, Case
 from .models import ReceiptLog
 
 import gmail
@@ -98,10 +97,10 @@ def process_receipts(query_from=None):
     insert the relevant IDs into the body of the outbound email in the
     following format:
 
-    <<<makeaplea-ref: {CourtEmailPleaId}, {CourtEmailCountId}>>>
+    <<<makeaplea-ref: {CaseId}, {CourtEmailCountId}>>>
 
     HMCTS receipt emails include the reference enabling us to
-    know which CourtEmailPlea and CourtEmailCount data needs
+    know which Case and CourtEmailCount data needs
     to be modified.
 
     This function is run as a management command:
@@ -175,9 +174,9 @@ def _process_receipts(log_entry):
                 continue
 
             try:
-                plea_obj = CourtEmailPlea.objects.get(id=plea_id)
-            except CourtEmailPlea.DoesNotExist:
-                status_text.append('Cannot find CourtEmailPlea(<{}>)'
+                plea_obj = Case.objects.get(id=plea_id)
+            except Case.DoesNotExist:
+                status_text.append('Cannot find Case(<{}>)'
                                    .format(plea_id))
 
                 log_entry.total_errors += 1
@@ -213,15 +212,6 @@ def _process_receipts(log_entry):
                     # HMCTS have changed the URN, update our records and log the change
 
                     old_urn, plea_obj.urn = plea_obj.urn, urn
-
-                    data = json.loads(plea_obj.dict_sent)
-
-                    try:
-                        data['case']['urn'] = urn
-                    except KeyError:
-                        pass
-
-                    plea_obj.dict_sent = json.dumps(data)
 
                     plea_obj.status_info = \
                         (plea_obj.status_info or "") +\
