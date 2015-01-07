@@ -9,7 +9,7 @@ from django.test import TestCase
 
 
 from ..email import TemplateAttachmentEmail, send_plea_email
-from ..models import CourtEmailPlea, CourtEmailCount
+from ..models import CourtEmailCount
 from ..forms import CaseForm, YourDetailsForm, PleaForm, YourMoneyForm, RequiredFormSet
 
 
