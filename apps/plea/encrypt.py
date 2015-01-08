@@ -1,6 +1,7 @@
 import os
 import json
 import time
+from glob import glob
 
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
@@ -23,7 +24,11 @@ def clear_user_data():
     """
 
     path = os.path.join(settings.USER_DATA_DIRECTORY, "*")
-    sh.rm(sh.glob(path))
+    try:
+        sh.rm(sh.glob(path))
+    except sh.ErrorReturnCode_1:
+        # directory already empty
+        pass
 
 
 def encrypt_and_store_user_data(urn, case_id, data, user_data_directory=None):
