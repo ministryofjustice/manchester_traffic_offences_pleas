@@ -1,3 +1,4 @@
+import datetime as dt
 import json
 
 from django.http import HttpResponse
@@ -33,6 +34,18 @@ class PublicStatsViewSet(viewsets.ViewSet):
 
     @list_route()
     def by_hearing(self, request):
+
+        now = dt.datetime.now()
+
+        start_date = now - dt.timedelta(now.weekday())
+
+        stats = CourtEmailCount.objects.get_stats_by_hearing_date(3, start_date)
+
+        return Response(stats)
+
+    @list_route()
+    def all_by_hearing(self, request):
+
         stats = CourtEmailCount.objects.get_stats_by_hearing_date()
 
         return Response(stats)
