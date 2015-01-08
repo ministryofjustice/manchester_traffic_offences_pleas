@@ -7,15 +7,16 @@ import socket
 import unittest
 
 from django.conf import settings
-from django.core.serializers.json import DjangoJSONEncoder
+from django.test import TestCase
 
 from ..email import send_plea_email
-from ..models import CourtEmailCount, Case
+from ..models import Case
 from ..encrypt import clear_user_data, gpg
 
 
-class CaseCreationTests(unittest.TestCase):
+class CaseCreationTests(TestCase):
     def setUp(self):
+
         self.context_data = {
             'case': {u'urn': u'00/aa/0000000/00',
                       u'date_of_hearing': datetime.date(2015, 1, 1),
@@ -76,7 +77,7 @@ class CaseCreationTests(unittest.TestCase):
     def test_email_failure_audit(self, send):
         send.side_effect = socket.error("Email failed to send, socket error")
         result = send_plea_email(self.context_data)
-        data = json.dumps(self.context_data, cls=DjangoJSONEncoder)
+
         self.assertFalse(result)
 
         case = Case.objects.all().order_by('-id')[0]

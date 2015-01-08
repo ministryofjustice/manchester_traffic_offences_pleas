@@ -1,5 +1,4 @@
 import datetime as dt
-import json
 
 from django.core import mail
 from django.test import TestCase
@@ -210,12 +209,6 @@ class TestProcessReceipts(TestCase):
         self.assertEqual(log.total_emails, 1)
         self.assertEqual(log.total_failed, 0)
         self.assertEqual(log.total_errors, 1)
-
-    def test_records_changed_on_changed_doh(self):
-        """
-        We can't complete this test due to missing hearing times in
-        the HMCTS receipt emails
-        """
 
     def test_records_changed_on_changed_urn(self):
 
