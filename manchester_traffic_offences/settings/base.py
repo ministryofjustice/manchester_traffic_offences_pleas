@@ -243,7 +243,7 @@ RECEIPT_ADMIN_EMAIL_ENABLED = True
 RECEIPT_ADMIN_EMAIL_SUBJECT = "Makeaplea receipt processing script"
 
 USER_DATA_DIRECTORY = os.path.join(os.path.abspath(os.path.dirname(__file__)), '../../user_data')
-GPG_RECIPIENT = os.environ.get('GPG_RECIPIENT', 'lyndon.garvey@digital.justice.gov.uk')
+GPG_RECIPIENT = os.environ.get('GPG_RECIPIENT', 'test@test.com')
 GPG_HOME_DIRECTORY = os.environ.get('GPG_HOME_DIRECTORY', '/home/vagrant/.gnupg/')
 
 # set basic authentication
