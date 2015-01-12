@@ -8,6 +8,7 @@ import unittest
 
 from django.conf import settings
 from django.test import TestCase
+from django.test.utils import override_settings
 
 from ..email import send_plea_email
 from ..models import Case
@@ -37,6 +38,7 @@ class CaseCreationTests(TestCase):
                                      u'guilty': u'not_guilty'}], u'understand': True}}
 
 
+    @override_settings(STORE_USER_DATA=True)
     def test_user_data_is_persisted(self):
         """
         Verify that the data is written to the user data folder.
@@ -73,9 +75,13 @@ class CaseCreationTests(TestCase):
 
         self.assertEquals(self.context_data['case']['urn'], data['case']['urn'])
 
+    @override_settings(STORE_USER_DATA=True)
     @patch("apps.plea.email.TemplateAttachmentEmail.send")
     def test_email_failure_audit(self, send):
         send.side_effect = socket.error("Email failed to send, socket error")
+
+        clear_user_data()
+
         result = send_plea_email(self.context_data)
 
         self.assertFalse(result)
@@ -83,3 +89,31 @@ class CaseCreationTests(TestCase):
         case = Case.objects.all().order_by('-id')[0]
         self.assertEqual(case.status, "network_error")
         self.assertEqual(case.status_info, u"Email failed to send, socket error")
+
+        # confirm we have a new file:
+
+        file_glob = '{}*.gpg'.format(self.context_data['case']['urn'].replace('/', '-').upper())
+
+        path = os.path.join(settings.USER_DATA_DIRECTORY, file_glob)
+
+        files = glob(path)
+
+        if len(files) != 1:
+            self.fail('Should be one file in {}'.format(file_glob))
+
+    @override_settings(STORE_USER_DATA=False)
+    def test_data_not_stored(self):
+
+        clear_user_data()
+
+        result = send_plea_email(self.context_data)
+
+        self.assertTrue(result)
+
+        path = os.path.join(settings.USER_DATA_DIRECTORY, '*.gpg')
+
+        files = glob(path)
+
+        if len(files) > 0:
+            self.fail('User data directory is not empty')
+
