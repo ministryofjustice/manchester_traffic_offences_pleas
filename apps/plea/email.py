@@ -95,7 +95,9 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
     case = Case()
     case.urn = context_data["case"]["urn"].upper()
     case.save()
-    encrypt_and_store_user_data(case.urn, case.id, context_data)
+
+    if getattr(settings, 'STORE_USER_DATA', False):
+        encrypt_and_store_user_data(case.urn, case.id, context_data)
 
     email_count = CourtEmailCount()
     email_count.get_from_context(context_data)
