@@ -9,5 +9,3 @@ splinter
 lettuce_webdriver
 
 coverage==3.7.1
-
-sh==1.11
