@@ -21,10 +21,4 @@ DATABASES = {
     }
 }
 
-ADMINS = (
-    ('Ian George', 'ian.george@digital.justice.gov.uk'),
-    ('Lyndon Garvey', 'lyndon.garvey@digital.justice.gov.uk')
-)
-
-MANAGERS = ADMINS
 ALLOWED_HOSTS = ["dev.makeaplea.dsd.io", ]
