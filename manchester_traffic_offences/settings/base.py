@@ -10,7 +10,10 @@ root = lambda *x: join(abspath(PROJECT_ROOT), *x)
 DEBUG = True
 template_DEBUG = DEBUG
 
-ADMINS = ()
+ADMINS = (
+    ('Ian George', 'ian.george@digital.justice.gov.uk'),
+    ('Lyndon Garvey', 'lyndon.garvey@digital.justice.gov.uk')
+)s
 
 MANAGERS = ADMINS
 
@@ -88,7 +91,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'CHANGE THIS!!!'
+SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
