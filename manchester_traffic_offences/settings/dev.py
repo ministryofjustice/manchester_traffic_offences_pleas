@@ -29,8 +29,8 @@ ADMINS = (
 MANAGERS = ADMINS
 ALLOWED_HOSTS = ["dev.makeaplea.dsd.io", ]
 
-EMAIL_HOST = os.environ.get('EMAIL_HOST', 'mail_proxy.dev.makeaplea.dsd.io')
-EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT'))
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USERNAME','')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 EMAIL_USE_TLS = True
