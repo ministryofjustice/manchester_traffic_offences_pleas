@@ -72,7 +72,7 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
                                          context_data,
                                          "text/html")
 
-    plp_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
+    plp_email = TemplateAttachmentEmail(settings.PLP_EMAIL_FROM,
                                         settings.PLEA_EMAIL_ATTACHMENT_NAME,
                                         settings.PLP_EMAIL_TEMPLATE,
                                         context_data,
