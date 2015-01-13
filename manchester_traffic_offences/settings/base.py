@@ -26,7 +26,7 @@ DATABASES = {
 }
 
 RAVEN_CONFIG = {
-    'dsn': 'https://bec1584e479a4bc0b694b7fbcb4c632d:4ef91764e1ea4d2cbbd50a4d4bdcf4a5@app.getsentry.com/28000',
+    'dsn': os.environ.get("RAVEN_DSN", ""),
 }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
@@ -206,34 +206,49 @@ INTERNAL_IPS = ['127.0.0.1']
 # EMAILS
 SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "")
 
-SMTP_ROUTES = {"GSI": {"HOST": "localhost",
-                       "PORT": 25},
-               "GMP": {"HOST": "localhost",
-                       "PORT": 25}}
+# Secure mail
+SMTP_ROUTES = {"GSI": {"HOST": os.environ.get("GSI_EMAIL_HOST", "localhost"),
+                       "PORT": os.environ.get("GSI_EMAIL_PORT", 25)},
+               "GMP": {"HOST": os.environ.get("GMP_EMAIL_HOST", "localhost"),
+                       "PORT": os.environ.get("GMP_EMAIL_PORT", 25),}}
 
-PLEA_EMAIL_FROM = "plea_from@example.org"
-PLEA_EMAIL_ATTACHMENT_NAME = "plea.html"
-PLEA_EMAIL_TEMPLATE = "plea/plea_email_attachment.html"
-PLEA_EMAIL_TO = ["plea_to@example.org", ]
-PLEA_EMAIL_SUBJECT = "ONLINE PLEA: {case[urn]} DOH: {email_date_of_hearing} {email_name}"
-PLEA_EMAIL_BODY = ""
+# Private email
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "localhost")
+EMAIL_PORT = os.environ.get("EMAIL_PORT", 25)
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USERNAME", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = True
 
-PLP_EMAIL_TO = ["plp_to@example.org", ]
-PLP_EMAIL_TEMPLATE = "plea/plp_email_attachment.html"
-PLP_EMAIL_SUBJECT = "POLICE %s" % PLEA_EMAIL_SUBJECT
-
-FEEDBACK_EMAIL_FROM = "makeaplea@digital.justice.gov.uk"
-FEEDBACK_EMAIL_TO = ("ian.george@digital.justice.gov.uk", )
-
-USER_SMTP_EMAIL_HOST = os.environ.get("SENDGRID_EMAIL_HOST", "")
-USER_SMTP_EMAIL_PORT = os.environ.get("SENDGRID_EMAIL_PORT", "")
+# Public email
+USER_SMTP_EMAIL_HOST = os.environ.get("SENDGRID_EMAIL_HOST", "localhost")
+USER_SMTP_EMAIL_PORT = os.environ.get("SENDGRID_EMAIL_PORT", 25)
 USER_SMTP_EMAIL_HOST_USERNAME = os.environ.get("SENDGRID_EMAIL_HOST_USERNAME", "")
 USER_SMTP_EMAIL_HOST_PASSWORD = os.environ.get("SENDGRID_EMAIL_HOST_PASSWORD", "")
 
+# Full plea email sent to court mailbox
+PLEA_EMAIL_FROM = os.environ.get("PLEA_EMAIL_FROM", "plea_from@example.org")
+PLEA_EMAIL_ATTACHMENT_NAME = "plea.html"
+PLEA_EMAIL_TEMPLATE = "plea/plea_email_attachment.html"
+PLEA_EMAIL_TO = [os.environ.get("PLEA_EMAIL_TO", "plea_to@example.org"), ]
+PLEA_EMAIL_SUBJECT = "ONLINE PLEA: {case[urn]} DOH: {email_date_of_hearing} {email_name}"
+PLEA_EMAIL_BODY = ""
+
+# Cut down email sent to the police prosecutor
+PLP_EMAIL_FROM = os.environ.get("PLP_EMAIL_FROM", "plea_from@example.org")
+PLP_EMAIL_TO = [os.environ.get("PLP_EMAIL_TO", "plea_to@example.org"), ]
+PLP_EMAIL_TEMPLATE = "plea/plp_email_attachment.html"
+PLP_EMAIL_SUBJECT = "POLICE %s" % PLEA_EMAIL_SUBJECT
+
+# Feedback email
+FEEDBACK_EMAIL_FROM = os.environ.get("FEEDBACK_EMAIL_FROM", "plea_feedback@example.org")
+FEEDBACK_EMAIL_TO = (os.environ.get("FEEDBACK_EMAIL_TO", "plea_feedback_to@example.org"), )
+
+# Emails to users
 PLEA_CONFIRMATION_EMAIL_FROM = os.environ.get("PLEA_CONFIRMATION_EMAIL_FROM", "")
 PLEA_CONFIRMATION_EMAIL_SUBJECT = "Online plea submission confirmation"
 PLEA_CONFIRMATION_EMAIL_BCC = []
 SEND_PLEA_CONFIRMATION_EMAIL = True
+
 
 RECEIPT_INBOX_FROM_EMAIL = os.environ.get("RECEIPT_INBOX_FROM_EMAIL", "")
 RECEIPT_INBOX_USERNAME = os.environ.get("RECEIPT_INBOX_USERNAME", "")
