@@ -3,7 +3,7 @@ import datetime as dt
 
 from django.test import TestCase
 
-from ..models import CourtEmailCount
+from ..models import CourtEmailCount, AggregateStats
 
 
 class CourtEmailCountModelTestCase(TestCase):
@@ -176,3 +176,67 @@ class CourtEmailCountModelTestCase(TestCase):
 
         self.assertEqual(email_count.sc_guilty_char_count, 13)
         self.assertEqual(email_count.sc_not_guilty_char_count, 16)
+
+class AggregateStatsTestCase(TestCase):
+
+    def test_aggregate_stats(self):
+
+        # wednesday
+        to_date = dt.date(2015, 01, 21)
+
+        # should be included in entry with start_date of 5/01/2015
+        CourtEmailCount.objects.create(date_sent=dt.date(2015, 01, 05),
+                                       total_pleas=50,
+                                       total_guilty=25,
+                                       total_not_guilty=5,
+                                       hearing_date=to_date)
+
+        # should be included in entry with start_date of 5/01/2015
+        CourtEmailCount.objects.create(date_sent=dt.date(2015, 01, 10),
+                                       total_pleas=50,
+                                       total_guilty=25,
+                                       total_not_guilty=5,
+                                       hearing_date=to_date)
+
+        # should be included in entry with start_date of 5/01/2015
+        CourtEmailCount.objects.create(date_sent=dt.date(2015, 01, 10),
+                                       total_pleas=50,
+                                       total_guilty=25,
+                                       total_not_guilty=5,
+                                       hearing_date=to_date)
+
+        # should be included in entry with start_date of 5/01/2015
+        CourtEmailCount.objects.create(date_sent=dt.date(2015, 01, 10),
+                                       total_pleas=50,
+                                       total_guilty=25,
+                                       total_not_guilty=5,
+                                       hearing_date=to_date)
+
+        # should be included in entry with start_date of 12/01/2015
+        CourtEmailCount.objects.create(date_sent=dt.date(2015, 01, 10),
+                                       total_pleas=50,
+                                       total_guilty=25,
+                                       total_not_guilty=5,
+                                       hearing_date=to_date)
+
+        # should not be included as there is not a full week
+        CourtEmailCount.objects.create(date_sent=dt.date(2015, 01, 19),
+                                       total_pleas=100,
+                                       total_guilty=50,
+                                       total_not_guilty=5,
+                                       hearing_date=to_date)
+
+        AggregateStats.objects.calculate_latest(to_date=to_date)
+
+        self.assertEquals(AggregateStats.objects.all().count(), 2)
+
+        wk1, wk2 = AggregateStats.objects.all().order_by('start_date')
+
+        self.assertEquals(wk1.start_date, dt.date(2015, 01, 05))
+        self.assertEquals(wk1.submissions, 200)
+
+        self.assertEquals(wk2.start_date, dt.date(2015, 01, 12))
+        self.assertEquals(wk2.submissions, 50)
+
+
+
