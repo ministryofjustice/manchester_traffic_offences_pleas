@@ -67,16 +67,12 @@ def encrypt_and_store_user_data(urn, case_id, data, user_data_directory=None):
     try:
         fd = os.open(file_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
         os.write(fd, str(encrypted_data))
-    except OSError as ex:
-        if ex.errno == 17:
-            # file exists already
 
-            # NOTE: It seems unlikely that there'll be file name
-            # clashes given the file name is the urn + timestamp. However,
-            # I'm leaving this code block in place in case it does
-            # become an issue.
-            pass
-        raise
+        # NOTE: It seems unlikely that there'll be file name
+        # clashes given the file name is the urn + timestamp. However,
+        # if it does become an issue, you can check for a 'file already
+        # exists' error by captching an OSError with ex.errno == 17
+
     finally:
         if 'fd' in locals():
             os.close(fd)
