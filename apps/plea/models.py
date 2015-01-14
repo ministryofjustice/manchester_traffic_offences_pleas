@@ -252,3 +252,56 @@ class Case(models.Model):
     name = models.CharField(max_length=255)
 
     objects = CaseManager()
+
+
+class AggregateStatsManager(models.Manager):
+    def calculate_latest(self, to_date=None):
+        """
+        Make the latest aggregate stats from CourtEmailCount
+        """
+
+        if not to_date:
+            to_date = dt.date.today()
+
+        # Monday is the start of the week
+
+        try:
+            last = self.latest('start_date')
+        except AggregateStats.DoesNotExist:
+            # arbitrary Monday start date that is before MAP went live
+            start_date = dt.date(2014, 05, 5)
+        else:
+            start_date = last.start_date
+
+        while start_date+dt.timedelta(7) <= to_date:
+
+            start_datetime = dt.datetime.combine(
+                start_date, dt.datetime.min.time())
+
+            end_datetime = dt.datetime.combine(
+                start_date+dt.timedelta(7), dt.datetime.max.time())
+
+            counts = CourtEmailCount.objects.filter(
+                date_sent__gte=start_datetime,
+                date_sent__lte=end_datetime).aggregate(Sum('total_pleas'),
+                                                       Sum('total_guilty'),
+                                                       Sum('total_not_guilty'))
+
+            AggregateStats.objects.create(
+                start_date=start_date,
+                submissions=counts['total_pleas__sum'] or 0)
+
+            start_date += dt.timedelta(7)
+
+
+class AggregateStats(models.Model):
+    """
+    An aggregate table used to store submission data over a 7 day
+    period.
+    """
+    start_date = models.DateTimeField()
+    submissions = models.PositiveIntegerField()
+    requisitions = models.PositiveIntegerField(blank=True, null=True, default=None)
+
+    objects = AggregateStatsManager()
+
