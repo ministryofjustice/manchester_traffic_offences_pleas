@@ -13,7 +13,7 @@ template_DEBUG = DEBUG
 ADMINS = (
     ('Ian George', 'ian.george@digital.justice.gov.uk'),
     ('Lyndon Garvey', 'lyndon.garvey@digital.justice.gov.uk')
-)s
+)
 
 MANAGERS = ADMINS
 
