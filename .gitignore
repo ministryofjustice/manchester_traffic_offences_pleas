@@ -84,3 +84,8 @@ coverage.xml
 /htmlcov
 
 *.doc
+
+# gpg directories
+/user_data
+/test_user_data
+/test_gpg_home

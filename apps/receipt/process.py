@@ -227,14 +227,14 @@ def _process_receipts(log_entry):
                         (plea_obj.status_info or "") +\
                         "\nURN CHANGED! Old Urn: {}".format(old_urn)
 
-                    plea_obj.save()
-
                     count_obj.get_from_context(data)
                     count_obj.save()
 
                     status_text.append('Passed [URN CHANGED! old urn: {}] {}'.format(urn, old_urn))
                 else:
                     status_text.append('Passed: {}'.format(urn))
+
+                plea_obj.save()
 
                 # We can't modify the DOH as the hearing time is not provided by
                 # hmcts, at current
