@@ -13,7 +13,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_str, force_text
 from django.utils.translation import ugettext_lazy as _
 
-from .models import CourtEmailPlea, Case
+from .models import Case
 
 
 ERROR_MESSAGES = {
@@ -107,19 +107,9 @@ def is_urn_not_used(urn):
     Check that the urn hasn't already been used in a previous submission
     """
 
-    if settings.SWITCH_FULL_URN_VALIDATION:
-        if not Case.objects.filter(urn__iexact=urn).exists():
-            raise exceptions.ValidationError(
-                _(ERROR_MESSAGES['URN_DOES_NOT_EXIST']))
-
-    if not CourtEmailPlea.objects.can_use_urn(urn):
+    if not Case.objects.can_use_urn(urn):
         raise exceptions.ValidationError(
-            _(ERROR_MESSAGES['URN_ALREADY_USED']))
-
-    return True
-
-    if not CourtEmailPlea.objects.can_use_urn(urn):
-        raise exceptions.ValidationError(ERROR_MESSAGES["URN_ALREADY_USED"])
+            _(ERROR_MESSAGES['URN_DOES_NOT_EXIST']))
 
     return True
 

@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.core import mail
 
 from ..email import TemplateAttachmentEmail, send_plea_email
-from ..models import CourtEmailPlea, CourtEmailCount
+from ..models import Case, CourtEmailCount
 
 
 class EmailGenerationTests(TestCase):
@@ -30,7 +30,8 @@ class EmailGenerationTests(TestCase):
     def test_plea_email_sends(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
-                                 "urn": "cvxcvx89"},
+                                 "urn": "cvxcvx89",
+                                 "number_of_charges": 2},
                         "your_details": {"name": "vcx", "national_insurance_number": "xxx",
                                          "driving_licence_number": "xxx", "registration_number": "xxx",
                                          "email": "test@test.com"},
@@ -46,7 +47,8 @@ class EmailGenerationTests(TestCase):
     def test_plea_email_body_contains_plea_and_count_ids(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
-                                 "urn": "cvxcvx89"},
+                                 "urn": "cvxcvx89",
+                                 "number_of_charges": 2},
                         "your_details": {"name": "vcx", "national_insurance_number": "xxx",
                                          "driving_licence_number": "xxx", "registration_number": "xxx",
                                          "email": "test@test.com"},
@@ -56,7 +58,7 @@ class EmailGenerationTests(TestCase):
 
         send_plea_email(context_data)
 
-        plea_obj = CourtEmailPlea.objects.latest('date_sent')
+        case_obj = Case.objects.all().order_by('-id')[0]
         count_obj = CourtEmailCount.objects.latest('date_sent')
 
         matches = re.search("<<<makeaplea-ref:\s*(\d+)/(\d+)>>>", mail.outbox[0].body)
@@ -66,15 +68,16 @@ class EmailGenerationTests(TestCase):
         except AttributeError:
             self.fail('Body makeaplea-ref tag not found!')
 
-        plea_id, count_id = matches.groups()
+        case_id, count_id = matches.groups()
 
-        self.assertEqual(int(plea_id), plea_obj.id)
+        self.assertEqual(int(case_id), case_obj.id)
         self.assertEqual(int(count_id), count_obj.id)
 
     def test_user_confirmation_sends_email(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
-                                 "urn": "cvxcvx89"},
+                                 "urn": "cvxcvx89",
+                                 "number_of_charges": 2},
                         "your_details": {"name": "vcx", "email": "lyndon@antlyn.com", "national_insurance_number": "xxx",
                                          "driving_licence_number": "xxx", "registration_number": "xxx"},
                         "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
@@ -90,7 +93,8 @@ class EmailGenerationTests(TestCase):
     def test_user_confirmation_sends_email_opt_out(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
-                                 "urn": "cvxcvx89"},
+                                 "urn": "cvxcvx89",
+                                 "number_of_charges": 2},
                         "your_details": {"name": "vcx", "email": "lyndon@antlyn.com", "national_insurance_number": "xxx",
                                          "driving_licence_number": "xxx", "registration_number": "xxx"},
                         "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},

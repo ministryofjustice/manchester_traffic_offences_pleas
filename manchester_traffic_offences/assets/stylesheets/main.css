@@ -1,19 +1,14 @@
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 #content:after {
   content: "";
   display: block;
@@ -22,25 +17,18 @@
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 #content:after {
   content: "";
   display: block;
@@ -48,10 +36,8 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 #content:after {
   content: "";
   display: block;
@@ -59,26 +45,19 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 #content:after {
   content: "";
   display: block;
@@ -86,16 +65,12 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 #content:after {
   content: "";
   display: block;
@@ -131,13 +106,10 @@
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 .TextIcon {
   background-repeat: no-repeat;
   background-position: left top; }
@@ -647,7 +619,7 @@ code {
       padding-bottom: 10px; } }
   .phase-banner p {
     margin: 0;
-    color: black;
+    color: #000;
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
@@ -847,7 +819,7 @@ fieldset {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   padding: 4px;
-  background-color: white;
+  background-color: #fff;
   border: 1px solid #bfc1c3;
   -webkit-appearance: none;
   border-radius: 0; }
@@ -999,7 +971,7 @@ fieldset {
   margin-right: 15px; }
 
 .js-enabled .selected {
-  background: white;
+  background: #fff;
   border-color: #0b0c0c; }
 
 .js-enabled label.focused {
@@ -1052,7 +1024,7 @@ table th {
   text-decoration: none;
   -webkit-font-smoothing: antialiased;
   cursor: pointer;
-  color: white;
+  color: #fff;
   margin: 0 15px 15px 0;
   padding: 0.52632em 0.78947em 0.26316em 0.78947em;
   vertical-align: top; }
@@ -1078,7 +1050,7 @@ table th {
       -moz-box-shadow: 0 2px 0 #003518;
       box-shadow: 0 2px 0 #003518; }
   .button:link, .button:hover, .button:focus, .button:visited {
-    color: white; }
+    color: #fff; }
   .button:before {
     content: "";
     height: 110%;
@@ -1416,7 +1388,7 @@ b, strong {
 #complete h2.ticked {
   display: inline-block;
   padding: 40px 40px 40px 80px;
-  background: #28a197 url(../images/icons/tick.png) no-repeat 35px 50px;
+  background: #009999 url(../images/icons/tick.png) no-repeat 35px 50px;
   color: white;
   margin-top: 40px; }
 
@@ -1563,7 +1535,8 @@ select {
   margin-bottom: 2em; }
 
 .actions {
-  clear: both; }
+  clear: both;
+  margin-top: 20px; }
 
 section#charges {
   clear: both;
@@ -1816,19 +1789,18 @@ h2.header {
   font-weight: bold;
   margin-bottom: 0.6em; }
 
-.get-started-intro a.button.button-get-started {
+#get_started a.button.button-get-started {
   font-size: 135%;
   font-weight: normal; }
+#get_started .panel-space {
+  margin-top: 50px; }
+#get_started h3 {
+  font-size: 1.4em;
+  font-weight: bold;
+  margin-top: 2em; }
 
 body.urn_invalid .button-get-started {
   margin-bottom: 30px; }
-
-#before-you-start {
-  margin-top: 2em; }
-
-#before-you-start h2 {
-  font-size: 1.2em;
-  font-weight: bold; }
 
 @media (max-width: 700px) {
   .related-positioning, .help-image {
@@ -1891,6 +1863,9 @@ h2 span.form-hint, label span.form-hint {
 
 label span.form-hint {
   color: black; }
+
+label.nobold {
+  font-weight: normal; }
 
 #understand, #receive_email {
   font-weight: normal;
@@ -1959,3 +1934,5 @@ p.lead {
     line-height: 1.2em;
     font-weight: bold;
     margin-bottom: 0.5em; }
+
+/*# sourceMappingURL=main.css.map */

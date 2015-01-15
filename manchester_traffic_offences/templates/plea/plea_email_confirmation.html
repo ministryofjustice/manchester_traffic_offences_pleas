@@ -210,25 +210,24 @@
                         <table width="100%" cellpadding="30">
                             <tr>
                                 <td style="font-family:Arial, Helvetica; line-height: 21px;">
-                                    <h1 style="margin-bottom: 30px; margin-top:0px;">Online plea submission
-                                        confirmation</h1>
+                                    <h1 style="margin-bottom: 30px; margin-top:0px;">Your online plea{{ number_of_charges|pluralize }} ha{{ number_of_charges|pluralize:"s,ve" }} been submitted</h1>
 
-                                    <p style="font-size: 18px;"><b>{{ name }}</b><br>
-                                        Your online {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea(s) have been sent to the court.
+                                    <p style="font-size: 18px;">
+                                        <strong>{{ name }}</strong><br>
+                                        Your {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea{{ number_of_charges|pluralize }} ha{{ number_of_charges|pluralize:"s,ve" }} been sent to the court
                                     </p>
 
-
-                                    <h2 style="font-size: 25px; margin-top: 30px;">What happens next?</h2>
+                                    <h2 style="font-size: 25px; margin-top: 50px;">What happens next?</h2>
 
                                     {% if plea_type == "guilty" %}
                                         {% add_test_tag "<<GUILTY>>" %}
                                     <ol style="margin-left: 0px;padding-left:25px;">
 
-                                        <li style="margin-bottom: 20px; font-size: 18px;">There’s <b>no need</b> to come
+                                        <li style="margin-bottom: 20px; font-size: 18px;">There's <b>no need</b> to come
                                             to court on the hearing date shown in the pack we sent you.
                                         </li>
-                                        <li style="margin-bottom: 20px; font-size: 18px;">We’ll send you a letter with
-                                            the court’s decision within three working days after your hearing.
+                                        <li style="margin-bottom: 20px; font-size: 18px;">We'll send you a letter with
+                                            the court's decision{{ number_of_charges|pluralize}} <b>within three working days after your hearing.</b>
                                         </li>
                                         <li style="margin-bottom: 20px; font-size: 18px;">Quote your URN <b>{{ urn | upper }}</b> if you contact the court about your case.
                                         </li>
@@ -241,19 +240,18 @@
                                     {% if plea_type == "not_guilty" %}
                                         {% add_test_tag "<<NOTGUILTY>>" %}
                                     <ol style="margin-left: 0px;padding-left:25px;">
-                                        <li style="margin-bottom: 20px; font-size: 18px;">There’s <b>no need</b> to come
+                                        <li style="margin-bottom: 20px; font-size: 18px;">There's <b>no need</b> to come
                                             to court on the hearing date shown in the pack we
                                             sent you.
                                         </li>
                                         <li style="margin-bottom: 20px; font-size: 18px;">The court will tell you if you
-                                            need to attend for your trial, and what
+                                            need to attend a trial, and what
                                             evidence you may
                                             need to send to the court in support of your case.
                                         </li>
-                                        <li style="margin-bottom: 20px; font-size: 18px;">We’ll send you a letter with
-                                            the court’s decision within three working days
-                                            after your
-                                            hearing.
+                                        <li style="margin-bottom: 20px; font-size: 18px;">We'll send you a letter with
+                                            the court's decision{{ number_of_charges|pluralize}} <b>within three working days
+                                            after your hearing.</b>
                                         </li>
                                         <li style="margin-bottom: 20px; font-size: 18px;">Quote your URN <b>{{ urn | upper }}</b> if you contact the court
                                             about your
@@ -269,12 +267,12 @@
                                     {% if plea_type == "mixed" %}
                                         {% add_test_tag "<<MIXED>>" %}
                                     <ol>
-                                        <li style="margin-bottom: 20px; font-size: 18px;">There’s <b>no need</b> to come to court on the hearing date shown in the pack we sent you.</li>
+                                        <li style="margin-bottom: 20px; font-size: 18px;">There's <b>no need</b> to come to court on the hearing date shown in the pack we sent you.</li>
 
                                         <li style="margin-bottom: 20px; font-size: 18px;">The court will tell you if you need to attend a trial, and what evidence you may
                                             need to send to the court in support of your case.</li>
 
-                                        <li style="margin-bottom: 20px; font-size: 18px;">We’ll send you a letter with the court’s decision within three working days after your
+                                        <li style="margin-bottom: 20px; font-size: 18px;">We'll send you a letter with the court's decisions within three working days after your
                                             hearing.</li>
 
                                         <li style="margin-bottom: 20px; font-size: 18px;">Quote your URN  {{ urn | upper }} if you contact the court about your case.</li>
@@ -285,7 +283,7 @@
 
                                     {% endif %}
 
-                                    <h2 style="font-size: 25px; margin-top: 30px;">Need to change a plea?</h2>
+                                    <h2 style="font-size: 25px; margin-top: 50px;">Need to change a plea?</h2>
 
                                     <p style="font-size: 18px;">Contact the court by post or email quoting your URN before the date of your hearing.</p>
 
