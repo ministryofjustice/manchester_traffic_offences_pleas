@@ -2,18 +2,18 @@
 GOV.UK - Online plea submission confirmation
 
 {{ name }}
-Your online {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea(s) have been sent to the court.
+Your {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea{{ case.number_of_charges|pluralize }} ha{{ case.number_of_charges|pluralize:"s,ve" }} been sent to the court
 
 What happens next?
 
 {% if plea_type == "guilty" %}
     {% add_test_tag "<<GUILTY>>" %}
 
-1. There’s no need to come
+1. There's no need to come
     to court on the hearing date shown in the pack we sent you.
 
-2. We’ll send you a letter with
-    the court’s decision within three working days after your hearing.
+2. We'll send you a letter with
+    the court's decision{{ case.number_of_charges|pluralize}} within three working days after your hearing.
 
 3. Quote your URN {{ urn | upper }} if you contact the court about your case.
 
@@ -24,14 +24,14 @@ What happens next?
 {% if plea_type == "not_guilty" %}
     {% add_test_tag "<<NOTGUILTY>>" %}
 
-1. There’s no need to come to court on the hearing date shown in the
+1. There's no need to come to court on the hearing date shown in the
     pack we sent you.
 
 2. The court will tell you if you need to attend for your trial, and what
     evidence you may need to send to the court in support of your
     case.
 
-3. We’ll send you a letter with the court’s decision within three working
+3. We'll send you a letter with the court's decision{{ case.number_of_charges|pluralize}} within three working
     days after your hearing.
 
 4. Quote your URN {{ urn | upper }} if you contact the court about your
@@ -44,14 +44,14 @@ What happens next?
 {% if plea_type == "mixed" %}
     {% add_test_tag "<<MIXED>>" %}
 
-1. There’s no need to come to court on the hearing date shown in the
+1. There's no need to come to court on the hearing date shown in the
     pack we sent you.
 
 2. The court will tell you if you need to attend a trial, and what
     evidence you may need to send to the court in support of your
     case.
 
-3. We’ll send you a letter with the court’s decision within three working
+3. We'll send you a letter with the court's decisions within three working
     days after your hearing.
 
 4. Quote your URN {{ urn | upper }} if you contact the court about

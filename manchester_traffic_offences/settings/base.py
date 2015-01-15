@@ -2,6 +2,8 @@ import sys
 import os
 from os.path import join, abspath, dirname
 
+VERSION = (0, 9, 2)
+
 # PATH vars
 here = lambda *x: join(abspath(dirname(__file__)), *x)
 PROJECT_ROOT = here("..")
@@ -260,7 +262,9 @@ RECEIPT_INBOX_OAUTH_API_KEY = ""
 RECEIPT_ADMIN_EMAIL_ENABLED = True
 RECEIPT_ADMIN_EMAIL_SUBJECT = "Makeaplea receipt processing script"
 
-SWITCH_FULL_URN_VALIDATION = False
+USER_DATA_DIRECTORY = os.environ.get('USER_DATA_DIRECTORY', os.path.abspath(here('../../user_data')))
+GPG_RECIPIENT = os.environ.get('GPG_RECIPIENT', 'test@test.com')
+GPG_HOME_DIRECTORY = os.environ.get('GPG_HOME_DIRECTORY', '/home/vagrant/.gnupg/')
 
 # set basic authentication
 REST_FRAMEWORK = {
@@ -279,5 +283,6 @@ except ImportError:
     pass
 
 # importing test settings file if necessary (TODO could be done better)
-if 'test' in sys.argv[1] or 'harvest' in sys.argv[1]:
-    from .testing import *
+if len(sys.argv) > 1:
+    if 'test' in sys.argv[1] or 'harvest' in sys.argv[1]:
+        from .testing import *

@@ -1,3 +1,5 @@
+from django.conf import settings
+
 def globals(request):
   return {
     # Application Title (Populates <title>)
@@ -13,5 +15,8 @@ def globals(request):
     'product_type': 'service',
 
     # Google Analytics ID (Tracking ID for the service)
-    'ga_id': 'UA-53811587-1'
+    'ga_id': 'UA-53811587-1',
+
+    # Version number
+    'version': settings.VERSION
   }
