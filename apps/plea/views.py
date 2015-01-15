@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 
 from brake.decorators import ratelimit
 
-from .models import CourtEmailCount, CourtEmailPlea
+from .models import Case
 
 from apps.govuk_utils.forms import MultiStageForm
 from stages import (CaseStage, YourDetailsStage, PleaStage, YourMoneyStage,
@@ -39,7 +39,7 @@ class PleaOnlineForms(MultiStageForm):
         except KeyError:
             saved_urn = None
 
-        if saved_urn and not CourtEmailPlea.objects.can_use_urn(saved_urn):
+        if saved_urn and not Case.objects.can_use_urn(saved_urn):
             self._urn_invalid = True
 
             return

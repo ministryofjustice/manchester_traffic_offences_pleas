@@ -10,7 +10,8 @@ from django.conf import settings
 from django.template.loader import render_to_string
 
 from apps.govuk_utils.email import TemplateAttachmentEmail
-from .models import CourtEmailPlea, CourtEmailCount
+from .models import Case, CourtEmailCount
+from .encrypt import encrypt_and_store_user_data
 
 
 logger = logging.getLogger(__name__)
@@ -92,24 +93,18 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
     context_data["email_name"] = " ".join(names)
     context_data["email_date_of_hearing"] = date_of_hearing.strftime("%Y-%m-%d")
 
-    email_audit = CourtEmailPlea()
-    email_audit.urn = context_data["case"]["urn"].upper()
-    email_audit.process_form_data(context_data)
-    email_audit.address_from = settings.PLEA_EMAIL_FROM
-    email_audit.address_to = settings.PLEA_EMAIL_TO
-    email_audit.attachment_text = plea_email.attachment_content
-    email_audit.body_text = settings.PLEA_EMAIL_BODY
-    email_audit.subject = settings.PLEA_EMAIL_SUBJECT.format(**context_data)
-    email_audit.status = "created_not_sent"
-    email_audit.hearing_date = "{0} {1}".format(context_data["case"]["date_of_hearing"],
-                                                context_data["case"]["time_of_hearing"])
-    email_audit.save()
+    case = Case()
+    case.urn = context_data["case"]["urn"].upper()
+    case.save()
+
+    if getattr(settings, 'STORE_USER_DATA', False):
+        encrypt_and_store_user_data(case.urn, case.id, context_data)
 
     email_count = CourtEmailCount()
     email_count.get_from_context(context_data)
     email_count.save()
 
-    email_body = "<<<makeaplea-ref: {}/{}>>>".format(email_audit.id, email_count.id)
+    email_body = "<<<makeaplea-ref: {}/{}>>>".format(case.id, email_count.id)
 
     try:
         plea_email.send(plea_email_to,
@@ -117,13 +112,13 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
                         email_body,
                         route="GSI")
     except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
-        email_audit.status = "network_error"
-        email_audit.status_info = unicode(e)
-        email_audit.save()
+        case.status = "network_error"
+        case.status_info = unicode(e)
+        case.save()
         return False
 
-    email_audit.status = "sent"
-    email_audit.save()
+    case.status = "sent"
+    case.save()
 
     try:
         plp_email.send(settings.PLP_EMAIL_TO,

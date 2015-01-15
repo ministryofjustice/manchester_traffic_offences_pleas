@@ -11,7 +11,7 @@ from django.test.client import RequestFactory
 from django.template.context import RequestContext
 
 
-from ..models import CourtEmailPlea
+from ..models import Case
 from ..views import PleaOnlineForms
 
 
@@ -105,17 +105,16 @@ class TestMultiPleaForms(TestCase):
 
     def test_case_stage_urn_already_submitted(self):
 
-        email_audit = CourtEmailPlea()
-        email_audit.urn = "00/aa/0000000/00"
-        email_audit.hearing_date = datetime.datetime.now()
-        email_audit.status = "sent"
-        email_audit.save()
+        case = Case()
+        case.urn = "00/AA/0000000/00"
+        case.status = "sent"
+        case.save()
 
         form = PleaOnlineForms("case", "plea_form_step", self.session)
         form.load(self.request_context)
         form.save({"date_of_hearing_0": "01",
                    "date_of_hearing_1": "01",
-                   "date_of_hearing_2": "2015",
+                   "date_of_hearing_2": "2016",
                    "time_of_hearing": "09:15",
                    "urn_0": "00",
                    "urn_1": "AA",
@@ -134,7 +133,7 @@ class TestMultiPleaForms(TestCase):
         form.load(self.request_context)
         form.save({"date_of_hearing_0": "01",
                    "date_of_hearing_1": "01",
-                   "date_of_hearing_2": "2015",
+                   "date_of_hearing_2": "2016",
                    "time_of_hearing": "09:15",
                    "urn_0": "00",
                    "urn_1": "AA",
@@ -143,6 +142,7 @@ class TestMultiPleaForms(TestCase):
                    "number_of_charges": 1},
                   self.request_context)
         response = form.render()
+
         self.assertEqual(response.status_code, 302)
 
     def test_your_details_stage_bad_data(self):
@@ -247,7 +247,7 @@ class TestMultiPleaForms(TestCase):
         test_data = {
             "case": {
                 "complete": True,
-                "date_of_hearing": "2015-01-01",
+                "date_of_hearing": "2016-01-01",
                 "urn": "00/AA/0000000/00",
                 "number_of_charges": 1
             },
@@ -397,7 +397,7 @@ class TestMultiPleaForms(TestCase):
         test_data = {
             "case": {
                 "complete": True,
-                "date_of_hearing": "2015-01-01",
+                "date_of_hearing": "2016-01-01",
                 "urn": "00/AA/0000000/00",
                 "number_of_charges": 1
             },
@@ -425,7 +425,7 @@ class TestMultiPleaForms(TestCase):
         test_data = {
             "case": {
                 "complete": True,
-                "date_of_hearing": "2015-01-01",
+                "date_of_hearing": "2016-01-01",
                 "urn": "00/AA/0000000/00",
                 "number_of_charges": 1
             },
@@ -472,7 +472,7 @@ class TestMultiPleaForms(TestCase):
         send.side_effect = socket.error("Email failed to send, socket error")
 
         fake_session = {"case": {}, "your_details": {}, "plea": {"PleaForms": [{}]}, "review": {}}
-        fake_session["case"]["date_of_hearing"] = datetime.date(2015, 1, 1)
+        fake_session["case"]["date_of_hearing"] = datetime.date(2016, 1, 1)
         fake_session["case"]["time_of_hearing"] = datetime.time(9, 15)
         fake_session["case"]["urn"] = "00/AA/0000000/00"
         fake_session["case"]["number_of_charges"] = 1
@@ -503,7 +503,7 @@ class TestMultiPleaForms(TestCase):
         form.load(request_context)
         form.save({"date_of_hearing_0": "01",
                    "date_of_hearing_1": "01",
-                   "date_of_hearing_2": "2015",
+                   "date_of_hearing_2": "2016",
                    "time_of_hearing": "09:15",
                    "urn_0": "00",
                    "urn_1": "AA",
@@ -548,7 +548,7 @@ class TestMultiPleaForms(TestCase):
         form = PleaOnlineForms("complete", "plea_form_step", fake_session)
         form.load(request_context)
 
-        self.assertEqual(fake_session["case"]["date_of_hearing"], datetime.date(2015, 1, 1))
+        self.assertEqual(fake_session["case"]["date_of_hearing"], datetime.date(2016, 1, 1))
         self.assertEqual(fake_session["case"]["time_of_hearing"], datetime.time(9, 15))
         self.assertEqual(fake_session["case"]["urn"], "00/AA/0000000/00")
         self.assertEqual(fake_session["case"]["number_of_charges"], 1)
@@ -569,7 +569,7 @@ class TestMultiPleaForms(TestCase):
         form.load(request_context)
         form.save({"date_of_hearing_0": "01",
                    "date_of_hearing_1": "01",
-                   "date_of_hearing_2": "2015",
+                   "date_of_hearing_2": "2016",
                    "time_of_hearing": "09:15",
                    "urn_0": "00",
                    "urn_1": "AA",
@@ -578,6 +578,7 @@ class TestMultiPleaForms(TestCase):
                    "number_of_charges": 2},
                   request_context)
         response = form.render()
+
         self.assertEqual(response.status_code, 302)
 
         form = PleaOnlineForms("your_details", "plea_form_step", fake_session)
@@ -614,7 +615,7 @@ class TestMultiPleaForms(TestCase):
         form = PleaOnlineForms("complete", "plea_form_step", fake_session)
         form.load(request_context)
 
-        self.assertEqual(fake_session["case"]["date_of_hearing"], datetime.date(2015, 1, 1))
+        self.assertEqual(fake_session["case"]["date_of_hearing"], datetime.date(2016, 1, 1))
         self.assertEqual(fake_session["case"]["time_of_hearing"], datetime.time(9, 15))
         self.assertEqual(fake_session["case"]["urn"], "00/AA/0000000/00")
         self.assertEqual(fake_session["case"]["number_of_charges"], 2)
@@ -705,11 +706,10 @@ class TestMultiPleaForms(TestCase):
 
         urn = "00/aa/0000000/00"
 
-        email_audit = CourtEmailPlea()
-        email_audit.urn = urn
-        email_audit.hearing_date = datetime.datetime.now()
-        email_audit.status = "sent"
-        email_audit.save()
+        case = Case()
+        case.urn = urn
+        case.status = "sent"
+        case.save()
 
         self.session['case'] = dict(urn=urn)
 
@@ -729,11 +729,10 @@ class TestMultiPleaForms(TestCase):
     def test_urn_not_success_is_not_blocked(self):
         urn = "00/aa/0000000/00"
 
-        email_audit = CourtEmailPlea()
-        email_audit.urn = urn
-        email_audit.hearing_date = datetime.datetime.now()
-        email_audit.status = "failed"
-        email_audit.save()
+        case = Case()
+        case.urn = urn
+        case.status = "network_error"
+        case.save()
 
         self.session['case'] = dict(urn=urn)
 
