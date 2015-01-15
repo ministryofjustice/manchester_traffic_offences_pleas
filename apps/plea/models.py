@@ -1,81 +1,15 @@
 from dateutil.parser import parse as date_parse
 import datetime as dt
-import json
 
 from django.db import models
 from django.db.models import Sum, Count
-from django.db.models import Q
-from django.core.serializers.json import DjangoJSONEncoder
 
 
-PLEA_CHOICES = (
-    (0, 'Guilty'),
-    (1, 'Not Guilty')
-)
-
-PAYMENT_FREQUENCY = (
-    ('weekly', 'Weekly'),
-    ('fortnightly', 'Fortnightly'),
-    ('monthly', 'Monthly')
-)
-
-EMPLOYMENT_CHOICES = (
-    ('Employed', 'Employed'),
-    ('Self employed', 'Self employed'),
-    ('Receiving benefits', 'Receiving benefits'),
-    ('Other', 'Other')
-)
-
-SELF_EMPLOYED_PAYMENT_FREQUENCY = PAYMENT_FREQUENCY + ('other', 'Other')
-
-
-class CourtEmailPleaManager(models.Manager):
-    @staticmethod
-    def delete_old_emails():
-        today = dt.datetime.today()
-        today_start = dt.datetime(today.year, today.month, today.day)
-        old_records = CourtEmailPlea.objects.filter(hearing_date__lt=today_start)
-        count = old_records.count()
-        old_records.delete()
-        return count
-
-    def can_use_urn(self, urn):
-        return not self.filter(
-            urn__iexact=urn,
-            status__in=["sent", "receipt_success"]).exists()
-
-
-class CourtEmailPlea(models.Model):
-    STATUS_CHOICES = (("created_not_sent", "Created but not sent"),
-                      ("sent", "Sent"),
-                      ("network_error", "Network error"),
-                      ("receipt_success", "Processed successfully"),
-                      ("receipt_failure", "Processing failed"))
-
-    urn = models.CharField(max_length=16, db_index=True)
-    date_sent = models.DateTimeField(auto_now_add=True)
-    dict_sent = models.TextField(null=True, blank=True)
-    subject = models.CharField(max_length=200)
-    attachment_text = models.TextField(null=True, blank=True)
-    body_text = models.TextField(null=True, blank=True)
-    address_from = models.EmailField()
-    address_to = models.EmailField()
-    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default="not_sent")
-    status_info = models.TextField(null=True, blank=True)
-    hearing_date = models.DateTimeField()
-
-    objects = CourtEmailPleaManager()
-
-    class Meta:
-        ordering = ['-date_sent', ]
-
-    def __unicode__(self):
-        return "Email to {0} from {1} on {2}".format(self.address_to,
-                                                     self.address_from,
-                                                     self.date_sent)
-
-    def process_form_data(self, form_data):
-        self.dict_sent = json.dumps(form_data, cls=DjangoJSONEncoder)
+STATUS_CHOICES = (("created_not_sent", "Created but not sent"),
+                  ("sent", "Sent"),
+                  ("network_error", "Network error"),
+                  ("receipt_success", "Processed successfully"),
+                  ("receipt_failure", "Processing failed"))
 
 
 class CourtEmailCountManager(models.Manager):
@@ -139,14 +73,14 @@ class CourtEmailCountManager(models.Manager):
 
         return stats
 
-    def get_stats_by_hearing_date(self, days=3):
+    def get_stats_by_hearing_date(self, days=None, start_date=None):
         """
         Return stats grouped by hearing date starting from today
         for the number of days specified by days.
         """
-        now = dt.datetime.now()
 
-        start_date = now - dt.timedelta(now.weekday())
+        if not start_date:
+            start_date = dt.date(2012,01,01)
 
         results = CourtEmailCount.objects\
             .filter(hearing_date__gte=start_date)\
@@ -156,7 +90,10 @@ class CourtEmailCountManager(models.Manager):
             .annotate(pleas=Sum('total_pleas'),
                       guilty=Sum('total_guilty'),
                       not_guilty=Sum('total_not_guilty'),
-                      submissions=Count('hearing_date'))[:days]
+                      submissions=Count('hearing_date'))
+
+        if days:
+            results = results[:days]
 
         return results
 
@@ -168,7 +105,7 @@ class CourtEmailCount(models.Model):
     total_not_guilty = models.IntegerField()
     hearing_date = models.DateTimeField()
 
-    # special circumbstances char counts
+    # special circumstances char counts
     sc_guilty_char_count = models.PositiveIntegerField(default=0)
     sc_not_guilty_char_count = models.PositiveIntegerField(default=0)
 
@@ -231,24 +168,24 @@ class CourtEmailCount(models.Model):
 
 class CaseManager(models.Manager):
 
-    def is_unique(self, urn, hearing_date, name):
-
-        return not self.filter(urn__iexact=urn.strip(),
-                               hearing_date=hearing_date,
-                               name__iexact=name.strip()).exists()
+    def can_use_urn(self, urn):
+        return not self.filter(
+            urn__iexact=urn,
+            status__in=["sent", "receipt_success"]).exists()
 
 
 class Case(models.Model):
     """
     The main case model.
 
-    v0
+    User data is gpg encrypted and persisted to disc then
+    transferred to an encrypted S3 account.
     """
 
-    created = models.DateTimeField(auto_now_add=True)
-
     urn = models.CharField(max_length=16, db_index=True)
-    hearing_date = models.DateTimeField()
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, null=True, blank=True)
+
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default="created_not_sent")
+    status_info = models.TextField(null=True, blank=True)
 
     objects = CaseManager()
