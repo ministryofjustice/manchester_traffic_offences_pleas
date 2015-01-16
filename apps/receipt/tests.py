@@ -1,12 +1,11 @@
 import datetime as dt
-import json
 
 from django.core import mail
 from django.test import TestCase
 
 from mock import Mock, patch
 
-from apps.plea.models import CourtEmailCount, CourtEmailPlea
+from apps.plea.models import CourtEmailCount, Case
 from apps.receipt.models import ReceiptLog
 from apps.receipt.process import (extract_data_from_email, InvalidFormatError,
                                   process_receipts)
@@ -80,11 +79,9 @@ class TestProcessReceipts(TestCase):
             }
         }
 
-        self.email_audit = CourtEmailPlea.objects.create(
+        self.case = Case.objects.create(
             urn=self.urn,
-            hearing_date=self.doh,
-            status="sent",
-            dict_sent=json.dumps(context_data)
+            status="sent"
         )
 
         self.email_count = CourtEmailCount.objects.create(
@@ -133,13 +130,10 @@ class TestProcessReceipts(TestCase):
         self.assertEqual(log.status, ReceiptLog.STATUS_ERROR)
         self.assertIn('Broken', log.status_detail)
 
-    def test_query_to_date_is_previous_query_from_date(self):
-        pass
-
     def test_success_responses_are_recorded(self):
 
         ref = "<<<makeaplea-ref: {}/{}>>>"\
-            .format(self.email_audit.id, self.email_count.id)
+            .format(self.case.id, self.email_count.id)
 
         subject = "Receipt (Passed) RE: FILED! ONLINE PLEA: {} DOH: {}"\
             .format(self.urn, self.doh.strftime("%G-%m-%d"))
@@ -151,6 +145,13 @@ class TestProcessReceipts(TestCase):
 
         process_receipts()
 
+        case_obj = Case.objects.get(pk=self.case.id)
+        count_obj = CourtEmailCount.objects.get(pk=self.email_count.id)
+
+        self.assertEquals(case_obj.status, "receipt_success")
+        self.assertEquals(case_obj.status, count_obj.status)
+        self.assertEquals(case_obj.status_info, count_obj.status_info)
+
         self.assertEqual(ReceiptLog.objects.all().count(), 1)
         log = ReceiptLog.objects.latest('id')
         self.assertEqual(log.total_success, 1)
@@ -159,7 +160,7 @@ class TestProcessReceipts(TestCase):
 
     def test_failed_responses_are_recorded(self):
         ref = "<<<makeaplea-ref: {}/{}>>>"\
-            .format(self.email_audit.id, self.email_count.id)
+            .format(self.case.id, self.email_count.id)
 
         subject = "Receipt (Failed) RE: ONLINE PLEA: {} DOH: {}"\
             .format(self.urn, self.doh.strftime("%G-%m-%d"))
@@ -171,6 +172,13 @@ class TestProcessReceipts(TestCase):
 
         process_receipts()
 
+        case_obj = Case.objects.get(pk=self.case.id)
+        count_obj = CourtEmailCount.objects.get(pk=self.email_count.id)
+
+        self.assertEquals(case_obj.status, "receipt_failure")
+        self.assertEquals(case_obj.status, count_obj.status)
+        self.assertEquals(case_obj.status_info, count_obj.status_info)
+
         self.assertEqual(ReceiptLog.objects.all().count(), 1)
         log = ReceiptLog.objects.latest('id')
         self.assertEqual(log.total_emails, 1)
@@ -179,7 +187,7 @@ class TestProcessReceipts(TestCase):
 
     def test_mismatched_ref_id(self):
         ref = "<<<makeaplea-ref: {}/{}>>>"\
-            .format(self.email_audit.id, self.email_count.id+1)
+            .format(self.case.id, self.email_count.id+1)
 
         subject = "Receipt (Failed) RE: ONLINE PLEA: {} DOH: {}"\
             .format(self.urn, self.doh.strftime("%G-%m-%d"))
@@ -199,7 +207,7 @@ class TestProcessReceipts(TestCase):
 
     def test_invalid_email_subjects_are_ignored_but_logged(self):
         ref = "<<<makeaplea-ref: {}/{}>>>"\
-            .format(self.email_audit.id, self.email_count.id+1)
+            .format(self.case.id, self.email_count.id+1)
 
         subject = "gibberish"
 
@@ -216,17 +224,12 @@ class TestProcessReceipts(TestCase):
         self.assertEqual(log.total_failed, 0)
         self.assertEqual(log.total_errors, 1)
 
-    def test_records_changed_on_changed_doh(self):
-        """
-        We can't complete this test due to missing hearing times in
-        the HMCTS receipt emails
-        """
-
     def test_records_changed_on_changed_urn(self):
+
         updated_urn = "00/BB/0000000/00"
 
         ref = "<<<makeaplea-ref: {}/{}>>>"\
-            .format(self.email_audit.id, self.email_count.id)
+            .format(self.case.id, self.email_count.id)
 
         subject = "Receipt (Passed) RE: FILED! ONLINE PLEA: {} DOH: {}"\
             .format(updated_urn, self.doh.strftime("%G-%m-%d"))
@@ -238,19 +241,23 @@ class TestProcessReceipts(TestCase):
 
         process_receipts()
 
+        case_obj = Case.objects.get(pk=self.case.id)
+        count_obj = CourtEmailCount.objects.get(pk=self.email_count.id)
+
+        self.assertEquals(case_obj.status, "receipt_success")
+        self.assertEquals(case_obj.status, count_obj.status)
+        self.assertEquals(case_obj.status_info, count_obj.status_info)
+
         log = ReceiptLog.objects.latest('id')
         self.assertEqual(log.total_emails, 1)
         self.assertEqual(log.total_success, 1)
 
-        email_audit = CourtEmailPlea.objects.get(pk=self.email_audit.id)
+        case = Case.objects.get(pk=self.case.id)
 
-        self.assertEqual(email_audit.urn, updated_urn)
+        self.assertEqual(case.urn, updated_urn)
 
-        self.assertIn(self.urn, email_audit.status_info)
-        self.assertIn("URN CHANGED!", email_audit.status_info)
-
-        data = json.loads(email_audit.dict_sent)
-        self.assertEqual(data['case']['urn'], updated_urn)
+        self.assertIn(self.urn, case.status_info)
+        self.assertIn("URN CHANGED!", case.status_info)
 
     def test_monitoring_email_is_sent_when_enabled(self):
 
