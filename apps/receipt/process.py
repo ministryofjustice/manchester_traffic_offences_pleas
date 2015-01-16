@@ -1,6 +1,5 @@
 import contextlib
 import datetime as dt
-import json
 import re
 import sys
 import traceback
@@ -9,7 +8,7 @@ from django.conf import settings
 from django.core.mail import mail_admins
 from django.template.loader import render_to_string
 
-from apps.plea.models import CourtEmailPlea, CourtEmailCount
+from apps.plea.models import CourtEmailCount, Case
 from .models import ReceiptLog
 
 import gmail
@@ -98,10 +97,10 @@ def process_receipts(query_from=None):
     insert the relevant IDs into the body of the outbound email in the
     following format:
 
-    <<<makeaplea-ref: {CourtEmailPleaId}, {CourtEmailCountId}>>>
+    <<<makeaplea-ref: {CaseId}, {CourtEmailCountId}>>>
 
     HMCTS receipt emails include the reference enabling us to
-    know which CourtEmailPlea and CourtEmailCount data needs
+    know which Case and CourtEmailCount data needs
     to be modified.
 
     This function is run as a management command:
@@ -175,9 +174,9 @@ def _process_receipts(log_entry):
                 continue
 
             try:
-                plea_obj = CourtEmailPlea.objects.get(id=plea_id)
-            except CourtEmailPlea.DoesNotExist:
-                status_text.append('Cannot find CourtEmailPlea(<{}>)'
+                case_obj = Case.objects.get(id=plea_id)
+            except Case.DoesNotExist:
+                status_text.append('Cannot find Case(<{}>)'
                                    .format(plea_id))
 
                 log_entry.total_errors += 1
@@ -201,40 +200,28 @@ def _process_receipts(log_entry):
                 continue
 
             if status == "Passed":
-                if plea_obj.status == "receipt_success":
+                if case_obj.status == "receipt_success":
                     status_text.append("{} already processed. Skipping.").format(urn)
                     continue
 
-                plea_obj.status = "receipt_success"
+                case_obj.status = "receipt_success"
 
                 log_entry.total_success += 1
 
-                if urn.upper() != plea_obj.urn:
+                if urn.upper() != case_obj.urn:
                     # HMCTS have changed the URN, update our records and log the change
 
-                    old_urn, plea_obj.urn = plea_obj.urn, urn
+                    old_urn, case_obj.urn = case_obj.urn, urn
 
-                    data = json.loads(plea_obj.dict_sent)
-
-                    try:
-                        data['case']['urn'] = urn
-                    except KeyError:
-                        pass
-
-                    plea_obj.dict_sent = json.dumps(data)
-
-                    plea_obj.status_info = \
-                        (plea_obj.status_info or "") +\
+                    case_obj.status_info = \
+                        (case_obj.status_info or "") +\
                         "\nURN CHANGED! Old Urn: {}".format(old_urn)
-
-                    count_obj.get_from_context(data)
-                    count_obj.save()
 
                     status_text.append('Passed [URN CHANGED! old urn: {}] {}'.format(urn, old_urn))
                 else:
                     status_text.append('Passed: {}'.format(urn))
 
-                plea_obj.save()
+                case_obj.save()
 
                 # We can't modify the DOH as the hearing time is not provided by
                 # hmcts, at current
@@ -244,7 +231,7 @@ def _process_receipts(log_entry):
                 #
 
             else:
-                plea_obj.status = "receipt_failure"
+                case_obj.status = "receipt_failure"
 
                 status_text.append('Failed: {}'.format(urn))
 
@@ -252,6 +239,11 @@ def _process_receipts(log_entry):
 
             # mark as read
             email.read()
+
+            count_obj.get_status_from_case(case_obj)
+            count_obj.save()
+
+            case_obj.save()
 
     log_entry.status = log_entry.STATUS_COMPLETE
 

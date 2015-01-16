@@ -10,12 +10,10 @@ class CaseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Case
-        fields = ('urn', 'hearing_date', 'name')
+        fields = ('urn',)
 
     def validate(self, attrs):
-        if not Case.objects.is_unique(attrs['urn'],
-                                      attrs['hearing_date'],
-                                      attrs['name']):
+        if not Case.objects.can_use_urn(attrs['urn']):
 
             raise serializers.ValidationError("Case data already exists")
 
