@@ -145,6 +145,10 @@ class TestProcessReceipts(TestCase):
 
         process_receipts()
 
+        case = Case.objects.get(pk=self.case.id)
+
+        self.assertEquals(case.status, "receipt_success")
+
         self.assertEqual(ReceiptLog.objects.all().count(), 1)
         log = ReceiptLog.objects.latest('id')
         self.assertEqual(log.total_success, 1)
@@ -164,6 +168,10 @@ class TestProcessReceipts(TestCase):
         self._get_context_mock(return_value=[email_obj_mock])
 
         process_receipts()
+
+        case = Case.objects.get(pk=self.case.id)
+
+        self.assertEquals(case.status, "receipt_failure")
 
         self.assertEqual(ReceiptLog.objects.all().count(), 1)
         log = ReceiptLog.objects.latest('id')
