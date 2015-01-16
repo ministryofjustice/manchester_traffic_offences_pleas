@@ -109,7 +109,15 @@ class CourtEmailCount(models.Model):
     sc_guilty_char_count = models.PositiveIntegerField(default=0)
     sc_not_guilty_char_count = models.PositiveIntegerField(default=0)
 
+    status = models.CharField(
+        max_length=30, choices=STATUS_CHOICES, null=True, blank=True)
+    status_info = models.TextField(null=True, blank=True)
+
     objects = CourtEmailCountManager()
+
+    def get_status_from_case(self, case_obj):
+        self.status = case_obj.status
+        self.status_info = case_obj.status_info
 
     def get_from_context(self, context):
         if not "plea" in context:
