@@ -11,7 +11,7 @@ from django.test import TestCase
 from django.test.utils import override_settings
 
 from ..email import send_plea_email
-from ..models import Case
+from ..models import Case, CourtEmailCount
 from ..encrypt import clear_user_data, gpg
 
 
@@ -55,6 +55,9 @@ class CaseCreationTests(TestCase):
         self.assertEqual(Case.objects.all()[0].urn, self.context_data['case']['urn'].upper())
         self.assertEqual(case.status, "sent")
 
+        count_obj = CourtEmailCount.objects.all().order_by('-id')[0]
+        self.assertEqual(case.status, count_obj.status)
+
         file_glob = '{}*.gpg'.format(self.context_data['case']['urn'].replace('/', '-').upper())
 
         path = os.path.join(settings.USER_DATA_DIRECTORY, file_glob)
@@ -89,6 +92,9 @@ class CaseCreationTests(TestCase):
         case = Case.objects.all().order_by('-id')[0]
         self.assertEqual(case.status, "network_error")
         self.assertEqual(case.status_info, u"Email failed to send, socket error")
+
+        count_obj = CourtEmailCount.objects.all().order_by('-id')[0]
+        self.assertEqual(case.status, count_obj.status)
 
         # confirm we have a new file:
 
