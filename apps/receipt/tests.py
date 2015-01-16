@@ -145,9 +145,12 @@ class TestProcessReceipts(TestCase):
 
         process_receipts()
 
-        case = Case.objects.get(pk=self.case.id)
+        case_obj = Case.objects.get(pk=self.case.id)
+        count_obj = CourtEmailCount.objects.get(pk=self.email_count.id)
 
-        self.assertEquals(case.status, "receipt_success")
+        self.assertEquals(case_obj.status, "receipt_success")
+        self.assertEquals(case_obj.status, count_obj.status)
+        self.assertEquals(case_obj.status_info, count_obj.status_info)
 
         self.assertEqual(ReceiptLog.objects.all().count(), 1)
         log = ReceiptLog.objects.latest('id')
@@ -169,9 +172,12 @@ class TestProcessReceipts(TestCase):
 
         process_receipts()
 
-        case = Case.objects.get(pk=self.case.id)
+        case_obj = Case.objects.get(pk=self.case.id)
+        count_obj = CourtEmailCount.objects.get(pk=self.email_count.id)
 
-        self.assertEquals(case.status, "receipt_failure")
+        self.assertEquals(case_obj.status, "receipt_failure")
+        self.assertEquals(case_obj.status, count_obj.status)
+        self.assertEquals(case_obj.status_info, count_obj.status_info)
 
         self.assertEqual(ReceiptLog.objects.all().count(), 1)
         log = ReceiptLog.objects.latest('id')
@@ -234,6 +240,13 @@ class TestProcessReceipts(TestCase):
         self._get_context_mock(return_value=[email_obj_mock])
 
         process_receipts()
+
+        case_obj = Case.objects.get(pk=self.case.id)
+        count_obj = CourtEmailCount.objects.get(pk=self.email_count.id)
+
+        self.assertEquals(case_obj.status, "receipt_success")
+        self.assertEquals(case_obj.status, count_obj.status)
+        self.assertEquals(case_obj.status_info, count_obj.status_info)
 
         log = ReceiptLog.objects.latest('id')
         self.assertEqual(log.total_emails, 1)

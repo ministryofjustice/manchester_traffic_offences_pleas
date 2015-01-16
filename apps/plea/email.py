@@ -114,11 +114,15 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
     except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
         case.status = "network_error"
         case.status_info = unicode(e)
+        email_count.get_status_from_case(case)
+        email_count.save()
         case.save()
         return False
 
     case.status = "sent"
     case.save()
+    email_count.get_status_from_case(case)
+    email_count.save()
 
     try:
         plp_email.send(settings.PLP_EMAIL_TO,

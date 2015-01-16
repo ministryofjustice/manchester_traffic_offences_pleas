@@ -238,6 +238,10 @@ def _process_receipts(log_entry):
 
             # mark as read
             email.read()
+
+            count_obj.get_status_from_case(case_obj)
+            count_obj.save()
+
             case_obj.save()
 
     log_entry.status = log_entry.STATUS_COMPLETE
