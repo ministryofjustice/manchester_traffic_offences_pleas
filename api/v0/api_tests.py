@@ -42,19 +42,19 @@ class GeneralAPiTestCase(APITestCase):
 
         response = self.client.post('/v0/case/', {}, format='json')
 
-        self.assertEquals(response.status_code, 401)
+        self.assertEqual(response.status_code, 401)
 
     def test_every_request_requires_auth(self):
 
         response = self.client.post(
             '/v0/case/', {}, format='json', **self.auth_header)
 
-        self.assertEquals(response.status_code, 400)
+        self.assertEqual(response.status_code, 400)
 
         response = self.client.post(
             '/v0/case/', {}, format='json')
 
-        self.assertEquals(response.status_code, 401)
+        self.assertEqual(response.status_code, 401)
 
 
 class CaseAPICallTestCase(APITestCase):
@@ -65,9 +65,7 @@ class CaseAPICallTestCase(APITestCase):
         self.endpoint = reverse('api-v0:case-list', format="json")
 
         self.test_data = {
-            u'urn': u'00/aa/00000/00',
-            u'name': u'asdf',
-            u'hearing_date': u'2014-11-20T09:15:00.000+01:00'
+            u'urn': u'00/aa/00000/00'
         }
 
     def test_urn_validation(self):
@@ -76,15 +74,15 @@ class CaseAPICallTestCase(APITestCase):
 
         response = self.client.post(self.endpoint, self.test_data, **self.auth_header)
 
-        self.assertEquals(response.status_code, 400)
+        self.assertEqual(response.status_code, 400)
 
         self.test_data['urn'] = '00/aa/0000000/00'
         response = self.client.post(self.endpoint, self.test_data, **self.auth_header)
-        self.assertEquals(response.status_code, 201)
+        self.assertEqual(response.status_code, 201)
 
         self.test_data['urn'] = 'xxx'
         response = self.client.post(self.endpoint, self.test_data, **self.auth_header)
-        self.assertEquals(response.status_code, 400)
+        self.assertEqual(response.status_code, 400)
 
     def test_valid_submission(self):
 
@@ -92,36 +90,13 @@ class CaseAPICallTestCase(APITestCase):
 
         case = Case.objects.all()[0]
 
-        self.assertEquals(Case.objects.all().count(), 1)
-        self.assertEquals(case.urn, self.test_data['urn'])
-        self.assertEquals(case.name, self.test_data['name'])
-
-    def test_duplicate_submission_causes_400(self):
-
-        response = self.client.post(self.endpoint, self.test_data, **self.auth_header)
-        self.assertEquals(response.status_code, 201)
-
-        response = self.client.post(self.endpoint, self.test_data, **self.auth_header)
-        self.assertEquals(response.status_code, 400)
-
-    def test_duplicate_submission_fields_are_case_insensitive(self):
-
-        response = self.client.post(self.endpoint, self.test_data, **self.auth_header)
-        self.assertEquals(response.status_code, 201)
-
-        self.test_data['urn'] = self.test_data['urn'].upper()
-        self.test_data['name'] = self.test_data['name'].upper()
-
-        response = self.client.post(self.endpoint, self.test_data, **self.auth_header)
-        self.assertEquals(response.status_code, 400)
+        self.assertEqual(Case.objects.all().count(), 1)
+        self.assertEqual(case.urn, self.test_data['urn'])
 
     def test_valid_submissions_returns_dict(self):
         response = self.client.post(self.endpoint, self.test_data, **self.auth_header)
-        self.assertEquals(response.status_code, 201)
+        self.assertEqual(response.status_code, 201)
 
         returned_data = json.loads(response.content)
 
         self.assertEqual(returned_data['urn'], self.test_data['urn'])
-        self.assertEqual(returned_data['name'], self.test_data['name'])
-        self.assertEqual(date_parse(returned_data['hearing_date']),
-                         date_parse(self.test_data['hearing_date']))

@@ -6,10 +6,6 @@ TEMPLATE_DEBUG = DEBUG
 
 INSTALLED_APPS += ('raven.contrib.django.raven_compat', )
 
-RAVEN_CONFIG = {
-    'dsn': os.environ['RAVEN_DSN'],
-}
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -21,12 +17,7 @@ DATABASES = {
     }
 }
 
-ADMINS = (
-    ('Ian George', 'ian.george@digital.justice.gov.uk'),
-    ('Lyndon Garvey', 'lyndon.garvey@digital.justice.gov.uk')
-)
 
-MANAGERS = ADMINS
 ALLOWED_HOSTS = ["www.makeaplea.justice.gov.uk", ]
 SESSION_COOKIE_SECURE = True
 
@@ -46,3 +37,5 @@ PLP_EMAIL_TO = [os.environ["PLP_EMAIL_TO"], ]
 
 FEEDBACK_EMAIL_TO = [os.environ["FEEDBACK_EMAIL_TO"], ]
 FEEDBACK_EMAIL_FROM = os.environ["FEEDBACK_EMAIL_FROM"]
+
+STORE_USER_DATA = True
