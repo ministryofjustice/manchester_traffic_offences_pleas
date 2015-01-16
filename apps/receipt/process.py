@@ -174,7 +174,7 @@ def _process_receipts(log_entry):
                 continue
 
             try:
-                plea_obj = Case.objects.get(id=plea_id)
+                case_obj = Case.objects.get(id=plea_id)
             except Case.DoesNotExist:
                 status_text.append('Cannot find Case(<{}>)'
                                    .format(plea_id))
@@ -200,27 +200,22 @@ def _process_receipts(log_entry):
                 continue
 
             if status == "Passed":
-                if plea_obj.status == "receipt_success":
+                if case_obj.status == "receipt_success":
                     status_text.append("{} already processed. Skipping.").format(urn)
                     continue
 
-                plea_obj.status = "receipt_success"
+                case_obj.status = "receipt_success"
 
                 log_entry.total_success += 1
 
-                if urn.upper() != plea_obj.urn:
+                if urn.upper() != case_obj.urn:
                     # HMCTS have changed the URN, update our records and log the change
 
-                    old_urn, plea_obj.urn = plea_obj.urn, urn
+                    old_urn, case_obj.urn = case_obj.urn, urn
 
-                    plea_obj.status_info = \
-                        (plea_obj.status_info or "") +\
+                    case_obj.status_info = \
+                        (case_obj.status_info or "") +\
                         "\nURN CHANGED! Old Urn: {}".format(old_urn)
-
-                    plea_obj.save()
-
-                    count_obj.get_from_context(data)
-                    count_obj.save()
 
                     status_text.append('Passed [URN CHANGED! old urn: {}] {}'.format(urn, old_urn))
                 else:
@@ -234,7 +229,8 @@ def _process_receipts(log_entry):
                 #
 
             else:
-                plea_obj.status = "receipt_failure"
+                case_obj.status = "receipt_failure"
+                case_obj.save()
 
                 status_text.append('Failed: {}'.format(urn))
 
@@ -242,6 +238,7 @@ def _process_receipts(log_entry):
 
             # mark as read
             email.read()
+            case_obj.save()
 
     log_entry.status = log_entry.STATUS_COMPLETE
 
