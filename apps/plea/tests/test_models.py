@@ -3,7 +3,7 @@ import datetime as dt
 
 from django.test import TestCase
 
-from ..models import CourtEmailCount, AggregateStats
+from ..models import CourtEmailCount, UsageStats
 
 
 class CourtEmailCountModelTestCase(TestCase):
@@ -177,66 +177,105 @@ class CourtEmailCountModelTestCase(TestCase):
         self.assertEqual(email_count.sc_guilty_char_count, 13)
         self.assertEqual(email_count.sc_not_guilty_char_count, 16)
 
-class AggregateStatsTestCase(TestCase):
+class UsageStatsTestCase(TestCase):
 
-    def test_aggregate_stats(self):
-
+    def setUp(self):
         # wednesday
-        to_date = dt.date(2015, 01, 21)
+        self.to_date = dt.date(2015, 01, 21)
 
         # should be included in entry with start_date of 5/01/2015
-        CourtEmailCount.objects.create(date_sent=dt.date(2015, 01, 05),
-                                       total_pleas=50,
-                                       total_guilty=25,
-                                       total_not_guilty=5,
-                                       hearing_date=to_date)
+        obj = CourtEmailCount()
+        obj.total_pleas = 50
+        obj.total_guilty = 25
+        obj.total_not_guilty = 5
+        obj.hearing_date = self.to_date
+        obj.save()
+        obj.date_sent = dt.date(2015, 01, 05)
+        obj.save()
 
         # should be included in entry with start_date of 5/01/2015
-        CourtEmailCount.objects.create(date_sent=dt.date(2015, 01, 10),
-                                       total_pleas=50,
-                                       total_guilty=25,
-                                       total_not_guilty=5,
-                                       hearing_date=to_date)
+        obj = CourtEmailCount()
+        obj.total_pleas = 50
+        obj.total_guilty = 25
+        obj.total_not_guilty = 5
+        obj.hearing_date = self.to_date
+        obj.save()
+        obj.date_sent = dt.date(2015, 01, 10)
+        obj.save()
 
         # should be included in entry with start_date of 5/01/2015
-        CourtEmailCount.objects.create(date_sent=dt.date(2015, 01, 10),
-                                       total_pleas=50,
-                                       total_guilty=25,
-                                       total_not_guilty=5,
-                                       hearing_date=to_date)
+        obj = CourtEmailCount()
+        obj.total_pleas = 50
+        obj.total_guilty = 25
+        obj.total_not_guilty = 5
+        obj.hearing_date = self.to_date
+        obj.save()
+        obj.date_sent = dt.date(2015, 01, 10)
+        obj.save()
 
         # should be included in entry with start_date of 5/01/2015
-        CourtEmailCount.objects.create(date_sent=dt.date(2015, 01, 10),
-                                       total_pleas=50,
-                                       total_guilty=25,
-                                       total_not_guilty=5,
-                                       hearing_date=to_date)
+        obj = CourtEmailCount()
+        obj.total_pleas = 50
+        obj.total_guilty = 25
+        obj.total_not_guilty = 5
+        obj.hearing_date = self.to_date
+        obj.save()
+        obj.date_sent = dt.date(2015, 01, 10)
+        obj.save()
 
-        # should be included in entry with start_date of 12/01/2015
-        CourtEmailCount.objects.create(date_sent=dt.date(2015, 01, 10),
-                                       total_pleas=50,
-                                       total_guilty=25,
-                                       total_not_guilty=5,
-                                       hearing_date=to_date)
+        # should be included in entry with start_date of 5/01/2015
+        obj = CourtEmailCount()
+        obj.total_pleas = 100
+        obj.total_guilty = 50
+        obj.total_not_guilty = 5
+        obj.hearing_date = self.to_date
+        obj.save()
+        obj.date_sent = dt.date(2015, 01, 19)
+        obj.save()
 
-        # should not be included as there is not a full week
-        CourtEmailCount.objects.create(date_sent=dt.date(2015, 01, 19),
-                                       total_pleas=100,
-                                       total_guilty=50,
-                                       total_not_guilty=5,
-                                       hearing_date=to_date)
+        # should be included in entry with start_date of 5/01/2015
+        obj = CourtEmailCount()
+        obj.total_pleas = 100
+        obj.total_guilty = 50
+        obj.total_not_guilty = 5
+        obj.hearing_date = self.to_date
+        obj.save()
+        obj.date_sent = dt.date(2015, 01, 19)
+        obj.save()
 
-        AggregateStats.objects.calculate_latest(to_date=to_date)
+    def test_calculate_aggregates(self):
 
-        self.assertEquals(AggregateStats.objects.all().count(), 2)
+        totals = CourtEmailCount.objects.calculate_aggregates(dt.date(2015, 1, 5), 7)
 
-        wk1, wk2 = AggregateStats.objects.all().order_by('start_date')
+        self.assertEquals(totals['submissions'], 4)
+        self.assertEquals(totals['pleas'], 200)
+        self.assertEquals(totals['guilty'], 100)
+        self.assertEquals(totals['not_guilty'], 20)
+
+    def test_null_entries_are_zero(self):
+
+        totals = CourtEmailCount.objects.calculate_aggregates(dt.date(2020, 1, 1), 7)
+
+        self.assertEquals(totals['submissions'], 0)
+        self.assertEquals(totals['pleas'], 0)
+        self.assertEquals(totals['guilty'], 0)
+        self.assertEquals(totals['not_guilty'], 0)
+
+    def test_weekly_stats(self):
+
+        UsageStats.objects.create(start_date=dt.date(2014, 12, 29), online_submissions=0)
+
+        UsageStats.objects.calculate_weekly_stats(to_date=self.to_date)
+
+        self.assertEquals(UsageStats.objects.all().count(), 3)
+
+        wk_, wk1, wk2 = UsageStats.objects.all().order_by('start_date')
 
         self.assertEquals(wk1.start_date, dt.date(2015, 01, 05))
-        self.assertEquals(wk1.submissions, 200)
+        self.assertEquals(wk1.online_submissions, 4)
 
         self.assertEquals(wk2.start_date, dt.date(2015, 01, 12))
-        self.assertEquals(wk2.submissions, 50)
+        self.assertEquals(wk2.online_submissions, 2)
 
 
 

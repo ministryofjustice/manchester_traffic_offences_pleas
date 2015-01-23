@@ -1,8 +1,6 @@
-import datetime as dt
-
 from rest_framework import serializers
 
-from apps.plea.models import Case
+from apps.plea.models import Case, UsageStats
 
 
 class CaseSerializer(serializers.ModelSerializer):
@@ -18,3 +16,9 @@ class CaseSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Case data already exists")
 
         return attrs
+
+
+class UsageStatsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UsageStats
