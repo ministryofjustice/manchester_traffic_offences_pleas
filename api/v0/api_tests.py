@@ -2,17 +2,12 @@ import base64
 import json
 
 from django.contrib.auth.models import User
-from django.test import TestCase
-from django.test import Client
-
-from dateutil.parser import parse as date_parse
 
 from rest_framework.reverse import reverse
-from rest_framework.test import APIRequestFactory, APITestCase
+from rest_framework.test import APITestCase
 from rest_framework.test import APITestCase
 
 from apps.plea.models import Case
-from .serializers import CaseSerializer
 
 
 def create_api_user():

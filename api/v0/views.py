@@ -1,18 +1,14 @@
 import datetime as dt
-import json
 
-from django.http import HttpResponse
-
-from rest_framework.decorators import detail_route, list_route
-from rest_framework import viewsets, mixins, status
+from rest_framework.decorators import list_route
+from rest_framework import viewsets, mixins
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 
-from .serializers import CaseSerializer
+from .serializers import CaseSerializer, UsageStatsSerializer
 
-from apps.plea.models import Case, CourtEmailCount
+from apps.plea.models import Case, CourtEmailCount, UsageStats
 
 
 class CaseViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
@@ -39,7 +35,7 @@ class PublicStatsViewSet(viewsets.ViewSet):
 
         start_date = now - dt.timedelta(now.weekday())
 
-        stats = CourtEmailCount.objects.get_stats_by_hearing_date(3, start_date)
+        stats = CourtEmailCount.objects.get_stats_by_hearing_date(4, start_date)
 
         return Response(stats)
 
@@ -49,3 +45,12 @@ class PublicStatsViewSet(viewsets.ViewSet):
         stats = CourtEmailCount.objects.get_stats_by_hearing_date()
 
         return Response(stats)
+
+    @list_route()
+    def by_week(self, request):
+
+        stats = UsageStats.objects.last_six_months()
+
+        serializer = UsageStatsSerializer(stats, many=True)
+
+        return Response(serializer.data)
