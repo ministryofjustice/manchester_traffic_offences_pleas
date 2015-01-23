@@ -26,8 +26,8 @@ class CourtEmailCountManager(models.Manager):
             start_date+dt.timedelta(days), dt.datetime.max.time())
 
         qs = self.filter(
-            hearing_sent__gte=start_datetime,
-            hearing_sent__lte=end_datetime)
+            hearing_date__gte=start_datetime,
+            hearing_date__lte=end_datetime)
 
         totals = qs.aggregate(Sum('total_pleas'),
                               Sum('total_guilty'),
