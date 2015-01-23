@@ -188,9 +188,7 @@ class UsageStatsTestCase(TestCase):
         obj.total_pleas = 50
         obj.total_guilty = 25
         obj.total_not_guilty = 5
-        obj.hearing_date = self.to_date
-        obj.save()
-        obj.date_sent = dt.date(2015, 01, 05)
+        obj.hearing_date = dt.date(2015, 01, 05)
         obj.save()
 
         # should be included in entry with start_date of 5/01/2015
@@ -198,9 +196,7 @@ class UsageStatsTestCase(TestCase):
         obj.total_pleas = 50
         obj.total_guilty = 25
         obj.total_not_guilty = 5
-        obj.hearing_date = self.to_date
-        obj.save()
-        obj.date_sent = dt.date(2015, 01, 10)
+        obj.hearing_date = dt.date(2015, 01, 10)
         obj.save()
 
         # should be included in entry with start_date of 5/01/2015
@@ -208,9 +204,7 @@ class UsageStatsTestCase(TestCase):
         obj.total_pleas = 50
         obj.total_guilty = 25
         obj.total_not_guilty = 5
-        obj.hearing_date = self.to_date
-        obj.save()
-        obj.date_sent = dt.date(2015, 01, 10)
+        obj.hearing_date = dt.date(2015, 01, 10)
         obj.save()
 
         # should be included in entry with start_date of 5/01/2015
@@ -218,9 +212,7 @@ class UsageStatsTestCase(TestCase):
         obj.total_pleas = 50
         obj.total_guilty = 25
         obj.total_not_guilty = 5
-        obj.hearing_date = self.to_date
-        obj.save()
-        obj.date_sent = dt.date(2015, 01, 10)
+        obj.hearing_date = dt.date(2015, 01, 10)
         obj.save()
 
         # should be included in entry with start_date of 5/01/2015
@@ -228,9 +220,7 @@ class UsageStatsTestCase(TestCase):
         obj.total_pleas = 100
         obj.total_guilty = 50
         obj.total_not_guilty = 5
-        obj.hearing_date = self.to_date
-        obj.save()
-        obj.date_sent = dt.date(2015, 01, 19)
+        obj.hearing_date = dt.date(2015, 01, 19)
         obj.save()
 
         # should be included in entry with start_date of 5/01/2015
@@ -238,9 +228,7 @@ class UsageStatsTestCase(TestCase):
         obj.total_pleas = 100
         obj.total_guilty = 50
         obj.total_not_guilty = 5
-        obj.hearing_date = self.to_date
-        obj.save()
-        obj.date_sent = dt.date(2015, 01, 19)
+        obj.hearing_date = dt.date(2015, 01, 19)
         obj.save()
 
     def test_calculate_aggregates(self):
