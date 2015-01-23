@@ -109,7 +109,7 @@ def is_urn_not_used(urn):
 
     if not Case.objects.can_use_urn(urn):
         raise exceptions.ValidationError(
-            _(ERROR_MESSAGES['URN_DOES_NOT_EXIST']))
+            _(ERROR_MESSAGES['URN_ALREADY_USED']))
 
     return True
 
