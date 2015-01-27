@@ -40,7 +40,7 @@ class CaseStage(FormStage):
     dependencies = []
 
     def render(self, request_context):
-        print self.forms[0].errors
+
         if 'urn' in self.forms[0].errors and ERROR_MESSAGES['URN_ALREADY_USED'] in self.forms[0].errors['urn']:
 
             self.context['urn_already_used'] = True
