@@ -687,21 +687,6 @@ class TestMultiPleaForms(TestCase):
 
         self.assertContains(response, "<<NOTGUILTY>>")
 
-    def already_used_urn_causes_redirect_to_error_page(self):
-        # temporary skip whilst I fix this issue 
-
-        plea = CourtEmailPlea.objects.create(
-            urn='00/AA/00000/00',
-            status='sent',
-            hearing_date=datetime.datetime.now())
-
-
-        session['case'] = {'urn': '00/AA/00000/00'}
-
-
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(reverse('urn_already_used'), response.url)
-
     def test_case_stage_urn_in_session(self):
 
         urn = "00/aa/0000000/00"
@@ -727,6 +712,7 @@ class TestMultiPleaForms(TestCase):
             self.assertEqual(response.url, reverse('urn_already_used'))
 
     def test_urn_not_success_is_not_blocked(self):
+
         urn = "00/aa/0000000/00"
 
         case = Case()
