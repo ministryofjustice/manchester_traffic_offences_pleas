@@ -22,5 +22,5 @@ ALLOWED_HOSTS = ["assisted-staging.makeaplea.dsd.io", ]
 SESSION_COOKIE_SECURE = True
 STORE_USER_DATA = True
 
-SITE_ID = 2
+SITE_ID = 1
 EMAIL_REQUIRED = False
