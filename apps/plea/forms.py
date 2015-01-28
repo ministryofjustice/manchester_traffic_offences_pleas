@@ -3,9 +3,8 @@ from __future__ import unicode_literals
 from django import forms
 from django.forms.formsets import BaseFormSet
 from django.forms.widgets import Textarea, RadioSelect
-from django.conf import settings
 
-from .fields import (ERROR_MESSAGES, is_date_in_future, DSRadioFieldRenderer, RadioFieldRenderer,
+from .fields import (ERROR_MESSAGES, is_date_in_future, DSRadioFieldRenderer,
                      URNField, HearingTimeField,
                      HearingDateWidget, is_urn_not_used)
 
