@@ -8,15 +8,15 @@
   },
   "dependencies": {
     "del": "^1.1.1",
-    "govuk_frontend_toolkit": "^1.6.1",
+    "govuk_frontend_toolkit": "^3.1.0",
     "gulp": "^3.8.10",
-    "gulp-concat": "^2.4.1",
-    "gulp-imagemin": "^1.0.1",
-    "gulp-jshint": "^1.8.4",
-    "gulp-load-plugins": "^0.6.0",
+    "gulp-concat": "^2.4.3",
+    "gulp-imagemin": "^2.1.0",
+    "gulp-jshint": "^1.9.0",
+    "gulp-load-plugins": "^0.8.0",
     "gulp-ruby-sass": "^0.7.1",
-    "jshint-stylish": "^0.4.0",
-    "run-sequence": "^0.3.7"
+    "jshint-stylish": "^1.0.0",
+    "run-sequence": "^1.0.2"
   },
   "devDependencies": {
     "del": "^1.1.1",
