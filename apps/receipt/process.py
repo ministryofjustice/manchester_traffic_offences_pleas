@@ -221,6 +221,8 @@ def _process_receipts(log_entry):
                 else:
                     status_text.append('Passed: {}'.format(urn))
 
+                case_obj.save()
+
                 # We can't modify the DOH as the hearing time is not provided by
                 # hmcts, at current
 
@@ -230,7 +232,6 @@ def _process_receipts(log_entry):
 
             else:
                 case_obj.status = "receipt_failure"
-                case_obj.save()
 
                 status_text.append('Failed: {}'.format(urn))
 

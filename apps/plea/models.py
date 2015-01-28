@@ -14,6 +14,32 @@ STATUS_CHOICES = (("created_not_sent", "Created but not sent"),
 
 class CourtEmailCountManager(models.Manager):
 
+    def calculate_aggregates(self, start_date, days=7):
+        """
+        Calculate aggregate stats (subs, guilty pleas, not guilty pleas) over the
+        specified date period.
+        """
+        start_datetime = dt.datetime.combine(
+            start_date, dt.datetime.min.time())
+
+        end_datetime = dt.datetime.combine(
+            start_date+dt.timedelta(days), dt.datetime.max.time())
+
+        qs = self.filter(
+            hearing_date__gte=start_datetime,
+            hearing_date__lte=end_datetime)
+
+        totals = qs.aggregate(Sum('total_pleas'),
+                              Sum('total_guilty'),
+                              Sum('total_not_guilty'))
+
+        return {
+            'submissions': qs.count(),
+            'pleas': totals['total_pleas__sum'] or 0,
+            'guilty': totals['total_guilty__sum'] or 0,
+            'not_guilty': totals['total_not_guilty__sum'] or 0
+        }
+
     def get_stats(self):
         """
         Return some basic stats
@@ -197,3 +223,69 @@ class Case(models.Model):
     status_info = models.TextField(null=True, blank=True)
 
     objects = CaseManager()
+
+
+class UsageStatsManager(models.Manager):
+
+    def calculate_weekly_stats(self, to_date=None):
+        """
+        Occupy UsageStats with the latest weekly aggregate stats.
+
+        This function will create entries in UsageStats for each Monday from
+        the last inserted date up to today.
+
+        An associated management command runs this function.
+        """
+
+        if not to_date:
+            to_date = dt.date.today()
+
+        try:
+            last_entry = self.latest('start_date')
+        except UsageStats.DoesNotExist:
+            # arbitrary Monday start date that is before MAP went live
+            start_date = dt.date(2014, 05, 5)
+        else:
+            start_date = last_entry.start_date + dt.timedelta(7)
+
+        while start_date+dt.timedelta(7) <= to_date:
+            totals = CourtEmailCount.objects.calculate_aggregates(start_date, 7)
+
+            UsageStats.objects.create(
+                start_date=start_date,
+                online_submissions=totals['submissions'],
+                online_guilty_pleas=totals['guilty'],
+                online_not_guilty_pleas=totals['not_guilty'])
+
+            start_date += dt.timedelta(7)
+
+    def last_six_months(self):
+        """
+        Get the usage data for the last 6 months
+        """
+
+        start_date = dt.date.today() - dt.timedelta(175)
+
+        return self.filter(start_date__gte=start_date)
+
+
+class UsageStats(models.Model):
+    """
+    An aggregate table used to store submission data over a 7 day
+    period.
+    """
+    start_date = models.DateField()
+
+    online_submissions = models.PositiveIntegerField(default=0)
+    online_guilty_pleas = models.PositiveIntegerField(default=0)
+    online_not_guilty_pleas = models.PositiveIntegerField(default=0)
+
+    postal_requisitions = models.PositiveIntegerField(blank=True, null=True)
+    postal_responses = models.PositiveIntegerField(blank=True, null=True)
+
+    objects = UsageStatsManager()
+
+    class Meta:
+        ordering = ('start_date',)
+        verbose_name_plural = "Usage Stats"
+
