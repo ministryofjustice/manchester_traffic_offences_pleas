@@ -103,103 +103,13 @@
   border-bottom: 0;
   padding: 0 10px; }
 
-h1 {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 48px;
-  line-height: 1.04167;
-  font-weight: 400;
-  text-transform: none;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  font-weight: 700; }
-  @media (max-width: 640px) {
-    h1 {
-      font-size: 32px;
-      line-height: 1.09375; } }
-  @media (min-width: 641px) {
-    h1 {
-      padding-top: 7px;
-      padding-bottom: 13px; } }
-
-h2 {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 36px;
-  line-height: 1.11111;
-  font-weight: 400;
-  text-transform: none;
-  padding-top: 8px;
-  padding-bottom: 7px;
-  font-weight: 700; }
-  @media (max-width: 640px) {
-    h2 {
-      font-size: 24px;
-      line-height: 1.04167; } }
-  @media (min-width: 641px) {
-    h2 {
-      padding-top: 6px;
-      padding-bottom: 9px; } }
-
-h3 {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 36px;
-  line-height: 1.11111;
-  font-weight: 400;
-  text-transform: none; }
-  @media (max-width: 640px) {
-    h3 {
-      font-size: 24px;
-      line-height: 1.04167; } }
-
-h4 {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 24px;
-  line-height: 1.25;
-  font-weight: 400;
-  text-transform: none; }
-  @media (max-width: 640px) {
-    h4 {
-      font-size: 18px;
-      line-height: 1.2; } }
-
-p,
-blockquote {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.25;
-  font-weight: 400;
-  text-transform: none; }
-  @media (max-width: 640px) {
-    p,
-    blockquote {
-      font-size: 14px;
-      line-height: 1.14286; } }
-
-.PageHeader h1 {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 36px;
-  line-height: 1.11111;
-  font-weight: 700;
-  text-transform: none;
-  padding-top: 12px;
-  padding-bottom: 9px; }
-  @media (max-width: 640px) {
-    .PageHeader h1 {
-      font-size: 24px;
-      line-height: 1.04167; } }
-.PageHeader p {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 24px;
-  line-height: 1.25;
-  font-weight: 400;
-  text-transform: none; }
-  @media (max-width: 640px) {
-    .PageHeader p {
-      font-size: 18px;
-      line-height: 1.2; } }
-.PageHeader .Button {
-  margin-top: 15px;
-  margin-left: 15px; }
-
+@font-face {
+  font-family: GDS-Logo;
+  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+@-ms-viewport {
+  width: device-width; }
+@-o-viewport {
+  width: device-width; }
 .TextIcon {
   background-repeat: no-repeat;
   background-position: left top; }
