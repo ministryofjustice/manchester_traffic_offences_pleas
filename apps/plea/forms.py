@@ -6,7 +6,7 @@ from django.forms.widgets import Textarea, RadioSelect
 from django.conf import settings
 
 from .fields import (ERROR_MESSAGES, is_date_in_future, DSRadioFieldRenderer,
-                     URNField, HearingTimeField,
+                     URNField,
                      HearingDateWidget, is_urn_not_used)
 
 YESNO_CHOICES = (
@@ -35,12 +35,11 @@ class CaseForm(BasePleaStepForm):
                    validators=[is_urn_not_used])
 
     date_of_hearing = forms.DateField(widget=HearingDateWidget, validators=[is_date_in_future],
+                                      required=True,
                                       help_text="On page 1 of the pack, near the top on the left<br>For example, 30/07/2014",
                                       error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"],
                                                       "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
-    time_of_hearing = HearingTimeField(label="Time",
-                                       error_messages={"required": ERROR_MESSAGES["HEARING_TIME_REQUIRED"],
-                                                       "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
+
     number_of_charges = forms.IntegerField(label="Number of charges against you",
                                            widget=forms.TextInput(attrs={"maxlength": "7", "pattern": "[0-9]+"}),
                                            help_text="On page 2 of the pack, in numbered boxes.<br>For example, 1",
@@ -98,7 +97,7 @@ class YourMoneyForm(BasePleaStepForm):
                                                                     "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
     employed_hardship = forms.TypedChoiceField(label="Would paying a fine cause you serious financial problems?",
-                                               help_text="eg you would become homeless",
+                                               help_text="For example, you would become homeless",
                                                widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                choices=YESNO_CHOICES,
                                                coerce=to_bool,
@@ -123,7 +122,7 @@ class YourMoneyForm(BasePleaStepForm):
                                               help_text="Tell us about how often you get paid")
 
     self_employed_hardship = forms.TypedChoiceField(label="Would paying a fine cause you serious financial problems?",
-                                                    help_text="eg you would become homeless",
+                                                    help_text="For example, you would become homeless",
                                                     widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                     choices=YESNO_CHOICES,
                                                     coerce=to_bool,
@@ -151,7 +150,7 @@ class YourMoneyForm(BasePleaStepForm):
                                                       "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
     receiving_benefits_hardship = forms.TypedChoiceField(label="Would paying a fine cause you serious financial problems?",
-                                                         help_text="eg you would become homeless",
+                                                         help_text="For example, you would become homeless",
                                                          widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                          choices=YESNO_CHOICES,
                                                          coerce=to_bool,
@@ -167,7 +166,7 @@ class YourMoneyForm(BasePleaStepForm):
                                                        "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
     other_hardship = forms.TypedChoiceField(label="Would paying a fine cause you serious financial problems?",
-                                            help_text="eg you would become homeless",
+                                            help_text="For example, you would become homeless",
                                             widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YESNO_CHOICES,
                                             coerce=to_bool,
@@ -210,8 +209,7 @@ class YourMoneyForm(BasePleaStepForm):
 class YourExpensesForm(BasePleaStepForm):
     hardship_details = forms.CharField(
         label="How would paying a fine cause you serious financial problems?",
-        help_text="What you feel the court should consider "
-                  "when deciding on any possible fine.",
+        help_text="What should the court consider when deciding on any possible fine?",
         widget=forms.Textarea(attrs={'cols': 45, 'rows': 5}),
         required=True,
         error_messages={'required': ERROR_MESSAGES['HARDSHIP_DETAILS_REQUIRED']})
@@ -285,7 +283,7 @@ class YourExpensesForm(BasePleaStepForm):
         initial=0,
         min_value=0,
         label="Telephone",
-        help_text="inc. mobile",
+        help_text="Landline and/or mobile",
         widget=forms.TextInput,
         error_messages={'required': ERROR_MESSAGES['OTHER_TELEPHONE_REQUIRED'],
                         'invalid': ERROR_MESSAGES['OTHER_TELEPHONE_INVALID'],
