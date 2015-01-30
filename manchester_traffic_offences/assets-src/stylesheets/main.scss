@@ -12,48 +12,22 @@
 @import "stylesheets/design-patterns/buttons";
 @import "stylesheets/design-patterns/alpha-beta";
 
-// Extras
-@import "mixins";
-@import "header";
-@import "footer";
-@import "content";
-@import "typography";
-@import "icons";
-@import "utilities";
-@import "icons";
-//@import "govuk-sass/measurements";
-//@import "govuk-sass/grid_layout";
-//@import "govuk-sass/colours";
-//@import "govuk-sass/conditionals";
-//@import "govuk-sass/shims";
-//@import "govuk-sass/typography";
-//@import "govuk-sass/font_stack";
-//@import "govuk-sass/url-helpers";
-
-// Helpers
+// GOV.UK Elements
 @import "elements/helpers";
-// Reset
 @import "elements/reset";
-// Typography
 @import "elements/typography";
-// Layout
 @import "elements/layout";
-
-// Modules
-// ==========================================================================
-// Forms
 @import "elements/forms";
-// Tables
 @import "elements/tables";
-// Buttons
 @import "elements/buttons";
-// Lists
 @import "elements/lists";
-// Panels
 @import "elements/panels";
-// Icons
 @import "elements/icons";
 
+
+
+
+// Shame
 h1{
   margin-top: 40px;
   font-size: 48px;
