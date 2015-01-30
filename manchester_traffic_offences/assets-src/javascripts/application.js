@@ -1,3 +1,7 @@
+GOVUK.selectionButtons = function (elms, opts) {
+  new GOVUK.SelectionButtons(elms, opts);
+};
+
 function showHideCheckboxToggledContent() {
 
     $(".block-label input[type='checkbox']").each(function () {
