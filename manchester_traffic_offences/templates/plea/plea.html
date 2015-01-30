@@ -52,18 +52,14 @@
 
                                 <a id="section_mitigations_{{ forloop.counter }}" name="section_mitigations_{{ forloop.counter }}"></a>
                                 <div class="section charges panel-indent">
-                                    <div class="js-hidden">
-                                        <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint sc-hint">(optional)</span></label>
-                                        <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
-                                    </div>
                                     <div class="" id="{{ form.guilty.0.name }}_not_guilty_extra" style="display: none">
                                         <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Not guilty because?</label>
-                                        <p class="form-hint datefield-hint" id="">Enter details of why you believe you are not guilty.</p>
+                                        <p class="form-hint datefield-hint" id="">Tell us why you believe you are not guilty.</p>
                                     </div>
 
                                     <div class="" id="{{ form.guilty.0.name }}_guilty_extra" style="display: none">
                                         <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint sc-hint">(optional)</span></label>
-                                        <p class="form-hint datefield-hint" id="">Enter details that you would like the court to take into account</p>
+                                        <p class="form-hint datefield-hint" id="">What would you like the court to consider?</p>
                                     </div>
 
                                     <span class="validation-message">{{ form.mitigations.errors }}</span>
