@@ -13,9 +13,13 @@
 
                         <section class="flash error-summary">
                             {% if urn_already_used %}
-                            <h2 id="error-heading">This URN has already been used to make a plea online</h2>
+                            <h2 id="error-heading">The details you've entered have already been used to make a plea online</h2>
 
-                            <p>The unique reference number you entered is no longer valid. Please check and try again.</p>
+                            <p>Check and try again.</p>
+
+                            <ul>
+                                <li><p><a class="error-link" href="#section_urn">Enter the correct URN</a></p></li>
+                            </ul>
 
                             <p>To make changes to a plea you’ve already made online, email or write to the court before your hearing with:</p>
 
@@ -80,9 +84,12 @@
                             <label class="datetime datetime-year">Year</label><br>
                             {{ form.date_of_hearing }}
 
+                            {# Removed as of 0.9.4 #}
+                            {% comment %}
                             {{ form.time_of_hearing.label_tag }}
                             <span class="validation-message">{{ form.time_of_hearing.errors }}</span>
                             {{ form.time_of_hearing }}
+                            {% endcomment %}
                         </div>
                     </section>
 
