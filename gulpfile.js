@@ -8,7 +8,7 @@ var gulp = require('gulp'),
 var paths = {
   dest_dir: 'manchester_traffic_offences/assets/',
   src_dir: 'manchester_traffic_offences/assets-src/',
-  styles: ['manchester_traffic_offences/assets-src/stylesheets/main.scss',
+  styles: ['manchester_traffic_offences/assets-src/stylesheets/**/*.scss',
            'node_modules/govuk_frontend_toolkit/stylesheets/**/*.scss'],
   scripts: [
     // vendor scripts
