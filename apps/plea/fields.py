@@ -17,15 +17,13 @@ from .models import Case
 
 
 ERROR_MESSAGES = {
-    "URN_REQUIRED": "You must enter your unique reference number (URN)",
+    "URN_REQUIRED": "Enter your unique reference number (URN)",
     "URN_INVALID": "The unique reference number (URN) isn't valid. Enter the number exactly as it appears on page 1 of the pack",
-    "URN_ALREADY_USED": "The URN has already been used to make a plea",
-    "URN_DOES_NOT_EXIST": "You've entered an invalid URN",
-    "HEARING_DATE_REQUIRED": "You must provide the court hearing date ",
-    "HEARING_TIME_REQUIRED": "You must provide the court hearing time ",
-    "HEARING_DATE_INVALID": "The court hearing date and/or time isn't a valid format",
+    "URN_ALREADY_USED": "Enter the correct URN",
+    "HEARING_DATE_REQUIRED": "Provide a court hearing date",
+    "HEARING_DATE_INVALID": "The court hearing date isn't a valid format",
     "HEARING_DATE_PASSED": "The court hearing date must be after today",
-    "NUMBER_OF_CHARGES_REQUIRED": "You must select the number of charges against you",
+    "NUMBER_OF_CHARGES_REQUIRED": "Select the number of charges against you",
     "FULL_NAME_REQUIRED": "Please enter your full name",
     "EMAIL_ADDRESS_REQUIRED": "You must provide an email address",
     "EMAIL_ADDRESS_INVALID": "Email address isn't a valid format",
@@ -42,9 +40,9 @@ ERROR_MESSAGES = {
     "YOUR_JOB_REQUIRED": "Please tell us what your job is",
     "SELF_EMPLOYED_PAY_REQUIRED": "Please enter your take home pay and how often you're paid",
     "BENEFITS_REQUIRED": "Please enter total benefits and how often you receive them",
-    "UNDERSTAND_REQUIRED": "You must tick the box to confirm the legal statements",
+    "UNDERSTAND_REQUIRED": "You must confirm that you have read & understood the charge against you before you can submit your plea",
     "OTHER_INFO_REQUIRED": "Please let us know how you earn your money",
-    "RECEIVE_EMAIL": "You must choose whether you want to get emails from the court or not.",
+    "RECEIVE_EMAIL": "You must choose whether you want to receive court correspondence through email",
     "HARDSHIP_DETAILS_REQUIRED": "You must tell us why paying a fine will cause you serious financial problems",
     "OTHER_BILL_PAYERS_REQUIRED": "You must tell us if anyone else contributes to your household bills.",
     "HOUSEHOLD_ACCOMMODATION_REQUIRED": "Accommodation is a required field",
@@ -192,71 +190,6 @@ class HearingDateWidget(MultiWidget):
 
 class HearingDateField(forms.DateField):
     widget = HearingDateWidget
-
-
-class FixedTimeWidget(Widget):
-    times = [(00, 00, "Midnight"), (12, 00, "Midday")]
-
-    def get_time_choices(self):
-        return (("{0}:{1}".format(*time), time[2]) for time in self.times)
-
-    def get_time_from_val(self, val):
-        return "{0}:{1}".format(*val)
-
-    def create_radio(self, name, value, val):
-        local_attrs = self.build_attrs()
-
-        r = RadioSelect(choices=self.get_time_choices(), renderer=DSRadioFieldRenderer)
-        radio_html = r.render(name, val, local_attrs)
-        return radio_html
-
-    def value_from_datadict(self, data, files, name):
-        t = data.get(name, None)
-        if t:
-            hr = t.split(":")[0]
-            mn = t.split(":")[1]
-        else:
-            hr, mn = None, None
-
-        if hr == mn == None:
-            return None
-
-        if t:
-            try:
-                datetime_value = datetime.time(int(hr), int(mn))
-            except ValueError:
-                return "{0}:{1}:00".format(hr, mn)
-            return str(datetime_value)
-
-        return data.get(name, None)
-
-    def render(self, name, value, attrs=None):
-        try:
-            hour_val, minute_val = value.hour, value.minute
-        except AttributeError:
-            hour_val, minute_val = (None, None)
-            if isinstance(value, six.string_types):
-                try:
-                    v = parse(force_str(value))
-                    hour_val, minute_val = v.hour, v.minute
-                except ValueError:
-                    pass
-
-        time_html = self.create_radio(name, value, self.get_time_from_val((hour_val, minute_val)))
-        return time_html
-
-
-class HearingTimeWidget(FixedTimeWidget):
-    times = [(9, 15, "9:15am"), (13, 15, "1:15pm")]
-
-
-class HearingTimeField(forms.TimeField):
-    widget = HearingTimeWidget
-
-    def validate(self, value):
-        super(HearingTimeField, self).validate(value)
-        if not (value.hour, value.minute) in ((v[0], v[1]) for v in self.widget.times):
-            raise forms.ValidationError(self.error_messages['required'], code='required')
 
 
 class URNWidget(MultiWidget):
