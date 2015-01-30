@@ -2,10 +2,16 @@
 
 {% load staticfiles %}
 {% block stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{% static "stylesheets/main.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "stylesheets/application.css" %}">
 {% endblock %}
 
 {% block content %}
+
+  <div class="phase-banner">
+    <p><a href="https://www.gov.uk/service-manual/phases/alpha.html" class="phase-tag">alpha</a> This is a new service - <a href="/feedback/?next=terms">your feedback</a> will help us to improve it</p>
+  </div>
+  <!--end phase-banner-->
+
   {%  if messages %}
       {% for message in messages %}
           {% if "info" in message.tags %}
@@ -24,14 +30,22 @@
   {% block page_content %}{% endblock %}
 {% endblock %}
 
+{% block footer_support_links %}
+<li><a href="http://www.gov.uk/help">Help</a></li>
+<li><a href="http://www.gov.uk/help/cookies">Cookies</a></li>
+<li><a href="http://www.gov.uk/contact">Contact</a></li>
+<li><a href="http://www.gov.uk/cymraeg" lang="cy">Cymraeg</a></li>
+{% endblock %}
+
 {% block javascripts %}
   <script src="/static/javascripts/govuk.js" type="text/javascript"></script>
   <script src="/static/javascripts/application.js" type="text/javascript"></script>
 {% endblock %}
 
 {% block footer_top %}
-    <a href="{% url "terms" %}">Terms and Conditions and Privacy Policy</a>
+    <p><a href="{% url "terms" %}">Terms and Conditions and Privacy Policy</a></p>
 {% endblock footer_top %}
+
 {% block body_end %}
 {% if request.META.HTTP_HOST == "www.makeaplea.justice.gov.uk" %}
 <script>

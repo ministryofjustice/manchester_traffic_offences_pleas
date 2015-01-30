@@ -1,43 +1,8 @@
-// GOV.UK Toolkit imports
-@import "stylesheets/colours";
-@import "stylesheets/conditionals";
-@import "stylesheets/css3";
-@import "stylesheets/device-pixels";
-@import "stylesheets/font_stack";
-@import "stylesheets/measurements";
-@import "stylesheets/shims";
-@import "stylesheets/typography";
-@import "stylesheets/grid_layout";
-@import "stylesheets/design-patterns/buttons";
-@import "stylesheets/design-patterns/alpha-beta";
-
-// GOV.UK Elements
-@import "elements/helpers";
-@import "elements/reset";
-@import "elements/typography";
-@import "elements/layout";
-@import "elements/forms";
-@import "elements/tables";
-@import "elements/buttons";
-@import "elements/lists";
-@import "elements/panels";
-@import "elements/icons";
 
 
-// Shame
-@import "shame";
-
-
-// MoJ Styles
-b, strong {font-weight: 600;}
-.clear {clear: both;}
 $errorcolour: #e12d2d;
 $errorbgcolour: #faebec;
 
-#global-header .header-wrapper {max-width: 990px; margin: 0 auto; padding: 0.5em 15px;}
-.article-container {background-color: #fff; margin-right: 22.25em; min-height: 25em; max-width: 38em;}
-#wrapper {padding-bottom:0px!important; text-align:left; border-bottom: 10px;}
-#wrapper.service header.page-header div h1 {padding: 48px 0 0 35px;}
 
 .article-container.group h2, #complete h2, .full-width h2 {font-size: 2em; font-weight: bold; }
 #complete h3.heading-medium.divide {border-top: 1px solid #c2c2c2; padding-top:20px;}
