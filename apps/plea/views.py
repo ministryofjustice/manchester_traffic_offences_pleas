@@ -75,8 +75,8 @@ class PleaOnlineViews(TemplateView):
         nxt = request.GET.get("next", None)
 
         form = PleaOnlineForms(stage, "plea_form_step", request.session)
-        if form.save(request.POST, RequestContext(request), nxt):
-            form.process_messages(request)
+        form.save(request.POST, RequestContext(request), nxt)
+        form.process_messages(request)
         return form.render()
 
 
