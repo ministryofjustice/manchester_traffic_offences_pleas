@@ -22,7 +22,6 @@ class EmailTemplateTests(TestCase):
                          "date_of_hearing_0": "30",
                          "date_of_hearing_1": "10",
                          "date_of_hearing_2": "2015",
-                         "time_of_hearing": "09:15",
                          "number_of_charges": 1}
 
         if not details_data:
@@ -85,7 +84,7 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
         self.assertContains(response, "<tr><th>URN</th><td>00/AA/00000/00</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>Court hearing</th><td>30 October 2015 at 09:15</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Court hearing</th><td>30 October 2015</td></tr>", count=1, html=True)
 
     def test_min_case_details_output(self):
         context_data = self.get_context_data()
@@ -278,7 +277,7 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
         self.assertContains(response, "<tr><th>URN</th><td>00/AA/00000/00</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>Court hearing</th><td>30 October 2015 at 09:15</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Court hearing</th><td>30 October 2015</td></tr>", count=1, html=True)
 
     def test_PLP_case_details_output(self):
         context_data = self.get_context_data()
