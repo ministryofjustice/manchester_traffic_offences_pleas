@@ -1,111 +1,94 @@
 {% extends "plea/base.html" %}
+
 {% block page_title %}{{ block.super }} Case details{% endblock %}
+
 {% load staticfiles %}
+
 {% block page_content %}
+<form method="POST" class="pleaform form" autocomplete="off">
 
-    <div class="full-width group">
-        <div class="main">
-            <form method=POST class="pleaform form" autocomplete="off">
+    {% csrf_token %}
+    
+    {% with forms.0 as form %}
+        {% if form.errors %}
+    <div class="error-summary">
+        {% if urn_already_used %}
+        <h2 class="heading-medium">The details you've entered have already been used to make a plea online</h2>
 
-                {% csrf_token %}
-                {% with forms.0 as form %}
-                    {% if form.errors %}
+        <p>Check and try again.</p>
 
-                        <section class="flash error-summary">
-                            {% if urn_already_used %}
-                            <h2 id="error-heading">The details you've entered have already been used to make a plea online</h2>
+        <ul class="errors-list">
+            <li><a href="#section_urn">Enter the correct URN</a></li>
+        </ul>
 
-                            <p>Check and try again.</p>
+        <p>To make changes to a plea you’ve already made online, email or write to the court before your hearing with:</p>
 
-                            <ul>
-                                <li><p><a class="error-link" href="#section_urn">Enter the correct URN</a></p></li>
-                            </ul>
-
-                            <p>To make changes to a plea you’ve already made online, email or write to the court before your hearing with:</p>
-
-                            <ul class="with-bullets">
-                                <li>details of the changes you want to make</li>
-                                <li>your unique reference number</li>
-                            </ul>
+        <ul class="list-bullet">
+            <li>details of the changes you want to make</li>
+            <li>your unique reference number</li>
+        </ul>
 
 
-                            <ul>
-                                <li id="case_contact_link"><a href="/contact">View court contact details</a></li>
-                                <li id="case_contact_details" class="js-hidden">
+        <details role="group">
+            <summary role="button" aria-controls="details-content-0" tabindex="0" aria-expanded="false"><span class="summary">View court contact details</span></summary>
+            <div id="details-content-0" aria-hidden="true">
+                <h3 class="heading-small">Send letters to:</h3>
+                <address>The Operations Manager<br>
+                Manchester & Salford<br>
+                Magistrates Court<br>
+                Crown Square<br>
+                Manchester<br>
+                M60 1PR</address>
 
+                <h3 class="heading-small">Send email to:</h3>
+                <p><a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">roadtrafficpcr@hmcts.gsi.gov.uk</a></p>
+            </div>
+        </details>
 
-                                <h2>Send letters to:</h2>
-                                <p>The Operations Manager<br>
-                                Manchester & Salford<br>
-                                Magistrates Court<br>
-                                Crown Square<br>
-                                Manchester<br>
-                                M60 1PR</p>
+        {% else %}
 
-                                <p><h2>Send email to:</h2>
-                                <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">roadtrafficpcr@hmcts.gsi.gov.uk</a></p>
+        <h2 class="heading-medium">You need to fix the errors on this page before continuing.</h2>
+        
+        <p>See highlighted errors below.</p>
 
-                                </li>
-                            </ul>
-
-                            {% else %}
-
-                            <h2 id="error-heading">You need to fix the errors on this page before continuing.</h2>
-                            <p>See highlighted errors below.</p>
-                            <ul>
-                                {% for field in form %}
-                                    {% if field.errors %}
-                                        <li><a class="error-link"
-                                               href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                            {% endif %}
-                        </section>
-                    {% endif %}
-
-                    <h1 id="your-details">Case details</h1>
-
-                    {% with form.urn as field %}
-                        {% include "widgets/std_field_with_image.html" %}
-                    {% endwith %}
-                    <div class="help-image">
-                        <img src="{% static "images/img-urn.png" %}" alt="Location of URN">
-                    </div>
-
-                    <section>
-                        <a id="section_date_of_hearing" name="section_date_of_hearing"></a>
-                        <div class="section with-help-image{% if form.date_of_hearing.errors %} error{% endif %}">
-                            <label for="{{ form.date_of_hearing.name }}">Court hearing date</label>
-                            <span class="validation-message">{{ form.date_of_hearing.errors }}</span>
-                            <p class="form-hint datefield-hint" id="">{{ form.date_of_hearing.help_text|safe }}</p>
-                            <label for="{{ day.attrs }}" class="datetime datetime-day">Day</label>
-                            <label class="datetime datetime-month">Month</label>
-                            <label class="datetime datetime-year">Year</label><br>
-                            {{ form.date_of_hearing }}
-
-                            {# Removed as of 0.9.4 #}
-                            {% comment %}
-                            {{ form.time_of_hearing.label_tag }}
-                            <span class="validation-message">{{ form.time_of_hearing.errors }}</span>
-                            {{ form.time_of_hearing }}
-                            {% endcomment %}
-                        </div>
-                    </section>
-
-                    {% with form.number_of_charges as field %}
-                        {% include "widgets/std_field_with_image.html" %}
-                    {% endwith %}
-                    <div class="help-image">
-                        <img src="{% static "images/img-charge.png" %}" alt="The number of charges is found on page 2 of the pack">
-                    </div>
-
-                    <div class="actions">
-                        <button class="button" type=submit>Continue</button>
-                    </div>
-                {% endwith %}
-            </form>
-        </div>
+        <ul class="errors-list">
+            {% for field in form %}
+                {% if field.errors %}
+            <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% endif %}
     </div>
+        {% endif %}
+
+    <h1 class="heading-xlarge">Case details</h1>
+
+    <div class="help-image">
+        <img src="{% static "images/img-urn.png" %}" alt="Location of URN and Court Hearing Date on page 1 of the pack" width="" height="">
+    </div>
+
+    {% with form.urn as field %}
+        {% include "widgets/std_field.html" %}
+    {% endwith %}
+
+    {% with form.date_of_hearing as field %}
+        {% include "widgets/date_field.html" %}
+    {% endwith %}
+
+    <div class="help-image">
+        <img src="{% static "images/img-charge.png" %}" alt="The number of charges is found on page 2 of the pack">
+    </div>
+
+    {% with form.number_of_charges as field %}
+        {% include "widgets/std_field.html" %}
+    {% endwith %}
+    
+
+    <div class="actions">
+        <button class="button" type=submit>Continue</button>
+    </div>
+    {% endwith %}
+</form>
 
 {% endblock page_content %}

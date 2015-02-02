@@ -116,12 +116,17 @@
 Typography
 ====================================================
 */
+h1.heading-xlarge {
+  margin-bottom: .9375em; }
+
 .heading-collapse {
   margin-bottom: 0; }
 
 p,
 ul,
-ol {
+ol,
+address,
+summary {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -130,9 +135,16 @@ ol {
   @media (max-width: 640px) {
     p,
     ul,
-    ol {
+    ol,
+    address,
+    summary {
       font-size: 16px;
       line-height: 1.25; } }
+
+address {
+  margin-top: 0.3125em;
+  margin-bottom: 1.25em;
+  font-style: normal; }
 
 .example-highlight-grid .grid-row {
   background: #bfc1c3; }
@@ -176,12 +188,17 @@ ol {
 Typography
 ====================================================
 */
+h1.heading-xlarge {
+  margin-bottom: .9375em; }
+
 .heading-collapse {
   margin-bottom: 0; }
 
 p,
 ul,
-ol {
+ol,
+address,
+summary {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -190,9 +207,16 @@ ol {
   @media (max-width: 640px) {
     p,
     ul,
-    ol {
+    ol,
+    address,
+    summary {
       font-size: 16px;
       line-height: 1.25; } }
+
+address {
+  margin-top: 0.3125em;
+  margin-bottom: 1.25em;
+  font-style: normal; }
 
 .button {
   background-color: #00823b;
@@ -555,12 +579,17 @@ details .panel-indent {
 Typography
 ====================================================
 */
+h1.heading-xlarge {
+  margin-bottom: .9375em; }
+
 .heading-collapse {
   margin-bottom: 0; }
 
 p,
 ul,
-ol {
+ol,
+address,
+summary {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -569,9 +598,16 @@ ol {
   @media (max-width: 640px) {
     p,
     ul,
-    ol {
+    ol,
+    address,
+    summary {
       font-size: 16px;
       line-height: 1.25; } }
+
+address {
+  margin-top: 0.3125em;
+  margin-bottom: 1.25em;
+  font-style: normal; }
 
 .example-highlight-grid .grid-row {
   background: #bfc1c3; }
@@ -772,12 +808,17 @@ ol {
 Typography
 ====================================================
 */
+h1.heading-xlarge {
+  margin-bottom: .9375em; }
+
 .heading-collapse {
   margin-bottom: 0; }
 
 p,
 ul,
-ol {
+ol,
+address,
+summary {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -786,9 +827,16 @@ ol {
   @media (max-width: 640px) {
     p,
     ul,
-    ol {
+    ol,
+    address,
+    summary {
       font-size: 16px;
       line-height: 1.25; } }
+
+address {
+  margin-top: 0.3125em;
+  margin-bottom: 1.25em;
+  font-style: normal; }
 
 .example-highlight-grid .grid-row {
   background: #bfc1c3; }
@@ -835,12 +883,17 @@ ol {
 Typography
 ====================================================
 */
+h1.heading-xlarge {
+  margin-bottom: .9375em; }
+
 .heading-collapse {
   margin-bottom: 0; }
 
 p,
 ul,
-ol {
+ol,
+address,
+summary {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -849,9 +902,16 @@ ol {
   @media (max-width: 640px) {
     p,
     ul,
-    ol {
+    ol,
+    address,
+    summary {
       font-size: 16px;
       line-height: 1.25; } }
+
+address {
+  margin-top: 0.3125em;
+  margin-bottom: 1.25em;
+  font-style: normal; }
 
 table {
   border-collapse: collapse;
@@ -898,12 +958,17 @@ table td.numeric {
 Typography
 ====================================================
 */
+h1.heading-xlarge {
+  margin-bottom: .9375em; }
+
 .heading-collapse {
   margin-bottom: 0; }
 
 p,
 ul,
-ol {
+ol,
+address,
+summary {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -912,9 +977,16 @@ ol {
   @media (max-width: 640px) {
     p,
     ul,
-    ol {
+    ol,
+    address,
+    summary {
       font-size: 16px;
       line-height: 1.25; } }
+
+address {
+  margin-top: 0.3125em;
+  margin-bottom: 1.25em;
+  font-style: normal; }
 
 main {
   font-family: "nta", Arial, sans-serif;
@@ -1224,12 +1296,17 @@ code {
 Typography
 ====================================================
 */
+h1.heading-xlarge {
+  margin-bottom: .9375em; }
+
 .heading-collapse {
   margin-bottom: 0; }
 
 p,
 ul,
-ol {
+ol,
+address,
+summary {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -1238,9 +1315,16 @@ ol {
   @media (max-width: 640px) {
     p,
     ul,
-    ol {
+    ol,
+    address,
+    summary {
       font-size: 16px;
       line-height: 1.25; } }
+
+address {
+  margin-top: 0.3125em;
+  margin-bottom: 1.25em;
+  font-style: normal; }
 
 .example-highlight-grid .grid-row {
   background: #bfc1c3; }
@@ -1413,12 +1497,17 @@ fieldset {
 Typography
 ====================================================
 */
+h1.heading-xlarge {
+  margin-bottom: .9375em; }
+
 .heading-collapse {
   margin-bottom: 0; }
 
 p,
 ul,
-ol {
+ol,
+address,
+summary {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -1427,9 +1516,16 @@ ol {
   @media (max-width: 640px) {
     p,
     ul,
-    ol {
+    ol,
+    address,
+    summary {
       font-size: 16px;
       line-height: 1.25; } }
+
+address {
+  margin-top: 0.3125em;
+  margin-bottom: 1.25em;
+  font-style: normal; }
 
 .validation-summary {
   border: 3px solid #df3034;
@@ -1612,12 +1708,17 @@ input[type=number] {
 Typography
 ====================================================
 */
+h1.heading-xlarge {
+  margin-bottom: .9375em; }
+
 .heading-collapse {
   margin-bottom: 0; }
 
 p,
 ul,
-ol {
+ol,
+address,
+summary {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -1626,9 +1727,16 @@ ol {
   @media (max-width: 640px) {
     p,
     ul,
-    ol {
+    ol,
+    address,
+    summary {
       font-size: 16px;
       line-height: 1.25; } }
+
+address {
+  margin-top: 0.3125em;
+  margin-bottom: 1.25em;
+  font-style: normal; }
 
 .validation-summary {
   border: 3px solid #df3034;
@@ -1736,8 +1844,86 @@ GOV.UK Toolkit/Template overrides
     vertical-align: baseline; }
 
 .footer-wrapper > p {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.25;
+  font-weight: 400;
+  text-transform: none;
   margin-bottom: 0;
   margin-top: 0; }
+  @media (max-width: 640px) {
+    .footer-wrapper > p {
+      font-size: 14px;
+      line-height: 1.14286; } }
+
+/*  
+====================================================
+Forms
+====================================================
+*/
+/*== Main form styles ===============================*/
+.form-row {
+  margin-bottom: 2em;
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.31579;
+  font-weight: 400;
+  text-transform: none; }
+  @media (max-width: 640px) {
+    .form-row {
+      font-size: 16px;
+      line-height: 1.25; } }
+  .form-row label {
+    font-family: "nta", Arial, sans-serif;
+    font-size: 24px;
+    line-height: 1.25;
+    font-weight: 700;
+    text-transform: none; }
+    @media (max-width: 640px) {
+      .form-row label {
+        font-size: 18px;
+        line-height: 1.2; } }
+    .form-row label .errorlist {
+      margin: .25em 0;
+      color: #df3034; }
+  .form-row .form-hint {
+    display: block;
+    font-family: "nta", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.25;
+    font-weight: 400;
+    text-transform: none; }
+    @media (max-width: 640px) {
+      .form-row .form-hint {
+        font-size: 14px;
+        line-height: 1.14286; } }
+  .form-row .form-hint-inline {
+    display: inline;
+    vertical-align: baseline; }
+
+.form-control-inline {
+  width: auto; }
+
+.help-image {
+  float: right;
+  clear: right; }
+
+/*== Error styles ==================================*/
+.error-summary {
+  margin: 2em 0;
+  padding: 1em 1em 0;
+  background: #fef7f7;
+  border: 4px solid #df3034; }
+  .error-summary h2 {
+    margin-top: 0; }
+  .error-summary .errors-list a {
+    color: #000; }
+  .error-summary details {
+    margin-bottom: 1.05263em; }
+
+.with-error {
+  padding-left: 1em;
+  border-left: 4px solid #df3034; }
 
 @font-face {
   font-family: GDS-Logo;
@@ -1762,7 +1948,8 @@ Elements
 Main styles
 ====================================================
 */
-.intro h3:first-child {
+/*== Start screen ==================================================*/
+.intro h2:first-child {
   margin-top: 0; }
 .intro .get-started {
   padding-top: 2em; }
@@ -1773,6 +1960,17 @@ Main styles
   .before-start .panel-indent .list-bullet {
     margin-top: 0;
     margin-bottom: 0; }
+
+/*== Case form ======================================================*/
+#section_urn .form-control,
+#section_date_of_hearing .form-control {
+  width: auto;
+  margin: 0 5px; }
+#section_urn #id_urn_0,
+#section_urn #id_date_of_hearing_0,
+#section_date_of_hearing #id_urn_0,
+#section_date_of_hearing #id_date_of_hearing_0 {
+  margin-left: 0; }
 
 /*  
 ====================================================

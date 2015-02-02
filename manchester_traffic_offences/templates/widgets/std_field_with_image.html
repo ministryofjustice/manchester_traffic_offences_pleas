@@ -1,9 +1,11 @@
-<section>
-    <a id="section_{{ field.name }}" name="section_{{ field.name }}"></a>
-    <div class="section with-help-image{%  if field.errors %} error{% endif %}">
-        {{ field.label_tag }}
-        <span class="validation-message">{{ field.errors }}</span>
-        <p class="form-hint datefield-hint">{{ field.help_text|safe }}</p>
-        {{ field }}
-    </div>
-</section>
+<div class="form-row{%  if field.errors %} error{% endif %}" id="section_{{ field.name }}">
+    <label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %} <span class="form-hint form-hint-inline">(optional)</span>{% endif %}
+    	{% if field.help_text %}
+    	<span class="form-hint">{{ field.help_text|safe }}</span>
+    	{% endif %}
+    	{% if field.errors %}
+    	<span class="form-error">{{ field.errors }}</span>
+    	{% endif %}
+    </label>
+    {{ field }}
+</div>
