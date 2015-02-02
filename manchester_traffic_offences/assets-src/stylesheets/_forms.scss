@@ -1,0 +1,71 @@
+/*  
+====================================================
+Forms
+====================================================
+*/
+
+/*== Main form styles ===============================*/
+.form-row {
+	margin-bottom: 2em;
+	@include core-19;
+
+	label {
+		@include bold-24();
+
+		.errorlist {
+			margin: .25em 0;
+			color: $error-colour;
+		}
+	}
+
+	.form-hint {
+		display: block;
+		@include core-16;
+	}
+
+	.form-hint-inline {
+		display: inline;
+		vertical-align: baseline;
+	}
+}
+
+
+
+.form-control-inline {
+	width: auto;
+}
+
+.help-image {
+	float: right;
+	clear: right;
+}
+
+
+/*== Error styles ==================================*/
+
+.error-summary {
+	margin: 2em 0;
+	padding: 1em 1em 0;
+	background: $error-background;
+	border: 4px solid $error-colour;
+
+	h2 {
+		margin-top: 0;
+	}
+
+	.errors-list {
+		a {
+			color: #000;
+		}
+	}
+
+	details {
+		margin-bottom: 1.05263em;
+	}
+}
+
+.with-error {
+	padding-left: 1em;
+	// margin-left: -24px;
+	border-left: 4px solid $error-colour;
+}
