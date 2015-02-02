@@ -1,16 +1,16 @@
 
 // GOV.UK Toolkit imports
-@import "govuk_frontend_toolkit/stylesheets/colours";
-@import "govuk_frontend_toolkit/stylesheets/conditionals";
-@import "govuk_frontend_toolkit/stylesheets/css3";
-@import "govuk_frontend_toolkit/stylesheets/device-pixels";
-@import "govuk_frontend_toolkit/stylesheets/font_stack";
-@import "govuk_frontend_toolkit/stylesheets/measurements";
-@import "govuk_frontend_toolkit/stylesheets/shims";
-@import "govuk_frontend_toolkit/stylesheets/typography";
-@import "govuk_frontend_toolkit/stylesheets/grid_layout";
-@import "govuk_frontend_toolkit/stylesheets/design-patterns/buttons";
-@import "govuk_frontend_toolkit/stylesheets/design-patterns/alpha-beta";
+@import "stylesheets/colours";
+@import "stylesheets/conditionals";
+@import "stylesheets/css3";
+@import "stylesheets/device-pixels";
+@import "stylesheets/font_stack";
+@import "stylesheets/measurements";
+@import "stylesheets/shims";
+@import "stylesheets/typography";
+@import "stylesheets/grid_layout";
+@import "stylesheets/design-patterns/buttons";
+@import "stylesheets/design-patterns/alpha-beta";
 
 // Extras
 @import "mixins";
@@ -29,6 +29,7 @@
 //@import "govuk-sass/typography";
 //@import "govuk-sass/font_stack";
 //@import "govuk-sass/url-helpers";
+
 // Helpers
 @import "elements/helpers";
 // Reset

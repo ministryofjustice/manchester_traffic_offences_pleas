@@ -39,8 +39,8 @@
                             <td>{{ case.urn }}</td>
                         </tr>
                         <tr>
-                            <th class="label">Court hearing date and time</th>
-                            <td>{{ case.date_of_hearing|string_date }} at {{ case.time_of_hearing|string_time }}</td>
+                            <th class="label">Court hearing date</th>
+                            <td>{{ case.date_of_hearing|string_date }}</td>
                         </tr>
                         <tr>
                             <th class="label">Number of charges against you</th>
@@ -255,7 +255,7 @@
                             <label for="{{ form.understand.id_for_label }}" class="block-label" id="{{ form.understand.name }}">
                                 <p class="important">It is an offence to make a false statement or to deliberately fail to disclose any relevant facts.</p>
                                 <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
-                                <strong>I confirm</strong> that I have read and understand the charge against me and that I am the person named on the charge sheet. The facts stated here are correct to the best of my knowledge.
+                                <strong>I confirm</strong> that I have read and understand the charge against me and that I am the person named in the Postal Requisition. The facts stated here are correct to the best of my knowledge.
                             </label>
                         </div>
                     </section>
@@ -266,7 +266,7 @@
                             <span class="validation-message">{{ form.receive_email.errors }}</span>
                             <div id="receive_email" class="clearfix">
 
-				                Do you want to receive an email confirming your plea(s)?
+				                Do you want to receive an email confirming your plea{{ case.number_of_charges|pluralize }}?
 
                                 {{ form.receive_email }}
                                 
