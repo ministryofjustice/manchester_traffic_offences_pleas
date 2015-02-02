@@ -19,15 +19,14 @@ class CourtEmailCountModelTestCase(TestCase):
                 "registration_number": "xxx"
             },
             "case": {
-                "date_of_hearing": "2014-09-22",
-                "time_of_hearing": "09:15:00"
+                "date_of_hearing": "2014-09-22"
             }
         }
 
         emailcount = CourtEmailCount()
         emailcount.get_from_context(context)
 
-        self.assertEqual(emailcount.hearing_date, dt.datetime(2014, 9, 22, 9, 15, 0))
+        self.assertEqual(emailcount.hearing_date, dt.datetime(2014, 9, 22, 0, 0, 0))
 
     def test_get_stats_yesterday(self):
         """
