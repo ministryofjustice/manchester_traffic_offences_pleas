@@ -5,26 +5,8 @@ import re
 from django.test import TestCase
 from django.core import mail
 
-from ..email import TemplateAttachmentEmail, send_plea_email, first_name
+from ..email import TemplateAttachmentEmail, send_plea_email
 from ..models import Case, CourtEmailCount
-
-
-class FirstNameExtractionTests(TestCase):
-
-    def test_single_name(self):
-        self.assertEquals(first_name("ASINGLENAME"), "Asinglename")
-
-    def test_known_name_prefix(self):
-        self.assertEquals(first_name("DR Lyndon Garvey"), "Lyndon")
-
-    def test_known_name_prefix_with_punctuation(self):
-        self.assertEquals(first_name("DR. Lyndon Garvey"), "Lyndon")
-
-    def test_standard_name(self):
-        self.assertEquals(first_name("Lyndon Garvey"), "Lyndon")
-
-    def test_non_standard(self):
-        self.assertEquals(first_name("ぴょ䏤ま䛧ベ 窨た氩め棃 じ樊奟榟㛤 ピェ窨 ピ姎軩"), "ぴょ䏤ま䛧ベ")
 
 
 class EmailGenerationTests(TestCase):
