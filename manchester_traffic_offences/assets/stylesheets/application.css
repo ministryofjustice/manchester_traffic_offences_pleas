@@ -2046,12 +2046,6 @@ h2.header {
 body.urn_invalid .button-get-started {
   margin-bottom: 30px; }
 
-@media (max-width: 700px) {
-  .related-positioning, .help-image {
-    display: none; }
-
-  .article-container {
-    margin-right: auto; } }
 @media (max-width: 500px) {
   #id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number,
   #id_employer_name, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0 {
@@ -2059,37 +2053,6 @@ body.urn_invalid .button-get-started {
 
   textarea {
     width: 98%; } }
-.related-positioning {
-  height: 0;
-  left: 0;
-  position: absolute;
-  top: 9.5em;
-  width: 100%;
-  z-index: 0; }
-
-.related-positioning .related-container {
-  position: relative;
-  height: 0;
-  margin: 0 auto;
-  max-width: 1020px;
-  z-index: 50; }
-
-.related {
-  position: absolute;
-  right: 1.75em;
-  margin: 3em 0 0 0;
-  width: 15.75em;
-  /*border-top: 10px solid #d53880;*/ }
-
-.related #stat {
-  font-size: 5em;
-  font-weight: bold;
-  color: #000;
-  line-height: 0.75em; }
-
-.js-enabled .related-positioning {
-  top: 8em; }
-
 .charges .form-hint {
   display: inline;
   font-weight: normal; }
