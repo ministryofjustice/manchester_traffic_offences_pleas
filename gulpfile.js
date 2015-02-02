@@ -1,8 +1,9 @@
 var gulp = require('gulp'),
     plugins = require('gulp-load-plugins')(),
-    rimraf = require('gulp-rimraf'),
+    del = require('del'),
     stylish = require('jshint-stylish'),
-    runSequence = require('run-sequence');
+    runSequence = require('run-sequence'),
+    vinylPaths = require('vinyl-paths');
 
 var paths = {
   dest_dir: 'manchester_traffic_offences/assets/',
@@ -24,7 +25,7 @@ var paths = {
 gulp.task('clean', function() {
   return gulp
     .src(paths.dest_dir, {read: false})
-    .pipe(rimraf());
+    .pipe(vinylPaths(del));
 });
 
 // compile scss
