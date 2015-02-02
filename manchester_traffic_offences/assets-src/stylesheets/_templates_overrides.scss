@@ -24,7 +24,7 @@ GOV.UK Toolkit/Template overrides
 
 .footer-wrapper > p {
 	@extend %site-width-container;
+	@include core-16;
 	margin-bottom: 0;
 	margin-top: 0;
-	// @include core-16;
 }

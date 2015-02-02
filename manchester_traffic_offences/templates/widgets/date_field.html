@@ -3,9 +3,12 @@
     	{% if field.help_text %}
     	<span class="form-hint">{{ field.help_text|safe }}</span>
     	{% endif %}
-    	
-    	{{ field.errors }}
+    	{% if field.errors %}
+    	<span class="form-error">{{ field.errors }}</span>
+    	{% endif %}
     </label>
-    
-    {{ field }}
+
+	<div class="form-date">
+		{{ field }}
+	</div>
 </div>
