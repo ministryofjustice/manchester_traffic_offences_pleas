@@ -143,13 +143,26 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-@font-face {
-  font-family: GDS-Logo;
-  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
+/*  
+====================================================
+Typography
+====================================================
+*/
+p,
+ul,
+ol {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.31579;
+  font-weight: 400;
+  text-transform: none; }
+  @media (max-width: 640px) {
+    p,
+    ul,
+    ol {
+      font-size: 16px;
+      line-height: 1.25; } }
+
 .button {
   background-color: #00823b;
   position: relative;
@@ -281,13 +294,26 @@ details .panel-indent {
   display: block;
   clear: both; }
 
-@font-face {
-  font-family: GDS-Logo;
-  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
+/*  
+====================================================
+Typography
+====================================================
+*/
+p,
+ul,
+ol {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.31579;
+  font-weight: 400;
+  text-transform: none; }
+  @media (max-width: 640px) {
+    p,
+    ul,
+    ol {
+      font-size: 16px;
+      line-height: 1.25; } }
+
 .example-highlight-grid .grid-row {
   background: #bfc1c3; }
 .example-highlight-grid .column-highlight {
@@ -546,13 +572,26 @@ details .panel-indent {
   display: block;
   clear: both; }
 
-@font-face {
-  font-family: GDS-Logo;
-  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
+/*  
+====================================================
+Typography
+====================================================
+*/
+p,
+ul,
+ol {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.31579;
+  font-weight: 400;
+  text-transform: none; }
+  @media (max-width: 640px) {
+    p,
+    ul,
+    ol {
+      font-size: 16px;
+      line-height: 1.25; } }
+
 .example-highlight-grid .grid-row {
   background: #bfc1c3; }
 .example-highlight-grid .column-highlight {
@@ -747,13 +786,26 @@ ol {
   display: block;
   clear: both; }
 
-@font-face {
-  font-family: GDS-Logo;
-  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
+/*  
+====================================================
+Typography
+====================================================
+*/
+p,
+ul,
+ol {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.31579;
+  font-weight: 400;
+  text-transform: none; }
+  @media (max-width: 640px) {
+    p,
+    ul,
+    ol {
+      font-size: 16px;
+      line-height: 1.25; } }
+
 .example-highlight-grid .grid-row {
   background: #bfc1c3; }
 .example-highlight-grid .column-highlight {
@@ -794,13 +846,26 @@ ol {
 .panel-indent .form-group:last-child {
   margin-bottom: 0; }
 
-@font-face {
-  font-family: GDS-Logo;
-  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
+/*  
+====================================================
+Typography
+====================================================
+*/
+p,
+ul,
+ol {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.31579;
+  font-weight: 400;
+  text-transform: none; }
+  @media (max-width: 640px) {
+    p,
+    ul,
+    ol {
+      font-size: 16px;
+      line-height: 1.25; } }
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -841,13 +906,26 @@ table td.numeric {
       font-size: 14px;
       line-height: 1.14286; } }
 
-@font-face {
-  font-family: GDS-Logo;
-  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
+/*  
+====================================================
+Typography
+====================================================
+*/
+p,
+ul,
+ol {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.31579;
+  font-weight: 400;
+  text-transform: none; }
+  @media (max-width: 640px) {
+    p,
+    ul,
+    ol {
+      font-size: 16px;
+      line-height: 1.25; } }
+
 main {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
@@ -1151,13 +1229,26 @@ code {
   display: block;
   clear: both; }
 
-@font-face {
-  font-family: GDS-Logo;
-  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
+/*  
+====================================================
+Typography
+====================================================
+*/
+p,
+ul,
+ol {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.31579;
+  font-weight: 400;
+  text-transform: none; }
+  @media (max-width: 640px) {
+    p,
+    ul,
+    ol {
+      font-size: 16px;
+      line-height: 1.25; } }
+
 .example-highlight-grid .grid-row {
   background: #bfc1c3; }
 .example-highlight-grid .column-highlight {
@@ -1324,13 +1415,26 @@ fieldset {
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-@font-face {
-  font-family: GDS-Logo;
-  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
+/*  
+====================================================
+Typography
+====================================================
+*/
+p,
+ul,
+ol {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.31579;
+  font-weight: 400;
+  text-transform: none; }
+  @media (max-width: 640px) {
+    p,
+    ul,
+    ol {
+      font-size: 16px;
+      line-height: 1.25; } }
+
 .validation-summary {
   border: 3px solid #df3034;
   padding: 15px 30px;
@@ -1507,13 +1611,26 @@ input[type=number] {
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-@font-face {
-  font-family: GDS-Logo;
-  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
+/*  
+====================================================
+Typography
+====================================================
+*/
+p,
+ul,
+ol {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.31579;
+  font-weight: 400;
+  text-transform: none; }
+  @media (max-width: 640px) {
+    p,
+    ul,
+    ol {
+      font-size: 16px;
+      line-height: 1.25; } }
+
 .validation-summary {
   border: 3px solid #df3034;
   padding: 15px 30px;
@@ -1558,9 +1675,11 @@ input[type=number] {
       font-size: 14px;
       line-height: 1.14286; } }
 
-/**
- * MoJ Template Overrides/tweaks
- */
+/*  
+====================================================
+GOV.UK Toolkit/Template overrides
+====================================================
+*/
 #global-header .header-proposition a#proposition-name:hover {
   text-decoration: none; }
 
@@ -1621,6 +1740,18 @@ input[type=number] {
   margin-bottom: 0;
   margin-top: 0; }
 
+@font-face {
+  font-family: GDS-Logo;
+  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+@-ms-viewport {
+  width: device-width; }
+@-o-viewport {
+  width: device-width; }
+/*  
+====================================================
+Main styles
+====================================================
+*/
 .article-container.group h2, #complete h2, .full-width h2 {
   font-size: 2em;
   font-weight: bold; }
@@ -2142,8 +2273,10 @@ p.lead {
     font-weight: bold;
     margin-bottom: 0.5em; }
 
-/* 	====================================================
-	Shame
-	==================================================== */
+/*  
+====================================================
+Shame
+====================================================
+*/
 
 /*# sourceMappingURL=application.css.map */
