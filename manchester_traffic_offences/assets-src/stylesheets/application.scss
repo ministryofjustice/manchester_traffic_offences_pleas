@@ -28,9 +28,11 @@
 @import "elements/forms/form-validation";
 
 
-@import "templates_overrides";
+
 
 // Main CSS
+@import "templates_overrides";
+@import "typography";
 @import "main";
 
 // Shame !
