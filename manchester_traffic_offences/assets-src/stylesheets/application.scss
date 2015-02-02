@@ -1,4 +1,7 @@
+$path: '/static/images/';
+
 // GOV.UK Toolkit
+@import "stylesheets/url-helpers";
 @import "stylesheets/colours";
 @import "stylesheets/conditionals";
 @import "stylesheets/css3";
@@ -12,10 +15,10 @@
 @import "stylesheets/design-patterns/alpha-beta";
 
 // GOV.UK Elements
-@import "elements/reset";
+@import "elements/helpers";
+// @import "elements/reset";
 @import "elements/buttons";
 @import "elements/details";
-@import "elements/helpers";
 @import "elements/icons";
 @import "elements/layout";
 @import "elements/lists";
@@ -33,6 +36,7 @@
 // Main CSS
 @import "templates_overrides";
 @import "typography";
+@import "elements";
 @import "main";
 
 // Shame !
