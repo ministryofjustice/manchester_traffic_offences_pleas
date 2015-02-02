@@ -3,7 +3,6 @@ import logging
 import json
 import smtplib
 import socket
-import string
 
 from django.core.mail import EmailMultiAlternatives
 from django.core.mail import get_connection
@@ -16,35 +15,6 @@ from .encrypt import encrypt_and_store_user_data
 
 
 logger = logging.getLogger(__name__)
-
-NAME_PREFIXES = (
-    'mr',
-    'miss',
-    'mrs',
-    'dr',
-    'doctor',
-    'lord',
-    'lady',
-    'sir'
-)
-
-
-def first_name(full_name):
-    """
-    Take a full name and return the first name.
-    """
-
-    parts = full_name.split(' ')
-
-    if len(parts) == 1:
-        return parts[0].title()
-
-    name = ''.join([c for c in parts[0].lower() if c not in string.punctuation])
-
-    if name in NAME_PREFIXES:
-        return parts[1].title()
-
-    return parts[0].title()
 
 
 def send_user_confirmation_email(context_data):
@@ -60,7 +30,7 @@ def send_user_confirmation_email(context_data):
         'urn': context_data['case']['urn'],
         'number_of_charges': context_data['case']['number_of_charges'],
         'plea_type': get_plea_type(context_data),
-        'name': first_name(context_data['your_details']['name'])
+        'name': context_data['your_details']['name']
     }
 
     html_body = render_to_string("plea/plea_email_confirmation.html", data)
