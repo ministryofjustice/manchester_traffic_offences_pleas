@@ -102,33 +102,61 @@
 .grid-row {
   margin: 0 -15px; }
 
-/* Borrowed from http://meyerweb.com/eric/tools/css/reset/ */
-div, span,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark {
-  border: none;
-  margin: 0;
-  padding: 0; }
+@-ms-viewport {
+  width: device-width; }
+@-o-viewport {
+  width: device-width; }
+.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-block:after {
+  content: "";
+  display: block;
+  clear: both; }
 
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-input, textarea,
-table, caption, tbody, tfoot, thead, tr, th, td {
-  font-size: inherit;
-  font-family: inherit;
-  line-height: inherit;
-  font-weight: normal; }
+/*  
+====================================================
+Typography
+====================================================
+*/
+.heading-collapse {
+  margin-bottom: 0; }
+
+p,
+ul,
+ol {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.31579;
+  font-weight: 400;
+  text-transform: none; }
+  @media (max-width: 640px) {
+    p,
+    ul,
+    ol {
+      font-size: 16px;
+      line-height: 1.25; } }
+
+.example-highlight-grid .grid-row {
+  background: #bfc1c3; }
+.example-highlight-grid .column-highlight {
+  background: #dee0e2;
+  width: 100%; }
+
+.example-back-link {
+  display: -moz-inline-stack;
+  display: inline-block;
+  margin-top: 30px; }
+
+.visuallyhidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0; }
+
+.js-enabled .js-hidden {
+  display: none; }
 
 @-ms-viewport {
   width: device-width; }
@@ -148,6 +176,9 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 Typography
 ====================================================
 */
+.heading-collapse {
+  margin-bottom: 0; }
+
 p,
 ul,
 ol {
@@ -184,7 +215,7 @@ ol {
   cursor: pointer;
   color: #fff;
   margin: 0 15px 15px 0;
-  padding: em(10) em(15) em(5) em(15);
+  padding: 0.52632em 0.78947em 0.26316em 0.78947em;
   vertical-align: top; }
   .button:visited {
     background-color: #00823b; }
@@ -246,17 +277,17 @@ ol {
   line-height: 1.25;
   font-weight: 700;
   text-transform: none;
-  background-image: image-url("icons/icon-pointer.png");
+  background-image: url("/static/images/icons/icon-pointer.png");
   background-repeat: no-repeat;
   background-position: 100% 50%;
-  padding: em(7) em(41) em(4) em(16); }
+  padding: 0.36842em 2.15789em 0.21053em 0.84211em; }
   @media (max-width: 640px) {
     .button-get-started {
       font-size: 18px;
       line-height: 1.2; } }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .button-get-started {
-      background-image: image-url("icons/icon-pointer-2x.png");
+      background-image: url("/static/images/icons/icon-pointer-2x.png");
       background-size: 30px 19px; } }
 
 details {
@@ -267,7 +298,7 @@ details summary {
   color: #005ea5;
   cursor: pointer;
   position: relative;
-  margin-bottom: em(5); }
+  margin-bottom: 0.26316em; }
 
 details summary:hover {
   color: #2e8aca; }
@@ -285,252 +316,199 @@ details .arrow {
 details .panel-indent {
   margin-top: 0; }
 
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
-.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-block:after {
-  content: "";
-  display: block;
-  clear: both; }
-
-/*  
-====================================================
-Typography
-====================================================
-*/
-p,
-ul,
-ol {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 19px;
-  line-height: 1.31579;
-  font-weight: 400;
-  text-transform: none; }
-  @media (max-width: 640px) {
-    p,
-    ul,
-    ol {
-      font-size: 16px;
-      line-height: 1.25; } }
-
-.example-highlight-grid .grid-row {
-  background: #bfc1c3; }
-.example-highlight-grid .column-highlight {
-  background: #dee0e2;
-  width: 100%; }
-
-.example-back-link {
-  display: -moz-inline-stack;
-  display: inline-block;
-  margin-top: 30px; }
-
-.visuallyhidden {
-  position: absolute;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  width: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0; }
-
-.js-enabled .js-hidden {
-  display: none; }
-
 .icon {
   background-position: 0 0;
   background-repeat: no-repeat; }
 
 .icon-calendar {
-  background-image: image-url("icons/icon-calendar.png");
+  background-image: url("/static/images/icons/icon-calendar.png");
   width: 27px;
   height: 27px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-calendar {
-      background-image: image-url("icons/icon-calendar-2x.png");
+      background-image: url("/static/images/icons/icon-calendar-2x.png");
       background-size: 100%; } }
 
 .icon-download {
-  background-image: image-url("icons/icon-file-download.png");
+  background-image: url("/static/images/icons/icon-file-download.png");
   width: 30px;
   height: 39px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-download {
-      background-image: image-url("icons/icon-file-download-2x.png");
+      background-image: url("/static/images/icons/icon-file-download-2x.png");
       background-size: 100%; } }
 
 .icon-important {
-  background-image: image-url("icons/icon-important.png");
+  background-image: url("/static/images/icons/icon-important.png");
   width: 34px;
   height: 34px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-important {
-      background-image: image-url("icons/icon-important-2x.png");
+      background-image: url("/static/images/icons/icon-important-2x.png");
       background-size: 100%; } }
 
 .icon-information {
-  background-image: image-url("icons/icon-information.png");
+  background-image: url("/static/images/icons/icon-information.png");
   width: 27px;
   height: 27px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-information {
-      background-image: image-url("icons/icon-information-2x.png");
+      background-image: url("/static/images/icons/icon-information-2x.png");
       background-size: 100%; } }
 
 .icon-locator {
-  background-image: image-url("icons/icon-locator.png");
+  background-image: url("/static/images/icons/icon-locator.png");
   width: 26px;
   height: 36px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-locator {
-      background-image: image-url("icons/icon-locator-2x.png");
+      background-image: url("/static/images/icons/icon-locator-2x.png");
       background-size: 100%; } }
 
 .icon-search {
-  background-image: image-url("icons/icon-search.png");
+  background-image: url("/static/images/icons/icon-search.png");
   width: 30px;
   height: 22px;
   background-color: black; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-search {
-      background-image: image-url("icons/icon-search-2x.png");
+      background-image: url("/static/images/icons/icon-search-2x.png");
       background-size: 100%; } }
 
 .icon-pointer {
-  background-image: image-url("icons/icon-pointer.png");
+  background-image: url("/static/images/icons/icon-pointer.png");
   width: 30px;
   height: 19px;
   background-color: black; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-pointer {
-      background-image: image-url("icons/icon-pointer-2x.png");
+      background-image: url("/static/images/icons/icon-pointer-2x.png");
       background-size: 100%; } }
 
 .icon-pointer-black {
-  background-image: image-url("icons/icon-pointer-black.png");
+  background-image: url("/static/images/icons/icon-pointer-black.png");
   width: 23px;
   height: 23px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-pointer-black {
-      background-image: image-url("icons/icon-pointer-black-2x.png");
+      background-image: url("/static/images/icons/icon-pointer-black-2x.png");
       background-size: 100%; } }
 
 .icon-step-1 {
-  background-image: image-url("icons/icon-steps/icon-step-1.png");
+  background-image: url("/static/images/icons/icon-steps/icon-step-1.png");
   width: 23px;
   height: 23px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-1 {
-      background-image: image-url("icons/icon-steps/icon-step-1-2x.png");
+      background-image: url("/static/images/icons/icon-steps/icon-step-1-2x.png");
       background-size: 100%; } }
 
 .icon-step-2 {
-  background-image: image-url("icons/icon-steps/icon-step-2.png");
+  background-image: url("/static/images/icons/icon-steps/icon-step-2.png");
   width: 23px;
   height: 23px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-2 {
-      background-image: image-url("icons/icon-steps/icon-step-2-2x.png");
+      background-image: url("/static/images/icons/icon-steps/icon-step-2-2x.png");
       background-size: 100%; } }
 
 .icon-step-3 {
-  background-image: image-url("icons/icon-steps/icon-step-3.png");
+  background-image: url("/static/images/icons/icon-steps/icon-step-3.png");
   width: 23px;
   height: 23px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-3 {
-      background-image: image-url("icons/icon-steps/icon-step-3-2x.png");
+      background-image: url("/static/images/icons/icon-steps/icon-step-3-2x.png");
       background-size: 100%; } }
 
 .icon-step-4 {
-  background-image: image-url("icons/icon-steps/icon-step-4.png");
+  background-image: url("/static/images/icons/icon-steps/icon-step-4.png");
   width: 23px;
   height: 23px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-4 {
-      background-image: image-url("icons/icon-steps/icon-step-4-2x.png");
+      background-image: url("/static/images/icons/icon-steps/icon-step-4-2x.png");
       background-size: 100%; } }
 
 .icon-step-5 {
-  background-image: image-url("icons/icon-steps/icon-step-5.png");
+  background-image: url("/static/images/icons/icon-steps/icon-step-5.png");
   width: 23px;
   height: 23px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-5 {
-      background-image: image-url("icons/icon-steps/icon-step-5-2x.png");
+      background-image: url("/static/images/icons/icon-steps/icon-step-5-2x.png");
       background-size: 100%; } }
 
 .icon-step-6 {
-  background-image: image-url("icons/icon-steps/icon-step-6.png");
+  background-image: url("/static/images/icons/icon-steps/icon-step-6.png");
   width: 23px;
   height: 23px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-6 {
-      background-image: image-url("icons/icon-steps/icon-step-6-2x.png");
+      background-image: url("/static/images/icons/icon-steps/icon-step-6-2x.png");
       background-size: 100%; } }
 
 .icon-step-7 {
-  background-image: image-url("icons/icon-steps/icon-step-7.png");
+  background-image: url("/static/images/icons/icon-steps/icon-step-7.png");
   width: 23px;
   height: 23px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-7 {
-      background-image: image-url("icons/icon-steps/icon-step-7-2x.png");
+      background-image: url("/static/images/icons/icon-steps/icon-step-7-2x.png");
       background-size: 100%; } }
 
 .icon-step-8 {
-  background-image: image-url("icons/icon-steps/icon-step-8.png");
+  background-image: url("/static/images/icons/icon-steps/icon-step-8.png");
   width: 23px;
   height: 23px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-8 {
-      background-image: image-url("icons/icon-steps/icon-step-8-2x.png");
+      background-image: url("/static/images/icons/icon-steps/icon-step-8-2x.png");
       background-size: 100%; } }
 
 .icon-step-9 {
-  background-image: image-url("icons/icon-steps/icon-step-9.png");
+  background-image: url("/static/images/icons/icon-steps/icon-step-9.png");
   width: 23px;
   height: 23px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-9 {
-      background-image: image-url("icons/icon-steps/icon-step-9-2x.png");
+      background-image: url("/static/images/icons/icon-steps/icon-step-9-2x.png");
       background-size: 100%; } }
 
 .icon-step-10 {
-  background-image: image-url("icons/icon-steps/icon-step-10.png");
+  background-image: url("/static/images/icons/icon-steps/icon-step-10.png");
   width: 23px;
   height: 23px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-10 {
-      background-image: image-url("icons/icon-steps/icon-step-10-2x.png");
+      background-image: url("/static/images/icons/icon-steps/icon-step-10-2x.png");
       background-size: 100%; } }
 
 .icon-step-11 {
-  background-image: image-url("icons/icon-steps/icon-step-11.png");
+  background-image: url("/static/images/icons/icon-steps/icon-step-11.png");
   width: 23px;
   height: 23px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-11 {
-      background-image: image-url("icons/icon-steps/icon-step-11-2x.png");
+      background-image: url("/static/images/icons/icon-steps/icon-step-11-2x.png");
       background-size: 100%; } }
 
 .icon-step-12 {
-  background-image: image-url("icons/icon-steps/icon-step-12.png");
+  background-image: url("/static/images/icons/icon-steps/icon-step-12.png");
   width: 23px;
   height: 23px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-12 {
-      background-image: image-url("icons/icon-steps/icon-step-12-2x.png");
+      background-image: url("/static/images/icons/icon-steps/icon-step-12-2x.png");
       background-size: 100%; } }
 
 .icon-step-13 {
-  background-image: image-url("icons/icon-steps/icon-step-13.png");
+  background-image: url("/static/images/icons/icon-steps/icon-step-13.png");
   width: 23px;
   height: 23px; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-13 {
-      background-image: image-url("icons/icon-steps/icon-step-13-2x.png");
+      background-image: url("/static/images/icons/icon-steps/icon-step-13-2x.png");
       background-size: 100%; } }
 
 @-ms-viewport {
@@ -577,6 +555,9 @@ ol {
 Typography
 ====================================================
 */
+.heading-collapse {
+  margin-bottom: 0; }
+
 p,
 ul,
 ol {
@@ -791,6 +772,9 @@ ol {
 Typography
 ====================================================
 */
+.heading-collapse {
+  margin-bottom: 0; }
+
 p,
 ul,
 ol {
@@ -851,6 +835,9 @@ ol {
 Typography
 ====================================================
 */
+.heading-collapse {
+  margin-bottom: 0; }
+
 p,
 ul,
 ol {
@@ -911,6 +898,9 @@ table td.numeric {
 Typography
 ====================================================
 */
+.heading-collapse {
+  margin-bottom: 0; }
+
 p,
 ul,
 ol {
@@ -1234,6 +1224,9 @@ code {
 Typography
 ====================================================
 */
+.heading-collapse {
+  margin-bottom: 0; }
+
 p,
 ul,
 ol {
@@ -1420,6 +1413,9 @@ fieldset {
 Typography
 ====================================================
 */
+.heading-collapse {
+  margin-bottom: 0; }
+
 p,
 ul,
 ol {
@@ -1616,6 +1612,9 @@ input[type=number] {
 Typography
 ====================================================
 */
+.heading-collapse {
+  margin-bottom: 0; }
+
 p,
 ul,
 ol {
@@ -1749,529 +1748,31 @@ GOV.UK Toolkit/Template overrides
   width: device-width; }
 /*  
 ====================================================
+Elements
+====================================================
+*/
+.related {
+  padding-top: 5px;
+  border-top: 10px solid #005ea5; }
+  .related h3:first-child {
+    margin-top: 10px; }
+
+/*  
+====================================================
 Main styles
 ====================================================
 */
-.article-container.group h2, #complete h2, .full-width h2 {
-  font-size: 2em;
-  font-weight: bold; }
+.intro h3:first-child {
+  margin-top: 0; }
+.intro .get-started {
+  padding-top: 2em; }
 
-#complete h3.heading-medium.divide {
-  border-top: 1px solid #c2c2c2;
-  padding-top: 20px; }
-
-#complete h2.ticked {
-  display: inline-block;
-  padding: 40px 40px 40px 80px;
-  background: #009999 url(../images/icons/tick.png) no-repeat 35px 50px;
-  color: white;
-  margin-top: 40px; }
-
-label {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 19px;
-  line-height: 1.31579;
-  font-weight: 400;
-  text-transform: none;
-  display: block; }
-
-.inline .block-label {
-  font-weight: normal;
-  margin-top: 0.0em; }
-
-.block-label input {
-  position: static;
-  margin-right: 0.5em; }
-
-.block-label {
-  padding-left: 1em; }
-
-.inline .radio-label {
-  float: left;
-  font-weight: normal;
-  margin: 0 1em 1em 0; }
-
-.group label {
-  font-weight: bold;
-  font-size: 1.3em;
-  margin: 1em 0 0.3em 0; }
-
-.with-help-image {
-  width: 70%;
-  float: left; }
-
-.help-image {
-  width: 30%;
-  float: right;
-  margin-top: 1.5em; }
-
-.panel-indent {
+.before-start .panel-indent {
   padding-top: 0;
   padding-bottom: 0; }
-
-#id_urn_0 {
-  width: 25px;
-  margin: 0 5px 0 0; }
-
-#id_urn_1 {
-  width: 25px;
-  margin: 0 5px 0 5px; }
-
-#id_urn_2 {
-  width: 85px;
-  margin: 0 5px 0 5px; }
-
-#id_urn_3 {
-  width: 25px;
-  margin: 0 5px 0 5px; }
-
-#id_number_of_charges {
-  width: 50px; }
-
-#id_date_of_hearing_1 {
-  width: 50px;
-  margin: 0 5px; }
-
-#id_date_of_hearing_2 {
-  width: 50px;
-  margin: 0 5px; }
-
-#id_date_of_hearing_0 {
-  width: 25px;
-  margin: 0 5px 0 0; }
-
-.group label.datetime {
-  font-size: 1em;
-  margin-top: 0.5em; }
-
-label.datetime {
-  font-weight: normal;
-  display: inline-block; }
-
-label.datetime-day {
-  width: 2.5em; }
-
-label.datetime-month {
-  width: 3.9em; }
-
-label.datetime-year {
-  width: 3.75em; }
-
-label.datetime-time {
-  display: block;
-  margin: 0; }
-
-section#group-urn #id_understand_checkbox {
-  font-weight: normal;
-  margin-right: 0px;
-  font-size: 1em; }
-
-section#group-urn #id_understand_checkbox span {
-  font-weight: bold; }
-
-details {
-  margin: 1em 0; }
-
-button.large, .button.large {
-  font-size: 24px; }
-
-.list-bullet li {
-  margin-left: 1em; }
-
-ul.with-bullets {
-  margin-bottom: 20px !important; }
-  ul.with-bullets li {
-    list-style-type: circle !important;
-    margin-left: 2em; }
-
-input[type=text], input[type="number"], input[type=email], input[type=tel], input[type=date], select[type=text], select[type=email], select[type=tel], select[type=date] {
-  width: 100%;
-  padding: 5px 4px 2px;
-  color: #0b0c0c;
-  border: 1px solid #bfc1c3;
-  margin: 0 0 10px 0; }
-
-input, select {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 19px;
-  line-height: 1.31579;
-  font-weight: 400;
-  text-transform: none;
-  margin: 0; }
-
-#id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number,
-#id_employed_your_job, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0, #id_your_job, #id_other_details {
-  width: 32%; }
-
-select {
-  border-color: #bfc1c3; }
-
-.section {
-  margin-bottom: 2em; }
-
-.actions {
-  clear: both;
-  margin-top: 20px; }
-
-section#charges {
-  clear: both;
-  width: 75%; }
-
-section#charges #enter-charges {
-  float: left;
-  width: 70%; }
-
-section#charges #charge-loc {
-  float: right;
-  width: 30%;
-  margin: 1em 0; }
-
-.charge-radios {
-  margin-bottom: 1em; }
-
-section .info-notice {
-  background: none;
-  border-left: 10px #dee0e2 solid;
-  margin-bottom: 1em;
-  margin-top: 2em; }
-
-section .info-notice p {
-  line-height: 1.31579; }
-
-section .application-notice {
-  padding: 0.1em 0 0.1em 1em; }
-
-section.flash {
-  /* styling for the 'urn already used' validation message */
-  border: 3px solid #6f777b;
-  background-color: #f8f8f8;
-  padding: 20px;
-  margin: 40px 0;
-  max-width: 798px; }
-  body.urn_invalid section.flash {
-    margin-top: 30px; }
-  section.flash li#case_contact_link a {
-    color: #005EA5 !important;
-    font-size: 20px;
-    font-weight: bold;
-    padding-left: 20px;
-    background: url(/static/images/icons/arrow-default.png) no-repeat left center; }
-  section.flash li#case_contact_link a.toggled {
-    background: url(/static/images/icons/arrow-down.png) no-repeat left center; }
-  section.flash li#case_contact_details {
-    margin-top: 20px; }
-  section.flash h2 {
-    margin: 0;
-    font-weight: bold;
-    font-size: 1.3em; }
-  section.flash h3 {
-    margin: 0 0 10px; }
-  section.flash ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0; }
-  section.flash li {
-    list-style-type: none; }
-  section.flash.error-summary {
-    border-color: #e12d2d;
-    background-color: #faebec; }
-    section.flash.error-summary h2 {
-      margin: 0 0 10px; }
-    section.flash.error-summary li {
-      color: black; }
-      section.flash.error-summary li a {
-        color: black; }
-        section.flash.error-summary li a :hover {
-          text-decoration: none; }
-  section.flash.success {
-    border-color: #85994b;
-    background-color: #e7ebda; }
-
-div.field-indent {
-  clear: both;
-  border-left: 4px solid #bfc1c3;
-  padding: 0px 0px 15px 20px;
-  margin: 0px 15px 0px 0; }
-  div.field-indent label {
-    margin-top: 10px; }
-
-div.error, section.error {
-  border-left: 4px solid #e12d2d;
-  margin: 10px -33px 10px -30px;
-  padding: 0 0 10px 30px;
-  overflow: auto; }
-
-div.indent-error {
-  border-left: 4px solid #e12d2d;
-  margin: 10px -33px 10px 0px;
-  padding: 0 0 0px 20px;
-  overflow: auto; }
-
-div.form-panel {
-  margin-bottom: 1em; }
-
-#complete ol {
-  padding: 0;
-  counter-reset: item;
-  font-style: normal;
-  border-left: solid 7px #bfc1c3;
-  margin: 0.5em 0;
-  padding: 0.5em 1em 0 1em; }
-  #complete ol p {
-    margin: 0.5em 0; }
-#complete ol > li {
-  padding-bottom: 1em;
-  list-style-type: none;
-  counter-increment: item; }
-#complete ol > li:before {
-  font-weight: bold;
-  padding-right: 0.5em;
-  display: inline-block;
-  width: 0.7em;
-  content: counter(item) "."; }
-#complete address {
-  margin-left: 1em;
-  font-style: normal; }
-
-#review .important {
-  background: url(../images/icons/icon-important.png) no-repeat top left;
-  padding-top: 0.3em;
-  padding-left: 40px;
-  min-height: 34px;
-  margin: 1em 0; }
-
-#your-money #employed, #your-money #benefits {
-  border-top: solid 1px #c2c2c2;
-  padding-top: 1em; }
-#your-money .full {
-  overflow: auto;
-  padding-left: 3px; }
-#your-money .block {
-  overflow: auto; }
-#your-money .amount {
-  border-left: none;
-  width: 29%; }
-#your-money .input-type-hint {
-  display: inline-block;
-  padding: 6px 10px 3px 10px;
-  line-height: 24px;
-  background-color: #bfc1c3;
-  border: solid 1px #6f777b; }
-#your-money .money ul {
-  overflow: auto; }
-#your-money .money li {
-  float: left;
-  margin-left: 1em; }
-#your-money .money li:first-child {
-  margin-left: 3px; }
-#your-money .money ul li label {
-  font-weight: normal;
-  margin: 0; }
-#your-money h4 {
-  font-size: 1.1em;
-  font-weight: bold; }
-
-#your-expenses {
-  margin-top: 40px; }
-  #your-expenses #id_other_bill_payers_False {
-    clear: both; }
-  #your-expenses hr {
-    margin: 20px 0;
-    clear: both;
-    border: none;
-    border-top: 1px solid #a9a9a9; }
-  #your-expenses #id_consideration {
-    width: 500px;
-    height: 100px; }
-  #your-expenses fieldset.inline {
-    overflow: auto;
-    margin-bottom: 20px; }
-  #your-expenses div.section.block {
+  .before-start .panel-indent .list-bullet {
+    margin-top: 0;
     margin-bottom: 0; }
-  #your-expenses section.error, #your-expenses div.error {
-    border: none; }
-  #your-expenses .expense-container {
-    width: 840px;
-    margin-bottom: 0px; }
-    #your-expenses .expense-container > section {
-      display: inline-block;
-      width: 416px; }
-      #your-expenses .expense-container > section ul.errorlist li {
-        width: 380px; }
-      #your-expenses .expense-container > section p.form-hint {
-        overflow: auto; }
-      #your-expenses .expense-container > section input {
-        width: 150px; }
-  #your-expenses .amount {
-    border-left: none;
-    width: 29%; }
-  #your-expenses .input-type-hint {
-    display: inline-block;
-    padding: 6px 10px 3px 10px;
-    line-height: 24px;
-    background-color: #bfc1c3;
-    border: solid 1px #6f777b; }
-  #your-expenses .money ul {
-    overflow: auto; }
-  #your-expenses .money li {
-    float: left;
-    margin-left: 1em; }
-  #your-expenses .money li:first-child {
-    margin-left: 3px; }
-  #your-expenses .money ul li label {
-    font-weight: normal;
-    margin: 0; }
-  #your-expenses #expense-summary {
-    margin-top: 20px;
-    width: 600px; }
-    #your-expenses #expense-summary td {
-      border: none; }
-    #your-expenses #expense-summary td.heading {
-      display: inline-block;
-      width: 394px; }
-  #your-expenses .expense-container {
-    margin-bottom: 0; }
-
-#terms h2 {
-  font-size: 32px;
-  font-weight: bold; }
-#terms h3 {
-  font-weight: bold;
-  margin-top: 1em; }
-#terms ul {
-  list-style-type: circle;
-  padding-left: 2em; }
-#terms table td.name {
-  width: 70px; }
-
-table {
-  clear: both;
-  margin: 2em 0; }
-
-table tr, table td, table th {
-  padding: 8px;
-  font-size: 1em;
-  width: 45%; }
-
-table th a.review {
-  font-weight: normal;
-  float: right; }
-
-table th.header, h2.header {
-  font-size: 1.2em; }
-
-h2.header {
-  font-weight: bold;
-  margin-bottom: 0.6em; }
-
-#get_started a.button.button-get-started {
-  font-size: 135%;
-  font-weight: normal; }
-#get_started .panel-space {
-  margin-top: 50px; }
-#get_started h3 {
-  font-size: 1.4em;
-  font-weight: bold;
-  margin-top: 2em; }
-
-body.urn_invalid .button-get-started {
-  margin-bottom: 30px; }
-
-@media (max-width: 500px) {
-  #id_name, #id_contact_number, #id_email, #id_national_insurance_number, #id_driving_licence_number, #id_registration_number,
-  #id_employer_name, #id_employer_phone, #id_take_home_pay_0, #id_benefits_0 {
-    width: 97%; }
-
-  textarea {
-    width: 98%; } }
-.charges .form-hint {
-  display: inline;
-  font-weight: normal; }
-
-p.form-hint {
-  width: 50%;
-  font-size: 0.8em;
-  margin-top: 0;
-  margin-bottom: 0.5em; }
-
-h2 span.form-hint, label span.form-hint {
-  display: inline;
-  font-weight: normal;
-  font-size: 0.7em; }
-
-label span.form-hint {
-  color: black; }
-
-label.nobold {
-  font-weight: normal; }
-
-#understand, #receive_email {
-  font-weight: normal;
-  font-size: 1em;
-  width: 874px; }
-
-#understand {
-  margin-top: 0px; }
-  #understand p.important {
-    margin-top: 0; }
-
-#receive_email {
-  padding: 18px 18px 15px 20px;
-  margin: 20px 0;
-  background-color: #dee0e2;
-  width: 886px; }
-  #receive_email ul li {
-    float: left;
-    margin-right: 20px; }
-    #receive_email ul li label {
-      font-weight: normal !important; }
-
-table#your-details tr, table#your-details th, table#your-details td, table#your-plea tr, table#your-plea th, table#your-plea td, table#case-details tr, table#case-details th, table#case-details td, table#your-money tr, table#your-money th, table#your-money td {
-  width: inherit; }
-table#your-details td, table#your-plea td, table#case-details td, table#your-money td {
-  border: none;
-  padding: 10px 8px; }
-table#your-details th, table#your-plea th, table#case-details th, table#your-money th {
-  border: none;
-  padding-bottom: 10px; }
-table#your-details tbody, table#your-plea tbody, table#case-details tbody, table#your-money tbody {
-  border-top: solid 1px #c2c2c2;
-  border-bottom: solid 1px #c2c2c2; }
-table#your-details th.label, table#your-plea th.label, table#case-details th.label, table#your-money th.label {
-  color: #6F777B;
-  vertical-align: top;
-  font-weight: normal; }
-table#your-details th.header, table#your-plea th.header, table#case-details th.header, table#your-money th.header {
-  width: 35%; }
-table#your-details h3, table#your-plea h3, table#case-details h3, table#your-money h3 {
-  font-weight: bold; }
-
-div.indent {
-  margin-left: 20px; }
-
-div.statement-understand {
-  padding: 2em 0; }
-
-p.lead {
-  font-size: 24px;
-  padding-right: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 2em; }
-
-#id_feedback_email {
-  width: 32%; }
-
-.legal-help {
-  border-top: solid 10px #005ea5;
-  padding-top: 10px;
-  margin-right: 20px;
-  margin-top: 25px; }
-  .legal-help h3 {
-    font-size: 1.6em;
-    line-height: 1.2em;
-    font-weight: bold;
-    margin-bottom: 0.5em; }
 
 /*  
 ====================================================

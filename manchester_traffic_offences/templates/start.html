@@ -1,56 +1,61 @@
 {% extends 'base.html' %}
+
 {% block page_title %}Traffic offences: Plea online{% endblock %}
+
 {% block page_content %}
-<h1>Make your plea online</h1>
+<header>
+    <h1 class="heading-xlarge">Make your plea online</h1>
+</header>
 
-<div class="article-container group">
-    <article role="article" class="group">
-        <div id="get_started" class="main">
+<div class="grid-row">
+
+    <div class="column-two-thirds">
+        <article role="article" class="group">
             <section class="intro">
-                <div>
-                    <h3>Use this service to:</h3>
-                    <p>Plead guilty or not guilty to your driving offence(s) being considered by the <a href="https://courttribunalfinder.service.gov.uk/courts/manchester-and-salford-magistrates-court" target="_blank" rel="external">Manchester and Salford Magistrates’ Court</a>.</p>
 
-                    <h3>By making your plea(s) online:</h3>
-                    <p>There's no need to come to court on your hearing date.</p>
+                <h2 class="heading-medium heading-collapse">Use this service to:</h2>
+                <p>Plead guilty or not guilty to your driving offence(s) being considered by the <a href="https://courttribunalfinder.service.gov.uk/courts/manchester-and-salford-magistrates-court" target="_blank" rel="external">Manchester and Salford Magistrates’ Court</a>.</p>
+
+                <h2 class="heading-medium heading-collapse">By making your plea(s) online:</h2>
+                <p>There's no need to come to court on your hearing date.</p>
+                
+                <div class="get-started">
+                    <a class="button button-get-started" role="button" href="{% url "plea_form" %}">Start now</a>
                 </div>
-                <div class="panel-space">
-                    <a class="button button-get-started" href="{% url "plea_form" %}" role=button>Start now</a>
-                </div>
-                <section class="more">
-                    <h3>Before you start</h3>
-                    <div class="panel-indent">
-                        <ul class="list-bullet text">
-                            <li>you'll need the 'Postal Requisition' pack we sent to you</li>
-                            <li>you can make your plea at any time up to the day before the court makes a decision</li>
-                            <li>you must be the person named on the charge sheet</li>
-                            <li>it is against the law to enter a plea for anyone else</li>
-                            <li>entering your plea takes about 10 minutes</li>
-                        </ul>
-                    </div>
-                </section>
+                
             </section>
-        </div>
-    </article>
-</div>
 
+            <section class="before-start">
+                
+                <h2 class="heading-medium heading-collapse">Before you start</h2>
+                
+                <div class="panel-indent">
+                    <ul class="list-bullet">
+                        <li>you'll need the 'Postal Requisition' pack we sent to you</li>
+                        <li>you can make your plea at any time up to the day before the court makes a decision</li>
+                        <li>you must be the person named on the charge sheet</li>
+                        <li>it is against the law to enter a plea for anyone else</li>
+                        <li>entering your plea takes about 10 minutes</li>
+                    </ul>
+                </div>
 
-<!-- related info -->
-<div class="related-positioning">
-  <div class="related-container">
-    <div class="related" id="related">
-        <p class="font-xsmall">If you plead guilty <br>you may get a</p>
-        <span id="stat">33%</span>
-        <p class="font-xsmall">reduction on your fine</p>
-        <div class="legal-help">
-            <h3>Legal help and advice</h3>
-            <a href="http://www.lawsociety.org.uk/for-the-public/common-legal-issues/criminal/" target="_blank">Law Society</a>
-        </div>
+            </section>
+
+        </article>
     </div>
+
+    <div class="column-third"> 
+        <aside>
+            <p class="font-xsmall">If you plead guilty <br>you may get a <br>
+                <span class="bold-xxlarge">33%</span> <br>
+                reduction on your fine</p>
+        </aside>   
+        
+        <aside class="related">
+            <h3 class="heading-medium">Legal help and advice</h3>
+            <p><a href="http://www.lawsociety.org.uk/for-the-public/common-legal-issues/criminal/" target="_blank">Law Society</a></p>
+        </aside>
+    </div>
+
 </div>
-</div>
-<!-- end related info -->
-
-
-
 {% endblock page_content %}
