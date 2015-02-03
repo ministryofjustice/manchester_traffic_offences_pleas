@@ -1,284 +1,284 @@
 {% extends "plea/base.html" %}
+
 {% block page_title %}{{ block.super }} Confirm your plea{{ case.number_of_charges|pluralize }}{% endblock %}
+
 {% load date testing %}
 
 {% block page_content %}
+<form method="POST" autocomplete="off">
+    
+    {% csrf_token %}
+    
+    {% with forms.0 as form %}
+        
+    {% if form.errors %}
+    <section class="error-summary">
+        <h2 class="heading-medium">You need to fix the errors on this page before continuing.</h2>
+        
+        <p>See highlighted errors below.</p>
+        
+        <ul class="errors-list">
+        {% for field in form %}
+            {% if field.errors %}
+            <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
 
-    <div class="main" id="review">
-        <form method=POST class="form" autocomplete="off">
-            {% csrf_token %}
-            {% with forms.0 as form %}
-                {% if form.errors %}
-                    <section class="flash error-summary">
-                        <h2 id="error-heading">You need to fix the errors on this page before continuing.</h2>
-                        <p>See highlighted errors below.</p>
-                        <ul>
-                            {% for field in form %}
-                                {% if field.errors %}
-                                    <li><a class="error-link"
-                                           href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
-                    </section>
-                {% endif %}
+    <header class="content-header">
+        <h1 class="heading-xlarge">Confirm your plea{{ case.number_of_charges|pluralize }}</h1>
 
-                <h1>Confirm your plea{{ case.number_of_charges|pluralize }}</h1>
-                <p>Review the information you’ve given before making your plea{{ case.number_of_charges|pluralize }}.</p>
+        <p class="lede">Review the information you’ve given before making your plea{{ case.number_of_charges|pluralize }}.</p>
+    </header>
 
-                    <table id="case-details">
-                        <thead>
-                        <tr>
-                            <th class="header">Case details</th>
-                            <th><a href="{% url "plea_form_step" "case" %}" class="review">Change case details</a></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th class="label">Unique reference number</th>
-                            <td>{{ case.urn }}</td>
-                        </tr>
-                        <tr>
-                            <th class="label">Court hearing date</th>
-                            <td>{{ case.date_of_hearing|string_date }}</td>
-                        </tr>
-                        <tr>
-                            <th class="label">Number of charges against you</th>
-                            <td>{{ case.number_of_charges }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+    <table class="review-table" id="case-details">
+        <thead>
+            <tr>
+                <th class="header">Case details</th>
+                <th class="change-link"><a href="{% url "plea_form_step" "case" %}" class="review">Change case details</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="label">Unique reference number</th>
+                <td>{{ case.urn }}</td>
+            </tr>
+            <tr>
+                <th class="label">Court hearing date</th>
+                <td>{{ case.date_of_hearing|string_date }}</td>
+            </tr>
+            <tr>
+                <th class="label">Number of charges against you</th>
+                <td>{{ case.number_of_charges }}</td>
+            </tr>
+        </tbody>
+    </table>
 
-                    <table id="your-details">
-                        <thead>
-                        <tr>
-                            <th class="header">Your details</th>
-                            <th><a href="{% url "plea_form_step" "your_details" %}" class="review">Change your details</a></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th class="label">Full name</th>
-                            <td>{{ your_details.name }}</td>
-                        </tr>
-                        <tr>
-                            <th class="label">Contact number</th>
-                            <td>{{ your_details.contact_number }}</td>
-                        </tr>
-                        <tr>
-                            <th class="label">Email</th>
-                            <td>{{ your_details.email }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+    <table class="review-table" id="your-details">
+        <thead>
+            <tr>
+                <th class="header">Your details</th>
+                <th class="change-link"><a href="{% url "plea_form_step" "your_details" %}" class="review">Change your details</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="label">Full name</th>
+                <td>{{ your_details.name }}</td>
+            </tr>
+            <tr>
+                <th class="label">Contact number</th>
+                <td>{{ your_details.contact_number }}</td>
+            </tr>
+            <tr>
+                <th class="label">Email</th>
+                <td>{{ your_details.email }}</td>
+            </tr>
+        </tbody>
+    </table>
 
-                    <table id="your-plea">
-                        <thead>
-                        <tr>
-                            <th class="header">Your plea{{ case.number_of_charges|pluralize }}</th>
-                            <th><a href="{% url "plea_form_step" "plea" %}" class="review">Change your plea{{ case.number_of_charges|pluralize }}</a></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for plea in plea.PleaForms %}
-                            {% if case.number_of_charges > 1 %}
-                                <tr>
-                                    <td colspan="2"><h3>Charge {{ forloop.counter }}</h3></td>
-                                </tr>
-                            {% endif %}
-                            <tr>
-                                <th class="label">Your plea</th>
-                                <td>
-                                    {% if plea.guilty == "guilty" %}
-                                        Guilty
-                                    {% elif plea.guilty == "not_guilty" %}
-                                        Not guilty
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            {% if plea.mitigations %}
-                                <tr>
-                                    <th class="label">
-                                        {% if plea.guilty == "guilty" %}Special circumstances{% else %}Not guilty because?{% endif %}
-                                    </th>
-                                    <td>{{ plea.mitigations|linebreaksbr }}</td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                        </tbody>
-                    </table>
+    <table class="review-table" id="your-plea">
+        <thead>
+            <tr>
+                <th class="header">Your plea{{ case.number_of_charges|pluralize }}</th>
+                <th class="change-link"><a href="{% url "plea_form_step" "plea" %}" class="review">Change your plea{{ case.number_of_charges|pluralize }}</a></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for plea in plea.PleaForms %}
+            {% if case.number_of_charges > 1 %}
+            <tr>
+                <td colspan="2"><h3>Charge {{ forloop.counter }}</h3></td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th class="label">Your plea</th>
+                <td>
+                    {% if plea.guilty == "guilty" %}
+                        Guilty
+                    {% elif plea.guilty == "not_guilty" %}
+                        Not guilty
+                    {% endif %}
+                </td>
+            </tr>
+            {% if plea.mitigations %}
+            <tr>
+                <th class="label">
+                    {% if plea.guilty == "guilty" %}Special circumstances{% else %}Not guilty because?{% endif %}
+                </th>
+                <td>{{ plea.mitigations|linebreaksbr }}</td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
 
-                {%  if not your_money.skipped %}
-                    <table id="your-money">
-                        <thead>
-                        <tr>
-                            <th class="header">Your finances</th>
-                            <th><a href="{% url "plea_form_step" "your_money" %}" class="review">Change your finances</a></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th class="label">You are</th>
-                            <td>{{ your_money.you_are }}</td>
-                        </tr>
-                        {% if your_money.you_are == "Employed" %}
-                            <tr>
-                                <th class="label">Your Job</th>
-                                <td>{{ your_money.employed_your_job }}</td>
-                            </tr>
-                            <tr>
-                                <th class="label">You get paid</th>
-                                <td>
-                                    {{ your_money.employed_take_home_pay_period }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="label">Amount</th>
-                                <td>£{{ your_money.employed_take_home_pay_amount }}</td>
-                            </tr>
-                        {% endif %}
-                        {% if your_money.you_are == "Self employed" %}
-                            <tr>
-                                <th class="label">Your Job</th>
-                                <td>{{ your_money.your_job }}</td>
-                            </tr>
-                            <tr>
-                                <th class="label">You get paid</th>
-                                <td>
-                                    {% if your_money.self_employed_pay_period == "self-employed other" %}
-                                    Other
-                                    {% else %}
-                                    {{ your_money.self_employed_pay_period }}
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% if your_money.self_employed_pay_period == "self-employed other" %}
-                            <tr>
-                                <th class="label">Details</th>
-                                <td>
-                                    {{ your_money.self_employed_pay_other }}
-                                </td>
-                            </tr>
-                        {% endif %}
-                            <tr>
-                                <th class="label">Amount</th>
-                                <td>£{{ your_money.self_employed_pay_amount }}</td>
-                            </tr>
-                        {% endif %}
-                        {% if your_money.you_are == "Receiving benefits" %}
-                            <tr>
-                                <th class="label">Benefits you receive</th>
-                                <td>
-                                    {{ your_money.benefits_details|linebreaksbr }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="label">Includes payment for dependents?</th>
-                                <td>
-                                    {{ your_money.benefits_dependents }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="label">You get paid</th>
-                                <td>
-                                    {%  if your_money.benefits_period == "benefits other" %}
-                                    Other
-                                    {% else %}
-                                    {{ your_money.benefits_period }}
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {%  if your_money.benefits_period == "benefits other" %}
-                            <tr>
-                                <th class="label">Details</th>
-                                <td>
-                                    {{ your_money.benefits_pay_other|linebreaksbr }}
-                                </td>
-                            </tr>
-                        {% endif %}
-                            <tr>
-                                <th class="label">Amount</th>
-                                <td>£{{ your_money.benefits_amount }}</td>
-                            </tr>
-                        {% endif %}
-                        {% if your_money.you_are == "Other" %}
-                            <tr>
-                                <th class="label">Details</th>
-                                <td>{{ your_money.other_details|linebreaksbr }}</td>
-                            </tr>
-                            <tr>
-                                <th class="label">Amount</th>
-                                <td>£{{ your_money.other_pay_amount }}</td>
-                            </tr>
-                        {% endif %}
-                        </tbody>
-                    </table>
-                {% endif %}
-                {% if your_money.hardship %}
-                    {% add_test_tag "<<SHOWINGEXPENSES>>" %}
-                    <table id="your-money">
-                        <thead>
-                        <tr>
-                            <th class="header">Your expenses</th>
-                            <th><a href="{% url "plea_form_step" "your_expenses" %}" class="review">Change your expenses</a></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th class="label">Financial hardship details</th>
-                                <td>{{ your_expenses.hardship_details|linebreaksbr }}</td>
-                            </tr>
-                            <tr>
-                                <th class="label">Other contributors to household bills</th>
-                                <td>{% if your_expenses.other_bill_payers %}Yes{% else %}No{% endif %}</td>
-                            </tr>
-                            <tr>
-                                <th class="label">Total household expenses</th>
-                                <td>£{{ your_expenses.total_household_expenses }}</td>
-                            </tr>
-                            <tr>
-                                <th class="label">Total other expenses</th>
-                                <td>£{{ your_expenses.total_other_expenses }}</td>
-                            </tr>
-                            <tr>
-                                <th class="label">Total expenses</th>
-                                <td>£{{ your_expenses.total_expenses }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                {% endif %}
-                    <section>
-                        <a id="section_understand" name="section_understand"></a>
-                        <h2 class="header">Important</h2>
-                        <div class="group{% if form.understand.errors %} error{% endif %}">
-                            <span class="validation-message">{{ form.understand.errors }}</span>
-                            <label for="{{ form.understand.id_for_label }}" class="block-label" id="{{ form.understand.name }}">
-                                <p class="important">It is an offence to make a false statement or to deliberately fail to disclose any relevant facts.</p>
-                                <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
-                                <strong>I confirm</strong> that I have read and understand the charge against me and that I am the person named in the Postal Requisition. The facts stated here are correct to the best of my knowledge.
-                            </label>
-                        </div>
-                    </section>
+{%  if not your_money.skipped %}
+    <table class="review-table" id="your-money">
+        <thead>
+            <tr>
+                <th class="header">Your finances</th>
+                <th class="change-link"><a href="{% url "plea_form_step" "your_money" %}" class="review">Change your finances</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="label">You are</th>
+                <td>{{ your_money.you_are }}</td>
+            </tr>
+            {% if your_money.you_are == "Employed" %}
+            <tr>
+                <th class="label">Your Job</th>
+                <td>{{ your_money.employed_your_job }}</td>
+            </tr>
+            <tr>
+                <th class="label">You get paid</th>
+                <td>{{ your_money.employed_take_home_pay_period }}</td>
+            </tr>
+            <tr>
+                <th class="label">Amount</th>
+                <td>£{{ your_money.employed_take_home_pay_amount }}</td>
+            </tr>
+            {% endif %}
+            {% if your_money.you_are == "Self employed" %}
+            <tr>
+                <th class="label">Your Job</th>
+                <td>{{ your_money.your_job }}</td>
+            </tr>
+            <tr>
+                <th class="label">You get paid</th>
+                <td>
+                    {% if your_money.self_employed_pay_period == "self-employed other" %}
+                    Other
+                    {% else %}
+                    {{ your_money.self_employed_pay_period }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% if your_money.self_employed_pay_period == "self-employed other" %}
+            <tr>
+                <th class="label">Details</th>
+                <td>{{ your_money.self_employed_pay_other }}</td>
+            </tr>
+        {% endif %}
+            <tr>
+                <th class="label">Amount</th>
+                <td>£{{ your_money.self_employed_pay_amount }}</td>
+            </tr>
+        {% endif %}
+        {% if your_money.you_are == "Receiving benefits" %}
+            <tr>
+                <th class="label">Benefits you receive</th>
+                <td>{{ your_money.benefits_details|linebreaksbr }}</td>
+            </tr>
+            <tr>
+                <th class="label">Includes payment for dependents?</th>
+                <td>{{ your_money.benefits_dependents }}</td>
+            </tr>
+            <tr>
+                <th class="label">You get paid</th>
+                <td>
+                    {%  if your_money.benefits_period == "benefits other" %}
+                    Other
+                    {% else %}
+                    {{ your_money.benefits_period }}
+                    {% endif %}
+                </td>
+            </tr>
+        {%  if your_money.benefits_period == "benefits other" %}
+            <tr>
+                <th class="label">Details</th>
+                <td>{{ your_money.benefits_pay_other|linebreaksbr }}</td>
+            </tr>
+        {% endif %}
+            <tr>
+                <th class="label">Amount</th>
+                <td>£{{ your_money.benefits_amount }}</td>
+            </tr>
+        {% endif %}
+        {% if your_money.you_are == "Other" %}
+            <tr>
+                <th class="label">Details</th>
+                <td>{{ your_money.other_details|linebreaksbr }}</td>
+            </tr>
+            <tr>
+                <th class="label">Amount</th>
+                <td>£{{ your_money.other_pay_amount }}</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+{% endif %}
 
-                    <section>
-                        <a id="section_receive_email" name="section_receive_email"></a>
-                        <div class="group{% if form.receive_email.errors %} error{% endif %}">
-                            <span class="validation-message">{{ form.receive_email.errors }}</span>
-                            <div id="receive_email" class="clearfix">
+{% if your_money.hardship %}
+    {% add_test_tag "<<SHOWINGEXPENSES>>" %}
+    <table class="review-table" id="your-money">
+        <thead>
+            <tr>
+                <th class="header">Your expenses</th>
+                <th class="change-link"><a href="{% url "plea_form_step" "your_expenses" %}" class="review">Change your expenses</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="label">Financial hardship details</th>
+                <td>{{ your_expenses.hardship_details|linebreaksbr }}</td>
+            </tr>
+            <tr>
+                <th class="label">Other contributors to household bills</th>
+                <td>{% if your_expenses.other_bill_payers %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th class="label">Total household expenses</th>
+                <td>£{{ your_expenses.total_household_expenses }}</td>
+            </tr>
+            <tr>
+                <th class="label">Total other expenses</th>
+                <td>£{{ your_expenses.total_other_expenses }}</td>
+            </tr>
+            <tr>
+                <th class="label">Total expenses</th>
+                <td>£{{ your_expenses.total_expenses }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endif %}
 
-				                Do you want to receive an email confirming your plea{{ case.number_of_charges|pluralize }}?
+    <section id="section_understand">
+        
+        <h2 class="heading-medium">Important</h2>
 
-                                {{ form.receive_email }}
-                                
-                            </label>
-                        </div>
-                    </section>
+        <div class="form-group-wide{% if form.understand.errors %} with-error{% endif %}">
+            
+            <span class="validation-message">{{ form.understand.errors }}</span>
+            
+            <label for="{{ form.understand.id_for_label }}" class="block-label">
+                <p class="important">It is an offence to make a false statement or to deliberately fail to disclose any relevant facts.</p>
+                <p><input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
+                <strong>I confirm</strong> that I have read and understand the charge against me and that I am the person named in the Postal Requisition. The facts stated here are correct to the best of my knowledge.</p>
+            </label>
+        </div>
+    </section>
 
-                    <div class="actions">
-                        <button type="submit" class="button primary large left">Make your plea{{ case.number_of_charges|pluralize }}</button>
-                    </div>
-            {% endwith %}
+    <section id="section_receive_email">
+        <div class="form-group{% if form.receive_email.errors %} with-error{% endif %}">
+            <span class="validation-message">{{ form.receive_email.errors }}</span>
+            <div id="receive_email" class="clearfix">
 
-        </form>
+                Do you want to receive an email confirming your plea{{ case.number_of_charges|pluralize }}?
+
+                {{ form.receive_email }}
+                
+            </label>
+        </div>
+    </section>
+
+    <div class="actions">
+        <button type="submit" class="button primary large left">Make your plea{{ case.number_of_charges|pluralize }}</button>
     </div>
+    {% endwith %}
+
+</form>
 {% endblock page_content %}
