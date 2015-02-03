@@ -2039,6 +2039,10 @@ p.important {
   min-height: 27px;
   background: url(../images/icons/icon-important.png) no-repeat top left; }
 
+.panel-indent {
+  padding-top: 0;
+  padding-bottom: 0; }
+
 /*  
 ====================================================
 Main styles
@@ -2050,12 +2054,9 @@ Main styles
 .intro .get-started {
   padding-top: 2em; }
 
-.before-start .panel-indent {
-  padding-top: 0;
-  padding-bottom: 0; }
-  .before-start .panel-indent .list-bullet {
-    margin-top: 0;
-    margin-bottom: 0; }
+.before-start .panel-indent .list-bullet {
+  margin-top: 0;
+  margin-bottom: 0; }
 
 /*== Case screen =============================================*/
 .has-image .form-group, .has-image .form-group-wide {
@@ -2175,6 +2176,35 @@ Main styles
             line-height: 1.2; } }
         #section_receive_email .grey ul li label input {
           vertical-align: middle; }
+
+/*== Complete screen ===============================================*/
+.success-header {
+  margin: 2em 0;
+  padding: 40px 40px 40px 80px;
+  background: #28a197 url(../images/icons/tick.png) 35px 50px no-repeat;
+  color: #fff; }
+  .success-header h1 {
+    margin: 0; }
+
+.what-next ol {
+  margin: 0; }
+  .what-next ol li {
+    counter-increment: item;
+    margin-bottom: 5px; }
+    .what-next ol li:before {
+      content: counter(item) ". ";
+      display: inline-block;
+      font-family: "nta", Arial, sans-serif;
+      font-size: 19px;
+      line-height: 1.31579;
+      font-weight: 700;
+      text-transform: none;
+      margin-right: .25em;
+      width: 1em; }
+      @media (max-width: 640px) {
+        .what-next ol li:before {
+          font-size: 16px;
+          line-height: 1.25; } }
 
 /*  
 ====================================================
