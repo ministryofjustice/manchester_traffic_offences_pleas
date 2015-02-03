@@ -1383,14 +1383,14 @@ fieldset {
     .form-label-bold {
       font-size: 18px;
       line-height: 1.2; } }
-  .form-label-bold .form-hint {
+  .form-label-bold .form-hint, .form-label-bold .form-group .form-hint-inline, .form-group .form-label-bold .form-hint-inline {
     font-family: "nta", Arial, sans-serif;
     font-size: 19px;
     line-height: 1.31579;
     font-weight: 400;
     text-transform: none; }
     @media (max-width: 640px) {
-      .form-label-bold .form-hint {
+      .form-label-bold .form-hint, .form-label-bold .form-group .form-hint-inline, .form-group .form-label-bold .form-hint-inline {
         font-size: 16px;
         line-height: 1.25; } }
 
@@ -1398,15 +1398,15 @@ fieldset {
   float: left;
   width: 100%; }
 
-.form-hint {
+.form-hint, .form-group .form-hint-inline {
   display: block;
   color: #6f777b;
   margin-bottom: 5px; }
   @media (min-width: 641px) {
-    .form-hint {
+    .form-hint, .form-group .form-hint-inline {
       margin-top: 8px; } }
 
-.form-control {
+.form-control, .form-control-inline, .form-control-wide {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -1422,11 +1422,11 @@ fieldset {
   -webkit-appearance: none;
   border-radius: 0; }
   @media (max-width: 640px) {
-    .form-control {
+    .form-control, .form-control-inline, .form-control-wide {
       font-size: 16px;
       line-height: 1.25; } }
   @media (min-width: 641px) {
-    .form-control {
+    .form-control, .form-control-inline, .form-control-wide {
       width: 50%; } }
 
 .form-control-3-4 {
@@ -1850,6 +1850,9 @@ Forms
     .form-group {
       font-size: 16px;
       line-height: 1.25; } }
+  .form-group.panel-indent {
+    padding-top: 0;
+    padding-bottom: 0; }
   .form-group label {
     font-family: "nta", Arial, sans-serif;
     font-size: 24px;
@@ -1863,7 +1866,19 @@ Forms
     .form-group label .errorlist {
       margin: .25em 0;
       color: #df3034; }
-  .form-group .form-hint {
+  .form-group .block-label {
+    font-family: "nta", Arial, sans-serif;
+    font-size: 24px;
+    line-height: 1.25;
+    font-weight: 400;
+    text-transform: none; }
+    @media (max-width: 640px) {
+      .form-group .block-label {
+        font-size: 18px;
+        line-height: 1.2; } }
+    .form-group .block-label input {
+      top: 22px; }
+  .form-group .form-hint, .form-group .form-hint-inline {
     display: block;
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
@@ -1871,7 +1886,7 @@ Forms
     font-weight: 400;
     text-transform: none; }
     @media (max-width: 640px) {
-      .form-group .form-hint {
+      .form-group .form-hint, .form-group .form-hint-inline {
         font-size: 14px;
         line-height: 1.14286; } }
   .form-group .form-hint-inline {
@@ -1880,6 +1895,24 @@ Forms
 
 .form-control-inline {
   width: auto; }
+
+.form-control-wide {
+  width: 75%; }
+
+fieldset {
+  margin: 0 0 2em; }
+
+legend.form-label {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 400;
+  text-transform: none;
+  margin-bottom: -.5em; }
+  @media (max-width: 640px) {
+    legend.form-label {
+      font-size: 18px;
+      line-height: 1.2; } }
 
 .has-image .form-group {
   float: left; }
@@ -1951,8 +1984,10 @@ Main styles
     margin-bottom: 0; }
 
 /*== Case form ======================================================*/
-#section_urn .form-control,
-#section_date_of_hearing .form-control {
+#section_urn .form-control, #section_urn .form-control-inline, #section_urn .form-control-wide,
+#section_date_of_hearing .form-control,
+#section_date_of_hearing .form-control-inline,
+#section_date_of_hearing .form-control-wide {
   width: auto;
   margin: 0 5px; }
 #section_urn #id_urn_0,
