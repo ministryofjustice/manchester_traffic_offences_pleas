@@ -6,7 +6,7 @@
     <div class="full-width group">
         <div class="main" id="your-expenses">
 
-            <form method=POST class="pleaform form" autocomplete="off">
+            <form method="POST" autocomplete="off">
                 {% csrf_token %}
                 {% with forms.0 as form %}
                     {% if form.errors %}

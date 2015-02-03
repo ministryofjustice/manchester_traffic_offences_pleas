@@ -1,11 +1,11 @@
 {% extends "plea/base.html" %}
-{% load staticfiles %}
-{% block page_title %}{{ block.super }} Your Finances{% endblock %}
-{% block page_content %}
 
-<div class="full-width group">
-    <div class="main" id="your-money">
-        <form method=POST class="pleaform form" autocomplete="off">
+{% load staticfiles %}
+
+{% block page_title %}{{ block.super }} Your Finances{% endblock %}
+
+{% block page_content %}
+        <form method="POST" autocomplete="off">
 
             {% csrf_token %}
             {% with forms.0 as form %}
