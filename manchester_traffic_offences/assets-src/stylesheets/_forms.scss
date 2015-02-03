@@ -9,6 +9,8 @@ Forms
 	@include core-19;
 
 	width: auto;
+	max-width: 60%;
+	float: none;
 	clear: left;
 	margin-top: 1em;
 
@@ -41,8 +43,7 @@ Forms
 .has-image {
 	// @extend %contain-floats;
 	.form-group {
-		width: auto;
-		max-width: 65%;
+		float: left;
 	}
 	.help-image {
 		float: right;
