@@ -5,9 +5,12 @@ Forms
 */
 
 /*== Main form styles ===============================*/
-.form-row {
-	margin-bottom: 2em;
+.form-group {
 	@include core-19;
+
+	width: auto;
+	clear: left;
+	margin-top: 1em;
 
 	label {
 		@include bold-24();
@@ -35,9 +38,17 @@ Forms
 	width: auto;
 }
 
-.help-image {
-	float: right;
-	clear: right;
+.has-image {
+	// @extend %contain-floats;
+	.form-group {
+		width: auto;
+		max-width: 65%;
+	}
+	.help-image {
+		float: right;
+		clear: right;
+		max-width: 30%;
+	}
 }
 
 
