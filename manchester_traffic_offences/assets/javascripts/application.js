@@ -328,7 +328,7 @@ $(document).ready(function () {
     showHideExtraNotes($("input[name=employed_hardship],input[name=self_employed_hardship],input[name=receiving_benefits_hardship],input[name=other_hardship]"));
 
     calculateExpenses();
-    $('.expense-container input[type=text]').change(calculateExpenses);
+    $('#household_expenses, #other_expenses').find('input[type=text]').change(calculateExpenses);
 
     labelTemplateExternal();
 });

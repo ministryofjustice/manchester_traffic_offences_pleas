@@ -54,7 +54,8 @@ Forms
 	}
 }
 
-.form-group-wide {
+.form-group-wide,
+.column-half .form-group {
 	@extend .form-group;
 	max-width: 100%;
 }

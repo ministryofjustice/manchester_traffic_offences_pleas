@@ -226,7 +226,7 @@ class YourExpensesForm(BasePleaStepForm):
     hardship_details = forms.CharField(
         label="How would paying a fine cause you serious financial problems?",
         help_text="What should the court consider when deciding on any possible fine?",
-        widget=forms.Textarea(attrs={'cols': 45, 'rows': 5}),
+        widget=forms.Textarea(attrs={'cols': 45, 'rows': 5, "class": "form-control"}),
         required=True,
         error_messages={'required': ERROR_MESSAGES['HARDSHIP_DETAILS_REQUIRED']})
 
@@ -235,7 +235,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         label="Accommodation",
         help_text="Rent, mortgage or lodgings",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_ACCOMMODATION_REQUIRED'],
                         'invalid': ERROR_MESSAGES['HOUSEHOLD_ACCOMMODATION_INVALID'],
                         'min_value': ERROR_MESSAGES['HOUSEHOLD_ACCOMMODATION_MIN']})
@@ -245,7 +245,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         label="Utility bills",
         help_text="Gas, water, electricity etc",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_UTILITY_BILLS_REQUIRED'],
                         'invalid': ERROR_MESSAGES['HOUSEHOLD_UTILITY_BILLS_INVALID'],
                         'min_value': ERROR_MESSAGES['HOUSEHOLD_UTILITY_BILLS_MIN']})
@@ -255,7 +255,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         label="Insurance",
         help_text="Home, life insurance etc",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_REQUIRED'],
                         'invalid': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_INVALID'],
                         'min_value': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_MIN']})
@@ -264,7 +264,7 @@ class YourExpensesForm(BasePleaStepForm):
         initial=0,
         min_value=0,
         label="Council tax",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_REQUIRED'],
                         'invalid': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_INVALID'],
                         'min_value': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_MIN']})
@@ -280,7 +280,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         label="Television subscription",
         help_text="TV licence, satellite etc",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['OTHER_TV_SUBSCRIPTION_REQUIRED'],
                         'invalid': ERROR_MESSAGES['OTHER_TV_SUBSCRIPTION_INVALID'],
                         'min_value': ERROR_MESSAGES['OTHER_TV_SUBSCRIPTION_MIN']})
@@ -290,7 +290,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         label="Travel expenses",
         help_text="Fuel, car, public transport etc",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['OTHER_TRAVEL_EXPENSES_REQUIRED'],
                         'invalid': ERROR_MESSAGES['OTHER_TRAVEL_EXPENSES_INVALID'],
                         'min_value': ERROR_MESSAGES['OTHER_TRAVEL_EXPENSES_MIN']})
@@ -300,7 +300,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         label="Telephone",
         help_text="Landline and/or mobile",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['OTHER_TELEPHONE_REQUIRED'],
                         'invalid': ERROR_MESSAGES['OTHER_TELEPHONE_INVALID'],
                         'min_value': ERROR_MESSAGES['OTHER_TELEPHONE_MIN']})
@@ -310,7 +310,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         label="Loan repayments",
         help_text="Credit card, bank etc",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['OTHER_LOAN_REPAYMENTS_REQUIRED'],
                         'invalid': ERROR_MESSAGES['OTHER_LOAN_REPAYMENTS_INVALID'],
                         'min_value': ERROR_MESSAGES['OTHER_LOAN_REPAYMENTS_MIN']})
@@ -319,7 +319,7 @@ class YourExpensesForm(BasePleaStepForm):
         initial=0,
         min_value=0,
         label="County court orders",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['OTHER_COURT_PAYMENTS_REQUIRED'],
                         'invalid': ERROR_MESSAGES['OTHER_COURT_PAYMENTS_INVALID'],
                         'min_value': ERROR_MESSAGES['OTHER_COURT_PAYMENTS_MIN']})
@@ -328,7 +328,7 @@ class YourExpensesForm(BasePleaStepForm):
         initial=0,
         min_value=0,
         label="Child maintenance",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_REQUIRED'],
                         'invalid': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_INVALID'],
                         'min_value': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_MIN']})
