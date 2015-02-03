@@ -53,7 +53,55 @@ def send_user_confirmation_email(context_data):
     try:
         email.send(fail_silently=False)
     except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
-        logger.error("Error sending email: {0}".format(e))
+        logger.error("Error sending user confirmation email: {0}".format(e))
+
+    return True
+
+def send_court_email(context_data, case, email_count):
+    plea_email_to = settings.PLEA_EMAIL_TO
+
+    email_body = "<<<makeaplea-ref: {}/{}>>>".format(case.id, email_count.id)
+
+    plea_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
+                                         settings.PLEA_EMAIL_ATTACHMENT_NAME,
+                                         settings.PLEA_EMAIL_TEMPLATE,
+                                         context_data,
+                                         "text/html")
+
+    try:
+        plea_email.send(plea_email_to,
+                        settings.PLEA_EMAIL_SUBJECT.format(**context_data),
+                        email_body,
+                        route="GSI")
+    except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
+        logger.error("Error sending email to court: {0}".format(e))
+
+        case.status = "network_error"
+        case.status_info = unicode(e)
+        email_count.get_status_from_case(case)
+        email_count.save()
+        case.save()
+        return False
+
+    return True
+
+def send_prosecutor_email(context_data):
+    plp_email_to = settings.PLP_EMAIL_TO
+
+    plp_email = TemplateAttachmentEmail(settings.PLP_EMAIL_FROM,
+                                        settings.PLEA_EMAIL_ATTACHMENT_NAME,
+                                        settings.PLP_EMAIL_TEMPLATE,
+                                        context_data,
+                                        "text/html")
+
+    try:
+        plp_email.send(settings.PLP_EMAIL_TO,
+                       settings.PLP_EMAIL_SUBJECT.format(**context_data),
+                       settings.PLEA_EMAIL_BODY,
+                       route="GSI")
+    except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
+        logger.error("Error sending email to prosecutor: {0}".format(e))
+        return False
 
     return True
 
@@ -65,21 +113,7 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
 
     context_data: dict populated by form fields
     """
-    if plea_email_to is None:
-        plea_email_to = settings.PLEA_EMAIL_TO
-
-    plea_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
-                                         settings.PLEA_EMAIL_ATTACHMENT_NAME,
-                                         settings.PLEA_EMAIL_TEMPLATE,
-                                         context_data,
-                                         "text/html")
-
-    plp_email = TemplateAttachmentEmail(settings.PLP_EMAIL_FROM,
-                                        settings.PLEA_EMAIL_ATTACHMENT_NAME,
-                                        settings.PLP_EMAIL_TEMPLATE,
-                                        context_data,
-                                        "text/html")
-
+    print context_data
     # add DOH / name to the email subject for compliance with the current format
     if isinstance(context_data["case"]["date_of_hearing"], basestring):
         date_of_hearing = parser.parse(context_data["case"]["date_of_hearing"])
@@ -104,33 +138,15 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
     email_count.get_from_context(context_data)
     email_count.save()
 
-    email_body = "<<<makeaplea-ref: {}/{}>>>".format(case.id, email_count.id)
-
-    try:
-        plea_email.send(plea_email_to,
-                        settings.PLEA_EMAIL_SUBJECT.format(**context_data),
-                        email_body,
-                        route="GSI")
-    except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
-        case.status = "network_error"
-        case.status_info = unicode(e)
-        email_count.get_status_from_case(case)
-        email_count.save()
-        case.save()
+    if not send_court_email(context_data, case, email_count):
         return False
+
+    send_prosecutor_email(context_data)
 
     case.status = "sent"
     case.save()
     email_count.get_status_from_case(case)
     email_count.save()
-
-    try:
-        plp_email.send(settings.PLP_EMAIL_TO,
-                       settings.PLP_EMAIL_SUBJECT.format(**context_data),
-                       settings.PLEA_EMAIL_BODY,
-                       route="GSI")
-    except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
-        logger.error("Error sending email: {0}".format(e.message))
 
     send_user_confirmation_email(context_data)
 
