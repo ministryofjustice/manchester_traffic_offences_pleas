@@ -120,6 +120,8 @@ SESSION_COOKIE_HTTPONLY = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 3600
 
+CELERY_BROKER = ""
+
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'manchester_traffic_offences.wsgi.application'
 
@@ -173,6 +175,14 @@ INSTALLED_APPS += PROJECT_APPS
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
@@ -183,7 +193,16 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
     },
     'loggers': {
         'django.request': {
@@ -191,6 +210,11 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'apps.plea.email': {
+                'handlers': ['console'],
+                'level': 'ERROR',
+                'propagate': True,
+        }
     }
 }
 
