@@ -104,7 +104,6 @@ class PleaStage(FormStage):
         return form_data
 
     def save(self, form_data, next_step=None):
-
         clean_data = super(PleaStage, self).save(form_data, next_step)
 
         none_guilty = True
@@ -112,6 +111,8 @@ class PleaStage(FormStage):
             for form in clean_data["PleaForms"]:
                 if form["guilty"] == "guilty":
                     none_guilty = False
+        else:
+            return clean_data
 
         if none_guilty:
             self.all_data["your_money"]["complete"] = True
