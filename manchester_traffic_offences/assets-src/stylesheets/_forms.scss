@@ -14,6 +14,11 @@ Forms
 	clear: left;
 	margin-top: 1em;
 
+	&.panel-indent {
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+
 	label {
 		@include bold-24();
 
@@ -23,21 +28,43 @@ Forms
 		}
 	}
 
+	.block-label {
+		@include core-24;
+
+		input {
+			top: 22px;
+		}
+	}
+
 	.form-hint {
 		display: block;
 		@include core-16;
 	}
 
 	.form-hint-inline {
+		@extend .form-hint;
 		display: inline;
 		vertical-align: baseline;
 	}
 }
 
-
-
 .form-control-inline {
+	@extend .form-control;
 	width: auto;
+}
+.form-control-wide {
+	@extend .form-control;
+	width: 75%;
+}
+
+fieldset {
+	margin: 0 0 2em;
+}
+
+legend.form-label {
+	@include core-24;
+
+	margin-bottom: -.5em;
 }
 
 .has-image {
