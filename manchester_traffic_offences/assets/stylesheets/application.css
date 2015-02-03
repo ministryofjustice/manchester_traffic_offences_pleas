@@ -116,9 +116,6 @@
 Typography
 ====================================================
 */
-h1.heading-xlarge {
-  margin-bottom: .9375em; }
-
 .heading-collapse {
   margin-bottom: 0; }
 
@@ -188,9 +185,6 @@ address {
 Typography
 ====================================================
 */
-h1.heading-xlarge {
-  margin-bottom: .9375em; }
-
 .heading-collapse {
   margin-bottom: 0; }
 
@@ -579,9 +573,6 @@ details .panel-indent {
 Typography
 ====================================================
 */
-h1.heading-xlarge {
-  margin-bottom: .9375em; }
-
 .heading-collapse {
   margin-bottom: 0; }
 
@@ -808,9 +799,6 @@ ol {
 Typography
 ====================================================
 */
-h1.heading-xlarge {
-  margin-bottom: .9375em; }
-
 .heading-collapse {
   margin-bottom: 0; }
 
@@ -883,9 +871,6 @@ address {
 Typography
 ====================================================
 */
-h1.heading-xlarge {
-  margin-bottom: .9375em; }
-
 .heading-collapse {
   margin-bottom: 0; }
 
@@ -958,9 +943,6 @@ table td.numeric {
 Typography
 ====================================================
 */
-h1.heading-xlarge {
-  margin-bottom: .9375em; }
-
 .heading-collapse {
   margin-bottom: 0; }
 
@@ -1296,9 +1278,6 @@ code {
 Typography
 ====================================================
 */
-h1.heading-xlarge {
-  margin-bottom: .9375em; }
-
 .heading-collapse {
   margin-bottom: 0; }
 
@@ -1497,9 +1476,6 @@ fieldset {
 Typography
 ====================================================
 */
-h1.heading-xlarge {
-  margin-bottom: .9375em; }
-
 .heading-collapse {
   margin-bottom: 0; }
 
@@ -1708,9 +1684,6 @@ input[type=number] {
 Typography
 ====================================================
 */
-h1.heading-xlarge {
-  margin-bottom: .9375em; }
-
 .heading-collapse {
   margin-bottom: 0; }
 
@@ -1862,31 +1835,33 @@ Forms
 ====================================================
 */
 /*== Main form styles ===============================*/
-.form-row {
-  margin-bottom: 2em;
+.form-group {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
   font-weight: 400;
-  text-transform: none; }
+  text-transform: none;
+  width: auto;
+  clear: left;
+  margin-top: 1em; }
   @media (max-width: 640px) {
-    .form-row {
+    .form-group {
       font-size: 16px;
       line-height: 1.25; } }
-  .form-row label {
+  .form-group label {
     font-family: "nta", Arial, sans-serif;
     font-size: 24px;
     line-height: 1.25;
     font-weight: 700;
     text-transform: none; }
     @media (max-width: 640px) {
-      .form-row label {
+      .form-group label {
         font-size: 18px;
         line-height: 1.2; } }
-    .form-row label .errorlist {
+    .form-group label .errorlist {
       margin: .25em 0;
       color: #df3034; }
-  .form-row .form-hint {
+  .form-group .form-hint {
     display: block;
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
@@ -1894,19 +1869,23 @@ Forms
     font-weight: 400;
     text-transform: none; }
     @media (max-width: 640px) {
-      .form-row .form-hint {
+      .form-group .form-hint {
         font-size: 14px;
         line-height: 1.14286; } }
-  .form-row .form-hint-inline {
+  .form-group .form-hint-inline {
     display: inline;
     vertical-align: baseline; }
 
 .form-control-inline {
   width: auto; }
 
-.help-image {
+.has-image .form-group {
+  width: auto;
+  max-width: 65%; }
+.has-image .help-image {
   float: right;
-  clear: right; }
+  clear: right;
+  max-width: 30%; }
 
 /*== Error styles ==================================*/
 .error-summary {
@@ -1937,10 +1916,19 @@ Forms
 Elements
 ====================================================
 */
+img {
+  max-width: 100%;
+  height: auto; }
+
+.content-header {
+  margin: 0 0 2em; }
+  .content-header h1 {
+    margin-bottom: .25em; }
+
 .related {
   padding-top: 5px;
   border-top: 10px solid #005ea5; }
-  .related h3:first-child {
+  .related h3 {
     margin-top: 10px; }
 
 /*  

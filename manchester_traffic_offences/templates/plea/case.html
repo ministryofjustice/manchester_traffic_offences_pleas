@@ -10,6 +10,7 @@
     {% csrf_token %}
     
     {% with forms.0 as form %}
+        
         {% if form.errors %}
     <div class="error-summary">
         {% if urn_already_used %}
@@ -62,31 +63,37 @@
     </div>
         {% endif %}
 
-    <h1 class="heading-xlarge">Case details</h1>
+    <header class="content-header">
+        <h1 class="heading-xlarge">Case details</h1>
+    </header>
 
-    <div class="help-image">
-        <img src="{% static "images/img-urn.png" %}" alt="Location of URN and Court Hearing Date on page 1 of the pack" width="" height="">
+    <div class="has-image">
+        {% with form.urn as field %}
+            {% include "widgets/std_field.html" %}
+        {% endwith %}
+
+        <div class="help-image">
+            <img src="{% static "images/img-urn.png" %}" alt="The URN and Court Hearing Date are found on page 1 of the pack" width="260" height="340">
+        </div>    
     </div>
-
-    {% with form.urn as field %}
-        {% include "widgets/std_field.html" %}
-    {% endwith %}
-
+    
     {% with form.date_of_hearing as field %}
         {% include "widgets/date_field.html" %}
     {% endwith %}
 
-    <div class="help-image">
-        <img src="{% static "images/img-charge.png" %}" alt="The number of charges is found on page 2 of the pack">
-    </div>
+    <div class="has-image">
+        {% with form.number_of_charges as field %}
+            {% include "widgets/std_field.html" %}
+        {% endwith %}
 
-    {% with form.number_of_charges as field %}
-        {% include "widgets/std_field.html" %}
-    {% endwith %}
+        <div class="help-image">
+            <img src="{% static "images/img-charge.png" %}" alt="The number of charges is found on page 2 of the pack" width="260" height="185">
+        </div>
+    </div>
     
 
-    <div class="actions">
-        <button class="button" type=submit>Continue</button>
+    <div class="form-group">
+        <button class="button" type="submit">Continue</button>
     </div>
     {% endwith %}
 </form>

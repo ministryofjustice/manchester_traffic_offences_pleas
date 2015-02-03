@@ -1,9 +1,9 @@
-<div class="form-row{% if field.errors %} with-error{% endif %}" id="section_{{ field.name }}">
+<div class="form-group{% if field.errors %} with-error{% endif %}" id="section_{{ field.name }}">
     <label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %} <span class="form-hint form-hint-inline">(optional)</span>{% endif %}
     	{% if field.help_text %}
     	<span class="form-hint">{{ field.help_text|safe }}</span>
     	{% endif %}
-    	
+
     	{{ field.errors }}
     </label>
     
