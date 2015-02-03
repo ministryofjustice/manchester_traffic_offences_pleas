@@ -246,9 +246,9 @@
     </table>
 {% endif %}
 
+    <h2 class="heading-medium">Important</h2>
+
     <section id="section_understand">
-        
-        <h2 class="heading-medium">Important</h2>
 
         <div class="form-group-wide{% if form.understand.errors %} with-error{% endif %}">
             
@@ -256,27 +256,28 @@
             
             <label for="{{ form.understand.id_for_label }}" class="block-label">
                 <p class="important">It is an offence to make a false statement or to deliberately fail to disclose any relevant facts.</p>
-                <p><input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
-                <strong>I confirm</strong> that I have read and understand the charge against me and that I am the person named in the Postal Requisition. The facts stated here are correct to the best of my knowledge.</p>
+                <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
+                <strong>I confirm</strong> that I have read and understand the charge against me and that I am the person named in the Postal Requisition. The facts stated here are correct to the best of my knowledge.
             </label>
         </div>
     </section>
 
     <section id="section_receive_email">
-        <div class="form-group{% if form.receive_email.errors %} with-error{% endif %}">
-            <span class="validation-message">{{ form.receive_email.errors }}</span>
-            <div id="receive_email" class="clearfix">
 
-                Do you want to receive an email confirming your plea{{ case.number_of_charges|pluralize }}?
+        <div class="form-group-wide{% if form.receive_email.errors %} with-error{% endif %}">
+            
+            <span class="validation-message">{{ form.receive_email.errors }}</span>
+
+            <div class="grey">
+                <legend class="label">Do you want to receive an email confirming your plea{{ case.number_of_charges|pluralize }}?</legend>
 
                 {{ form.receive_email }}
-                
-            </label>
+            </div>
         </div>
     </section>
 
-    <div class="actions">
-        <button type="submit" class="button primary large left">Make your plea{{ case.number_of_charges|pluralize }}</button>
+    <div class="form-group">
+        <button type="submit" class="button-large">Make your plea{{ case.number_of_charges|pluralize }}</button>
     </div>
     {% endwith %}
 
