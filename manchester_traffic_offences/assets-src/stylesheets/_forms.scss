@@ -4,6 +4,12 @@ Forms
 ====================================================
 */
 
+/*== Buttons ========================================*/
+.button-large {
+	@extend .button;
+	@include bold-24();
+}
+
 /*== Main form styles ===============================*/
 .form-group {
 	@include core-19;

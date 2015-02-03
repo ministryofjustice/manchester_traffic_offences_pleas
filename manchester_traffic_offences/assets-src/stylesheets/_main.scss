@@ -92,3 +92,47 @@ Main styles
 		color: $grey-1;
 	}
 }
+
+#section_understand {
+	.block-label {
+		@include core-19;
+		padding: 1em;
+
+		.important {
+			margin-top: 0;
+		}
+
+		input {
+			position: static;
+			margin: 0 .25em 0 0;
+			@include core-24;
+		}
+	}
+}
+
+#section_receive_email {
+	.grey {
+		@include core-19;
+		padding: 1em;
+		background: $grey-3;
+
+		ul {
+			margin-bottom: 0;
+
+			li {
+				display: inline-block;
+				margin: 0 1em 0 0;
+
+				label {
+					@include core-24;
+					padding: .5em .5em .5em 0;
+					cursor: pointer;
+
+					input {
+						vertical-align: middle;
+					}
+				}
+			}
+		}
+	}
+}
