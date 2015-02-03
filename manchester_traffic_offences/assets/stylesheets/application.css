@@ -9,7 +9,8 @@
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after, .form-block:after {
+.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+.column-half .form-group:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -29,7 +30,8 @@
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after, .form-block:after {
+.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+.column-half .form-group:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -51,7 +53,8 @@
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after, .form-block:after {
+.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+.column-half .form-group:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -71,7 +74,8 @@
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after, .form-block:after {
+.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+.column-half .form-group:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -84,7 +88,8 @@
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after, .form-block:after {
+.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+.column-half .form-group:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -106,7 +111,8 @@
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after, .form-block:after {
+.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+.column-half .form-group:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -171,7 +177,8 @@ address {
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after, .form-block:after {
+.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+.column-half .form-group:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -541,7 +548,8 @@ details .panel-indent {
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after, .form-block:after {
+.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+.column-half .form-group:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -563,7 +571,8 @@ details .panel-indent {
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after, .form-block:after {
+.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+.column-half .form-group:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -635,7 +644,8 @@ address {
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after, .form-block:after {
+.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+.column-half .form-group:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -648,7 +658,8 @@ address {
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after, .form-block:after {
+.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+.column-half .form-group:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -789,7 +800,8 @@ ol {
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after, .form-block:after {
+.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+.column-half .form-group:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -1268,7 +1280,8 @@ code {
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after, .form-block:after {
+.grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+.column-half .form-group:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -1332,12 +1345,14 @@ address {
 fieldset {
   width: 100%; }
 
-.form-group, .form-group-wide {
+.form-group, .form-group-wide,
+.column-half .form-group {
   float: left;
   width: 100%;
   margin-bottom: 15px; }
   @media (min-width: 641px) {
-    .form-group, .form-group-wide {
+    .form-group, .form-group-wide,
+    .column-half .form-group {
       margin-bottom: 30px; } }
 
 .form-group-related {
@@ -1835,7 +1850,8 @@ Forms
 ====================================================
 */
 /*== Main form styles ===============================*/
-.form-group, .form-group-wide {
+.form-group, .form-group-wide,
+.column-half .form-group {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -1847,7 +1863,8 @@ Forms
   clear: left;
   margin-top: 1em; }
   @media (max-width: 640px) {
-    .form-group, .form-group-wide {
+    .form-group, .form-group-wide,
+    .column-half .form-group {
       font-size: 16px;
       line-height: 1.25; } }
   .form-group .form-group, .form-group-wide .form-group, .form-group .form-group-wide, .form-group-wide .form-group-wide {
@@ -1855,7 +1872,8 @@ Forms
   .form-group.panel-indent, .panel-indent.form-group-wide {
     padding-top: 0;
     padding-bottom: 0; }
-  .form-group label, .form-group-wide label {
+  .form-group label, .form-group-wide label,
+  .column-half .form-group label {
     font-family: "nta", Arial, sans-serif;
     font-size: 24px;
     line-height: 1.25;
@@ -1864,7 +1882,8 @@ Forms
     display: block;
     margin-bottom: .25em; }
     @media (max-width: 640px) {
-      .form-group label, .form-group-wide label {
+      .form-group label, .form-group-wide label,
+      .column-half .form-group label {
         font-size: 18px;
         line-height: 1.2; } }
     .form-group label .errorlist, .form-group-wide label .errorlist {
@@ -1897,7 +1916,9 @@ Forms
     display: inline;
     vertical-align: baseline; }
 
-.form-group-wide {
+.form-group-wide,
+.column-half .form-group-wide,
+.column-half .form-group {
   max-width: 100%; }
 
 .move-up {
@@ -1978,6 +1999,14 @@ legend.form-label-bold {
 Elements
 ====================================================
 */
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #bfc1c3;
+  margin: 1em 0 2em;
+  padding: 0; }
+
 img {
   max-width: 100%;
   height: auto; }
@@ -2018,6 +2047,24 @@ Main styles
   float: right;
   clear: right;
   max-width: 30%; }
+
+/*== Expenses screen =======================================*/
+#expense-summary th, #expense-summary td {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.31579;
+  font-weight: 400;
+  text-transform: none;
+  border-bottom: none;
+  font-weight: 400; }
+  @media (max-width: 640px) {
+    #expense-summary th, #expense-summary td {
+      font-size: 16px;
+      line-height: 1.25; } }
+#expense-summary td {
+  text-align: right; }
+#expense-summary .total th, #expense-summary .total td {
+  font-weight: 700; }
 
 /*  
 ====================================================

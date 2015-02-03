@@ -42,3 +42,22 @@ Main styles
 		max-width: 30%;
 	}
 }
+
+/*== Expenses screen =======================================*/
+#expense-summary {
+
+	th, td {
+		@include core-19;
+		border-bottom: none;
+		font-weight: 400;
+	}
+	td {
+		text-align: right;
+	}
+
+	.total {
+		th, td {
+			font-weight: 700;
+		}
+	}
+}
