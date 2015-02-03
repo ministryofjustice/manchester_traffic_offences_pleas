@@ -1,4 +1,4 @@
-<div class="form-row">
+<div class="inline">
 	{% for choice in renderer %}
         <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label" data-target="section-{{ choice.choice_value|slugify }}">
             <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio"

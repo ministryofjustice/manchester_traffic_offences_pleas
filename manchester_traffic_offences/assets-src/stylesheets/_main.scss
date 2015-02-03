@@ -29,17 +29,16 @@ Main styles
 	}	
 }
 
-/*== Case form ======================================================*/
-#section_urn,
-#section_date_of_hearing {
-	.form-control {
-		width: auto;
-		margin: 0 5px;
-	}
 
-	#id_urn_0,
-	#id_date_of_hearing_0 {
-		margin-left: 0;
+/*== Case screen =============================================*/
+.has-image {
+	// @extend %contain-floats;
+	.form-group {
+		float: left;
+	}
+	.help-image {
+		float: right;
+		clear: right;
+		max-width: 30%;
 	}
 }
-
