@@ -61,3 +61,34 @@ Main styles
 		}
 	}
 }
+
+/*== Review screen ==========================================*/
+.review-table {
+	margin: 0 0 2em;
+	border-bottom: 1px solid $grey-2;
+
+	th,
+	td {
+		@include core-19;
+	}
+
+	tbody {
+		th, td {
+			border-bottom: none;
+		}
+	}
+
+	.header {
+		@include bold-24();
+		width: 35%;
+	}
+
+	.change-link {
+		padding: 0;
+		text-align: right;
+	}
+
+	.label {
+		color: $grey-1;
+	}
+}
