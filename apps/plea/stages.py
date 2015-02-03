@@ -200,7 +200,7 @@ class ReviewStage(FormStage):
             if email_result:
                 next_step = reverse_lazy("plea_form_step", args=("complete", ))
             else:
-                self.add_message(messages.ERROR, "<h2>Submission Error</h2>Oops there seems to have been a problem submitting your plea. Please try again.")
+                self.add_message(messages.ERROR, '<h2 class="heading-medium">Submission Error</h2><p>There seems to have been a problem submitting your plea. Please try again.</p>')
                 next_step = reverse_lazy('plea_form_step', args=('review', ))
 
             self.next_step = next_step
