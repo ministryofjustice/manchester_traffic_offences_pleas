@@ -1,12 +1,19 @@
 {% extends "base.html" %}
+
 {% load testing %}
+
 {% block page_title %}{{ block.super }} Sent{% endblock %}
+
 {% block page_content %}
 
-<div class="main" id="complete">
-    <h2 class="ticked">Your {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea{{ case.number_of_charges|pluralize }} ha{{ case.number_of_charges|pluralize:"s,ve" }} been sent to the court</h2>
-	<h3 class="heading-medium">What happens next?</h3>
+<header class="success-header">
+    <h1 class="heading-large ticked">Your {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea{{ case.number_of_charges|pluralize }} ha{{ case.number_of_charges|pluralize:"s,ve" }} been sent to the court</h1>
+</header>
 
+
+<h2 class="heading-medium">What happens next?</h2>
+
+<div class="panel-indent what-next">
     {% if plea_type == "guilty" %}
         {% add_test_tag "<<GUILTY>>" %}
         <ol>
@@ -41,30 +48,27 @@
             <li>If you requested email updates you'll be sent a copy of this confirmation of plea.</li>
         </ol>
     {% endif %}
-
-    <h3 class="heading-medium">Need to change a plea?</h3>
-
-    <p>Contact the court by post or email quoting your URN before the date of your hearing.</p>
-
-    <p>The contact details for the court are:</p>
-
-    <p>
-        <strong>By post:</strong><br>
-        <address>
-        The Operations Manager<br>
-        Manchester &amp; Salford Magistrates Court<br>
-        Crown Square<br>
-        Manchester<br>
-        M60 1PR<br>
-        </address>
-    </p>
-
-    <p>
-        <strong>By email:</strong><br>
-        <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">roadtrafficpcr@hmcts.gsi.gov.uk</a>
-    </p>
-
-    <p class="font-xsmall">This is a new service &#x2014; please give us <a class="external" href="/feedback/?next=home">feedback</a> so we can make it better.</p>
-
 </div>
+
+<h2 class="heading-medium">Need to change a plea?</h2>
+
+<p>Contact the court by post or email quoting your URN before the date of your hearing.</p>
+
+<p>The contact details for the court are:</p>
+
+<h3 class="heading-small">By post:</h3>
+
+<address>
+The Operations Manager<br>
+Manchester &amp; Salford Magistrates Court<br>
+Crown Square<br>
+Manchester<br>
+M60 1PR<br>
+</address>
+
+<h3 class="heading-small">By email:</h3>
+<p><a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">roadtrafficpcr@hmcts.gsi.gov.uk</a></p>
+
+<p class="font-xsmall">This is a new service &#x2014; please give us <a class="external" href="/feedback/?next=home">feedback</a> so we can make it better.</p>
+
 {% endblock page_content %}

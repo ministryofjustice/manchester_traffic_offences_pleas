@@ -19,9 +19,6 @@ Main styles
 
 .before-start {
 	.panel-indent {
-		padding-top: 0;
-		padding-bottom: 0;
-
 		.list-bullet {
 			margin-top: 0;
 			margin-bottom: 0;
@@ -132,6 +129,38 @@ Main styles
 						vertical-align: middle;
 					}
 				}
+			}
+		}
+	}
+}
+
+/*== Complete screen ===============================================*/
+
+.success-header {
+	margin: 2em 0;
+	padding: 40px 40px 40px 80px;
+	background: $turquoise url(../images/icons/tick.png) 35px 50px no-repeat;
+	color: $white;
+
+	h1 {
+		margin: 0;
+	}
+}
+
+.what-next {
+	ol {
+		margin: 0;
+
+		li {
+			counter-increment: item;
+			margin-bottom: 5px;
+
+			&:before {
+				content: counter(item) ". ";
+				display: inline-block;
+				@include bold-19();
+				margin-right: .25em;
+				width: 1em;
 			}
 		}
 	}
