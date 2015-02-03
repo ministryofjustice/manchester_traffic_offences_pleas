@@ -4,13 +4,25 @@ Elements
 ====================================================
 */
 
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+.content-header {
+	margin: 0 0 2em;
+
+	h1 {
+		margin-bottom: .25em;
+	}
+}
 
 
 .related {
 	padding-top: 5px;
 	border-top: 10px solid $govuk-blue;
 
-	h3:first-child {
+	h3 {
 		margin-top: 10px;
 	}
 }
