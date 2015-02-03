@@ -37,7 +37,7 @@ class CaseForm(BasePleaStepForm):
 
     date_of_hearing = forms.DateField(label="Court hearing date", widget=HearingDateWidget, validators=[is_date_in_future],
                                       required=True,
-                                      help_text="On page 1 of the pack, near the top on the left<br>For example, 30/07/2014",
+                                      help_text="On page 1 of the pack, near the top on the left.<br>For example, 30/07/2014",
                                       error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"],
                                                       "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
 
@@ -49,14 +49,17 @@ class CaseForm(BasePleaStepForm):
 
 
 class YourDetailsForm(BasePleaStepForm):
-    name = forms.CharField(max_length=100, required=True, label="Full name",
+    name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                           max_length=100, required=True, label="Full name",
                            help_text="On page 1 of the pack we sent you",
                            error_messages={"required": ERROR_MESSAGES["FULL_NAME_REQUIRED"]})
-    contact_number = forms.CharField(max_length=30, required=True, label="Contact number",
+    contact_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                                     max_length=30, required=True, label="Contact number",
                                      help_text="Home or mobile number.",
                                      error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
-    email = forms.EmailField(required=getattr(settings, "EMAIL_REQUIRED", True), label="Email", help_text="If you choose to we will use this email address for all future correspondence regarding your case, including the court's decision.",
+    email = forms.EmailField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                             required=getattr(settings, "EMAIL_REQUIRED", True), label="Email", help_text="If you choose to we will use this email address for all future correspondence regarding your case, including the court's decision.",
                              error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
                                              "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
