@@ -1,63 +1,46 @@
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
-@font-face {
-  font-family: GDS-Logo;
-  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
-#content:after {
-  content: "";
-  display: block;
-  clear: both; }
 
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
+
 #content:after {
   content: "";
   display: block;
   clear: both; }
 
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
-#content:after {
-  content: "";
-  display: block;
-  clear: both; }
-
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
+@-ms-viewport {
+  width: device-width; }
+
+@-o-viewport {
+  width: device-width; }
+
 #content:after {
   content: "";
   display: block;
@@ -65,12 +48,54 @@
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
+#content:after {
+  content: "";
+  display: block;
+  clear: both; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
+@font-face {
+  font-family: GDS-Logo;
+  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
+@-ms-viewport {
+  width: device-width; }
+
+@-o-viewport {
+  width: device-width; }
+
+@-ms-viewport {
+  width: device-width; }
+
+@-o-viewport {
+  width: device-width; }
+
+#content:after {
+  content: "";
+  display: block;
+  clear: both; }
+
+@-ms-viewport {
+  width: device-width; }
+
+@-o-viewport {
+  width: device-width; }
+
+@-ms-viewport {
+  width: device-width; }
+
+@-o-viewport {
+  width: device-width; }
+
 #content:after {
   content: "";
   display: block;
@@ -709,7 +734,7 @@ code {
       padding-bottom: 10px; } }
   .phase-banner p {
     margin: 0;
-    color: #000;
+    color: black;
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
@@ -909,7 +934,7 @@ fieldset {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   padding: 4px;
-  background-color: #fff;
+  background-color: white;
   border: 1px solid #bfc1c3;
   -webkit-appearance: none;
   border-radius: 0; }
@@ -1061,7 +1086,7 @@ fieldset {
   margin-right: 15px; }
 
 .js-enabled .selected {
-  background: #fff;
+  background: white;
   border-color: #0b0c0c; }
 
 .js-enabled label.focused {
@@ -1114,7 +1139,7 @@ table th {
   text-decoration: none;
   -webkit-font-smoothing: antialiased;
   cursor: pointer;
-  color: #fff;
+  color: white;
   margin: 0 15px 15px 0;
   padding: 0.52632em 0.78947em 0.26316em 0.78947em;
   vertical-align: top; }
@@ -1140,7 +1165,7 @@ table th {
       -moz-box-shadow: 0 2px 0 #003518;
       box-shadow: 0 2px 0 #003518; }
   .button:link, .button:hover, .button:focus, .button:visited {
-    color: #fff; }
+    color: white; }
   .button:before {
     content: "";
     height: 110%;
@@ -2024,5 +2049,3 @@ p.lead {
     line-height: 1.2em;
     font-weight: bold;
     margin-bottom: 0.5em; }
-
-/*# sourceMappingURL=main.css.map */
