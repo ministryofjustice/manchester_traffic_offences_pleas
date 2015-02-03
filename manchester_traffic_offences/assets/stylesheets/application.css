@@ -1842,6 +1842,8 @@ Forms
   font-weight: 400;
   text-transform: none;
   width: auto;
+  max-width: 60%;
+  float: none;
   clear: left;
   margin-top: 1em; }
   @media (max-width: 640px) {
@@ -1880,8 +1882,7 @@ Forms
   width: auto; }
 
 .has-image .form-group {
-  width: auto;
-  max-width: 65%; }
+  float: left; }
 .has-image .help-image {
   float: right;
   clear: right;
