@@ -1906,14 +1906,17 @@ Forms
     font-size: 24px;
     line-height: 1.25;
     font-weight: 400;
-    text-transform: none; }
+    text-transform: none;
+    margin-right: 0; }
     @media (max-width: 640px) {
       .form-group .block-label, .form-group-wide .block-label {
         font-size: 18px;
         line-height: 1.2; } }
     @media (min-width: 641px) {
-      .form-group .block-label input, .form-group-wide .block-label input {
-        top: 22px; } }
+      .form-group .block-label, .form-group-wide .block-label {
+        margin-right: 15px; }
+        .form-group .block-label input, .form-group-wide .block-label input {
+          top: 22px; } }
   .form-group .form-hint, .form-group-wide .form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline {
     display: block;
     font-family: "nta", Arial, sans-serif;
@@ -2042,8 +2045,9 @@ p.important {
   padding-top: 0;
   padding-bottom: 0; }
 
-.move-up {
-  margin-top: -.75em; }
+@media (min-width: 641px) {
+  .move-up {
+    margin-top: -.75em; } }
 
 /*  
 ====================================================

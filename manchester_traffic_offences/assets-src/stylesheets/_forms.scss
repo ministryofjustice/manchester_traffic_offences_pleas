@@ -40,8 +40,11 @@ Forms
 
 	.block-label {
 		@include core-24;
+		margin-right: 0;
 
 		@include media(tablet) {
+			margin-right: 15px;
+			
 			input {
 				top: 22px;
 			}	

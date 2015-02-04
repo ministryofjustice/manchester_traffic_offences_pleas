@@ -48,5 +48,7 @@ p.important {
 }
 
 .move-up {
-	margin-top: -.75em;
+	@include media(tablet) {
+		margin-top: -.75em;
+	}
 }
