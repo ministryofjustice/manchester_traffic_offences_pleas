@@ -1881,9 +1881,6 @@ Forms
       line-height: 1.25; } }
   .form-group .form-group, .form-group-wide .form-group, .form-group .form-group-wide, .form-group-wide .form-group-wide {
     max-width: 100%; }
-  .form-group.panel-indent, .panel-indent.form-group-wide {
-    padding-top: 0;
-    padding-bottom: 0; }
   .form-group label, .form-group-wide label,
   .column-half .form-group label {
     font-family: "nta", Arial, sans-serif;

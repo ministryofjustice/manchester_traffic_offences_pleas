@@ -24,11 +24,6 @@ Forms
 		max-width: 100%;
 	}
 
-	&.panel-indent {
-		padding-top: 0;
-		padding-bottom: 0;
-	}
-
 	label {
 		@include bold-24();
 		display: block;
