@@ -8,8 +8,8 @@ var gulp = require('gulp'),
 var paths = {
   dest_dir: 'manchester_traffic_offences/assets/',
   src_dir: 'manchester_traffic_offences/assets-src/',
-  styles: ['manchester_traffic_offences/assets-src/stylesheets/main.scss',
-           'node_modules/govuk_frontend_toolkit/govuk_frontend_toolkit/stylesheets/**/*.scss'],
+  styles: ['manchester_traffic_offences/assets-src/stylesheets/**/*.scss',
+           'node_modules/govuk_frontend_toolkit/stylesheets/**/*.scss'],
   scripts: [
     // vendor scripts
     'manchester_traffic_offences/assets-src/vendor/jquery-details/jquery.details.js',
@@ -17,7 +17,7 @@ var paths = {
     'manchester_traffic_offences/assets-src/javascripts/application.js',
   ],
   vendor_scripts: 'manchester_traffic_offences/assets-src/javascripts/vendor/*',
-  govuk_scripts: 'node_modules/govuk_frontend_toolkit/govuk_frontend_toolkit/javascripts/**/*.js',
+  govuk_scripts: 'node_modules/govuk_frontend_toolkit/javascripts/**/*.js',
   images: 'manchester_traffic_offences/assets-src/images/**/*'
 };
 
