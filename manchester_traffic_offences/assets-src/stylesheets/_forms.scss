@@ -15,10 +15,13 @@ Forms
 	@include core-19;
 
 	width: auto;
-	max-width: 60%;
 	float: none;
 	clear: left;
 	margin-top: 1em;
+
+	@include media(tablet) {
+		max-width: 60%;
+	}
 
 	.form-group {
 		max-width: 100%;
@@ -38,8 +41,10 @@ Forms
 	.block-label {
 		@include core-24;
 
-		input {
-			top: 22px;
+		@include media(tablet) {
+			input {
+				top: 22px;
+			}	
 		}
 	}
 
@@ -61,10 +66,6 @@ Forms
 	max-width: 100%;
 }
 
-.move-up {
-	margin-top: -.75em;
-}
-
 .form-control-inline {
 	@extend .form-control;
 	width: auto;
@@ -76,7 +77,10 @@ Forms
 }
 .form-control-wide {
 	@extend .form-control;
-	width: 75%;
+	
+	@include media(tablet){
+		width: 75%;
+	}
 }
 
 fieldset {

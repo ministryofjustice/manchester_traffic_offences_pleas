@@ -13,7 +13,7 @@ Main styles
 	}
 
 	.get-started {
-		padding-top: 2em;
+		padding-top: 1em;
 	}
 }
 
@@ -29,14 +29,20 @@ Main styles
 
 /*== Case screen =============================================*/
 .has-image {
-	// @extend %contain-floats;
-	.form-group {
-		float: left;
-	}
 	.help-image {
-		float: right;
-		clear: right;
-		max-width: 30%;
+		display: none;
+	}
+
+	@include media(tablet) {
+		.form-group {
+			float: left;
+		}
+		.help-image {
+			display: block;
+			float: right;
+			clear: right;
+			max-width: 30%;
+		}
 	}
 }
 
