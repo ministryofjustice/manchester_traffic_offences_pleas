@@ -177,3 +177,23 @@ Main styles
 		}
 	}
 }
+
+/*== Terms ==========================================================*/
+.cookies-table {
+	margin-bottom: 1em;
+
+	th, td {
+		@include core-19;
+		vertical-align: top;
+	}
+	th {
+		font-weight: 700;
+	}
+
+	.name {
+		width: 10%;
+	}
+	.purpose {
+		width: 60%;
+	}
+}
