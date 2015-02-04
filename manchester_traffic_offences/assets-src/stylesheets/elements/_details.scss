@@ -1,5 +1,7 @@
 // Details
 // ==========================================================================
+// GOV.UK front end toolkit dependencies
+@import "colours";
 
 details {
   display: block;
@@ -29,6 +31,7 @@ details .summary {
 // Match fallback arrow spacing with -webkit default
 details .arrow {
   margin-right: 0.35em;
+  font-style: normal;
 }
 
 // Remove top margin from bordered panel

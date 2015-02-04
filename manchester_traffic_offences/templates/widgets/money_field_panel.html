@@ -1,9 +1,0 @@
-<section>
-    <a id="section_{{ field.name }}" name="section_{{ field.name }}"></a>
-    <div class="section field-indent block{%  if field.errors %} indent-error{% endif %}">
-        {{ field.label_tag }}
-        <span class="validation-message">{{ field.errors }}</span>
-        <p class="form-hint datefield-hint">{{ field.help_text|safe }}</p>
-        <span class="input-type-hint">&pound;</span>{{ field }}
-    </div>
-</section>

@@ -142,9 +142,9 @@ class DSRadioFieldRenderer(RadioFieldRenderer):
 
 class HearingDateWidget(MultiWidget):
     def __init__(self, attrs=None):
-        widgets = [forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]+'}),
-                   forms.TextInput(),
-                   forms.TextInput(attrs={'maxlength': '4', 'pattern': '[0-9]+'}),
+        widgets = [forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline first-inline', 'size': '2'}),
+                   forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}),
+                   forms.TextInput(attrs={'maxlength': '4', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '4'}),
                    ]
         super(HearingDateWidget, self).__init__(widgets, attrs)
 
@@ -197,10 +197,10 @@ class HearingDateField(forms.DateField):
 
 class URNWidget(MultiWidget):
     def __init__(self, attrs=None):
-        widgets = [forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]+'}),
-                   forms.TextInput(attrs={'maxlength': '2'}),
-                   forms.TextInput(attrs={'maxlength': '7', 'pattern': '[0-9]+'}),
-                   forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]+'}),
+        widgets = [forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}),
+                   forms.TextInput(attrs={'maxlength': '2', 'class': 'form-control-inline', 'size': '2'}),
+                   forms.TextInput(attrs={'maxlength': '7', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '7'}),
+                   forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}),
                    ]
         super(URNWidget, self).__init__(widgets, attrs)
 
