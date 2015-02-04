@@ -1,82 +1,91 @@
 {% extends "plea/base.html" %}
+
 {% load debug %}
+
 {% block page_title %}{{ block.super }} Your plea{% endblock %}
+
 {% block page_content %}
 
     {% with request.session.case.number_of_charges as charges %}
-    <div class="full-width group">
-        <div class="main">
-            <form method=POST class="form" autocomplete="off">
+<form method="POST" autocomplete="off">
 
-                {% csrf_token %}
-                {% if formset_has_errors %}
-                    <section class="flash error-summary">
-                        <h2 id="error-heading">You need to fix the errors on this page before continuing.</h2>
-                        <p>See highlighted errors below.</p>
-                        <ul>
-                            {% with forms.0 as formset %}
-                                {% for form in formset %}
-                                    {% for field in form %}
-                                        {% if field.errors %}
-                                            <li><a class="error-link"
-                                                   href="#section_{{ field.name }}_{{ forloop.parentloop.counter }}">{{ field.errors|striptags }}</a></li>
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endfor %}
-                            {% endwith %}
-                        </ul>
-                    </section>
-                {% endif %}
+    {% csrf_token %}
 
-                <h1>Your plea{{ charges|pluralize }}</h1>
-                <p>This is your opportunity to present your case to the court.</p>
+    {% if formset_has_errors %}
+    <section class="error-summary">
+        <h2 class="heading-medium">You need to fix the errors on this page before continuing.</h2>
+        
+        <p>See highlighted errors below.</p>
+        
+        <ul class="errors-list">
+        {% with forms.0 as formset %}
+            {% for form in formset %}
+                {% for field in form %}
+                    {% if field.errors %}
+            <li><a href="#section_{{ field.name }}_{{ forloop.parentloop.counter }}">{{ field.errors|striptags }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        {% endwith %}
+        </ul>
+    </section>
+    {% endif %}
 
-                {% with formset=forms.0 form_count=forms.0|length %}
-                    {{ formset.management_form }}
-                    <h3>Enter {% if charges > 1 %}{{ form_count }}{% else %}a{% endif %} plea{{ charges|pluralize}} for the charge{{ charges|pluralize}} below</h3>
-                        {% for form in formset %}
-                            <section>
-                                <a id="section_guilty_{{ forloop.counter }}" name="section_guilty_{{ forloop.counter }}"></a>
-                                <div class="section{%  if form.guilty.errors %} error{% endif %}">
-                                    {% if form_count > 1 %}<label class="nobold">Your plea for charge [{{ forloop.counter }}]</label>{% endif %}
-                                    <span class="validation-message">{{ form.guilty.errors }}</span>
-                                    <fieldset class="inline charge-radios">
-                                        {% for choice in form.guilty %}
-                                            <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label" data-target="{{ choice.name }}_{{ choice.choice_value }}_extra {{ form.mitigations.id_for_label }}">
-                                                <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
-                                                {{ choice.choice_label }}
-                                            </label>
-                                        {% endfor %}
-                                    </fieldset>
-                                </div>
+    <header class="content-header">
+        <h1 class="heading-xlarge">Your plea{{ charges|pluralize }}</h1>
 
-                                <a id="section_mitigations_{{ forloop.counter }}" name="section_mitigations_{{ forloop.counter }}"></a>
-                                <div class="section charges panel-indent">
-                                    <div class="" id="{{ form.guilty.0.name }}_not_guilty_extra" style="display: none">
-                                        <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Not guilty because?</label>
-                                        <p class="form-hint datefield-hint" id="">Tell us why you believe you are not guilty.</p>
-                                    </div>
+        <p class="lede">This is your opportunity to present your case to the court.</p>
+    </header>
 
-                                    <div class="" id="{{ form.guilty.0.name }}_guilty_extra" style="display: none">
-                                        <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint sc-hint">(optional)</span></label>
-                                        <p class="form-hint datefield-hint" id="">What would you like the court to consider?</p>
-                                    </div>
+    {% with formset=forms.0 form_count=forms.0|length %}
+        
+        {{ formset.management_form }}
 
-                                    <span class="validation-message">{{ form.mitigations.errors }}</span>
-                                    <textarea maxlength="5000" rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}" class="js-hidden">{{ form.mitigations.value|default_if_none:"" }}</textarea>
-                                </div>
-                            </section>
-                        {% endfor %}
+        <h2 class="heading-medium">Enter {% if charges > 1 %}{{ form_count }}{% else %}a{% endif %} plea{{ charges|pluralize}} for the charge{{ charges|pluralize}} below</h2>
 
-                {% endwith %}
+        {% for form in formset %}
+        <fieldset id="section_guilty_{{ forloop.counter }}">
+            {% if form_count > 1 %}<legend class="form-label">Your plea for charge [{{ forloop.counter }}]</legend>{% endif %}
+            
+            <div class="form-group form-group-compound inline{%  if form.guilty.errors %} with-error{% endif %}">
+                
+                {{ form.guilty.errors }}
 
-                <div class="clear"></div>
+                {% for choice in form.guilty %}
+                <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label" data-target="{{ choice.name }}_{{ choice.choice_value }}_extra {{ form.mitigations.id_for_label }}">
+                    <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %} aria-controls="{{ choice.name }}_{{ choice.choice_value }}_extra">
+                    {{ choice.choice_label }}
+                </label>
+                {% endfor %}
+            </div>
 
-                <div class="actions">
-                    <button class="button" type=submit>Continue</button>
+            <div id="section_mitigations_{{ forloop.counter }}" class="panel-indent form-group">
+                <div id="{{ form.guilty.0.name }}_not_guilty_extra" class="js-hidden">
+                    <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Not guilty because?
+                        <span class="form-hint">Tell us why you believe you are not guilty.</span>
+                    </label>
                 </div>
-            </form>
-        </div>
+
+                <div id="{{ form.guilty.0.name }}_guilty_extra" class="js-hidden">
+                    <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint-inline">(optional)</span>
+                        <span class="form-hint">What would you like the court to consider?</span>
+                    </label>
+                </div>
+
+                {{ form.mitigations.errors }}
+
+                <textarea maxlength="5000" rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}" class="form-control-wide js-hidden">{{ form.mitigations.value|default_if_none:"" }}</textarea>
+            </div>
+        </fieldset>
+
+            
+        {% endfor %}
+
+    {% endwith %}
+
+    <div class="form-group">
+        <button class="button" type="submit">Continue</button>
     </div>
+</form>
     {% endwith %}
 {% endblock page_content %}
