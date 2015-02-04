@@ -2227,6 +2227,27 @@ Main styles
           font-size: 16px;
           line-height: 1.25; } }
 
+/*== Terms ==========================================================*/
+.cookies-table {
+  margin-bottom: 1em; }
+  .cookies-table th, .cookies-table td {
+    font-family: "nta", Arial, sans-serif;
+    font-size: 19px;
+    line-height: 1.31579;
+    font-weight: 400;
+    text-transform: none;
+    vertical-align: top; }
+    @media (max-width: 640px) {
+      .cookies-table th, .cookies-table td {
+        font-size: 16px;
+        line-height: 1.25; } }
+  .cookies-table th {
+    font-weight: 700; }
+  .cookies-table .name {
+    width: 10%; }
+  .cookies-table .purpose {
+    width: 60%; }
+
 /*  
 ====================================================
 Shame
