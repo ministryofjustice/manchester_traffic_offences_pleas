@@ -1870,7 +1870,6 @@ Forms
   font-weight: 400;
   text-transform: none;
   width: auto;
-  max-width: 60%;
   float: none;
   clear: left;
   margin-top: 1em; }
@@ -1879,6 +1878,10 @@ Forms
     .column-half .form-group {
       font-size: 16px;
       line-height: 1.25; } }
+  @media (min-width: 641px) {
+    .form-group, .form-group-wide,
+    .column-half .form-group {
+      max-width: 60%; } }
   .form-group .form-group, .form-group-wide .form-group, .form-group .form-group-wide, .form-group-wide .form-group-wide {
     max-width: 100%; }
   .form-group label, .form-group-wide label,
@@ -1908,8 +1911,9 @@ Forms
       .form-group .block-label, .form-group-wide .block-label {
         font-size: 18px;
         line-height: 1.2; } }
-    .form-group .block-label input, .form-group-wide .block-label input {
-      top: 22px; }
+    @media (min-width: 641px) {
+      .form-group .block-label input, .form-group-wide .block-label input {
+        top: 22px; } }
   .form-group .form-hint, .form-group-wide .form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline {
     display: block;
     font-family: "nta", Arial, sans-serif;
@@ -1930,17 +1934,15 @@ Forms
 .column-half .form-group {
   max-width: 100%; }
 
-.move-up {
-  margin-top: -.75em; }
-
 .form-control-inline {
   width: auto;
   margin: 0 5px; }
   .form-control-inline:first-child {
     margin-left: 0; }
 
-.form-control-wide {
-  width: 75%; }
+@media (min-width: 641px) {
+  .form-control-wide {
+    width: 75%; } }
 
 fieldset {
   margin: 0 0 2em; }
@@ -2040,6 +2042,9 @@ p.important {
   padding-top: 0;
   padding-bottom: 0; }
 
+.move-up {
+  margin-top: -.75em; }
+
 /*  
 ====================================================
 Main styles
@@ -2049,19 +2054,23 @@ Main styles
 .intro h2:first-child {
   margin-top: 0; }
 .intro .get-started {
-  padding-top: 2em; }
+  padding-top: 1em; }
 
 .before-start .panel-indent .list-bullet {
   margin-top: 0;
   margin-bottom: 0; }
 
 /*== Case screen =============================================*/
-.has-image .form-group, .has-image .form-group-wide {
-  float: left; }
 .has-image .help-image {
-  float: right;
-  clear: right;
-  max-width: 30%; }
+  display: none; }
+@media (min-width: 641px) {
+  .has-image .form-group, .has-image .form-group-wide {
+    float: left; }
+  .has-image .help-image {
+    display: block;
+    float: right;
+    clear: right;
+    max-width: 30%; } }
 
 /*== Expenses screen =======================================*/
 #expense-summary th, #expense-summary td {
