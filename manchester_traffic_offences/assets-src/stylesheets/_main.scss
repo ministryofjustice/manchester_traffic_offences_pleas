@@ -138,12 +138,24 @@ Main styles
 
 .success-header {
 	margin: 2em 0;
-	padding: 40px 40px 40px 80px;
-	background: $turquoise url(../images/icons/tick.png) 35px 50px no-repeat;
+	padding: 40px;
+	background: $turquoise;
 	color: $white;
 
-	h1 {
+	h1,
+	p {
 		margin: 0;
+	}
+	h1 {
+		@include bold-36();
+	}
+	p {
+		@include bold-24();
+	}
+
+	.ticked {
+		padding-left: 40px;
+		background: url(../images/icons/tick.png) 0 7px no-repeat;
 	}
 }
 
