@@ -7,7 +7,7 @@
 {% block page_content %}
 
 <header class="success-header">
-    <h1 class="heading-large ticked">Your {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea{{ case.number_of_charges|pluralize }} ha{{ case.number_of_charges|pluralize:"s,ve" }} been sent to the court</h1>
+    <h1 class="ticked">Your {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea{{ case.number_of_charges|pluralize }} ha{{ case.number_of_charges|pluralize:"s,ve" }} been sent to the court</h1>
 </header>
 
 
