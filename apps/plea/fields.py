@@ -179,6 +179,9 @@ class HearingDateWidget(MultiWidget):
         except (ValueError, TypeError):
             year = None
 
+        if day == month == year == None:
+            return ""
+
         try:
             return str(datetime.date(day=day, month=month, year=year))
         except (ValueError, TypeError):
