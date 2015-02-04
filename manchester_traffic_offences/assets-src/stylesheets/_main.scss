@@ -73,6 +73,11 @@ Main styles
 	th,
 	td {
 		@include core-19;
+		vertical-align: top;
+	}
+
+	thead th {
+		vertical-align: bottom;
 	}
 
 	tbody {
@@ -83,11 +88,16 @@ Main styles
 
 	.header {
 		@include bold-24();
-		width: 35%;
+		width: 45%;
+		padding-right: 0;
+
+		@include media(tablet) {
+			width: 30%;
+		}
 	}
 
 	.change-link {
-		padding: 0;
+		padding-right: 0;
 		text-align: right;
 	}
 
