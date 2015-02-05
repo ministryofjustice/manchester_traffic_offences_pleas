@@ -130,6 +130,11 @@ class YourMoneyStage(FormStage):
     form_classes = [YourMoneyForm]
     dependencies = ["case", "your_details", "plea"]
 
+    def render(self, request_context):
+        self.context['hide_optional'] = True
+
+        return super(YourMoneyStage, self).render(request_context)
+
     def save(self, form_data, next_step=None):
 
         clean_data = super(YourMoneyStage, self).save(form_data, next_step)
