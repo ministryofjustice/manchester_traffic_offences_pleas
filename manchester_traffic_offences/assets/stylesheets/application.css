@@ -1490,7 +1490,7 @@ Forms
     width: 75%; } }
 
 fieldset {
-  margin: 0 0 2em; }
+  margin: 0; }
 
 legend {
   font-family: "nta", Arial, sans-serif;
@@ -1515,6 +1515,10 @@ legend.form-label-bold {
     legend.form-label-bold {
       font-size: 18px;
       line-height: 1.2; } }
+
+.form-submit {
+  clear: left;
+  margin-top: 3em; }
 
 /*== Error styles ==================================*/
 .form-group .validation-message .errorlist, .form-group-wide .validation-message .errorlist {
@@ -1612,12 +1616,13 @@ Main styles
   margin-bottom: 0; }
 
 /*== Case screen =============================================*/
-.has-image .help-image {
+.with-help-images .help-image {
   display: none; }
 @media (min-width: 641px) {
-  .has-image .form-group, .has-image .form-group-wide {
-    float: left; }
-  .has-image .help-image {
+  .with-help-images .form-group, .with-help-images .form-group-wide {
+    float: left;
+    margin-bottom: .5789em; }
+  .with-help-images .help-image {
     display: block;
     float: right;
     clear: right;
