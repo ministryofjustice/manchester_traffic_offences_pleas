@@ -109,7 +109,7 @@ Forms
 }
 
 fieldset {
-	margin: 0 0 2em;
+	margin: 0;
 }
 
 legend {
@@ -130,6 +130,11 @@ legend {
 legend.form-label-bold {
 	@extend .form-label;
 	@include bold-24();
+}
+
+.form-submit {
+	clear: left;
+	margin-top: 3em;
 }
 
 
