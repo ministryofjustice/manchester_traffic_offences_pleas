@@ -43,11 +43,13 @@
         {% with form.you_are as field %}
         {% include "widgets/radio_field.html" %}
         {% endwith %}
-
-        <div class="panel-indent form-group-wide">
             
-            <div class="move-up js-hidden" id="section-employed">
-                
+        <div class="move-up js-hidden" id="section-employed">
+
+            <h4 class="heading-medium js-hidden">If you are employed:</h4>
+
+            <div class="panel-indent">
+            
                 {% with form.employed_your_job as field %}
                 {% include "widgets/std_field.html" %}
                 {% endwith %}
@@ -68,9 +70,15 @@
                     <h4 class="heading-small">Note:</h4>
                     <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                 </div>
-            </div>
 
-            <div class="move-up js-hidden" id="section-self-employed">
+            </div>
+        </div>
+
+        <div class="move-up js-hidden" id="section-self-employed">
+
+            <h4 class="heading-medium js-hidden">If you are self-employed:</h4>
+
+            <div class="panel-indent">
 
                 {% with form.your_job as field %}
                 {% include "widgets/std_field.html" %}
@@ -98,9 +106,15 @@
                     <h4 class="heading-small">Note:</h4>
                     <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                 </div>
-            </div>
 
-            <div class="move-up js-hidden" id="section-receiving-benefits">
+            </div>
+        </div>
+
+        <div class="move-up js-hidden" id="section-receiving-benefits">
+
+            <h4 class="heading-medium js-hidden">If you are receiving benefits:</h4>
+
+            <div class="panel-indent">
 
                 {% with form.benefits_details as field %}
                 {% include "widgets/std_field.html" %}
@@ -132,9 +146,16 @@
                     <h4 class="heading-small">Note:</h4>
                     <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                 </div>
-            </div>
 
-            <div class="move-up js-hidden" id="section-other">
+            </div>
+        </div>
+
+        <div class="move-up js-hidden" id="section-other">
+
+            <h4 class="heading-medium js-hidden">If you answered 'Other':</h4>
+
+            <div class="panel-indent">
+
                 {% with form.other_details as field %}
                 {% include "widgets/std_field.html" %}
                 {% endwith %}
@@ -151,8 +172,10 @@
                     <h4 class="heading-small">Note:</h4>
                     <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                 </div>
+
             </div>
         </div>
+
     </div>
 
     {% endwith %}
