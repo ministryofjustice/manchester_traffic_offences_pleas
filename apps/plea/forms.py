@@ -87,15 +87,15 @@ class YourMoneyForm(BasePleaStepForm):
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
     # Employed
     employed_your_job = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                                        required=True, max_length=500, label="What's your job?",
+                                        required=False, max_length=500, label="What's your job?",
                                         error_messages={"required": ERROR_MESSAGES["YOUR_JOB_REQUIRED"]})
 
     employed_take_home_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                                      choices=PERIOD_CHOICES, required=True,
+                                                      choices=PERIOD_CHOICES, required=False,
                                                       label="How often do you get paid?",
                                                       error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                                       "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
-    employed_take_home_pay_amount = forms.CharField(label="What's your take home pay (after tax)?", required=True,
+    employed_take_home_pay_amount = forms.CharField(label="What's your take home pay (after tax)?", required=False,
                                                     widget=forms.TextInput(attrs={"maxlength": "7",
                                                                                   "data-label-template-value": "employed_take_home_pay_period",
                                                                                   "data-label-template": "What's your {0} take home pay (after tax)?",
@@ -109,18 +109,18 @@ class YourMoneyForm(BasePleaStepForm):
                                                widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                choices=YESNO_CHOICES,
                                                coerce=to_bool,
-                                               required=True)
+                                               required=False)
 
     # Self employed
     your_job = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                               required=True, max_length=100, label="What's your job?",
+                               required=False, max_length=100, label="What's your job?",
                                error_messages={"required": ERROR_MESSAGES["YOUR_JOB_REQUIRED"]})
     self_employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                                 choices=SE_PERIOD_CHOICES, required=True,
+                                                 choices=SE_PERIOD_CHOICES, required=False,
                                                  label="How often do you get paid?",
                                                  error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                                  "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
-    self_employed_pay_amount = forms.CharField(label="What's your average take home pay?", required=True,
+    self_employed_pay_amount = forms.CharField(label="What's your average take home pay?", required=False,
                                                widget=forms.TextInput(attrs={"maxlength": "7",
                                                                              "data-label-template-value": "self_employed_pay_period",
                                                                              "data-label-template": "What's your average {0} take home pay?",
@@ -128,7 +128,7 @@ class YourMoneyForm(BasePleaStepForm):
                                                                              "class": "form-control-inline"}),
                                                error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                                "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
-    self_employed_pay_other = forms.CharField(required=True, max_length=500, label="",
+    self_employed_pay_other = forms.CharField(required=False, max_length=500, label="",
                                               widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
                                               help_text="Tell us about how often you get paid")
 
@@ -137,23 +137,23 @@ class YourMoneyForm(BasePleaStepForm):
                                                     widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                     choices=YESNO_CHOICES,
                                                     coerce=to_bool,
-                                                    required=True)
+                                                    required=False)
 
     # On benefits
-    benefits_details = forms.CharField(required=True, max_length=500, label="Which benefits do you receive?",
+    benefits_details = forms.CharField(required=False, max_length=500, label="Which benefits do you receive?",
                                        widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}))
-    benefits_dependents = forms.ChoiceField(required=True, widget=RadioSelect(renderer=DSRadioFieldRenderer),
+    benefits_dependents = forms.ChoiceField(required=False, widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YES_NO,
                                             label="Does this include payment for dependants?")
     benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                        choices=BEN_PERIOD_CHOICES, required=True,
+                                        choices=BEN_PERIOD_CHOICES, required=False,
                                         label="How often are your benefits paid?",
                                         error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                         "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
-    benefits_pay_other = forms.CharField(required=True, max_length=500, label="",
+    benefits_pay_other = forms.CharField(required=False, max_length=500, label="",
                                          widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
                                          help_text="Tell us about how often you get paid")
-    benefits_amount = forms.CharField(label="What's your average take home pay?", required=True,
+    benefits_amount = forms.CharField(label="What's your average take home pay?", required=False,
                                       widget=forms.TextInput(attrs={"maxlength": "7",
                                                                     "data-label-template-value": "benefits_period",
                                                                     "data-label-template": "What's your average {0} take home pay?",
@@ -167,14 +167,14 @@ class YourMoneyForm(BasePleaStepForm):
                                                          widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                          choices=YESNO_CHOICES,
                                                          coerce=to_bool,
-                                                         required=True)
+                                                         required=False)
 
     # Other
-    other_details = forms.CharField(required=True, max_length=500, label="Please provide details",
+    other_details = forms.CharField(required=False, max_length=500, label="Please provide details",
                                     help_text="eg retired, student etc.",
                                     widget=forms.TextInput(attrs={"class": "form-control"}), 
                                     error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
-    other_pay_amount = forms.CharField(label="What is your monthly disposable income?", required=True,
+    other_pay_amount = forms.CharField(label="What is your monthly disposable income?", required=False,
                                        widget=forms.TextInput(attrs={"maxlength": "7", 
                                                                      "size": "10",
                                                                      "class": "form-control-inline"}),
@@ -186,7 +186,7 @@ class YourMoneyForm(BasePleaStepForm):
                                             widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YESNO_CHOICES,
                                             coerce=to_bool,
-                                            required=True)
+                                            required=False)
 
 
     def __init__(self, *args, **kwargs):
