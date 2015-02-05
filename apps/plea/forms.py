@@ -196,12 +196,7 @@ class YourMoneyForm(BasePleaStepForm):
         except IndexError:
             data = {}
 
-        
-
-        if "you_are" in data:
-            for field in self.fields:
-                self.fields[field].required = False
-                
+        if "you_are" in data:                
             if data["you_are"] == "Employed":
                 self.fields["employed_your_job"].required = True
                 self.fields["employed_take_home_pay_period"].required = True
