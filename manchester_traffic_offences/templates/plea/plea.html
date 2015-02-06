@@ -49,7 +49,7 @@
             
             <div class="form-group form-group-compound inline{%  if form.guilty.errors %} with-error{% endif %}">
                 
-                {{ form.guilty.errors }}
+                <span class="validation-message">{{ form.guilty.errors }}</span>
 
                 {% for choice in form.guilty %}
                 <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label" data-target="{{ choice.name }}_{{ choice.choice_value }}_extra {{ form.mitigations.id_for_label }}">
