@@ -89,3 +89,6 @@ coverage.xml
 /user_data
 /test_user_data
 /test_gpg_home
+
+# local version of moj_template
+moj_template/

@@ -233,6 +233,7 @@ class YourExpensesForm(BasePleaStepForm):
     household_accommodation = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Accommodation",
         help_text="Rent, mortgage or lodgings",
         widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
@@ -243,6 +244,7 @@ class YourExpensesForm(BasePleaStepForm):
     household_utility_bills = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Utility bills",
         help_text="Gas, water, electricity etc",
         widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
@@ -253,6 +255,7 @@ class YourExpensesForm(BasePleaStepForm):
     household_insurance = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Insurance",
         help_text="Home, life insurance etc",
         widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
@@ -263,6 +266,7 @@ class YourExpensesForm(BasePleaStepForm):
     household_council_tax = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Council tax",
         widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_REQUIRED'],
@@ -278,6 +282,7 @@ class YourExpensesForm(BasePleaStepForm):
     other_tv_subscription = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Television subscription",
         help_text="TV licence, satellite etc",
         widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
@@ -288,6 +293,7 @@ class YourExpensesForm(BasePleaStepForm):
     other_travel_expenses = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Travel expenses",
         help_text="Fuel, car, public transport etc",
         widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
@@ -298,6 +304,7 @@ class YourExpensesForm(BasePleaStepForm):
     other_telephone = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Telephone",
         help_text="Landline and/or mobile",
         widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
@@ -308,6 +315,7 @@ class YourExpensesForm(BasePleaStepForm):
     other_loan_repayments = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Loan repayments",
         help_text="Credit card, bank etc",
         widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
@@ -318,6 +326,7 @@ class YourExpensesForm(BasePleaStepForm):
     other_court_payments = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="County court orders",
         widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['OTHER_COURT_PAYMENTS_REQUIRED'],
@@ -327,6 +336,7 @@ class YourExpensesForm(BasePleaStepForm):
     other_child_maintenance = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Child maintenance",
         widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_REQUIRED'],
