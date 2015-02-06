@@ -34,6 +34,7 @@ class FormStage(object):
         return self.all_urls.values()[-1]
 
     def check_dependencies(self):
+        return True
         for dependency in self.dependencies:
             if not (self.all_data[dependency].get("complete", False) is True):
                 return False
