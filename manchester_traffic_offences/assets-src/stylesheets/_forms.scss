@@ -49,6 +49,11 @@ Forms
 				top: 22px;
 			}	
 		}
+
+		@include ie(6) {
+			display: inline-block;
+			margin-right: 10px;
+		}
 	}
 
 	.form-hint {
@@ -82,6 +87,10 @@ Forms
 	@extend .form-control;
 	
 	@include media(tablet){
+		width: 75%;
+	}
+
+	@include ie(6) {
 		width: 75%;
 	}
 }
