@@ -22,6 +22,12 @@ GOV.UK Toolkit/Template overrides
 	}
 }
 
+#content {
+	@include ie(6) {
+		width: 960px;
+	}
+}
+
 .footer-wrapper > p {
 	@extend %site-width-container;
 	@include core-16;
