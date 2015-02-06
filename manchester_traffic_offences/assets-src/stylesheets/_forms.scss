@@ -5,10 +5,13 @@ Forms
 */
 
 /*== Buttons ========================================*/
+
 .button-large {
 	@extend .button;
 	@include bold-24();
 }
+
+
 
 /*== Main form styles ===============================*/
 .form-group {
@@ -68,6 +71,16 @@ Forms
 	}
 }
 
+@include ie-lte(7) {
+	.form-control {
+		width: 90%;
+	}
+
+	.form-group .button {
+		margin-bottom: 0;
+	}
+}
+
 .form-group-wide,
 .column-half .form-group {
 	@extend .form-group;
@@ -86,7 +99,7 @@ Forms
 .form-control-wide {
 	@extend .form-control;
 	
-	@include media(tablet){
+	@include media(tablet) {
 		width: 75%;
 	}
 
@@ -99,10 +112,19 @@ fieldset {
 	margin: 0 0 2em;
 }
 
-legend.form-label {
+legend {
 	@include core-24;
-
+	padding: 0;
 	margin-bottom: -.5em;
+
+	@include ie-lte(8) {
+		color: #000;
+		margin-left: -7px;
+
+		@include ie(8) {
+			margin-left: -2px;
+		}
+	}
 }
 
 legend.form-label-bold {
@@ -112,6 +134,10 @@ legend.form-label-bold {
 
 
 /*== Error styles ==================================*/
+.form-group .validation-message .errorlist {
+	margin: .25em 0;
+	color: $error-colour;
+}
 
 .error-summary {
 	margin: 2em 0;
@@ -131,6 +157,12 @@ legend.form-label-bold {
 
 	details {
 		margin-bottom: 1.05263em;
+	}
+
+	@include ie-lte(7) {
+		ul {
+			margin: 1em 0;
+		}
 	}
 }
 
