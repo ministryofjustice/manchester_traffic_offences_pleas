@@ -1,5 +1,5 @@
-<fieldset class="inline">
-    {% for choice in renderer %}
+<div class="inline">
+	{% for choice in renderer %}
         <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label" data-target="section-{{ choice.choice_value|slugify }}">
             <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio"
                    name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}
@@ -7,4 +7,4 @@
             {{ choice.choice_label }}
         </label>
     {% endfor %}
-</fieldset>
+</div>

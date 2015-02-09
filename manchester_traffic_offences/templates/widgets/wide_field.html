@@ -1,4 +1,4 @@
-<div class="form-group{% if field.errors %} with-error{% endif %}" id="section_{{ field.name }}">
+<div class="form-group-wide{% if field.errors %} with-error{% endif %}" id="section_{{ field.name }}">
     <label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required and not hide_optional %} <span class="form-hint-inline">(optional)</span>{% endif %}
     	{% if field.help_text %}
     	<span class="form-hint">{{ field.help_text|safe }}</span>
@@ -7,7 +7,6 @@
     	{{ field.errors }}
     </label>
     <div class="form-field">
-		<span class="form-field-prefix">£</span>
 	    {{ field }}
     </div>
 </div>
