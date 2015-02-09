@@ -113,7 +113,8 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
 
     context_data: dict populated by form fields
     """
-    print context_data
+
+
     # add DOH / name to the email subject for compliance with the current format
     if isinstance(context_data["case"]["date_of_hearing"], basestring):
         date_of_hearing = parser.parse(context_data["case"]["date_of_hearing"])
