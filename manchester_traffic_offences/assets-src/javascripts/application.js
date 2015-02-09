@@ -1,3 +1,7 @@
+GOVUK.selectionButtons = function (elms, opts) {
+  new GOVUK.SelectionButtons(elms, opts);
+};
+
 function showHideCheckboxToggledContent() {
 
     $(".block-label input[type='checkbox']").each(function () {
@@ -324,7 +328,7 @@ $(document).ready(function () {
     showHideExtraNotes($("input[name=employed_hardship],input[name=self_employed_hardship],input[name=receiving_benefits_hardship],input[name=other_hardship]"));
 
     calculateExpenses();
-    $('.expense-container input[type=text]').change(calculateExpenses);
+    $('#household_expenses, #other_expenses').find('input[type=text]').change(calculateExpenses);
 
     labelTemplateExternal();
 });
