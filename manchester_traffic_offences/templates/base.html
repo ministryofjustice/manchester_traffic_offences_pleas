@@ -3,6 +3,9 @@
 {% load staticfiles %}
 {% block stylesheets %}
 <link rel="stylesheet" type="text/css" href="{% static "stylesheets/application.css" %}">
+<!--[if IE 6]><link href="{% static "stylesheets/application-ie6.css" %}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+<!--[if IE 7]><link href="{% static "stylesheets/application-ie7.css" %}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+<!--[if IE 8]><link href="{% static "stylesheets/application-ie8.css" %}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
 {% endblock %}
 
 {% block content %}
@@ -42,12 +45,13 @@
 {% endblock %}
 
 {% block javascripts %}
+<script src="/static/javascripts/vendor/jquery.details.min.js" type="text/javascript"></script>
 <script src="/static/javascripts/govuk.js" type="text/javascript"></script>
 <script src="/static/javascripts/application.js" type="text/javascript"></script>
 {% endblock %}
 
 {% block footer_top %}
-<p><a href="{% url "terms" %}">Terms and Conditions and Privacy Policy</a></p>
+<p class="footer-top"><a href="{% url "terms" %}">Terms and Conditions and Privacy Policy</a></p>
 {% endblock footer_top %}
 
 {% block body_end %}
