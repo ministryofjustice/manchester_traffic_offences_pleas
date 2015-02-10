@@ -1,3 +1,11 @@
+// Shims
+if(typeof String.prototype.trim !== 'function') {
+  String.prototype.trim = function() {
+    return this.replace(/^\s+|\s+$/g, ''); 
+  }
+}
+
+
 GOVUK.selectionButtons = function (elms, opts) {
   new GOVUK.SelectionButtons(elms, opts);
 };
@@ -283,9 +291,8 @@ function labelTemplateExternal(){
         var $label = $("label[for=" + $(form_element).attr("id") + "]");
         $(form_element).data("original", $label.text());
         $("input:radio[name=" + $value_source + "]").click(function(evt){
-            var val = $(evt.target).val().trim().toLowerCase();
-            console.log(val);
-            if(val.indexOf(" ") > 0) {
+            var val = $(this).val().toLowerCase().trim();
+            if(val.match(/\ other/)) {
                 $label.text($(form_element).data("original"));
             }
             else {
@@ -318,6 +325,8 @@ $(document).ready(function () {
 
     var $blockLabels = $(".block-label input[type='radio'], .block-label input[type='checkbox']");
     GOVUK.selectionButtons($blockLabels);
+
+    $('details').details();
 
     showSingleRadioContent();
 
