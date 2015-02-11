@@ -153,25 +153,26 @@ Typography
 .heading-collapse {
   margin-bottom: 0; }
 
-#content p,
-#content ul,
-#content ol,
-#content address,
-#content summary {
+p,
+ul,
+ol,
+address,
+summary {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
   font-weight: 400;
   text-transform: none; }
   @media (max-width: 640px) {
-    #content p,
-    #content ul,
-    #content ol,
-    #content address,
-    #content summary {
+    p,
+    ul,
+    ol,
+    address,
+    summary {
       font-size: 16px;
       line-height: 1.25; } }
-#content address {
+
+address {
   margin-top: 0.3125em;
   margin-bottom: 1.25em;
   font-style: normal; }
