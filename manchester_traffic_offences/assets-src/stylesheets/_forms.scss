@@ -184,8 +184,9 @@ legend.form-label-bold {
 	padding: 5px .75em 4px;
 	background: $grey-3;
 	border: 1px solid $grey-2;
-}
-.form-field-prefixed input {
-	border-left: none;
-	margin-left: 0;
+
+	& + input {
+		border-left: none;
+		margin-left: 0;
+	}
 }
