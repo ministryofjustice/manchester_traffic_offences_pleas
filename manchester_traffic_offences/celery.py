@@ -7,7 +7,7 @@ from django.conf import settings
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'manchester_traffic_offences.settings.local')
 
-app = Celery('manchester_traffic_offences')
+app = Celery('apps.plea')
 
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)

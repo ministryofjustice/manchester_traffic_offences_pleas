@@ -1,14 +1,19 @@
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -18,18 +23,25 @@
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -51,8 +63,10 @@
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -61,19 +75,26 @@
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -82,12 +103,16 @@
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -109,8 +134,10 @@
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -175,8 +202,10 @@ address {
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -185,8 +214,10 @@ address {
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 /*  
 ====================================================
 Typography
@@ -238,7 +269,7 @@ address {
   text-decoration: none;
   -webkit-font-smoothing: antialiased;
   cursor: pointer;
-  color: #fff;
+  color: white;
   margin: 0 15px 15px 0;
   padding: 0.52632em 0.78947em 0.26316em 0.78947em;
   vertical-align: top; }
@@ -264,7 +295,7 @@ address {
       -moz-box-shadow: 0 2px 0 #003518;
       box-shadow: 0 2px 0 #003518; }
   .button:link, .button-large:link, .button:hover, .button-large:hover, .button:focus, .button-large:focus, .button:visited, .button-large:visited {
-    color: #fff; }
+    color: white; }
   .button:before, .button-large:before {
     content: "";
     height: 110%;
@@ -538,16 +569,22 @@ details .panel-indent {
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -569,8 +606,10 @@ details .panel-indent {
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -636,14 +675,19 @@ address {
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -652,12 +696,16 @@ address {
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -691,7 +739,7 @@ address {
       padding-bottom: 10px; } }
   .phase-banner p {
     margin: 0;
-    color: #000;
+    color: black;
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
@@ -798,8 +846,10 @@ ol {
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -1278,8 +1328,10 @@ code {
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -1432,7 +1484,7 @@ fieldset {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   padding: 4px;
-  background-color: #fff;
+  background-color: white;
   border: 1px solid #bfc1c3;
   -webkit-appearance: none;
   border-radius: 0; }
@@ -1484,8 +1536,10 @@ fieldset {
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 /*  
 ====================================================
 Typography
@@ -1586,8 +1640,10 @@ input[type=number] {
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .block-label {
   display: block;
   float: none;
@@ -1617,7 +1673,7 @@ input[type=number] {
   margin-right: 15px; }
 
 .js-enabled label.selected {
-  background: #fff;
+  background: white;
   border-color: #0b0c0c; }
 
 .js-enabled label.focused {
@@ -1628,8 +1684,10 @@ input[type=number] {
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .block-label {
   display: block;
   float: none;
@@ -1659,7 +1717,7 @@ input[type=number] {
   margin-right: 15px; }
 
 .js-enabled label.selected {
-  background: #fff;
+  background: white;
   border-color: #0b0c0c; }
 
 .js-enabled label.focused {
@@ -1692,8 +1750,10 @@ input[type=number] {
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 /*  
 ====================================================
 Typography
@@ -1786,7 +1846,7 @@ GOV.UK Toolkit/Template overrides
       padding-bottom: 10px; } }
   .phase-banner p {
     margin: 0;
-    color: #000;
+    color: black;
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
@@ -2004,10 +2064,13 @@ legend.form-label-bold {
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 /*  
 ====================================================
 Elements
@@ -2199,7 +2262,7 @@ Main styles
   margin: 2em 0;
   padding: 40px;
   background: #28a197;
-  color: #fff; }
+  color: white; }
   .success-header h1,
   .success-header p {
     margin: 0; }
@@ -2273,5 +2336,3 @@ Main styles
 Shame
 ====================================================
 */
-
-/*# sourceMappingURL=application.css.map */
