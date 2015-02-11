@@ -214,6 +214,11 @@ LOGGING = {
                 'handlers': ['console'],
                 'level': 'ERROR',
                 'propagate': True,
+        },
+        'apps.plea.tasks': {
+                'handlers': ['console'],
+                'level': 'ERROR',
+                'propagate': True,
         }
     }
 }
