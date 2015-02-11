@@ -1547,10 +1547,9 @@ legend.form-label-bold {
   padding: 5px .75em 4px;
   background: #dee0e2;
   border: 1px solid #bfc1c3; }
-
-.form-field-prefixed input {
-  border-left: none;
-  margin-left: 0; }
+  .form-field-prefix + input {
+    border-left: none;
+    margin-left: 0; }
 
 @font-face {
   font-family: GDS-Logo;
