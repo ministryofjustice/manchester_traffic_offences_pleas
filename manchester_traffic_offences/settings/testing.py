@@ -12,6 +12,8 @@ LETTUCE_AVOID_APPS = (
 )
 LETTUCE_SERVER_PORT = 8100
 
+CELERY_ALWAYS_EAGER = True
+
 TESTING = True
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
