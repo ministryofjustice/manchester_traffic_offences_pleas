@@ -8,22 +8,20 @@ Typography
 	margin-bottom: 0;
 }
 
-#content {
-	p,
-	ul,
-	ol,
-	address,
-	summary {
-		@include core-19;
+p,
+ul,
+ol,
+address,
+summary {
+	@include core-19;
 
-		@include ie-lte(7) {
-			margin-left: 0;
-		}
+	@include ie-lte(7) {
+		margin-left: 0;
 	}
+}
 
-	address {
-		margin-top: 0.3125em;
-		margin-bottom: 1.25em;
-		font-style: normal;
-	}
+address {
+	margin-top: 0.3125em;
+	margin-bottom: 1.25em;
+	font-style: normal;
 }
