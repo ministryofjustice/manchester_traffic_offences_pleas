@@ -50,6 +50,6 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
     email_count.get_from_context(context_data)
     email_count.save()
 
-    email_send_court(case.id, email_count.id, context_data)
+    email_send_court.delay(case.id, email_count.id, context_data)
 
     return True
