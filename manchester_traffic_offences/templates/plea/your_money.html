@@ -5,7 +5,7 @@
 {% block page_title %}{{ block.super }} Your Finances{% endblock %}
 
 {% block page_content %}
-<form method="POST" autocomplete="off">
+<form action="{{ request.path }}" method="post" autocomplete="off">
 
     {% csrf_token %}
 
@@ -38,15 +38,16 @@
         <li>Your details will be stored securely by the court</li>
     </ul>
 
-    <fieldset id="section_{{ form.you_are.name }}">
+    <div id="section_{{ form.you_are.name }}">
 
         {% with form.you_are as field %}
         {% include "widgets/radio_field.html" %}
         {% endwith %}
-
-        <div class="panel-indent form-group-wide">
             
-            <div class="move-up js-hidden" id="section-employed">
+        <div class="move-up js-hidden" id="section-employed">
+
+            <div class="panel-indent">
+            
                 {% with form.employed_your_job as field %}
                 {% include "widgets/std_field.html" %}
                 {% endwith %}
@@ -67,9 +68,13 @@
                     <h4 class="heading-small">Note:</h4>
                     <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                 </div>
-            </div>
 
-            <div class="move-up js-hidden" id="section-self-employed">
+            </div>
+        </div>
+
+        <div class="move-up js-hidden" id="section-self-employed">
+
+            <div class="panel-indent">
 
                 {% with form.your_job as field %}
                 {% include "widgets/std_field.html" %}
@@ -97,9 +102,13 @@
                     <h4 class="heading-small">Note:</h4>
                     <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                 </div>
-            </div>
 
-            <div class="move-up js-hidden" id="section-receiving-benefits">
+            </div>
+        </div>
+
+        <div class="move-up js-hidden" id="section-receiving-benefits">
+
+            <div class="panel-indent">
 
                 {% with form.benefits_details as field %}
                 {% include "widgets/std_field.html" %}
@@ -131,9 +140,14 @@
                     <h4 class="heading-small">Note:</h4>
                     <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                 </div>
-            </div>
 
-            <div class="move-up js-hidden" id="section-other">
+            </div>
+        </div>
+
+        <div class="move-up js-hidden" id="section-other">
+
+            <div class="panel-indent">
+
                 {% with form.other_details as field %}
                 {% include "widgets/std_field.html" %}
                 {% endwith %}
@@ -150,13 +164,15 @@
                     <h4 class="heading-small">Note:</h4>
                     <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                 </div>
+
             </div>
         </div>
-    </fieldset>
+
+    </div>
 
     {% endwith %}
 
-    <div class="form-group">
+    <div class="form-group form-submit">
         <button class="button" type="submit">Continue</button>
     </div>
 

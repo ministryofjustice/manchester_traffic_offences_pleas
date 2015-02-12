@@ -163,11 +163,11 @@ Typography
 .heading-collapse {
   margin-bottom: 0; }
 
-#content p,
-#content ul,
-#content ol,
-#content address,
-#content summary {
+p,
+ul,
+ol,
+address,
+summary {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -175,14 +175,15 @@ Typography
   text-transform: none;
   margin-left: 0; }
   @media (max-width: 640px) {
-    #content p,
-    #content ul,
-    #content ol,
-    #content address,
-    #content summary {
+    p,
+    ul,
+    ol,
+    address,
+    summary {
       font-size: 16px;
       line-height: 1.25; } }
-#content address {
+
+address {
   margin-top: 0.3125em;
   margin-bottom: 1.25em;
   font-style: normal; }
@@ -1427,7 +1428,7 @@ Forms
   width: 75%; }
 
 fieldset {
-  margin: 0 0 2em; }
+  margin: 0; }
 
 legend {
   font-family: "nta", Arial, sans-serif;
@@ -1454,6 +1455,10 @@ legend.form-label-bold {
     legend.form-label-bold {
       font-size: 18px;
       line-height: 1.2; } }
+
+.form-submit {
+  clear: left;
+  margin-top: 3em; }
 
 /*== Error styles ==================================*/
 .form-group .validation-message .errorlist, .form-group-wide .validation-message .errorlist {
@@ -1484,10 +1489,9 @@ legend.form-label-bold {
   padding: 5px .75em 4px;
   background: #dee0e2;
   border: 1px solid #bfc1c3; }
-
-.form-field-prefixed input {
-  border-left: none;
-  margin-left: 0; }
+  .form-field-prefix + input {
+    border-left: none;
+    margin-left: 0; }
 
 @font-face {
   font-family: GDS-Logo;
@@ -1553,7 +1557,7 @@ Main styles
   margin-bottom: 0; }
 
 /*== Case screen =============================================*/
-.has-image .help-image {
+.with-help-images .help-image {
   display: none; }
 
 /*== Expenses screen =======================================*/
