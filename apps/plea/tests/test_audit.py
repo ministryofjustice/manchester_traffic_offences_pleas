@@ -1,7 +1,10 @@
+from celery.exceptions import Retry, RetryTaskError
 import datetime
 from glob import glob
-import json
+import io
 import os
+from itertools import cycle, chain
+import json
 from mock import patch
 import socket
 import unittest
@@ -85,9 +88,12 @@ class CaseCreationTests(TestCase):
 
         clear_user_data()
 
-        result = send_plea_email(self.context_data)
-
-        self.assertFalse(result)
+        try:
+            send_plea_email(self.context_data)
+        except Retry:
+            pass
+        except socket.error:
+            pass
 
         case = Case.objects.all().order_by('-id')[0]
         self.assertEqual(case.status, "network_error")
