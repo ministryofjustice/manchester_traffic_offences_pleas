@@ -15,7 +15,7 @@ GOV.UK Toolkit/Template overrides
 }
 
 .phase-banner {
-	@include phase-banner;
+	@include phase-banner(alpha);
 
 	.phase-tag {
 		vertical-align: baseline;
