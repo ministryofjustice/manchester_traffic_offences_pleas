@@ -59,7 +59,8 @@ class YourDetailsForm(BasePleaStepForm):
                                      error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
     email = forms.EmailField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                             required=getattr(settings, "EMAIL_REQUIRED", True), label="Email", help_text="If you choose to we will use this email address for all future correspondence regarding your case, including the court's decision.",
+                             required=getattr(settings, "EMAIL_REQUIRED", True), 
+                             label="Email",
                              error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
                                              "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
