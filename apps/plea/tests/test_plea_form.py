@@ -1,6 +1,8 @@
+from celery.exceptions import Retry
 import datetime
-from mock import Mock, MagicMock, patch
 from importlib import import_module
+from itertools import chain, cycle
+from mock import Mock, MagicMock, patch
 import socket
 
 from django.conf import settings
@@ -523,32 +525,6 @@ class TestMultiPleaForms(TestCase):
 
         self.assertIn(test_data["case"]["urn"], response.content)
 
-    @patch("apps.plea.email.TemplateAttachmentEmail.send")
-    @patch("apps.govuk_utils.forms.messages.add_message")
-    def test_email_error_adds_message(self, add_message, send):
-        send.side_effect = socket.error("Email failed to send, socket error")
-
-        fake_session = {"case": {}, "your_details": {}, "plea": {"PleaForms": [{}]}, "review": {}}
-        fake_session["case"]["date_of_hearing"] = datetime.date(2016, 1, 1)
-        fake_session["case"]["urn"] = "00/AA/0000000/00"
-        fake_session["case"]["number_of_charges"] = 1
-        fake_session["your_details"]["name"] = "Charlie Brown"
-        fake_session["your_details"]["contact_number"] = "07802639892"
-        fake_session["your_details"]["email"] = "test@example.org"
-        fake_session['your_details']["national_insurance_number"] = "test NI number"
-        fake_session['your_details']["driving_licence_number"] = "test driving number"
-        fake_session['your_details']["registration_number"] = "test registration number"
-        fake_session["plea"]["PleaForms"][0]["guilty"] = "guilty"
-        fake_session["plea"]["PleaForms"][0]["mitigations"] = "lorem ipsum 1"
-
-        form = PleaOnlineForms("review", "plea_form_step", fake_session)
-        form.load(self.request_context)
-        form.save({"understand": True, "receive_email": False}, self.request_context)
-        form.process_messages({})
-        self.assertEqual(add_message.call_count, 1)
-        self.assertEqual(add_message.call_args[0][0], {})
-        self.assertEqual(add_message.call_args[0][1], 40)
-        self.assertTrue(isinstance(add_message.call_args[0][2], basestring))
 
     def test_successful_completion_single_charge(self):
         fake_session = {}
