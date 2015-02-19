@@ -15,16 +15,30 @@ GOV.UK Toolkit/Template overrides
 }
 
 .phase-banner {
-	@include phase-banner;
+	@include phase-banner(alpha);
 
 	.phase-tag {
 		vertical-align: baseline;
 	}
 }
 
-.footer-wrapper > p {
+#content {
+	@include ie-lte(8) {
+		width: 960px;
+	}
+}
+
+.footer-wrapper p.footer-top {
 	@extend %site-width-container;
 	@include core-16;
-	margin-bottom: 0;
-	margin-top: 0;
+	margin-bottom: 1em;
+
+	@include media(tablet) {
+		margin-bottom: 0;
+	}
+
+	@include ie-lte(7) {
+		width: 960px;
+		margin-left: 30px;
+	}
 }
