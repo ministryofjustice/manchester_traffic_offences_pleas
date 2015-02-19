@@ -1,0 +1,44 @@
+/*  
+====================================================
+GOV.UK Toolkit/Template overrides
+====================================================
+*/
+
+#global-cookie-message {
+	> div {
+		@extend %site-width-container;
+	}
+}
+
+#global-header .header-proposition a#proposition-name:hover {
+	text-decoration: none;
+}
+
+.phase-banner {
+	@include phase-banner(alpha);
+
+	.phase-tag {
+		vertical-align: baseline;
+	}
+}
+
+#content {
+	@include ie-lte(8) {
+		width: 960px;
+	}
+}
+
+.footer-wrapper p.footer-top {
+	@extend %site-width-container;
+	@include core-16;
+	margin-bottom: 1em;
+
+	@include media(tablet) {
+		margin-bottom: 0;
+	}
+
+	@include ie-lte(7) {
+		width: 960px;
+		margin-left: 30px;
+	}
+}
