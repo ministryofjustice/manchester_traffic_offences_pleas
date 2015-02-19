@@ -12,7 +12,7 @@ from ..models import Case
 class TestUrnValidator(TestCase):
 
     def setUp(self):
-        self.case = Case.objects.create(urn="00/AA/00000/00", status="sent")
+        self.case = Case.objects.create(urn="00/AA/00000/00", sent=True)
 
     def test_urn_does_not_match(self):
 
