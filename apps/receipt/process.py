@@ -200,11 +200,9 @@ def _process_receipts(log_entry):
                 continue
 
             if status == "Passed":
-                if case_obj.status == "receipt_success":
+                if case_obj.has_action("receipt_success"):
                     status_text.append("{} already processed. Skipping.").format(urn)
                     continue
-
-                case_obj.status = "receipt_success"
 
                 log_entry.total_success += 1
 
@@ -213,12 +211,11 @@ def _process_receipts(log_entry):
 
                     old_urn, case_obj.urn = case_obj.urn, urn
 
-                    case_obj.status_info = \
-                        (case_obj.status_info or "") +\
-                        "\nURN CHANGED! Old Urn: {}".format(old_urn)
+                    case_obj.add_action("receipt_success", "\URN CHANGED! Old Urn: {}".format(old_urn))
 
                     status_text.append('Passed [URN CHANGED! old urn: {}] {}'.format(urn, old_urn))
                 else:
+                    case_obj.add_action("receipt_success", "")
                     status_text.append('Passed: {}'.format(urn))
 
                 case_obj.save()
@@ -231,7 +228,7 @@ def _process_receipts(log_entry):
                 #
 
             else:
-                case_obj.status = "receipt_failure"
+                case_obj.add_action("receipt_failure", "")
 
                 status_text.append('Failed: {}'.format(urn))
 
