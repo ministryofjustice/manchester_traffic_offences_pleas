@@ -5,7 +5,7 @@
 {% load date testing %}
 
 {% block page_content %}
-<form method="POST" autocomplete="off">
+<form action="{{ request.path }}" method="post" autocomplete="off">
     
     {% csrf_token %}
     
@@ -276,7 +276,7 @@
         </div>
     </section>
 
-    <div class="form-group">
+    <div class="form-group form-submit">
         <button type="submit" class="button-large">Make your plea{{ case.number_of_charges|pluralize }}</button>
     </div>
     {% endwith %}

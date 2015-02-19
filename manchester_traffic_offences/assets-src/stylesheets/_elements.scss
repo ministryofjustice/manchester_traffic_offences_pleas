@@ -13,11 +13,6 @@ hr {
     padding: 0;
 }
 
-img {
-	max-width: 100%;
-	height: auto;
-}
-
 .content-header {
 	margin: 0 0 2em;
 
@@ -25,7 +20,6 @@ img {
 		margin-bottom: .25em;
 	}
 }
-
 
 .related {
 	padding-top: 5px;
@@ -50,5 +44,23 @@ p.important {
 .move-up {
 	@include media(tablet) {
 		margin-top: -.75em;
+	}
+}
+
+// It turns out that IE6 can handle dat javascriptz
+@include ie(6) {
+	.js-hidden {
+		display: none;
+	}
+}
+
+#content {
+	img {
+		max-width: 100%;
+		height: auto;
+
+		@include ie-lte(8) {
+			width: inherit;
+		}
 	}
 }
