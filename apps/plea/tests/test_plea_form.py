@@ -160,6 +160,65 @@ class TestMultiPleaForms(TestCase):
         response = form.render()
         self.assertEqual(response.status_code, 302)
 
+    def test_plea_form_shows_errors_when_invalid(self):
+        self.session.update({"case": {"complete": True,
+                                      "date_of_hearing": "2015-01-01",
+                                      "urn": "00/AA/0000000/00",
+                                      "number_of_charges": 2},
+                             "your_details": {"name": "Charlie Brown",
+                                              "contact_number": "07802639892",
+                                              "email": "test@example.org"}})
+
+        form = PleaOnlineForms("plea", "plea_form_step", self.session)
+        form.load(self.request_context)
+        form.save({"name": "Test man",
+                   "contact_number": "012345678",
+                   "email": "test.man@example.org",
+                   "date_of_hearing_0": "01",
+                   "date_of_hearing_1": "01",
+                   "date_of_hearing_2": "2016",
+                   "urn_0": "00",
+                   "urn_1": "AA",
+                   "urn_2": "0000000",
+                   "urn_3": "00",
+                   "number_of_charges": 2,
+                   "form-TOTAL_FORMS": 2,
+                   "form-INITIAL_FORMS": "0",
+                   "form-MAX_NUM_FORMS": 2},
+                  self.request_context)
+        response = form.render()
+
+        self.assertEqual(len(form.current_stage.forms[0][0].errors), 1)
+        self.assertEqual(len(form.current_stage.forms[0][1].errors), 1)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_plea_stage_redirects_when_valid(self):
+        self.session.update({"case": {"complete": True,
+                                      "date_of_hearing": "2015-01-01",
+                                      "urn": "00/AA/0000000/00",
+                                      "number_of_charges": 2},
+                             "your_details": {"name": "Charlie Brown",
+                                              "contact_number": "07802639892",
+                                              "email": "test@example.org"}})
+
+        form = PleaOnlineForms("plea", "plea_form_step", self.session)
+
+        form.load(self.request_context)
+        form.save({"form-TOTAL_FORMS": "2",
+                   "form-INITIAL_FORMS": "0",
+                   "form-MAX_NUM_FORMS": "2",
+                   "form-0-guilty": "guilty",
+                   "form-0-mitigations": "lorem ipsum 1",
+                   "form-1-guilty": "guilty",
+                   "form-1-mitigations": "lorem ipsum 1"},
+                  self.request_context)
+        response = form.render()
+
+        self.assertEqual(len(form.current_stage.forms[0][0].errors), 0)
+        self.assertEqual(len(form.current_stage.forms[0][1].errors), 0)
+        self.assertEqual(response.status_code, 302)
+
     def test_plea_stage_bad_data_single_charge(self):
         self.session.update(self.plea_stage_pre_data_1_charge)
         form = PleaOnlineForms("plea", "plea_form_step", self.session)

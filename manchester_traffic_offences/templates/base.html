@@ -2,55 +2,75 @@
 
 {% load staticfiles %}
 {% block stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{% static "stylesheets/main.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "stylesheets/application.css" %}">
+<!--[if IE 6]><link href="{% static "stylesheets/application-ie6.css" %}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+<!--[if IE 7]><link href="{% static "stylesheets/application-ie7.css" %}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+<!--[if IE 8]><link href="{% static "stylesheets/application-ie8.css" %}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
 {% endblock %}
 
 {% block content %}
+
+<div class="phase-banner">
+  <p><a href="https://www.gov.uk/service-manual/phases/alpha.html" class="phase-tag">alpha</a> This is a new service - <a href="/feedback/?next=terms">your feedback</a> will help us to improve it</p>
+</div>
+<!--end phase-banner-->
+
   {%  if messages %}
-      {% for message in messages %}
-          {% if "info" in message.tags %}
-              <section class="flash success">
-                  <h2>{{ message }}</h2>
-              </section>
-          {% endif %}
-          {% if "error" in message.tags %}
-              <section class="flash error-summary">
-                  {{ message|safe }}
-              </section>
-          {% endif %}
-      {% endfor %}
+    {% for message in messages %}
+      {% if "info" in message.tags %}
+
+<section class="success-header">
+  <p>{{ message }}</p>
+</section>
+
+      {% endif %}
+      {% if "error" in message.tags %}
+
+<section class="error-summary">
+  {{ message|safe }}
+</section>
+
+      {% endif %}
+    {% endfor %}
   {% endif %}
-  {% block right %}{% endblock %}
+
   {% block page_content %}{% endblock %}
 {% endblock %}
 
+{% block footer_support_links %}
+<li><a href="http://www.gov.uk/help">Help</a></li>
+<li><a href="http://www.gov.uk/help/cookies">Cookies</a></li>
+<li><a href="http://www.gov.uk/contact">Contact</a></li>
+<li><a href="http://www.gov.uk/cymraeg" lang="cy">Cymraeg</a></li>
+{% endblock %}
+
 {% block javascripts %}
-  <script src="/static/javascripts/govuk.js" type="text/javascript"></script>
-  <script src="/static/javascripts/application.js" type="text/javascript"></script>
+<script src="/static/javascripts/vendor/jquery.details.min.js" type="text/javascript"></script>
+<script src="/static/javascripts/govuk.js" type="text/javascript"></script>
+<script src="/static/javascripts/application.js" type="text/javascript"></script>
 {% endblock %}
 
 {% block footer_top %}
-    <a href="{% url "terms" %}">Terms and Conditions and Privacy Policy</a>
+<p class="footer-top"><a href="{% url "terms" %}">Terms and Conditions and Privacy Policy</a></p>
 {% endblock footer_top %}
+
 {% block body_end %}
-{% if request.META.HTTP_HOST == "www.makeaplea.justice.gov.uk" %}
+  {% if request.META.HTTP_HOST == "www.makeaplea.justice.gov.uk" %}
 <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    
+ga('create', 'UA-53811587-1', {'cookieDomain': 'none'});
+ga('require', 'linkid', 'linkid.js');
+//ga('set', 'appVersion', '{{ version|join:"." }}');
 
-    ga('create', 'UA-53811587-1', {'cookieDomain': 'none'});
-    ga('require', 'linkid', 'linkid.js');
-    ga('set', 'appVersion', '{{ version|join:"." }}');
-    {% if case.urn %}
-    ga('set', '&uid', '{{case.urn}}'); // Set the user ID using signed-in user_id.
-    {% endif %}
-    ga('send', 'pageview');
-
-
-</script>
+{% if case.urn %}
+ga('set', '&uid', '{{case.urn}}');
 {% endif %}
+
+ga('send', 'pageview');
+</script>
+  {% endif %}
 {% endblock %}
