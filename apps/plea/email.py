@@ -52,4 +52,11 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
 
     email_send_court.delay(case.id, email_count.id, context_data)
 
+    case.add_action("Sent", "Email tasks created")
+    case.sent = True
+    case.save()
+
+    email_count.sent = True
+    email_count.save()
+
     return True
