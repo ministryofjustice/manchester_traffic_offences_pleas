@@ -1,0 +1,44 @@
+$path: '/static/images/';
+
+// GOV.UK Toolkit
+@import "stylesheets/measurements";
+@import "stylesheets/colours";
+@import "stylesheets/url-helpers";
+@import "stylesheets/conditionals";
+@import "stylesheets/css3";
+@import "stylesheets/device-pixels";
+@import "stylesheets/font_stack";
+@import "stylesheets/shims";
+@import "stylesheets/typography";
+@import "stylesheets/grid_layout";
+@import "stylesheets/design-patterns/buttons";
+@import "stylesheets/design-patterns/alpha-beta";
+
+// GOV.UK Elements
+// @import "elements/reset";
+@import "elements/helpers";
+@import "elements/buttons";
+@import "elements/details";
+@import "elements/icons";
+@import "elements/layout";
+@import "elements/lists";
+@import "elements/panels";
+@import "elements/tables";
+@import "elements/elements-typography";
+@import "elements/forms";
+@import "elements/forms/form-block-labels";
+@import "elements/forms/form-date";
+@import "elements/forms/form-validation";
+
+
+
+
+// Main CSS
+@import "templates_overrides";
+@import "forms";
+@import "typography";
+@import "elements";
+@import "main";
+
+// Shame !
+@import "shame";

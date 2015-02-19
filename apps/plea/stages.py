@@ -104,7 +104,6 @@ class PleaStage(FormStage):
         return form_data
 
     def save(self, form_data, next_step=None):
-
         clean_data = super(PleaStage, self).save(form_data, next_step)
 
         none_guilty = True
@@ -112,6 +111,8 @@ class PleaStage(FormStage):
             for form in clean_data["PleaForms"]:
                 if form["guilty"] == "guilty":
                     none_guilty = False
+        else:
+            return clean_data
 
         if none_guilty:
             self.all_data["your_money"]["complete"] = True
@@ -128,6 +129,11 @@ class YourMoneyStage(FormStage):
     template = "plea/your_money.html"
     form_classes = [YourMoneyForm]
     dependencies = ["case", "your_details", "plea"]
+
+    def render(self, request_context):
+        self.context['hide_optional'] = True
+
+        return super(YourMoneyStage, self).render(request_context)
 
     def save(self, form_data, next_step=None):
 
@@ -200,7 +206,7 @@ class ReviewStage(FormStage):
             if email_result:
                 next_step = reverse_lazy("plea_form_step", args=("complete", ))
             else:
-                self.add_message(messages.ERROR, "<h2>Submission Error</h2>Oops there seems to have been a problem submitting your plea. Please try again.")
+                self.add_message(messages.ERROR, '<h2 class="heading-medium">Submission Error</h2><p>There seems to have been a problem submitting your plea. Please try again.</p>')
                 next_step = reverse_lazy('plea_form_step', args=('review', ))
 
             self.next_step = next_step

@@ -1,0 +1,219 @@
+/*  
+====================================================
+Main styles
+====================================================
+*/
+
+
+
+/*== Start screen ==================================================*/
+.intro {
+	h2:first-child {
+		margin-top: 0;
+	}
+
+	.get-started {
+		padding-top: 1em;
+	}
+}
+
+.before-start {
+	.panel-indent {
+		.list-bullet {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+	}	
+}
+
+
+/*== Case screen =============================================*/
+
+.with-help-images {
+	.help-image {
+		display: none;
+	}
+
+	@include media(tablet) {
+		.form-group {
+			float: left;
+			margin-bottom: .5789em;
+		}
+		.help-image {
+			display: block;
+			float: right;
+			clear: right;
+			max-width: 30%;
+		}
+	}
+}
+
+/*== Expenses screen =======================================*/
+#expense-summary {
+
+	th, td {
+		@include core-19;
+		border-bottom: none;
+		font-weight: 400;
+	}
+	td {
+		text-align: right;
+	}
+
+	.total {
+		th, td {
+			font-weight: 700;
+		}
+	}
+}
+
+/*== Review screen ==========================================*/
+.review-table {
+	margin: 0 0 2em;
+	border-bottom: 1px solid $grey-2;
+
+	th,
+	td {
+		@include core-19;
+		vertical-align: top;
+	}
+
+	thead th {
+		vertical-align: bottom;
+	}
+
+	tbody {
+		th, td {
+			border-bottom: none;
+		}
+	}
+
+	.header {
+		@include bold-24();
+		width: 45%;
+		padding-right: 0;
+
+		@include media(tablet) {
+			width: 30%;
+		}
+	}
+
+	.change-link {
+		padding-right: 0;
+		text-align: right;
+	}
+
+	.label {
+		color: $grey-1;
+	}
+}
+
+#section_understand {
+	.block-label {
+		@include core-19;
+		padding: 1em;
+		margin-right: 0;
+
+		.important {
+			margin-top: 0;
+		}
+
+		input {
+			position: static;
+			margin: 0 .25em 0 0;
+			@include core-24;
+		}
+	}
+}
+
+#section_receive_email {
+	.grey {
+		@include core-19;
+		padding: 1em;
+		background: $grey-3;
+
+		ul {
+			margin-bottom: 0;
+
+			li {
+				display: inline-block;
+				margin: 0 1em 0 0;
+
+				label {
+					@include core-24;
+					padding: .5em .5em .5em 0;
+					cursor: pointer;
+
+					input {
+						vertical-align: middle;
+					}
+				}
+			}
+		}
+	}
+}
+
+/*== Complete screen ===============================================*/
+
+
+#content .success-header {
+	margin: 2em 0;
+	padding: 40px;
+	background: $turquoise;
+	color: $white;
+
+	h1,
+	p {
+		margin: 0;
+	}
+	h1 {
+		@include bold-36();
+	}
+	p {
+		@include bold-24();
+	}
+
+	.ticked {
+		padding-left: 40px;
+		background: url(../images/icons/tick.png) 0 7px no-repeat;
+	}
+}
+
+.what-next {
+	ol {
+		margin: 0;
+
+		li {
+			counter-increment: item;
+			margin-bottom: 5px;
+
+			&:before {
+				content: counter(item) ". ";
+				display: inline-block;
+				@include bold-19();
+				margin-right: .25em;
+				width: 1em;
+			}
+		}
+	}
+}
+
+/*== Terms ==========================================================*/
+.cookies-table {
+	margin-bottom: 1em;
+
+	th, td {
+		@include core-19;
+		vertical-align: top;
+	}
+	th {
+		font-weight: 700;
+	}
+
+	.name {
+		width: 10%;
+	}
+	.purpose {
+		width: 60%;
+	}
+}

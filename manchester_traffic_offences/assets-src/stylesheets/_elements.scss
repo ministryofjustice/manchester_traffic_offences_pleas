@@ -1,0 +1,66 @@
+/*  
+====================================================
+Elements
+====================================================
+*/
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid $grey-2;
+    margin: 1em 0 2em;
+    padding: 0;
+}
+
+.content-header {
+	margin: 0 0 2em;
+
+	h1 {
+		margin-bottom: .25em;
+	}
+}
+
+.related {
+	padding-top: 5px;
+	border-top: 10px solid $govuk-blue;
+
+	h3 {
+		margin-top: 10px;
+	}
+}
+
+p.important {
+	padding: 7px 0 0 40px;
+	min-height: 27px;
+	background: url(../images/icons/icon-important.png) no-repeat top left;
+}
+
+.panel-indent {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.move-up {
+	@include media(tablet) {
+		margin-top: -.75em;
+	}
+}
+
+// It turns out that IE6 can handle dat javascriptz
+@include ie(6) {
+	.js-hidden {
+		display: none;
+	}
+}
+
+#content {
+	img {
+		max-width: 100%;
+		height: auto;
+
+		@include ie-lte(8) {
+			width: inherit;
+		}
+	}
+}
