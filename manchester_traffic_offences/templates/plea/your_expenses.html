@@ -5,7 +5,7 @@
 {% load staticfiles testing %}
 
 {% block page_content %}
-<form method="POST" autocomplete="off">
+<form action="{{ request.path }}" method="post" autocomplete="off">
     
     {% csrf_token %}
     
@@ -124,7 +124,7 @@
         </div>
     {% endwith %}
 
-    <div class="js-enabled">
+    <div class="js-enabled-only">
         
         <hr>
 
@@ -149,7 +149,7 @@
         
     </div>
 
-    <div class="form-group">
+    <div class="form-group form-submit">
         <button class="button" type="submit">Continue</button>
     </div>
 

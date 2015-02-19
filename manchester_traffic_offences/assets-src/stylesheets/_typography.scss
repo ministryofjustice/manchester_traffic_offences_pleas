@@ -14,6 +14,10 @@ ol,
 address,
 summary {
 	@include core-19;
+
+	@include ie-lte(7) {
+		margin-left: 0;
+	}
 }
 
 address {
