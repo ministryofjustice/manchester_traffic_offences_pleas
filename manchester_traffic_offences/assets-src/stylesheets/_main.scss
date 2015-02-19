@@ -28,7 +28,8 @@ Main styles
 
 
 /*== Case screen =============================================*/
-.has-image {
+
+.with-help-images {
 	.help-image {
 		display: none;
 	}
@@ -36,6 +37,7 @@ Main styles
 	@include media(tablet) {
 		.form-group {
 			float: left;
+			margin-bottom: .5789em;
 		}
 		.help-image {
 			display: block;
@@ -110,6 +112,7 @@ Main styles
 	.block-label {
 		@include core-19;
 		padding: 1em;
+		margin-right: 0;
 
 		.important {
 			margin-top: 0;
@@ -152,7 +155,8 @@ Main styles
 
 /*== Complete screen ===============================================*/
 
-.success-header {
+
+#content .success-header {
 	margin: 2em 0;
 	padding: 40px;
 	background: $turquoise;
