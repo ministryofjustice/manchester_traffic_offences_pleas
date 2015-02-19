@@ -135,15 +135,14 @@ class CourtEmailCount(models.Model):
     sc_guilty_char_count = models.PositiveIntegerField(default=0)
     sc_not_guilty_char_count = models.PositiveIntegerField(default=0)
 
-    status = models.CharField(
-        max_length=30, choices=STATUS_CHOICES, null=True, blank=True)
-    status_info = models.TextField(null=True, blank=True)
+    sent = models.BooleanField(null=False, default=False)
+    processed = models.BooleanField(null=False, default=False)
 
     objects = CourtEmailCountManager()
 
     def get_status_from_case(self, case_obj):
-        self.status = case_obj.status
-        self.status_info = case_obj.status_info
+        self.sent = case_obj.sent
+        self.processed = case_obj.processed
 
     def get_from_context(self, context):
         if not "plea" in context:
@@ -200,7 +199,7 @@ class CaseManager(models.Manager):
     def can_use_urn(self, urn):
         return not self.filter(
             urn__iexact=urn,
-            status__in=["sent", "receipt_success"]).exists()
+            sent=True).exists()
 
 
 class Case(models.Model):
@@ -213,11 +212,29 @@ class Case(models.Model):
 
     urn = models.CharField(max_length=16, db_index=True)
     name = models.CharField(max_length=255, null=True, blank=True)
-
-    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default="created_not_sent")
-    status_info = models.TextField(null=True, blank=True)
+    sent = models.BooleanField(null=False, default=False)
+    processed = models.BooleanField(null=False, default=False)
 
     objects = CaseManager()
+
+    def add_action(self, status, status_info):
+        self.actions.create(status=status, status_info=status_info)
+
+    def has_action(self, status):
+        return self.actions.filter(status=status).exists()
+
+    def get_actions(self, status):
+        return self.actions.filter(status=status)
+
+
+class CaseAction(models.Model):
+    case = models.ForeignKey(Case, related_name="actions", null=False, blank=False)
+    date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=50, null=False, blank=False)
+    status_info = models.TextField(null=True, blank=True)
+
+    class Meta:
+        get_latest_by = 'date'
 
 
 class UsageStatsManager(models.Manager):
