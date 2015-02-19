@@ -5,7 +5,7 @@
 {% load staticfiles %}
 
 {% block page_content %}
-<form method="POST" autocomplete="off">
+<form action="{{ request.path }}" method="post" autocomplete="off">
 
     {% csrf_token %}
     
@@ -67,21 +67,19 @@
         <h1 class="heading-xlarge">Case details</h1>
     </header>
 
-    <div class="has-image">
+    <div class="with-help-images">
         {% with form.urn as field %}
             {% include "widgets/std_field.html" %}
         {% endwith %}
 
         <div class="help-image">
             <img src="{% static "images/img-urn.png" %}" alt="The URN and Court Hearing Date are found on page 1 of the pack" width="260" height="340">
-        </div>    
-    </div>
+        </div>
     
-    {% with form.date_of_hearing as field %}
-        {% include "widgets/date_field.html" %}
-    {% endwith %}
+        {% with form.date_of_hearing as field %}
+            {% include "widgets/date_field.html" %}
+        {% endwith %}
 
-    <div class="has-image">
         {% with form.number_of_charges as field %}
             {% include "widgets/std_field.html" %}
         {% endwith %}
@@ -89,11 +87,11 @@
         <div class="help-image">
             <img src="{% static "images/img-charge.png" %}" alt="The number of charges is found on page 2 of the pack" width="260" height="185">
         </div>
-    </div>
     
 
-    <div class="form-group">
-        <button class="button" type="submit">Continue</button>
+        <div class="form-group form-submit">
+            <button class="button" type="submit">Continue</button>
+        </div>
     </div>
     {% endwith %}
 </form>

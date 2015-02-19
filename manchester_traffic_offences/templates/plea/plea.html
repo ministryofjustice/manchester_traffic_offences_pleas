@@ -7,7 +7,7 @@
 {% block page_content %}
 
     {% with request.session.case.number_of_charges as charges %}
-<form method="POST" autocomplete="off">
+<form action="{{ request.path }}" method="post" autocomplete="off">
 
     {% csrf_token %}
 
@@ -49,7 +49,7 @@
             
             <div class="form-group form-group-compound inline{%  if form.guilty.errors %} with-error{% endif %}">
                 
-                {{ form.guilty.errors }}
+                <span class="validation-message">{{ form.guilty.errors }}</span>
 
                 {% for choice in form.guilty %}
                 <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label" data-target="{{ choice.name }}_{{ choice.choice_value }}_extra {{ form.mitigations.id_for_label }}">
@@ -61,7 +61,7 @@
 
             <div id="section_mitigations_{{ forloop.counter }}" class="panel-indent form-group">
                 <div id="{{ form.guilty.0.name }}_not_guilty_extra" class="js-hidden">
-                    <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Not guilty because?
+                    <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Not guilty because? <span class="form-hint-inline">(optional)</span>
                         <span class="form-hint">Tell us why you believe you are not guilty.</span>
                     </label>
                 </div>
@@ -83,7 +83,7 @@
 
     {% endwith %}
 
-    <div class="form-group">
+    <div class="form-group form-submit">
         <button class="button" type="submit">Continue</button>
     </div>
 </form>
