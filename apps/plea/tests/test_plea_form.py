@@ -109,7 +109,7 @@ class TestMultiPleaForms(TestCase):
 
         case = Case()
         case.urn = "00/AA/0000000/00"
-        case.status = "sent"
+        case.sent = True
         case.save()
 
         form = PleaOnlineForms("case", "plea_form_step", self.session)
@@ -721,23 +721,19 @@ class TestMultiPleaForms(TestCase):
 
         case = Case()
         case.urn = urn
-        case.status = "sent"
+        case.sent = True
         case.save()
 
         self.session['case'] = dict(urn=urn)
 
-        stages = ['case', 'your_details', 'plea', 'your_money', 'review', 'complete']
+        form = PleaOnlineForms("case", "plea_form_step", self.session)
+        form.load(self.request_context)
+        form.save({}, self.request_context)
 
-        for stage in stages:
+        response = form.render()
 
-            form = PleaOnlineForms(stage, "plea_form_step", self.session)
-            form.load(self.request_context)
-            form.save({}, self.request_context)
-
-            response = form.render()
-
-            self.assertEqual(response.status_code, 302)
-            self.assertEqual(response.url, reverse('urn_already_used'))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('urn_already_used'))
 
     def test_urn_not_success_is_not_blocked(self):
 

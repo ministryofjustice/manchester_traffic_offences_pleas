@@ -81,14 +81,17 @@ class TestProcessReceipts(TestCase):
 
         self.case = Case.objects.create(
             urn=self.urn,
-            status="sent"
+            sent=True,
+            processed=False
         )
 
         self.email_count = CourtEmailCount.objects.create(
             hearing_date=self.doh,
             total_pleas=1,
             total_guilty=1,
-            total_not_guilty=0
+            total_not_guilty=0,
+            sent=True,
+            processed=False
         )
 
         patcher = patch('apps.receipt.process.get_receipt_emails')
@@ -148,9 +151,9 @@ class TestProcessReceipts(TestCase):
         case_obj = Case.objects.get(pk=self.case.id)
         count_obj = CourtEmailCount.objects.get(pk=self.email_count.id)
 
-        self.assertEquals(case_obj.status, "receipt_success")
-        self.assertEquals(case_obj.status, count_obj.status)
-        self.assertEquals(case_obj.status_info, count_obj.status_info)
+        self.assertTrue(case_obj.has_action("receipt_success"))
+        self.assertEquals(case_obj.sent, count_obj.sent)
+        self.assertEquals(case_obj.processed, count_obj.processed)
 
         self.assertEqual(ReceiptLog.objects.all().count(), 1)
         log = ReceiptLog.objects.latest('id')
@@ -175,9 +178,9 @@ class TestProcessReceipts(TestCase):
         case_obj = Case.objects.get(pk=self.case.id)
         count_obj = CourtEmailCount.objects.get(pk=self.email_count.id)
 
-        self.assertEquals(case_obj.status, "receipt_failure")
-        self.assertEquals(case_obj.status, count_obj.status)
-        self.assertEquals(case_obj.status_info, count_obj.status_info)
+        self.assertTrue(case_obj.has_action("receipt_failure"))
+        self.assertEquals(case_obj.sent, count_obj.sent)
+        self.assertEquals(case_obj.processed, count_obj.processed)
 
         self.assertEqual(ReceiptLog.objects.all().count(), 1)
         log = ReceiptLog.objects.latest('id')
@@ -244,9 +247,9 @@ class TestProcessReceipts(TestCase):
         case_obj = Case.objects.get(pk=self.case.id)
         count_obj = CourtEmailCount.objects.get(pk=self.email_count.id)
 
-        self.assertEquals(case_obj.status, "receipt_success")
-        self.assertEquals(case_obj.status, count_obj.status)
-        self.assertEquals(case_obj.status_info, count_obj.status_info)
+        self.assertTrue(case_obj.has_action("receipt_success"))
+        self.assertEquals(case_obj.sent, count_obj.sent)
+        self.assertEquals(case_obj.processed, count_obj.processed)
 
         log = ReceiptLog.objects.latest('id')
         self.assertEqual(log.total_emails, 1)
@@ -256,8 +259,9 @@ class TestProcessReceipts(TestCase):
 
         self.assertEqual(case.urn, updated_urn)
 
-        self.assertIn(self.urn, case.status_info)
-        self.assertIn("URN CHANGED!", case.status_info)
+        action = case.actions.latest()
+        self.assertIn(self.urn, action.status_info)
+        self.assertIn("URN CHANGED!", action.status_info)
 
     def test_monitoring_email_is_sent_when_enabled(self):
 
