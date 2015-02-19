@@ -1,10 +1,12 @@
-{% load debug %}
-<section>
-    <a id="section_{{ field.name }}" name="section_{{ field.name }}"></a>
-    <div class="section full{%  if field.errors %} error{% endif %}">
-        <label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %} <span class="form-hint">(optional)</span>{% endif %}</label>
-        <span class="validation-message">{{ field.errors }}</span>
-        <p class="form-hint datefield-hint">{{ field.help_text|safe }}</p>
-        {{ field }}
+<div class="form-group{% if field.errors %} with-error{% endif %}" id="section_{{ field.name }}">
+    <label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required and not hide_optional %} <span class="form-hint-inline">(optional)</span>{% endif %}
+    	{% if field.help_text %}
+    	<span class="form-hint">{{ field.help_text|safe }}</span>
+    	{% endif %}
+
+    	{{ field.errors }}
+    </label>
+    <div class="form-field">
+	    {{ field }}
     </div>
-</section>
+</div>

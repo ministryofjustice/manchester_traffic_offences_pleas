@@ -1,159 +1,180 @@
 {% extends "plea/base.html" %}
+
 {% load staticfiles %}
+
 {% block page_title %}{{ block.super }} Your Finances{% endblock %}
+
 {% block page_content %}
+<form action="{{ request.path }}" method="post" autocomplete="off">
 
-<div class="full-width group">
-    <div class="main" id="your-money">
-        <form method=POST class="pleaform form" autocomplete="off">
+    {% csrf_token %}
 
-            {% csrf_token %}
-            {% with forms.0 as form %}
-            {% if form.errors %}
-            <section class="flash error-summary">
-                <h2 id="error-heading">You need to fix the errors on this page before continuing.</h2>
-                <p>See highlighted errors below.</p>
-                <ul>
-                    {% for field in form %}
-                    {% if field.errors %}
-                    <li><a class="error-link"
-                           href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
-                    {% endif %}
-                    {% endfor %}
-                </ul>
-            </section>
-            {% endif %}
+    {% with forms.0 as form %}
+    
+        {% if form.errors %}
+        <section class="error-summary">
+            <h2 class="heading-medium">You need to fix the errors on this page before continuing.</h2>
 
-            <h1>Your finances</h1>
-
-            <ul class="list-bullet">
-                <li>For this type of offence you'll usually have to pay a fine</li>
-                <li>You must provide your income details</li>
-                <li>The court will decide your fine based on your finances and the seriousness of the offence</li>
-                <li>Your details will be stored securely by the court</li>
+            <p>See highlighted errors below.</p>
+            
+            <ul class="errors-list">
+            {% for field in form %}
+                {% if field.errors %}
+                <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
+                {% endif %}
+            {% endfor %}
             </ul>
+        </section>
+        {% endif %}
 
-            <section>
-                <a id="section_{{ form.you_are.name }}" name="section_{{ form.you_are.name }}"></a>
-                {{ form.you_are.label_tag }}
-                <div class="section full{%  if form.you_are.errors %} error{% endif %}">
-                    <span class="validation-message">{{ form.you_are.errors }}</span>
-                    <p class="form-hint datefield-hint">{{ form.you_are.help_text|safe }}</p>
-                    {{ form.you_are }}
-                </div>
-            </section>
+    <header class="content-header">
+        <h1 class="heading-xlarge">Your finances</h1>
+    </header>
 
-            <div class="form-panel">
-                <div class="js-hidden" id="section-employed">
-                    {% with form.employed_your_job as field %}
-                    {% include "widgets/std_field_panel.html" %}
-                    {% endwith %}
+    <ul class="list-bullet">
+        <li>For this type of offence you'll usually have to pay a fine</li>
+        <li>You must provide your income details</li>
+        <li>The court will decide your fine based on your finances and the seriousness of the offence</li>
+        <li>Your details will be stored securely by the court</li>
+    </ul>
 
-                    {% with form.employed_take_home_pay_period as field %}
-                    {% include "widgets/std_field_panel.html" %}
-                    {% endwith %}
+    <div id="section_{{ form.you_are.name }}">
 
-                    {% with form.employed_take_home_pay_amount as field %}
-                    {% include "widgets/money_field_panel.html" %}
-                    {% endwith %}
+        {% with form.you_are as field %}
+        {% include "widgets/radio_field.html" %}
+        {% endwith %}
+            
+        <div class="move-up js-hidden" id="section-employed">
 
-                    {% with form.employed_hardship as field %}
-                    {% include "widgets/std_field_panel.html" %}
-                    {% endwith %}
+            <div class="panel-indent">
+            
+                {% with form.employed_your_job as field %}
+                {% include "widgets/std_field.html" %}
+                {% endwith %}
 
-                    <div class="section field-indent block employed_hardship employed_hardship-True">
-                        <h4>Note:</h4>
-                        <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
-                    </div>
-                </div>
+                {% with form.employed_take_home_pay_period as field %}
+                {% include "widgets/radio_field.html" %}
+                {% endwith %}
 
-                <div class="js-hidden" id="section-self-employed">
-                    <strong class="js-hidden">If you're self employed, please complete the following</strong>
+                {% with form.employed_take_home_pay_amount as field %}
+                {% include "widgets/money_field.html" %}
+                {% endwith %}
 
-                    {% with form.your_job as field %}
-                    {% include "widgets/std_field_panel.html" %}
-                    {% endwith %}
+                {% with form.employed_hardship as field %}
+                {% include "widgets/radio_field.html" %}
+                {% endwith %}
 
-                    {% with form.self_employed_pay_period as field %}
-                    {% include "widgets/std_field_panel.html" %}
-                    {% endwith %}
-                    <div class="js-hidden" id="section-self-employed-other">
-                        {% with form.self_employed_pay_other as field %}
-                        {% include "widgets/std_field_panel.html" %}
-                        {% endwith %}
-                    </div>
-                    {% with form.self_employed_pay_amount as field %}
-                    {% include "widgets/money_field_panel.html" %}
-                    {% endwith %}
-
-                    {% with form.self_employed_hardship as field %}
-                    {% include "widgets/std_field_panel.html" %}
-                    {% endwith %}
-
-                    <div class="section field-indent block self_employed_hardship self_employed_hardship-True">
-                        <h4>Note:</h4>
-                        <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
-                    </div>
+                <div class="employed_hardship employed_hardship-True">
+                    <h4 class="heading-small">Note:</h4>
+                    <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                 </div>
 
-                <div class="js-hidden" id="section-receiving-benefits">
-                    <strong class="js-hidden">If you're receiving benefits, please complete the following</strong>
-                    {% with form.benefits_details as field %}
-                    {% include "widgets/std_field_panel.html" %}
-                    {% endwith %}
-
-                    {% with form.benefits_dependents as field %}
-                    {% include "widgets/std_field_panel.html" %}
-                    {% endwith %}
-
-                    {% with form.benefits_period as field %}
-                    {% include "widgets/std_field_panel.html" %}
-                    {% endwith %}
-                    <div class="js-hidden" id="section-benefits-other">
-                        {% with form.benefits_pay_other as field %}
-                        {% include "widgets/std_field_panel.html" %}
-                        {% endwith %}
-                    </div>
-                    {% with form.benefits_amount as field %}
-                    {% include "widgets/money_field_panel.html" %}
-                    {% endwith %}
-
-                    {% with form.receiving_benefits_hardship as field %}
-                    {% include "widgets/std_field_panel.html" %}
-                    {% endwith %}
-
-                    <div class="section field-indent block receiving_benefits_hardship receiving_benefits_hardship-True">
-                        <h4>Note:</h4>
-                        <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
-                    </div>
-                </div>
-
-                <div class="js-hidden" id="section-other">
-                    {% with form.other_details as field %}
-                    {% include "widgets/std_field_panel.html" %}
-                    {% endwith %}
-
-                    {% with form.other_pay_amount as field %}
-                    {% include "widgets/money_field_panel.html" %}
-                    {% endwith %}
-
-                    {% with form.other_hardship as field %}
-                    {% include "widgets/std_field_panel.html" %}
-                    {% endwith %}
-
-                    <div class="section field-indent block other_hardship other_hardship-True">
-                        <h4>Note:</h4>
-                        <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
-                    </div>
-                </div>
             </div>
+        </div>
 
-            {% endwith %}
-            <div class="actions">
-                <button class="button" type=submit>Continue</button>
+        <div class="move-up js-hidden" id="section-self-employed">
+
+            <div class="panel-indent">
+
+                {% with form.your_job as field %}
+                {% include "widgets/std_field.html" %}
+                {% endwith %}
+
+                {% with form.self_employed_pay_period as field %}
+                {% include "widgets/radio_field.html" %}
+                {% endwith %}
+
+                <div class="move-up js-hidden" id="section-self-employed-other">
+                    {% with form.self_employed_pay_other as field %}
+                    {% include "widgets/std_field.html" %}
+                    {% endwith %}
+                </div>
+
+                {% with form.self_employed_pay_amount as field %}
+                {% include "widgets/money_field.html" %}
+                {% endwith %}
+
+                {% with form.self_employed_hardship as field %}
+                {% include "widgets/radio_field.html" %}
+                {% endwith %}
+
+                <div class="self_employed_hardship self_employed_hardship-True">
+                    <h4 class="heading-small">Note:</h4>
+                    <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
+                </div>
+
             </div>
+        </div>
 
-        </form>
+        <div class="move-up js-hidden" id="section-receiving-benefits">
+
+            <div class="panel-indent">
+
+                {% with form.benefits_details as field %}
+                {% include "widgets/std_field.html" %}
+                {% endwith %}
+
+                {% with form.benefits_dependents as field %}
+                {% include "widgets/std_field.html" %}
+                {% endwith %}
+
+                {% with form.benefits_period as field %}
+                {% include "widgets/radio_field.html" %}
+                {% endwith %}
+
+                <div class="move-up js-hidden" id="section-benefits-other">
+                    {% with form.benefits_pay_other as field %}
+                    {% include "widgets/std_field.html" %}
+                    {% endwith %}
+                </div>
+
+                {% with form.benefits_amount as field %}
+                {% include "widgets/money_field.html" %}
+                {% endwith %}
+
+                {% with form.receiving_benefits_hardship as field %}
+                {% include "widgets/radio_field.html" %}
+                {% endwith %}
+
+                <div class="receiving_benefits_hardship receiving_benefits_hardship-True">
+                    <h4 class="heading-small">Note:</h4>
+                    <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="move-up js-hidden" id="section-other">
+
+            <div class="panel-indent">
+
+                {% with form.other_details as field %}
+                {% include "widgets/std_field.html" %}
+                {% endwith %}
+
+                {% with form.other_pay_amount as field %}
+                {% include "widgets/money_field.html" %}
+                {% endwith %}
+
+                {% with form.other_hardship as field %}
+                {% include "widgets/radio_field.html" %}
+                {% endwith %}
+
+                <div class="other_hardship other_hardship-True">
+                    <h4 class="heading-small">Note:</h4>
+                    <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
+                </div>
+
+            </div>
+        </div>
+
     </div>
-</div>
+
+    {% endwith %}
+
+    <div class="form-group form-submit">
+        <button class="button" type="submit">Continue</button>
+    </div>
+
+</form>
 {% endblock page_content %}

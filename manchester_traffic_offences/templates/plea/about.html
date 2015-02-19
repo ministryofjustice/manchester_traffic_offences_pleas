@@ -1,51 +1,55 @@
 {% extends "plea/base.html" %}
+
 {% block page_title %}{{ block.super }} Your details{% endblock %}
+
 {% load staticfiles %}
+
 {% block page_content %}
+<form action="{{ request.path }}" method="post" autocomplete="off">
+    
+    {% csrf_token %}
+    
+    {% with forms.0 as form %}
+        
+        {% if form.errors %}
+        <section class="error-summary">
+            <h2 class="heading-medium">You need to fix the errors on this page before continuing.</h2>
 
-    <div class="full-width group">
-        <div class="main">
-            <form method=POST class="pleaform form" autocomplete="off">
-                {% csrf_token %}
-                {% with forms.0 as form %}
-                    {% if form.errors %}
-                        <section class="flash error-summary">
-                            <h2 id="error-heading">You need to fix the errors on this page before continuing.</h2>
-                            <p>See highlighted errors below.</p>
-                            <ul>
-                                {% for field in form %}
-                                    {% if field.errors %}
-                                        <li><a class="error-link"
-                                               href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </section>
+            <p>See highlighted errors below.</p>
+
+            <ul class="errors-list">
+                {% for field in form %}
+                    {% if field.errors %}
+                <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
                     {% endif %}
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
 
+        <header class="content-header">
+            <h1 class="heading-xlarge">Your details</h1>
 
-                    <h1 id="your-details">Your details</h1>
-                    <p>We need these in case we have to get in touch with you about your plea.</p>
+            <p class="lede">We need these in case we have to get in touch with you about your plea.</p>
+        </header>
 
-                    {% with form.name as field %}
-                        {% include "widgets/std_field.html" %}
-                    {% endwith %}
+        {% with form.name as field %}
+            {% include "widgets/std_field.html" %}
+        {% endwith %}
 
-                    {% with form.contact_number as field %}
-                        {% include "widgets/std_field.html" %}
-                    {% endwith %}
+        {% with form.contact_number as field %}
+            {% include "widgets/std_field.html" %}
+        {% endwith %}
 
-                    {% with form.email as field %}
-                        {% include "widgets/std_field.html" %}
-                    {% endwith %}
+        {% with form.email as field %}
+            {% include "widgets/std_field.html" %}
+        {% endwith %}
 
-                {% endwith %}
+    {% endwith %}
 
-                <div class="actions">
-                    <button class="button" type=submit>Continue</button>
-                </div>
-
-            </form>
-        </div>
+    <div class="form-group form-submit">
+        <button class="button" type="submit">Continue</button>
     </div>
+
+</form>
 {% endblock page_content %}

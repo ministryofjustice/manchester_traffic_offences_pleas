@@ -30,32 +30,37 @@ class BasePleaStepForm(forms.Form):
 
 class CaseForm(BasePleaStepForm):
     urn = URNField(label="Unique reference number (URN)",
-                   required=True, help_text="On page 1 of the pack, in the top right corner",
+                   required=True,
+                   help_text="On page 1 of the pack, in the top right corner",
                    error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]},
                    validators=[is_urn_not_used])
 
-    date_of_hearing = forms.DateField(widget=HearingDateWidget, validators=[is_date_in_future],
+    date_of_hearing = forms.DateField(label="Court hearing date", widget=HearingDateWidget, validators=[is_date_in_future],
                                       required=True,
-                                      help_text="On page 1 of the pack, near the top on the left<br>For example, 30/07/2014",
+                                      help_text="On page 1 of the pack, near the top on the left.<br>For example, 30/07/2014",
                                       error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"],
                                                       "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
 
     number_of_charges = forms.IntegerField(label="Number of charges against you",
-                                           widget=forms.TextInput(attrs={"maxlength": "7", "pattern": "[0-9]+"}),
+                                           widget=forms.TextInput(attrs={"maxlength": "7", "pattern": "[0-9]+", "class": "form-control-inline", "size": "2"}),
                                            help_text="On page 2 of the pack, in numbered boxes.<br>For example, 1",
                                            min_value=1, max_value=10,
                                            error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]})
 
 
 class YourDetailsForm(BasePleaStepForm):
-    name = forms.CharField(max_length=100, required=True, label="Full name",
+    name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                           max_length=100, required=True, label="Full name",
                            help_text="On page 1 of the pack we sent you",
                            error_messages={"required": ERROR_MESSAGES["FULL_NAME_REQUIRED"]})
-    contact_number = forms.CharField(max_length=30, required=True, label="Contact number",
+    contact_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                                     max_length=30, required=True, label="Contact number",
                                      help_text="Home or mobile number.",
                                      error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
-    email = forms.EmailField(required=getattr(settings, "EMAIL_REQUIRED", True), label="Email", help_text="If you choose to we will use this email address for all future correspondence regarding your case, including the court's decision.",
+    email = forms.EmailField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                             required=getattr(settings, "EMAIL_REQUIRED", True), 
+                             label="Email",
                              error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
                                              "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
@@ -82,17 +87,21 @@ class YourMoneyForm(BasePleaStepForm):
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
     # Employed
-    employed_your_job = forms.CharField(required=False, max_length=500, label="What's your job?",
-                                        error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"]})
+    employed_your_job = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                                        required=False, max_length=500, label="What's your job?",
+                                        error_messages={"required": ERROR_MESSAGES["YOUR_JOB_REQUIRED"]})
+
     employed_take_home_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                       choices=PERIOD_CHOICES, required=False,
                                                       label="How often do you get paid?",
                                                       error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                                       "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
     employed_take_home_pay_amount = forms.CharField(label="What's your take home pay (after tax)?", required=False,
-                                                    widget=forms.TextInput(attrs={"maxlength": "7", "class": "amount",
+                                                    widget=forms.TextInput(attrs={"maxlength": "7",
                                                                                   "data-label-template-value": "employed_take_home_pay_period",
-                                                                                  "data-label-template": "What's your {0} take home pay (after tax)?"}),
+                                                                                  "data-label-template": "What's your {0} take home pay (after tax)?",
+                                                                                  "size": "10",
+                                                                                  "class": "form-control-inline"}),
                                                     error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                                     "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
@@ -104,7 +113,8 @@ class YourMoneyForm(BasePleaStepForm):
                                                required=False)
 
     # Self employed
-    your_job = forms.CharField(required=False, max_length=100, label="What's your job?",
+    your_job = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                               required=False, max_length=100, label="What's your job?",
                                error_messages={"required": ERROR_MESSAGES["YOUR_JOB_REQUIRED"]})
     self_employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                  choices=SE_PERIOD_CHOICES, required=False,
@@ -112,13 +122,15 @@ class YourMoneyForm(BasePleaStepForm):
                                                  error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                                  "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
     self_employed_pay_amount = forms.CharField(label="What's your average take home pay?", required=False,
-                                               widget=forms.TextInput(attrs={"maxlength": "7", "class": "amount",
+                                               widget=forms.TextInput(attrs={"maxlength": "7",
                                                                              "data-label-template-value": "self_employed_pay_period",
-                                                                             "data-label-template": "What's your average {0} take home pay?"}),
+                                                                             "data-label-template": "What's your average {0} take home pay?",
+                                                                             "size": "10",
+                                                                             "class": "form-control-inline"}),
                                                error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                                "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
     self_employed_pay_other = forms.CharField(required=False, max_length=500, label="",
-                                              widget=forms.Textarea(attrs={"rows": "2"}),
+                                              widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
                                               help_text="Tell us about how often you get paid")
 
     self_employed_hardship = forms.TypedChoiceField(label="Would paying a fine cause you serious financial problems?",
@@ -130,7 +142,7 @@ class YourMoneyForm(BasePleaStepForm):
 
     # On benefits
     benefits_details = forms.CharField(required=False, max_length=500, label="Which benefits do you receive?",
-                                       widget=forms.Textarea(attrs={"rows": "2"}))
+                                       widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}))
     benefits_dependents = forms.ChoiceField(required=False, widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YES_NO,
                                             label="Does this include payment for dependants?")
@@ -140,12 +152,14 @@ class YourMoneyForm(BasePleaStepForm):
                                         error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                         "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
     benefits_pay_other = forms.CharField(required=False, max_length=500, label="",
-                                         widget=forms.Textarea(attrs={"rows": "2"}),
+                                         widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
                                          help_text="Tell us about how often you get paid")
     benefits_amount = forms.CharField(label="What's your average take home pay?", required=False,
-                                      widget=forms.TextInput(attrs={"maxlength": "7", "class": "amount",
+                                      widget=forms.TextInput(attrs={"maxlength": "7",
                                                                     "data-label-template-value": "benefits_period",
-                                                                    "data-label-template": "What's your average {0} take home pay?"}),
+                                                                    "data-label-template": "What's your average {0} take home pay?",
+                                                                    "size": "10",
+                                                                    "class": "form-control-inline"}),
                                       error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                       "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
@@ -159,9 +173,12 @@ class YourMoneyForm(BasePleaStepForm):
     # Other
     other_details = forms.CharField(required=False, max_length=500, label="Please provide details",
                                     help_text="eg retired, student etc.",
-                                    widget=forms.TextInput, error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
+                                    widget=forms.TextInput(attrs={"class": "form-control"}), 
+                                    error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
     other_pay_amount = forms.CharField(label="What is your monthly disposable income?", required=False,
-                                       widget=forms.TextInput(attrs={"maxlength": "7", "class": "amount"}),
+                                       widget=forms.TextInput(attrs={"maxlength": "7", 
+                                                                     "size": "10",
+                                                                     "class": "form-control-inline"}),
                                        error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                        "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
@@ -180,7 +197,7 @@ class YourMoneyForm(BasePleaStepForm):
         except IndexError:
             data = {}
 
-        if "you_are" in data:
+        if "you_are" in data:                
             if data["you_are"] == "Employed":
                 self.fields["employed_your_job"].required = True
                 self.fields["employed_take_home_pay_period"].required = True
@@ -210,16 +227,17 @@ class YourExpensesForm(BasePleaStepForm):
     hardship_details = forms.CharField(
         label="How would paying a fine cause you serious financial problems?",
         help_text="What should the court consider when deciding on any possible fine?",
-        widget=forms.Textarea(attrs={'cols': 45, 'rows': 5}),
+        widget=forms.Textarea(attrs={'cols': 45, 'rows': 5, "class": "form-control"}),
         required=True,
         error_messages={'required': ERROR_MESSAGES['HARDSHIP_DETAILS_REQUIRED']})
 
     household_accommodation = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Accommodation",
         help_text="Rent, mortgage or lodgings",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_ACCOMMODATION_REQUIRED'],
                         'invalid': ERROR_MESSAGES['HOUSEHOLD_ACCOMMODATION_INVALID'],
                         'min_value': ERROR_MESSAGES['HOUSEHOLD_ACCOMMODATION_MIN']})
@@ -227,9 +245,10 @@ class YourExpensesForm(BasePleaStepForm):
     household_utility_bills = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Utility bills",
         help_text="Gas, water, electricity etc",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_UTILITY_BILLS_REQUIRED'],
                         'invalid': ERROR_MESSAGES['HOUSEHOLD_UTILITY_BILLS_INVALID'],
                         'min_value': ERROR_MESSAGES['HOUSEHOLD_UTILITY_BILLS_MIN']})
@@ -237,9 +256,10 @@ class YourExpensesForm(BasePleaStepForm):
     household_insurance = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Insurance",
         help_text="Home, life insurance etc",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_REQUIRED'],
                         'invalid': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_INVALID'],
                         'min_value': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_MIN']})
@@ -247,8 +267,9 @@ class YourExpensesForm(BasePleaStepForm):
     household_council_tax = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Council tax",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_REQUIRED'],
                         'invalid': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_INVALID'],
                         'min_value': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_MIN']})
@@ -262,9 +283,10 @@ class YourExpensesForm(BasePleaStepForm):
     other_tv_subscription = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Television subscription",
         help_text="TV licence, satellite etc",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['OTHER_TV_SUBSCRIPTION_REQUIRED'],
                         'invalid': ERROR_MESSAGES['OTHER_TV_SUBSCRIPTION_INVALID'],
                         'min_value': ERROR_MESSAGES['OTHER_TV_SUBSCRIPTION_MIN']})
@@ -272,9 +294,10 @@ class YourExpensesForm(BasePleaStepForm):
     other_travel_expenses = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Travel expenses",
         help_text="Fuel, car, public transport etc",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['OTHER_TRAVEL_EXPENSES_REQUIRED'],
                         'invalid': ERROR_MESSAGES['OTHER_TRAVEL_EXPENSES_INVALID'],
                         'min_value': ERROR_MESSAGES['OTHER_TRAVEL_EXPENSES_MIN']})
@@ -282,9 +305,10 @@ class YourExpensesForm(BasePleaStepForm):
     other_telephone = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Telephone",
         help_text="Landline and/or mobile",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['OTHER_TELEPHONE_REQUIRED'],
                         'invalid': ERROR_MESSAGES['OTHER_TELEPHONE_INVALID'],
                         'min_value': ERROR_MESSAGES['OTHER_TELEPHONE_MIN']})
@@ -292,9 +316,10 @@ class YourExpensesForm(BasePleaStepForm):
     other_loan_repayments = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Loan repayments",
         help_text="Credit card, bank etc",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['OTHER_LOAN_REPAYMENTS_REQUIRED'],
                         'invalid': ERROR_MESSAGES['OTHER_LOAN_REPAYMENTS_INVALID'],
                         'min_value': ERROR_MESSAGES['OTHER_LOAN_REPAYMENTS_MIN']})
@@ -302,8 +327,9 @@ class YourExpensesForm(BasePleaStepForm):
     other_court_payments = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="County court orders",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['OTHER_COURT_PAYMENTS_REQUIRED'],
                         'invalid': ERROR_MESSAGES['OTHER_COURT_PAYMENTS_INVALID'],
                         'min_value': ERROR_MESSAGES['OTHER_COURT_PAYMENTS_MIN']})
@@ -311,8 +337,9 @@ class YourExpensesForm(BasePleaStepForm):
     other_child_maintenance = forms.DecimalField(
         initial=0,
         min_value=0,
+        decimal_places=2,
         label="Child maintenance",
-        widget=forms.TextInput,
+        widget=forms.TextInput(attrs={"size": "15", "class": "form-control-inline"}),
         error_messages={'required': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_REQUIRED'],
                         'invalid': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_INVALID'],
                         'min_value': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_MIN']})
