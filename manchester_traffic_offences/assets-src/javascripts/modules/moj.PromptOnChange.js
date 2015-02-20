@@ -13,7 +13,7 @@
   var PromptOnChange = function(options) {
     this.init(options);
     return this;
-  }
+  };
 
   PromptOnChange.prototype = {
     defaults: {
