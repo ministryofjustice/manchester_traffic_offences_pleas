@@ -44,7 +44,7 @@
         {% include "widgets/radio_field.html" %}
         {% endwith %}
             
-        <div class="move-up js-hidden" id="section-employed">
+        <div id="section-employed" class="move-up js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Employed">
 
             <div class="panel-indent">
             
@@ -64,7 +64,7 @@
                 {% include "widgets/radio_field.html" %}
                 {% endwith %}
 
-                <div class="employed_hardship employed_hardship-True">
+                <div id="employed_hardship-True" class="js-Conditional" data-conditional-trigger="employed_hardship" data-conditional-value="True">
                     <h4 class="heading-small">Note:</h4>
                     <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                 </div>
@@ -72,7 +72,7 @@
             </div>
         </div>
 
-        <div class="move-up js-hidden" id="section-self-employed">
+        <div id="section-self-employed" class="move-up js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Self employed">
 
             <div class="panel-indent">
 
@@ -84,7 +84,7 @@
                 {% include "widgets/radio_field.html" %}
                 {% endwith %}
 
-                <div class="move-up js-hidden" id="section-self-employed-other">
+                <div id="section-self-employed-other" class="move-up js-Conditional" data-conditional-trigger="self_employed_pay_period" data-conditional-value="Self-employed other">
                     {% with form.self_employed_pay_other as field %}
                     {% include "widgets/std_field.html" %}
                     {% endwith %}
@@ -98,7 +98,7 @@
                 {% include "widgets/radio_field.html" %}
                 {% endwith %}
 
-                <div class="self_employed_hardship self_employed_hardship-True">
+                <div id="self_employed_hardship-True" class="js-Conditional" data-conditional-trigger="self_employed_hardship" data-conditional-value="True">
                     <h4 class="heading-small">Note:</h4>
                     <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                 </div>
@@ -106,7 +106,7 @@
             </div>
         </div>
 
-        <div class="move-up js-hidden" id="section-receiving-benefits">
+        <div id="section-receiving-benefits" class="move-up js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Receiving benefits">
 
             <div class="panel-indent">
 
@@ -122,7 +122,7 @@
                 {% include "widgets/radio_field.html" %}
                 {% endwith %}
 
-                <div class="move-up js-hidden" id="section-benefits-other">
+                <div id="section-benefits-other" class="move-up js-Conditional" data-conditional-trigger="benefits_period" data-conditional-value="Benefits other">
                     {% with form.benefits_pay_other as field %}
                     {% include "widgets/std_field.html" %}
                     {% endwith %}
@@ -136,7 +136,7 @@
                 {% include "widgets/radio_field.html" %}
                 {% endwith %}
 
-                <div class="receiving_benefits_hardship receiving_benefits_hardship-True">
+                <div id="receiving_benefits_hardship-True" class="js-Conditional" data-conditional-trigger="receiving_benefits_hardship" data-conditional-value="True">
                     <h4 class="heading-small">Note:</h4>
                     <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                 </div>
@@ -144,7 +144,7 @@
             </div>
         </div>
 
-        <div class="move-up js-hidden" id="section-other">
+        <div id="section-other" class="move-up js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Other">
 
             <div class="panel-indent">
 
@@ -160,7 +160,7 @@
                 {% include "widgets/radio_field.html" %}
                 {% endwith %}
 
-                <div class="other_hardship other_hardship-True">
+                <div id="other_hardship-True" class="js-Conditional" data-conditional-trigger="other_hardship" data-conditional-value="True">
                     <h4 class="heading-small">Note:</h4>
                     <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
                 </div>

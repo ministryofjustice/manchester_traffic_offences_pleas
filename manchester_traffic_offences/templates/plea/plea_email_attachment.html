@@ -139,7 +139,7 @@
         <tr>
             <th>You get paid</th>
             <td>
-                {%  if your_money.self_employed_pay_period == "self-employed other" %}
+                {%  if your_money.self_employed_pay_period == "Self-employed other" %}
                     Other - {{ your_money.self_employed_pay_other }}
                 {% else %}
                     {{ your_money.self_employed_pay_period }}
@@ -163,7 +163,7 @@
         <tr>
             <th>You get paid</th>
             <td>
-                {%  if your_money.benefits_period == "benefits other" %}
+                {%  if your_money.benefits_period == "Benefits other" %}
                     Other - {{ your_money.benefits_pay_other }}
                 {% else %}
                     {{ your_money.benefits_period }}
