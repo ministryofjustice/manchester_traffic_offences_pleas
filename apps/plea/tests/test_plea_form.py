@@ -110,11 +110,13 @@ class TestMultiPleaForms(TestCase):
         case.status = "sent"
         case.save()
 
+        hearing_date = datetime.date.today()+datetime.timedelta(30)
+
         form = PleaOnlineForms("case", "plea_form_step", self.session)
         form.load(self.request_context)
-        form.save({"date_of_hearing_0": "01",
-                   "date_of_hearing_1": "01",
-                   "date_of_hearing_2": "2016",
+        form.save({"date_of_hearing_0": str(hearing_date.day),
+                   "date_of_hearing_1": str(hearing_date.month),
+                   "date_of_hearing_2": str(hearing_date.year),
                    "urn_0": "00",
                    "urn_1": "AA",
                    "urn_2": "0000000",
@@ -129,10 +131,13 @@ class TestMultiPleaForms(TestCase):
 
     def test_case_stage_good_data(self):
         form = PleaOnlineForms("case", "plea_form_step", self.session)
+
+        hearing_date = datetime.date.today()+datetime.timedelta(30)
+
         form.load(self.request_context)
-        form.save({"date_of_hearing_0": "01",
-                   "date_of_hearing_1": "01",
-                   "date_of_hearing_2": "2016",
+        form.save({"date_of_hearing_0": str(hearing_date.day),
+                   "date_of_hearing_1": str(hearing_date.month),
+                   "date_of_hearing_2": str(hearing_date.year),
                    "urn_0": "00",
                    "urn_1": "AA",
                    "urn_2": "0000000",
@@ -170,13 +175,16 @@ class TestMultiPleaForms(TestCase):
                                               "email": "test@example.org"}})
 
         form = PleaOnlineForms("plea", "plea_form_step", self.session)
+
+        hearing_date = datetime.date.today()+datetime.timedelta(30)
+
         form.load(self.request_context)
         form.save({"name": "Test man",
                    "contact_number": "012345678",
                    "email": "test.man@example.org",
-                   "date_of_hearing_0": "01",
-                   "date_of_hearing_1": "01",
-                   "date_of_hearing_2": "2016",
+                   "date_of_hearing_0": str(hearing_date.day),
+                   "date_of_hearing_1": str(hearing_date.month),
+                   "date_of_hearing_2": str(hearing_date.year),
                    "urn_0": "00",
                    "urn_1": "AA",
                    "urn_2": "0000000",
@@ -301,10 +309,12 @@ class TestMultiPleaForms(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def _get_your_money_stage(self):
+        hearing_date = datetime.date.today()+datetime.timedelta(30)
+
         test_data = {
             "case": {
                 "complete": True,
-                "date_of_hearing": "2016-01-01",
+                "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
                 "urn": "00/AA/0000000/00",
                 "number_of_charges": 1
             },
@@ -451,10 +461,12 @@ class TestMultiPleaForms(TestCase):
         self.assertTrue(form.current_stage.forms[0].is_valid())
 
     def test_review_stage_loads(self):
+        hearing_date = datetime.date.today()+datetime.timedelta(30)
+
         test_data = {
             "case": {
                 "complete": True,
-                "date_of_hearing": "2016-01-01",
+                "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
                 "urn": "00/AA/0000000/00",
                 "number_of_charges": 1
             },
@@ -479,10 +491,12 @@ class TestMultiPleaForms(TestCase):
 
     def test_complete_stage_loads(self):
 
+        hearing_date = datetime.date.today()+datetime.timedelta(30)
+
         test_data = {
             "case": {
                 "complete": True,
-                "date_of_hearing": "2016-01-01",
+                "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
                 "urn": "00/AA/0000000/00",
                 "number_of_charges": 1
             },
@@ -555,11 +569,13 @@ class TestMultiPleaForms(TestCase):
         fake_request = self.get_request_mock("/plea/case")
         request_context = RequestContext(fake_request)
 
+        hearing_date = datetime.date.today()+datetime.timedelta(30)
+
         form = PleaOnlineForms("case", "plea_form_step", fake_session)
         form.load(request_context)
-        form.save({"date_of_hearing_0": "01",
-                   "date_of_hearing_1": "01",
-                   "date_of_hearing_2": "2016",
+        form.save({"date_of_hearing_0": str(hearing_date.day),
+                   "date_of_hearing_1": str(hearing_date.month),
+                   "date_of_hearing_2": str(hearing_date.year),
                    "urn_0": "00",
                    "urn_1": "AA",
                    "urn_2": "0000000",
@@ -603,7 +619,7 @@ class TestMultiPleaForms(TestCase):
         form = PleaOnlineForms("complete", "plea_form_step", fake_session)
         form.load(request_context)
 
-        self.assertEqual(fake_session["case"]["date_of_hearing"], datetime.date(2016, 1, 1))
+        self.assertEqual(fake_session["case"]["date_of_hearing"], hearing_date)
         self.assertEqual(fake_session["case"]["urn"], "00/AA/0000000/00")
         self.assertEqual(fake_session["case"]["number_of_charges"], 1)
         self.assertEqual(fake_session["your_details"]["name"], "Charlie Brown")
@@ -618,12 +634,13 @@ class TestMultiPleaForms(TestCase):
         fake_request = self.get_request_mock("/plea/case/")
 
         request_context = RequestContext(fake_request)
+        hearing_date = datetime.date.today()+datetime.timedelta(30)
 
         form = PleaOnlineForms("case", "plea_form_step", fake_session)
         form.load(request_context)
-        form.save({"date_of_hearing_0": "01",
-                   "date_of_hearing_1": "01",
-                   "date_of_hearing_2": "2016",
+        form.save({"date_of_hearing_0": str(hearing_date.day),
+                   "date_of_hearing_1": str(hearing_date.month),
+                   "date_of_hearing_2": str(hearing_date.year),
                    "urn_0": "00",
                    "urn_1": "AA",
                    "urn_2": "0000000",
@@ -668,7 +685,7 @@ class TestMultiPleaForms(TestCase):
         form = PleaOnlineForms("complete", "plea_form_step", fake_session)
         form.load(request_context)
 
-        self.assertEqual(fake_session["case"]["date_of_hearing"], datetime.date(2016, 1, 1))
+        self.assertEqual(fake_session["case"]["date_of_hearing"], hearing_date)
         self.assertEqual(fake_session["case"]["urn"], "00/AA/0000000/00")
         self.assertEqual(fake_session["case"]["number_of_charges"], 2)
         self.assertEqual(fake_session["your_details"]["name"], "Charlie Brown")
