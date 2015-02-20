@@ -47,34 +47,34 @@
         <fieldset id="section_guilty_{{ forloop.counter }}">
             {% if form_count > 1 %}<legend class="form-label">Your plea for charge [{{ forloop.counter }}]</legend>{% endif %}
             
-            <div class="form-group form-group-compound inline{%  if form.guilty.errors %} with-error{% endif %}">
+            <div class="form-group inline{%  if form.guilty.errors %} with-error{% endif %}">
                 
                 <span class="validation-message">{{ form.guilty.errors }}</span>
 
                 {% for choice in form.guilty %}
-                <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label" data-target="{{ choice.name }}_{{ choice.choice_value }}_extra {{ form.mitigations.id_for_label }}">
-                    <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %} aria-controls="{{ choice.name }}_{{ choice.choice_value }}_extra">
+                <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
+                    <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
                     {{ choice.choice_label }}
                 </label>
                 {% endfor %}
             </div>
 
             <div id="section_mitigations_{{ forloop.counter }}" class="panel-indent form-group">
-                <div id="{{ form.guilty.0.name }}_not_guilty_extra" class="js-hidden">
-                    <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Not guilty because? <span class="form-hint-inline">(optional)</span>
-                        <span class="form-hint">Tell us why you believe you are not guilty.</span>
-                    </label>
-                </div>
-
-                <div id="{{ form.guilty.0.name }}_guilty_extra" class="js-hidden">
+                <div id="{{ form.guilty.0.name }}_guilty_extra" class="js-Conditional js-hidden" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^guilty$">
                     <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint-inline">(optional)</span>
                         <span class="form-hint">What would you like the court to consider?</span>
                     </label>
                 </div>
 
+                <div id="{{ form.guilty.0.name }}_not_guilty_extra" class="js-Conditional js-hidden" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^not_guilty$">
+                    <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Not guilty because? <span class="form-hint-inline">(optional)</span>
+                        <span class="form-hint">Tell us why you believe you are not guilty.</span>
+                    </label>
+                </div>
+
                 {{ form.mitigations.errors }}
 
-                <textarea maxlength="5000" rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}" class="form-control-wide js-hidden">{{ form.mitigations.value|default_if_none:"" }}</textarea>
+                <textarea maxlength="5000" rows="4" cols="50" name="{{ form.mitigations.html_name }}" id="{{ form.mitigations.id_for_label }}" class="form-control-wide js-Conditional js-hidden" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^(guilty|not_guilty)$">{{ form.mitigations.value|default_if_none:"" }}</textarea>
             </div>
         </fieldset>
 
