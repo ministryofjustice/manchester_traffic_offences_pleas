@@ -134,15 +134,15 @@
             <table id="expense-summary">
                 <tr>
                     <th>Total household expenses</th>
-                    <td>£<span class="total_household"></span></td>
+                    <td>£<span class="js-CalculateTotals intermediate-total" data-total-terms="#household_expenses input[type=text]"></span></td>
                 </tr>
                 <tr>
                     <th>Total other expenses</th>
-                    <td>£<span class="total_other"></span></td>
+                    <td>£<span class="js-CalculateTotals intermediate-total" data-total-terms="#other_expenses input[type=text]"></span></td>
                 </tr>
                 <tr class="total">
                     <th>Total expenses</th>
-                    <td>£<span class="total_expenses"></span></td>
+                    <td>£<span class="js-CalculateTotals" data-total-terms=".intermediate-total"></span></td>
                 </tr>
             </table>
         </div>
