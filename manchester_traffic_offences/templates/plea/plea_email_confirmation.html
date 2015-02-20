@@ -213,6 +213,7 @@
                                     <h1 style="margin-bottom: 30px; margin-top:0px;">Your online plea{{ number_of_charges|pluralize }} ha{{ number_of_charges|pluralize:"s,ve" }} been submitted</h1>
 
                                     <p style="font-size: 18px;">
+                                        <strong>{{ name }}</strong><br>
                                         Your {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea{{ number_of_charges|pluralize }} ha{{ number_of_charges|pluralize:"s,ve" }} been sent to the court
                                     </p>
 
