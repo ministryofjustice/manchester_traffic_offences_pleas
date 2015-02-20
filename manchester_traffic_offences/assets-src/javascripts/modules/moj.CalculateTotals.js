@@ -59,7 +59,10 @@
         value = $element.val();
       }
 
-      return (value) ? parseFloat(value.replace(/,/g,'')) : 0;
+      // Remove commas
+      value = value.replace(/,/g,'');
+
+      return ($.isNumeric(value)) ? parseFloat(value) : 0;
     },
 
     getTotal: function() {
