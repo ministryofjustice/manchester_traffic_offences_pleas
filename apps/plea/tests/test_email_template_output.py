@@ -188,7 +188,7 @@ class EmailTemplateTests(TestCase):
     def test_self_employed_other_email_money_output(self):
         context_data_money = {"you_are": "Self employed",
                               "your_job": "Window cleaner",
-                              "self_employed_pay_period": "self-employed other",
+                              "self_employed_pay_period": "Self-employed other",
                               "self_employed_pay_amount": "20",
                               "self_employed_pay_other": "by the window",
                               "self_employed_hardship": False}
@@ -224,7 +224,7 @@ class EmailTemplateTests(TestCase):
         context_data_money = {"you_are": "Receiving benefits",
                               "benefits_details": "Housing benefit\nUniversal Credit",
                               "benefits_dependents": "Yes",
-                              "benefits_period": "benefits other",
+                              "benefits_period": "Benefits other",
                               "benefits_pay_other": "Other details!",
                               "benefits_amount": "120",
                               "receiving_benefits_hardship": False}
