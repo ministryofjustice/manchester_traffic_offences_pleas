@@ -3,7 +3,9 @@ var gulp = require('gulp'),
     del = require('del'),
     stylish = require('jshint-stylish'),
     runSequence = require('run-sequence'),
-    vinylPaths = require('vinyl-paths');
+    vinylPaths = require('vinyl-paths'),
+    jasmine = require('gulp-jasmine'),
+    karma = require('karma');
 
 var paths = {
   dest_dir: 'manchester_traffic_offences/assets/',
@@ -11,13 +13,13 @@ var paths = {
   styles: ['manchester_traffic_offences/assets-src/stylesheets/**/*.scss',
            'node_modules/govuk_frontend_toolkit/stylesheets/**/*.scss'],
   scripts: [
-    // vendor scripts
-    'manchester_traffic_offences/assets-src/vendor/jquery-details/jquery.details.js',
-    // Application
-    'manchester_traffic_offences/assets-src/javascripts/application.js',
+    'manchester_traffic_offences/assets-src/javascripts/shims/**/*.js',
+    'manchester_traffic_offences/assets-src/javascripts/modules/**/*.js',
+    'manchester_traffic_offences/assets-src/javascripts/application.js'
   ],
-  vendor_scripts: 'manchester_traffic_offences/assets-src/javascripts/vendor/*',
+  vendor_scripts: 'manchester_traffic_offences/assets-src/javascripts/vendor/**/*.js',
   govuk_scripts: 'node_modules/govuk_frontend_toolkit/javascripts/**/*.js',
+  test_scripts: 'manchester_traffic_offences/assets-src/tests/**/*.js',
   images: 'manchester_traffic_offences/assets-src/images/**/*'
 };
 
@@ -41,14 +43,14 @@ gulp.task('sass', function() {
 
 // default js task
 gulp.task('js', function() {
-  var prod = paths.scripts.slice(0);
+  paths.main_scripts = paths.scripts.slice(0);
 
   // ignore debug files
-  prod.push('!' + paths.src_dir + '**/*debug*');
+  paths.main_scripts.push('!' + paths.src_dir + '**/*debug*');
 
-  // create concatenated js file
+  // create concatenated main js file
   gulp
-    .src(prod)
+    .src(paths.main_scripts)
     .pipe(plugins.concat('application.js'))
     .pipe(gulp.dest(paths.dest_dir + 'javascripts'));
 
@@ -57,11 +59,11 @@ gulp.task('js', function() {
     .src(paths.vendor_scripts)
     .pipe(gulp.dest(paths.dest_dir + 'javascripts/vendor'));
 
-  //
+  // Concatenate govuk scripts
   gulp
     .src(paths.govuk_scripts)
     .pipe(plugins.concat('govuk.js'))
-    .pipe(gulp.dest(paths.dest_dir + 'javascripts'))
+    .pipe(gulp.dest(paths.dest_dir + 'javascripts'));
 
   // create debug js file
   gulp
@@ -76,6 +78,7 @@ gulp.task('lint', function() {
 
   // files to ignore from linting
   files.push('!manchester_traffic_offences/assets-src/vendor/**');
+  files.push('!manchester_traffic_offences/assets-src/shims/**');
   files.push('!manchester_traffic_offences/assets-src/javascripts/vendor/**');
   files.push('!node_modules/**');
 
@@ -83,6 +86,15 @@ gulp.task('lint', function() {
     .src(files)
     .pipe(plugins.jshint())
     .pipe(plugins.jshint.reporter(stylish));
+});
+
+// JS Tests
+gulp.task('test', function (done) {
+  karma.server.start({
+    configFile: __dirname + '/karma.conf.js'
+  }, function() {
+    done();
+  });
 });
 
 // optimise images
@@ -96,7 +108,7 @@ gulp.task('images', function() {
 // setup watches
 gulp.task('watch', function() {
   gulp.watch(paths.styles, ['sass']);
-  gulp.watch(paths.src_dir + 'javascripts/**/*', ['lint', 'js']);
+  gulp.watch(paths.src_dir + 'javascripts/**/*.js', ['lint', 'js']);
   gulp.watch(paths.images, ['images']);
 });
 
