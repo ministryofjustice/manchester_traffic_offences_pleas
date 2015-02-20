@@ -49,6 +49,11 @@ describe("moj.CalculateTotals", function() {
     expect(subject.$total.text()).toBe('22.00');
   });
 
+  it("should not add values which are not numerical", function() {
+    $('.term:first').val('aaa').trigger('change');
+    expect(subject.$total.text()).not.toBe('NaN');
+  });
+
   it("should match the precision set in the attribute", function() {
     $('body').find('.test_control').remove();
     $fixture = $(
