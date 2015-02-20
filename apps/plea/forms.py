@@ -59,8 +59,7 @@ class YourDetailsForm(BasePleaStepForm):
                                      error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
     email = forms.EmailField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                             required=getattr(settings, "EMAIL_REQUIRED", True), 
-                             label="Email",
+                             required=getattr(settings, "EMAIL_REQUIRED", True), label="Email", help_text="If you choose to we will use this email address for all future correspondence regarding your case, including the court's decision.",
                              error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
                                              "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
@@ -76,11 +75,11 @@ class YourMoneyForm(BasePleaStepForm):
     SE_PERIOD_CHOICES = (("Weekly", "Weekly"),
                          ("Fortnightly", "Fortnightly"),
                          ("Monthly", "Monthly"),
-                         ("self-employed other", "Other"),)
+                         ("Self-employed other", "Other"),)
     BEN_PERIOD_CHOICES = (("Weekly", "Weekly"),
                          ("Fortnightly", "Fortnightly"),
                          ("Monthly", "Monthly"),
-                         ("benefits other", "Other"),)
+                         ("Benefits other", "Other"),)
     YES_NO = (("Yes", "Yes"),
               ("No", "No"))
     you_are = forms.ChoiceField(label="Are you?", choices=YOU_ARE_CHOICES,
@@ -98,10 +97,11 @@ class YourMoneyForm(BasePleaStepForm):
                                                                       "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
     employed_take_home_pay_amount = forms.CharField(label="What's your take home pay (after tax)?", required=False,
                                                     widget=forms.TextInput(attrs={"maxlength": "7",
-                                                                                  "data-label-template-value": "employed_take_home_pay_period",
-                                                                                  "data-label-template": "What's your {0} take home pay (after tax)?",
+                                                                                  "data-template-trigger": "employed_take_home_pay_period",
+                                                                                  "data-template": "What's your {value} take home pay (after tax)?",
+                                                                                  "data-template-delegate": "[for=id_employed_take_home_pay_amount]",
                                                                                   "size": "10",
-                                                                                  "class": "form-control-inline"}),
+                                                                                  "class": "form-control-inline js-TemplatedElement"}),
                                                     error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                                     "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
@@ -123,10 +123,12 @@ class YourMoneyForm(BasePleaStepForm):
                                                                  "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
     self_employed_pay_amount = forms.CharField(label="What's your average take home pay?", required=False,
                                                widget=forms.TextInput(attrs={"maxlength": "7",
-                                                                             "data-label-template-value": "self_employed_pay_period",
-                                                                             "data-label-template": "What's your average {0} take home pay?",
+                                                                             "data-template-trigger": "self_employed_pay_period",
+                                                                             "data-template": "What's your average {value} take home pay?",
+                                                                             "data-template-defaults-for": "Self-employed other",
+                                                                             "data-template-delegate": "[for=id_self_employed_pay_amount]",
                                                                              "size": "10",
-                                                                             "class": "form-control-inline"}),
+                                                                             "class": "form-control-inline js-TemplatedElement"}),
                                                error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                                "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
     self_employed_pay_other = forms.CharField(required=False, max_length=500, label="",
@@ -156,10 +158,12 @@ class YourMoneyForm(BasePleaStepForm):
                                          help_text="Tell us about how often you get paid")
     benefits_amount = forms.CharField(label="What's your average take home pay?", required=False,
                                       widget=forms.TextInput(attrs={"maxlength": "7",
-                                                                    "data-label-template-value": "benefits_period",
-                                                                    "data-label-template": "What's your average {0} take home pay?",
+                                                                    "data-template-trigger": "benefits_period",
+                                                                    "data-template": "What's your average {value} take home pay?",
+                                                                    "data-template-defaults-for": "Benefits other",
+                                                                    "data-template-delegate": "[for=id_benefits_amount]",
                                                                     "size": "10",
-                                                                    "class": "form-control-inline"}),
+                                                                    "class": "form-control-inline js-TemplatedElement"}),
                                       error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                       "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
