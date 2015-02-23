@@ -140,11 +140,30 @@ class DSRadioFieldRenderer(RadioFieldRenderer):
         return render_to_string("widgets/DSRadioSelect.html", context)
 
 
+class DSTemplateWidgetBase(forms.TextInput):
+    template = ""
+
+    def __init__(self, attrs=None, context=None):
+        super(DSTemplateWidgetBase, self).__init__(attrs)
+        self.context = context or {}
+
+    def render(self, name, value, attrs=None):
+        final_attrs = self.build_attrs(attrs, type=self.input_type, name=name)
+        rendered_widget = super(DSTemplateWidgetBase, self).render(name, value, attrs)
+        context = {"name": name, "value": value, "attrs": final_attrs, "field": rendered_widget}
+        context.update(**self.context)
+        return render_to_string(self.template, context)
+
+
+class DSDateTemplateWidget(DSTemplateWidgetBase):
+    template = "widgets/DSDateInputWidget.html"
+
+
 class HearingDateWidget(MultiWidget):
     def __init__(self, attrs=None):
-        widgets = [forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline first-inline', 'size': '2'}),
-                   forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}),
-                   forms.TextInput(attrs={'maxlength': '4', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '4'}),
+        widgets = [DSDateTemplateWidget(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline first-inline', 'size': '2'}, context={'title': 'Day'}),
+                   DSDateTemplateWidget(attrs={'_title': 'Month', 'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}, context={'title': 'Month'}),
+                   DSDateTemplateWidget(attrs={'_title': 'Year', 'maxlength': '4', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '4'}, context={'title': 'Year'}),
                    ]
         super(HearingDateWidget, self).__init__(widgets, attrs)
 
