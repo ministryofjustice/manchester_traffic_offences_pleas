@@ -61,13 +61,13 @@
 
             <div id="section_mitigations_{{ forloop.counter }}" class="panel-indent form-group">
                 <div id="{{ form.guilty.0.name }}_guilty_extra" class="js-Conditional js-hidden" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^guilty$">
-                    <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint-inline">(optional)</span>
+                    <label for="{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint-inline">(optional)</span>
                         <span class="form-hint">What would you like the court to consider?</span>
                     </label>
                 </div>
 
                 <div id="{{ form.guilty.0.name }}_not_guilty_extra" class="js-Conditional js-hidden" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^not_guilty$">
-                    <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Not guilty because? <span class="form-hint-inline">(optional)</span>
+                    <label for="{{ form.mitigations.id_for_label }}">Not guilty because? <span class="form-hint-inline">(optional)</span>
                         <span class="form-hint">Tell us why you believe you are not guilty.</span>
                     </label>
                 </div>
