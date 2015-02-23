@@ -159,6 +159,10 @@ class DSDateTemplateWidget(DSTemplateWidgetBase):
     template = "widgets/DSDateInputWidget.html"
 
 
+class DSURNTemplateWidget(DSTemplateWidgetBase):
+    template = "widgets/DSURNInputWidget.html"
+
+
 class HearingDateWidget(MultiWidget):
     def __init__(self, attrs=None):
         widgets = [DSDateTemplateWidget(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline first-inline', 'size': '2'}, context={'title': 'Day'}),
@@ -216,10 +220,10 @@ class HearingDateField(forms.DateField):
 
 class URNWidget(MultiWidget):
     def __init__(self, attrs=None):
-        widgets = [forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}),
-                   forms.TextInput(attrs={'maxlength': '2', 'class': 'form-control-inline', 'size': '2'}),
-                   forms.TextInput(attrs={'maxlength': '7', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '7'}),
-                   forms.TextInput(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}),
+        widgets = [DSURNTemplateWidget(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}, context={'title': 'Part 1'}),
+                   DSURNTemplateWidget(attrs={'maxlength': '2', 'class': 'form-control-inline', 'size': '2'}, context={'title': 'Part 2'}),
+                   DSURNTemplateWidget(attrs={'maxlength': '7', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '7'}, context={'title': 'Part 3'}),
+                   DSURNTemplateWidget(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}, context={'title': 'Part 4'}),
                    ]
         super(URNWidget, self).__init__(widgets, attrs)
 
