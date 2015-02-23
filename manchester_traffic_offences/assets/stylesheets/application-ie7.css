@@ -1536,6 +1536,26 @@ legend.form-label-bold {
     border-left: none;
     margin-left: 0; }
 
+.form-field-inline {
+  display: inline-block;
+  margin: 0 5px;
+  vertical-align: baseline; }
+  .form-field-inline:first-child {
+    margin-left: 0; }
+  .form-field-inline label {
+    font-family: "nta", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.25;
+    font-weight: 400;
+    text-transform: none;
+    margin-right: -20px; }
+    @media (max-width: 640px) {
+      .form-field-inline label {
+        font-size: 14px;
+        line-height: 1.14286; } }
+  .form-field-inline input {
+    margin: 0; }
+
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
