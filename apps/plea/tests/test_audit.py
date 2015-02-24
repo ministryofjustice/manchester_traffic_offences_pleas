@@ -19,7 +19,7 @@ class CaseCreationTests(TestCase):
     def setUp(self):
 
         self.context_data = {
-            'case': {u'urn': u'00/aa/0000000/00',
+            'case': {u'urn': u'06/aa/0000000/00',
                       u'date_of_hearing': datetime.date(2015, 1, 1),
                       u'time_of_hearing': datetime.time(9, 15),
                       u'number_of_charges': 2},
