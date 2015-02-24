@@ -90,7 +90,7 @@ def is_valid_urn_format(urn):
 
     pattern = r"[0-9]{2}/[a-zA-Z]{2}/(?:[0-9]{5}|[0-9]{7})/[0-9]{2}"
 
-    if not re.match(pattern, urn):
+    if not re.match(pattern, urn) or not urn.startswith("06"):
         raise exceptions.ValidationError(_(ERROR_MESSAGES["URN_INVALID"]))
 
     return True
