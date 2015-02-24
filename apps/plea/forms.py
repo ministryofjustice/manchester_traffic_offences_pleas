@@ -5,8 +5,8 @@ from django.forms.formsets import BaseFormSet
 from django.forms.widgets import Textarea, RadioSelect
 from django.conf import settings
 
-from .fields import (ERROR_MESSAGES, is_date_in_future, DSRadioFieldRenderer,
-                     URNField,
+from .fields import (ERROR_MESSAGES, is_date_in_future, is_date_within_range,
+                     DSRadioFieldRenderer, URNField,
                      HearingDateWidget, is_urn_not_used)
 
 YESNO_CHOICES = (
@@ -35,7 +35,7 @@ class CaseForm(BasePleaStepForm):
                    error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]},
                    validators=[is_urn_not_used])
 
-    date_of_hearing = forms.DateField(label="Court hearing date", widget=HearingDateWidget, validators=[is_date_in_future],
+    date_of_hearing = forms.DateField(label="Court hearing date", widget=HearingDateWidget, validators=[is_date_in_future, is_date_within_range],
                                       required=True,
                                       help_text="On page 1 of the pack, near the top on the left.<br>For example, 30/07/2014",
                                       error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"],
