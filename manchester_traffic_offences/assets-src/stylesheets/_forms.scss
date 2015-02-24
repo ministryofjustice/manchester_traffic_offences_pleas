@@ -130,6 +130,8 @@ legend {
 legend.form-label-bold {
 	@extend .form-label;
 	@include bold-24();
+	
+	margin-bottom: 0;
 }
 
 .form-submit {
