@@ -5,7 +5,7 @@
 {% block page_title %}{{ block.super }} Your Finances{% endblock %}
 
 {% block page_content %}
-<form action="{{ request.path }}" method="post" autocomplete="off">
+<form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
 
     {% csrf_token %}
 
@@ -38,7 +38,7 @@
         <li>Your details will be stored securely by the court</li>
     </ul>
 
-    <div id="section_{{ form.you_are.name }}">
+    <div>
 
         {% with form.you_are as field %}
         {% include "widgets/radio_field.html" %}
@@ -115,7 +115,7 @@
                 {% endwith %}
 
                 {% with form.benefits_dependents as field %}
-                {% include "widgets/std_field.html" %}
+                {% include "widgets/radio_field.html" %}
                 {% endwith %}
 
                 {% with form.benefits_period as field %}
