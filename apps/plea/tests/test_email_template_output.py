@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
 from mock import Mock
 
 from django.core import mail
@@ -14,14 +14,17 @@ from ..forms import CaseForm, YourDetailsForm, PleaForm, YourMoneyForm, Required
 
 class EmailTemplateTests(TestCase):
     def get_context_data(self, case_data=None, details_data=None, plea_data=None, money_data=None):
+
+        self.hearing_date = datetime.today() + timedelta(30)
+
         if not case_data:
             case_data = {"urn_0": "00",
                          "urn_1": "AA",
                          "urn_2": "00000",
                          "urn_3": "00",
-                         "date_of_hearing_0": "30",
-                         "date_of_hearing_1": "10",
-                         "date_of_hearing_2": "2015",
+                         "date_of_hearing_0": str(self.hearing_date.day),
+                         "date_of_hearing_1": str(self.hearing_date.month),
+                         "date_of_hearing_2": str(self.hearing_date.year),
                          "number_of_charges": 1}
 
         if not details_data:
@@ -75,7 +78,8 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertEqual(mail.outbox[0].subject, 'ONLINE PLEA: 00/AA/00000/00 DOH: 2015-10-30 PUBLIC Joe')
+        self.assertEqual(mail.outbox[0].subject, 'ONLINE PLEA: 00/AA/00000/00 DOH: {} PUBLIC Joe'
+            .format(self.hearing_date.strftime('%Y-%m-%d')))
 
     def test_case_details_output(self):
         context_data = self.get_context_data()
@@ -84,7 +88,7 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
         self.assertContains(response, "<tr><th>URN</th><td>00/AA/00000/00</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>Court hearing</th><td>30 October 2015</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Court hearing</th><td>{}</td></tr>".format(self.hearing_date.strftime('%d %B %Y')), count=1, html=True)
 
     def test_min_case_details_output(self):
         context_data = self.get_context_data()
@@ -268,7 +272,8 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertEqual(mail.outbox[1].subject, 'POLICE ONLINE PLEA: 00/AA/00000/00 DOH: 2015-10-30 PUBLIC Joe')
+        self.assertEqual(mail.outbox[1].subject, 'POLICE ONLINE PLEA: 00/AA/00000/00 DOH: {} PUBLIC Joe'
+                         .format(self.hearing_date.strftime('%Y-%m-%d')))
 
     def test_PLP_case_details_output(self):
         context_data = self.get_context_data()
