@@ -18,7 +18,7 @@ class EmailTemplateTests(TestCase):
         self.hearing_date = datetime.today() + timedelta(30)
 
         if not case_data:
-            case_data = {"urn_0": "00",
+            case_data = {"urn_0": "06",
                          "urn_1": "AA",
                          "urn_2": "00000",
                          "urn_3": "00",
@@ -78,7 +78,7 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertEqual(mail.outbox[0].subject, 'ONLINE PLEA: 00/AA/00000/00 DOH: {} PUBLIC Joe'
+        self.assertEqual(mail.outbox[0].subject, 'ONLINE PLEA: 06/AA/00000/00 DOH: {} PUBLIC Joe'
             .format(self.hearing_date.strftime('%Y-%m-%d')))
 
     def test_case_details_output(self):
@@ -87,7 +87,7 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
-        self.assertContains(response, "<tr><th>URN</th><td>00/AA/00000/00</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>URN</th><td>06/AA/00000/00</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Court hearing</th><td>{}</td></tr>".format(self.hearing_date.strftime('%d %B %Y')), count=1, html=True)
 
     def test_min_case_details_output(self):
@@ -272,7 +272,7 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertEqual(mail.outbox[1].subject, 'POLICE ONLINE PLEA: 00/AA/00000/00 DOH: {} PUBLIC Joe'
+        self.assertEqual(mail.outbox[1].subject, 'POLICE ONLINE PLEA: 06/AA/00000/00 DOH: {} PUBLIC Joe'
                          .format(self.hearing_date.strftime('%Y-%m-%d')))
 
     def test_PLP_case_details_output(self):
@@ -281,7 +281,7 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
-        self.assertContains(response, "<tr><th>URN</th><td>00/AA/00000/00</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>URN</th><td>06/AA/00000/00</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Court hearing</th><td>30 October 2015</td></tr>", count=1, html=True)
 
     def test_PLP_case_details_output(self):
