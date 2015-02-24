@@ -7,7 +7,7 @@
 {% block page_content %}
 
     {% with request.session.case.number_of_charges as charges %}
-<form action="{{ request.path }}" method="post" autocomplete="off">
+<form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
 
     {% csrf_token %}
 
@@ -49,7 +49,9 @@
             
             <div class="form-group inline{%  if form.guilty.errors %} with-error{% endif %}">
                 
-                <span class="validation-message">{{ form.guilty.errors }}</span>
+                {% if form.guilty.errors %}
+                <div class="validation-message">{{ form.guilty.errors }}</div>
+                {% endif %}
 
                 {% for choice in form.guilty %}
                 <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
