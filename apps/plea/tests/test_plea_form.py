@@ -21,7 +21,7 @@ class TestMultiPleaForms(TestCase):
         self.request_context = {}
 
         self.plea_stage_pre_data_1_charge = {"case": {"date_of_hearing": "2015-01-01",
-                                                      "urn_0": "00",
+                                                      "urn_0": "06",
                                                       "urn_1": "AA",
                                                       "urn_2": "0000000",
                                                       "urn_3": "00",
@@ -31,7 +31,7 @@ class TestMultiPleaForms(TestCase):
                                                               "email": "charliebrown@example.org"}}
 
         self.plea_stage_pre_data_3_charges = {"case": {"date_of_hearing": "2015-01-01",
-                                                       "urn_0": "00",
+                                                       "urn_0": "06",
                                                        "urn_1": "AA",
                                                        "urn_2": "0000000",
                                                        "urn_3": "00",
@@ -47,7 +47,7 @@ class TestMultiPleaForms(TestCase):
             "case": {
                 "complete": True,
                 "date_of_hearing": "2015-01-01",
-                "urn": "00/AA/0000000/00",
+                "urn": "06/AA/0000000/00",
                 "number_of_charges": 3
             },
             'your_details': {"name": "Charlie Brown",
@@ -106,7 +106,7 @@ class TestMultiPleaForms(TestCase):
     def test_case_stage_urn_already_submitted(self):
 
         case = Case()
-        case.urn = "00/AA/0000000/00"
+        case.urn = "06/AA/0000000/00"
         case.status = "sent"
         case.save()
 
@@ -117,7 +117,7 @@ class TestMultiPleaForms(TestCase):
         form.save({"date_of_hearing_0": str(hearing_date.day),
                    "date_of_hearing_1": str(hearing_date.month),
                    "date_of_hearing_2": str(hearing_date.year),
-                   "urn_0": "00",
+                   "urn_0": "06",
                    "urn_1": "AA",
                    "urn_2": "0000000",
                    "urn_3": "00",
@@ -138,7 +138,7 @@ class TestMultiPleaForms(TestCase):
         form.save({"date_of_hearing_0": str(hearing_date.day),
                    "date_of_hearing_1": str(hearing_date.month),
                    "date_of_hearing_2": str(hearing_date.year),
-                   "urn_0": "00",
+                   "urn_0": "06",
                    "urn_1": "AA",
                    "urn_2": "0000000",
                    "urn_3": "00",
@@ -168,7 +168,7 @@ class TestMultiPleaForms(TestCase):
     def test_plea_form_shows_errors_when_invalid(self):
         self.session.update({"case": {"complete": True,
                                       "date_of_hearing": "2015-01-01",
-                                      "urn": "00/AA/0000000/00",
+                                      "urn": "06/AA/0000000/00",
                                       "number_of_charges": 2},
                              "your_details": {"name": "Charlie Brown",
                                               "contact_number": "07802639892",
@@ -185,7 +185,7 @@ class TestMultiPleaForms(TestCase):
                    "date_of_hearing_0": str(hearing_date.day),
                    "date_of_hearing_1": str(hearing_date.month),
                    "date_of_hearing_2": str(hearing_date.year),
-                   "urn_0": "00",
+                   "urn_0": "06",
                    "urn_1": "AA",
                    "urn_2": "0000000",
                    "urn_3": "00",
@@ -204,7 +204,7 @@ class TestMultiPleaForms(TestCase):
     def test_plea_stage_redirects_when_valid(self):
         self.session.update({"case": {"complete": True,
                                       "date_of_hearing": "2015-01-01",
-                                      "urn": "00/AA/0000000/00",
+                                      "urn": "06/AA/0000000/00",
                                       "number_of_charges": 2},
                              "your_details": {"name": "Charlie Brown",
                                               "contact_number": "07802639892",
@@ -315,7 +315,7 @@ class TestMultiPleaForms(TestCase):
             "case": {
                 "complete": True,
                 "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
-                "urn": "00/AA/0000000/00",
+                "urn": "06/AA/0000000/00",
                 "number_of_charges": 1
             },
             "your_details": {
@@ -467,7 +467,7 @@ class TestMultiPleaForms(TestCase):
             "case": {
                 "complete": True,
                 "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
-                "urn": "00/AA/0000000/00",
+                "urn": "06/AA/0000000/00",
                 "number_of_charges": 1
             },
             "your_details": {
@@ -487,7 +487,7 @@ class TestMultiPleaForms(TestCase):
         response = form.render()
 
         self.assertTemplateUsed(response, "plea/review.html")
-        self.assertIn("00/AA/0000000/00", response.content)
+        self.assertIn("06/AA/0000000/00", response.content)
 
     def test_complete_stage_loads(self):
 
@@ -497,7 +497,7 @@ class TestMultiPleaForms(TestCase):
             "case": {
                 "complete": True,
                 "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
-                "urn": "00/AA/0000000/00",
+                "urn": "06/AA/0000000/00",
                 "number_of_charges": 1
             },
             "your_details": {
@@ -544,7 +544,7 @@ class TestMultiPleaForms(TestCase):
 
         fake_session = {"case": {}, "your_details": {}, "plea": {"PleaForms": [{}]}, "review": {}}
         fake_session["case"]["date_of_hearing"] = datetime.date(2016, 1, 1)
-        fake_session["case"]["urn"] = "00/AA/0000000/00"
+        fake_session["case"]["urn"] = "06/AA/0000000/00"
         fake_session["case"]["number_of_charges"] = 1
         fake_session["your_details"]["name"] = "Charlie Brown"
         fake_session["your_details"]["contact_number"] = "07802639892"
@@ -576,7 +576,7 @@ class TestMultiPleaForms(TestCase):
         form.save({"date_of_hearing_0": str(hearing_date.day),
                    "date_of_hearing_1": str(hearing_date.month),
                    "date_of_hearing_2": str(hearing_date.year),
-                   "urn_0": "00",
+                   "urn_0": "06",
                    "urn_1": "AA",
                    "urn_2": "0000000",
                    "urn_3": "00",
@@ -620,7 +620,7 @@ class TestMultiPleaForms(TestCase):
         form.load(request_context)
 
         self.assertEqual(fake_session["case"]["date_of_hearing"], hearing_date)
-        self.assertEqual(fake_session["case"]["urn"], "00/AA/0000000/00")
+        self.assertEqual(fake_session["case"]["urn"], "06/AA/0000000/00")
         self.assertEqual(fake_session["case"]["number_of_charges"], 1)
         self.assertEqual(fake_session["your_details"]["name"], "Charlie Brown")
         self.assertEqual(fake_session["your_details"]["contact_number"], "07802639892")
@@ -641,7 +641,7 @@ class TestMultiPleaForms(TestCase):
         form.save({"date_of_hearing_0": str(hearing_date.day),
                    "date_of_hearing_1": str(hearing_date.month),
                    "date_of_hearing_2": str(hearing_date.year),
-                   "urn_0": "00",
+                   "urn_0": "06",
                    "urn_1": "AA",
                    "urn_2": "0000000",
                    "urn_3": "00",
@@ -686,7 +686,7 @@ class TestMultiPleaForms(TestCase):
         form.load(request_context)
 
         self.assertEqual(fake_session["case"]["date_of_hearing"], hearing_date)
-        self.assertEqual(fake_session["case"]["urn"], "00/AA/0000000/00")
+        self.assertEqual(fake_session["case"]["urn"], "06/AA/0000000/00")
         self.assertEqual(fake_session["case"]["number_of_charges"], 2)
         self.assertEqual(fake_session["your_details"]["name"], "Charlie Brown")
         self.assertEqual(fake_session["your_details"]["contact_number"], "07802639892")
@@ -758,7 +758,7 @@ class TestMultiPleaForms(TestCase):
 
     def test_case_stage_urn_in_session(self):
 
-        urn = "00/aa/0000000/00"
+        urn = "06/AA/0000000/00"
 
         case = Case()
         case.urn = urn
@@ -782,7 +782,7 @@ class TestMultiPleaForms(TestCase):
 
     def test_urn_not_success_is_not_blocked(self):
 
-        urn = "00/aa/0000000/00"
+        urn = "06/AA/0000000/00"
 
         case = Case()
         case.urn = urn
