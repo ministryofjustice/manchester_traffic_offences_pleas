@@ -23,6 +23,7 @@ ERROR_MESSAGES = {
     "HEARING_DATE_REQUIRED": "Provide a court hearing date",
     "HEARING_DATE_INVALID": "The court hearing date isn't a valid format",
     "HEARING_DATE_PASSED": "The court hearing date must be after today",
+    "HEARING_DATE_INCORRECT": "Enter the correct hearing date.",
     "NUMBER_OF_CHARGES_REQUIRED": "Select the number of charges against you",
     "FULL_NAME_REQUIRED": "Please enter your full name",
     "EMAIL_ADDRESS_REQUIRED": "You must provide an email address",
@@ -98,6 +99,16 @@ def is_valid_urn_format(urn):
 def is_date_in_future(date):
     if date <= datetime.datetime.today().date():
         raise exceptions.ValidationError(ERROR_MESSAGES["HEARING_DATE_PASSED"])
+
+    return True
+
+
+def is_date_within_range(date):
+
+    if date > datetime.datetime.today().date()+datetime.timedelta(178):
+        raise exceptions.ValidationError(ERROR_MESSAGES["HEARING_DATE_INCORRECT"])
+
+    return True
 
 
 def is_urn_not_used(urn):
