@@ -50,9 +50,9 @@ class CaseStage(FormStage):
 
         if 'complete' in clean_data:
             if clean_data.get("company_plea", None):
-                self.next_step = reverse_lazy("plea_form_step", args=("company_details", ))
+                self.next_step = self.all_urls["company_details"]
             else:
-                self.next_step = reverse_lazy("plea_form_step", args=("your_details", ))
+                self.next_step = self.all_urls["your_details"]
 
         return clean_data
 

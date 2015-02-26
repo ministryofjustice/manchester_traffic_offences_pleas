@@ -74,9 +74,9 @@ class YourDetailsForm(BasePleaStepForm):
 
 class CompanyDetailsForm(BasePleaStepForm):
     COMPANY_POSITION_CHOICES = (
-        ("director", "a director"),
-        ("company_secretary", "company secretary"),
-        ("solicitor", "the company's solicitor"))
+        ("Director", "a director"),
+        ("Company secretary", "the company secretary"),
+        ("Company solicitor", "the company's solicitor"))
 
     company_name = forms.CharField(
         widget=forms.TextInput(attrs={"class": "form-control"}),
@@ -84,21 +84,23 @@ class CompanyDetailsForm(BasePleaStepForm):
         help_text="As written on page 1 of the pack we sent you.",
         error_messages={"required": ERROR_MESSAGES["FULL_NAME_REQUIRED"]})
 
-    company_address = forms.CharField(label="Company address", widget=Textarea())
+    company_address = forms.CharField(label="Company address", widget=Textarea(), required=True)
 
-    your_name = forms.CharField(label="Your name",
-                                widget=forms.TextInput(attrs={"class": "form-control"}),
-                                required=True)
+    name = forms.CharField(label="Your name",
+                           widget=forms.TextInput(attrs={"class": "form-control"}),
+                           required=True)
 
     position_in_company = forms.ChoiceField(choices=COMPANY_POSITION_CHOICES,
-                                            widget=RadioSelect(renderer=DSStackedRadioFieldRenderer),
-                                            help_text="You must confirm that you are:")
+                                            widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                            help_text="You must confirm that you are:",
+                                            required=True)
 
     contact_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                                      max_length=30, required=True, label="Contact number",
                                      help_text="Home or mobile number.",
                                      error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
+
     email = forms.EmailField(widget=forms.TextInput(attrs={"class": "form-control"}),
                              required=getattr(settings, "EMAIL_REQUIRED", True),
                              label="Email",
