@@ -5,7 +5,7 @@
 {% load staticfiles testing %}
 
 {% block page_content %}
-<form action="{{ request.path }}" method="post" autocomplete="off">
+<form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
     
     {% csrf_token %}
     
@@ -71,7 +71,7 @@
             </div>
 
             {% with form.other_bill_payers as field %}
-            {% include "widgets/std_field.html" %}
+            {% include "widgets/radio_field.html" %}
             {% endwith %}
         </div>
 
