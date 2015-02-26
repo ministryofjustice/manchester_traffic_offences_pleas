@@ -38,11 +38,18 @@ class FormStage(object):
         A convenience function to set the next form stage and optionally
         skip stages by marking them as completed.
         """
+
         self.next_step = self.all_urls[next_step]
+
+        data = self.all_data.get(next_step, None)
+
+        if data and 'skipped' in data:
+            del data['skipped']
 
         if skip:
             for stage in skip:
                 self.all_data[stage]['complete'] = True
+                self.all_data[stage]['skipped'] = True
 
     def check_dependencies(self):
         for dependency in self.dependencies:
@@ -152,6 +159,7 @@ class MultiStageForm(object):
         self.current_stage = self.current_stage_class(self.urls, self.all_data)
         if self.current_stage.name not in self.all_data:
             self.all_data[self.current_stage.name] = {}
+
         self.all_data[self.current_stage.name].update(self.current_stage.save(form_data, next_step=next_url))
         self.save_to_storage()
 
