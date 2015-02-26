@@ -25,7 +25,8 @@ class EmailTemplateTests(TestCase):
                          "date_of_hearing_0": str(self.hearing_date.day),
                          "date_of_hearing_1": str(self.hearing_date.month),
                          "date_of_hearing_2": str(self.hearing_date.year),
-                         "number_of_charges": 1}
+                         "number_of_charges": 1,
+                         "company_plea": False}
 
         if not details_data:
             details_data = {"name": "Joe Public",

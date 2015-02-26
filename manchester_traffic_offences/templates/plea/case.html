@@ -84,6 +84,10 @@
             {% include "widgets/std_field.html" %}
         {% endwith %}
 
+        {% with form.company_plea as field %}
+            {% include "widgets/std_field.html" %}
+        {% endwith %}
+
         <div class="help-image">
             <img src="{% static "images/img-charge.png" %}" alt="The number of charges is found on page 2 of the pack" width="260" height="185">
         </div>

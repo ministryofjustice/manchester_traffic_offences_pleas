@@ -38,7 +38,7 @@
     </header>
 
     {% with formset=forms.0 form_count=forms.0|length %}
-        
+
         {{ formset.management_form }}
 
         <h2 class="heading-medium">Enter {% if charges > 1 %}{{ form_count }}{% else %}a{% endif %} plea{{ charges|pluralize}} for the charge{{ charges|pluralize}} below</h2>
@@ -46,9 +46,9 @@
         {% for form in formset %}
         <fieldset id="section_guilty_{{ forloop.counter }}">
             {% if form_count > 1 %}<legend class="form-label">Your plea for charge [{{ forloop.counter }}]</legend>{% endif %}
-            
+
             <div class="form-group inline{%  if form.guilty.errors %} with-error{% endif %}">
-                
+
                 <span class="validation-message">{{ form.guilty.errors }}</span>
 
                 {% for choice in form.guilty %}
@@ -78,7 +78,7 @@
             </div>
         </fieldset>
 
-            
+
         {% endfor %}
 
     {% endwith %}
