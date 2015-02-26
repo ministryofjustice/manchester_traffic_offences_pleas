@@ -10,16 +10,19 @@ from brake.decorators import ratelimit
 from .models import Case
 
 from apps.govuk_utils.forms import MultiStageForm
-from stages import (CaseStage, YourDetailsStage, PleaStage, YourMoneyStage,
-                    YourExpensesStage, ReviewStage, CompleteStage)
+from stages import (CaseStage, YourDetailsStage, CompanyDetailsStage,
+                    PleaStage, YourMoneyStage, YourExpensesStage,
+                    CompanyFinancesStage, ReviewStage, CompleteStage)
 
 
 class PleaOnlineForms(MultiStageForm):
     stage_classes = [CaseStage,
                      YourDetailsStage,
+                     CompanyDetailsStage,
                      PleaStage,
                      YourMoneyStage,
                      YourExpensesStage,
+                     CompanyFinancesStage,
                      ReviewStage,
                      CompleteStage]
 

@@ -33,6 +33,17 @@ class FormStage(object):
 
         return self.all_urls.values()[-1]
 
+    def set_next_step(self, next_step, skip=None):
+        """
+        A convenience function to set the next form stage and optionally
+        skip stages by marking them as completed.
+        """
+        self.next_step = self.all_urls[next_step]
+
+        if skip:
+            for stage in skip:
+                self.all_data[stage]['complete'] = True
+
     def check_dependencies(self):
         for dependency in self.dependencies:
             if not (self.all_data[dependency].get("complete", False) is True):
