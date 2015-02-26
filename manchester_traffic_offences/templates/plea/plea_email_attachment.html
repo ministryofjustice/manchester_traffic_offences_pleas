@@ -45,6 +45,28 @@
     <tr>
         <td colspan="2" class="heading"><h2>Defendant details</h2></td>
     </tr>
+    {% if case.company_plea %}
+    <tr>
+        <th>Company name</th>
+        <td>{{ company_details.company_name }}</td>
+    </tr>
+    <tr>
+        <th>Full name</th>
+        <td>{{ company_details.name }}</td>
+    </tr>
+    <tr>
+        <th>Position held</th>
+        <td>{{ company_details.position_in_company }}</td>
+    </tr>
+    <tr>
+        <th>Contact number</th>
+        <td>{{ company_details.contact_number }}</td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td>{{ company_details.email }}</td>
+    </tr>
+    {% else %}
     <tr>
         <th>Full name</th>
         <td>{{ your_details.name }}</td>
@@ -57,23 +79,6 @@
         <th>Email</th>
         <td>{{ your_details.email }}</td>
     </tr>
-    {% if your_details.national_insurance_number %}
-        <tr>
-            <th>National Insurance number</th>
-            <td>{{ your_details.national_insurance_number }}</td>
-        </tr>
-    {% endif %}
-    {% if your_details.driving_licence_number %}
-        <tr>
-            <th>UK driving licence number</th>
-            <td>{{ your_details.driving_licence_number }}</td>
-        </tr>
-    {% endif %}
-    {% if your_details.registration_number %}
-        <tr>
-            <th>Registration number</th>
-            <td>{{ your_details.registration_number }}</td>
-        </tr>
     {% endif %}
 
     <tr>
@@ -102,115 +107,139 @@
         </tr>
         {% endif %}
     {%  endfor %}
-    <tr>
-        <td class="heading" colspan="2"><h2>Your money</h2></td>
-    </tr>
-    {% if your_money.skipped %}
-    <tr>
-        <th>Status</th>
-        <td><i>Not completed/provided Financial details must be collected at hearing</i></td>
-    </tr>
+    {% if case.company_plea %}
+        {% if not company_finances.skipped %}
+        <tr>
+            <td class="heading" colspan="2"><h2>Company finances</h2></td>
+        </tr>
+        <tr>
+            <th>Number of employees</th>
+            <td>{{ company_finances.number_of_employees }}</td>
+        </tr>
+        <tr>
+            <th>Trading greater than 12 months?</th>
+            <td>{{ company_finances.trading_period |yesno:"yes,no" }}</td>
+        </tr>
+        <tr>
+            <th>Gross turnover </th>
+            <td>£{{ company_finances.gross_turnover }}</td>
+        </tr>
+        <tr>
+            <th>Net turnover </th>
+            <td>£{{ company_finances.net_turnover }}</td>
+        </tr>
+        {% endif %}
     {% else %}
-    <tr>
-        <th>Status</th>
-        <td>{{ your_money.you_are }}</td>
-    </tr>
-    {% if your_money.you_are == "Employed" %}
         <tr>
-            <th>Your Job</th>
-            <td>{{ your_money.employed_your_job }}</td>
+            <td class="heading" colspan="2"><h2>Your money</h2></td>
         </tr>
+        {% if your_money.skipped %}
         <tr>
-            <th>You get paid</th>
-            <td>
-                {{ your_money.employed_take_home_pay_period }}
-            </td>
+            <th>Status</th>
+            <td><i>Not completed/provided Financial details must be collected at hearing</i></td>
         </tr>
+        {% else %}
         <tr>
-            <th>Take home pay</th>
-            <td>£{{ your_money.employed_take_home_pay_amount }}</td>
+            <th>Status</th>
+            <td>{{ your_money.you_are }}</td>
         </tr>
-    {% endif %}
-    {% if your_money.you_are == "Self employed" %}
-        <tr>
-            <th>Your Job</th>
-            <td>{{ your_money.your_job }}</td>
-        </tr>
-        <tr>
-            <th>You get paid</th>
-            <td>
-                {%  if your_money.self_employed_pay_period == "Self-employed other" %}
-                    Other - {{ your_money.self_employed_pay_other }}
-                {% else %}
-                    {{ your_money.self_employed_pay_period }}
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <th>Amount</th>
-            <td>£{{ your_money.self_employed_pay_amount }}</td>
-        </tr>
-    {% endif %}
-    {% if your_money.you_are == "Receiving benefits" %}
-        <tr>
-            <th>Benefits you receive</th>
-            <td>{{ your_money.benefits_details }}</td>
-        </tr>
-        <tr>
-            <th>Does this include payment for dependents?</th>
-            <td>{{ your_money.benefits_dependents }}</td>
-        </tr>
-        <tr>
-            <th>You get paid</th>
-            <td>
-                {%  if your_money.benefits_period == "Benefits other" %}
-                    Other - {{ your_money.benefits_pay_other }}
-                {% else %}
-                    {{ your_money.benefits_period }}
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <th>Amount</th>
-            <td>£{{ your_money.benefits_amount }}</td>
-        </tr>
-    {% endif %}
-    {% if your_money.you_are == "Other" %}
-        <tr>
-            <th>More information</th>
-            <td>{{ your_money.other_details|linebreaksbr }}</td>
-        </tr>
-        <tr>
-            <th>Amount</th>
-            <td>£{{ your_money.other_pay_amount }}</td>
-        </tr>
-    {% endif %}
-    {% endif %}
-    {% if your_money.hardship %}
-        {% add_test_tag "<<SHOWEXPENSES>>" %}
-        <tr>
-            <td class="heading" colspan="2"><h2>Your expenses</h2></td>
-        </tr>
-        <tr>
-            <th>Financial hardship details</th>
-            <td>{{ your_expenses.hardship_details|linebreaksbr }}</td>
-        </tr>
-        <tr>
-            <th>Other contributors to household bills</th>
-            <td>{% if your_expenses.other_bill_payers %}Yes{% else %}No{% endif %}</td>
-        </tr>
-        <tr>
-            <th>Total household expenses</th>
-            <td>£{{ your_expenses.total_household_expenses }}</td>
-        </tr>
-        <tr>
-            <th>Total other expenses</th>
-            <td>£{{ your_expenses.total_other_expenses }}</td>
-        </tr>
-        <tr>
-            <th>Total expenses</th>
-            <td>£{{ your_expenses.total_expenses }}</td>
-        </tr>
+        {% if your_money.you_are == "Employed" %}
+            <tr>
+                <th>Your Job</th>
+                <td>{{ your_money.employed_your_job }}</td>
+            </tr>
+            <tr>
+                <th>You get paid</th>
+                <td>
+                    {{ your_money.employed_take_home_pay_period }}
+                </td>
+            </tr>
+            <tr>
+                <th>Take home pay</th>
+                <td>£{{ your_money.employed_take_home_pay_amount }}</td>
+            </tr>
+        {% endif %}
+        {% if your_money.you_are == "Self employed" %}
+            <tr>
+                <th>Your Job</th>
+                <td>{{ your_money.your_job }}</td>
+            </tr>
+            <tr>
+                <th>You get paid</th>
+                <td>
+                    {%  if your_money.self_employed_pay_period == "Self-employed other" %}
+                        Other - {{ your_money.self_employed_pay_other }}
+                    {% else %}
+                        {{ your_money.self_employed_pay_period }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td>£{{ your_money.self_employed_pay_amount }}</td>
+            </tr>
+        {% endif %}
+        {% if your_money.you_are == "Receiving benefits" %}
+            <tr>
+                <th>Benefits you receive</th>
+                <td>{{ your_money.benefits_details }}</td>
+            </tr>
+            <tr>
+                <th>Does this include payment for dependents?</th>
+                <td>{{ your_money.benefits_dependents }}</td>
+            </tr>
+            <tr>
+                <th>You get paid</th>
+                <td>
+                    {%  if your_money.benefits_period == "Benefits other" %}
+                        Other - {{ your_money.benefits_pay_other }}
+                    {% else %}
+                        {{ your_money.benefits_period }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td>£{{ your_money.benefits_amount }}</td>
+            </tr>
+        {% endif %}
+        {% if your_money.you_are == "Other" %}
+            <tr>
+                <th>More information</th>
+                <td>{{ your_money.other_details|linebreaksbr }}</td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td>£{{ your_money.other_pay_amount }}</td>
+            </tr>
+        {% endif %}
+        {% endif %}
+        {% if your_money.hardship %}
+            {% add_test_tag "<<SHOWEXPENSES>>" %}
+            <tr>
+                <td class="heading" colspan="2"><h2>Your expenses</h2></td>
+            </tr>
+            <tr>
+                <th>Financial hardship details</th>
+                <td>{{ your_expenses.hardship_details|linebreaksbr }}</td>
+            </tr>
+            <tr>
+                <th>Other contributors to household bills</th>
+                <td>{% if your_expenses.other_bill_payers %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Total household expenses</th>
+                <td>£{{ your_expenses.total_household_expenses }}</td>
+            </tr>
+            <tr>
+                <th>Total other expenses</th>
+                <td>£{{ your_expenses.total_other_expenses }}</td>
+            </tr>
+            <tr>
+                <th>Total expenses</th>
+                <td>£{{ your_expenses.total_expenses }}</td>
+            </tr>
+        {% endif %}
     {% endif %}
     </tbody>
 </table>
