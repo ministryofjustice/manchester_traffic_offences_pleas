@@ -25,12 +25,19 @@ def send_user_confirmation_email(context_data):
 
     from .stages import get_plea_type
 
+    if context_data['case']['company_plea']:
+        email = context_data['company_details']['email']
+        name = context_data['company_details']['name']
+    else:
+        email = context_data['your_details']['email']
+        name = context_data['your_details']['name']
+
     data = {
-        'email': context_data['your_details']['email'],
+        'email': email,
         'urn': context_data['case']['urn'],
         'number_of_charges': context_data['case']['number_of_charges'],
         'plea_type': get_plea_type(context_data),
-        'name': context_data['your_details']['name']
+        'name': name
     }
 
     html_body = render_to_string("plea/plea_email_confirmation.html", data)
@@ -85,8 +92,14 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
         date_of_hearing = parser.parse(context_data["case"]["date_of_hearing"])
     else:
         date_of_hearing = context_data["case"]["date_of_hearing"]
-    names = [context_data["your_details"]["name"].rsplit(" ", 1)[-1].upper()]
-    first_names = " ".join(context_data["your_details"]["name"].rsplit(" ", 1)[:-1])
+
+    if context_data["case"]["company_plea"]:
+        name = context_data["company_details"]["name"]
+    else:
+        name = context_data["your_details"]["name"]
+
+    names = [name.rsplit(" ", 1)[-1].upper()]
+    first_names = " ".join(name.rsplit(" ", 1)[:-1])
     if first_names:
         names.append(first_names)
 
