@@ -78,26 +78,33 @@ class CompanyDetailsForm(BasePleaStepForm):
         ("Company secretary", "the company secretary"),
         ("Company solicitor", "the company's solicitor"))
 
-    company_name = forms.CharField(
-        widget=forms.TextInput(attrs={"class": "form-control"}),
-        max_length=100, required=True, label="Company name",
-        help_text="As written on page 1 of the pack we sent you.",
-        error_messages={"required": ERROR_MESSAGES["FULL_NAME_REQUIRED"]})
+    company_name = forms.CharField(label="Company name",
+                                   widget=forms.TextInput(attrs={"class": "form-control"}),
+                                   max_length=100, 
+                                   required=True, 
+                                   help_text="As written on page 1 of the pack we sent you.",
+                                   error_messages={"required": ERROR_MESSAGES["FULL_NAME_REQUIRED"]})
 
-    company_address = forms.CharField(label="Company address", widget=Textarea(), required=True)
+    company_address = forms.CharField(label="Company address",
+                                      widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
+                                      help_text="This is the address we will use for all future correspondence about this case.",
+                                      required=True)
 
     name = forms.CharField(label="Your name",
                            widget=forms.TextInput(attrs={"class": "form-control"}),
                            required=True)
 
-    position_in_company = forms.ChoiceField(choices=COMPANY_POSITION_CHOICES,
-                                            widget=RadioSelect(renderer=DSRadioFieldRenderer),
+    position_in_company = forms.ChoiceField(label="Your position in the company",
+                                            choices=COMPANY_POSITION_CHOICES,
+                                            widget=RadioSelect(renderer=DSStackedRadioFieldRenderer),
                                             help_text="You must confirm that you are:",
                                             required=True)
 
-    contact_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                                     max_length=30, required=True, label="Contact number",
-                                     help_text="Home or mobile number.",
+    contact_number = forms.CharField(label="Contact number",
+                                     widget=forms.TextInput(attrs={"class": "form-control"}),
+                                     max_length=30,
+                                     required=True, 
+                                     help_text="Office or mobile number.",
                                      error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
 
@@ -403,36 +410,24 @@ class CompanyFinancesForm(BasePleaStepForm):
                                             label="Has the company been trading for more than 12 months?")
 
     number_of_employees = forms.IntegerField(label="Number of employees",
-                                             widget=forms.TextInput(attrs={"maxlength": "7", "pattern": "[0-9]+", "class": "form-control-inline", "size": "2"}),
+                                             widget=forms.TextInput(attrs={"maxlength": "7", "pattern": "[0-9]+", "class": "form-control-inline", "size": "17"}),
                                              min_value=1, max_value=10000,
                                              error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]},
-                                             required=False)
+                                             required=True)
 
-    gross_turnover = forms.DecimalField(widget=forms.TextInput(attrs={"class": "form-control"}),
+    gross_turnover = forms.DecimalField(widget=forms.TextInput(attrs={"class": "form-control-inline", "size": "13"}),
                                         max_digits=10,
                                         decimal_places=2,
                                         help_text="For example, 150000",
                                         initial=0,
-                                        required=False)
+                                        required=True)
 
-    net_turnover = forms.DecimalField(widget=forms.TextInput(attrs={"class": "form-control"}),
+    net_turnover = forms.DecimalField(widget=forms.TextInput(attrs={"class": "form-control-inline", "size": "13"}),
                                       help_text="For example, 110000",
                                       max_digits=10,
                                       decimal_places=2,
                                       initial=0,
-                                      required=False)
-
-    def __init__(self, *args, **kwargs):
-        super(CompanyFinancesForm, self).__init__(*args, **kwargs)
-        try:
-            data = args[0]
-        except IndexError:
-            data = {}
-
-        if "trading_period" in data:
-            self.fields["number_of_employees"].required = True
-            self.fields["gross_turnover"].required = True
-            self.fields["net_turnover"].required = True
+                                      required=True)
 
 
 class ConfirmationForm(BasePleaStepForm):

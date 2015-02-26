@@ -142,19 +142,32 @@
     </table>
 
 {% if case.company_plea and not company_finances.skipped %}
-
     {% add_test_tag "<<SHOWCOMPANYFINANCES>>" %}
-
-    Number of employees {{ company_finances.number_of_employees }}<br>
-
-    {% if not company_finances.trading_period %}
-        Projected figures message
-    {% endif %}
-
-    Gross turnover {{ company_finances.gross_turnover }}<br>
-
-    Net turnover {{ company_finances.net_turnover }}<br>
-
+    <table class="review-table" id="company-details">
+        <thead>
+            <tr>
+                <th class="header">Company financial details</th>
+                <th class="change-link"><a href="{% url "plea_form_step" "company_finances" %}" class="review">Change details</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="label">Number of employees</th>
+                <td>{{ company_finances.number_of_employees }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><h3>{% if company_finances.trading_period %}From the most recent audited company accounts{% else %}From the first 12 month's trading projections{% endif %}</h3></td>
+            </tr>
+            <tr>
+                <th class="label">Gross turnover</th>
+                <td>{{ company_finances.gross_turnover }}</td>
+            </tr>
+            <tr>
+                <th class="label">Net turnover</th>
+                <td>{{ company_finances.net_turnover }}</td>
+            </tr>
+        </tbody>
+    </table>
 {% else %}
     {%  if not your_money.skipped %}
         <table class="review-table" id="your-money">
@@ -255,7 +268,7 @@
 
     {% if your_money.hardship %}
         {% add_test_tag "<<SHOWINGEXPENSES>>" %}
-        <table class="review-table" id="your-money">
+        <table class="review-table" id="your-expenses">
             <thead>
                 <tr>
                     <th class="header">Your expenses</th>
