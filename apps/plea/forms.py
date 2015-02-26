@@ -6,7 +6,9 @@ from django.forms.widgets import Textarea, RadioSelect
 from django.conf import settings
 
 from .fields import (ERROR_MESSAGES, is_date_in_future, is_date_within_range,
-                     DSRadioFieldRenderer, URNField,
+                     DSRadioFieldRenderer, 
+                     DSStackedRadioFieldRenderer,
+                     URNField,
                      HearingDateWidget, is_urn_not_used)
 
 YESNO_CHOICES = (
@@ -89,7 +91,7 @@ class CompanyDetailsForm(BasePleaStepForm):
                                 required=True)
 
     position_in_company = forms.ChoiceField(choices=COMPANY_POSITION_CHOICES,
-                                            widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                            widget=RadioSelect(renderer=DSStackedRadioFieldRenderer),
                                             help_text="You must confirm that you are:")
 
     contact_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
