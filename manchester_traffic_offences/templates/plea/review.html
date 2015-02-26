@@ -5,7 +5,7 @@
 {% load date testing %}
 
 {% block page_content %}
-<form action="{{ request.path }}" method="post" autocomplete="off">
+<form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
     
     {% csrf_token %}
     
@@ -214,7 +214,7 @@
 
 {% if your_money.hardship %}
     {% add_test_tag "<<SHOWINGEXPENSES>>" %}
-    <table class="review-table" id="your-money">
+    <table class="review-table" id="your-expenses">
         <thead>
             <tr>
                 <th class="header">Your expenses</th>
@@ -252,10 +252,12 @@
 
         <div class="form-group-wide{% if form.understand.errors %} with-error{% endif %}">
             
-            <span class="validation-message">{{ form.understand.errors }}</span>
+            {% if form.understand.errors %}
+            <div class="validation-message">{{ form.understand.errors }}</div>
+            {% endif %}
             
             <label for="{{ form.understand.id_for_label }}" class="block-label">
-                <p class="important">It is an offence to make a false statement or to deliberately fail to disclose any relevant facts.</p>
+                <span class="important">It is an offence to make a false statement or to deliberately fail to disclose any relevant facts.</span>
                 <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
                 <strong>I confirm</strong> that I have read and understand the charge against me and that I am the person named in the Postal Requisition. The facts stated here are correct to the best of my knowledge.
             </label>
@@ -266,12 +268,16 @@
 
         <div class="form-group-wide{% if form.receive_email.errors %} with-error{% endif %}">
             
-            <span class="validation-message">{{ form.receive_email.errors }}</span>
+            {% if form.receive_email.errors %}
+            <div class="validation-message">{{ form.receive_email.errors }}</div>
+            {% endif %}
 
             <div class="grey">
-                <legend class="label">Do you want to receive an email confirming your plea{{ case.number_of_charges|pluralize }}?</legend>
+                <fieldset>
+                    <legend>Do you want to receive an email confirming your plea{{ case.number_of_charges|pluralize }}?</legend>
 
-                {{ form.receive_email }}
+                    {{ form.receive_email }}
+                </fieldset>
             </div>
         </div>
     </section>

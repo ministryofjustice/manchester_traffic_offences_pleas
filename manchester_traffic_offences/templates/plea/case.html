@@ -5,7 +5,7 @@
 {% load staticfiles %}
 
 {% block page_content %}
-<form action="{{ request.path }}" method="post" autocomplete="off">
+<form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
 
     {% csrf_token %}
     
@@ -77,7 +77,7 @@
         </div>
     
         {% with form.date_of_hearing as field %}
-            {% include "widgets/date_field.html" %}
+            {% include "widgets/std_field.html" %}
         {% endwith %}
 
         {% with form.number_of_charges as field %}

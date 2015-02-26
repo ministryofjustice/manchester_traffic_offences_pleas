@@ -1441,9 +1441,9 @@ Forms
       .column-half .form-group label {
         font-size: 18px;
         line-height: 1.2; } }
-    .form-group label .errorlist, .form-group-wide label .errorlist {
-      margin: .25em 0;
-      color: #df3034; }
+  .form-group .errorlist, .form-group-wide .errorlist {
+    margin: .25em 0;
+    color: #df3034; }
   .form-group .block-label, .form-group-wide .block-label {
     font-family: "nta", Arial, sans-serif;
     font-size: 24px;
