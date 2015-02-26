@@ -151,6 +151,20 @@ class DSRadioFieldRenderer(RadioFieldRenderer):
         return render_to_string("widgets/DSRadioSelect.html", context)
 
 
+class DSStackedRadioFieldRenderer(RadioFieldRenderer):
+    def render(self):
+        """
+        Outputs a <ul> for this set of choice fields.
+        If an id was given to the field, it is applied to the <ul> (each
+        item in the list will get an id of `$id_$i`).
+        """
+        id_ = self.attrs.get('id', None)
+
+        context = {"id": id_, "renderer": self, "inputs": [force_text(widget) for widget in self]}
+
+        return render_to_string("widgets/DSStackedRadioSelect.html", context)
+
+
 class DSTemplateWidgetBase(forms.TextInput):
     template = ""
 
