@@ -7,7 +7,7 @@
 {% block page_content %}
 
     {% with request.session.case.number_of_charges as charges %}
-<form action="{{ request.path }}" method="post" autocomplete="off">
+<form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
 
     {% csrf_token %}
 
@@ -48,8 +48,10 @@
             {% if form_count > 1 %}<legend class="form-label">Your plea for charge [{{ forloop.counter }}]</legend>{% endif %}
 
             <div class="form-group inline{%  if form.guilty.errors %} with-error{% endif %}">
-
-                <span class="validation-message">{{ form.guilty.errors }}</span>
+                
+                {% if form.guilty.errors %}
+                <div class="validation-message">{{ form.guilty.errors }}</div>
+                {% endif %}
 
                 {% for choice in form.guilty %}
                 <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
@@ -61,13 +63,13 @@
 
             <div id="section_mitigations_{{ forloop.counter }}" class="panel-indent form-group">
                 <div id="{{ form.guilty.0.name }}_guilty_extra" class="js-Conditional js-hidden" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^guilty$">
-                    <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint-inline">(optional)</span>
+                    <label for="{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint-inline">(optional)</span>
                         <span class="form-hint">What would you like the court to consider?</span>
                     </label>
                 </div>
 
                 <div id="{{ form.guilty.0.name }}_not_guilty_extra" class="js-Conditional js-hidden" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^not_guilty$">
-                    <label for="{{ form.prefix }}{{ form.mitigations.id_for_label }}">Not guilty because? <span class="form-hint-inline">(optional)</span>
+                    <label for="{{ form.mitigations.id_for_label }}">Not guilty because? <span class="form-hint-inline">(optional)</span>
                         <span class="form-hint">Tell us why you believe you are not guilty.</span>
                     </label>
                 </div>
