@@ -396,13 +396,11 @@ class TestMultiPleaForms(TestCase):
         mgmt_data.update({"form-0-guilty": "not_guilty",
                           "form-0-mitigations": "lorem ipsum 1"})
 
-        import pdb; pdb.set_trace()
         form.save(mgmt_data, request_context)
         response = form.render()
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/plea/company_finances/")
-
 
     def test_plea_stage_skips_company_finances_when_not_guilty(self):
         pass
