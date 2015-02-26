@@ -2,6 +2,7 @@ import datetime
 from mock import Mock, MagicMock, patch
 from importlib import import_module
 import socket
+import unittest
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -13,6 +14,7 @@ from django.template.context import RequestContext
 
 from ..models import Case
 from ..views import PleaOnlineForms
+from ..forms import CompanyFinancesForm
 
 
 class TestMultiPleaForms(TestCase):
@@ -25,7 +27,8 @@ class TestMultiPleaForms(TestCase):
                                                       "urn_1": "AA",
                                                       "urn_2": "0000000",
                                                       "urn_3": "00",
-                                                      "number_of_charges": 1},
+                                                      "number_of_charges": 1,
+                                                      "company_plea": False},
                                              "your_details": {"name": "Charlie Brown",
                                                               "contact_number": "012345678",
                                                               "email": "charliebrown@example.org"}}
@@ -35,7 +38,8 @@ class TestMultiPleaForms(TestCase):
                                                        "urn_1": "AA",
                                                        "urn_2": "0000000",
                                                        "urn_3": "00",
-                                                       "number_of_charges": 3},
+                                                       "number_of_charges": 3,
+                                                       "company_plea": False},
                                               "your_details": {"name": "Charlie Brown",
                                                                "contact_number": "012345678",
                                                                "email": "charliebrown@example.org"}}
@@ -48,7 +52,8 @@ class TestMultiPleaForms(TestCase):
                 "complete": True,
                 "date_of_hearing": "2015-01-01",
                 "urn": "06/AA/0000000/00",
-                "number_of_charges": 3
+                "number_of_charges": 3,
+                "company_plea": False
             },
             'your_details': {"name": "Charlie Brown",
                    "contact_number": "07802639892",
@@ -101,7 +106,7 @@ class TestMultiPleaForms(TestCase):
         form.load(self.request_context)
         form.save({}, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 3)
+        self.assertEqual(len(form.current_stage.forms[0].errors), 4)
 
     def test_case_stage_urn_already_submitted(self):
 
@@ -121,7 +126,8 @@ class TestMultiPleaForms(TestCase):
                    "urn_1": "AA",
                    "urn_2": "0000000",
                    "urn_3": "00",
-                   "number_of_charges": 1},
+                   "number_of_charges": 1,
+                   "company_plea": False},
                   self.request_context)
 
         response = form.render()
@@ -142,11 +148,56 @@ class TestMultiPleaForms(TestCase):
                    "urn_1": "AA",
                    "urn_2": "0000000",
                    "urn_3": "00",
-                   "number_of_charges": 1},
+                   "number_of_charges": 1,
+                   "company_plea": False},
                   self.request_context)
         response = form.render()
 
         self.assertEqual(response.status_code, 302)
+
+    def test_case_stage_redirects_to_company_stage(self):
+        form = PleaOnlineForms("case", "plea_form_step", self.session)
+
+        hearing_date = datetime.date.today()+datetime.timedelta(30)
+
+        form.load(self.request_context)
+        form.save({"date_of_hearing_0": str(hearing_date.day),
+                   "date_of_hearing_1": str(hearing_date.month),
+                   "date_of_hearing_2": str(hearing_date.year),
+                   "urn_0": "06",
+                   "urn_1": "AA",
+                   "urn_2": "0000000",
+                   "urn_3": "00",
+                   "number_of_charges": 1,
+                   "company_plea": True},
+                  self.request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/plea/company_details/')
+
+    def test_case_stage_redirects_to_your_money_stage(self):
+        form = PleaOnlineForms("case", "plea_form_step", self.session)
+
+        hearing_date = datetime.date.today()+datetime.timedelta(30)
+
+        form.load(self.request_context)
+        form.save({"date_of_hearing_0": str(hearing_date.day),
+                   "date_of_hearing_1": str(hearing_date.month),
+                   "date_of_hearing_2": str(hearing_date.year),
+                   "urn_0": "06",
+                   "urn_1": "AA",
+                   "urn_2": "0000000",
+                   "urn_3": "00",
+                   "number_of_charges": 1,
+                   "company_plea": False},
+                  self.request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/plea/your_details/')
 
     def test_your_details_stage_bad_data(self):
         form = PleaOnlineForms("your_details", "plea_form_step", self.session)
@@ -205,7 +256,8 @@ class TestMultiPleaForms(TestCase):
         self.session.update({"case": {"complete": True,
                                       "date_of_hearing": "2015-01-01",
                                       "urn": "06/AA/0000000/00",
-                                      "number_of_charges": 2},
+                                      "number_of_charges": 2,
+                                      "company_plea": False},
                              "your_details": {"name": "Charlie Brown",
                                               "contact_number": "07802639892",
                                               "email": "test@example.org"}})
@@ -308,6 +360,53 @@ class TestMultiPleaForms(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
+    def test_plea_stage_redirects_to_company_finances(self):
+
+        hearing_date = datetime.date.today()+datetime.timedelta(30)
+
+        fake_request = self.get_request_mock("/plea/plea/")
+        request_context = RequestContext(fake_request)
+
+        test_data = {
+            "case": {
+                "complete": True,
+                "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
+                "urn": "06/AA/0000000/00",
+                "number_of_charges": 2,
+                "company_plea": True
+            },
+            "your_details": {
+                "complete": True
+            },
+            "your_money": {
+                "complete": True
+            },
+            "plea": {
+
+            }
+        }
+
+        form = PleaOnlineForms("plea", "plea_form_step", test_data)
+        form.load(request_context)
+
+        mgmt_data = {"form-TOTAL_FORMS": "1",
+                     "form-INITIAL_FORMS": "0",
+                     "form-MAX_NUM_FORMS": "1000"}
+
+        mgmt_data.update({"form-0-guilty": "not_guilty",
+                          "form-0-mitigations": "lorem ipsum 1"})
+
+        import pdb; pdb.set_trace()
+        form.save(mgmt_data, request_context)
+        response = form.render()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/plea/company_finances/")
+
+
+    def test_plea_stage_skips_company_finances_when_not_guilty(self):
+        pass
+
     def _get_your_money_stage(self):
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
@@ -316,7 +415,8 @@ class TestMultiPleaForms(TestCase):
                 "complete": True,
                 "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
                 "urn": "06/AA/0000000/00",
-                "number_of_charges": 1
+                "number_of_charges": 1,
+                "company_plea": False
             },
             "your_details": {
                 "complete": True
@@ -468,7 +568,8 @@ class TestMultiPleaForms(TestCase):
                 "complete": True,
                 "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
                 "urn": "06/AA/0000000/00",
-                "number_of_charges": 1
+                "number_of_charges": 1,
+                "company_plea": False
             },
             "your_details": {
                 "complete": True
@@ -498,7 +599,8 @@ class TestMultiPleaForms(TestCase):
                 "complete": True,
                 "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
                 "urn": "06/AA/0000000/00",
-                "number_of_charges": 1
+                "number_of_charges": 1,
+                "company_plea": False
             },
             "your_details": {
                 "complete": True
@@ -580,7 +682,8 @@ class TestMultiPleaForms(TestCase):
                    "urn_1": "AA",
                    "urn_2": "0000000",
                    "urn_3": "00",
-                   "number_of_charges": 1},
+                   "number_of_charges": 1,
+                   "company_plea": False},
                   request_context)
         response = form.render()
         self.assertEqual(response.status_code, 302)
@@ -645,7 +748,8 @@ class TestMultiPleaForms(TestCase):
                    "urn_1": "AA",
                    "urn_2": "0000000",
                    "urn_3": "00",
-                   "number_of_charges": 2},
+                   "number_of_charges": 2,
+                   "company_plea": False},
                   request_context)
         response = form.render()
 
@@ -688,6 +792,7 @@ class TestMultiPleaForms(TestCase):
         self.assertEqual(fake_session["case"]["date_of_hearing"], hearing_date)
         self.assertEqual(fake_session["case"]["urn"], "06/AA/0000000/00")
         self.assertEqual(fake_session["case"]["number_of_charges"], 2)
+        self.assertEqual(fake_session["case"]["company_plea"], False)
         self.assertEqual(fake_session["your_details"]["name"], "Charlie Brown")
         self.assertEqual(fake_session["your_details"]["contact_number"], "07802639892")
         self.assertEqual(fake_session["your_details"]["email"], "test@example.org")
@@ -1085,3 +1190,23 @@ class TestMultiPleaForms(TestCase):
         self.assertNotContains(response, '<<SHOWINGEXPENSES>>')
 
 
+class TestCompanyForm(unittest.TestCase):
+
+    def test_trading_period_not_specified_other_fields_not_required(self):
+
+        form = CompanyFinancesForm({})
+
+        form.is_valid()
+
+        self.assertIn('trading_period', form.errors)
+        self.assertEqual(len(form.errors.items()), 1)
+
+    def test_trading_period_specified_other_fields_required(self):
+        form = CompanyFinancesForm({'trading_period': 'Yes'})
+
+        form.is_valid()
+
+        self.assertEquals(len(form.errors.items()), 3)
+        self.assertIn('number_of_employees', form.errors)
+        self.assertIn('gross_turnover', form.errors)
+        self.assertIn('net_turnover', form.errors)
