@@ -177,8 +177,8 @@ class DSURNTemplateWidget(DSTemplateWidgetBase):
 class HearingDateWidget(MultiWidget):
     def __init__(self, attrs=None):
         widgets = [DSDateTemplateWidget(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline first-inline', 'size': '2'}, context={'title': 'Day'}),
-                   DSDateTemplateWidget(attrs={'_title': 'Month', 'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}, context={'title': 'Month'}),
-                   DSDateTemplateWidget(attrs={'_title': 'Year', 'maxlength': '4', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '4'}, context={'title': 'Year'}),
+                   DSDateTemplateWidget(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}, context={'title': 'Month'}),
+                   DSDateTemplateWidget(attrs={'maxlength': '4', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '4'}, context={'title': 'Year'}),
                    ]
         super(HearingDateWidget, self).__init__(widgets, attrs)
 

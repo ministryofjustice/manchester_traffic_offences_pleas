@@ -115,7 +115,9 @@ Main styles
 		margin-right: 0;
 
 		.important {
-			margin-top: 0;
+			@extend p.important;
+			display: block;
+			margin: 0 0 1.25em;
 		}
 
 		input {
@@ -143,6 +145,10 @@ Main styles
 					@include core-24;
 					padding: .5em .5em .5em 0;
 					cursor: pointer;
+
+					&.selected {
+						background: transparent;
+					}
 
 					input {
 						vertical-align: middle;

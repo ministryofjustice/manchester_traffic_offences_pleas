@@ -34,11 +34,11 @@ Forms
 		@include bold-24();
 		display: block;
 		margin-bottom: .25em;
+	}
 
-		.errorlist {
-			margin: .25em 0;
-			color: $error-colour;
-		}
+	.errorlist {
+		margin: .25em 0;
+		color: $error-colour;
 	}
 
 	.block-label {
@@ -130,6 +130,8 @@ legend {
 legend.form-label-bold {
 	@extend .form-label;
 	@include bold-24();
+	
+	margin-bottom: 0;
 }
 
 .form-submit {
