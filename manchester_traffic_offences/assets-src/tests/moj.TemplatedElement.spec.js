@@ -109,4 +109,20 @@ describe("moj.TemplatedElement", function() {
     $('#radio_1').trigger('click');
     expect($('#delegate').text()).toBe('Templated content, value = one');
   });
+
+  it('should use the default text from the first element only', function() {
+    $fixture = $(
+      '<div class="test_control">'
+      + '<input id="radio_1" name="testField" type="radio" value="one"/>'
+      + '<input id="radio_2" name="testField" type="radio" value="two"/>'
+      + '<div class="js-TemplatedElement" data-template-trigger="testField" data-template="Templated content, value = {value}" data-template-defaults-for="two" data-template-delegate=".delegate">Default content</div>'
+      + '<div class="delegate">Another element</div>'
+      + '<div class="delegate">Another element</div>'
+      + '</div>'
+    );
+    $fixture.appendTo('body');
+    subject = new moj.Modules._TemplatedElement($fixture.find('.js-TemplatedElement'));
+
+    expect(subject.originalText).toBe('Another element');
+  });
 });
