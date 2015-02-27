@@ -471,7 +471,7 @@ if(typeof String.prototype.trim !== 'function') {
         $el = $($el.data('templateDelegate'));
       }
 
-      this.originalText = $el.text();
+      this.originalText = $el.eq(0).text();
 
       this.cacheElements($el);
 
