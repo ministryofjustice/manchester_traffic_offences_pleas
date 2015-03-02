@@ -204,7 +204,7 @@
                     <td>£{{ your_money.employed_take_home_pay_amount }}</td>
                 </tr>
                 {% endif %}
-                {% if your_money.you_are == "Self employed" %}
+                {% if your_money.you_are == "Self-employed" %}
                 <tr>
                     <th class="label">Your Job</th>
                     <td>{{ your_money.your_job }}</td>
@@ -212,14 +212,14 @@
                 <tr>
                     <th class="label">You get paid</th>
                     <td>
-                        {% if your_money.self_employed_pay_period == "self-employed other" %}
+                        {% if your_money.self_employed_pay_period == "Self-employed other" %}
                         Other
                         {% else %}
                         {{ your_money.self_employed_pay_period }}
                         {% endif %}
                     </td>
                 </tr>
-            {% if your_money.self_employed_pay_period == "self-employed other" %}
+            {% if your_money.self_employed_pay_period == "Self-employed other" %}
                 <tr>
                     <th class="label">Details</th>
                     <td>{{ your_money.self_employed_pay_other }}</td>
@@ -242,14 +242,14 @@
                 <tr>
                     <th class="label">You get paid</th>
                     <td>
-                        {%  if your_money.benefits_period == "benefits other" %}
+                        {%  if your_money.benefits_period == "Benefits other" %}
                         Other
                         {% else %}
                         {{ your_money.benefits_period }}
                         {% endif %}
                     </td>
                 </tr>
-            {%  if your_money.benefits_period == "benefits other" %}
+            {%  if your_money.benefits_period == "Benefits other" %}
                 <tr>
                     <th class="label">Details</th>
                     <td>{{ your_money.benefits_pay_other|linebreaksbr }}</td>
