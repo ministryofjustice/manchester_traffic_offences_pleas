@@ -424,7 +424,6 @@ class CompanyFinancesForm(BasePleaStepForm):
                                         max_digits=10,
                                         decimal_places=2,
                                         help_text="For example, 150000",
-                                        initial=0,
                                         required=False,
                                         error_messages={"required": ERROR_MESSAGES["COMPANY_GROSS_TURNOVER"]})
 
@@ -446,6 +445,10 @@ class CompanyFinancesForm(BasePleaStepForm):
             self.fields["number_of_employees"].required = True
             self.fields["gross_turnover"].required = True
             self.fields["net_turnover"].required = True
+
+            if data["trading_period"] == "False":
+                self.fields["gross_turnover"].error_messages = {"required": ERROR_MESSAGES["COMPANY_GROSS_TURNOVER_PROJECTED"]}
+                self.fields["net_turnover"].error_messages = {"required": ERROR_MESSAGES["COMPANY_NET_TURNOVER_PROJECTED"]}
 
 
 class ConfirmationForm(BasePleaStepForm):
