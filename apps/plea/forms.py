@@ -122,7 +122,7 @@ class CompanyDetailsForm(BasePleaStepForm):
 class YourMoneyForm(BasePleaStepForm):
 
     YOU_ARE_CHOICES = (("Employed", "Employed"),
-                       ("Self employed", "Self employed"),
+                       ("Self-employed", "Self-employed"),
                        ("Receiving benefits", "Receiving benefits"),
                        ("Other", "Other"))
     PERIOD_CHOICES = (("Weekly", "Weekly"),
@@ -170,7 +170,7 @@ class YourMoneyForm(BasePleaStepForm):
                                                required=False,
                                                error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
-    # Self employed
+    # Self-employed
     your_job = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                                required=False, max_length=100, label="What's your job?",
                                error_messages={"required": ERROR_MESSAGES["YOUR_JOB_REQUIRED"]})
@@ -273,7 +273,7 @@ class YourMoneyForm(BasePleaStepForm):
                 self.fields["employed_take_home_pay_amount"].required = True
                 self.fields["employed_hardship"].required = True
 
-            if data["you_are"] == "Self employed":
+            if data["you_are"] == "Self-employed":
                 self.fields["your_job"].required = True
                 self.fields["self_employed_pay_period"].required = True
                 self.fields["self_employed_pay_amount"].required = True
