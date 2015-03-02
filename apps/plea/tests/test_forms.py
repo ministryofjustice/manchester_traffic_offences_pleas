@@ -14,7 +14,7 @@ class TestCompanyForm(unittest.TestCase):
         self.assertEqual(len(form.errors.items()), 1)
 
     def test_trading_period_specified_other_fields_required(self):
-        form = CompanyFinancesForm({'trading_period': 'Yes'})
+        form = CompanyFinancesForm({'trading_period': "False"})
 
         form.is_valid()
 
