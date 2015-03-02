@@ -53,6 +53,10 @@
                 <th class="label">Number of charges against you</th>
                 <td>{{ case.number_of_charges }}</td>
             </tr>
+            <tr>
+                <th class="label">Plea on behalf of a company?</th>
+                <td>{{ case.company_plea|yesno:"Yes,No" }}</td>
+            </tr>
         </tbody>
     </table>
 
@@ -70,6 +74,10 @@
             <tr>
                 <th class="label">Company name</th>
                 <td>{{ company_details.company_name }}</td>
+            </tr>
+            <tr>
+                <th class="label">Company address</th>
+                <td>{{ company_details.company_address|linebreaksbr }}</td>
             </tr>
             <tr>
                 <th class="label">Full name</th>
@@ -160,11 +168,11 @@
             </tr>
             <tr>
                 <th class="label">Gross turnover</th>
-                <td>{{ company_finances.gross_turnover }}</td>
+                <td>£{{ company_finances.gross_turnover }}</td>
             </tr>
             <tr>
                 <th class="label">Net turnover</th>
-                <td>{{ company_finances.net_turnover }}</td>
+                <td>£{{ company_finances.net_turnover }}</td>
             </tr>
         </tbody>
     </table>
