@@ -46,6 +46,7 @@
         <td colspan="2" class="heading"><h2>Defendant details</h2></td>
     </tr>
     {% if case.company_plea %}
+    {% add_test_tag "<<SHOWCOMPANYDETAILS>>" %}
     <tr>
         <th>Company name</th>
         <td>{{ company_details.company_name }}</td>
@@ -67,6 +68,7 @@
         <td>{{ company_details.email }}</td>
     </tr>
     {% else %}
+    {% add_test_tag "<<SHOWYOURDETAILS>>" %}
     <tr>
         <th>Full name</th>
         <td>{{ your_details.name }}</td>
@@ -109,6 +111,7 @@
     {%  endfor %}
     {% if case.company_plea %}
         {% if not company_finances.skipped %}
+        {% add_test_tag "<<SHOWCOMPANYFINANCES>>" %}
         <tr>
             <td class="heading" colspan="2"><h2>Company finances</h2></td>
         </tr>
