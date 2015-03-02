@@ -6,7 +6,9 @@ from django.forms.widgets import Textarea, RadioSelect
 from django.conf import settings
 
 from .fields import (ERROR_MESSAGES, is_date_in_future, is_date_within_range,
-                     DSRadioFieldRenderer, URNField,
+                     DSRadioFieldRenderer, 
+                     DSStackedRadioFieldRenderer,
+                     URNField,
                      HearingDateWidget, is_urn_not_used)
 
 YESNO_CHOICES = (
@@ -29,6 +31,7 @@ class BasePleaStepForm(forms.Form):
 
 
 class CaseForm(BasePleaStepForm):
+
     urn = URNField(label="Unique reference number (URN)",
                    required=True,
                    help_text="On page 1 of the pack, in the top right corner",
@@ -47,6 +50,12 @@ class CaseForm(BasePleaStepForm):
                                            min_value=1, max_value=10,
                                            error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]})
 
+    company_plea = forms.TypedChoiceField(required=True, widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                          coerce=to_bool,
+                                          choices=YESNO_CHOICES,
+                                          label="Are you making a plea on behalf of a company?",
+                                          error_messages={"required": ERROR_MESSAGES["ON_BEHALF_OF_COMPANY"]})
+
 
 class YourDetailsForm(BasePleaStepForm):
     name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
@@ -64,8 +73,54 @@ class YourDetailsForm(BasePleaStepForm):
                              error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
                                              "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
+class CompanyDetailsForm(BasePleaStepForm):
+    COMPANY_POSITION_CHOICES = (
+        ("Director", "a director"),
+        ("Company secretary", "the company secretary"),
+        ("Company solicitor", "the company's solicitor"))
+
+    company_name = forms.CharField(label="Company name",
+                                   widget=forms.TextInput(attrs={"class": "form-control"}),
+                                   max_length=100, 
+                                   required=True, 
+                                   help_text="As written on page 1 of the pack we sent you.",
+                                   error_messages={"required": ERROR_MESSAGES["COMPANY_NAME_REQUIRED"]})
+
+    company_address = forms.CharField(label="Company address",
+                                      widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
+                                      help_text="This is the address we will use for all future correspondence about this case.",
+                                      required=True,
+                                      error_messages={"required": ERROR_MESSAGES["COMPANY_ADDRESS_REQUIRED"]})
+
+    name = forms.CharField(label="Your name",
+                           widget=forms.TextInput(attrs={"class": "form-control"}),
+                           required=True,
+                           error_messages={"required": ERROR_MESSAGES["NAME_REQUIRED"]})
+
+    position_in_company = forms.ChoiceField(label="Your position in the company",
+                                            choices=COMPANY_POSITION_CHOICES,
+                                            widget=RadioSelect(renderer=DSStackedRadioFieldRenderer),
+                                            help_text="You must confirm that you are:",
+                                            required=True,
+                                            error_messages={"required": ERROR_MESSAGES["POSITION_REQUIRED"]})
+
+    contact_number = forms.CharField(label="Contact number",
+                                     widget=forms.TextInput(attrs={"class": "form-control"}),
+                                     max_length=30,
+                                     required=True, 
+                                     help_text="Office or mobile number.",
+                                     error_messages={"required": ERROR_MESSAGES["COMPANY_CONTACT_NUMBER_REQUIRED"],
+                                                     "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
+
+    email = forms.EmailField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                             required=getattr(settings, "EMAIL_REQUIRED", True),
+                             label="Email",
+                             error_messages={"required": ERROR_MESSAGES["COMPANY_EMAIL_ADDRESS_REQUIRED"],
+                                             "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
+
 
 class YourMoneyForm(BasePleaStepForm):
+
     YOU_ARE_CHOICES = (("Employed", "Employed"),
                        ("Self employed", "Self employed"),
                        ("Receiving benefits", "Receiving benefits"),
@@ -83,6 +138,7 @@ class YourMoneyForm(BasePleaStepForm):
                          ("Benefits other", "Other"),)
     YES_NO = (("Yes", "Yes"),
               ("No", "No"))
+
     you_are = forms.ChoiceField(label="Are you?", choices=YOU_ARE_CHOICES,
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
@@ -350,6 +406,51 @@ class YourExpensesForm(BasePleaStepForm):
                         'min_value': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_MIN']})
 
 
+class CompanyFinancesForm(BasePleaStepForm):
+
+    trading_period = forms.TypedChoiceField(required=True, widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                            choices=YESNO_CHOICES,
+                                            coerce=to_bool,
+                                            label="Has the company been trading for more than 12 months?",
+                                            error_messages={"required": ERROR_MESSAGES["COMPANY_TRADING_PERIOD"]})
+
+    number_of_employees = forms.IntegerField(label="Number of employees",
+                                             widget=forms.TextInput(attrs={"maxlength": "7", "pattern": "[0-9]+", "class": "form-control-inline", "size": "17"}),
+                                             min_value=1, max_value=10000,
+                                             error_messages={"required": ERROR_MESSAGES["COMPANY_NUMBER_EMPLOYEES"]},
+                                             required=False)
+
+    gross_turnover = forms.DecimalField(widget=forms.TextInput(attrs={"class": "form-control-inline", "size": "13"}),
+                                        max_digits=10,
+                                        decimal_places=2,
+                                        help_text="For example, 150000",
+                                        required=False,
+                                        error_messages={"required": ERROR_MESSAGES["COMPANY_GROSS_TURNOVER"]})
+
+    net_turnover = forms.DecimalField(widget=forms.TextInput(attrs={"class": "form-control-inline", "size": "13"}),
+                                      help_text="For example, 110000",
+                                      max_digits=10,
+                                      decimal_places=2,
+                                      required=False,
+                                      error_messages={"required": ERROR_MESSAGES["COMPANY_NET_TURNOVER"]})
+
+    def __init__(self, *args, **kwargs):
+        super(CompanyFinancesForm, self).__init__(*args, **kwargs)
+        try:
+            data = args[0]
+        except IndexError:
+            data = {}
+
+        if "trading_period" in data:
+            self.fields["number_of_employees"].required = True
+            self.fields["gross_turnover"].required = True
+            self.fields["net_turnover"].required = True
+
+            if data["trading_period"] == "False":
+                self.fields["gross_turnover"].error_messages = {"required": ERROR_MESSAGES["COMPANY_GROSS_TURNOVER_PROJECTED"]}
+                self.fields["net_turnover"].error_messages = {"required": ERROR_MESSAGES["COMPANY_NET_TURNOVER_PROJECTED"]}
+
+
 class ConfirmationForm(BasePleaStepForm):
     understand = forms.BooleanField(required=True,
                                     error_messages={"required": ERROR_MESSAGES["UNDERSTAND_REQUIRED"]})
@@ -372,4 +473,3 @@ class PleaForm(BasePleaStepForm):
 
 
 ###### Form stage classes #######
-
