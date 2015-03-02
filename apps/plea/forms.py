@@ -122,7 +122,7 @@ class CompanyDetailsForm(BasePleaStepForm):
 class YourMoneyForm(BasePleaStepForm):
 
     YOU_ARE_CHOICES = (("Employed", "Employed"),
-                       ("Self employed", "Self employed"),
+                       ("Self-employed", "Self-employed"),
                        ("Receiving benefits", "Receiving benefits"),
                        ("Other", "Other"))
     PERIOD_CHOICES = (("Weekly", "Weekly"),
@@ -167,9 +167,10 @@ class YourMoneyForm(BasePleaStepForm):
                                                widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                choices=YESNO_CHOICES,
                                                coerce=to_bool,
-                                               required=False)
+                                               required=False,
+                                               error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
-    # Self employed
+    # Self-employed
     your_job = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                                required=False, max_length=100, label="What's your job?",
                                error_messages={"required": ERROR_MESSAGES["YOUR_JOB_REQUIRED"]})
@@ -197,14 +198,19 @@ class YourMoneyForm(BasePleaStepForm):
                                                     widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                     choices=YESNO_CHOICES,
                                                     coerce=to_bool,
-                                                    required=False)
+                                                    required=False,
+                                                    error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
     # On benefits
     benefits_details = forms.CharField(required=False, max_length=500, label="Which benefits do you receive?",
-                                       widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}))
+                                       widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
+                                       error_messages={"required": ERROR_MESSAGES["BENEFITS_DETAILS_REQUIRED"]})
+
     benefits_dependents = forms.ChoiceField(required=False, widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YES_NO,
-                                            label="Does this include payment for dependants?")
+                                            label="Does this include payment for dependants?",
+                                            error_messages={"required": ERROR_MESSAGES["BENEFITS_DEPENDANTS_REQUIRED"]})
+    
     benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                         choices=BEN_PERIOD_CHOICES, required=False,
                                         label="How often are your benefits paid?",
@@ -229,7 +235,8 @@ class YourMoneyForm(BasePleaStepForm):
                                                          widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                          choices=YESNO_CHOICES,
                                                          coerce=to_bool,
-                                                         required=False)
+                                                         required=False,
+                                                         error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
     # Other
     other_details = forms.CharField(required=False, max_length=500, label="Please provide details",
@@ -248,7 +255,8 @@ class YourMoneyForm(BasePleaStepForm):
                                             widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YESNO_CHOICES,
                                             coerce=to_bool,
-                                            required=False)
+                                            required=False,
+                                            error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
 
     def __init__(self, *args, **kwargs):
@@ -265,7 +273,7 @@ class YourMoneyForm(BasePleaStepForm):
                 self.fields["employed_take_home_pay_amount"].required = True
                 self.fields["employed_hardship"].required = True
 
-            if data["you_are"] == "Self employed":
+            if data["you_are"] == "Self-employed":
                 self.fields["your_job"].required = True
                 self.fields["self_employed_pay_period"].required = True
                 self.fields["self_employed_pay_amount"].required = True
