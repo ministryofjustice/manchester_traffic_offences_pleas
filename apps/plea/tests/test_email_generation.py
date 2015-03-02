@@ -32,7 +32,8 @@ class EmailGenerationTests(TestCase):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
                                  "urn": "cvxcvx89",
-                                 "number_of_charges": 2},
+                                 "number_of_charges": 2,
+                                 "company_plea": False},
                         "your_details": {"name": "vcx", "national_insurance_number": "xxx",
                                          "driving_licence_number": "xxx", "registration_number": "xxx",
                                          "email": "test@test.com"},
@@ -49,7 +50,8 @@ class EmailGenerationTests(TestCase):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
                                  "urn": "cvxcvx89",
-                                 "number_of_charges": 2},
+                                 "number_of_charges": 2,
+                                 "company_plea": False},
                         "your_details": {"name": "vcx", "national_insurance_number": "xxx",
                                          "driving_licence_number": "xxx", "registration_number": "xxx",
                                          "email": "test@test.com"},
@@ -78,7 +80,8 @@ class EmailGenerationTests(TestCase):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
                                  "urn": "cvxcvx89",
-                                 "number_of_charges": 2},
+                                 "number_of_charges": 2,
+                                 "company_plea": False},
                         "your_details": {"name": "vcx", "email": "lyndon@antlyn.com", "national_insurance_number": "xxx",
                                          "driving_licence_number": "xxx", "registration_number": "xxx"},
                         "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
@@ -91,11 +94,40 @@ class EmailGenerationTests(TestCase):
         self.assertIn(context_data['case']['urn'].upper(), mail.outbox[-1].body)
         self.assertIn(context_data['your_details']['email'], mail.outbox[-1].to)
 
+    def test_user_confirmation_for_company_uses_correct_email_address(self):
+        context_data = {"case": {"date_of_hearing": "2014-06-30",
+                                 "time_of_hearing": "12:00:00",
+                                 "urn": "cvxcvx89",
+                                 "number_of_charges": 2,
+                                 "company_plea": True},
+                        "your_details": {
+                            "complete": True,
+                            "skipped": True
+                        },
+                        "company_details": {
+                            "company_name": "some company plc",
+                            "company_address": "some place plc",
+                            "name": "mr smith",
+                            "position_in_company": "a director",
+                            "contact_number": "0800 SOMECOMPANY",
+                            "email": "test@companyemail.com"
+                        },
+                        "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
+                                               {"mitigations": "test2", "guilty": "guilty"}],
+                                 "understand": True}}
+
+        send_plea_email(context_data, send_user_email=True)
+
+        self.assertEqual(len(mail.outbox), 3)
+        self.assertIn(context_data['case']['urn'].upper(), mail.outbox[-1].body)
+        self.assertIn(context_data['company_details']['email'], mail.outbox[-1].to)
+
     def test_user_confirmation_sends_email_opt_out(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
                                  "urn": "cvxcvx89",
-                                 "number_of_charges": 2},
+                                 "number_of_charges": 2,
+                                 "company_plea": False},
                         "your_details": {"name": "vcx", "email": "lyndon@antlyn.com", "national_insurance_number": "xxx",
                                          "driving_licence_number": "xxx", "registration_number": "xxx"},
                         "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
