@@ -439,3 +439,84 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, '101')
         self.assertContains(response, '202')
         self.assertContains(response, '303')
+
+
+class TestCompanyFinancesEmailLogic(TestCase):
+
+    def setUp(self):
+
+        self.test_session_data = {
+            "case": {
+                "complete": True,
+                "date_of_hearing": "2015-01-01",
+                "urn": "06/AA/0000000/00",
+                "number_of_charges": 1,
+                "company_plea": True
+            },
+            'your_details': {
+                "complete": True,
+                "skipped": True
+            },
+            "company_details": {
+                "company_name": "some company plc",
+                "company_address": "some place plc",
+                "name": "mr smith",
+                "position_in_company": "a director",
+                "contact_number": "0800 SOMECOMPANY",
+                "email": "test@companyemail.com"
+            },
+            "plea": {
+                "complete": True,
+                "PleaForms": [
+                    {
+                        "guilty": "not_guilty",
+                        "mitigations": "something"
+                    }
+                ]
+            },
+            'your_money': {
+                "complete": True,
+                "skipped": True
+            },
+            "company_finances": {
+                "complete": True,
+                "skipped": True
+            },
+            'your_expenses': {
+                "complete": True,
+                "skipped": True
+            },
+            'review': {
+                "complete": True
+            }
+        }
+
+    def test_company_details_without_company_finances(self):
+        """
+        If the user's pleas are all not guilty, there shouldn't be a company
+        finance block
+        """
+
+        send_plea_email(self.test_session_data)
+
+        attachment = mail.outbox[0].attachments[0][1]
+
+        self.assertTrue("<<SHOWCOMPANYDETAILS>>" in attachment)
+        self.assertTrue("<<SHOWYOURDETAILS>>" not in attachment)
+        self.assertTrue("<<SHOWCOMPANYFINANCES>>" not in attachment)
+        self.assertTrue("<<SHOWEXPENSES>>" not in attachment)
+
+    def test_company_details_with_company_finances(self):
+
+        self.test_session_data["plea"]["PleaForms"][0]["guilty"] = "guilty"
+        del self.test_session_data["company_finances"]["skipped"]
+
+        send_plea_email(self.test_session_data)
+
+        attachment = mail.outbox[0].attachments[0][1]
+
+        self.assertTrue("<<SHOWCOMPANYDETAILS>>" in attachment)
+        self.assertTrue("<<SHOWYOURDETAILS>>" not in attachment)
+        self.assertTrue("<<SHOWCOMPANYFINANCES>>" in attachment)
+        self.assertTrue("<<SHOWEXPENSES>>" not in attachment)
+
