@@ -517,7 +517,7 @@ class TestMultiPleaForms(TestCase):
         form = self._get_your_money_stage()
 
         test_data = {
-            "you_are": "Self employed"
+            "you_are": "Self-employed"
         }
 
         form.save(test_data, self.request_context)
@@ -529,7 +529,7 @@ class TestMultiPleaForms(TestCase):
         form = self._get_your_money_stage()
 
         test_data = {
-            "you_are": "Self employed",
+            "you_are": "Self-employed",
             "your_job": "Build trains",
             "self_employed_pay_period": "Fortnightly",
             "self_employed_pay_amount": "1000",
@@ -1117,7 +1117,7 @@ class TestMultiPleaForms(TestCase):
         form.load(request_context)
 
         test_data = {
-            "you_are": "Self employed",
+            "you_are": "Self-employed",
             "your_job": "Build trains",
             "self_employed_pay_period": "Fortnightly",
             "self_employed_pay_amount": "1000",
@@ -1141,7 +1141,7 @@ class TestMultiPleaForms(TestCase):
         form.load(request_context)
 
         test_data = {
-            "you_are": "Self employed",
+            "you_are": "Self-employed",
             "your_job": "Build trains",
             "self_employed_pay_period": "Fortnightly",
             "self_employed_pay_amount": "1000",
