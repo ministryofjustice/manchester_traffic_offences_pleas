@@ -1,0 +1,70 @@
+{% extends "plea/base.html" %}
+
+{% load debug %}
+
+{% block page_title %}{{ block.super }} Your Details{% endblock %}
+
+{% block page_content %}
+
+    {% with request.session.case.number_of_charges as charges %}
+<form action="{{ request.path }}" method="post" autocomplete="off">
+
+    {% csrf_token %}
+
+    {% with forms.0 as form %}
+
+        {% if form.errors %}
+        <section class="error-summary">
+            <h2 class="heading-medium">You need to fix the errors on this page before continuing.</h2>
+
+            <p>See highlighted errors below.</p>
+
+            <ul class="errors-list">
+            {% for field in form %}
+                {% if field.errors %}
+                <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+
+     <header class="content-header">
+        <h1 class="heading-xlarge">Your details</h1>
+
+        <p class="lede">We need these in case we have to contact you about your plea.</p>
+        <p class="lede"><strong>Warning: </strong>You can only make a plea on behalf of a company if you are a director, the company secretary or the company's solicitor.</p>
+    </header>
+
+    {% with form.company_name as field %}
+        {% include "widgets/std_field.html" %}
+    {% endwith %}
+
+    {% with form.company_address as field %}
+        {% include "widgets/std_field.html" %}
+    {% endwith %}
+
+    {% with form.name as field %}
+        {% include "widgets/std_field.html" %}
+    {% endwith %}
+
+    {% with form.position_in_company as field %}
+        {% include "widgets/radio_field.html" %}
+    {% endwith %}
+
+    {% with form.contact_number as field %}
+        {% include "widgets/std_field.html" %}
+    {% endwith %}
+
+    {% with form.email as field %}
+        {% include "widgets/std_field.html" %}
+    {% endwith %}
+
+    {% endwith %}
+
+    <div class="form-group form-submit">
+        <button class="button" type="submit">Continue</button>
+    </div>
+</form>
+    {% endwith %}
+{% endblock page_content %}

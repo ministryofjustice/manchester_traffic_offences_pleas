@@ -25,11 +25,18 @@ ERROR_MESSAGES = {
     "HEARING_DATE_PASSED": "The court hearing date must be after today",
     "HEARING_DATE_INCORRECT": "Enter the correct hearing date.",
     "NUMBER_OF_CHARGES_REQUIRED": "Select the number of charges against you",
+    "ON_BEHALF_OF_COMPANY": "Tell us if you're making a plea on behalf of a company",
     "FULL_NAME_REQUIRED": "Please enter your full name",
     "EMAIL_ADDRESS_REQUIRED": "You must provide an email address",
     "EMAIL_ADDRESS_INVALID": "Email address isn't a valid format",
     "CONTACT_NUMBER_REQUIRED": "You must provide a contact number",
     "CONTACT_NUMBER_INVALID": "The contact number isn't a valid format",
+    "COMPANY_NAME_REQUIRED": "Enter the company name",
+    "COMPANY_ADDRESS_REQUIRED": "Enter the company address",
+    "NAME_REQUIRED": "Tell us your name",
+    "POSITION_REQUIRED": "Confirm your position in the company",
+    "COMPANY_CONTACT_NUMBER_REQUIRED": "Enter a phone number so we can contact you about the company's plea",
+    "COMPANY_EMAIL_ADDRESS_REQUIRED": "Enter an email address so we can contact you about the company's plea",
     "PLEA_REQUIRED": "Your plea must be selected",
     "YOU_ARE_REQUIRED": "You must let us know if you're employed, receiving benefits or other",
     "EMPLOYED_JOB_REQUIRED": "Please tell us what your job is",
@@ -75,7 +82,13 @@ ERROR_MESSAGES = {
     "OTHER_COURT_PAYMENTS_MIN": "Court payments must be a number greater than, or equal to, 0",
     "OTHER_CHILD_MAINTENANCE_REQUIRED": "Child maintenance is a required field",
     "OTHER_CHILD_MAINTENANCE_INVALID": "Child maintenance must be a number",
-    "OTHER_CHILD_MAINTENANCE_MIN": "Child maintenance must be a number greater than, or equal to, 0"
+    "OTHER_CHILD_MAINTENANCE_MIN": "Child maintenance must be a number greater than, or equal to, 0",
+    "COMPANY_TRADING_PERIOD": "You must tell us if the company has been trading for more than 12 months",
+    "COMPANY_NUMBER_EMPLOYEES": "Enter the number of employees",
+    "COMPANY_GROSS_TURNOVER": "Enter the company's gross turnover",
+    "COMPANY_NET_TURNOVER": "Enter the company's net turnover",
+    "COMPANY_GROSS_TURNOVER_PROJECTED": "Enter the company's projected gross turnover",
+    "COMPANY_NET_TURNOVER_PROJECTED": "Enter the company's projected net turnover"
 }
 
 
@@ -149,6 +162,20 @@ class DSRadioFieldRenderer(RadioFieldRenderer):
         context = {"id": id_, "renderer": self, "inputs": [force_text(widget) for widget in self]}
 
         return render_to_string("widgets/DSRadioSelect.html", context)
+
+
+class DSStackedRadioFieldRenderer(RadioFieldRenderer):
+    def render(self):
+        """
+        Outputs a <ul> for this set of choice fields.
+        If an id was given to the field, it is applied to the <ul> (each
+        item in the list will get an id of `$id_$i`).
+        """
+        id_ = self.attrs.get('id', None)
+
+        context = {"id": id_, "renderer": self, "inputs": [force_text(widget) for widget in self]}
+
+        return render_to_string("widgets/DSStackedRadioSelect.html", context)
 
 
 class DSTemplateWidgetBase(forms.TextInput):
