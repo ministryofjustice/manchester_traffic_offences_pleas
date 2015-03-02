@@ -201,7 +201,7 @@ class YourMoneyStage(FormStage):
 
         if you_are:
 
-            hardship_field = you_are.replace(' ', '_').lower() + "_hardship"
+            hardship_field = you_are.replace(' ', '_').replace('-', '_').lower() + "_hardship"
 
             hardship = clean_data.get(hardship_field, False)
 
