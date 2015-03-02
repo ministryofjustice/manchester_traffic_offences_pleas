@@ -1450,7 +1450,8 @@ legend.form-label-bold {
   font-size: 24px;
   line-height: 1.25;
   font-weight: 700;
-  text-transform: none; }
+  text-transform: none;
+  margin-bottom: 0; }
   @media (max-width: 640px) {
     legend.form-label-bold {
       font-size: 18px;
@@ -1544,7 +1545,7 @@ hr {
   .related h3 {
     margin-top: 10px; }
 
-p.important {
+p.important, #section_understand .block-label .important {
   padding: 7px 0 0 40px;
   min-height: 27px;
   background: url(../images/icons/icon-important.png) no-repeat top left; }
@@ -1650,7 +1651,8 @@ Main styles
       font-size: 16px;
       line-height: 1.25; } }
   #section_understand .block-label .important {
-    margin-top: 0; }
+    display: block;
+    margin: 0 0 1.25em; }
   #section_understand .block-label input {
     position: static;
     margin: 0 .25em 0 0;
@@ -1693,6 +1695,8 @@ Main styles
           #section_receive_email .grey ul li label {
             font-size: 18px;
             line-height: 1.2; } }
+        #section_receive_email .grey ul li label.selected {
+          background: transparent; }
         #section_receive_email .grey ul li label input {
           vertical-align: middle; }
 
