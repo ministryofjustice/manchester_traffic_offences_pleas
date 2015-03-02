@@ -50,9 +50,9 @@ class CaseStage(FormStage):
 
         if 'complete' in clean_data:
             if clean_data.get("company_plea", None):
-                self.next_step = self.all_urls["company_details"]
+                self.set_next_step("company_details")
             else:
-                self.next_step = self.all_urls["your_details"]
+                self.set_next_step("your_details")
 
         return clean_data
 
@@ -163,7 +163,7 @@ class PleaStage(FormStage):
             if none_guilty:
                 self.all_data["your_money"]["complete"] = True
                 self.all_data["your_money"]["skipped"] = True
-                self.next_step = self.all_urls["review"]
+                self.set_next_step("review")
             elif "skipped" in self.all_data["your_money"]:
                 del self.all_data["your_money"]["skipped"]
 
@@ -208,8 +208,7 @@ class YourMoneyStage(FormStage):
             self.all_data["your_money"]["hardship"] = hardship
 
             if not hardship:
-                self.next_step = self.all_urls['review']
-                self.all_data["your_expenses"]["complete"] = True
+                self.set_next_step("review", skip=["your_expenses"])
 
         return clean_data
 
@@ -263,12 +262,10 @@ class ReviewStage(FormStage):
         if clean_data.get("complete", False):
             email_result = send_plea_email(self.all_data, send_user_email=send_user_email)
             if email_result:
-                next_step = reverse_lazy("plea_form_step", args=("complete", ))
+                self.set_next_step("complete")
             else:
                 self.add_message(messages.ERROR, '<h2 class="heading-medium">Submission Error</h2><p>There seems to have been a problem submitting your plea. Please try again.</p>')
-                next_step = reverse_lazy('plea_form_step', args=('review', ))
-
-            self.next_step = next_step
+                self.set_next_step("review")
 
         return clean_data
 
