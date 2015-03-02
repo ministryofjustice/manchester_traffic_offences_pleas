@@ -87,6 +87,10 @@
         <div class="help-image">
             <img src="{% static "images/img-charge.png" %}" alt="The number of charges is found on page 2 of the pack" width="260" height="185">
         </div>
+
+        {% with form.company_plea as field %}
+            {% include "widgets/radio_field.html" %}
+        {% endwith %}
     
 
         <div class="form-group form-submit">
