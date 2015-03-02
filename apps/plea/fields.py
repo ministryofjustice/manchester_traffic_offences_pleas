@@ -86,7 +86,9 @@ ERROR_MESSAGES = {
     "COMPANY_TRADING_PERIOD": "You must tell us if the company has been trading for more than 12 months",
     "COMPANY_NUMBER_EMPLOYEES": "Enter the number of employees",
     "COMPANY_GROSS_TURNOVER": "Enter the company's gross turnover",
-    "COMPANY_NET_TURNOVER": "Enter the company's net turnover"
+    "COMPANY_NET_TURNOVER": "Enter the company's net turnover",
+    "COMPANY_GROSS_TURNOVER_PROJECTED": "Enter the company's projected gross turnover",
+    "COMPANY_NET_TURNOVER_PROJECTED": "Enter the company's projected net turnover"
 }
 
 
