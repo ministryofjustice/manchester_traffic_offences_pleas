@@ -418,14 +418,14 @@ class CompanyFinancesForm(BasePleaStepForm):
                                              widget=forms.TextInput(attrs={"maxlength": "7", "pattern": "[0-9]+", "class": "form-control-inline", "size": "17"}),
                                              min_value=1, max_value=10000,
                                              error_messages={"required": ERROR_MESSAGES["COMPANY_NUMBER_EMPLOYEES"]},
-                                             required=True)
+                                             required=False)
 
     gross_turnover = forms.DecimalField(widget=forms.TextInput(attrs={"class": "form-control-inline", "size": "13"}),
                                         max_digits=10,
                                         decimal_places=2,
                                         help_text="For example, 150000",
                                         initial=0,
-                                        required=True,
+                                        required=False,
                                         error_messages={"required": ERROR_MESSAGES["COMPANY_GROSS_TURNOVER"]})
 
     net_turnover = forms.DecimalField(widget=forms.TextInput(attrs={"class": "form-control-inline", "size": "13"}),
@@ -433,8 +433,24 @@ class CompanyFinancesForm(BasePleaStepForm):
                                       max_digits=10,
                                       decimal_places=2,
                                       initial=0,
-                                      required=True,
+                                      required=False,
                                       error_messages={"required": ERROR_MESSAGES["COMPANY_NET_TURNOVER"]})
+
+    def __init__(self, *args, **kwargs):
+        super(CompanyFinancesForm, self).__init__(*args, **kwargs)
+        try:
+            data = args[0]
+        except IndexError:
+            data = {}
+
+        if "trading_period" in data:
+            self.fields["number_of_employees"].required = True
+            self.fields["gross_turnover"].required = True
+            self.fields["net_turnover"].required = True
+
+            if data["trading_period"] == "False":
+                self.fields["gross_turnover"].error_messages = {"required": ERROR_MESSAGES["COMPANY_GROSS_TURNOVER_PROJECTED"]}
+                self.fields["net_turnover"].error_messages = {"required": ERROR_MESSAGES["COMPANY_NET_TURNOVER_PROJECTED"]}
 
 
 class ConfirmationForm(BasePleaStepForm):
