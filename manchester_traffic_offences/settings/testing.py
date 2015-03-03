@@ -13,6 +13,7 @@ LETTUCE_AVOID_APPS = (
 LETTUCE_SERVER_PORT = 8100
 
 TESTING = True
+DEBUG=False
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
 

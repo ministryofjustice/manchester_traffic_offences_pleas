@@ -1,6 +1,7 @@
 {% extends "plea/base.html" %}
 
 {% load debug %}
+{% load i18n %}
 
 {% block page_title %}{{ block.super }} Your plea{% endblock %}
 
@@ -13,9 +14,9 @@
 
     {% if formset_has_errors %}
     <section class="error-summary">
-        <h2 class="heading-medium">You need to fix the errors on this page before continuing.</h2>
+        <h2 class="heading-medium">{% trans "You need to fix the errors on this page before continuing." %}</h2>
         
-        <p>See highlighted errors below.</p>
+        <p>{% trans "See highlighted errors below. %}</p>
         
         <ul class="errors-list">
         {% with forms.0 as formset %}
@@ -32,20 +33,35 @@
     {% endif %}
 
     <header class="content-header">
-        <h1 class="heading-xlarge">Your plea{{ charges|pluralize }}</h1>
+        <h1 class="heading-xlarge">
+            {% blocktrans count changes=charges %}
+                Your plea
+            {% plural %}
+                Your pleas
+            {% endblocktrans %}</h1>
 
-        <p class="lede">This is your opportunity to present your case to the court.</p>
+        <p class="lede">{% trans "This is your opportunity to present your case to the court." %}</p>
     </header>
 
     {% with formset=forms.0 form_count=forms.0|length %}
 
         {{ formset.management_form }}
 
-        <h2 class="heading-medium">Enter {% if charges > 1 %}{{ form_count }}{% else %}a{% endif %} plea{{ charges|pluralize}} for the charge{{ charges|pluralize}} below</h2>
+        <h2 class="heading-medium">
+            {% blocktrans with form_count=form_count count charges=charges %}
+                Enter a plea for the charge below
+            {% plural %}
+                Enter {{ form_count }} pleas for the charges below
+            {% endblocktrans %}</h2>
 
         {% for form in formset %}
         <fieldset id="section_guilty_{{ forloop.counter }}">
-            {% if form_count > 1 %}<legend class="form-label">Your plea for charge [{{ forloop.counter }}]</legend>{% endif %}
+            {% if form_count > 1 %}<legend class="form-label">
+            {% blocktrans with counter=forloop.counter %}
+                Your plea for charge [{{ counter }}]
+            {% endblocktrans %}
+
+            </legend>{% endif %}
 
             <div class="form-group inline{%  if form.guilty.errors %} with-error{% endif %}">
                 
@@ -63,14 +79,14 @@
 
             <div id="section_mitigations_{{ forloop.counter }}" class="panel-indent form-group">
                 <div id="{{ form.guilty.0.name }}_guilty_extra" class="js-Conditional js-hidden" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^guilty$">
-                    <label for="{{ form.mitigations.id_for_label }}">Special circumstances <span class="form-hint-inline">(optional)</span>
-                        <span class="form-hint">What would you like the court to consider?</span>
+                    <label for="{{ form.mitigations.id_for_label }}">{% blocktrans %}Special circumstances <span class="form-hint-inline">(optional){% endblocktrans %}</span>
+                        <span class="form-hint">{% trans "What would you like the court to consider?" %}</span>
                     </label>
                 </div>
 
                 <div id="{{ form.guilty.0.name }}_not_guilty_extra" class="js-Conditional js-hidden" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^not_guilty$">
-                    <label for="{{ form.mitigations.id_for_label }}">Not guilty because? <span class="form-hint-inline">(optional)</span>
-                        <span class="form-hint">Tell us why you believe you are not guilty.</span>
+                    <label for="{{ form.mitigations.id_for_label }}">{% blocktrans %}Not guilty because? <span class="form-hint-inline">(optional){% endblocktrans %}</span>
+                        <span class="form-hint">{% trans "Tell us why you believe you are not guilty." %}</span>
                     </label>
                 </div>
 
@@ -86,7 +102,7 @@
     {% endwith %}
 
     <div class="form-group form-submit">
-        <button class="button" type="submit">Continue</button>
+        <button class="button" type="submit">{% trans "Continue" %}</button>
     </div>
 </form>
     {% endwith %}
