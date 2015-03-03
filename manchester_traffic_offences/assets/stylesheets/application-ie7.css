@@ -1367,6 +1367,10 @@ GOV.UK Toolkit/Template overrides
       font-size: 14px;
       line-height: 1.14286; } }
 
+#footer .footer-meta .footer-meta-inner ul li.li-block {
+  display: block;
+  margin: 0 0 1em; }
+
 /*  
 ====================================================
 Forms
