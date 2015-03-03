@@ -18,35 +18,35 @@
     {% if plea_type == "guilty" %}
         {% add_test_tag "<<GUILTY>>" %}
         <ol>
-            <li>There's <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.</li>
-            <li>We'll send you a letter with the court's decision{{ case.number_of_charges|pluralize}} <strong>within three working days after your hearing.</strong></li>
-            <li>Quote your URN <strong>{{ case.urn | upper }}</strong> if you <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">contact</a> the court about your case.</li>
-            <li><a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.</li>
-            <li>If you requested email updates you'll be sent a copy of this confirmation of plea.</li>
+            <li>{% blocktrans %}There's <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}</li>
+            <li>{% blocktrans %}We'll send you a letter with the court's decision{{ case.number_of_charges|pluralize}} <strong>within three working days after your hearing.</strong>{% endblocktrans %}</li>
+            <li>{% blocktrans %}Quote your URN <strong>{{ case.urn | upper }}</strong> if you <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">contact</a> the court about your case.{% endblocktrans %}</li>
+            <li>{% blocktrans %}<a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.{% endblocktrans %}</li>
+            <li>{% blocktrans %}If you requested email updates you'll be sent a copy of this confirmation of plea.{% endblocktrans %}</li>
         </ol>
     {% endif %}
 
     {% if plea_type == "not_guilty" %}
         {% add_test_tag "<<NOTGUILTY>>" %}
         <ol>
-            <li>There's <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.</li>
-            <li>The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.</li>
-            <li>We'll send you a letter with the court's decision{{ case.number_of_charges|pluralize}} <strong>within three working days after your hearing.</strong></li>
-            <li>Quote your URN <strong>{{ case.urn | upper }}</strong> if you <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">contact</a> the court about your case.</li>
-            <li><a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.</li>
-            <li>If you requested email updates you'll be sent a copy of this confirmation of plea.</li>
+            <li>{% blocktrans %}There's <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}</li>
+            <li>{% blocktrans %}The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.{% endblocktrans %}</li>
+            <li>{% blocktrans %}We'll send you a letter with the court's decision{{ case.number_of_charges|pluralize}} <strong>within three working days after your hearing.</strong>{% endblocktrans %}</li>
+            <li>{% blocktrans %}Quote your URN <strong>{{ case.urn | upper }}</strong> if you <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">contact</a> the court about your case.{% endblocktrans %}</li>
+            <li>{% blocktrans %}<a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.{% endblocktrans %}</li>
+            <li>{% blocktrans %}If you requested email updates you'll be sent a copy of this confirmation of plea.{% endblocktrans %}</li>
         </ol>
     {% endif %}
 
     {% if plea_type == "mixed" %}
         {% add_test_tag "<<MIXED>>" %}
         <ol>
-            <li>There's <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.</li>
-            <li>The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.</li>
-            <li>We'll send you a letter with the court's decisions <strong>within three working days after your hearing.</strong></li>
-            <li>Quote your URN {{ case.urn | upper }} if you contact the court about your case.</li>
-            <li><a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.</li>
-            <li>If you requested email updates you'll be sent a copy of this confirmation of plea.</li>
+            <li>{% blocktrans %}There's <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}</li>
+            <li>{% blocktrans %}The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.{% endblocktrans %}</li>
+            <li>{% blocktrans %}We'll send you a letter with the court's decisions <strong>within three working days after your hearing.{% endblocktrans %}</strong></li>
+            <li>{% blocktrans %}Quote your URN {{ case.urn | upper }} if you contact the court about your case.{% endblocktrans %}</li>
+            <li>{% blocktrans %}<a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.{% endblocktrans %}</li>
+            <li>{% blocktrans %}If you requested email updates you'll be sent a copy of this confirmation of plea.{% endblocktrans %}</li>
         </ol>
     {% endif %}
 </div>
@@ -57,7 +57,7 @@
 
 <p>{% trans "The contact details for the court are:" %}</p>
 
-<h3 class="heading-small">"{% trans "By post:" %}</h3>
+<h3 class="heading-small">{% trans "By post:" %}</h3>
 
 <address>
 The Operations Manager<br>
@@ -70,6 +70,6 @@ M60 1PR<br>
 <h3 class="heading-small">{% trans "By email:" %}</h3>
 <p><a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">roadtrafficpcr@hmcts.gsi.gov.uk</a></p>
 
-<p class="font-xsmall">This is a new service &#x2014; please give us <a class="external" href="/feedback/?next=home">feedback</a> so we can make it better.</p>
+<p class="font-xsmall">{% blocktrans %}This is a new service &#x2014; please give us <a class="external" href="/feedback/?next=home">feedback</a> so we can make it better.{% endblocktrans %}</p>
 
 {% endblock page_content %}
