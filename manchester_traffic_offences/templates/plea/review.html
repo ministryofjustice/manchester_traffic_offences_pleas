@@ -1,4 +1,5 @@
 {% extends "plea/base.html" %}
+
 {% load i18n %}
 
 {% block page_title %}{{ block.super }} Confirm your plea{{ case.number_of_charges|pluralize }}{% endblock %}
@@ -30,7 +31,7 @@
 
     <header class="content-header">
         <h1 class="heading-xlarge">
-            {% blocktrans case.number_of_charges|pluralize %}
+            {% blocktrans count charges=case.number_of_charges %}
                 Confirm your plea
             {% plural %}
                 Confirm your pleas
@@ -38,7 +39,7 @@
         </h1>
 
         <p class="lede">
-            {% blocktrans case.number_of_charges %}
+            {% blocktrans count charges=case.number_of_charges %}
                 Review the information you’ve given before making your plea.
             {% plural %}
                 Review the information you’ve given before making your pleas.
@@ -48,7 +49,7 @@
     <table class="review-table" id="case-details">
         <thead>
             <tr>
-                <th class="header">Case details</th>
+                <th class="header">{% trans "Case details" %}</th>
                 <th class="change-link"><a href="{% url "plea_form_step" "case" %}" class="review">{% trans "Change case details" %}</a></th>
             </tr>
         </thead>
@@ -129,13 +130,17 @@
         <thead>
             <tr>
                 <th class="header">
-                    {% blocktrans case.number_of_charges %}
+                    {% blocktrans count charges=case.number_of_charges %}
                         Your plea
                     {% plural %}
                         Your pleas
                     {% endblocktrans %}</th>
                 <th class="change-link"><a href="{% url "plea_form_step" "plea" %}" class="review">
-                    {% blocktrans case.number_of_charges %}Change your plea{{ case.number_of_charges|pluralize }}</a></th>
+                    {% blocktrans count charges=case.number_of_charges %}
+                        Change your plea
+                    {% plural %}
+                        Change your pleas
+                    {% endblocktrans %}</a></th>
             </tr>
         </thead>
         <tbody>
@@ -149,16 +154,16 @@
                 <th class="label">{% trans "Your plea" %}</th>
                 <td>
                     {% if plea.guilty == "guilty" %}
-                        Guilty
+                        {% trans "Guilty" %}
                     {% elif plea.guilty == "not_guilty" %}
-                        Not guilty
+                        {% trans "Not guilty" %}
                     {% endif %}
                 </td>
             </tr>
             {% if plea.mitigations %}
             <tr>
                 <th class="label">
-                    {% if plea.guilty == "guilty" %}Special circumstances{% else %}Not guilty because?{% endif %}
+                    {% if plea.guilty == "guilty" %}{% trans "Special circumstances" %}{% else %}{% trans "Not guilty because?" %}{% endif %}
                 </th>
                 <td>{{ plea.mitigations|linebreaksbr }}</td>
             </tr>
@@ -327,7 +332,7 @@
     {% endif %}
 {% endif %}
 
-    <h2 class="heading-medium">Important</h2>
+    <h2 class="heading-medium">{% trans "Important" %}</h2>
 
     <section id="section_understand">
 
@@ -355,7 +360,12 @@
 
             <div class="grey">
                 <fieldset>
-                    <legend>Do you want to receive an email confirming your plea{{ case.number_of_charges|pluralize }}?</legend>
+                    <legend>
+                        {% blocktrans count charges=case.number_of_charges %}
+                            Do you want to receive an email confirming your plea?
+                        {% plural %}
+                            Do you want to receive an email confirming your pleas?
+                        {% endblocktrans %}</legend>
 
                     {{ form.receive_email }}
                 </fieldset>
@@ -364,7 +374,11 @@
     </section>
 
     <div class="form-group form-submit">
-        <button type="submit" class="button-large">Make your plea{{ case.number_of_charges|pluralize }}</button>
+        <button type="submit" class="button-large">{% blocktrans count charges=case.number_of_charges %}
+                                                        Make your plea
+                                                   {% plural %}
+                                                        Make your pleas
+                                                   {% endblocktrans %}</button>
     </div>
     {% endwith %}
 
