@@ -46,7 +46,7 @@
             {% include "widgets/std_field.html" %}
         {% endwith %}
 
-        <h3 class="heading-medium js-TemplatedElement" data-template-trigger="trading_period" data-template="{% trans 'From the first 12 month's trading projections, tell us:' %}" data-template-defaults-for="True">{% trans 'From the most recent audited company accounts, tell us:' %}</h3>
+        <h3 class="heading-medium js-TemplatedElement" data-template-trigger="trading_period" data-template="{% trans "From the first 12 month's trading projections, tell us:" %}" data-template-defaults-for="True">{% trans 'From the most recent audited company accounts, tell us:' %}</h3>
 
         {% with form.gross_turnover as field %}
             {% include "widgets/money_field.html" %}
