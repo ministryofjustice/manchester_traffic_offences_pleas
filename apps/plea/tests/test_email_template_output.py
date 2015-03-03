@@ -175,7 +175,7 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>Take home pay</th><td>£200</td></tr>", count=1, html=True)
 
     def test_self_employed_email_money_output(self):
-        context_data_money = {"you_are": "Self employed",
+        context_data_money = {"you_are": "Self-employed",
                               "your_job": "Tesco",
                               "self_employed_pay_period": "Weekly",
                               "self_employed_pay_amount": "200",
@@ -191,7 +191,7 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>Amount</th><td>£200</td></tr>", count=1, html=True)
 
     def test_self_employed_other_email_money_output(self):
-        context_data_money = {"you_are": "Self employed",
+        context_data_money = {"you_are": "Self-employed",
                               "your_job": "Window cleaner",
                               "self_employed_pay_period": "Self-employed other",
                               "self_employed_pay_amount": "20",

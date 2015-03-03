@@ -17,8 +17,11 @@ DATABASES = {
     }
 }
 
-
 ALLOWED_HOSTS = ["www.makeaplea.justice.gov.uk", ]
+
+# Enable CachedStaticFilesStorage for cache-busting assets
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
+
 SESSION_COOKIE_SECURE = True
 
 # Emails

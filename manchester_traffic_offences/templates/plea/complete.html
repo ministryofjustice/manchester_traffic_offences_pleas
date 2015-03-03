@@ -20,7 +20,7 @@
         <ol>
             <li>{% blocktrans %}There's <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}</li>
             <li>{% blocktrans %}We'll send you a letter with the court's decision{{ case.number_of_charges|pluralize}} <strong>within three working days after your hearing.</strong>{% endblocktrans %}</li>
-            <li>{% blocktrans %}Quote your URN <strong>{{ case.urn | upper }}</strong> if you <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">contact</a> the court about your case.{% endblocktrans %}</li>
+            <li>{% blocktrans with urn=case.urn|upper  %}Quote your URN <strong>{{ urn }}</strong> if you <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">contact</a> the court about your case.{% endblocktrans %}</li>
             <li>{% blocktrans %}<a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.{% endblocktrans %}</li>
             <li>{% blocktrans %}If you requested email updates you'll be sent a copy of this confirmation of plea.{% endblocktrans %}</li>
         </ol>
@@ -32,7 +32,7 @@
             <li>{% blocktrans %}There's <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}</li>
             <li>{% blocktrans %}The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.{% endblocktrans %}</li>
             <li>{% blocktrans %}We'll send you a letter with the court's decision{{ case.number_of_charges|pluralize}} <strong>within three working days after your hearing.</strong>{% endblocktrans %}</li>
-            <li>{% blocktrans %}Quote your URN <strong>{{ case.urn | upper }}</strong> if you <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">contact</a> the court about your case.{% endblocktrans %}</li>
+            <li>{% blocktrans with urn=case.urn|upper %}Quote your URN <strong>{{ urn }}</strong> if you <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">contact</a> the court about your case.{% endblocktrans %}</li>
             <li>{% blocktrans %}<a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.{% endblocktrans %}</li>
             <li>{% blocktrans %}If you requested email updates you'll be sent a copy of this confirmation of plea.{% endblocktrans %}</li>
         </ol>
@@ -44,7 +44,7 @@
             <li>{% blocktrans %}There's <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}</li>
             <li>{% blocktrans %}The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.{% endblocktrans %}</li>
             <li>{% blocktrans %}We'll send you a letter with the court's decisions <strong>within three working days after your hearing.{% endblocktrans %}</strong></li>
-            <li>{% blocktrans %}Quote your URN {{ case.urn | upper }} if you contact the court about your case.{% endblocktrans %}</li>
+            <li>{% blocktrans with urn=case.urn|upper  %}Quote your URN {{ urn }} if you contact the court about your case.{% endblocktrans %}</li>
             <li>{% blocktrans %}<a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.{% endblocktrans %}</li>
             <li>{% blocktrans %}If you requested email updates you'll be sent a copy of this confirmation of plea.{% endblocktrans %}</li>
         </ol>
