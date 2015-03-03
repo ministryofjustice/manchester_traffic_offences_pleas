@@ -1387,6 +1387,10 @@ GOV.UK Toolkit/Template overrides
     .footer-wrapper p.footer-top {
       margin-bottom: 0; } }
 
+#footer .footer-meta .footer-meta-inner ul li.li-block {
+  display: block;
+  margin: 0 0 1em; }
+
 /*  
 ====================================================
 Forms
