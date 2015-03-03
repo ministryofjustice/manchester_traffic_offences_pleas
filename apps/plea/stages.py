@@ -153,7 +153,7 @@ class PleaStage(FormStage):
         else:
             return clean_data
 
-        if self.all_data["case"]["company_plea"]:
+        if self.all_data["case"].get("company_plea", None):
             if none_guilty:
                 self.set_next_step("review", skip=["company_finances",
                                                    "your_money"])
@@ -202,7 +202,7 @@ class YourMoneyStage(FormStage):
 
         if you_are:
 
-            hardship_field = you_are.replace(' ', '_').lower() + "_hardship"
+            hardship_field = you_are.replace(' ', '_').replace('-', '_').lower() + "_hardship"
 
             hardship = clean_data.get(hardship_field, False)
 
@@ -235,6 +235,8 @@ class YourExpensesStage(FormStage):
                                 'other_child_maintenance']
 
         clean_data = super(YourExpensesStage, self).save(form_data, next_step)
+
+        self.set_next_step("review", skip=["company_finances"])
 
         if 'complete' in clean_data:
             total_household = sum(clean_data[field] for field in household_expense_fields)
