@@ -1,4 +1,5 @@
 {% extends "plea/base.html" %}
+{% load i18n %}
 
 {% block page_title %}{{ block.super }} Your details{% endblock %}
 
@@ -13,9 +14,9 @@
         
         {% if form.errors %}
         <section class="error-summary">
-            <h2 class="heading-medium">You need to fix the errors on this page before continuing.</h2>
+            <h2 class="heading-medium">{% trans "You need to fix the errors on this page before continuing." %}</h2>
 
-            <p>See highlighted errors below.</p>
+            <p>{% trans "See highlighted errors below." %}</p>
 
             <ul class="errors-list">
                 {% for field in form %}
@@ -28,9 +29,9 @@
         {% endif %}
 
         <header class="content-header">
-            <h1 class="heading-xlarge">Your details</h1>
+            <h1 class="heading-xlarge">{% trans "Your details" %}</h1>
 
-            <p class="lede">We need these in case we have to get in touch with you about your plea.</p>
+            <p class="lede">{% trans "We need these in case we have to get in touch with you about your plea." %}</p>
         </header>
 
         {% with form.name as field %}
@@ -48,7 +49,7 @@
     {% endwith %}
 
     <div class="form-group form-submit">
-        <button class="button" type="submit">Continue</button>
+        <button class="button" type="submit">{% trans "Continue" %}</button>
     </div>
 
 </form>

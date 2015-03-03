@@ -1,8 +1,8 @@
 {% extends "plea/base.html" %}
-
+{% load i18n %}
 {% load debug %}
 
-{% block page_title %}{{ block.super }} Your Details{% endblock %}
+{% block page_title %}{{ block.super }} {% trans "Your Details" %}{% endblock %}
 
 {% block page_content %}
 
@@ -15,9 +15,9 @@
 
         {% if form.errors %}
         <section class="error-summary">
-            <h2 class="heading-medium">You need to fix the errors on this page before continuing.</h2>
+            <h2 class="heading-medium">{% trans "You need to fix the errors on this page before continuing." %}</h2>
 
-            <p>See highlighted errors below.</p>
+            <p>{% trans "See highlighted errors below." %}</p>
 
             <ul class="errors-list">
             {% for field in form %}
@@ -30,10 +30,10 @@
         {% endif %}
 
      <header class="content-header">
-        <h1 class="heading-xlarge">Your details</h1>
+        <h1 class="heading-xlarge">{% trans "Your details" %}</h1>
 
-        <p class="lede">We need these in case we have to contact you about your plea.</p>
-        <p class="lede"><strong>Warning: </strong>You can only make a plea on behalf of a company if you are a director, the company secretary or the company's solicitor.</p>
+        <p class="lede">{% trans "We need these in case we have to contact you about your plea." %}</p>
+        <p class="lede">{% trans "<strong>Warning: </strong>You can only make a plea on behalf of a company if you are a director, the company secretary or the company's solicitor." %}</p>
     </header>
 
     {% with form.company_name as field %}
@@ -63,7 +63,7 @@
     {% endwith %}
 
     <div class="form-group form-submit">
-        <button class="button" type="submit">Continue</button>
+        <button class="button" type="submit">{% trans "Continue" %}</button>
     </div>
 </form>
     {% endwith %}
