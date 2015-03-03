@@ -152,7 +152,7 @@ class PleaStage(FormStage):
         else:
             return clean_data
 
-        if self.all_data["case"]["company_plea"]:
+        if self.all_data["case"].get("company_plea", None):
             if none_guilty:
                 self.set_next_step("review", skip=["company_finances",
                                                    "your_money"])
