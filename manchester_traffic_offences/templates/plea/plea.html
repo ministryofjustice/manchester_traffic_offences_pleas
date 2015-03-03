@@ -16,7 +16,7 @@
     <section class="error-summary">
         <h2 class="heading-medium">{% trans "You need to fix the errors on this page before continuing." %}</h2>
         
-        <p>{% trans "See highlighted errors below. %}</p>
+        <p>{% trans "See highlighted errors below." %}</p>
         
         <ul class="errors-list">
         {% with forms.0 as formset %}
@@ -34,7 +34,7 @@
 
     <header class="content-header">
         <h1 class="heading-xlarge">
-            {% blocktrans count changes=charges %}
+            {% blocktrans count charges=charges %}
                 Your plea
             {% plural %}
                 Your pleas
