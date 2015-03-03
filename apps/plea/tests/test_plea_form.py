@@ -1082,6 +1082,38 @@ class TestMultiPleaForms(TestCase):
 
         self.assertEqual(response.url, '/plea/your_expenses/')
 
+    def test_your_expenses_redirects_to_review_page(self):
+
+        session_data = self.test_session_data
+        fake_request = self.get_request_mock("/plea/your_expenses")
+        request_context = RequestContext(fake_request)
+
+        form = PleaOnlineForms("your_expenses", "plea_form_step", session_data)
+
+        form.load(request_context)
+
+        test_data = {
+            "hardship_details": "ra ra ra",
+            "household_accommodation": "0",
+            "household_utility_bills": "0",
+            "household_insurance": "100",
+            "household_council_tax": "50",
+            "other_bill_payers": True,
+            "other_tv_subscription": "0",
+            "other_travel_expenses": "20",
+            "other_telephone": "40",
+            "other_loan_repayments": "60",
+            "other_court_payments": "30",
+            "other_child_maintenance": "50"
+        }
+
+        form.save(test_data, request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/plea/review/')
+
     def test_your_finances_employed_no_hardship_redirects_to_review(self):
 
         session_data = self.test_session_data
