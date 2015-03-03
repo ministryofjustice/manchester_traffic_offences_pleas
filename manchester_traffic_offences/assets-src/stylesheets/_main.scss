@@ -204,6 +204,14 @@ Main styles
 	}
 }
 
+
+/*== Feedback screen ================================================*/
+#section_feedback_satisfaction {
+	legend.form-label-bold {
+		@include core-19;
+	}
+}
+
 /*== Terms ==========================================================*/
 .cookies-table {
 	margin-bottom: 1em;
