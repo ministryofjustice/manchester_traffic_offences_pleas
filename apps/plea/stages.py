@@ -235,6 +235,8 @@ class YourExpensesStage(FormStage):
 
         clean_data = super(YourExpensesStage, self).save(form_data, next_step)
 
+        self.set_next_step("review", skip=["company_finances"])
+
         if 'complete' in clean_data:
             total_household = sum(clean_data[field] for field in household_expense_fields)
             total_other = sum(clean_data[field] for field in other_expense_fields)
