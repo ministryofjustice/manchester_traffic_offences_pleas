@@ -26,6 +26,7 @@ def feedback_form(request):
         if feedback_form.is_valid():
             email_context = {"question": feedback_form.cleaned_data["feedback_question"],
                              "email": feedback_form.cleaned_data["feedback_email"],
+                             "satisfaction": feedback_form.cleaned_data["feedback_satisfaction"],
                              "date_sent": datetime.now(),
                              "referrer": nxt_url,
                              "user_agent": request.META["HTTP_USER_AGENT"]}
