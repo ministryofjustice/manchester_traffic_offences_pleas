@@ -130,13 +130,13 @@ class YourMoneyForm(BasePleaStepForm):
                       ("Fortnightly", _("Fortnightly")),
                       ("Monthly", _("Monthly")))
     SE_PERIOD_CHOICES = (("Weekly", _("Weekly")),
-                         ("Fortnightly", _("Fortnightly")_,
+                         ("Fortnightly", _("Fortnightly")),
                          ("Monthly", _("Monthly")),
                          ("Self-employed other", _("Other")),)
     BEN_PERIOD_CHOICES = (("Weekly", _("Weekly")),
                          ("Fortnightly", _("Fortnightly")),
                          ("Monthly", _("Monthly")),
-                         ("Benefits other", _("Other"),)
+                         ("Benefits other", _("Other")),)
     YES_NO = (("Yes", _("Yes")),
               ("No", _("No")))
 
@@ -205,7 +205,7 @@ class YourMoneyForm(BasePleaStepForm):
                                        widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}))
     benefits_dependents = forms.ChoiceField(required=False, widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YES_NO,
-                                            label=_("Does this include payment for dependants?")
+                                            label=_("Does this include payment for dependants?"))
     benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                         choices=BEN_PERIOD_CHOICES, required=False,
                                         label=_("How often are your benefits paid?"),
