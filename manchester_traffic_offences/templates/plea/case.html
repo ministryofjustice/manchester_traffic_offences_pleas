@@ -1,6 +1,7 @@
 {% extends "plea/base.html" %}
+{% load i18n %}
 
-{% block page_title %}{{ block.super }} Case details{% endblock %}
+{% block page_title %}{{ block.super }} {% trans "Case details" %}{% endblock %}
 
 {% load staticfiles %}
 
