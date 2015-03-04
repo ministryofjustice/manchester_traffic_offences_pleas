@@ -1,8 +1,10 @@
 {% extends "plea/base.html" %}
 
+{% load i18n %}
+
 {% load staticfiles %}
 
-{% block page_title %}{{ block.super }} Your Finances{% endblock %}
+{% block page_title %}{{ block.super }} {% trans "Your Finances" %}{% endblock %}
 
 {% block page_content %}
 <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
@@ -13,9 +15,9 @@
     
         {% if form.errors %}
         <section class="error-summary">
-            <h2 class="heading-medium">You need to fix the errors on this page before continuing.</h2>
+            <h2 class="heading-medium">{% trans "You need to fix the errors on this page before continuing." %}</h2>
 
-            <p>See highlighted errors below.</p>
+            <p>{% trans "See highlighted errors below." %}</p>
             
             <ul class="errors-list">
             {% for field in form %}
@@ -28,14 +30,14 @@
         {% endif %}
 
     <header class="content-header">
-        <h1 class="heading-xlarge">Your finances</h1>
+        <h1 class="heading-xlarge">{% trans "Your finances" %}</h1>
     </header>
 
     <ul class="list-bullet">
-        <li>For this type of offence you'll usually have to pay a fine</li>
-        <li>You must provide your income details</li>
-        <li>The court will decide your fine based on your finances and the seriousness of the offence</li>
-        <li>Your details will be stored securely by the court</li>
+        <li>{% trans "For this type of offence you'll usually have to pay a fine" %}</li>
+        <li>{% trans "You must provide your income details" %}</li>
+        <li>{% trans "The court will decide your fine based on your finances and the seriousness of the offence" %}</li>
+        <li>{% trans "Your details will be stored securely by the court" %}</li>
     </ul>
 
     <div>
@@ -65,8 +67,8 @@
                 {% endwith %}
 
                 <div id="employed_hardship-True" class="js-Conditional" data-conditional-trigger="employed_hardship" data-conditional-value="True">
-                    <h4 class="heading-small">Note:</h4>
-                    <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
+                    <h4 class="heading-small">{% trans "Note:" %}</h4>
+                    <p>{% trans "For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen." %}</p>
                 </div>
 
             </div>
@@ -99,8 +101,8 @@
                 {% endwith %}
 
                 <div id="self_employed_hardship-True" class="js-Conditional" data-conditional-trigger="self_employed_hardship" data-conditional-value="True">
-                    <h4 class="heading-small">Note:</h4>
-                    <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
+                    <h4 class="heading-small">{% trans "Note:" %}</h4>
+                    <p>{% trans "For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen." %}</p>
                 </div>
 
             </div>
@@ -137,8 +139,8 @@
                 {% endwith %}
 
                 <div id="receiving_benefits_hardship-True" class="js-Conditional" data-conditional-trigger="receiving_benefits_hardship" data-conditional-value="True">
-                    <h4 class="heading-small">Note:</h4>
-                    <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
+                    <h4 class="heading-small">{% trans "Note:" %}</h4>
+                    <p>{% trans "For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen." %}</p>
                 </div>
 
             </div>
@@ -161,8 +163,8 @@
                 {% endwith %}
 
                 <div id="other_hardship-True" class="js-Conditional" data-conditional-trigger="other_hardship" data-conditional-value="True">
-                    <h4 class="heading-small">Note:</h4>
-                    <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
+                    <h4 class="heading-small">{% trans "Note:" %}</h4>
+                    <p>{% trans "For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen." %}</p>
                 </div>
 
             </div>
@@ -173,7 +175,7 @@
     {% endwith %}
 
     <div class="form-group form-submit">
-        <button class="button" type="submit">Continue</button>
+        <button class="button" type="submit">{% trans "Continue" %}</button>
     </div>
 
 </form>
