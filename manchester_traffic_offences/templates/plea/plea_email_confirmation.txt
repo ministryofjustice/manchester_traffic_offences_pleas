@@ -81,6 +81,13 @@ roadtrafficpcr@hmcts.gsi.gov.uk
 
 -------
 
+We’re constantly working to improve Make Your Plea.
+
+Please give us feedback so we can make it better:
+{{ base_url }}/feedback/
+
+-------
+
 If you're unsure an email is from the Ministry of Justice:
 
 * do not reply to it or click any links
