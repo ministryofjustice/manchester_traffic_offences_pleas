@@ -34,11 +34,7 @@
 
     <header class="content-header">
         <h1 class="heading-xlarge">
-            {% blocktrans count charges=charges %}
-                Your plea
-            {% plural %}
-                Your pleas
-            {% endblocktrans %}</h1>
+            {% blocktrans count charges=charges %} Your plea {% plural %} Your pleas {% endblocktrans %}</h1>
 
         <p class="lede">{% trans "This is your opportunity to present your case to the court." %}</p>
     </header>
@@ -48,18 +44,12 @@
         {{ formset.management_form }}
 
         <h2 class="heading-medium">
-            {% blocktrans with form_count=form_count count charges=charges %}
-                Enter a plea for the charge below
-            {% plural %}
-                Enter {{ form_count }} pleas for the charges below
-            {% endblocktrans %}</h2>
+            {% blocktrans with form_count=form_count count charges=charges %} Enter a plea for the charge below {% plural %} Enter {{ form_count }} pleas for the charges below {% endblocktrans %}</h2>
 
         {% for form in formset %}
         <fieldset id="section_guilty_{{ forloop.counter }}">
             {% if form_count > 1 %}<legend class="form-label">
-            {% blocktrans with counter=forloop.counter %}
-                Your plea for charge [{{ counter }}]
-            {% endblocktrans %}
+            {% blocktrans with counter=forloop.counter %} Your plea for charge [{{ counter }}] {% endblocktrans %}
 
             </legend>{% endif %}
 
