@@ -17,7 +17,20 @@ from ..views import PleaOnlineForms
 from ..forms import CompanyFinancesForm
 
 
-class TestMultiPleaForms(TestCase):
+class TestMultiPleaFormBase(TestCase):
+
+    def get_request_mock(self, url, url_name="", url_kwargs=None):
+        request_factory = RequestFactory()
+
+        if not url_kwargs:
+            url_kwargs = {}
+        request = request_factory.get(url)
+        request.resolver_match = Mock()
+        request.resolver_match.url_name = url_name
+        request.resolver_match.kwargs = url_kwargs
+        return request
+
+class TestMultiPleaForms(TestMultiPleaFormBase):
     def setUp(self):
         self.session = {}
         self.request_context = {}
@@ -43,9 +56,6 @@ class TestMultiPleaForms(TestCase):
                                               "your_details": {"name": "Charlie Brown",
                                                                "contact_number": "012345678",
                                                                "email": "charliebrown@example.org"}}
-
-
-        self.request_factory = RequestFactory()
 
         self.test_session_data = {
             "case": {
@@ -92,15 +102,6 @@ class TestMultiPleaForms(TestCase):
                 "complete": True
             }
         }
-
-    def get_request_mock(self, url, url_name="", url_kwargs=None):
-        if not url_kwargs:
-            url_kwargs = {}
-        request = self.request_factory.get(url)
-        request.resolver_match = Mock()
-        request.resolver_match.url_name = url_name
-        request.resolver_match.kwargs = url_kwargs
-        return request
 
     def test_case_stage_bad_data(self):
         form = PleaOnlineForms("case", "plea_form_step", self.session)
@@ -818,7 +819,6 @@ class TestMultiPleaForms(TestCase):
         self.assertEqual(add_message.call_count, 1)
         self.assertEqual(add_message.call_args[0][0], {})
         self.assertEqual(add_message.call_args[0][1], 40)
-        self.assertTrue(isinstance(add_message.call_args[0][2], basestring))
 
     def test_successful_completion_single_charge(self):
         fake_session = {}
@@ -1082,6 +1082,38 @@ class TestMultiPleaForms(TestCase):
 
         self.assertEqual(response.url, '/plea/your_expenses/')
 
+    def test_your_expenses_redirects_to_review_page(self):
+
+        session_data = self.test_session_data
+        fake_request = self.get_request_mock("/plea/your_expenses")
+        request_context = RequestContext(fake_request)
+
+        form = PleaOnlineForms("your_expenses", "plea_form_step", session_data)
+
+        form.load(request_context)
+
+        test_data = {
+            "hardship_details": "ra ra ra",
+            "household_accommodation": "0",
+            "household_utility_bills": "0",
+            "household_insurance": "100",
+            "household_council_tax": "50",
+            "other_bill_payers": True,
+            "other_tv_subscription": "0",
+            "other_travel_expenses": "20",
+            "other_telephone": "40",
+            "other_loan_repayments": "60",
+            "other_court_payments": "30",
+            "other_child_maintenance": "50"
+        }
+
+        form.save(test_data, request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/plea/review/')
+
     def test_your_finances_employed_no_hardship_redirects_to_review(self):
 
         session_data = self.test_session_data
@@ -1342,3 +1374,64 @@ class TestMultiPleaForms(TestCase):
         response = form.render()
 
         self.assertNotContains(response, '<<SHOWINGEXPENSES>>')
+
+
+class TestYourExpensesStage(TestMultiPleaFormBase):
+
+    def setUp(self):
+
+        hearing_date = datetime.date.today()+datetime.timedelta(30)
+
+        self.fake_request = self.get_request_mock("/plea/your_money")
+        self.request_context = RequestContext(self.fake_request)
+
+        self.test_data = {
+            "case": {
+                "complete": True,
+                "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
+                "urn": "06/AA/0000000/00",
+                "number_of_charges": 1,
+                "company_plea": False
+            },
+            "your_details": {
+                "complete": True
+            },
+            "plea": {
+                "complete": True,
+                "PleaForms": [
+                    {
+                        "guilty": "guilty",
+                        "mitigations": "something"
+                    },
+                    {
+                        "guilty": "guilty",
+                        "mitigations": "something"
+                    },
+                    {
+                        "guilty": "guilty",
+                        "mitigations": "something"
+                    }
+                ]
+            },
+            "your_money":  {
+                "complete": True
+            },
+            "your_expenses": {
+
+            },
+            "review": {
+                "complete": True
+            }
+        }
+
+    def test_your_expenses_form_requires_validation(self):
+
+        form = PleaOnlineForms("your_expenses", "plea_form_step", self.test_data)
+
+        form.load(self.request_context)
+
+        form.save({}, self.request_context)
+
+        response = form.render()
+
+        self.assertEquals(response.status_code, 200)
