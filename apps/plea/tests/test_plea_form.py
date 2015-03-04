@@ -819,7 +819,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertEqual(add_message.call_count, 1)
         self.assertEqual(add_message.call_args[0][0], {})
         self.assertEqual(add_message.call_args[0][1], 40)
-        self.assertTrue(isinstance(add_message.call_args[0][2], basestring))
 
     def test_successful_completion_single_charge(self):
         fake_session = {}
