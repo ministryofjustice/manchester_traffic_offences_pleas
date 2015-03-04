@@ -221,6 +221,8 @@ class YourExpensesStage(FormStage):
 
     def save(self, form_data, next_step=None):
 
+        #import pdb; pdb.set_trace()
+
         household_expense_fields = ['household_accommodation',
                                     'household_utility_bills',
                                     'household_insurance',
@@ -235,9 +237,10 @@ class YourExpensesStage(FormStage):
 
         clean_data = super(YourExpensesStage, self).save(form_data, next_step)
 
-        self.set_next_step("review", skip=["company_finances"])
-
         if 'complete' in clean_data:
+
+            self.set_next_step("review", skip=["company_finances"])
+
             total_household = sum(clean_data[field] for field in household_expense_fields)
             total_other = sum(clean_data[field] for field in other_expense_fields)
             total_expenses = total_household + total_other
