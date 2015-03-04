@@ -60,7 +60,7 @@
             </tr>
             <tr>
                 <th class="label">{% trans "Plea on behalf of a company?" %}</th>
-                <td>{{ case.company_plea|yesno:"Yes,No" }}</td>
+                <td>{{ case.company_plea|yesno:_("Yes,No") }}</td>
             </tr>
         </tbody>
     </table>
@@ -286,7 +286,7 @@
         <table class="review-table" id="your-expenses">
             <thead>
                 <tr>
-                    <th class="header">Your expenses</th>
+                    <th class="header">{% trans "Your expenses" %}</th>
                     <th class="change-link"><a href="{% url "plea_form_step" "your_expenses" %}" class="review">{% trans "Change your expenses" %}</a></th>
                 </tr>
             </thead>
