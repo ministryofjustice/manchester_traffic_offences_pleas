@@ -478,6 +478,3 @@ class PleaForm(BasePleaStepForm):
     guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect(), required=True,
                                error_messages={"required": ERROR_MESSAGES["PLEA_REQUIRED"]})
     mitigations = forms.CharField(max_length=5000, widget=Textarea(), required=False)
-
-
-###### Form stage classes #######
