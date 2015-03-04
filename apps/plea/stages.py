@@ -4,6 +4,7 @@ import datetime
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 from django.forms.formsets import formset_factory
+from django.utils.translation import ugettext_lazy as _
 
 from apps.govuk_utils.forms import FormStage
 from email import send_plea_email
@@ -152,7 +153,7 @@ class PleaStage(FormStage):
         else:
             return clean_data
 
-        if self.all_data["case"]["company_plea"]:
+        if self.all_data["case"].get("company_plea", None):
             if none_guilty:
                 self.set_next_step("review", skip=["company_finances",
                                                    "your_money"])
@@ -221,6 +222,8 @@ class YourExpensesStage(FormStage):
 
     def save(self, form_data, next_step=None):
 
+        #import pdb; pdb.set_trace()
+
         household_expense_fields = ['household_accommodation',
                                     'household_utility_bills',
                                     'household_insurance',
@@ -236,6 +239,9 @@ class YourExpensesStage(FormStage):
         clean_data = super(YourExpensesStage, self).save(form_data, next_step)
 
         if 'complete' in clean_data:
+
+            self.set_next_step("review", skip=["company_finances"])
+
             total_household = sum(clean_data[field] for field in household_expense_fields)
             total_other = sum(clean_data[field] for field in other_expense_fields)
             total_expenses = total_household + total_other
@@ -264,7 +270,7 @@ class ReviewStage(FormStage):
             if email_result:
                 self.set_next_step("complete")
             else:
-                self.add_message(messages.ERROR, '<h2 class="heading-medium">Submission Error</h2><p>There seems to have been a problem submitting your plea. Please try again.</p>')
+                self.add_message(messages.ERROR, _('<h2 class="heading-medium">Submission Error</h2><p>There seems to have been a problem submitting your plea. Please try again.</p>'))
                 self.set_next_step("review")
 
         return clean_data
