@@ -1,10 +1,11 @@
 {% load testing %}
+{% load i18n %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Online plea submission confirmation</title>
+    <title>{% trans "Online plea submission confirmation" %}</title>
     <style type="text/css">
         /* Based on The MailChimp Reset INLINE: Yes. */
         /* Client-specific Styles */
@@ -210,28 +211,48 @@
                         <table width="100%" cellpadding="30">
                             <tr>
                                 <td style="font-family:Arial, Helvetica; line-height: 21px;">
-                                    <h1 style="margin-bottom: 30px; margin-top:0px;">Your online plea{{ number_of_charges|pluralize }} ha{{ number_of_charges|pluralize:"s,ve" }} been submitted</h1>
+                                    <h1 style="margin-bottom: 30px; margin-top:0px;">
+{% blocktrans count charges=number_of_charges %}
+Your online plea has been submitted
+{% plural %}
+Your online pleas have been submitted
+{% endblocktrans %}
+                                    </h1>
 
                                     <p style="font-size: 18px;">
-                                        Your {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea{{ number_of_charges|pluralize }} ha{{ number_of_charges|pluralize:"s,ve" }} been sent to the court
+{% if plea_type == "guilty" %}
+    {% blocktrans count charges=number_of_charges %}
+Your guilty plea has been sent to the court
+    {% plural %}
+Your guilty pleas have been sent to the court
+    {% endblocktrans %}
+{% else %}
+    {% blocktrans count charges=number_of_charges %}
+Your not guilty plea has been sent to the court
+    {% plural %}
+Your not guilty pleas have been sent to the court
+    {% endblocktrans %}
+{% endif %}
                                     </p>
 
-                                    <h2 style="font-size: 25px; margin-top: 50px;">What happens next?</h2>
+                                    <h2 style="font-size: 25px; margin-top: 50px;">{% trans "What happens next?" %}</h2>
 
                                     {% if plea_type == "guilty" %}
                                         {% add_test_tag "<<GUILTY>>" %}
                                     <ol style="margin-left: 0px;padding-left:25px;">
 
-                                        <li style="margin-bottom: 20px; font-size: 18px;">There's <b>no need</b> to come
-                                            to court on the hearing date shown in the pack we sent you.
+                                        <li style="margin-bottom: 20px; font-size: 18px;"> {% blocktrans %}There's <b>no need</b> to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}
                                         </li>
-                                        <li style="margin-bottom: 20px; font-size: 18px;">We'll send you a letter with
-                                            the court's decision{{ number_of_charges|pluralize}} <b>within three working days after your hearing.</b>
+                                        <li style="margin-bottom: 20px; font-size: 18px;">
+{% blocktrans count charges=number_of_charges %}
+We'll send you a letter with the court's decision <b>within three working days after your hearing.
+{% plural %}
+We'll send you a letter with the court's decisions <b>within three working days after your hearing.
+{% endblocktrans %}</b>
                                         </li>
-                                        <li style="margin-bottom: 20px; font-size: 18px;">Quote your URN <b>{{ urn | upper }}</b> if you contact the court about your case.
+                                        <li style="margin-bottom: 20px; font-size: 18px;"> {% blocktrans with urn=urn %}Quote your URN <b>{{ urn }}</b> if you contact the court about your case.{% endblocktrans %}
                                         </li>
-                                        <li style="margin-bottom: 20px; font-size: 18px;">Print a copy of this
-                                            confirmation of plea for your records.
+                                        <li style="margin-bottom: 20px; font-size: 18px;"> {% trans "Print a copy of this confirmation of plea for your records." %}
                                         </li>
                                     </ol>
                                     {% endif %}
@@ -239,25 +260,17 @@
                                     {% if plea_type == "not_guilty" %}
                                         {% add_test_tag "<<NOTGUILTY>>" %}
                                     <ol style="margin-left: 0px;padding-left:25px;">
-                                        <li style="margin-bottom: 20px; font-size: 18px;">There's <b>no need</b> to come
-                                            to court on the hearing date shown in the pack we
-                                            sent you.
+                                        <li style="margin-bottom: 20px; font-size: 18px;"> {% blocktrans %}There's <b>no need</b> to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}
                                         </li>
-                                        <li style="margin-bottom: 20px; font-size: 18px;">The court will tell you if you
-                                            need to attend a trial, and what
-                                            evidence you may
-                                            need to send to the court in support of your case.
+                                        <li style="margin-bottom: 20px; font-size: 18px;"> {% blocktrans %}The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case." {% endblocktrans %}
                                         </li>
-                                        <li style="margin-bottom: 20px; font-size: 18px;">We'll send you a letter with
-                                            the court's decision{{ number_of_charges|pluralize}} <b>within three working days
-                                            after your hearing.</b>
+                                        <li style="margin-bottom: 20px; font-size: 18px;">
+{% blocktrans count charges=number_of_charges %} We'll send you a letter with the court's decision <b>within three working days after your hearing. {% plural %} We'll send you a letter with the court's decisions <b>within three working days after your hearing.
+                                                        {% endblocktrans %}
                                         </li>
-                                        <li style="margin-bottom: 20px; font-size: 18px;">Quote your URN <b>{{ urn | upper }}</b> if you contact the court
-                                            about your
-                                            case.
+                                        <li style="margin-bottom: 20px; font-size: 18px;"> {% blocktrans with urn=urn|upper %}Quote your URN <b>{{ urn }}</b> if you contact the court about your case.{% endblocktrans %}
                                         </li>
-                                        <li style="font-size: 18px;"> Print a copy of this confirmation of plea for
-                                            your records.
+                                        <li style="font-size: 18px;"> {% blocktrans %}Print a copy of this confirmation of plea for your records.{% endblocktrans %}
                                         </li>
                                     </ol>
 
@@ -266,29 +279,28 @@
                                     {% if plea_type == "mixed" %}
                                         {% add_test_tag "<<MIXED>>" %}
                                     <ol>
-                                        <li style="margin-bottom: 20px; font-size: 18px;">There's <b>no need</b> to come to court on the hearing date shown in the pack we sent you.</li>
+                                        <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}There's <b>no need</b> to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}</li>
 
-                                        <li style="margin-bottom: 20px; font-size: 18px;">The court will tell you if you need to attend a trial, and what evidence you may
-                                            need to send to the court in support of your case.</li>
+                                        <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.{% endblocktrans %}</li>
 
-                                        <li style="margin-bottom: 20px; font-size: 18px;">We'll send you a letter with the court's decisions within three working days after your
-                                            hearing.</li>
+                                        <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans count charges=number_of_charges %} We'll send you a letter with the court's decision <b>within three working days after your hearing. {% plural %} We'll send you a letter with the court's decisions <b>within three working days after your hearing.
+                                                        {% endblocktrans %}</li>
 
-                                        <li style="margin-bottom: 20px; font-size: 18px;">Quote your URN  {{ urn | upper }} if you contact the court about your case.</li>
+                                        <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans with urn=urn|upper %}Quote your URN  {{ urn }} if you contact the court about your case.{% endblocktrans %}</li>
 
-                                        <li style="margin-bottom: 20px; font-size: 18px;">Print a copy of this confirmation of plea for your records.</li>
+                                        <li style="margin-bottom: 20px; font-size: 18px;">{% trans "Print a copy of this confirmation of plea for your records." %}</li>
 
                                     </ol>
 
                                     {% endif %}
 
-                                    <h2 style="font-size: 25px; margin-top: 50px;">Need to change a plea?</h2>
+                                    <h2 style="font-size: 25px; margin-top: 50px;">{% trans "Need to change a plea?" %}</h2>
 
-                                    <p style="font-size: 18px;">Contact the court by post or email quoting your URN before the date of your hearing.</p>
+                                    <p style="font-size: 18px;">{% trans "Contact the court by post or email quoting your URN before the date of your hearing." %}</p>
 
-                                    <p style="font-size: 18px;">The contact details for the court are:</p>
+                                    <p style="font-size: 18px;">{% trans "The contact details for the court are:" %}</p>
 
-                                    <p style="font-size: 18px;"><strong>By Post:</strong><br>
+                                    <p style="font-size: 18px;"><strong>{% trans "By Post:" %}</strong><br>
                                         The Operations Manager<br>
                                         Manchester & Salford<br>
                                         Magistrates Court<br>
@@ -296,7 +308,7 @@
                                         Manchester<br>
                                         M60 1PR</p>
 
-                                    <p style="font-size: 18px;"><strong>By email:</strong><br>
+                                    <p style="font-size: 18px;"><strong>{% trans "By email:" %}</strong><br>
                                         <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk" style="color: #1068AA;">roadtrafficpcr@hmcts.gsi.gov.uk</a>
                                     </p>
 
@@ -315,18 +327,18 @@
                             <tr>
                                 <td width="20">&nbsp;</td>
                                 <td style="color: #777777; font-size: 13px; font-family: Arial;">
-                                    <p>If you're unsure an email is from the Ministry of Justice:</p>
+                                    <p>{% trans "If you're unsure an email is from the Ministry of Justice:" %}</p>
 
                                     <ul style="margin: 1.2em; padding:0;">
-                                        <li> do not reply to it or click any links</li>
-                                        <li> forward it to <a href="mailto:feedback@makeaplea.gov.uk"
+                                        <li> {% trans "do not reply to it or click any links" %}</li>
+                                        <li> {% trans "forward it to" %} <a href="mailto:feedback@makeaplea.gov.uk"
                                                               style="color: #9a9a9a;">feedback@makeaplea.gov.uk</a>
                                         </li>
                                     </ul>
 
                                     <p>
                                         <a href="https://www.makeaplea.justice.gov.uk/terms-and-conditions-and-privacy-policy"
-                                           style="color: #777777;">Terms and Conditions and privacy policy</a>
+                                           style="color: #777777;">{% trans "Terms and Conditions and privacy policy" %}</a>
                                     </p>
                                 </td>
                             </tr>
