@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-04 09:46+0000\n"
+"POT-Creation-Date: 2015-03-04 12:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -306,11 +306,11 @@ msgstr ""
 msgid "Enter the company's projected net turnover"
 msgstr ""
 
-#: apps/plea/forms.py:16 apps/plea/forms.py:350
+#: apps/plea/forms.py:16 apps/plea/forms.py:140 apps/plea/forms.py:350
 msgid "Yes"
 msgstr ""
 
-#: apps/plea/forms.py:17 apps/plea/forms.py:350
+#: apps/plea/forms.py:17 apps/plea/forms.py:141 apps/plea/forms.py:350
 msgid "No"
 msgstr ""
 
@@ -345,12 +345,30 @@ msgstr ""
 msgid "Are you making a plea on behalf of a company?"
 msgstr ""
 
+#: apps/plea/forms.py:63
+#: manchester_traffic_offences/templates/plea/review.html:88
+#: manchester_traffic_offences/templates/plea/review.html:106
+msgid "Full name"
+msgstr ""
+
 #: apps/plea/forms.py:64
 msgid "On page 1 of the pack we sent you"
 msgstr ""
 
+#: apps/plea/forms.py:67 apps/plea/forms.py:108
+#: manchester_traffic_offences/templates/plea/review.html:96
+#: manchester_traffic_offences/templates/plea/review.html:110
+msgid "Contact number"
+msgstr ""
+
 #: apps/plea/forms.py:68
 msgid "Home or mobile number."
+msgstr ""
+
+#: apps/plea/forms.py:73 apps/plea/forms.py:118
+#: manchester_traffic_offences/templates/plea/review.html:100
+#: manchester_traffic_offences/templates/plea/review.html:114
+msgid "Email"
 msgstr ""
 
 #: apps/plea/forms.py:79
@@ -374,10 +392,19 @@ msgstr ""
 msgid "As written on page 1 of the pack we sent you."
 msgstr ""
 
+#: apps/plea/forms.py:90
+#: manchester_traffic_offences/templates/plea/review.html:84
+msgid "Company address"
+msgstr ""
+
 #: apps/plea/forms.py:92
 msgid ""
 "This is the address we will use for all future correspondence about this "
 "case."
+msgstr ""
+
+#: apps/plea/forms.py:96
+msgid "Your name"
 msgstr ""
 
 #: apps/plea/forms.py:101
@@ -388,20 +415,8 @@ msgstr ""
 msgid "You must confirm that you are:"
 msgstr ""
 
-#: apps/plea/forms.py:108
-#: manchester_traffic_offences/templates/plea/review.html:96
-#: manchester_traffic_offences/templates/plea/review.html:110
-msgid "Contact number"
-msgstr ""
-
 #: apps/plea/forms.py:112
 msgid "Office or mobile number."
-msgstr ""
-
-#: apps/plea/forms.py:118
-#: manchester_traffic_offences/templates/plea/review.html:100
-#: manchester_traffic_offences/templates/plea/review.html:114
-msgid "Email"
 msgstr ""
 
 #: apps/plea/forms.py:125
@@ -432,6 +447,10 @@ msgstr ""
 
 #: apps/plea/forms.py:131 apps/plea/forms.py:134 apps/plea/forms.py:138
 msgid "Monthly"
+msgstr ""
+
+#: apps/plea/forms.py:143
+msgid "Are you?"
 msgstr ""
 
 #: apps/plea/forms.py:148 apps/plea/forms.py:176
@@ -803,16 +822,6 @@ msgstr ""
 msgid "Send letters to:"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/case.html:39
-msgid ""
-"The Operations Manager<br>\n"
-"                Manchester & Salford<br>\n"
-"                Magistrates Court<br>\n"
-"                Crown Square<br>\n"
-"                Manchester<br>\n"
-"                M60 1PR"
-msgstr ""
-
 #: manchester_traffic_offences/templates/plea/case.html:46
 #: manchester_traffic_offences/templates/plea/urn_used.html:40
 msgid "Send email to:"
@@ -965,9 +974,9 @@ msgid ""
 msgstr ""
 
 #: manchester_traffic_offences/templates/plea/plea.html:37
-#: manchester_traffic_offences/templates/plea/review.html:125
-msgid " Your plea "
-msgid_plural " Your pleas "
+#: manchester_traffic_offences/templates/plea/review.html:138
+msgid "Your plea"
+msgid_plural "Your pleas"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -1235,32 +1244,29 @@ msgstr ""
 msgid "Plea on behalf of a company?"
 msgstr ""
 
+#: manchester_traffic_offences/templates/plea/review.html:63
+msgid "Yes,No"
+msgstr ""
+
 #: manchester_traffic_offences/templates/plea/review.html:72
 msgid "Change your details"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/review.html:84
-msgid "Company address"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/review.html:88
-#: manchester_traffic_offences/templates/plea/review.html:106
-msgid "Full name"
 msgstr ""
 
 #: manchester_traffic_offences/templates/plea/review.html:92
 msgid "Position held"
 msgstr ""
 
+#: manchester_traffic_offences/templates/plea/review.html:125
+msgid " Your plea "
+msgid_plural " Your pleas "
+msgstr[0] ""
+msgstr[1] ""
+
 #: manchester_traffic_offences/templates/plea/review.html:127
 msgid " Change your plea "
 msgid_plural " Change your pleas "
 msgstr[0] ""
 msgstr[1] ""
-
-#: manchester_traffic_offences/templates/plea/review.html:138
-msgid "Your plea"
-msgstr ""
 
 #: manchester_traffic_offences/templates/plea/review.html:143
 msgid "Not guilty"
@@ -1337,6 +1343,12 @@ msgstr ""
 
 #: manchester_traffic_offences/templates/plea/review.html:246
 msgid "Includes payment for dependents?"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/review.html:289
+#: manchester_traffic_offences/templates/plea/your_expenses.html:5
+#: manchester_traffic_offences/templates/plea/your_expenses.html:32
+msgid "Your expenses"
 msgstr ""
 
 #: manchester_traffic_offences/templates/plea/review.html:290
@@ -1419,11 +1431,6 @@ msgstr ""
 
 #: manchester_traffic_offences/templates/plea/urn_used.html:55
 msgid "Start now"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/your_expenses.html:5
-#: manchester_traffic_offences/templates/plea/your_expenses.html:32
-msgid "Your expenses"
 msgstr ""
 
 #: manchester_traffic_offences/templates/plea/your_expenses.html:34
