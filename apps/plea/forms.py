@@ -137,8 +137,8 @@ class YourMoneyForm(BasePleaStepForm):
                          ("Fortnightly", _("Fortnightly")),
                          ("Monthly", _("Monthly")),
                          ("Benefits other", _("Other")),)
-    YES_NO = (("Yes", "Yes"),
-              ("No", "No"))
+    YES_NO = (("Yes", _("Yes")),
+              ("No", _("No")))
 
     you_are = forms.ChoiceField(label="Are you?", choices=YOU_ARE_CHOICES,
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
