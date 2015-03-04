@@ -1,6 +1,8 @@
 {% extends "plea/base.html" %}
 
-{% block page_title %}{{ block.super }} Case details{% endblock %}
+{% load i18n %}
+
+{% block page_title %}{{ block.super }} {% trans "Case details" %}{% endblock %}
 
 {% load staticfiles %}
 
@@ -8,32 +10,32 @@
 <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
 
     {% csrf_token %}
-    
+
     {% with forms.0 as form %}
-        
+
         {% if form.errors %}
     <div class="error-summary">
         {% if urn_already_used %}
-        <h2 class="heading-medium">The details you've entered have already been used to make a plea online</h2>
+        <h2 class="heading-medium">{% trans "The details you've entered have already been used to make a plea online" %}</h2>
 
-        <p>Check and try again.</p>
+        <p>{% trans "Check and try again." %}</p>
 
         <ul class="errors-list">
-            <li><a href="#section_urn">Enter the correct URN</a></li>
+            <li><a href="#section_urn">{% trans "Enter the correct URN" %}</a></li>
         </ul>
 
-        <p>To make changes to a plea you’ve already made online, email or write to the court before your hearing with:</p>
+        <p>{% trans "To make changes to a plea you’ve already made online, email or write to the court before your hearing with:" %}</p>
 
         <ul class="list-bullet">
-            <li>details of the changes you want to make</li>
-            <li>your unique reference number</li>
+            <li>{% trans "details of the changes you want to make" %}</li>
+            <li>{% trans "your unique reference number" %}</li>
         </ul>
 
 
         <details role="group">
-            <summary role="button" aria-controls="details-content-0" tabindex="0" aria-expanded="false"><span class="summary">View court contact details</span></summary>
+            <summary role="button" aria-controls="details-content-0" tabindex="0" aria-expanded="false"><span class="summary">{% trans "View court contact details</span></summary>
             <div id="details-content-0" aria-hidden="true">
-                <h3 class="heading-small">Send letters to:</h3>
+                <h3 class="heading-small">{% trans "Send letters to:" %}</h3>
                 <address>The Operations Manager<br>
                 Manchester & Salford<br>
                 Magistrates Court<br>
@@ -41,16 +43,16 @@
                 Manchester<br>
                 M60 1PR</address>
 
-                <h3 class="heading-small">Send email to:</h3>
+                <h3 class="heading-small">{% trans "Send email to:" %}</h3>
                 <p><a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">roadtrafficpcr@hmcts.gsi.gov.uk</a></p>
             </div>
         </details>
 
         {% else %}
 
-        <h2 class="heading-medium">You need to fix the errors on this page before continuing.</h2>
-        
-        <p>See highlighted errors below.</p>
+        <h2 class="heading-medium">{% trans "You need to fix the errors on this page before continuing." %}</h2>
+
+        <p>{% trans "See highlighted errors below." %}</p>
 
         <ul class="errors-list">
             {% for field in form %}
@@ -64,7 +66,7 @@
         {% endif %}
 
     <header class="content-header">
-        <h1 class="heading-xlarge">Case details</h1>
+        <h1 class="heading-xlarge">{% trans "Case details" %}</h1>
     </header>
 
     <div class="with-help-images">
@@ -73,9 +75,9 @@
         {% endwith %}
 
         <div class="help-image">
-            <img src="{% static "images/img-urn.png" %}" alt="The URN and Court Hearing Date are found on page 1 of the pack" width="260" height="340">
+            <img src="{% static "images/img-urn.png" %}" alt="{% trans "The URN and Court Hearing Date are found on page 1 of the pack" %}" width="260" height="340">
         </div>
-    
+
         {% with form.date_of_hearing as field %}
             {% include "widgets/std_field.html" %}
         {% endwith %}
@@ -85,16 +87,16 @@
         {% endwith %}
 
         <div class="help-image">
-            <img src="{% static "images/img-charge.png" %}" alt="The number of charges is found on page 2 of the pack" width="260" height="185">
+            <img src="{% static "images/img-charge.png" %}" alt="{% trans "The number of charges is found on page 2 of the pack" %}" width="260" height="185">
         </div>
 
         {% with form.company_plea as field %}
             {% include "widgets/radio_field.html" %}
         {% endwith %}
-    
+
 
         <div class="form-group form-submit">
-            <button class="button" type="submit">Continue</button>
+            <button class="button" type="submit">{% trans "Continue" %}</button>
         </div>
     </div>
     {% endwith %}
