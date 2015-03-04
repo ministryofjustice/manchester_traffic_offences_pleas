@@ -17,7 +17,20 @@ from ..views import PleaOnlineForms
 from ..forms import CompanyFinancesForm
 
 
-class TestMultiPleaForms(TestCase):
+class TestMultiPleaFormBase(TestCase):
+
+    def get_request_mock(self, url, url_name="", url_kwargs=None):
+        request_factory = RequestFactory()
+
+        if not url_kwargs:
+            url_kwargs = {}
+        request = request_factory.get(url)
+        request.resolver_match = Mock()
+        request.resolver_match.url_name = url_name
+        request.resolver_match.kwargs = url_kwargs
+        return request
+
+class TestMultiPleaForms(TestMultiPleaFormBase):
     def setUp(self):
         self.session = {}
         self.request_context = {}
@@ -43,9 +56,6 @@ class TestMultiPleaForms(TestCase):
                                               "your_details": {"name": "Charlie Brown",
                                                                "contact_number": "012345678",
                                                                "email": "charliebrown@example.org"}}
-
-
-        self.request_factory = RequestFactory()
 
         self.test_session_data = {
             "case": {
@@ -92,15 +102,6 @@ class TestMultiPleaForms(TestCase):
                 "complete": True
             }
         }
-
-    def get_request_mock(self, url, url_name="", url_kwargs=None):
-        if not url_kwargs:
-            url_kwargs = {}
-        request = self.request_factory.get(url)
-        request.resolver_match = Mock()
-        request.resolver_match.url_name = url_name
-        request.resolver_match.kwargs = url_kwargs
-        return request
 
     def test_case_stage_bad_data(self):
         form = PleaOnlineForms("case", "plea_form_step", self.session)
@@ -1374,3 +1375,64 @@ class TestMultiPleaForms(TestCase):
         response = form.render()
 
         self.assertNotContains(response, '<<SHOWINGEXPENSES>>')
+
+
+class TestYourExpensesStage(TestMultiPleaFormBase):
+
+    def setUp(self):
+
+        hearing_date = datetime.date.today()+datetime.timedelta(30)
+
+        self.fake_request = self.get_request_mock("/plea/your_money")
+        self.request_context = RequestContext(self.fake_request)
+
+        self.test_data = {
+            "case": {
+                "complete": True,
+                "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
+                "urn": "06/AA/0000000/00",
+                "number_of_charges": 1,
+                "company_plea": False
+            },
+            "your_details": {
+                "complete": True
+            },
+            "plea": {
+                "complete": True,
+                "PleaForms": [
+                    {
+                        "guilty": "guilty",
+                        "mitigations": "something"
+                    },
+                    {
+                        "guilty": "guilty",
+                        "mitigations": "something"
+                    },
+                    {
+                        "guilty": "guilty",
+                        "mitigations": "something"
+                    }
+                ]
+            },
+            "your_money":  {
+                "complete": True
+            },
+            "your_expenses": {
+
+            },
+            "review": {
+                "complete": True
+            }
+        }
+
+    def test_your_expenses_form_requires_validation(self):
+
+        form = PleaOnlineForms("your_expenses", "plea_form_step", self.test_data)
+
+        form.load(self.request_context)
+
+        form.save({}, self.request_context)
+
+        response = form.render()
+
+        self.assertEquals(response.status_code, 200)
