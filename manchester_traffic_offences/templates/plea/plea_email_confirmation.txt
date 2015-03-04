@@ -9,17 +9,17 @@ Your online pleas have been submitted
 {% endblocktrans %}
 
 {% if plea_type == "guilty" %}
-    {% blocktrans count charges=number_of_charges %}
-        Your guilty plea has been sent to the court
-    {% plural %}
-        Your guilty pleas have been sent to the court
-    {% endblocktrans %}
+{% blocktrans count charges=number_of_charges %}
+Your guilty plea has been sent to the court
+{% plural %}
+Your guilty pleas have been sent to the court
+{% endblocktrans %}
 {% else %}
-    {% blocktrans count charges=number_of_charges %}
-        Your not guilty plea has been sent to the court
-    {% plural %}
-        Your not guilty pleas have been sent to the court
-    {% endblocktrans %}
+{% blocktrans count charges=number_of_charges %}
+Your not guilty plea has been sent to the court
+{% plural %}
+Your not guilty pleas have been sent to the court
+{% endblocktrans %}
 {% endif %}
 
 {% trans "What happens next?" %}
@@ -40,22 +40,13 @@ Your online pleas have been submitted
 {% if plea_type == "not_guilty" %}
     {% add_test_tag "<<NOTGUILTY>>" %}
 
-{% blocktrans %}1. There's no need to come to court on the hearing date shown in the
-    pack we sent you.{% endblocktrans %}
+{% blocktrans %}1. There's no need to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}
 
-{% blocktrans %}2. The court will tell you if you need to attend for your trial, and what
-    evidence you may need to send to the court in support of your
-    case.{% endblocktrans %}
+{% blocktrans %}2. The court will tell you if you need to attend for your trial, and what evidence you may need to send to the court in support of your case.{% endblocktrans %}
 
-{% blocktrans count charges=number_of_charges %}3. We'll send you a letter with the court's decision within three working
-    days after your hearing.
-{% plural %}
-3. We'll send you a letter with the court's decisions within three working
-    days after your hearing.
-{% endblocktrans %}
-
+{% blocktrans count charges=number_of_charges %}3. We'll send you a letter with the court's decision within three working days after your hearing.
+{% plural %}3. We'll send you a letter with the court's decisions within three working days after your hearing.{% endblocktrans %}
 {% blocktrans with urn=urn|upper %}4. Quote your URN {{ urn }} if you contact the court about your case.{% endblocktrans %}
-
 {% trans "5. Print a copy of this confirmation of plea for your records." %}
 
 {% endif %}
@@ -66,8 +57,7 @@ Your online pleas have been submitted
 {% trans "1. There's no need to come to court on the hearing date shown in the pack we sent you." %}
 {% trans "2. The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case." %}
 {% trans "3. We'll send you a letter with the court's decisions within three working days after your hearing." %}
-{% blocktrans with urn=urn|upper %}4. Quote your URN {{ urn }} if you contact the court about
-    your case.{% endblocktrans %}
+{% blocktrans with urn=urn|upper %}4. Quote your URN {{ urn }} if you contact the court about your case.{% endblocktrans %}
 
 {% trans "5. Print a copy of this confirmation of plea for your records." %}
 
