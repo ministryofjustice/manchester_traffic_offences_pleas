@@ -60,17 +60,17 @@ class CaseForm(BasePleaStepForm):
 
 class YourDetailsForm(BasePleaStepForm):
     name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                           max_length=100, required=True, label="Full name",
+                           max_length=100, required=True, label=_("Full name"),
                            help_text=_("On page 1 of the pack we sent you"),
                            error_messages={"required": ERROR_MESSAGES["FULL_NAME_REQUIRED"]})
     contact_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                                     max_length=30, required=True, label="Contact number",
+                                     max_length=30, required=True, label=_("Contact number"),
                                      help_text=_("Home or mobile number."),
                                      error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
     email = forms.EmailField(widget=forms.TextInput(attrs={"class": "form-control"}),
                              required=getattr(settings, "EMAIL_REQUIRED", True), 
-                             label="Email",
+                             label=_("Email"),
                              error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
                                              "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
@@ -87,13 +87,13 @@ class CompanyDetailsForm(BasePleaStepForm):
                                    help_text=_("As written on page 1 of the pack we sent you."),
                                    error_messages={"required": ERROR_MESSAGES["COMPANY_NAME_REQUIRED"]})
 
-    company_address = forms.CharField(label="Company address",
+    company_address = forms.CharField(label=_("Company address"),
                                       widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
                                       help_text=_("This is the address we will use for all future correspondence about this case."),
                                       required=True,
                                       error_messages={"required": ERROR_MESSAGES["COMPANY_ADDRESS_REQUIRED"]})
 
-    name = forms.CharField(label="Your name",
+    name = forms.CharField(label=_("Your name"),
                            widget=forms.TextInput(attrs={"class": "form-control"}),
                            required=True,
                            error_messages={"required": ERROR_MESSAGES["NAME_REQUIRED"]})
@@ -140,7 +140,7 @@ class YourMoneyForm(BasePleaStepForm):
     YES_NO = (("Yes", _("Yes")),
               ("No", _("No")))
 
-    you_are = forms.ChoiceField(label="Are you?", choices=YOU_ARE_CHOICES,
+    you_are = forms.ChoiceField(label=_("Are you?"), choices=YOU_ARE_CHOICES,
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
     # Employed
