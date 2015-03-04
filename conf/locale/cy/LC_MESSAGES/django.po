@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-03 16:57+0000\n"
+"POT-Creation-Date: 2015-03-04 09:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -323,7 +323,7 @@ msgid "On page 1 of the pack, in the top right corner"
 msgstr ""
 
 #: apps/plea/forms.py:42
-#: manchester_traffic_offences/templates/plea/review.html:62
+#: manchester_traffic_offences/templates/plea/review.html:54
 msgid "Court hearing date"
 msgstr ""
 
@@ -333,7 +333,7 @@ msgid ""
 msgstr ""
 
 #: apps/plea/forms.py:48
-#: manchester_traffic_offences/templates/plea/review.html:66
+#: manchester_traffic_offences/templates/plea/review.html:58
 msgid "Number of charges against you"
 msgstr ""
 
@@ -366,7 +366,7 @@ msgid "the company's solicitor"
 msgstr ""
 
 #: apps/plea/forms.py:83
-#: manchester_traffic_offences/templates/plea/review.html:88
+#: manchester_traffic_offences/templates/plea/review.html:80
 msgid "Company name"
 msgstr ""
 
@@ -389,8 +389,8 @@ msgid "You must confirm that you are:"
 msgstr ""
 
 #: apps/plea/forms.py:108
-#: manchester_traffic_offences/templates/plea/review.html:104
-#: manchester_traffic_offences/templates/plea/review.html:118
+#: manchester_traffic_offences/templates/plea/review.html:96
+#: manchester_traffic_offences/templates/plea/review.html:110
 msgid "Contact number"
 msgstr ""
 
@@ -399,8 +399,8 @@ msgid "Office or mobile number."
 msgstr ""
 
 #: apps/plea/forms.py:118
-#: manchester_traffic_offences/templates/plea/review.html:108
-#: manchester_traffic_offences/templates/plea/review.html:122
+#: manchester_traffic_offences/templates/plea/review.html:100
+#: manchester_traffic_offences/templates/plea/review.html:114
 msgid "Email"
 msgstr ""
 
@@ -417,8 +417,8 @@ msgid "Receiving benefits"
 msgstr ""
 
 #: apps/plea/forms.py:128 apps/plea/forms.py:135 apps/plea/forms.py:139
-#: manchester_traffic_offences/templates/plea/review.html:239
-#: manchester_traffic_offences/templates/plea/review.html:269
+#: manchester_traffic_offences/templates/plea/review.html:223
+#: manchester_traffic_offences/templates/plea/review.html:253
 msgid "Other"
 msgstr ""
 
@@ -583,7 +583,7 @@ msgid "Has the company been trading for more than 12 months?"
 msgstr ""
 
 #: apps/plea/forms.py:426
-#: manchester_traffic_offences/templates/plea/review.html:186
+#: manchester_traffic_offences/templates/plea/review.html:170
 msgid "Number of employees"
 msgstr ""
 
@@ -596,7 +596,7 @@ msgid "For example, 110000"
 msgstr ""
 
 #: apps/plea/forms.py:475
-#: manchester_traffic_offences/templates/plea/review.html:157
+#: manchester_traffic_offences/templates/plea/review.html:141
 msgid "Guilty"
 msgstr ""
 
@@ -723,7 +723,7 @@ msgstr ""
 #: manchester_traffic_offences/templates/plea/about.html:5
 #: manchester_traffic_offences/templates/plea/about.html:33
 #: manchester_traffic_offences/templates/plea/company_details.html:33
-#: manchester_traffic_offences/templates/plea/review.html:79
+#: manchester_traffic_offences/templates/plea/review.html:71
 msgid "Your details"
 msgstr ""
 
@@ -757,7 +757,7 @@ msgstr ""
 #: manchester_traffic_offences/templates/plea/case.html:99
 #: manchester_traffic_offences/templates/plea/company_details.html:66
 #: manchester_traffic_offences/templates/plea/company_finances.html:64
-#: manchester_traffic_offences/templates/plea/plea.html:105
+#: manchester_traffic_offences/templates/plea/plea.html:95
 #: manchester_traffic_offences/templates/plea/your_expenses.html:155
 #: manchester_traffic_offences/templates/plea/your_money.html:178
 msgid "Continue"
@@ -769,7 +769,7 @@ msgstr ""
 
 #: manchester_traffic_offences/templates/plea/case.html:5
 #: manchester_traffic_offences/templates/plea/case.html:69
-#: manchester_traffic_offences/templates/plea/review.html:52
+#: manchester_traffic_offences/templates/plea/review.html:44
 msgid "Case details"
 msgstr ""
 
@@ -863,7 +863,7 @@ msgid "From the most recent audited company accounts, tell us:"
 msgstr ""
 
 #: manchester_traffic_offences/templates/plea/complete.html:15
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:236
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:238
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:25
 msgid "What happens next?"
 msgstr ""
@@ -911,6 +911,7 @@ msgstr ""
 
 #: manchester_traffic_offences/templates/plea/complete.html:33
 #: manchester_traffic_offences/templates/plea/complete.html:45
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:284
 msgid ""
 "The court will tell you if you need to attend a trial, and what evidence you "
 "may need to send to the court in support of your case."
@@ -928,22 +929,22 @@ msgid "Quote your URN %(urn)s if you contact the court about your case."
 msgstr ""
 
 #: manchester_traffic_offences/templates/plea/complete.html:54
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:309
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:76
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:297
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:66
 msgid "Need to change a plea?"
 msgstr ""
 
 #: manchester_traffic_offences/templates/plea/complete.html:56
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:311
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:78
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:299
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:68
 msgid ""
 "Contact the court by post or email quoting your URN before the date of your "
 "hearing."
 msgstr ""
 
 #: manchester_traffic_offences/templates/plea/complete.html:58
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:313
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:80
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:301
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:70
 msgid "The contact details for the court are:"
 msgstr ""
 
@@ -952,8 +953,8 @@ msgid "By post:"
 msgstr ""
 
 #: manchester_traffic_offences/templates/plea/complete.html:70
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:323
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:90
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:311
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:80
 msgid "By email:"
 msgstr ""
 
@@ -964,55 +965,41 @@ msgid ""
 msgstr ""
 
 #: manchester_traffic_offences/templates/plea/plea.html:37
-msgid ""
-"\n"
-"                Your plea\n"
-"            "
-msgid_plural ""
-"\n"
-"                Your pleas\n"
-"            "
+#: manchester_traffic_offences/templates/plea/review.html:125
+msgid " Your plea "
+msgid_plural " Your pleas "
 msgstr[0] ""
 msgstr[1] ""
 
-#: manchester_traffic_offences/templates/plea/plea.html:43
+#: manchester_traffic_offences/templates/plea/plea.html:39
 msgid "This is your opportunity to present your case to the court."
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/plea.html:51
+#: manchester_traffic_offences/templates/plea/plea.html:47
 #, python-format
-msgid ""
-"\n"
-"                Enter a plea for the charge below\n"
-"            "
-msgid_plural ""
-"\n"
-"                Enter %(form_count)s pleas for the charges below\n"
-"            "
+msgid " Enter a plea for the charge below "
+msgid_plural " Enter %(form_count)s pleas for the charges below "
 msgstr[0] ""
 msgstr[1] ""
 
-#: manchester_traffic_offences/templates/plea/plea.html:60
+#: manchester_traffic_offences/templates/plea/plea.html:52
 #, python-format
-msgid ""
-"\n"
-"                Your plea for charge [%(counter)s]\n"
-"            "
+msgid " Your plea for charge [%(counter)s] "
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/plea.html:82
+#: manchester_traffic_offences/templates/plea/plea.html:72
 msgid "Special circumstances <span class=\"form-hint-inline\">(optional)"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/plea.html:83
+#: manchester_traffic_offences/templates/plea/plea.html:73
 msgid "What would you like the court to consider?"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/plea.html:88
+#: manchester_traffic_offences/templates/plea/plea.html:78
 msgid "Not guilty because? <span class=\"form-hint-inline\">(optional)"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/plea.html:89
+#: manchester_traffic_offences/templates/plea/plea.html:79
 msgid "Tell us why you believe you are not guilty."
 msgstr ""
 
@@ -1020,150 +1007,7 @@ msgstr ""
 msgid "Online plea submission confirmation"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:214
-msgid ""
-"\n"
-"                                                        Your online plea has "
-"been submitted\n"
-"                                                    "
-msgid_plural ""
-"\n"
-"                                                        Your online pleas "
-"have been submitted\n"
-"                                                    "
-msgstr[0] ""
-msgstr[1] ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:222
-msgid ""
-"\n"
-"                                                Your guilty plea has been "
-"sent to the court\n"
-"                                            "
-msgid_plural ""
-"\n"
-"                                                Your guilty pleas have been "
-"sent to the court\n"
-"                                            "
-msgstr[0] ""
-msgstr[1] ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:228
-msgid ""
-"\n"
-"                                                Your not guilty plea has "
-"been sent to the court\n"
-"                                            "
-msgid_plural ""
-"\n"
-"                                                Your not guilty pleas have "
-"been sent to the court\n"
-"                                            "
-msgstr[0] ""
-msgstr[1] ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:242
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:261
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:289
-msgid ""
-"There's <b>no need</b> to come\n"
-"                                            to court on the hearing date "
-"shown in the pack we sent you."
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:245
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:269
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:295
-msgid ""
-"\n"
-"                                                            We'll send you a "
-"letter with the court's decision <b>within three working days after your "
-"hearing.\n"
-"                                                        "
-msgid_plural ""
-"\n"
-"                                                            We'll send you a "
-"letter with the court's decisions <b>within three working days after your "
-"hearing.\n"
-"                                                        "
-msgstr[0] ""
-msgstr[1] ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:251
-#, python-format
-msgid "Quote your URN <b>%(urn)s</b> if you contact the court about your case."
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:253
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:303
-msgid "Print a copy of this confirmation of plea for your records."
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:264
-msgid ""
-"The court will tell you if you\n"
-"                                            need to attend a trial, and "
-"what\n"
-"                                            evidence you may\n"
-"                                            need to send to the court in "
-"support of your case.\" "
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:275
-#, python-format
-msgid ""
-"Quote your URN <b>%(urn)s</b> if you contact the court\n"
-"                                            about your\n"
-"                                            case."
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:279
-msgid ""
-"Print a copy of this confirmation of plea for\n"
-"                                            your records."
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:292
-msgid ""
-"The court will tell you if you need to attend a trial, and what evidence you "
-"may\n"
-"                                            need to send to the court in "
-"support of your case."
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:301
-#, python-format
-msgid "Quote your URN  %(urn)s if you contact the court about your case."
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:315
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:82
-msgid "By Post:"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:337
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:95
-msgid "If you're unsure an email is from the Ministry of Justice:"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:340
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:97
-msgid "do not reply to it or click any links"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:341
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:98
-msgid "forward it to"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:348
-msgid "Terms and Conditions and privacy policy"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:3
-msgid "GOV.UK - Online plea submission confirmation"
-msgstr ""
-
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:215
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:5
 msgid ""
 "\n"
@@ -1174,32 +1018,136 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:12
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:224
 msgid ""
 "\n"
-"        Your guilty plea has been sent to the court\n"
+"Your guilty plea has been sent to the court\n"
 "    "
 msgid_plural ""
 "\n"
-"        Your guilty pleas have been sent to the court\n"
+"Your guilty pleas have been sent to the court\n"
 "    "
+msgstr[0] ""
+msgstr[1] ""
+
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:230
+msgid ""
+"\n"
+"Your not guilty plea has been sent to the court\n"
+"    "
+msgid_plural ""
+"\n"
+"Your not guilty pleas have been sent to the court\n"
+"    "
+msgstr[0] ""
+msgstr[1] ""
+
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:244
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:263
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:282
+msgid ""
+"There's <b>no need</b> to come to court on the hearing date shown in the "
+"pack we sent you."
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:247
+msgid ""
+"\n"
+"We'll send you a letter with the court's decision <b>within three working "
+"days after your hearing.\n"
+msgid_plural ""
+"\n"
+"We'll send you a letter with the court's decisions <b>within three working "
+"days after your hearing.\n"
+msgstr[0] ""
+msgstr[1] ""
+
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:253
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:271
+#, python-format
+msgid "Quote your URN <b>%(urn)s</b> if you contact the court about your case."
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:255
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:273
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:291
+msgid "Print a copy of this confirmation of plea for your records."
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:265
+msgid ""
+"The court will tell you if you need to attend a trial, and what evidence you "
+"may need to send to the court in support of your case.\" "
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:268
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:286
+msgid ""
+" We'll send you a letter with the court's decision <b>within three working "
+"days after your hearing. "
+msgid_plural ""
+" We'll send you a letter with the court's decisions <b>within three working "
+"days after your hearing.\n"
+"                                                        "
+msgstr[0] ""
+msgstr[1] ""
+
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:289
+#, python-format
+msgid "Quote your URN  %(urn)s if you contact the court about your case."
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:303
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:72
+msgid "By Post:"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:325
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:85
+msgid "If you're unsure an email is from the Ministry of Justice:"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:328
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:87
+msgid "do not reply to it or click any links"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:329
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:88
+msgid "forward it to"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:336
+msgid "Terms and Conditions and privacy policy"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:3
+msgid "GOV.UK - Online plea submission confirmation"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:12
+msgid ""
+"\n"
+"Your guilty plea has been sent to the court\n"
+msgid_plural ""
+"\n"
+"Your guilty pleas have been sent to the court\n"
 msgstr[0] ""
 msgstr[1] ""
 
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:18
 msgid ""
 "\n"
-"        Your not guilty plea has been sent to the court\n"
-"    "
+"Your not guilty plea has been sent to the court\n"
 msgid_plural ""
 "\n"
-"        Your not guilty pleas have been sent to the court\n"
-"    "
+"Your not guilty pleas have been sent to the court\n"
 msgstr[0] ""
 msgstr[1] ""
 
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:30
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:66
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:43
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:57
 msgid ""
 "1. There's no need to come to court on the hearing date shown in the pack we "
 "sent you."
@@ -1220,290 +1168,230 @@ msgstr ""
 msgid "4. Print a copy of this confirmation of plea for your records."
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:43
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:45
 msgid ""
-"1. There's no need to come to court on the hearing date shown in the\n"
-"    pack we sent you."
+"2. The court will tell you if you need to attend for your trial, and what "
+"evidence you may need to send to the court in support of your case."
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:46
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:47
 msgid ""
-"2. The court will tell you if you need to attend for your trial, and what\n"
-"    evidence you may need to send to the court in support of your\n"
-"    case."
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:50
-msgid ""
-"3. We'll send you a letter with the court's decision within three working\n"
-"    days after your hearing.\n"
+"3. We'll send you a letter with the court's decision within three working "
+"days after your hearing.\n"
 msgid_plural ""
-"\n"
-"3. We'll send you a letter with the court's decisions within three working\n"
-"    days after your hearing.\n"
+"3. We'll send you a letter with the court's decisions within three working "
+"days after your hearing."
 msgstr[0] ""
 msgstr[1] ""
 
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:57
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:49
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:60
 #, python-format
 msgid "4. Quote your URN %(urn)s if you contact the court about your case."
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:59
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:72
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:50
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:62
 msgid "5. Print a copy of this confirmation of plea for your records."
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:67
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:58
 msgid ""
 "2. The court will tell you if you need to attend a trial, and what evidence "
 "you may need to send to the court in support of your case."
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:68
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:59
 msgid ""
 "3. We'll send you a letter with the court's decisions within three working "
 "days after your hearing."
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:69
-#, python-format
-msgid ""
-"4. Quote your URN %(urn)s if you contact the court about\n"
-"    your case."
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:100
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:90
 msgid "Terms and Conditions and Privacy Policy:"
 msgstr ""
 
 #: manchester_traffic_offences/templates/plea/review.html:34
-msgid ""
-"\n"
-"                Confirm your plea\n"
-"            "
-msgid_plural ""
-"\n"
-"                Confirm your pleas\n"
-"            "
+msgid " Confirm your plea "
+msgid_plural " Confirm your pleas "
 msgstr[0] ""
 msgstr[1] ""
 
-#: manchester_traffic_offences/templates/plea/review.html:42
-msgid ""
-"\n"
-"                Review the information you’ve given before making your "
-"plea.\n"
-"            "
-msgid_plural ""
-"\n"
-"                Review the information you’ve given before making your "
-"pleas.\n"
-"            "
+#: manchester_traffic_offences/templates/plea/review.html:38
+msgid " Review the information you’ve given before making your plea. "
+msgid_plural " Review the information you’ve given before making your pleas. "
 msgstr[0] ""
 msgstr[1] ""
 
-#: manchester_traffic_offences/templates/plea/review.html:53
+#: manchester_traffic_offences/templates/plea/review.html:45
 msgid "Change case details"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:58
+#: manchester_traffic_offences/templates/plea/review.html:50
 msgid "Unique reference number"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:70
+#: manchester_traffic_offences/templates/plea/review.html:62
 msgid "Plea on behalf of a company?"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:80
+#: manchester_traffic_offences/templates/plea/review.html:72
 msgid "Change your details"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:92
+#: manchester_traffic_offences/templates/plea/review.html:84
 msgid "Company address"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:96
-#: manchester_traffic_offences/templates/plea/review.html:114
+#: manchester_traffic_offences/templates/plea/review.html:88
+#: manchester_traffic_offences/templates/plea/review.html:106
 msgid "Full name"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:100
+#: manchester_traffic_offences/templates/plea/review.html:92
 msgid "Position held"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:133
-msgid ""
-"\n"
-"                        Your plea\n"
-"                    "
-msgid_plural ""
-"\n"
-"                        Your pleas\n"
-"                    "
+#: manchester_traffic_offences/templates/plea/review.html:127
+msgid " Change your plea "
+msgid_plural " Change your pleas "
 msgstr[0] ""
 msgstr[1] ""
 
-#: manchester_traffic_offences/templates/plea/review.html:139
-msgid ""
-"\n"
-"                        Change your plea\n"
-"                    "
-msgid_plural ""
-"\n"
-"                        Change your pleas\n"
-"                    "
-msgstr[0] ""
-msgstr[1] ""
-
-#: manchester_traffic_offences/templates/plea/review.html:154
+#: manchester_traffic_offences/templates/plea/review.html:138
 msgid "Your plea"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:159
+#: manchester_traffic_offences/templates/plea/review.html:143
 msgid "Not guilty"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:166
+#: manchester_traffic_offences/templates/plea/review.html:150
 msgid "Special circumstances"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:166
+#: manchester_traffic_offences/templates/plea/review.html:150
 msgid "Not guilty because?"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:181
+#: manchester_traffic_offences/templates/plea/review.html:165
 msgid "Change details"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:190
+#: manchester_traffic_offences/templates/plea/review.html:174
 msgid "From the most recent audited company accounts"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:190
+#: manchester_traffic_offences/templates/plea/review.html:174
 msgid "From the first 12 month's trading projections"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:193
+#: manchester_traffic_offences/templates/plea/review.html:177
 msgid "Gross turnover"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:197
+#: manchester_traffic_offences/templates/plea/review.html:181
 msgid "Net turnover"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:207
+#: manchester_traffic_offences/templates/plea/review.html:191
 #: manchester_traffic_offences/templates/plea/your_money.html:33
 msgid "Your finances"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:208
+#: manchester_traffic_offences/templates/plea/review.html:192
 msgid "Change your finances"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:213
+#: manchester_traffic_offences/templates/plea/review.html:197
 msgid "You are"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:218
-#: manchester_traffic_offences/templates/plea/review.html:232
+#: manchester_traffic_offences/templates/plea/review.html:202
+#: manchester_traffic_offences/templates/plea/review.html:216
 msgid "Your Job"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:222
-#: manchester_traffic_offences/templates/plea/review.html:236
-#: manchester_traffic_offences/templates/plea/review.html:266
+#: manchester_traffic_offences/templates/plea/review.html:206
+#: manchester_traffic_offences/templates/plea/review.html:220
+#: manchester_traffic_offences/templates/plea/review.html:250
 msgid "You get paid"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:226
-#: manchester_traffic_offences/templates/plea/review.html:252
-#: manchester_traffic_offences/templates/plea/review.html:282
-#: manchester_traffic_offences/templates/plea/review.html:292
+#: manchester_traffic_offences/templates/plea/review.html:210
+#: manchester_traffic_offences/templates/plea/review.html:236
+#: manchester_traffic_offences/templates/plea/review.html:266
+#: manchester_traffic_offences/templates/plea/review.html:276
 msgid "Amount"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:247
-#: manchester_traffic_offences/templates/plea/review.html:277
-#: manchester_traffic_offences/templates/plea/review.html:288
+#: manchester_traffic_offences/templates/plea/review.html:231
+#: manchester_traffic_offences/templates/plea/review.html:261
+#: manchester_traffic_offences/templates/plea/review.html:272
 msgid "Details"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:258
+#: manchester_traffic_offences/templates/plea/review.html:242
 msgid "Benefits you receive"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:262
+#: manchester_traffic_offences/templates/plea/review.html:246
 msgid "Includes payment for dependents?"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:306
+#: manchester_traffic_offences/templates/plea/review.html:290
 msgid "Change your expenses"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:311
+#: manchester_traffic_offences/templates/plea/review.html:295
 msgid "Financial hardship details"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:315
+#: manchester_traffic_offences/templates/plea/review.html:299
 msgid "Other contributors to household bills"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:319
+#: manchester_traffic_offences/templates/plea/review.html:303
 #: manchester_traffic_offences/templates/plea/your_expenses.html:138
 msgid "Total household expenses"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:323
+#: manchester_traffic_offences/templates/plea/review.html:307
 #: manchester_traffic_offences/templates/plea/your_expenses.html:142
 msgid "Total other expenses"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:327
+#: manchester_traffic_offences/templates/plea/review.html:311
 #: manchester_traffic_offences/templates/plea/your_expenses.html:146
 msgid "Total expenses"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:335
+#: manchester_traffic_offences/templates/plea/review.html:319
 msgid "Important"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:346
+#: manchester_traffic_offences/templates/plea/review.html:330
 msgid ""
 "It is an offence to make a false statement or to deliberately fail to "
 "disclose any relevant facts."
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:348
+#: manchester_traffic_offences/templates/plea/review.html:332
 msgid ""
 "<strong>I confirm</strong> that I have read and understand the charge "
 "against me and that I am the person named in the Postal Requisition. The "
 "facts stated here are correct to the best of my knowledge."
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:364
-msgid ""
-"\n"
-"                            Do you want to receive an email confirming your "
-"plea?\n"
-"                        "
-msgid_plural ""
-"\n"
-"                            Do you want to receive an email confirming your "
-"pleas?\n"
-"                        "
+#: manchester_traffic_offences/templates/plea/review.html:348
+msgid " Do you want to receive an email confirming your plea? "
+msgid_plural " Do you want to receive an email confirming your pleas? "
 msgstr[0] ""
 msgstr[1] ""
 
-#: manchester_traffic_offences/templates/plea/review.html:377
-msgid ""
-"\n"
-"                                                        Make your plea\n"
-"                                                   "
-msgid_plural ""
-"\n"
-"                                                        Make your pleas\n"
-"                                                   "
+#: manchester_traffic_offences/templates/plea/review.html:358
+msgid " Make your plea "
+msgid_plural " Make your pleas "
 msgstr[0] ""
 msgstr[1] ""
 

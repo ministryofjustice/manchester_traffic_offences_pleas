@@ -31,19 +31,11 @@
 
     <header class="content-header">
         <h1 class="heading-xlarge">
-            {% blocktrans count charges=case.number_of_charges %}
-                Confirm your plea
-            {% plural %}
-                Confirm your pleas
-            {% endblocktrans %}
+            {% blocktrans count charges=case.number_of_charges %} Confirm your plea {% plural %} Confirm your pleas {% endblocktrans %}
         </h1>
 
         <p class="lede">
-            {% blocktrans count charges=case.number_of_charges %}
-                Review the information you’ve given before making your plea.
-            {% plural %}
-                Review the information you’ve given before making your pleas.
-            {% endblocktrans %}</p>
+            {% blocktrans count charges=case.number_of_charges %} Review the information you’ve given before making your plea. {% plural %} Review the information you’ve given before making your pleas. {% endblocktrans %}</p>
     </header>
 
     <table class="review-table" id="case-details">
@@ -130,17 +122,9 @@
         <thead>
             <tr>
                 <th class="header">
-                    {% blocktrans count charges=case.number_of_charges %}
-                        Your plea
-                    {% plural %}
-                        Your pleas
-                    {% endblocktrans %}</th>
+                    {% blocktrans count charges=case.number_of_charges %} Your plea {% plural %} Your pleas {% endblocktrans %}</th>
                 <th class="change-link"><a href="{% url "plea_form_step" "plea" %}" class="review">
-                    {% blocktrans count charges=case.number_of_charges %}
-                        Change your plea
-                    {% plural %}
-                        Change your pleas
-                    {% endblocktrans %}</a></th>
+                    {% blocktrans count charges=case.number_of_charges %} Change your plea {% plural %} Change your pleas {% endblocktrans %}</a></th>
             </tr>
         </thead>
         <tbody>
@@ -361,11 +345,8 @@
             <div class="grey">
                 <fieldset>
                     <legend>
-                        {% blocktrans count charges=case.number_of_charges %}
-                            Do you want to receive an email confirming your plea?
-                        {% plural %}
-                            Do you want to receive an email confirming your pleas?
-                        {% endblocktrans %}</legend>
+                        {% blocktrans count charges=case.number_of_charges %} Do you want to receive an email confirming your plea? {% plural %} Do you want to receive an email confirming your pleas? {% endblocktrans %}
+                    </legend>
 
                     {{ form.receive_email }}
                 </fieldset>
@@ -374,11 +355,7 @@
     </section>
 
     <div class="form-group form-submit">
-        <button type="submit" class="button-large">{% blocktrans count charges=case.number_of_charges %}
-                                                        Make your plea
-                                                   {% plural %}
-                                                        Make your pleas
-                                                   {% endblocktrans %}</button>
+        <button type="submit" class="button-large">{% blocktrans count charges=case.number_of_charges %} Make your plea {% plural %} Make your pleas {% endblocktrans %}</button>
     </div>
     {% endwith %}
 
