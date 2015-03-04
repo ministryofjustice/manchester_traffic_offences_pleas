@@ -1,8 +1,9 @@
 {% extends "plea/base.html" %}
 
+{% load i18n %}
 {% load debug %}
 
-{% block page_title %}{{ block.super }} Your Details{% endblock %}
+{% block page_title %}{{ block.super }} {% trans "Company Finances" %}{% endblock %}
 
 {% block page_content %}
 
@@ -15,9 +16,9 @@
 
         {% if form.errors %}
         <section class="error-summary">
-            <h2 class="heading-medium">You need to fix the errors on this page before continuing.</h2>
+            <h2 class="heading-medium">{% trans "You need to fix the errors on this page before continuing." %}</h2>
 
-            <p>See highlighted errors below.</p>
+            <p>{% trans "See highlighted errors below." %}</p>
 
             <ul class="errors-list">
             {% for field in form %}
@@ -30,9 +31,9 @@
         {% endif %}
 
      <header class="content-header">
-        <h1 class="heading-xlarge">Company details</h1>
+        <h1 class="heading-xlarge">{% trans "Company details" %}</h1>
 
-        <p class="lede">The court will decide the company's fine based on its size and financial situation.</p>
+        <p class="lede">{% trans "The court will decide the company's fine based on its size and financial situation." %}</p>
     </header>
 
     {% with form.trading_period as field %}
@@ -45,7 +46,7 @@
             {% include "widgets/std_field.html" %}
         {% endwith %}
 
-        <h3 class="heading-medium js-TemplatedElement" data-template-trigger="trading_period" data-template="From the first 12 month's trading projections, tell us:" data-template-defaults-for="True">From the most recent audited company accounts, tell us:</h3>
+        <h3 class="heading-medium js-TemplatedElement" data-template-trigger="trading_period" data-template="{% trans "From the first 12 month's trading projections, tell us:" %}" data-template-defaults-for="True">{% trans 'From the most recent audited company accounts, tell us:' %}</h3>
 
         {% with form.gross_turnover as field %}
             {% include "widgets/money_field.html" %}
@@ -60,7 +61,7 @@
     {% endwith %}
 
     <div class="form-group form-submit">
-        <button class="button" type="submit">Continue</button>
+        <button class="button" type="submit">{% trans "Continue" %}</button>
     </div>
 </form>
     {% endwith %}
