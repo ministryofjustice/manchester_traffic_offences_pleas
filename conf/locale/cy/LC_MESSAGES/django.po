@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-04 15:45+0000\n"
+"POT-Creation-Date: 2015-03-05 09:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1212,10 +1212,10 @@ msgid "By Post:"
 msgstr ""
 
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:296
-#, python-format
 msgid ""
-"Please give us <a class=\"external\" href=\"%(base_url)s/feedback/\" style="
-"\"color: #1068AA;\">feedback</a> so we can make it better."
+"Please give us <a class=\"external\" href=\"https://www.makeaplea.justice."
+"gov.uk/feedback/\" style=\"color: #1068AA;\">feedback</a> so we can make it "
+"better."
 msgstr ""
 
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:308
@@ -1233,7 +1233,7 @@ msgstr ""
 msgid "forward it to"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:316
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:315
 msgid "Terms and Conditions and privacy policy"
 msgstr ""
 
