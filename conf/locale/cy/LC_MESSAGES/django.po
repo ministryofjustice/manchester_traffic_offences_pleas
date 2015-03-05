@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-05 09:43+0000\n"
+"POT-Creation-Date: 2015-03-05 10:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -694,10 +694,13 @@ msgstr ""
 msgid "Not Guilty"
 msgstr ""
 
-#: apps/plea/stages.py:273
+#: apps/plea/stages.py:274
+msgid "Submission Error"
+msgstr ""
+
+#: apps/plea/stages.py:275
 msgid ""
-"<h2 class=\"heading-medium\">Submission Error</h2><p>There seems to have "
-"been a problem submitting your plea. Please try again.</p>"
+"There seems to have been a problem submitting your plea. Please try again."
 msgstr ""
 
 #: manchester_traffic_offences/templates/404.html:5
@@ -795,7 +798,8 @@ msgid "There's no need to come to court on your hearing date."
 msgstr ""
 
 #: manchester_traffic_offences/templates/start.html:26
-msgid "Start now:"
+#: manchester_traffic_offences/templates/plea/urn_used.html:55
+msgid "Start now"
 msgstr ""
 
 #: manchester_traffic_offences/templates/start.html:33
@@ -827,9 +831,9 @@ msgstr ""
 #: manchester_traffic_offences/templates/start.html:52
 #, python-format
 msgid ""
-"<p class=\"font-xsmall\">If you plead guilty <br>you may get a<br>\n"
+"If you plead guilty <br>you may get a<br>\n"
 "                <span class=\"bold-xxlarge\">33%%</span> <br>\n"
-"                reduction on your fine</p>"
+"                reduction on your fine"
 msgstr ""
 
 #: manchester_traffic_offences/templates/start.html:58
@@ -1534,10 +1538,6 @@ msgstr ""
 
 #: manchester_traffic_offences/templates/plea/urn_used.html:51
 msgid "Select the button below to start a new plea"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/urn_used.html:55
-msgid "Start now"
 msgstr ""
 
 #: manchester_traffic_offences/templates/plea/your_expenses.html:34
