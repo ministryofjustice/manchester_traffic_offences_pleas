@@ -78,7 +78,16 @@
 
     updateTotal: function() {
       var total = this.getTotal();
-      this.$total.text(total.toFixed(this.precision)).trigger('update.CalculateTotals');
+
+      total = this.formatNumber(total.toFixed(this.precision));
+      this.$total.text(total).trigger('update.CalculateTotals');
+    },
+
+    formatNumber: function(number) {
+      var parts = number.toString().split(".");
+          parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+      return parts.join(".");
     }
   };
 
