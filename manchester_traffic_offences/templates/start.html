@@ -23,7 +23,7 @@
                 <p>{% trans "There's no need to come to court on your hearing date." %}</p>
                 
                 <div class="get-started">
-                    <a class="button button-get-started" role="button" href="{% url "plea_form" %}">{% trans "Start now:" %}</a>
+                    <a class="button button-get-started" role="button" href="{% url "plea_form" %}">{% trans "Start now" %}</a>
                 </div>
                 
             </section>
@@ -49,9 +49,9 @@
 
     <div class="column-third"> 
         <aside>
-            {% blocktrans %}<p class="font-xsmall">If you plead guilty <br>you may get a<br>
+            <p class="font-xsmall">{% blocktrans %}If you plead guilty <br>you may get a<br>
                 <span class="bold-xxlarge">33%</span> <br>
-                reduction on your fine</p>{% endblocktrans %}
+                reduction on your fine{% endblocktrans %}</p>
         </aside>   
         
         <aside class="related">
