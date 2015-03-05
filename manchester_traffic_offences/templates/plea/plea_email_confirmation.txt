@@ -85,7 +85,7 @@ roadtrafficpcr@hmcts.gsi.gov.uk
 {% trans "We’re constantly working to improve Make Your Plea." %}
 
 {% trans "Please give us feedback so we can make it better:" %}
-{{ base_url }}/feedback/
+https://www.makeaplea.justice.gov.uk/feedback/
 
 -------
 
@@ -95,4 +95,4 @@ roadtrafficpcr@hmcts.gsi.gov.uk
 * {% trans "forward it to" %} feedback@makeaplea.gov.uk
 
 {% trans "Terms and Conditions and Privacy Policy:" %}
-{{ base_url }}/terms-and-conditions-and-privacy-policy
+https://www.makeaplea.justice.gov.uk/terms-and-conditions-and-privacy-policy
