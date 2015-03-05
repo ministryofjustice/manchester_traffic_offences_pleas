@@ -79,12 +79,12 @@
     updateTotal: function() {
       var total = this.getTotal();
 
-      total = this.formatNumber(total.toFixed(this.precision));
+      total = this.formatNumber(total);
       this.$total.text(total).trigger('update.CalculateTotals');
     },
 
     formatNumber: function(number) {
-      var parts = number.toString().split(".");
+      var parts = number.toFixed(this.precision).toString().split(".");
           parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
       return parts.join(".");
