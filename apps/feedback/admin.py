@@ -21,8 +21,6 @@ def performance_platform_export(modeladmin, request, queryset):
         writer.writerow([start_date, u"week", feedback_avg])
 
     return response
-
-
 performance_platform_export.short_description = "Export for performance platform"
 
 
