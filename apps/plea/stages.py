@@ -270,7 +270,9 @@ class ReviewStage(FormStage):
             if email_result:
                 self.set_next_step("complete")
             else:
-                self.add_message(messages.ERROR, _('<h2 class="heading-medium">Submission Error</h2><p>There seems to have been a problem submitting your plea. Please try again.</p>'))
+                self.add_message(messages.ERROR, '<h2 class="heading-medium">{}</h2><p>{}</p>').format(
+                    _('Submission Error'), 
+                    _('There seems to have been a problem submitting your plea. Please try again.'))
                 self.set_next_step("review")
 
         return clean_data
