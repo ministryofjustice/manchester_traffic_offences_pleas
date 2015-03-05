@@ -1,5 +1,7 @@
 import datetime as dt
+from mock import patch
 
+from django.core import mail
 from django.core.urlresolvers import reverse
 from django.test import TestCase, RequestFactory
 
@@ -10,45 +12,61 @@ from .views import feedback_form
 class FeedbackFormTestCase(TestCase):
     def setUp(self):
 
+        mail.outbox = []
+
         self.request_factory = RequestFactory()
 
         self.test_form_data = {
-            "user_satifaction": 1
+            "feedback_question": "ra ra ra",
+            "feedabck_email": "test@test.com",
+            "feedback_satisfaction": 5
         }
 
-    def test_redirect_to_next_url(self):
+    @patch("apps.feedback.views.messages")
+    def test_redirect_to_next_url(self, messages):
 
         request = self.request_factory.post(reverse("feedback_form"),
-                                            self.test_data)
+                                            self.test_form_data,
+                                            HTTP_USER_AGENT='Mozilla/5.0')
 
         response = feedback_form(request)
 
-        self.assertRedirects(response, reverse("home"))
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response.url, reverse("home"))
 
-    def test_email_is_sent(self):
+    @patch("apps.feedback.views.messages")
+    def test_email_is_sent(self, messages):
 
         request = self.request_factory.post(reverse("feedback_form"),
-                                            self.test_data)
+                                            self.test_form_data,
+                                            HTTP_USER_AGENT='Mozilla/5.0')
 
         response = feedback_form(request)
 
-    def test_user_satisfaction_is_recorded(self):
+        self.assertEquals(messages.add_message.call_count, 1)
+        self.assertEquals(len(mail.outbox), 1)
+
+    @patch("apps.feedback.views.messages")
+    def test_user_satisfaction_is_recorded(self, messages):
 
         assert not UserRating.objects.all()
 
         request = self.request_factory.post(reverse("feedback_form"),
-                                            self.test_data)
+                                            self.test_form_data,
+                                            HTTP_USER_AGENT='Mozilla/5.0')
 
         feedback_form(request)
 
         self.assertEquals(UserRating.objects.all().count(), 1)
         self.assertEquals(
-            UserRating.objects.all()[0].user_satisfaction,
-            self.test_form_data["user_satifaction"])
+            UserRating.objects.all()[0].rating,
+            self.test_form_data["feedback_satisfaction"])
 
-    def test_form_requires_validation(self):
+    @patch("apps.feedback.views.messages")
+    def test_form_requires_validation(self, messages):
 
-        request = self.request_factory.post(reverse("feedback_form"), {})
+        request = self.request_factory.post(reverse("feedback_form"), {},
+                                            HTTP_USER_AGENT='Mozilla/5.0')
 
         response = feedback_form(request)
 
@@ -56,7 +74,7 @@ class FeedbackFormTestCase(TestCase):
         self.assertTemplateUsed(response, "feedback.html")
 
 
-def UserRatingTestCase(TestCase):
+class UserRatingTestCase(TestCase):
 
     def test_weekly_aggregates(self):
 
@@ -66,17 +84,19 @@ def UserRatingTestCase(TestCase):
         self.assertEquals(UserRatingAggregate.objects.all().count(), 1)
 
         rating = UserRating.objects.all()[0]
-        aggregate = UserRating.objects.all()[0]
+        aggregate = UserRatingAggregate.objects.all()[0]
 
         self.assertEquals(rating.rating, 5)
         self.assertEquals(aggregate.feedback_count, 1)
         self.assertEquals(aggregate.feedback_total, 5)
         self.assertEquals(aggregate.feedback_total, 5.0)
 
-        UserRating.objects.record(1)
+        UserRating.objects.record("1")
 
         self.assertEquals(UserRating.objects.all().count(), 2)
         self.assertEquals(UserRatingAggregate.objects.all().count(), 1)
+
+        aggregate = UserRatingAggregate.objects.all()[0]
 
         self.assertEquals(aggregate.feedback_count, 2)
         self.assertEquals(aggregate.feedback_total, 6)
@@ -97,9 +117,9 @@ def UserRatingTestCase(TestCase):
 
         week1, week2 = UserRatingAggregate.objects.all()
 
-        self.assertEquals(week2.feedback_count, 2)
-        self.assertEquals(week2.feedback_total, 6)
-        self.assertEquals(week2.feedback_avg, 3.0)
+        self.assertEquals(week1.feedback_count, 2)
+        self.assertEquals(week1.feedback_total, 6)
+        self.assertEquals(week1.feedback_avg, 3.0)
 
         self.assertEquals(week2.feedback_count, 1)
         self.assertEquals(week2.feedback_total, 3)
