@@ -2,13 +2,7 @@ import datetime as dt
 
 from django.db import models
 
-
-SATISFACTION_CHOICES = (
-    (0, 'bad'),
-    (1, 'bad'),
-    (2, 'neutral'),
-    (3, 'ok'),
-    (4, 'very ok'))
+from .forms import SATISFACTION_CHOICES
 
 
 class UserRatingManager(models.Manager):
@@ -19,9 +13,9 @@ class UserRatingManager(models.Manager):
         aggregates accordingly.
         """
 
-        obj = self.create(rating=rating)
+        obj = self.create(rating=int(rating))
 
-        UserRatingAggregate.update_weekly_aggregate(obj)
+        UserRatingAggregate.objects.update_weekly_aggregate(obj)
 
 
 class UserRating(models.Model):
@@ -50,6 +44,7 @@ class UserRatingAggregateManager(models.Manager):
             aggregate_obj = self.get(start_date=start_date)
         except UserRatingAggregate.DoesNotExist:
             aggregate_obj = UserRatingAggregate(
+                start_date=start_date,
                 feedback_count=0,
                 feedback_total=0,
                 feedback_avg=0)
