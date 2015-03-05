@@ -222,8 +222,6 @@ class YourExpensesStage(FormStage):
 
     def save(self, form_data, next_step=None):
 
-        #import pdb; pdb.set_trace()
-
         household_expense_fields = ['household_accommodation',
                                     'household_utility_bills',
                                     'household_insurance',
@@ -270,9 +268,9 @@ class ReviewStage(FormStage):
             if email_result:
                 self.set_next_step("complete")
             else:
-                self.add_message(messages.ERROR, '<h2 class="heading-medium">{}</h2><p>{}</p>').format(
+                self.add_message(messages.ERROR, '<h2 class="heading-medium">{}</h2><p>{}</p>'.format(
                     _('Submission Error'), 
-                    _('There seems to have been a problem submitting your plea. Please try again.'))
+                    _('There seems to have been a problem submitting your plea. Please try again.')))
                 self.set_next_step("review")
 
         return clean_data
