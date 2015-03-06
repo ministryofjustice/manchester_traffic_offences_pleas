@@ -186,11 +186,11 @@ class CourtEmailCount(models.Model):
         # extra anon information
         self.sc_guilty_char_count, self.sc_not_guilty_char_count = 0, 0
 
-        for plea in context['plea']['PleaForms']:
-            if plea['guilty'] == "guilty":
-                self.sc_guilty_char_count += len(plea['mitigations'])
+        for plea in context["plea"]["PleaForms"]:
+            if plea["guilty"] == "guilty":
+                self.sc_guilty_char_count += len(plea.get("guilty_extra", ""))
             else:
-                self.sc_not_guilty_char_count += len(plea['mitigations'])
+                self.sc_not_guilty_char_count += len(plea.get("not_guilty_extra", ""))
 
         return True
 
