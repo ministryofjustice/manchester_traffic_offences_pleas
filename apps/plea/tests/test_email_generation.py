@@ -6,12 +6,22 @@ from django.test import TestCase
 from django.core import mail
 
 from ..email import TemplateAttachmentEmail, send_plea_email
-from ..models import Case, CourtEmailCount
+from ..models import Case, CourtEmailCount, Court
 
 
 class EmailGenerationTests(TestCase):
     def setUp(self):
         mail.outbox = []
+
+        Court.objects.create(
+            region_code="06",
+            court_name="x",
+            court_address="x",
+            court_telephone="x",
+            court_email="x",
+            submission_email="x",
+            enabled=True,
+            test_mode=False)
 
     def test_template_attachment_sends_email(self):
         email_context = {"URN": "1A2B3C4D5E"}

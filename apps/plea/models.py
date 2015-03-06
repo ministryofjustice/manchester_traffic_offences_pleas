@@ -284,3 +284,46 @@ class UsageStats(models.Model):
         ordering = ('start_date',)
         verbose_name_plural = "Usage Stats"
 
+
+class Court(models.Model):
+    court_code = models.CharField(
+        max_length=100, null=True, blank=True)
+
+    region_code = models.CharField(
+        max_length=2,
+        help_text="The initial two digit URN number, e.g. 06",
+        unique=True)
+
+    court_name = models.CharField(
+        max_length=255)
+
+    court_address = models.TextField()
+
+    court_telephone = models.CharField(
+        max_length=50)
+
+    court_email = models.CharField(
+        max_length=255,
+        help_text="A user facing email address")
+
+    submission_email = models.CharField(
+        max_length=255,
+        help_text="The outbound court email used to send submission data")
+
+    enabled = models.BooleanField(
+        default=False)
+
+    test_mode = models.BooleanField(
+        default=False,
+        help_text="Is this court entry used for testing purposes?")
+
+    def __unicode__(self):
+        return "{} / {} / {}".format(self.court_code,
+                                     self.region_code,
+                                     self.court_name)
+
+
+
+
+
+

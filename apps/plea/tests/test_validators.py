@@ -1,10 +1,24 @@
 from django.test import TestCase
 from django import forms
-from ..fields import is_valid_urn_format
+
+from ..models import Court
+from ..fields import is_urn_valid
 
 
 class UtilsTestCase(TestCase):
     urls = 'defendant.tests.urls'
+
+    def setUp(self):
+
+        Court.objects.create(
+            region_code="06",
+            court_name="x",
+            court_address="x",
+            court_telephone="x",
+            court_email="x",
+            submission_email="x",
+            enabled=True,
+            test_mode=False)
 
     def test_is_valid_urn_format(self):
         good_urns = [
@@ -24,8 +38,8 @@ class UtilsTestCase(TestCase):
         ]
 
         for URN in good_urns:
-            self.assertTrue(is_valid_urn_format(URN))
+            self.assertTrue(is_urn_valid(URN))
 
         for URN in bad_urns:
             with self.assertRaises(forms.ValidationError):
-                is_valid_urn_format(URN)
+                is_urn_valid(URN)
