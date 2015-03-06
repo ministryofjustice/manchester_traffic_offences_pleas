@@ -73,15 +73,15 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "PleaForms": [
                     {
                         "guilty": "guilty",
-                        "mitigations": "something"
+                        "guilty_extra": "something"
                     },
                     {
                         "guilty": "guilty",
-                        "mitigations": "something"
+                        "guilty_extra": "something"
                     },
                     {
                         "guilty": "guilty",
-                        "mitigations": "something"
+                        "guilty_extra": "something"
                     }
                 ]
             },
@@ -271,9 +271,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "form-INITIAL_FORMS": "0",
                    "form-MAX_NUM_FORMS": "2",
                    "form-0-guilty": "guilty",
-                   "form-0-mitigations": "lorem ipsum 1",
+                   "form-0-guilty_extra": "lorem ipsum 1",
                    "form-1-guilty": "guilty",
-                   "form-1-mitigations": "lorem ipsum 1"},
+                   "form-1-guilty_extra": "lorem ipsum 1"},
                   self.request_context)
         response = form.render()
 
@@ -289,7 +289,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                      "form-INITIAL_FORMS": "0",
                      "form-MAX_NUM_FORMS": "1000"}
         mgmt_data.update({"form-0-guilty": "",
-                          "form-0-mitigations": ""})
+                          "form-0-guilty_extra": ""})
 
         # no form data, just the management stuff
         form.save(mgmt_data, self.request_context)
@@ -305,7 +305,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                      "form-MAX_NUM_FORMS": "1"}
 
         mgmt_data.update({"form-0-guilty": "guilty",
-                          "form-0-mitigations": "lorem ipsum 1"})
+                          "form-0-guilty_extra": "lorem ipsum 1"})
 
         form.save(mgmt_data, self.request_context)
         response = form.render()
@@ -321,7 +321,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                      "form-MAX_NUM_FORMS": "1000"}
 
         mgmt_data.update({"form-0-guilty": "guilty",
-                          "form-0-mitigations": "lorem ipsum 1"})
+                          "form-0-guilty_extra": "lorem ipsum 1"})
 
         form.save(mgmt_data, self.request_context)
 
@@ -338,7 +338,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                      "form-MAX_NUM_FORMS": "1000"}
 
         mgmt_data.update({"form-0-guilty": "guilty",
-                          "form-0-mitigations": "lorem ipsum 1"})
+                          "form-0-guilty_extra": "lorem ipsum 1"})
 
         form.save(mgmt_data, self.request_context)
 
@@ -353,9 +353,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                      "form-MAX_NUM_FORMS": "1000"}
 
         mgmt_data.update({"form-0-guilty": "guilty",
-                          "form-0-mitigations": "lorem ipsum 1",
+                          "form-0-guilty_extra": "lorem ipsum 1",
                           "form-1-guilty": "guilty",
-                          "form-1-mitigations": "lorem ipsum 1"})
+                          "form-1-guilty_extra": "lorem ipsum 1"})
 
         form.save(mgmt_data, self.request_context)
         response = form.render()
@@ -396,7 +396,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                      "form-MAX_NUM_FORMS": "1000"}
 
         mgmt_data.update({"form-0-guilty": "guilty",
-                          "form-0-mitigations": "lorem ipsum 1"})
+                          "form-0-guilty_extra": "lorem ipsum 1"})
 
         form.save(mgmt_data, request_context)
         response = form.render()
@@ -436,7 +436,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                      "form-MAX_NUM_FORMS": "1000"}
 
         mgmt_data.update({"form-0-guilty": "not_guilty",
-                          "form-0-mitigations": "lorem ipsum 1"})
+                          "form-0-not_guilty_extra": "lorem ipsum 1"})
 
         form.save(mgmt_data, request_context)
         response = form.render()
@@ -625,7 +625,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "PleaForms": [
                     {
                         "guilty": "not_guilty",
-                        "mitigations": ""
+                        "not_guilty_extra": ""
                     }
                 ],
                 "complete": True
@@ -684,7 +684,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "PleaForms": [
                     {
                         "guilty": "guilty",
-                        "mitigations": ""
+                        "guilty_extra": ""
                     }
                 ],
                 "complete": True
@@ -764,15 +764,15 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "PleaForms": [
                     {
                         "guilty": "guilty",
-                        "mitigations": "something"
+                        "guilty_extra": "something"
                     },
                     {
                         "guilty": "guilty",
-                        "mitigations": "something"
+                        "guilty_extra": "something"
                     },
                     {
                         "guilty": "guilty",
-                        "mitigations": "something"
+                        "guilty_extra": "something"
                     }
                 ]
             },
@@ -810,7 +810,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         fake_session['your_details']["driving_licence_number"] = "test driving number"
         fake_session['your_details']["registration_number"] = "test registration number"
         fake_session["plea"]["PleaForms"][0]["guilty"] = "guilty"
-        fake_session["plea"]["PleaForms"][0]["mitigations"] = "lorem ipsum 1"
+        fake_session["plea"]["PleaForms"][0]["guilty_extra"] = "lorem ipsum 1"
 
         form = PleaOnlineForms("review", "plea_form_step", fake_session)
         form.load(self.request_context)
@@ -859,7 +859,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                      "form-MAX_NUM_FORMS": "1000"}
 
         mgmt_data.update({"form-0-guilty": "guilty",
-                          "form-0-mitigations": "lorem ipsum 1"})
+                          "form-0-guilty_extra": "lorem ipsum 1"})
 
         form.save(mgmt_data, request_context)
         response = form.render()
@@ -883,7 +883,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertEqual(fake_session["your_details"]["contact_number"], "07802639892")
         self.assertEqual(fake_session["your_details"]["email"], "test@example.org")
         self.assertEqual(fake_session["plea"]["PleaForms"][0]["guilty"], "guilty")
-        self.assertEqual(fake_session["plea"]["PleaForms"][0]["mitigations"], "lorem ipsum 1")
+        self.assertEqual(fake_session["plea"]["PleaForms"][0]["guilty_extra"], "lorem ipsum 1")
         self.assertEqual(fake_session["review"]["understand"], True)
 
     def test_successful_completion_multiple_charges(self):
@@ -924,9 +924,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                      "form-MAX_NUM_FORMS": "1000"}
 
         mgmt_data.update({"form-0-guilty": "guilty",
-                          "form-0-mitigations": "lorem ipsum 1",
+                          "form-0-guilty_extra": "lorem ipsum 1",
                           "form-1-guilty": "guilty",
-                          "form-1-mitigations": "lorem ipsum 2"})
+                          "form-1-guilty_extra": "lorem ipsum 2"})
 
         form.save(mgmt_data, request_context)
         response = form.render()
@@ -951,9 +951,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertEqual(fake_session["your_details"]["contact_number"], "07802639892")
         self.assertEqual(fake_session["your_details"]["email"], "test@example.org")
         self.assertEqual(fake_session["plea"]["PleaForms"][0]["guilty"], "guilty")
-        self.assertEqual(fake_session["plea"]["PleaForms"][0]["mitigations"], "lorem ipsum 1")
+        self.assertEqual(fake_session["plea"]["PleaForms"][0]["guilty_extra"], "lorem ipsum 1")
         self.assertEqual(fake_session["plea"]["PleaForms"][1]["guilty"], "guilty")
-        self.assertEqual(fake_session["plea"]["PleaForms"][1]["mitigations"], "lorem ipsum 2")
+        self.assertEqual(fake_session["plea"]["PleaForms"][1]["guilty_extra"], "lorem ipsum 2")
         self.assertEqual(fake_session["review"]["understand"], True)
 
     def test_guilty_pleas_complete_page_content(self):
@@ -1401,15 +1401,15 @@ class TestYourExpensesStage(TestMultiPleaFormBase):
                 "PleaForms": [
                     {
                         "guilty": "guilty",
-                        "mitigations": "something"
+                        "guilty_extra": "something"
                     },
                     {
                         "guilty": "guilty",
-                        "mitigations": "something"
+                        "guilty_extra": "something"
                     },
                     {
                         "guilty": "guilty",
-                        "mitigations": "something"
+                        "guilty_extra": "something"
                     }
                 ]
             },
