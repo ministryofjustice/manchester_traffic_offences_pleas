@@ -11,12 +11,23 @@ from django.test import TestCase
 from django.test.utils import override_settings
 
 from ..email import send_plea_email
-from ..models import Case, CourtEmailCount
+from ..models import Case, CourtEmailCount, Court
 from ..encrypt import clear_user_data, gpg
 
 
 class CaseCreationTests(TestCase):
     def setUp(self):
+
+        Court.objects.create(
+            region_code="06",
+            court_name="x",
+            court_address="x",
+            court_telephone="x",
+            court_email="x",
+            submission_email="test@test.com",
+            plp_email="plptest@test.com",
+            enabled=True,
+            test_mode=False)
 
         self.context_data = {
             'case': {u'urn': u'06/aa/0000000/00',

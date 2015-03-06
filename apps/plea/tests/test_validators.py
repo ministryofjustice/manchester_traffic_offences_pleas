@@ -9,7 +9,6 @@ class UtilsTestCase(TestCase):
     urls = 'defendant.tests.urls'
 
     def setUp(self):
-
         Court.objects.create(
             region_code="06",
             court_name="x",
