@@ -12,7 +12,7 @@ from django.test.client import RequestFactory
 from django.template.context import RequestContext
 
 
-from ..models import Case
+from ..models import Case, Court
 from ..views import PleaOnlineForms
 from ..forms import CompanyFinancesForm
 
@@ -102,6 +102,16 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "complete": True
             }
         }
+
+        Court.objects.create(
+            region_code="06",
+            court_name="x",
+            court_address="x",
+            court_telephone="x",
+            court_email="x",
+            submission_email="x",
+            enabled=True,
+            test_mode=False)
 
     def test_case_stage_bad_data(self):
         form = PleaOnlineForms("case", "plea_form_step", self.session)
