@@ -1,6 +1,7 @@
 {% extends "plea/base.html" %}
 
 {% load i18n %}
+{% load humanize %}
 
 {% block page_title %}{{ block.super }} Confirm your plea{{ case.number_of_charges|pluralize }}{% endblock %}
 
@@ -175,11 +176,11 @@
             </tr>
             <tr>
                 <th class="label">{% trans "Gross turnover" %}</th>
-                <td>£{{ company_finances.gross_turnover }}</td>
+                <td>£{{ company_finances.gross_turnover|intcomma }}</td>
             </tr>
             <tr>
                 <th class="label">{% trans "Net turnover" %}</th>
-                <td>£{{ company_finances.net_turnover }}</td>
+                <td>£{{ company_finances.net_turnover|intcomma }}</td>
             </tr>
         </tbody>
     </table>
@@ -208,7 +209,7 @@
                 </tr>
                 <tr>
                     <th class="label">{% trans "Amount" %}</th>
-                    <td>£{{ your_money.employed_take_home_pay_amount }}</td>
+                    <td>£{{ your_money.employed_take_home_pay_amount|intcomma }}</td>
                 </tr>
                 {% endif %}
                 {% if your_money.you_are == "Self-employed" %}
@@ -234,7 +235,7 @@
             {% endif %}
                 <tr>
                     <th class="label">{% trans "Amount" %}</th>
-                    <td>£{{ your_money.self_employed_pay_amount }}</td>
+                    <td>£{{ your_money.self_employed_pay_amount|intcomma }}</td>
                 </tr>
             {% endif %}
             {% if your_money.you_are == "Receiving benefits" %}
@@ -264,7 +265,7 @@
             {% endif %}
                 <tr>
                     <th class="label">{% trans "Amount" %}</th>
-                    <td>£{{ your_money.benefits_amount }}</td>
+                    <td>£{{ your_money.benefits_amount|intcomma }}</td>
                 </tr>
             {% endif %}
             {% if your_money.you_are == "Other" %}
@@ -274,7 +275,7 @@
                 </tr>
                 <tr>
                     <th class="label">{% trans "Amount" %}</th>
-                    <td>£{{ your_money.other_pay_amount }}</td>
+                    <td>£{{ your_money.other_pay_amount|intcomma }}</td>
                 </tr>
             {% endif %}
             </tbody>
@@ -301,15 +302,15 @@
                 </tr>
                 <tr>
                     <th class="label">{% trans "Total household expenses" %}</th>
-                    <td>£{{ your_expenses.total_household_expenses }}</td>
+                    <td>£{{ your_expenses.total_household_expenses|intcomma }}</td>
                 </tr>
                 <tr>
                     <th class="label">{% trans "Total other expenses" %}</th>
-                    <td>£{{ your_expenses.total_other_expenses }}</td>
+                    <td>£{{ your_expenses.total_other_expenses|intcomma }}</td>
                 </tr>
                 <tr>
                     <th class="label">{% trans "Total expenses" %}</th>
-                    <td>£{{ your_expenses.total_expenses }}</td>
+                    <td>£{{ your_expenses.total_expenses|intcomma }}</td>
                 </tr>
             </tbody>
         </table>
