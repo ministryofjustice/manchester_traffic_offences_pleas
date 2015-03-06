@@ -37,7 +37,7 @@ def get_plea_type(context_data):
 class CaseStage(FormStage):
     name = "case"
     template = "plea/case.html"
-    form_classes = [CaseForm, ]
+    form_classes = [CaseForm]
     dependencies = []
 
     def render(self, request_context):
@@ -95,7 +95,7 @@ class YourDetailsStage(FormStage):
 class PleaStage(FormStage):
     name = "plea"
     template = "plea/plea.html"
-    form_classes = [PleaForm, ]
+    form_classes = [PleaForm]
     dependencies = ["case", "your_details", "company_details"]
 
     def load_forms(self, data=None, initial=False):
@@ -222,8 +222,6 @@ class YourExpensesStage(FormStage):
 
     def save(self, form_data, next_step=None):
 
-        #import pdb; pdb.set_trace()
-
         household_expense_fields = ['household_accommodation',
                                     'household_utility_bills',
                                     'household_insurance',
@@ -256,7 +254,7 @@ class YourExpensesStage(FormStage):
 class ReviewStage(FormStage):
     name = "review"
     template = "plea/review.html"
-    form_classes = [ConfirmationForm, ]
+    form_classes = [ConfirmationForm]
     dependencies = ["case", "company_details", "your_details", "plea",
                     "your_money", "company_finances"]
 
