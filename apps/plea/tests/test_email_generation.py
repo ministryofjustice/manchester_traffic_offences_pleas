@@ -37,8 +37,8 @@ class EmailGenerationTests(TestCase):
                         "your_details": {"name": "vcx", "national_insurance_number": "xxx",
                                          "driving_licence_number": "xxx", "registration_number": "xxx",
                                          "email": "test@test.com"},
-                        "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
-                                               {"mitigations": "test2", "guilty": "guilty"}],
+                        "plea": {"PleaForms": [{"guilty_extra": "test1", "guilty": "guilty"},
+                                               {"guilty_extra": "test2", "guilty": "guilty"}],
                                  "understand": True}}
 
         send_plea_email(context_data)
@@ -55,8 +55,8 @@ class EmailGenerationTests(TestCase):
                         "your_details": {"name": "vcx", "national_insurance_number": "xxx",
                                          "driving_licence_number": "xxx", "registration_number": "xxx",
                                          "email": "test@test.com"},
-                        "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
-                                               {"mitigations": "test2", "guilty": "guilty"}],
+                        "plea": {"PleaForms": [{"guilty_extra": "test1", "guilty": "guilty"},
+                                               {"guilty_extra": "test2", "guilty": "guilty"}],
                                  "understand": True}}
 
         send_plea_email(context_data)
@@ -84,8 +84,8 @@ class EmailGenerationTests(TestCase):
                                  "company_plea": False},
                         "your_details": {"name": "vcx", "email": "lyndon@antlyn.com", "national_insurance_number": "xxx",
                                          "driving_licence_number": "xxx", "registration_number": "xxx"},
-                        "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
-                                               {"mitigations": "test2", "guilty": "guilty"}],
+                        "plea": {"PleaForms": [{"guilty_extra": "test1", "guilty": "guilty"},
+                                               {"guilty_extra": "test2", "guilty": "guilty"}],
                                  "understand": True}}
 
         send_plea_email(context_data, send_user_email=True)
@@ -112,8 +112,8 @@ class EmailGenerationTests(TestCase):
                             "contact_number": "0800 SOMECOMPANY",
                             "email": "test@companyemail.com"
                         },
-                        "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
-                                               {"mitigations": "test2", "guilty": "guilty"}],
+                        "plea": {"PleaForms": [{"guilty_extra": "test1", "guilty": "guilty"},
+                                               {"guilty_extra": "test2", "guilty": "guilty"}],
                                  "understand": True}}
 
         send_plea_email(context_data, send_user_email=True)
@@ -130,8 +130,8 @@ class EmailGenerationTests(TestCase):
                                  "company_plea": False},
                         "your_details": {"name": "vcx", "email": "lyndon@antlyn.com", "national_insurance_number": "xxx",
                                          "driving_licence_number": "xxx", "registration_number": "xxx"},
-                        "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
-                                               {"mitigations": "test2", "guilty": "guilty"}],
+                        "plea": {"PleaForms": [{"guilty_extra": "test1", "guilty": "guilty"},
+                                               {"guilty_extra": "test2", "guilty": "guilty"}],
                                  "understand": True}}
 
         send_plea_email(context_data, send_user_email=False)
