@@ -20,7 +20,8 @@ class EmailTemplateTests(TestCase):
             court_address="x",
             court_telephone="x",
             court_email="x",
-            submission_email="x",
+            submission_email="test@test.com",
+            plp_email="plptest@test.com",
             enabled=True,
             test_mode=False)
 
@@ -455,6 +456,17 @@ class EmailTemplateTests(TestCase):
 class TestCompanyFinancesEmailLogic(TestCase):
 
     def setUp(self):
+
+        Court.objects.create(
+            region_code="06",
+            court_name="x",
+            court_address="x",
+            court_telephone="x",
+            court_email="x",
+            submission_email="test@test.com",
+            plp_email="plptest@test.com",
+            enabled=True,
+            test_mode=False)
 
         self.test_session_data = {
             "case": {
