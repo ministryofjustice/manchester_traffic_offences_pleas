@@ -478,4 +478,15 @@ class PleaForm(BasePleaStepForm):
 
     guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect(), required=True,
                                error_messages={"required": ERROR_MESSAGES["PLEA_REQUIRED"]})
-    mitigations = forms.CharField(max_length=5000, widget=Textarea(), required=False)
+    
+    guilty_extra = forms.CharField(label=_("Special circumstances"),
+                                   widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
+                                   help_text=_("What would you like the court to consider?"),
+                                   required=False,
+                                   max_length=5000)
+
+    not_guilty_extra = forms.CharField(label=_("Not guilty because?"),
+                                       widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
+                                       help_text=_("Tell us why you believe you are not guilty."),
+                                       required=False,
+                                       max_length=5000)
