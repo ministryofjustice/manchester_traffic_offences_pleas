@@ -101,16 +101,10 @@ def is_urn_valid(urn):
 
     pattern = r"[0-9]{2}/[a-zA-Z]{2}/(?:[0-9]{5}|[0-9]{7})/[0-9]{2}"
 
-    if re.match(pattern, urn):
-        try:
-            Court.objects.get(region_code=urn[:2],
-                              enabled=True)
+    if not re.match(pattern, urn) or not Court.objects.has_court(urn):
+        raise exceptions.ValidationError(_(ERROR_MESSAGES["URN_INVALID"]))
 
-            return True
-        except Court.DoesNotExist:
-            pass
-
-    raise exceptions.ValidationError(_(ERROR_MESSAGES["URN_INVALID"]))
+    return True
 
 
 def is_date_in_future(date):

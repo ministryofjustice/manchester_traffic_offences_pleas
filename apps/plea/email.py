@@ -10,7 +10,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 
 from apps.govuk_utils.email import TemplateAttachmentEmail
-from .models import Case, CourtEmailCount
+from .models import Case, CourtEmailCount, Court
 from .encrypt import encrypt_and_store_user_data
 
 
@@ -72,8 +72,11 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
 
     context_data: dict populated by form fields
     """
+
+    court_obj = Court.objects.get_by_urn(context_data["case"]["urn"])
+
     if plea_email_to is None:
-        plea_email_to = settings.PLEA_EMAIL_TO
+        plea_email_to = [court_obj.submission_email]
 
     plea_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
                                          settings.PLEA_EMAIL_ATTACHMENT_NAME,
@@ -113,11 +116,19 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
     if getattr(settings, 'STORE_USER_DATA', False):
         encrypt_and_store_user_data(case.urn, case.id, context_data)
 
-    email_count = CourtEmailCount()
-    email_count.get_from_context(context_data)
-    email_count.save()
+    if not court_obj.test_mode:
+        # don't add test court entries to the anon stat data
+        email_count = CourtEmailCount()
+        email_count.get_from_context(context_data)
+        email_count.save()
 
-    email_body = "<<<makeaplea-ref: {}/{}>>>".format(case.id, email_count.id)
+        email_count_id = email_count.id
+
+    else:
+        # use a fake email count ID as we're using a test record
+        email_count_id = "XX"
+
+    email_body = "<<<makeaplea-ref: {}/{}>>>".format(case.id, email_count_id)
 
     try:
         plea_email.send(plea_email_to,
@@ -127,23 +138,28 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
     except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
         case.status = "network_error"
         case.status_info = unicode(e)
-        email_count.get_status_from_case(case)
-        email_count.save()
+        if not court_obj.test_mode:
+            email_count.get_status_from_case(case)
+            email_count.save()
         case.save()
         return False
 
-    case.status = "sent"
-    case.save()
-    email_count.get_status_from_case(case)
-    email_count.save()
+    if not court_obj.test_mode:
+        # again, only update anon stats if we're not using a test court
+        case.status = "sent"
+        case.save()
+        email_count.get_status_from_case(case)
+        email_count.save()
 
-    try:
-        plp_email.send(settings.PLP_EMAIL_TO,
-                       settings.PLP_EMAIL_SUBJECT.format(**context_data),
-                       settings.PLEA_EMAIL_BODY,
-                       route="GSI")
-    except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
-        logger.error("Error sending email: {0}".format(e.message))
+    if court_obj.plp_email:
+        # only send the plp email if Court.plp_email is occupied
+        try:
+            plp_email.send([court_obj.plp_email]    ,
+                           settings.PLP_EMAIL_SUBJECT.format(**context_data),
+                           settings.PLEA_EMAIL_BODY,
+                           route="GSI")
+        except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
+            logger.error("Error sending email: {0}".format(e.message))
 
     send_user_confirmation_email(context_data)
 
