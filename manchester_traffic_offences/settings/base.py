@@ -61,6 +61,9 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = False
 
+# Allow the use of commas in decimal fields and when displaying large numbers
+USE_THOUSAND_SEPARATOR = True
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = root('assets', 'uploads')
@@ -151,6 +154,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'south',
     'django_extensions',
     'waffle',
