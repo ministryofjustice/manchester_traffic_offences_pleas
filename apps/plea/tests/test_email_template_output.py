@@ -13,17 +13,6 @@ from ..forms import CaseForm, YourDetailsForm, PleaForm, YourMoneyForm, Required
 
 
 class EmailTemplateTests(TestCase):
-    def setUp(self):
-        Court.objects.create(
-            region_code="06",
-            court_name="x",
-            court_address="x",
-            court_telephone="x",
-            court_email="x",
-            submission_email="test@test.com",
-            plp_email="plptest@test.com",
-            enabled=True,
-            test_mode=False)
 
     def get_context_data(self, case_data=None, details_data=None, plea_data=None, money_data=None):
 
@@ -456,17 +445,6 @@ class EmailTemplateTests(TestCase):
 class TestCompanyFinancesEmailLogic(TestCase):
 
     def setUp(self):
-
-        Court.objects.create(
-            region_code="06",
-            court_name="x",
-            court_address="x",
-            court_telephone="x",
-            court_email="x",
-            submission_email="test@test.com",
-            plp_email="plptest@test.com",
-            enabled=True,
-            test_mode=False)
 
         self.test_session_data = {
             "case": {
