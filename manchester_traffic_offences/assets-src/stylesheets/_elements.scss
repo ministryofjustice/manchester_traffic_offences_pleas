@@ -64,3 +64,11 @@ p.important {
 		}
 	}
 }
+
+.js-enabled-only {
+	display: none;
+}
+
+.js-enabled .js-enabled-only {
+	display: block;
+}
