@@ -27,7 +27,7 @@ class Migration(DataMigration):
     def backwards(self, orm):
 
         try:
-            orm.Court.objects.get(court_code="06").delete()
+            orm.Court.objects.get(region_code="06").delete()
         except orm.Court.DoesNotExist:
             pass
 

@@ -73,7 +73,11 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
     context_data: dict populated by form fields
     """
 
-    court_obj = Court.objects.get_by_urn(context_data["case"]["urn"])
+    try:
+        court_obj = Court.objects.get_by_urn(context_data["case"]["urn"])
+    except Court.DoesNotExist:
+        logger.error("A URN does not have a matching Court entry. Cannot proceed.")
+        raise
 
     if plea_email_to is None:
         plea_email_to = [court_obj.submission_email]
