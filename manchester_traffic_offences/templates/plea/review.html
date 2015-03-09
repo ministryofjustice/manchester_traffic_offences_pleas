@@ -32,11 +32,11 @@
 
     <header class="content-header">
         <h1 class="heading-xlarge">
-            {% blocktrans count charges=case.number_of_charges %} Confirm your plea {% plural %} Confirm your pleas {% endblocktrans %}
+            {% blocktrans count charges=case.number_of_charges %}Confirm your plea{% plural %}Confirm your pleas{% endblocktrans %}
         </h1>
 
         <p class="lede">
-            {% blocktrans count charges=case.number_of_charges %} Review the information you’ve given before making your plea. {% plural %} Review the information you’ve given before making your pleas. {% endblocktrans %}</p>
+            {% blocktrans count charges=case.number_of_charges %}Review the information you’ve given before making your plea.{% plural %}Review the information you’ve given before making your pleas.{% endblocktrans %}</p>
     </header>
 
     <table class="review-table" id="case-details">
@@ -123,9 +123,9 @@
         <thead>
             <tr>
                 <th class="header">
-                    {% blocktrans count charges=case.number_of_charges %} Your plea {% plural %} Your pleas {% endblocktrans %}</th>
+                    {% blocktrans count charges=case.number_of_charges %}Your plea{% plural %}Your pleas{% endblocktrans %}</th>
                 <th class="change-link"><a href="{% url "plea_form_step" "plea" %}" class="review">
-                    {% blocktrans count charges=case.number_of_charges %} Change your plea {% plural %} Change your pleas {% endblocktrans %}</a></th>
+                    {% blocktrans count charges=case.number_of_charges %}Change your plea{% plural %}Change your pleas{% endblocktrans %}</a></th>
             </tr>
         </thead>
         <tbody>
@@ -145,12 +145,24 @@
                     {% endif %}
                 </td>
             </tr>
-            {% if plea.mitigations %}
+            {% if plea.guilty == "guilty" and plea.guilty_extra %}
             <tr>
                 <th class="label">
-                    {% if plea.guilty == "guilty" %}{% trans "Special circumstances" %}{% else %}{% trans "Not guilty because?" %}{% endif %}
+                    {% trans "Special circumstances" %}
                 </th>
-                <td>{{ plea.mitigations|linebreaksbr }}</td>
+                <td>
+                    {{ plea.guilty_extra|linebreaksbr }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if plea.guilty == "not_guilty" and plea.not_guilty_extra %}
+            <tr>
+                <th class="label">
+                    {% trans "Not guilty because?" %}
+                </th>
+                <td>
+                    {{ plea.not_guilty_extra|linebreaksbr }}
+                </td>
             </tr>
             {% endif %}
         {% endfor %}
