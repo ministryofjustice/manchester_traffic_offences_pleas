@@ -4,7 +4,7 @@ import datetime
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 from django.forms.formsets import formset_factory
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 
 from apps.govuk_utils.forms import FormStage
 from email import send_plea_email
@@ -37,7 +37,7 @@ def get_plea_type(context_data):
 class CaseStage(FormStage):
     name = "case"
     template = "plea/case.html"
-    form_classes = [CaseForm, ]
+    form_classes = [CaseForm]
     dependencies = []
 
     def render(self, request_context):
@@ -95,7 +95,7 @@ class YourDetailsStage(FormStage):
 class PleaStage(FormStage):
     name = "plea"
     template = "plea/plea.html"
-    form_classes = [PleaForm, ]
+    form_classes = [PleaForm]
     dependencies = ["case", "your_details", "company_details"]
 
     def load_forms(self, data=None, initial=False):
@@ -254,11 +254,12 @@ class YourExpensesStage(FormStage):
 class ReviewStage(FormStage):
     name = "review"
     template = "plea/review.html"
-    form_classes = [ConfirmationForm, ]
+    form_classes = [ConfirmationForm]
     dependencies = ["case", "company_details", "your_details", "plea",
                     "your_money", "company_finances"]
 
     def save(self, form_data, next_step=None):
+
         clean_data = super(ReviewStage, self).save(form_data, next_step)
 
         send_user_email = bool(clean_data.get('receive_email', False))

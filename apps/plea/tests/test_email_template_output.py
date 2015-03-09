@@ -1,18 +1,19 @@
 # coding=utf-8
 
-from datetime import datetime, time, timedelta
+from datetime import datetime, timedelta
 from mock import Mock
 
 from django.core import mail
 from django.forms.formsets import formset_factory
 from django.test import TestCase
 
-from ..email import TemplateAttachmentEmail, send_plea_email
-from ..models import CourtEmailCount
+from ..email import send_plea_email
+from ..models import Court
 from ..forms import CaseForm, YourDetailsForm, PleaForm, YourMoneyForm, RequiredFormSet
 
 
 class EmailTemplateTests(TestCase):
+
     def get_context_data(self, case_data=None, details_data=None, plea_data=None, money_data=None):
 
         self.hearing_date = datetime.today() + timedelta(30)
