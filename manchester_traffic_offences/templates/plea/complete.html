@@ -3,12 +3,24 @@
 
 {% load testing %}
 
-{% block page_title %}{{ block.super }} Sent{% endblock %}
+{% block page_title %}{{ block.super }} {% trans "Sent" %}{% endblock %}
 
 {% block page_content %}
 
 <header class="success-header">
-    <h1 class="ticked">Your {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea{{ case.number_of_charges|pluralize }} ha{{ case.number_of_charges|pluralize:"s,ve" }} been sent to the court</h1>
+    <h1 class="ticked">{% if plea_type == "guilty" %}
+    {% blocktrans count charges=case.number_of_charges %}
+Your guilty plea has been sent to the court
+    {% plural %}
+Your guilty pleas have been sent to the court
+    {% endblocktrans %}
+{% else %}
+    {% blocktrans count charges=case.number_of_charges %}
+Your not guilty plea has been sent to the court
+    {% plural %}
+Your not guilty pleas have been sent to the court
+    {% endblocktrans %}
+{% endif %}</h1>
 </header>
 
 
@@ -70,6 +82,8 @@ M60 1PR<br>
 <h3 class="heading-small">{% trans "By email:" %}</h3>
 <p><a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">roadtrafficpcr@hmcts.gsi.gov.uk</a></p>
 
-<p class="font-xsmall">{% blocktrans %}This is a new service &#x2014; please give us <a class="external" href="/feedback/?next=home">feedback</a> so we can make it better.{% endblocktrans %}</p>
+
+<h2 class="heading-medium">{% trans "We’re constantly working to improve Make Your Plea." %}</h2>
+<p>{% blocktrans %}Please give us <a href="/feedback/">feedback</a> so we can make it better.{% endblocktrans %}</p>
 
 {% endblock page_content %}
