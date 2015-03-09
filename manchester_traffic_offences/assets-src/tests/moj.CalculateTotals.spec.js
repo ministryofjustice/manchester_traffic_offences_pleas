@@ -73,7 +73,12 @@ describe("moj.CalculateTotals", function() {
 
   it("should handle numbers with commas", function() {
     $('.term:first').val('1,000,000').trigger('change');
-    expect(subject.$total.text()).toBe('1000012.00');
+    expect(subject.$total.text()).toBe('1,000,012.00');
+  });
+
+  it("should render large totals with commas", function() {
+    $('.term:first').val('1,000,000').trigger('change');
+    expect(subject.$total.text()).toBe("1,000,012.00");
   });
 
   it("should cascade down several totals", function() {
