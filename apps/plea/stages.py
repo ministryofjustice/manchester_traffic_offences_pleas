@@ -222,8 +222,6 @@ class YourExpensesStage(FormStage):
 
     def save(self, form_data, next_step=None):
 
-        #import pdb; pdb.set_trace()
-
         household_expense_fields = ['household_accommodation',
                                     'household_utility_bills',
                                     'household_insurance',
