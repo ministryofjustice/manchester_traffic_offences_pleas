@@ -33,9 +33,9 @@ class CaseCreationTests(TestCase):
             'complete': {},
             'review': {u'csrfmiddlewaretoken': [u'z6Pz8e3M1rX2c31M0YpZtGnIv1V74ml7']},
             'send_error': {},
-            'plea': {u'PleaForms': [{u'mitigations': u'fdsfdsff\r\nds\r\nf',
+            'plea': {u'PleaForms': [{u'guilty_extra': u'fdsfdsff\r\nds\r\nf',
                                      u'guilty': u'guilty'},
-                                    {u'mitigations': u'fdsfd\r\nsf\r\n\r\n',
+                                    {u'not_guilty_extra': u'fdsfd\r\nsf\r\n\r\n',
                                      u'guilty': u'not_guilty'}], u'understand': True}}
 
 
