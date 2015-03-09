@@ -4,7 +4,7 @@ import datetime
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 from django.forms.formsets import formset_factory
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 
 from apps.govuk_utils.forms import FormStage
 from email import send_plea_email
@@ -259,6 +259,7 @@ class ReviewStage(FormStage):
                     "your_money", "company_finances"]
 
     def save(self, form_data, next_step=None):
+
         clean_data = super(ReviewStage, self).save(form_data, next_step)
 
         send_user_email = bool(clean_data.get('receive_email', False))
