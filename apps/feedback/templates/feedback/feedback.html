@@ -1,35 +1,39 @@
 {% extends 'base.html' %}
 
-{% block page_title %}Traffic offences: Plea online{% endblock %}
+{% load i18n %}
+
+{% block page_title %}{% trans "Traffic offences: Plea online" %}{% endblock %}
 
 {% block page_content %}
 <header class="content-header">
-    <h1 class="heading-xlarge">Send feedback</h1>
+    <h1 class="heading-xlarge">{% trans "Send feedback" %}</h1>
+
+    <p class="lede">{% trans "Use this form to report a problem or ask us a question about the Make a Plea service." %}</p>
 </header>
         
-<p>Use this form to report a problem or ask us a question about the Make a Plea service.</p>
-<p><strong>Please don't include any sensitive information (eg. your financial details).</strong></p>
+<p><strong>{% trans "Please don't include any sensitive information" %}</strong><br>
+    {% trans "For example, your financial details." %}</p>
 
 <form method="POST">
     {% csrf_token %}
-    
-    <fieldset>
-        {% with form.feedback_question as field %}
-        {% include "widgets/std_field.html" %}
-        {% endwith %}
-    </fieldset>
-    
-    <fieldset>
-        <legend class="heading-medium">Do you want a reply?</legend>
-        <p>If you'd like us to get back to you, please leave your details below.</p>
 
-        {% with form.feedback_email as field %}
-        {% include "widgets/std_field.html" %}
-        {% endwith %}
-    </fieldset>
+    {% with form.feedback_question as field %}
+    {% include "widgets/std_field.html" %}
+    {% endwith %}
+
+    {% with form.feedback_email as field %}
+    {% include "widgets/std_field.html" %}
+    {% endwith %}
+
+    <h3 class="heading-medium">{% trans "We’re constantly working to improve the online plea service." %}</h3>
+
+    {% with form.feedback_satisfaction as field %}
+    {% include "widgets/radio_field.html" %}
+    {% endwith %}
+
 
     <div class="form-group">
-        <button class="button" type="submit">Submit</button>
+        <button class="button" type="submit">{% trans "Submit" %}</button>
     </div>
 </form>
-{% endblock page_content %}
+{% endblock %}
