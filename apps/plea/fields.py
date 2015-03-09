@@ -13,7 +13,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_str, force_text
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Case
+from .models import Case, Court
 
 
 ERROR_MESSAGES = {
@@ -90,7 +90,7 @@ ERROR_MESSAGES = {
 }
 
 
-def is_valid_urn_format(urn):
+def is_urn_valid(urn):
     """
     URN is 11 or 13 characters long in the following format:
 
@@ -101,7 +101,7 @@ def is_valid_urn_format(urn):
 
     pattern = r"[0-9]{2}/[a-zA-Z]{2}/(?:[0-9]{5}|[0-9]{7})/[0-9]{2}"
 
-    if not re.match(pattern, urn) or not urn.startswith("06"):
+    if not re.match(pattern, urn) or not Court.objects.has_court(urn):
         raise exceptions.ValidationError(_(ERROR_MESSAGES["URN_INVALID"]))
 
     return True
@@ -284,5 +284,5 @@ class URNField(forms.MultiValueField):
     def compress(self, values):
         return "/".join(values)
 
-    default_validators = [is_valid_urn_format, ]
+    default_validators = [is_urn_valid]
     widget = URNWidget()

@@ -11,7 +11,7 @@ from django.test import TestCase
 from django.test.utils import override_settings
 
 from ..email import send_plea_email
-from ..models import Case, CourtEmailCount
+from ..models import Case, CourtEmailCount, Court
 from ..encrypt import clear_user_data, gpg
 
 

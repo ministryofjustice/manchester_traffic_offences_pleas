@@ -6,15 +6,17 @@ from django.test import TestCase
 from django.core import mail
 
 from ..email import TemplateAttachmentEmail, send_plea_email
-from ..models import Case, CourtEmailCount
+from ..models import Case, CourtEmailCount, Court
 
 
 class EmailGenerationTests(TestCase):
     def setUp(self):
         mail.outbox = []
 
+        self.court_obj = Court.objects.get(region_code="06")
+
     def test_template_attachment_sends_email(self):
-        email_context = {"URN": "1A2B3C4D5E"}
+        email_context = {"URN": "062B3C4D5E"}
         email = TemplateAttachmentEmail("test_from@example.org",
                                         "test.html",
                                         "plea/plea_email_attachment.html",
@@ -31,7 +33,7 @@ class EmailGenerationTests(TestCase):
     def test_plea_email_sends(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
-                                 "urn": "cvxcvx89",
+                                 "urn": "06xcvx89",
                                  "number_of_charges": 2,
                                  "company_plea": False},
                         "your_details": {"name": "vcx", "national_insurance_number": "xxx",
@@ -49,7 +51,7 @@ class EmailGenerationTests(TestCase):
     def test_plea_email_body_contains_plea_and_count_ids(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
-                                 "urn": "cvxcvx89",
+                                 "urn": "06xcvx89",
                                  "number_of_charges": 2,
                                  "company_plea": False},
                         "your_details": {"name": "vcx", "national_insurance_number": "xxx",
@@ -79,7 +81,7 @@ class EmailGenerationTests(TestCase):
     def test_user_confirmation_sends_email(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
-                                 "urn": "cvxcvx89",
+                                 "urn": "06xcvx89",
                                  "number_of_charges": 2,
                                  "company_plea": False},
                         "your_details": {"name": "vcx", "email": "lyndon@antlyn.com", "national_insurance_number": "xxx",
@@ -97,7 +99,7 @@ class EmailGenerationTests(TestCase):
     def test_user_confirmation_for_company_uses_correct_email_address(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
-                                 "urn": "cvxcvx89",
+                                 "urn": "06xcvx89",
                                  "number_of_charges": 2,
                                  "company_plea": True},
                         "your_details": {
@@ -125,7 +127,7 @@ class EmailGenerationTests(TestCase):
     def test_user_confirmation_sends_email_opt_out(self):
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
-                                 "urn": "cvxcvx89",
+                                 "urn": "06xcvx89",
                                  "number_of_charges": 2,
                                  "company_plea": False},
                         "your_details": {"name": "vcx", "email": "lyndon@antlyn.com", "national_insurance_number": "xxx",
@@ -137,3 +139,71 @@ class EmailGenerationTests(TestCase):
         send_plea_email(context_data, send_user_email=False)
 
         self.assertEqual(len(mail.outbox), 3)
+
+    def test_email_addresses_from_court_model(self):
+
+        context_data = {"case": {"date_of_hearing": "2014-06-30",
+                                 "time_of_hearing": "12:00:00",
+                                 "urn": "06xcvx89",
+                                 "number_of_charges": 2,
+                                 "company_plea": False},
+                        "your_details": {"name": "vcx", "national_insurance_number": "xxx",
+                                         "driving_licence_number": "xxx", "registration_number": "xxx",
+                                         "email": "test@test.com"},
+                        "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
+                                               {"mitigations": "test2", "guilty": "guilty"}],
+                                 "understand": True}}
+
+        send_plea_email(context_data)
+
+        self.assertEqual(len(mail.outbox), 3)
+
+        to_emails = [item.to[0] for item in mail.outbox]
+
+        self.assertIn(self.court_obj.submission_email, to_emails)
+        self.assertIn(self.court_obj.plp_email, to_emails)
+
+    def test_plp_email_doesnt_send_when_court_field_blank(self):
+
+        self.court_obj.plp_email = ""
+        self.court_obj.save()
+
+        context_data = {"case": {"date_of_hearing": "2014-06-30",
+                                 "time_of_hearing": "12:00:00",
+                                 "urn": "06xcvx89",
+                                 "number_of_charges": 2,
+                                 "company_plea": False},
+                        "your_details": {"name": "vcx", "national_insurance_number": "xxx",
+                                         "driving_licence_number": "xxx", "registration_number": "xxx",
+                                         "email": "test@test.com"},
+                        "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
+                                               {"mitigations": "test2", "guilty": "guilty"}],
+                                 "understand": True}}
+
+        send_plea_email(context_data)
+
+        self.assertEqual(len(mail.outbox), 2)
+
+    def test_anon_stats_not_added_when_court_in_test_mode(self):
+
+        self.court_obj.test_mode = True
+        self.court_obj.save()
+
+        anon_total = CourtEmailCount.objects.all().count()
+
+        context_data = {"case": {"date_of_hearing": "2014-06-30",
+                                 "time_of_hearing": "12:00:00",
+                                 "urn": "06xcvx89",
+                                 "number_of_charges": 2,
+                                 "company_plea": False},
+                        "your_details": {"name": "vcx", "national_insurance_number": "xxx",
+                                         "driving_licence_number": "xxx", "registration_number": "xxx",
+                                         "email": "test@test.com"},
+                        "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
+                                               {"mitigations": "test2", "guilty": "guilty"}],
+                                 "understand": True}}
+
+        send_plea_email(context_data)
+
+        self.assertEquals(anon_total, CourtEmailCount.objects.all().count())
+
