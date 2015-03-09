@@ -227,13 +227,11 @@ USER_SMTP_EMAIL_HOST_PASSWORD = os.environ.get("SENDGRID_EMAIL_HOST_PASSWORD", "
 PLEA_EMAIL_FROM = os.environ.get("PLEA_EMAIL_FROM", "plea_from@example.org")
 PLEA_EMAIL_ATTACHMENT_NAME = "plea.html"
 PLEA_EMAIL_TEMPLATE = "plea/plea_email_attachment.html"
-PLEA_EMAIL_TO = [os.environ.get("PLEA_EMAIL_TO", "plea_to@example.org"), ]
 PLEA_EMAIL_SUBJECT = u"ONLINE PLEA: {case[urn]} DOH: {email_date_of_hearing} {email_name}"
 PLEA_EMAIL_BODY = ""
 
 # Cut down email sent to the police prosecutor
 PLP_EMAIL_FROM = os.environ.get("PLP_EMAIL_FROM", "plea_from@example.org")
-PLP_EMAIL_TO = [os.environ.get("PLP_EMAIL_TO", "plea_to@example.org"), ]
 PLP_EMAIL_TEMPLATE = "plea/plp_email_attachment.html"
 PLP_EMAIL_SUBJECT = u"POLICE {0}".format(PLEA_EMAIL_SUBJECT)
 
