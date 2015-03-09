@@ -38,7 +38,7 @@ class EmailTemplateTests(TestCase):
                          "form-INITIAL_FORMS": "1",
                          "form-MAX_NUM_FORMS": "1",
                          "form-0-guilty": "guilty",
-                         "form-0-mitigations": "IT wasn't me driving!"}
+                         "form-0-guilty_extra": "IT wasn't me driving!"}
 
         if not money_data:
             money_data = {"you_are": "Employed",
@@ -122,7 +122,7 @@ class EmailTemplateTests(TestCase):
     def test_multiple_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
 
-        context_data["plea"]["PleaForms"].append({"mitigations": "test2", "guilty": "guilty"})
+        context_data["plea"]["PleaForms"].append({"guilty_extra": "test2", "guilty": "guilty"})
 
         send_plea_email(context_data)
 
@@ -141,7 +141,7 @@ class EmailTemplateTests(TestCase):
     def test_multiple_not_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
         context_data["plea"]["PleaForms"][0]["guilty"] = "not_guilty"
-        context_data["plea"]["PleaForms"].append({"mitigations": "test2", "guilty": "not_guilty"})
+        context_data["plea"]["PleaForms"].append({"not_guilty_extra": "test2", "guilty": "not_guilty"})
 
         send_plea_email(context_data)
 
@@ -150,7 +150,7 @@ class EmailTemplateTests(TestCase):
 
     def test_mixed_plea_email_plea_output(self):
         context_data = self.get_context_data()
-        context_data["plea"]["PleaForms"].append({"mitigations": "test2", "guilty": "not_guilty"})
+        context_data["plea"]["PleaForms"].append({"not_guilty_extra": "test2", "guilty": "not_guilty"})
 
         send_plea_email(context_data)
 
@@ -304,7 +304,7 @@ class EmailTemplateTests(TestCase):
     def test_PLP_multiple_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
 
-        context_data["plea"]["PleaForms"].append({"mitigations": "test2", "guilty": "guilty"})
+        context_data["plea"]["PleaForms"].append({"guilty_extra": "test2", "guilty": "guilty"})
 
         send_plea_email(context_data)
 
@@ -323,7 +323,7 @@ class EmailTemplateTests(TestCase):
     def test_PLP_multiple_not_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
         context_data["plea"]["PleaForms"][0]["guilty"] = "not_guilty"
-        context_data["plea"]["PleaForms"].append({"mitigations": "test2", "guilty": "not_guilty"})
+        context_data["plea"]["PleaForms"].append({"not_guilty_extra": "test2", "guilty": "not_guilty"})
 
         send_plea_email(context_data)
 
@@ -332,7 +332,7 @@ class EmailTemplateTests(TestCase):
 
     def test_PLP_mixed_plea_email_plea_output(self):
         context_data = self.get_context_data()
-        context_data["plea"]["PleaForms"].append({"mitigations": "test2", "guilty": "not_guilty"})
+        context_data["plea"]["PleaForms"].append({"not_guilty_extra": "test2", "guilty": "not_guilty"})
 
         send_plea_email(context_data)
 
@@ -346,15 +346,15 @@ class EmailTemplateTests(TestCase):
         context_data["plea"]["PleaForms"] = [
             {
                 'guilty': 'guilty',
-                'mitigations': 'asdf'
+                'guilty_extra': 'asdf'
             },
             {
                 'guilty': 'guilty',
-                'mitigations': 'asdf'
+                'guilty_extra': 'asdf'
             },
             {
                 'guilty': 'guilty',
-                'mitigations': 'asdf'
+                'guilty_extra': 'asdf'
             }
         ]
 
@@ -370,15 +370,15 @@ class EmailTemplateTests(TestCase):
         context_data["plea"]["PleaForms"] = [
             {
                 'guilty': 'not_guilty',
-                'mitigations': 'asdf'
+                'not_guilty_extra': 'asdf'
             },
             {
                 'guilty': 'not_guilty',
-                'mitigations': 'asdf'
+                'not_guilty_extra': 'asdf'
             },
             {
                 'guilty': 'not_guilty',
-                'mitigations': 'asdf'
+                'not_guilty_extra': 'asdf'
             }
         ]
 
@@ -394,15 +394,15 @@ class EmailTemplateTests(TestCase):
         context_data["plea"]["PleaForms"] = [
             {
                 'guilty': 'not_guilty',
-                'mitigations': 'asdf'
+                'not_guilty_extra': 'asdf'
             },
             {
                 'guilty': 'guilty',
-                'mitigations': 'asdf'
+                'guilty_extra': 'asdf'
             },
             {
                 'guilty': 'guilty',
-                'mitigations': 'asdf'
+                'guilty_extra': 'asdf'
             }
         ]
 
@@ -470,7 +470,7 @@ class TestCompanyFinancesEmailLogic(TestCase):
                 "PleaForms": [
                     {
                         "guilty": "not_guilty",
-                        "mitigations": "something"
+                        "not_guilty_extra": "something"
                     }
                 ]
             },

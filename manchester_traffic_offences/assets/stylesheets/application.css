@@ -1523,6 +1523,9 @@ Forms
   .form-control-wide {
     width: 75%; } }
 
+.form-group-extra .form-group, .form-group-extra .form-group-wide {
+  margin-top: 0; }
+
 fieldset {
   margin: 0; }
 
@@ -1656,6 +1659,12 @@ p.important, #section_understand .block-label .important {
 #content img {
   max-width: 100%;
   height: auto; }
+
+.js-enabled-only {
+  display: none; }
+
+.js-enabled .js-enabled-only {
+  display: block; }
 
 /*  
 ====================================================
