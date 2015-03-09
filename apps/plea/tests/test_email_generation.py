@@ -13,16 +13,7 @@ class EmailGenerationTests(TestCase):
     def setUp(self):
         mail.outbox = []
 
-        self.court = Court.objects.create(
-            region_code="06",
-            court_name="x",
-            court_address="x",
-            court_telephone="x",
-            court_email="x",
-            submission_email="test@test.com",
-            plp_email="plptest@test.com",
-            enabled=True,
-            test_mode=False)
+        self.court_obj = Court.objects.get(region_code="06")
 
     def test_template_attachment_sends_email(self):
         email_context = {"URN": "062B3C4D5E"}
@@ -169,13 +160,13 @@ class EmailGenerationTests(TestCase):
 
         to_emails = [item.to[0] for item in mail.outbox]
 
-        self.assertIn("test@test.com", to_emails)
-        self.assertIn("plptest@test.com", to_emails)
+        self.assertIn(self.court_obj.submission_email, to_emails)
+        self.assertIn(self.court_obj.plp_email, to_emails)
 
     def test_plp_email_doesnt_send_when_court_field_blank(self):
 
-        self.court.plp_email = ""
-        self.court.save()
+        self.court_obj.plp_email = ""
+        self.court_obj.save()
 
         context_data = {"case": {"date_of_hearing": "2014-06-30",
                                  "time_of_hearing": "12:00:00",
@@ -195,8 +186,8 @@ class EmailGenerationTests(TestCase):
 
     def test_anon_stats_not_added_when_court_in_test_mode(self):
 
-        self.court.test_mode = True
-        self.court.save()
+        self.court_obj.test_mode = True
+        self.court_obj.save()
 
         anon_total = CourtEmailCount.objects.all().count()
 
