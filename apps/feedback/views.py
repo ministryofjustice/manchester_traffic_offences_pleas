@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 
 from .forms import FeedbackForm
+from .models import UserRating
 
 
 def feedback_form(request):
@@ -26,9 +27,13 @@ def feedback_form(request):
         if feedback_form.is_valid():
             email_context = {"question": feedback_form.cleaned_data["feedback_question"],
                              "email": feedback_form.cleaned_data["feedback_email"],
+                             "satisfaction": feedback_form.cleaned_data["feedback_satisfaction"],
                              "date_sent": datetime.now(),
                              "referrer": nxt_url,
                              "user_agent": request.META["HTTP_USER_AGENT"]}
+
+            UserRating.objects.record(
+                feedback_form.cleaned_data["feedback_satisfaction"])
 
             email = EmailMessage("Feedback from makeaplea.justice.gov.uk",
                                  render_to_string("feedback/email.html",
@@ -38,6 +43,7 @@ def feedback_form(request):
             email.content_subtype = "html"
             email.send(fail_silently=False)
             messages.add_message(request, messages.INFO, "Thanks for your feedback.")
+
             return HttpResponseRedirect(nxt_url)
         else:
             return render(request, "feedback/feedback.html", {"form": feedback_form})

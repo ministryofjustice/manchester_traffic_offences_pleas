@@ -1,14 +1,19 @@
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-block {
   zoom: 1; }
@@ -21,18 +26,25 @@
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-block {
   zoom: 1; }
@@ -54,8 +66,10 @@
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-block {
   zoom: 1; }
@@ -67,19 +81,26 @@
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-block {
   zoom: 1; }
@@ -91,12 +112,16 @@
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-block {
   zoom: 1; }
@@ -144,8 +169,10 @@
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-block {
   zoom: 1; }
@@ -157,8 +184,10 @@
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 /*  
 ====================================================
 Typography
@@ -214,7 +243,7 @@ address {
   text-decoration: none;
   -webkit-font-smoothing: antialiased;
   cursor: pointer;
-  color: #fff;
+  color: white;
   margin: 0 15px 15px 0;
   padding: 0.52632em 0.78947em 0.26316em 0.78947em;
   vertical-align: top; }
@@ -241,7 +270,7 @@ address {
       box-shadow: 0 2px 0 #003518;
       border-bottom: 2px solid #003518; }
   .button:link, .button-large:link, .button:hover, .button-large:hover, .button:focus, .button-large:focus, .button:visited, .button-large:visited {
-    color: #fff; }
+    color: white; }
   .button:before, .button-large:before {
     content: "";
     height: 110%;
@@ -260,7 +289,7 @@ address {
     margin-left: 0;
     margin-right: 0; }
   .button[type="submit"], [type="submit"].button-large, .button[type="reset"], [type="reset"].button-large, .button[type="button"], [type="button"].button-large {
-    filter: chroma(color=#000000); }
+    filter: chroma(color=black); }
   .button[type=submit].button, [type=submit].button-large {
     filter: none; }
 
@@ -527,7 +556,7 @@ details .panel-indent {
   border-bottom: 1px solid #bfc1c3; }
   .phase-banner p {
     margin: 0;
-    color: #000;
+    color: black;
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
@@ -1046,7 +1075,7 @@ fieldset {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   padding: 4px;
-  background-color: #fff;
+  background-color: white;
   border: 1px solid #bfc1c3;
   -webkit-appearance: none;
   border-radius: 0;
@@ -1179,7 +1208,7 @@ input[type=number] {
   margin-right: 15px; }
 
 .js-enabled label.selected {
-  background: #fff;
+  background: white;
   border-color: #0b0c0c; }
 
 .js-enabled label.focused {
@@ -1215,7 +1244,7 @@ input[type=number] {
   margin-right: 15px; }
 
 .js-enabled label.selected {
-  background: #fff;
+  background: white;
   border-color: #0b0c0c; }
 
 .js-enabled label.focused {
@@ -1304,7 +1333,7 @@ GOV.UK Toolkit/Template overrides
   border-bottom: 1px solid #bfc1c3; }
   .phase-banner p {
     margin: 0;
-    color: #000;
+    color: black;
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
@@ -1366,6 +1395,10 @@ GOV.UK Toolkit/Template overrides
     .footer-wrapper p.footer-top {
       font-size: 14px;
       line-height: 1.14286; } }
+
+#footer .footer-meta .footer-meta-inner ul li.li-block {
+  display: block;
+  margin: 0 0 1em; }
 
 /*  
 ====================================================
@@ -1560,10 +1593,13 @@ legend.form-label-bold {
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 /*  
 ====================================================
 Elements
@@ -1757,7 +1793,7 @@ Main styles
   margin: 2em 0;
   padding: 40px;
   background: #28a197;
-  color: #fff; }
+  color: white; }
   #content .success-header h1,
   #content .success-header p {
     margin: 0; }
@@ -1805,6 +1841,18 @@ Main styles
           font-size: 16px;
           line-height: 1.25; } }
 
+/*== Feedback screen ================================================*/
+#section_feedback_satisfaction legend.form-label-bold {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.31579;
+  font-weight: 400;
+  text-transform: none; }
+  @media (max-width: 640px) {
+    #section_feedback_satisfaction legend.form-label-bold {
+      font-size: 16px;
+      line-height: 1.25; } }
+
 /*== Terms ==========================================================*/
 .cookies-table {
   margin-bottom: 1em; }
@@ -1831,5 +1879,3 @@ Main styles
 Shame
 ====================================================
 */
-
-/*# sourceMappingURL=application-ie7.css.map */
