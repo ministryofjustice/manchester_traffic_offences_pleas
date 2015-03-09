@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django import forms
-from ..fields import is_valid_urn_format
+
+from ..models import Court
+from ..fields import is_urn_valid
 
 
 class UtilsTestCase(TestCase):
@@ -24,8 +26,8 @@ class UtilsTestCase(TestCase):
         ]
 
         for URN in good_urns:
-            self.assertTrue(is_valid_urn_format(URN))
+            self.assertTrue(is_urn_valid(URN))
 
         for URN in bad_urns:
             with self.assertRaises(forms.ValidationError):
-                is_valid_urn_format(URN)
+                is_urn_valid(URN)

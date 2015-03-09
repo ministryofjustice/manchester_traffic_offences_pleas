@@ -12,7 +12,7 @@ from django.test.client import RequestFactory
 from django.template.context import RequestContext
 
 
-from ..models import Case
+from ..models import Case, Court
 from ..views import PleaOnlineForms
 from ..forms import CompanyFinancesForm
 
