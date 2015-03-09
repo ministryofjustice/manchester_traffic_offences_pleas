@@ -76,7 +76,8 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
     try:
         court_obj = Court.objects.get_by_urn(context_data["case"]["urn"])
     except Court.DoesNotExist:
-        logger.error("A URN does not have a matching Court entry. Cannot proceed.")
+        logger.error("URN does not have a matching Court entry: {}".format(
+            context_data["case"]["urn"]))
         raise
 
     if plea_email_to is None:
