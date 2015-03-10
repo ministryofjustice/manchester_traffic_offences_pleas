@@ -10,7 +10,7 @@ from .fields import (ERROR_MESSAGES, is_date_in_future, is_date_within_range,
                      DSRadioFieldRenderer, 
                      DSStackedRadioFieldRenderer,
                      URNField,
-                     HearingDateWidget, is_urn_not_used)
+                     HearingDateWidget, is_urn_not_used, is_urn_valid)
 
 YESNO_CHOICES = (
     (True, _("Yes")),
@@ -525,3 +525,11 @@ class CourtFinderForm(forms.Form):
                    required=True,
                    help_text=_("On page 1 of the pack, in the top right corner.<br>For example, 12/AB/0034567/89"),
                    error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]})
+
+    def clean_urn(self):
+        urn = self.cleaned_data["urn"]
+
+        try:
+            is_urn_valid(urn)
+        except forms.ValidationError:
+            raise forms.ValidationError("humpty dumpty is dead")
