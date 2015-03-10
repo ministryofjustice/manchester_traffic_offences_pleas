@@ -37,7 +37,7 @@ class CaseForm(BasePleaStepForm):
                    required=True,
                    help_text=_("On page 1 of the pack, in the top right corner"),
                    error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]},
-                   validators=[is_urn_not_used])
+                   validators=[is_urn_valid, is_urn_not_used])
 
     date_of_hearing = forms.DateField(label=_("Court hearing date"), widget=HearingDateWidget, validators=[is_date_in_future, is_date_within_range],
                                       required=True,
@@ -532,4 +532,5 @@ class CourtFinderForm(forms.Form):
         try:
             is_urn_valid(urn)
         except forms.ValidationError:
-            raise forms.ValidationError("humpty dumpty is dead")
+            raise forms.ValidationError("You've entered incorrect details")
+        return urn
