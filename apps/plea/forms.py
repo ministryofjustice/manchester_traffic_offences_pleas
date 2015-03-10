@@ -521,7 +521,7 @@ class PleaForm(BasePleaStepForm):
 
 
 class CourtFinderForm(forms.Form):
-    urn = URNField(label=_("Enter a URN"),
+    urn = URNField(label=_("Unique reference number (URN)"),
                    required=True,
-                   help_text=_(""),
+                   help_text=_("On page 1 of the pack, in the top right corner.<br>For example, 12/AB/0034567/89"),
                    error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]})
