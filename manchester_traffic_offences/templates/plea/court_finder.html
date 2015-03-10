@@ -1,0 +1,20 @@
+
+<form method="post" action="{{ request.path }}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Find courts</button>
+</form>
+
+{% if submitted %}
+    {% if court %}
+        {{ court.court_address|linebreaksbr }}
+
+        {{ court.court_email }}
+    {% else %}
+        <p>Nothing found</p>
+    {% endif %}
+{% endif %}
+
+
+
+
