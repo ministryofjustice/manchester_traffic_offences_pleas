@@ -284,5 +284,5 @@ class URNField(forms.MultiValueField):
     def compress(self, values):
         return "/".join(values)
 
-    default_validators = [is_urn_valid]
+    #default_validators = [is_urn_valid]
     widget = URNWidget()
