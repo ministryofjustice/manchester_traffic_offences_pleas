@@ -518,3 +518,10 @@ class PleaForm(BasePleaStepForm):
                                        help_text=_("Tell us why you believe you are not guilty."),
                                        required=False,
                                        max_length=5000)
+
+
+class CourtFinderForm(forms.Form):
+    urn = URNField(label=_("Enter a URN"),
+                   required=True,
+                   help_text=_(""),
+                   error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]})
