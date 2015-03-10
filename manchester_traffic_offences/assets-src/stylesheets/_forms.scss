@@ -172,6 +172,10 @@ legend.form-label-bold {
 		margin-bottom: 1.05263em;
 	}
 
+	p:last-child {
+		margin-bottom: .5em;
+	}
+
 	@include ie-lte(7) {
 		ul {
 			margin: 1em 0;
