@@ -13,6 +13,7 @@ from forms import (CaseForm, YourDetailsForm, CompanyDetailsForm,
                    CompanyFinancesForm, ConfirmationForm, RequiredFormSet)
 
 from .fields import ERROR_MESSAGES
+from .models import Court
 
 
 def get_plea_type(context_data):
@@ -43,6 +44,12 @@ class CaseStage(FormStage):
     def render(self, request_context):
         if 'urn' in self.forms[0].errors and ERROR_MESSAGES['URN_ALREADY_USED'] in self.forms[0].errors['urn']:
             self.context['urn_already_used'] = True
+
+            try:
+                request_context["court"] = Court.objects.get_by_urn(
+                    self.forms[0].data['urn_0'])
+            except Court.DoesNotExist:
+                pass
 
         return super(CaseStage, self).render(request_context)
 
@@ -288,10 +295,17 @@ class CompleteStage(FormStage):
 
         request_context['plea_type'] = get_plea_type(self.all_data)
 
+        try:
+            request_context["court"] = Court.objects.get_by_urn(
+                self.all_data["case"]["urn"])
+        except Court.DoesNotExist:
+            pass
+
         if isinstance(self.all_data["case"]["date_of_hearing"], basestring):
             court_date = parse(self.all_data["case"]["date_of_hearing"])
         else:
             court_date = self.all_data["case"]["date_of_hearing"]
+
         request_context["days_before_hearing"] = (court_date - datetime.datetime.today()).days
         request_context["will_hear_by"] = court_date + datetime.timedelta(days=3)
 
