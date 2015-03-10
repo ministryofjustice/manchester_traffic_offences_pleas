@@ -107,6 +107,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
     def test_case_stage_urn_already_submitted(self):
 
+        fake_request = self.get_request_mock("/plea/case/")
+        request_context = RequestContext(fake_request)
+
         case = Case()
         case.urn = "06/AA/0000000/00"
         case.status = "sent"
@@ -115,7 +118,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
         form = PleaOnlineForms("case", "plea_form_step", self.session)
-        form.load(self.request_context)
+        form.load(request_context)
         form.save({"date_of_hearing_0": str(hearing_date.day),
                    "date_of_hearing_1": str(hearing_date.month),
                    "date_of_hearing_2": str(hearing_date.year),
@@ -125,13 +128,13 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "urn_3": "00",
                    "number_of_charges": 1,
                    "company_plea": False},
-                  self.request_context)
-
-        import pdb; pdb.set_trace()
+                  request_context)
 
         response = form.render()
 
         court_obj = Court.objects.get(region_code="06")
+
+        import pdb; pdb.set_trace()
 
         self.assertContains(
             response,
