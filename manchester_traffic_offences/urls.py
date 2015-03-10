@@ -10,6 +10,8 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 admin.autodiscover()
 
+from apps.plea.views import CourtFinderView
+
 import views
 
 handler500 = "manchester_traffic_offences.views.server_error"
@@ -22,5 +24,6 @@ urlpatterns = patterns('',
     url(r'^plea/', include('apps.plea.urls', )),
     url(r'^feedback/', include('apps.feedback.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^court-finder/$', CourtFinderView.as_view())
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
