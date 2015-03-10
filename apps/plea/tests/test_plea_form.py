@@ -1,20 +1,14 @@
 import datetime
 from mock import Mock, MagicMock, patch
-from importlib import import_module
 import socket
-import unittest
 
-from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from django.test import Client
 from django.test.client import RequestFactory
 from django.template.context import RequestContext
 
-
 from ..models import Case, Court
 from ..views import PleaOnlineForms
-from ..forms import CompanyFinancesForm
 
 
 class TestMultiPleaFormBase(TestCase):
@@ -29,6 +23,7 @@ class TestMultiPleaFormBase(TestCase):
         request.resolver_match.url_name = url_name
         request.resolver_match.kwargs = url_kwargs
         return request
+
 
 class TestMultiPleaForms(TestMultiPleaFormBase):
     def setUp(self):
@@ -132,7 +127,17 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "company_plea": False},
                   self.request_context)
 
+        import pdb; pdb.set_trace()
+
         response = form.render()
+
+        court_obj = Court.objects.get(region_code="06")
+
+        self.assertContains(
+            response,
+            "<br>".join(court_obj.court_address.split("\n")))
+
+        self.assertContains(response, court_obj.court_email)
 
         self.assertEqual(form.current_stage.forms[0].errors.keys()[0], 'urn')
         self.assertEqual(response.status_code, 200)
