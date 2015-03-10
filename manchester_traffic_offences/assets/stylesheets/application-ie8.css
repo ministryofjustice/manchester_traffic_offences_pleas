@@ -1513,6 +1513,8 @@ legend.form-label-bold {
     color: #000; }
   .error-summary details {
     margin-bottom: 1.05263em; }
+  .error-summary p:last-child {
+    margin-bottom: .5em; }
 
 .with-error {
   padding-left: 15px;
@@ -1819,6 +1821,10 @@ Main styles
     #section_feedback_satisfaction legend.form-label-bold {
       font-size: 16px;
       line-height: 1.25; } }
+
+/*== Court Finder ===================================================*/
+.court-details h2.heading-medium {
+  margin-bottom: 0; }
 
 /*== Terms ==========================================================*/
 .cookies-table {
