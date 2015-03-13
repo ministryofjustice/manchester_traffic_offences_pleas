@@ -14,12 +14,14 @@ Your guilty plea has been sent to the court
     {% plural %}
 Your guilty pleas have been sent to the court
     {% endblocktrans %}
-{% else %}
+{% elif plea_type == "not_guilty" %}
     {% blocktrans count charges=case.number_of_charges %}
 Your not guilty plea has been sent to the court
     {% plural %}
 Your not guilty pleas have been sent to the court
     {% endblocktrans %}
+{% elif plea_type == "mixed" %}
+    {% trans "Your pleas have been sent to the court" %}
 {% endif %}</h1>
 </header>
 
