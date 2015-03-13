@@ -6,9 +6,9 @@
 
 {% block page_content %}
 <header class="content-header">
-    <h1 class="heading-xlarge">{% trans "Send feedback" %}</h1>
+    <h1>{% trans "Send feedback" %}</h1>
 
-    <p class="lede">{% trans "Use this form to report a problem or ask us a question about the Make a Plea service." %}</p>
+    <p>{% trans "Use this form to report a problem or ask us a question about the Make a Plea service." %}</p>
 </header>
         
 <p><strong>{% trans "Please don't include any sensitive information" %}</strong><br>
@@ -25,7 +25,7 @@
     {% include "widgets/std_field.html" %}
     {% endwith %}
 
-    <h3 class="heading-medium">{% trans "We’re constantly working to improve the online plea service." %}</h3>
+    <h3>{% trans "We’re constantly working to improve the online plea service." %}</h3>
 
     {% with form.feedback_satisfaction as field %}
     {% include "widgets/radio_field.html" %}

@@ -16,11 +16,11 @@
         {% if form.errors %}
     <div class="error-summary">
         {% if urn_already_used %}
-        <h2 class="heading-medium">{% trans "The details you've entered have already been used to make a plea online" %}</h2>
+        <h2>{% trans "The details you've entered have already been used to make a plea online" %}</h2>
 
         <p>{% trans "Check and try again." %}</p>
 
-        <ul class="errors-list">
+        <ul>
             <li><a href="#section_urn">{% trans "Enter the correct URN" %}</a></li>
         </ul>
 
@@ -50,11 +50,11 @@
 
         {% else %}
 
-        <h2 class="heading-medium">{% trans "You need to fix the errors on this page before continuing." %}</h2>
+        <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
 
         <p>{% trans "See highlighted errors below." %}</p>
 
-        <ul class="errors-list">
+        <ul>
             {% for field in form %}
                 {% if field.errors %}
             <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
@@ -66,7 +66,7 @@
         {% endif %}
 
     <header class="content-header">
-        <h1 class="heading-xlarge">{% trans "Case details" %}</h1>
+        <h1>{% trans "Case details" %}</h1>
     </header>
 
     <div class="with-help-images">
@@ -95,7 +95,7 @@
         {% endwith %}
 
 
-        <div class="form-group form-submit">
+        <div class="form-submit">
             <button class="button" type="submit">{% trans "Continue" %}</button>
         </div>
     </div>
