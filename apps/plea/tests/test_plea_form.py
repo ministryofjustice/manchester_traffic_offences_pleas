@@ -134,11 +134,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         court_obj = Court.objects.get(region_code="06")
 
-        import pdb; pdb.set_trace()
-
         self.assertContains(
             response,
-            "<br>".join(court_obj.court_address.split("\n")))
+            "<br />".join(court_obj.court_address.split("\n")))
 
         self.assertContains(response, court_obj.court_email)
 
@@ -798,6 +796,12 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form.load(request_context)
         response = form.render()
+
+        court_obj = Court.objects.get(region_code="06")
+
+        self.assertContains(
+            response,
+            "<br />".join(court_obj.court_address.split("\n")))
 
         self.assertIn(test_data["case"]["urn"], response.content)
 
