@@ -31,6 +31,7 @@ Forms
 	label {
 		@include bold-24();
 		display: block;
+		margin-bottom: .25em;
 	}
 
 	.block-label {
@@ -149,14 +150,12 @@ fieldset {
 }
 
 legend {
+	@include core-24;
 	padding: 0;
 	margin: 0;
 
 	&.form-label {
-		@extend .form-label;
-		@include bold-24();
-		
-		margin-bottom: 0;
+		@include core-24;
 	}
 
 	@include ie-lte(8) {
@@ -171,10 +170,6 @@ legend {
 
 legend + * {
   -webkit-margin-top-collapse: separate;
-}
-
-legend.form-label-bold {
-	@include bold-24();
 }
 
 .form-submit {
@@ -228,6 +223,7 @@ legend.form-label-bold {
 }
 
 .errorlist {
+	@include core-19;
 	margin: .25em 0;
 	padding: 0;
 	color: $error-colour;
