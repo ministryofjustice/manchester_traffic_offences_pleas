@@ -10,16 +10,18 @@ from brake.decorators import ratelimit
 from .models import Case
 
 from apps.govuk_utils.forms import MultiStageForm
-from stages import (CaseStage, YourDetailsStage, PleaStage, YourMoneyStage,
-                    YourExpensesStage, ReviewStage, CompleteStage)
-
+from stages import (CaseStage, YourDetailsStage, CompanyDetailsStage,
+                    PleaStage, YourMoneyStage, YourExpensesStage,
+                    CompanyFinancesStage, ReviewStage, CompleteStage)
 
 class PleaOnlineForms(MultiStageForm):
     stage_classes = [CaseStage,
                      YourDetailsStage,
+                     CompanyDetailsStage,
                      PleaStage,
                      YourMoneyStage,
                      YourExpensesStage,
+                     CompanyFinancesStage,
                      ReviewStage,
                      CompleteStage]
 
@@ -46,6 +48,7 @@ class PleaOnlineForms(MultiStageForm):
 
         super(PleaOnlineForms, self).save(*args, **kwargs)
 
+    @never_cache
     def render(self):
         if self._urn_invalid:
             return redirect('urn_already_used')
@@ -67,11 +70,16 @@ class PleaOnlineViews(TemplateView):
             return redirect
 
         form.process_messages(request)
+
+        if stage == "complete":
+            request.session.clear()
+
         return form.render()
 
     @never_cache
     @method_decorator(ratelimit(block=True, rate="20/m"))
     def post(self, request, stage):
+
         nxt = request.GET.get("next", None)
 
         form = PleaOnlineForms(stage, "plea_form_step", request.session)

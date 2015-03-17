@@ -1,4 +1,7 @@
 {% extends "plea/base.html" %}
+
+{% load i18n %}
+
 {% block page_title %}{{ block.super }} URN already used{% endblock %}
 {% block body_classes %}{{ block.super }} urn_invalid{% endblock %}
 {% load staticfiles %}
@@ -9,24 +12,24 @@
 
             <section class="flash error-summary no_margin">
 
-                <h2 id="error-heading">This URN has already been used to make a plea online</h2>
+                <h2 id="error-heading">{% trans "This URN has already been used to make a plea online" %}</h2>
 
-                <p>The unique reference number you entered is no longer valid. Please check and try again.</p>
+                <p>{% trans "The unique reference number you entered is no longer valid. Please check and try again." %}</p>
 
-                <p>To make changes to a plea you’ve already made online, email or write to the court before your hearing with:</p>
+                <p>{% trans "To make changes to a plea you’ve already made online, email or write to the court before your hearing with:" %}</p>
 
                 <ul class="with-bullets">
-                    <li>details of the changes you want to make</li>
-                    <li>your unique reference number</li>
+                    <li>{% trans "details of the changes you want to make" %}</li>
+                    <li>{% trans "your unique reference number" %}</li>
                 </ul>
 
 
                 <ul>
-                    <li id="case_contact_link"><a href="/contact">View court contact details</a></li>
+                    <li id="case_contact_link"><a href="/contact">{% trans "View court contact details" %}</a></li>
                     <li id="case_contact_details" class="js-hidden">
 
 
-                    <h2>Send letters to:</h2>
+                    <h2>{% trans "Send letters to:" %}</h2>
                     <p>The Operations Manager<br>
                     Manchester & Salford<br>
                     Magistrates Court<br>
@@ -34,7 +37,7 @@
                     Manchester<br>
                     M60 1PR</p>
 
-                    <p><h2>Send email to:</h2>
+                    <p><h2>{% trans "Send email to:" %}</h2>
                     <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">roadtrafficpcr@hmcts.gsi.gov.uk</a></p>
 
                     </li>
@@ -43,13 +46,13 @@
             </section>
 
 
-            <h2 id="your-details">Create a new plea</h2>
+            <h2 id="your-details">{% trans "Create a new plea" %}</h2>
 
-            <p>Select the button below to start a new plea</p>
+            <p>{% trans "Select the button below to start a new plea" %}</p>
 
             <form method="post">
                 {% csrf_token %}
-                <button class="button button-get-started" href="/plea/" role="button">Start now</button>
+                <button class="button button-get-started" href="/plea/" role="button">{% trans "Start now" %}</button>
             </form>
         </div>
     </div>

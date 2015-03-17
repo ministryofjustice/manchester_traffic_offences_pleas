@@ -149,11 +149,11 @@ class CourtEmailCountModelTestCase(TestCase):
             "plea": {
                 "PleaForms": [
                     {
-                        "mitigations": "13 chars long",
+                        "guilty_extra": "13 chars long",
                         "guilty": "guilty"
                     },
                     {
-                        "mitigations": "16 chars long xx",
+                        "not_guilty_extra": "16 chars long xx",
                         "guilty": "not_guilty"
                     }
                 ],
