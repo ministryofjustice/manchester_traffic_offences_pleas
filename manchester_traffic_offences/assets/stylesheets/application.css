@@ -10,7 +10,7 @@
 @-o-viewport {
   width: device-width; }
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
-.column-half .form-group:after, .form-block:after {
+.column-half .form-group:after, .form-submit:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -31,7 +31,7 @@
 @-o-viewport {
   width: device-width; }
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
-.column-half .form-group:after, .form-block:after {
+.column-half .form-group:after, .form-submit:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -54,7 +54,7 @@
 @-o-viewport {
   width: device-width; }
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
-.column-half .form-group:after, .form-block:after {
+.column-half .form-group:after, .form-submit:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -75,7 +75,7 @@
 @-o-viewport {
   width: device-width; }
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
-.column-half .form-group:after, .form-block:after {
+.column-half .form-group:after, .form-submit:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -89,7 +89,7 @@
 @-o-viewport {
   width: device-width; }
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
-.column-half .form-group:after, .form-block:after {
+.column-half .form-group:after, .form-submit:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -136,7 +136,7 @@
 @-o-viewport {
   width: device-width; }
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
-.column-half .form-group:after, .form-block:after {
+.column-half .form-group:after, .form-submit:after, .form-block:after {
   content: "";
   display: block;
   clear: both; }
@@ -150,31 +150,21 @@
 Typography
 ====================================================
 */
-.heading-collapse {
-  margin-bottom: 0; }
-
-p,
-ul,
-ol,
-address,
-summary {
+#content {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
   font-weight: 400;
   text-transform: none; }
   @media (max-width: 640px) {
-    p,
-    ul,
-    ol,
-    address,
-    summary {
+    #content {
       font-size: 16px;
       line-height: 1.25; } }
 
+.heading-collapse, .headings-collapse h1, .headings-collapse h2, .headings-collapse h3, .headings-collapse h4, .headings-collapse h5 {
+  margin-bottom: 0; }
+
 address {
-  margin-top: 0.3125em;
-  margin-bottom: 1.25em;
   font-style: normal; }
 
 .button, .button-large {
@@ -596,21 +586,23 @@ ol {
   list-style-type: none;
   padding: 0; }
 
-.list-bullet {
+.list-bullet, ul, .error-summary ul.list-bullet {
   list-style-type: disc;
   padding-left: 20px; }
 
-.list-number {
+.list-number, ol {
   list-style-type: decimal;
   padding-left: 20px; }
 
-.list-bullet,
-.list-number {
+.list-bullet, ul, .error-summary ul.list-bullet,
+.list-number,
+ol {
   margin-top: 5px;
   margin-bottom: 20px; }
 
-.list-bullet li,
-.list-number li {
+.list-bullet li, ul li, .error-summary ul.list-bullet li,
+.list-number li,
+ol li {
   margin-bottom: 5px; }
 
 .panel-indent {
@@ -626,7 +618,7 @@ ol {
 .panel-indent p:last-child {
   margin-bottom: 0; }
 
-.panel-indent .form-group:last-child, .panel-indent .form-group-wide:last-child {
+.panel-indent .form-group:last-child, .panel-indent .form-group-wide:last-child, .panel-indent .form-submit:last-child {
   margin-bottom: 0; }
 
 table {
@@ -813,7 +805,7 @@ main {
       font-size: 14px;
       line-height: 1.14286; } }
 
-.heading-xlarge {
+.heading-xlarge, h1 {
   font-family: "nta", Arial, sans-serif;
   font-size: 48px;
   line-height: 1.04167;
@@ -822,14 +814,14 @@ main {
   margin-top: 0.46875em;
   margin-bottom: 0.9375em; }
   @media (max-width: 640px) {
-    .heading-xlarge {
+    .heading-xlarge, h1 {
       font-size: 32px;
       line-height: 1.09375; } }
   @media (min-width: 641px) {
-    .heading-xlarge {
+    .heading-xlarge, h1 {
       margin-top: 0.625em;
       margin-bottom: 1.25em; } }
-  .heading-xlarge .heading-secondary {
+  .heading-xlarge .heading-secondary, h1 .heading-secondary {
     font-family: "nta", Arial, sans-serif;
     font-size: 27px;
     line-height: 1.11111;
@@ -840,15 +832,15 @@ main {
     display: block;
     color: #6f777b; }
     @media (max-width: 640px) {
-      .heading-xlarge .heading-secondary {
+      .heading-xlarge .heading-secondary, h1 .heading-secondary {
         font-size: 20px;
         line-height: 1.11111; } }
     @media (min-width: 641px) {
-      .heading-xlarge .heading-secondary {
+      .heading-xlarge .heading-secondary, h1 .heading-secondary {
         padding-top: 4px;
         padding-bottom: 6px; } }
 
-.heading-large {
+.heading-large, h2 {
   font-family: "nta", Arial, sans-serif;
   font-size: 36px;
   line-height: 1.11111;
@@ -857,14 +849,14 @@ main {
   margin-top: 1.04167em;
   margin-bottom: 0.41667em; }
   @media (max-width: 640px) {
-    .heading-large {
+    .heading-large, h2 {
       font-size: 24px;
       line-height: 1.04167; } }
   @media (min-width: 641px) {
-    .heading-large {
+    .heading-large, h2 {
       margin-top: 1.25em;
       margin-bottom: 0.55556em; } }
-  .heading-large .heading-secondary {
+  .heading-large .heading-secondary, h2 .heading-secondary {
     font-family: "nta", Arial, sans-serif;
     font-size: 24px;
     line-height: 1.25;
@@ -875,15 +867,15 @@ main {
     display: block;
     color: #6f777b; }
     @media (max-width: 640px) {
-      .heading-large .heading-secondary {
+      .heading-large .heading-secondary, h2 .heading-secondary {
         font-size: 18px;
         line-height: 1.2; } }
     @media (min-width: 641px) {
-      .heading-large .heading-secondary {
+      .heading-large .heading-secondary, h2 .heading-secondary {
         padding-top: 6px;
         padding-bottom: 4px; } }
 
-.heading-medium {
+.heading-medium, h3, .error-summary h2 {
   font-family: "nta", Arial, sans-serif;
   font-size: 24px;
   line-height: 1.25;
@@ -892,15 +884,15 @@ main {
   margin-top: 1.25em;
   margin-bottom: 0.5em; }
   @media (max-width: 640px) {
-    .heading-medium {
+    .heading-medium, h3, .error-summary h2 {
       font-size: 18px;
       line-height: 1.2; } }
   @media (min-width: 641px) {
-    .heading-medium {
+    .heading-medium, h3, .error-summary h2 {
       margin-top: 1.875em;
       margin-bottom: 0.83333em; } }
 
-.heading-small {
+.heading-small, h4, h5 {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -909,11 +901,11 @@ main {
   margin-top: 0.625em;
   margin-bottom: 0.3125em; }
   @media (max-width: 640px) {
-    .heading-small {
+    .heading-small, h4, h5 {
       font-size: 16px;
       line-height: 1.25; } }
   @media (min-width: 641px) {
-    .heading-small {
+    .heading-small, h4, h5 {
       margin-top: 1.05263em; } }
 
 p {
@@ -924,14 +916,14 @@ p {
       margin-top: 0.26316em;
       margin-bottom: 1.05263em; } }
 
-.lede {
+.lede, .content-header p:first-of-type {
   font-family: "nta", Arial, sans-serif;
   font-size: 24px;
   line-height: 1.25;
   font-weight: 400;
   text-transform: none; }
   @media (max-width: 640px) {
-    .lede {
+    .lede, .content-header p:first-of-type {
       font-size: 18px;
       line-height: 1.2; } }
 
@@ -967,13 +959,13 @@ fieldset {
   width: 100%; }
 
 .form-group, .form-group-wide,
-.column-half .form-group {
+.column-half .form-group, .form-submit {
   float: left;
   width: 100%;
   margin-bottom: 15px; }
   @media (min-width: 641px) {
     .form-group, .form-group-wide,
-    .column-half .form-group {
+    .column-half .form-group, .form-submit {
       margin-bottom: 30px; } }
 
 .form-group-related {
@@ -991,12 +983,12 @@ fieldset {
     .form-title {
       margin-bottom: 45px; } }
 
-.form-label,
+.form-label, legend.form-label,
 .form-label-bold {
   display: block;
   color: #0b0c0c; }
 
-.form-label {
+.form-label, legend.form-label {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -1004,7 +996,7 @@ fieldset {
   text-transform: none;
   margin-bottom: 5px; }
   @media (max-width: 640px) {
-    .form-label {
+    .form-label, legend.form-label {
       font-size: 16px;
       line-height: 1.25; } }
 
@@ -1019,14 +1011,14 @@ fieldset {
     .form-label-bold {
       font-size: 18px;
       line-height: 1.2; } }
-  .form-label-bold .form-hint, .form-label-bold .form-group .form-hint-inline, .form-group .form-label-bold .form-hint-inline, .form-label-bold .form-group-wide .form-hint-inline, .form-group-wide .form-label-bold .form-hint-inline {
+  .form-label-bold .form-hint, .form-label-bold .form-group .form-hint-inline, .form-group .form-label-bold .form-hint-inline, .form-label-bold .form-group-wide .form-hint-inline, .form-group-wide .form-label-bold .form-hint-inline, .form-label-bold .form-submit .form-hint-inline, .form-submit .form-label-bold .form-hint-inline {
     font-family: "nta", Arial, sans-serif;
     font-size: 19px;
     line-height: 1.31579;
     font-weight: 400;
     text-transform: none; }
     @media (max-width: 640px) {
-      .form-label-bold .form-hint, .form-label-bold .form-group .form-hint-inline, .form-group .form-label-bold .form-hint-inline, .form-label-bold .form-group-wide .form-hint-inline, .form-group-wide .form-label-bold .form-hint-inline {
+      .form-label-bold .form-hint, .form-label-bold .form-group .form-hint-inline, .form-group .form-label-bold .form-hint-inline, .form-label-bold .form-group-wide .form-hint-inline, .form-group-wide .form-label-bold .form-hint-inline, .form-label-bold .form-submit .form-hint-inline, .form-submit .form-label-bold .form-hint-inline {
         font-size: 16px;
         line-height: 1.25; } }
 
@@ -1034,12 +1026,12 @@ fieldset {
   float: left;
   width: 100%; }
 
-.form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline {
+.form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline, .form-submit .form-hint-inline {
   display: block;
   color: #6f777b;
   margin-bottom: 5px; }
   @media (min-width: 641px) {
-    .form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline {
+    .form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline, .form-submit .form-hint-inline {
       margin-top: 8px; } }
 
 .form-control, .form-control-inline, .form-control-day,
@@ -1140,7 +1132,7 @@ fieldset {
 .validation-summary a {
   color: #df3034; }
 
-.validation-summary .heading-small {
+.validation-summary .heading-small, .validation-summary h4, .validation-summary h5 {
   margin-top: 15px; }
 
 .validation-message {
@@ -1164,16 +1156,16 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield; }
 
-.form-date .form-group, .form-date .form-group-wide {
+.form-date .form-group, .form-date .form-group-wide, .form-date .form-submit {
   float: left;
   width: 50px;
   margin-right: 20px;
   margin-bottom: 0;
   clear: none; }
-  .form-date .form-group label, .form-date .form-group-wide label {
+  .form-date .form-group label, .form-date .form-group-wide label, .form-date .form-submit label {
     display: block;
     margin-bottom: 5px; }
-  .form-date .form-group input, .form-date .form-group-wide input {
+  .form-date .form-group input, .form-date .form-group-wide input, .form-date .form-submit input {
     width: 100%; }
 .form-date .form-group-year {
   width: 70px; }
@@ -1262,16 +1254,16 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield; }
 
-.form-date .form-group, .form-date .form-group-wide {
+.form-date .form-group, .form-date .form-group-wide, .form-date .form-submit {
   float: left;
   width: 50px;
   margin-right: 20px;
   margin-bottom: 0;
   clear: none; }
-  .form-date .form-group label, .form-date .form-group-wide label {
+  .form-date .form-group label, .form-date .form-group-wide label, .form-date .form-submit label {
     display: block;
     margin-bottom: 5px; }
-  .form-date .form-group input, .form-date .form-group-wide input {
+  .form-date .form-group input, .form-date .form-group-wide input, .form-date .form-submit input {
     width: 100%; }
 .form-date .form-group-year {
   width: 70px; }
@@ -1304,7 +1296,7 @@ input[type=number] {
 .validation-summary a {
   color: #df3034; }
 
-.validation-summary .heading-small {
+.validation-summary .heading-small, .validation-summary h4, .validation-summary h5 {
   margin-top: 15px; }
 
 .validation-message {
@@ -1419,45 +1411,31 @@ Forms
 
 /*== Main form styles ===============================*/
 .form-group, .form-group-wide,
-.column-half .form-group {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 19px;
-  line-height: 1.31579;
-  font-weight: 400;
-  text-transform: none;
+.column-half .form-group, .form-submit {
   width: auto;
   float: none;
   clear: left;
-  margin-top: 1em; }
-  @media (max-width: 640px) {
-    .form-group, .form-group-wide,
-    .column-half .form-group {
-      font-size: 16px;
-      line-height: 1.25; } }
+  margin: 0 0 2em; }
   @media (min-width: 641px) {
     .form-group, .form-group-wide,
-    .column-half .form-group {
+    .column-half .form-group, .form-submit {
       max-width: 60%; } }
-  .form-group .form-group, .form-group-wide .form-group, .form-group .form-group-wide, .form-group-wide .form-group-wide {
+  .form-group .form-group, .form-group-wide .form-group, .form-submit .form-group, .form-group .form-group-wide, .form-group-wide .form-group-wide, .form-submit .form-group-wide, .form-group .form-submit, .form-group-wide .form-submit, .form-submit .form-submit {
     max-width: 100%; }
   .form-group label, .form-group-wide label,
-  .column-half .form-group label {
+  .column-half .form-group label, .form-submit label {
     font-family: "nta", Arial, sans-serif;
     font-size: 24px;
     line-height: 1.25;
     font-weight: 700;
     text-transform: none;
-    display: block;
-    margin-bottom: .25em; }
+    display: block; }
     @media (max-width: 640px) {
       .form-group label, .form-group-wide label,
-      .column-half .form-group label {
+      .column-half .form-group label, .form-submit label {
         font-size: 18px;
         line-height: 1.2; } }
-  .form-group .errorlist, .form-group-wide .errorlist {
-    margin: .25em 0;
-    color: #df3034; }
-  .form-group .block-label, .form-group-wide .block-label {
+  .form-group .block-label, .form-group-wide .block-label, .form-submit .block-label {
     font-family: "nta", Arial, sans-serif;
     font-size: 24px;
     line-height: 1.25;
@@ -1465,28 +1443,32 @@ Forms
     text-transform: none;
     margin-right: 0; }
     @media (max-width: 640px) {
-      .form-group .block-label, .form-group-wide .block-label {
+      .form-group .block-label, .form-group-wide .block-label, .form-submit .block-label {
         font-size: 18px;
         line-height: 1.2; } }
     @media (min-width: 641px) {
-      .form-group .block-label, .form-group-wide .block-label {
-        margin-right: 15px; }
-        .form-group .block-label input, .form-group-wide .block-label input {
-          top: 22px; } }
-  .form-group .form-hint, .form-group-wide .form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline {
-    display: block;
+      .form-group .block-label input, .form-group-wide .block-label input, .form-submit .block-label input {
+        top: 22px; } }
+  @media (min-width: 641px) {
+    .form-group .inline .block-label, .form-group-wide .inline .block-label, .form-submit .inline .block-label {
+      margin-right: 15px; } }
+  .form-group .form-hint, .form-group-wide .form-hint, .form-submit .form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline, .form-submit .form-hint-inline {
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
     font-weight: 400;
-    text-transform: none; }
+    text-transform: none;
+    margin: .25em 0; }
     @media (max-width: 640px) {
-      .form-group .form-hint, .form-group-wide .form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline {
+      .form-group .form-hint, .form-group-wide .form-hint, .form-submit .form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline, .form-submit .form-hint-inline {
         font-size: 14px;
         line-height: 1.14286; } }
-  .form-group .form-hint-inline, .form-group-wide .form-hint-inline {
+  .form-group .form-hint-inline, .form-group-wide .form-hint-inline, .form-submit .form-hint-inline {
     display: inline;
     vertical-align: baseline; }
+  .form-group .errorlist, .form-group-wide .errorlist, .form-submit .errorlist {
+    margin: .25em 0;
+    color: #df3034; }
 
 .form-control, .form-control-inline, .form-control-day,
 .form-control-month,
@@ -1497,7 +1479,8 @@ Forms
 
 .form-group-wide,
 .column-half .form-group-wide,
-.column-half .form-group {
+.column-half .form-group,
+.column-half .form-submit {
   max-width: 100%; }
 
 .form-control-inline, .form-control-day,
@@ -1522,67 +1505,46 @@ Forms
   .form-control-wide {
     width: 75%; } }
 
-.form-control-day,
-.form-control-month {
-  width: 2em; }
-
-.form-control-year {
-  width: 3em; }
-
-.form-group-extra .form-group, .form-group-extra .form-group-wide {
-  margin-top: 0; }
-
 fieldset {
   margin: 0;
   -webkit-margin-top-collapse: separate; }
 
 legend {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 24px;
-  line-height: 1.25;
-  font-weight: 400;
-  text-transform: none;
   padding: 0;
   margin: 0; }
-  @media (max-width: 640px) {
-    legend {
-      font-size: 18px;
-      line-height: 1.2; } }
-
-legend + * {
-  -webkit-margin-top-collapse: separate; }
-
-legend.form-label-bold {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 24px;
-  line-height: 1.25;
-  font-weight: 700;
-  text-transform: none; }
-  @media (max-width: 640px) {
-    legend.form-label-bold {
-      font-size: 18px;
-      line-height: 1.2; } }
+  legend.form-label {
+    font-family: "nta", Arial, sans-serif;
+    font-size: 24px;
+    line-height: 1.25;
+    font-weight: 700;
+    text-transform: none;
+    margin-bottom: 0; }
+    @media (max-width: 640px) {
+      legend.form-label {
+        font-size: 18px;
+        line-height: 1.2; } }
 
 .form-submit {
   clear: left;
   margin-top: 3em; }
 
 /*== Error styles ==================================*/
-.form-group .validation-message .errorlist, .form-group-wide .validation-message .errorlist {
-  margin: .25em 0;
-  color: #df3034; }
-
 .error-summary {
-  margin: 2em 0;
-  padding: 15px 15px 0;
+  margin: 1.625em 0;
+  padding: 15px;
   background: #fef7f7;
   border: 4px solid #df3034; }
   .error-summary h2 {
     margin-top: 0; }
-  .error-summary .errors-list a {
-    color: #000; }
-  .error-summary details {
-    margin-bottom: 1.05263em; }
+  .error-summary ul {
+    padding: 0;
+    list-style: none; }
+    .error-summary ul a {
+      color: #000; }
+      .error-summary ul a:hover, .error-summary ul a:focus {
+        text-decoration: none; }
+  .error-summary > :last-child {
+    margin-bottom: 0; }
 
 .with-error {
   padding-left: 10px;
@@ -1590,6 +1552,13 @@ legend.form-label-bold {
   @media (min-width: 641px) {
     .with-error {
       padding-left: 15px; } }
+
+.errorlist {
+  margin: .25em 0;
+  padding: 0;
+  color: #df3034; }
+  .errorlist li {
+    list-style: none; }
 
 /*== Modifiers ========================================*/
 .money-field input {
@@ -1648,7 +1617,7 @@ hr {
   padding: 0; }
 
 .content-header {
-  margin: 0 0 2em; }
+  margin: 0 0 1.675em; }
   .content-header h1 {
     margin-bottom: .25em; }
 
@@ -1658,11 +1627,6 @@ hr {
   .related h3 {
     margin-top: 10px; }
 
-p.important, #section_understand .block-label .important {
-  padding: 7px 0 0 40px;
-  min-height: 27px;
-  background: url(../images/icons/icon-important.png) no-repeat top left; }
-
 .panel-indent {
   padding-top: 0;
   padding-bottom: 0;
@@ -1671,14 +1635,19 @@ p.important, #section_understand .block-label .important {
     .panel-indent {
       padding-left: 15px; } }
 
-@media (min-width: 641px) {
-  .move-up {
-    margin-top: -.75em; } }
+.move-up {
+  margin-top: -1em; }
 
 #content img {
   max-width: 100%;
   height: auto; }
 
+p.important, #section_understand .block-label .important {
+  padding: 7px 0 0 40px;
+  min-height: 27px;
+  background: url(../images/icons/icon-important.png) no-repeat top left; }
+
+/*== JS classes ======================================*/
 .js-enabled-only {
   display: none; }
 
@@ -1694,19 +1663,35 @@ Main styles
 .intro h2:first-child {
   margin-top: 0; }
 .intro .get-started {
-  padding-top: 1em; }
+  padding-top: .75em; }
 
-.before-start .panel-indent .list-bullet {
-  margin-top: 0;
-  margin-bottom: 0; }
+.fine-reduction p {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.25;
+  font-weight: 400;
+  text-transform: none; }
+  @media (max-width: 640px) {
+    .fine-reduction p {
+      font-size: 14px;
+      line-height: 1.14286; } }
+  .fine-reduction p strong {
+    font-family: "nta", Arial, sans-serif;
+    font-size: 80px;
+    line-height: 1;
+    font-weight: 700;
+    text-transform: none; }
+    @media (max-width: 640px) {
+      .fine-reduction p strong {
+        font-size: 53px;
+        line-height: 1.03774; } }
 
 /*== Case screen =============================================*/
 .with-help-images .help-image {
   display: none; }
 @media (min-width: 641px) {
-  .with-help-images .form-group, .with-help-images .form-group-wide {
-    float: left;
-    margin-bottom: .5789em; }
+  .with-help-images .form-group, .with-help-images .form-group-wide, .with-help-images .form-submit {
+    float: left; }
   .with-help-images .help-image {
     display: block;
     float: right;
@@ -1797,7 +1782,8 @@ Main styles
     margin: 0 0 1.25em; }
   #section_understand .block-label input {
     position: static;
-    margin: 0 .25em 0 0;
+    float: left;
+    margin: 0 .5em;
     font-family: "nta", Arial, sans-serif;
     font-size: 24px;
     line-height: 1.25;
@@ -1807,21 +1793,19 @@ Main styles
       #section_understand .block-label input {
         font-size: 18px;
         line-height: 1.2; } }
+    @media (min-width: 641px) {
+      #section_understand .block-label input {
+        margin: .125em .375em; } }
+  #section_understand .block-label .checkbox-text {
+    display: block;
+    margin-left: 40px; }
 
 #section_receive_email .grey {
-  font-family: "nta", Arial, sans-serif;
-  font-size: 19px;
-  line-height: 1.31579;
-  font-weight: 400;
-  text-transform: none;
   padding: 1em;
   background: #dee0e2; }
-  @media (max-width: 640px) {
-    #section_receive_email .grey {
-      font-size: 16px;
-      line-height: 1.25; } }
   #section_receive_email .grey ul {
-    margin: 0; }
+    margin: 1em 0 0;
+    padding: 0; }
     #section_receive_email .grey ul li {
       display: inline-block;
       margin: 0 1em 0 0; }
@@ -1877,12 +1861,13 @@ Main styles
     background: url(../images/icons/tick.png) 0 7px no-repeat; }
 
 .what-next ol {
-  margin: 0; }
+  padding: 0; }
   .what-next ol li {
+    list-style: none;
     counter-increment: item;
     margin-bottom: 5px; }
     .what-next ol li:before {
-      content: counter(item) ". ";
+      content: counter(item) ".";
       display: inline-block;
       font-family: "nta", Arial, sans-serif;
       font-size: 19px;
@@ -1890,21 +1875,21 @@ Main styles
       font-weight: 700;
       text-transform: none;
       margin-right: .25em;
-      width: 1em; }
+      width: 1.125em; }
       @media (max-width: 640px) {
         .what-next ol li:before {
           font-size: 16px;
           line-height: 1.25; } }
 
 /*== Feedback screen ================================================*/
-#section_feedback_satisfaction legend.form-label-bold {
+#section_feedback_satisfaction legend.form-label {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
   font-weight: 400;
   text-transform: none; }
   @media (max-width: 640px) {
-    #section_feedback_satisfaction legend.form-label-bold {
+    #section_feedback_satisfaction legend.form-label {
       font-size: 16px;
       line-height: 1.25; } }
 
