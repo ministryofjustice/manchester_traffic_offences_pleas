@@ -50,12 +50,14 @@
             
             <div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty_{{ forloop.counter }}">
               <fieldset>
-                {% if form_count > 1 %}
-                <legend class="form-label">{% blocktrans with counter=forloop.counter %}Your plea for charge [{{ counter }}]{% endblocktrans %}</legend>
-                {% endif %}
+                {% if form_count > 1 or form.guilty.errors %}
+                <legend class="form-label">
+                    {% if form_count > 1 %}
+                    {% blocktrans with counter=forloop.counter %}Your plea for charge [{{ counter }}]{% endblocktrans %}
+                    {% endif %}
 
-                {% if form.guilty.errors %}
-                <div class="validation-message">{{ form.guilty.errors }}</div>
+                    {{ form.guilty.errors }}
+                </legend>
                 {% endif %}
 
                 <div class="form-field">
