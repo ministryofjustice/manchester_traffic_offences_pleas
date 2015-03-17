@@ -1,0 +1,68 @@
+{% extends "plea/base.html" %}
+
+{% load i18n %}
+{% load debug %}
+
+{% block page_title %}{{ block.super }} {% trans "Company Finances" %}{% endblock %}
+
+{% block page_content %}
+
+    {% with request.session.case.number_of_charges as charges %}
+<form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
+
+    {% csrf_token %}
+
+    {% with forms.0 as form %}
+
+        {% if form.errors %}
+        <section class="error-summary">
+            <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
+
+            <p>{% trans "See highlighted errors below." %}</p>
+
+            <ul>
+            {% for field in form %}
+                {% if field.errors %}
+                <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+
+     <header class="content-header">
+        <h1>{% trans "Company details" %}</h1>
+
+        <p>{% trans "The court will decide the company's fine based on its size and financial situation." %}</p>
+    </header>
+
+    {% with form.trading_period as field %}
+        {% include "widgets/radio_field.html" %}
+    {% endwith %}
+
+    <div class="js-Conditional" data-conditional-trigger="trading_period" data-conditional-value="^(True|False)$">
+
+        {% with form.number_of_employees as field %}
+            {% include "widgets/std_field.html" %}
+        {% endwith %}
+
+        <h3 class="heading-medium js-TemplatedElement" data-template-trigger="trading_period" data-template="{% trans "From the first 12 months' trading projections, tell us:" %}" data-template-defaults-for="True">{% trans "From the most recent audited company accounts, tell us:" %}</h3>
+
+        {% with form.gross_turnover as field %}
+            {% include "widgets/money_field.html" %}
+        {% endwith %}
+
+        {% with form.net_turnover as field %}
+            {% include "widgets/money_field.html" %}
+        {% endwith %}
+
+    </div>
+
+    {% endwith %}
+
+    <div class="form-submit">
+        <button class="button" type="submit">{% trans "Continue" %}</button>
+    </div>
+</form>
+    {% endwith %}
+{% endblock page_content %}

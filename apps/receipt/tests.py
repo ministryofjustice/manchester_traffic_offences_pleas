@@ -229,7 +229,7 @@ class TestProcessReceipts(TestCase):
 
     def test_records_changed_on_changed_urn(self):
 
-        updated_urn = "00/BB/0000000/00"
+        updated_urn = "06/BB/0000000/00"
 
         ref = "<<<makeaplea-ref: {}/{}>>>"\
             .format(self.case.id, self.email_count.id)

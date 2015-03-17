@@ -1,75 +1,75 @@
 {% load testing %}
-GOV.UK - Online plea submission confirmation
+{% load i18n %}
+{% trans "GOV.UK - Online plea submission confirmation" %}
 
-Your online plea{{ number_of_charges|pluralize }} ha{{ number_of_charges|pluralize:"s,ve" }} been submitted
+{% blocktrans count charges=number_of_charges %}
+Your online plea has been submitted
+{% plural %}
+Your online pleas have been submitted
+{% endblocktrans %}
 
-{{ name }}
-Your {% if plea_type == "guilty" %}guilty {% endif %}{% if plea_type == "not_guilty" %}not guilty {% endif %}plea{{ case.number_of_charges|pluralize }} ha{{ case.number_of_charges|pluralize:"s,ve" }} been sent to the court
+{% if plea_type == "guilty" %}
+{% blocktrans count charges=number_of_charges %}
+Your guilty plea has been sent to the court
+{% plural %}
+Your guilty pleas have been sent to the court
+{% endblocktrans %}
+{% else %}
+{% blocktrans count charges=number_of_charges %}
+Your not guilty plea has been sent to the court
+{% plural %}
+Your not guilty pleas have been sent to the court
+{% endblocktrans %}
+{% endif %}
 
-What happens next?
+{% trans "What happens next?" %}
 
 {% if plea_type == "guilty" %}
     {% add_test_tag "<<GUILTY>>" %}
 
-1. There's no need to come
-    to court on the hearing date shown in the pack we sent you.
+{% trans "1. There's no need to come to court on the hearing date shown in the pack we sent you." %}
 
-2. We'll send you a letter with
-    the court's decision{{ case.number_of_charges|pluralize}} within three working days after your hearing.
+{% trans "2. We'll send you a letter with the court's decision{{ case.number_of_charges|pluralize}} within three working days after your hearing." %}
 
-3. Quote your URN {{ urn | upper }} if you contact the court about your case.
+{% blocktrans with urn=urn|upper %}3. Quote your URN {{ urn }} if you contact the court about your case.{% endblocktrans %}
 
-4. Print a copy of this confirmation of plea for your records.
+{% trans "4. Print a copy of this confirmation of plea for your records." %}
 
 {% endif %}
 
 {% if plea_type == "not_guilty" %}
     {% add_test_tag "<<NOTGUILTY>>" %}
 
-1. There's no need to come to court on the hearing date shown in the
-    pack we sent you.
+{% blocktrans %}1. There's no need to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}
 
-2. The court will tell you if you need to attend for your trial, and what
-    evidence you may need to send to the court in support of your
-    case.
+{% blocktrans %}2. The court will tell you if you need to attend for your trial, and what evidence you may need to send to the court in support of your case.{% endblocktrans %}
 
-3. We'll send you a letter with the court's decision{{ case.number_of_charges|pluralize}} within three working
-    days after your hearing.
-
-4. Quote your URN {{ urn | upper }} if you contact the court about your
-    case.
-
-5. Print a copy of this confirmation of plea for your records.
+{% blocktrans count charges=number_of_charges %}3. We'll send you a letter with the court's decision within three working days after your hearing.
+{% plural %}3. We'll send you a letter with the court's decisions within three working days after your hearing.{% endblocktrans %}
+{% blocktrans with urn=urn|upper %}4. Quote your URN {{ urn }} if you contact the court about your case.{% endblocktrans %}
+{% trans "5. Print a copy of this confirmation of plea for your records." %}
 
 {% endif %}
 
 {% if plea_type == "mixed" %}
     {% add_test_tag "<<MIXED>>" %}
 
-1. There's no need to come to court on the hearing date shown in the
-    pack we sent you.
+{% trans "1. There's no need to come to court on the hearing date shown in the pack we sent you." %}
+{% trans "2. The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case." %}
+{% trans "3. We'll send you a letter with the court's decisions within three working days after your hearing." %}
+{% blocktrans with urn=urn|upper %}4. Quote your URN {{ urn }} if you contact the court about your case.{% endblocktrans %}
 
-2. The court will tell you if you need to attend a trial, and what
-    evidence you may need to send to the court in support of your
-    case.
-
-3. We'll send you a letter with the court's decisions within three working
-    days after your hearing.
-
-4. Quote your URN {{ urn | upper }} if you contact the court about
-    your case.
-
-5. Print a copy of this confirmation of plea for your records.
+{% trans "5. Print a copy of this confirmation of plea for your records." %}
 
 {% endif %}
 
-Need to change a plea?
+{% trans "Need to change a plea?" %}
 
-Contact the court by post or email quoting your URN before the date of your hearing.
+{% trans "Contact the court by post or email quoting your URN before the date of your hearing." %}
 
-The contact details for the court are:
+{% trans "The contact details for the court are:" %}
 
-By Post:
+{% trans "By Post:" %}
 The Operations Manager
 Manchester & Salford
 Magistrates Court
@@ -77,15 +77,22 @@ Crown Square
 Manchester
 M60 1PR
 
-By email:
+{% trans "By email:" %}
 roadtrafficpcr@hmcts.gsi.gov.uk
 
 -------
 
-If you're unsure an email is from the Ministry of Justice:
+{% trans "We’re constantly working to improve Make Your Plea." %}
 
-* do not reply to it or click any links
-* forward it to feedback@makeaplea.gov.uk
+{% trans "Please give us feedback so we can make it better:" %}
+https://www.makeaplea.justice.gov.uk/feedback/
 
-Terms and Conditions and Privacy Policy:
+-------
+
+{% trans "If you're unsure an email is from the Ministry of Justice:" %}
+
+* {% trans "do not reply to it or click any links" %}
+* {% trans "forward it to" %} feedback@makeaplea.gov.uk
+
+{% trans "Terms and Conditions and Privacy Policy:" %}
 https://www.makeaplea.justice.gov.uk/terms-and-conditions-and-privacy-policy

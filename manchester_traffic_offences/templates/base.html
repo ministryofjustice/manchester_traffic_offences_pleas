@@ -1,5 +1,6 @@
 {% extends 'moj_template/base.html' %}
 
+{% load i18n %}
 {% load staticfiles %}
 {% block stylesheets %}
 <link rel="stylesheet" type="text/css" href="{% static "stylesheets/application.css" %}">
@@ -9,9 +10,8 @@
 {% endblock %}
 
 {% block content %}
-
 <div class="phase-banner">
-  <p><a href="https://www.gov.uk/service-manual/phases/alpha.html" class="phase-tag">alpha</a> This is a new service - <a href="/feedback/?next=terms">your feedback</a> will help us to improve it</p>
+  <p><a href="https://www.gov.uk/service-manual/phases/alpha.html" class="phase-tag">alpha</a> {% blocktrans with feedback_url=feedback_url %}This is a new service - <a href="{{ feedback_url }}">your feedback</a> will help us to improve it{% endblocktrans %}</p>
 </div>
 <!--end phase-banner-->
 
@@ -38,21 +38,17 @@
 {% endblock %}
 
 {% block footer_support_links %}
-<li><a href="http://www.gov.uk/help">Help</a></li>
-<li><a href="http://www.gov.uk/help/cookies">Cookies</a></li>
-<li><a href="http://www.gov.uk/contact">Contact</a></li>
-<li><a href="http://www.gov.uk/cymraeg" lang="cy">Cymraeg</a></li>
+<li class="li-block"><a href="{% url "terms" %}">{% trans "Terms and Conditions and Privacy Policy" %}</a></li>
+<li><a href="http://www.gov.uk/help">{% trans "Help" %}</a></li>
+<li><a href="http://www.gov.uk/help/cookies">{% trans "Cookies" %}</a></li>
+<li><a href="http://www.gov.uk/contact">{% trans "Contact" %}</a></li>
+<li><a href="http://www.gov.uk/cymraeg" lang="cy">{% trans "Cymraeg" %}</a></li>
 {% endblock %}
 
 {% block javascripts %}
-<script src="/static/javascripts/vendor/jquery.details.min.js" type="text/javascript"></script>
-<script src="/static/javascripts/govuk.js" type="text/javascript"></script>
-<script src="/static/javascripts/application.js" type="text/javascript"></script>
+<script src="{% static "javascripts/govuk.js" %}" type="text/javascript"></script>
+<script src="{% static "javascripts/application.js" %}" type="text/javascript"></script>
 {% endblock %}
-
-{% block footer_top %}
-<p class="footer-top"><a href="{% url "terms" %}">Terms and Conditions and Privacy Policy</a></p>
-{% endblock footer_top %}
 
 {% block body_end %}
   {% if request.META.HTTP_HOST == "www.makeaplea.justice.gov.uk" %}

@@ -19,3 +19,6 @@ DATABASES = {
 INSTALLED_APPS += ('raven.contrib.django.raven_compat', )
 
 ALLOWED_HOSTS = ["dev.makeaplea.dsd.io", ]
+
+# Enable CachedStaticFilesStorage for cache-busting assets
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
