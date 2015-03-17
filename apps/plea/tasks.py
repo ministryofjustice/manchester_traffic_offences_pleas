@@ -14,7 +14,7 @@ from django.template.loader import render_to_string
 from apps.govuk_utils.email import TemplateAttachmentEmail
 
 from manchester_traffic_offences.celery import app
-from apps.plea.models import Case, CourtEmailCount
+from apps.plea.models import Case, CourtEmailCount, Court
 
 logger = logging.getLogger(__name__)
 
@@ -22,14 +22,26 @@ logger = logging.getLogger(__name__)
 @app.task(bind=True, max_retries=5, default_retry_delay=10)
 def email_send_court(self, case_id, count_id, email_data):
     plea_email_result = False
-    plea_email_to = settings.PLEA_EMAIL_TO
 
     # No error trapping, let these fail hard if the objects can't be found
     case = Case.objects.get(pk=case_id)
-    email_count = CourtEmailCount.objects.get(pk=count_id)
+
+    try:
+        court_obj = Court.objects.get_by_urn(email_data["case"]["urn"])
+    except Court.DoesNotExist:
+        logger.error("URN does not have a matching Court entry: {}".format(
+            email_data["case"]["urn"]))
+        raise
+
+    plea_email_to = [court_obj.submission_email]
+
+    email_count = None
+    if not court_obj.test_mode:
+        email_count = CourtEmailCount.objects.get(pk=count_id)
+
     case.add_action("Court email started", "")
 
-    email_body = "<<<makeaplea-ref: {}/{}>>>".format(case.id, email_count.id)
+    email_body = "<<<makeaplea-ref: {}/{}>>>".format(case.id, count_id)
 
     plea_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
                                          settings.PLEA_EMAIL_ATTACHMENT_NAME,
@@ -47,16 +59,20 @@ def email_send_court(self, case_id, count_id, email_data):
         case.add_action("Court email network error", unicode(exc))
         email_count.get_status_from_case(case)
         email_count.save()
+        case.sent = False
         case.save()
 
         raise self.retry(exc=exc)
 
     case.add_action("Court email sent", "")
 
-    email_count.get_status_from_case(case)
-    email_count.save()
+    if not court_obj.test_mode:
+        email_count.get_status_from_case(case)
+        email_count.save()
 
-    email_send_prosecutor.delay(email_data, case_id)
+    if court_obj.plp_email:
+        email_send_prosecutor.delay(email_data, case_id)
+
     email_send_user.delay(email_data, case_id)
 
 
@@ -97,18 +113,25 @@ def email_send_user(self, email_data, case_id):
     was successful.
     """
     # No error trapping, let these fail hard if the objects can't be found
-    case = Case.objects.get(pk=case_id)
-    case.add_action("User email started", "")
-
     from .stages import get_plea_type
 
+    if email_data['case']['company_plea']:
+        email = email_data['company_details']['email']
+        name = email_data['company_details']['name']
+    else:
+        email = email_data['your_details']['email']
+        name = email_data['your_details']['name']
+
     data = {
-        'email': email_data['your_details']['email'],
+        'email': email,
         'urn': email_data['case']['urn'],
         'number_of_charges': email_data['case']['number_of_charges'],
-        'name': email_data['your_details']['name'],
-        'plea_type': get_plea_type(email_data)
+        'plea_type': get_plea_type(email_data),
+        'name': name
     }
+
+    case = Case.objects.get(pk=case_id)
+    case.add_action("User email started", "")
 
     html_body = render_to_string("plea/plea_email_confirmation.html", data)
     txt_body = render_to_string("plea/plea_email_confirmation.txt", data)

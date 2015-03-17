@@ -1,343 +1,551 @@
-// Shims
+/*! http://mths.be/details v0.1.0 by @mathias | includes http://mths.be/noselect v1.0.3 */
+;(function(document, $) {
+
+	var proto = $.fn,
+	    details,
+	    // :'(
+	    isOpera = Object.prototype.toString.call(window.opera) == '[object Opera]',
+	    // Feature test for native `<details>` support
+	    isDetailsSupported = (function(doc) {
+	    	var el = doc.createElement('details'),
+	    	    fake,
+	    	    root,
+	    	    diff;
+	    	if (!('open' in el)) {
+	    		return false;
+	    	}
+	    	root = doc.body || (function() {
+	    		var de = doc.documentElement;
+	    		fake = true;
+	    		return de.insertBefore(doc.createElement('body'), de.firstElementChild || de.firstChild);
+	    	}());
+	    	el.innerHTML = '<summary>a</summary>b';
+	    	el.style.display = 'block';
+	    	root.appendChild(el);
+	    	diff = el.offsetHeight;
+	    	el.open = true;
+	    	diff = diff != el.offsetHeight;
+	    	root.removeChild(el);
+	    	if (fake) {
+	    		root.parentNode.removeChild(root);
+	    	}
+	    	return diff;
+	    }(document)),
+	    toggleOpen = function($details, $detailsSummary, $detailsNotSummary, toggle) {
+	    	var isOpen = $details.prop('open'),
+	    	    close = isOpen && toggle || !isOpen && !toggle;
+	    	if (close) {
+	    		$details.removeClass('open').prop('open', false).triggerHandler('close.details');
+	    		$detailsSummary.attr('aria-expanded', false);
+	    		$detailsNotSummary.hide();
+	    	} else {
+	    		$details.addClass('open').prop('open', true).triggerHandler('open.details');
+	    		$detailsSummary.attr('aria-expanded', true);
+	    		$detailsNotSummary.show();
+	    	}
+	    };
+
+	/* http://mths.be/noselect v1.0.3 */
+	proto.noSelect = function() {
+
+		// Since the string 'none' is used three times, storing it in a variable gives better results after minification
+		var none = 'none';
+
+		// onselectstart and ondragstart for WebKit & IE
+		// onmousedown for WebKit & Opera
+		return this.bind('selectstart dragstart mousedown', function() {
+			return false;
+		}).css({
+			'MozUserSelect': none,
+			'msUserSelect': none,
+			'webkitUserSelect': none,
+			'userSelect': none
+		});
+
+	};
+
+	// Execute the fallback only if there’s no native `details` support
+	if (isDetailsSupported) {
+
+		details = proto.details = function() {
+
+			return this.each(function() {
+				var $details = $(this),
+				    $summary = $('summary', $details).first();
+				$summary.attr({
+					'role': 'button',
+					'aria-expanded': $details.prop('open')
+				}).on('click', function() {
+					// the value of the `open` property is the old value
+					var close = $details.prop('open');
+					$summary.attr('aria-expanded', !close);
+					$details.triggerHandler((close ? 'close' : 'open') + '.details');
+				});
+			});
+
+		};
+
+		details.support = isDetailsSupported;
+
+	} else {
+
+		details = proto.details = function() {
+
+			// Loop through all `details` elements
+			return this.each(function() {
+
+				// Store a reference to the current `details` element in a variable
+				var $details = $(this),
+				    // Store a reference to the `summary` element of the current `details` element (if any) in a variable
+				    $detailsSummary = $('summary', $details).first(),
+				    // Do the same for the info within the `details` element
+				    $detailsNotSummary = $details.children(':not(summary)'),
+				    // This will be used later to look for direct child text nodes
+				    $detailsNotSummaryContents = $details.contents(':not(summary)');
+
+				// If there is no `summary` in the current `details` element…
+				if (!$detailsSummary.length) {
+					// …create one with default text
+					$detailsSummary = $('<summary>').text('Details').prependTo($details);
+				}
+
+				// Look for direct child text nodes
+				if ($detailsNotSummary.length != $detailsNotSummaryContents.length) {
+					// Wrap child text nodes in a `span` element
+					$detailsNotSummaryContents.filter(function() {
+						// Only keep the node in the collection if it’s a text node containing more than only whitespace
+						// http://www.whatwg.org/specs/web-apps/current-work/multipage/common-microsyntaxes.html#space-character
+						return this.nodeType == 3 && /[^ \t\n\f\r]/.test(this.data);
+					}).wrap('<span>');
+					// There are now no direct child text nodes anymore — they’re wrapped in `span` elements
+					$detailsNotSummary = $details.children(':not(summary)');
+				}
+
+				// Hide content unless there’s an `open` attribute
+				$details.prop('open', typeof $details.attr('open') == 'string');
+				toggleOpen($details, $detailsSummary, $detailsNotSummary);
+
+				// Add `role=button` and set the `tabindex` of the `summary` element to `0` to make it keyboard accessible
+				$detailsSummary.attr('role', 'button').noSelect().prop('tabIndex', 0).on('click', function() {
+					// Focus on the `summary` element
+					$detailsSummary.focus();
+					// Toggle the `open` and `aria-expanded` attributes and the `open` property of the `details` element and display the additional info
+					toggleOpen($details, $detailsSummary, $detailsNotSummary, true);
+				}).keyup(function(event) {
+					if (32 == event.keyCode || (13 == event.keyCode && !isOpera)) {
+						// Space or Enter is pressed — trigger the `click` event on the `summary` element
+						// Opera already seems to trigger the `click` event when Enter is pressed
+						event.preventDefault();
+						$detailsSummary.click();
+					}
+				});
+
+			});
+
+		};
+
+		details.support = isDetailsSupported;
+
+	}
+
+}(document, jQuery));
+/**
+ * Fallback for browsers not supporting native trim()
+ */
 if(typeof String.prototype.trim !== 'function') {
   String.prototype.trim = function() {
     return this.replace(/^\s+|\s+$/g, ''); 
-  }
+  };
 }
 
-
-GOVUK.selectionButtons = function (elms, opts) {
-  new GOVUK.SelectionButtons(elms, opts);
-};
-
-function showHideCheckboxToggledContent() {
-
-    $(".block-label input[type='checkbox']").each(function () {
-        var $checkbox = $(this);
-        var $checkboxLabel = $(this).parent();
-
-        var $dataTarget = $checkboxLabel.attr('data-target');
-
-        // Add ARIA attributes
-
-        // If the data-target attribute is defined
-        if (typeof $dataTarget !== 'undefined' && $dataTarget !== false) {
-            // Set aria-controls
-            $checkbox.attr('aria-controls', $dataTarget);
-
-            // Set aria-expanded and aria-hidden
-            $checkbox.attr('aria-expanded', 'false');
-            $('#' + $dataTarget).attr('aria-hidden', 'true');
-
-            // For checkboxes revealing hidden content
-            $checkbox.on('click', function () {
-                var state = $(this).attr('aria-expanded') === 'false' ? true : false;
-
-                // Toggle hidden content
-                $('#' + $dataTarget).toggle();
-
-                // Update aria-expanded and aria-hidden attributes
-                $(this).attr('aria-expanded', state);
-                $('#' + $dataTarget).attr('aria-hidden', !state);
-
-            });
-        }
-    });
-}
-
-function showHideRadioToggledContent() {
-
-    $(".block-label input[type='radio']").each(function () {
-        var $radio = $(this);
-        var $radioGroupName = $(this).attr('name');
-        var $radioLabel = $(this).parent();
-
-        var $dataTarget = $radioLabel.attr('data-target');
-
-        // Add ARIA attributes
-
-        // If the data-target attribute is defined
-        if (typeof $dataTarget !== 'undefined' && $dataTarget !== false) {
-            // Set aria-controls
-            $radio.attr('aria-controls', $dataTarget);
-
-            // Set aria-expanded and aria-hidden
-            $radio.attr('aria-expanded', 'false');
-            $('#' + $dataTarget).attr('aria-hidden', 'true');
-
-            // For radio buttons revealing hidden content
-            $radio.on('click', function () {
-                var state = $(this).attr('aria-expanded') === 'false' ? true : false;
-
-                // Toggle hidden content
-                $('#' + $dataTarget).toggle();
-
-                // Update aria-expanded and aria-hidden attributes
-                $(this).attr('aria-expanded', state);
-                $('#' + $dataTarget).attr('aria-hidden', !state);
-            });
-        }
-
-        // If the data-target attribute is undefined for a radio button,
-        // hide visible data-target content for radio buttons in the same group
-        else {
-            $radio.on('click', function () {
-                // Select radio buttons in the same group
-                $(".block-label input[name=" + $radioGroupName + "]").each(function () {
-                    var groupDataTarget = $(this).parent().attr('data-target');
-
-                    // Hide toggled content
-                    $('#' + groupDataTarget).hide();
-
-                    // Update aria-expanded and aria-hidden attributes
-                    if ($(this).attr('aria-controls')) {
-                        $(this).attr('aria-expanded', 'false');
-                    }
-                    $('#' + groupDataTarget).attr('aria-hidden', 'true');
-                });
-            });
-        }
-    });
-}
-
-
-function showSingleRadioContent() {
-    var allTargets = {};
-
-    // convert the aria id list, e.g. aria-controls="first_elem second_elem ..." to
-    // a jQuery compatible selector, e.g. #first_elem,#second_elem ...
-    var prefixHash = function(target){
-        var targets = target.split(' ');
-        for (var idx in targets){
-            targets[idx] = '#' + targets[idx];
-        }
-        return targets.join(',');
-    };
-
-    $(".block-label input[type='radio'], .radio-label input[type='radio']").each(function () {
-        var $radio = $(this);
-        var $radioGroupName = $(this).attr('name');
-        var $radioLabel = $(this).parent();
-
-        var $dataTarget = $radioLabel.attr('data-target');
-
-        var targetSel = prefixHash($dataTarget);
-
-        if ($radioGroupName in allTargets){
-            allTargets[$radioGroupName].push(targetSel);
-        }
-        else{
-            allTargets[$radioGroupName] = [targetSel];
-        }
-
-        $radio.on('click', function () {
-
-            $(".block-label input[name=" + $radioGroupName + "],  .radio-label input[name=" + $radioGroupName + "]").each(function () {
-                // hide radio button content and reset aria values
-                var groupDataTarget = $(this).parent().attr('data-target');
-
-                var groupTargetSel = prefixHash(groupDataTarget);
-
-                // Update aria-expanded and aria-hidden attributes
-                if ($(this).attr('aria-controls')) {
-                    $(this).attr('aria-expanded', 'false');
-                }
-                $(groupTargetSel).attr('aria-hidden', 'true');
-                $(groupTargetSel).hide();
-            });
-
-            selected = $(".block-label[data-target='" + $dataTarget + "'] input[name=" + $radioGroupName + "]");
-
-            if (selected.attr('aria-controls')) {
-                selected.attr('aria-expanded', 'true');
-            }
-
-            $(targetSel).show();
-            $(targetSel).attr('aria-hidden', 'false');
-        });
-    });
-
-    $("input[type='radio']:checked").click();
-}
-
-
-function hashInputFields(){
-    var all_values = "";
-    $('input').each(function(){
-        var $field = $(this);
-        var val;
-        var type = $field.attr('type');
-
-        if ($field.is('select')) {
-            type = 'select';
-        }
-
-        switch (type) {
-            case 'checkbox':
-            case 'radio':
-                val = $field.is(':checked');
-                break;
-            case 'select':
-                val = '';
-                $field.find('option').each(function(o) {
-                    var $option = $(this);
-                    if ($option.is(':selected')) {
-                        val += $option.val();
-                    }
-                });
-                break;
-            default:
-                val = $field.val();
-        }
-
-        all_values += val;
-
-    });
-
-    return all_values;
-}
-
-
-function alertIfFieldsChanged(){
-    GOVUK.form_hash = hashInputFields();
-    GOVUK.form_check = true;
-
-    $("form").on("submit", function(){
-        GOVUK.form_check = false;
-    });
-
-    $(window).on("beforeunload", function () {
-        if(GOVUK.form_check) {
-            var form_state = hashInputFields();
-            if (form_state != GOVUK.form_hash) {
-                return "You have entered some information";
-            }
-        }
-    });
-}
-
-
-/*
- * An aria aware toggle function
+/**
+ * Calculate totals
  *
+ * Calculate totals for a selection of terms.
+ *
+ * -----------------------------------------------------------------------
  * Usage:
  *
- * onClickToggleContainer('#link', '.target,#target2...');
+ * <span class="js-CalculateTotals" data-total-terms=".term" data-total-precision="2"></span>
+ */ 
+(function() {
+  'use strict';
+
+  window.moj = window.moj || { Modules: {}, Events: $({}) };
+
+  var CalculateTotals = function($el, options) {
+    this.init($el, options);
+    return this;
+  };
+
+  CalculateTotals.prototype = {
+    defaults: {
+      terms: '.term', // Selector for list of terms
+      precision: 2 // Rounding precision (use 0 for integer result)
+    },
+
+    init: function($el, options) {
+      this.settings = $.extend({}, this.defaults, options);
+
+      this.termSelector = $el.data('totalTerms') || this.settings.terms;
+      this.precision = $el.data('totalPrecision') || this.settings.precision;
+
+      this.cacheElements($el);
+
+      this.bindEvents();
+    },
+
+    cacheElements: function($el) {
+      this.$total = $el;
+      this.$terms = $(this.termSelector);
+    },
+
+    bindEvents: function() {
+      var self = this;
+      this.$terms
+        .on('change.CalculateTotals update.CalculateTotals', function() {
+          self.updateTotal();
+        });
+      moj.Events
+        .on('render.CalculateTotals', function() {
+          self.updateTotal();
+        });
+    },
+
+    getNumericValue: function($element) {
+      var value = $element.text();
+      
+      if ($element.is(':input')) {
+        value = $element.val();
+      }
+
+      // Remove commas
+      value = value.replace(/,/g,'');
+
+      return ($.isNumeric(value)) ? parseFloat(value) : 0;
+    },
+
+    getTotal: function() {
+      var self = this,
+          total = 0;
+
+      this.$terms.each(function() {
+        total += self.getNumericValue($(this));
+      });
+
+      return total;
+    },
+
+    updateTotal: function() {
+      var total = this.getTotal();
+
+      total = this.formatNumber(total);
+      this.$total.text(total).trigger('update.CalculateTotals');
+    },
+
+    formatNumber: function(number) {
+      var parts = number.toFixed(this.precision).toString().split(".");
+          parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+      return parts.join(".");
+    }
+  };
+
+  moj.Modules._CalculateTotals = CalculateTotals;
+
+  moj.Modules.CalculateTotals = {
+    init: function() {
+      return $('.js-CalculateTotals').each(function() {
+        $(this).data('CalculateTotals', new CalculateTotals($(this), $(this).data()));
+      });
+    }
+  };
+
+}());
+/**
+ * Conditional form elements reveal
+ *
+ * Reveal content based on value of related field
+ *
+ * -----------------------------------------------------------------------
+ * Usage:
+ * 
+ * <input type="radio" name="trigger_name" value="regex">
+ * <input type="radio" name="trigger_name" value="another value">
+ * <div class="js-Conditional" id="target_id" data-conditional-trigger="trigger_name" data-conditional-value="^regex$">...</div>
  */
-function onClickToggleContainer(toggleSelector, targetSelectors){
-    // an aria aware toggle function
 
-    $(toggleSelector).click(function(event){
+(function() {
+  'use strict';
 
-        if(!$(this).hasClass('toggled')){
-            $(this).addClass('toggled');
-        }
-        else{
-            $(this).removeClass('toggled');
-        }
+  window.moj = window.moj || { Modules: {}, Events: $({}) };
 
-        $(targetSelectors).each(function(){
-            $(this).toggle();
+  var Conditional = function($el, options) {
+    this.init($el, options);
+    return this;
+  };
 
-            if($(this).is(":visible")){
-                if ($(this).attr('aria-controls')) {
-                    $(this).attr('aria-expanded', 'true');
-                }
+  Conditional.prototype = {
+    defaults: {},
 
-                $(this).attr('aria-hidden', 'false');
-            }
-            else{
-                if ($(this).attr('aria-controls')) {
-                    $(this).attr('aria-expanded', 'false');
-                }
+    init: function($el, options) {
+      this.settings = $.extend({}, this.defaults, options);
+      this.cacheElements($el);
+      this.addAriaAttributes();
+      this.bindEvents();
+    },
 
-                $(this).attr('aria-hidden', 'true');
-            }
+    cacheElements: function($el) {
+      this.$conditional = $el;
+      this.$inputs = $('[name="' + $el.data('conditionalTrigger') + '"]');
+    },
+
+    bindEvents: function() {
+      var self = this;
+      this.$inputs
+        .on('change.Conditional', function() {
+          self.toggle();
         });
-
-        event.preventDefault();
-    });
-}
-
-function calculateTotals(elems){
-    var total = 0;
-
-    $.each(elems, function(key, item){
-
-        var value = parseFloat($(item).val());
-
-        if(value && value > 0){
-            total += value;
-        }
-    });
-
-    return total >= 0 ? total : 0;
-}
-
-function calculateExpenses(){
-    var household_expenses = calculateTotals($('#household_expenses input[type=text]'));
-    var other_expenses = calculateTotals($('#other_expenses input[type=text]'));
-
-    $('.total_household').html(household_expenses.toFixed(2));
-    $('.total_other').html(other_expenses.toFixed(2));
-    $('.total_expenses').html((household_expenses+other_expenses).toFixed(2));
-}
-
-
-function labelTemplateExternal(){
-    $('[data-label-template]').each(function(idx, form_element){
-        var template = $(form_element).data("label-template");
-        var $value_source = $(form_element).data("label-template-value");
-        var $label = $("label[for=" + $(form_element).attr("id") + "]");
-        $(form_element).data("original", $label.text());
-        $("input:radio[name=" + $value_source + "]").click(function(evt){
-            var val = $(this).val().toLowerCase().trim();
-            if(val.match(/\ other/)) {
-                $label.text($(form_element).data("original"));
-            }
-            else {
-                $label.text(template.replace("{0}", val));
-            }
+      moj.Events
+        .on('render.Conditional', function() {
+          self.toggle();
         });
-    });
-}
+    },
 
-function showHideExtraNotes(elems){
-    $.each(elems, function(index, elem){
-        $('div.' + $(elem).attr('name')).hide();
+    addAriaAttributes: function() {
+      this.$inputs.attr('aria-controls', this.$conditional.attr('id'));
+    },
 
-        $(elem).on('change', function(){
-            $('div.' + $(elem).attr('name')).hide();
-            $('div.' + $(elem).attr('name') + '-' + $(elem).val()).show();
-        });
-    });
+    getInputValue: function($input) {
+      switch($input.attr('type')) {
+        case "radio":
+          return $('[name="' + $input.attr('name') + '"]:checked').attr('value');
 
-    $.each(elems, function(index, elem){
-        if($(elem).is(':checked')) {
-            $('.' + $(elem).attr('name') + '-' + $(elem).val()).show();
-        }
-    });
-}
+        case "checkbox":
+          return $input.filter(':checked').val();
 
+        default:
+          return $input.val() || $input.find(':selected').attr('value');
+      }
+    },
 
+    toggle: function() {
+      var currentValue = this.getInputValue(this.$inputs),
+          testExpression = new RegExp(this.$conditional.data('conditionalValue'));
+
+      if (currentValue && currentValue.match(testExpression)) {
+        this.$conditional
+          .show()
+          .attr('aria-expanded', 'true')
+          .attr('aria-hidden', 'false');
+      }
+      else {
+        this.$conditional
+          .hide()
+          .attr('aria-expanded', 'false')
+          .attr('aria-hidden', 'true');
+      }
+    }
+  };
+
+  moj.Modules._Conditional = Conditional;
+
+  moj.Modules.Conditional = {
+    init: function() {
+      return $('.js-Conditional').each(function() {
+        $(this).data('Conditional', new Conditional($(this), $(this).data()));
+      });
+    }
+  };
+
+}());
+/**
+ * Page exit prompt
+ *
+ * Prompts the user upon leaving the page if they have changed
+ * any data in any form.
+ */
+
+(function(){
+  'use strict';
+
+  window.moj = window.moj || { Modules: {}, Events: $({}) };
+
+  var PromptOnChange = function(options) {
+    this.init(options);
+    return this;
+  };
+
+  PromptOnChange.prototype = {
+    defaults: {
+      message: "You have entered some information"
+    },
+
+    init: function(options) {
+      this.settings = $.extend({}, this.defaults, options);
+      this.enable();
+      this.hashedFields = this.hashFields();
+      this.bindEvents();
+    },
+
+    bindEvents: function() {
+      var self = this;
+
+      $('form').on('submit', function() {
+        self.disable();
+      });
+
+      $(window).on('beforeunload', function() {
+        self.runCheck();
+      });
+    },
+
+    hashFields: function() {
+      return $('form').serialize();
+    },
+
+    fieldsHaveChanged: function() {
+      return this.hashFields() !== this.hashedFields;
+    },
+
+    runCheck: function() {
+      var self = this;
+
+      if (this.isEnabled && this.fieldsHaveChanged()) {
+        return self.settings.message;
+      }
+    },
+
+    enable: function() {
+      this.isEnabled = true;
+    },
+
+    disable: function() {
+      this.isEnabled = false;
+    }
+  };
+
+  moj.Modules._PromptOnChange = PromptOnChange;
+
+  moj.Modules.PromptOnChange = {
+    init: function() {
+      return new PromptOnChange();
+    }
+  };
+
+}());
+/**
+ * Templated Element
+ *
+ * Update the text of an element based on the value of a related input field
+ *
+ * -----------------------------------------------------------------------
+ * Usage:
+ *
+ * <span class="js-TemplatedElement" 
+ *     data-template-trigger="field_name"
+ *     data-template="Content with {value}" 
+ *     data-template-defaults-for="Excluded value"
+ *     data-template-delegate="#other-element">Original content</span>
+ *
+ * If templateDelegate is set, the functionality will be transferred to the
+ * matching element.
+ */
+(function() {
+  'use strict';
+
+  window.moj = window.moj || { Modules: {}, Events: $({}) };
+
+  var TemplatedElement = function($el, options) {
+    this.init($el, options);
+    return this;
+  };
+
+  TemplatedElement.prototype = {
+    defaults: {
+      trigger: '',
+      template: '{value}',
+      defaultsFor: null
+    },
+
+    init: function($el, options) {
+      this.settings = $.extend({}, this.defaults, options);
+
+      this.trigger = $el.data('templateTrigger') || this.settings.trigger;
+      this.template = $el.data('template') || this.settings.template;
+      this.defaultsFor = $el.data('templateDefaultsFor') || this.settings.defaultsFor;
+      
+      
+      if ($el.data('templateDelegate')) {
+        $el = $($el.data('templateDelegate'));
+      }
+
+      this.originalText = $el.eq(0).text();
+
+      this.cacheElements($el);
+
+      this.bindEvents();
+    },
+
+    cacheElements: function($el) {
+      this.$element = $el;
+      this.$inputs = $('[name="' + this.trigger + '"]');
+    },
+
+    bindEvents: function() {
+      var self = this;
+      this.$inputs.on('change.TemplatedElement', function() {
+        self.updateText();
+      });
+      moj.Events.on('render.TemplatedElement', function() {
+        self.updateText();
+      });
+    },
+
+    getCurrentValue: function() {
+      return this.$inputs.filter(':checked').val();
+    },
+
+    formatValue: function(value) {
+      return value.toLowerCase();
+    },
+
+    updateText: function() {
+      this.$element.text(this.getText());
+    },
+
+    getText: function() {
+      var text = this.originalText,
+          value = this.getCurrentValue();
+
+      if (value && value !== this.defaultsFor) {
+        value = this.formatValue(value);
+        text = this.populateTemplate(value);
+      }
+
+      return text;
+    },
+
+    populateTemplate: function(value) {
+      return this.template.replace('{value}', value);
+    }
+  };
+
+  moj.Modules._TemplatedElement = TemplatedElement;
+
+  moj.Modules.TemplatedElement = {
+    init: function() {
+      return $('.js-TemplatedElement').each(function() {
+        $(this).data('TemplatedElement', new TemplatedElement($(this), $(this).data()));
+      });
+    }
+  };
+
+}());
 $(document).ready(function () {
     jQuery.fx.off = true;
 
-    var $blockLabels = $(".block-label input[type='radio'], .block-label input[type='checkbox']");
-    GOVUK.selectionButtons($blockLabels);
+    var selectionButtons = new GOVUK.SelectionButtons($("label input[type='radio'], label input[type='checkbox']"));
 
     $('details').details();
-
-    showSingleRadioContent();
-
-    onClickToggleContainer('#case_contact_link a', '#case_contact_details');
-
-    alertIfFieldsChanged();
-
-    showHideExtraNotes($("input[name=employed_hardship],input[name=self_employed_hardship],input[name=receiving_benefits_hardship],input[name=other_hardship]"));
-
-    calculateExpenses();
-    $('#household_expenses, #other_expenses').find('input[type=text]').change(calculateExpenses);
-
-    labelTemplateExternal();
 });

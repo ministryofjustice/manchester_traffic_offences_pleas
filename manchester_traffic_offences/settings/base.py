@@ -61,6 +61,9 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = False
 
+# Allow the use of commas in decimal fields and when displaying large numbers
+USE_THOUSAND_SEPARATOR = True
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = root('assets', 'uploads')
@@ -110,6 +113,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
+    'django.middleware.locale.LocaleMiddleware'
 )
 
 ROOT_URLCONF = 'manchester_traffic_offences.urls'
@@ -152,6 +156,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'south',
     'django_extensions',
     'waffle',
@@ -251,13 +256,11 @@ USER_SMTP_EMAIL_HOST_PASSWORD = os.environ.get("SENDGRID_EMAIL_HOST_PASSWORD", "
 PLEA_EMAIL_FROM = os.environ.get("PLEA_EMAIL_FROM", "plea_from@example.org")
 PLEA_EMAIL_ATTACHMENT_NAME = "plea.html"
 PLEA_EMAIL_TEMPLATE = "plea/plea_email_attachment.html"
-PLEA_EMAIL_TO = [os.environ.get("PLEA_EMAIL_TO", "plea_to@example.org"), ]
 PLEA_EMAIL_SUBJECT = u"ONLINE PLEA: {case[urn]} DOH: {email_date_of_hearing} {email_name}"
 PLEA_EMAIL_BODY = ""
 
 # Cut down email sent to the police prosecutor
 PLP_EMAIL_FROM = os.environ.get("PLP_EMAIL_FROM", "plea_from@example.org")
-PLP_EMAIL_TO = [os.environ.get("PLP_EMAIL_TO", "plea_to@example.org"), ]
 PLP_EMAIL_TEMPLATE = "plea/plp_email_attachment.html"
 PLP_EMAIL_SUBJECT = u"POLICE {0}".format(PLEA_EMAIL_SUBJECT)
 

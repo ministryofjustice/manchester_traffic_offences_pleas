@@ -14,7 +14,7 @@ from django.test import TestCase
 from django.test.utils import override_settings
 
 from ..email import send_plea_email
-from ..models import Case, CourtEmailCount
+from ..models import Case, CourtEmailCount, Court
 from ..encrypt import clear_user_data, gpg
 
 
@@ -22,10 +22,11 @@ class CaseCreationTests(TestCase):
     def setUp(self):
 
         self.context_data = {
-            'case': {u'urn': u'00/aa/0000000/00',
+            'case': {u'urn': u'06/aa/0000000/00',
                       u'date_of_hearing': datetime.date(2015, 1, 1),
                       u'time_of_hearing': datetime.time(9, 15),
-                      u'number_of_charges': 2},
+                      u'number_of_charges': 2,
+                      u'company_plea': False},
             'your_details': {
                 u'name': u'maverick cobain',
                 u"national_insurance_number": u"test ni number",
@@ -35,9 +36,9 @@ class CaseCreationTests(TestCase):
             'complete': {},
             'review': {u'csrfmiddlewaretoken': [u'z6Pz8e3M1rX2c31M0YpZtGnIv1V74ml7']},
             'send_error': {},
-            'plea': {u'PleaForms': [{u'mitigations': u'fdsfdsff\r\nds\r\nf',
+            'plea': {u'PleaForms': [{u'guilty_extra': u'fdsfdsff\r\nds\r\nf',
                                      u'guilty': u'guilty'},
-                                    {u'mitigations': u'fdsfd\r\nsf\r\n\r\n',
+                                    {u'not_guilty_extra': u'fdsfd\r\nsf\r\n\r\n',
                                      u'guilty': u'not_guilty'}], u'understand': True}}
 
 
