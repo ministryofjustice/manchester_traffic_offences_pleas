@@ -597,6 +597,26 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertTrue(form.current_stage.forms[0].is_valid())
 
+    @patch("apps.govuk_utils.forms.messages.add_message")
+    def test_review_stage_session_timeout_redirects_to_case(self, add_message):
+        # no test data to simulate a timed out session
+        test_data = {
+            "case": {}
+        }
+
+        form = PleaOnlineForms("review", "plea_form_step", test_data)
+
+        form.save({"understand": True, "receive_email": False}, self.request_context)
+        form.process_messages({})
+        response = form.render()
+
+        self.assertEqual(add_message.call_count, 1)
+        self.assertEqual(add_message.call_args[0][0], {})
+        self.assertEqual(add_message.call_args[0][1], 40)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/plea/case/")
+
     def test_review_stage_has_company_details_block(self):
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
