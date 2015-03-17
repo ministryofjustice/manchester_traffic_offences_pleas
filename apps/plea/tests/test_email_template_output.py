@@ -1,28 +1,33 @@
 # coding=utf-8
 
-from datetime import datetime, time
+from datetime import datetime, timedelta
 from mock import Mock
 
 from django.core import mail
 from django.forms.formsets import formset_factory
 from django.test import TestCase
 
-from ..email import TemplateAttachmentEmail, send_plea_email
-from ..models import CourtEmailCount
+from ..email import send_plea_email
+from ..models import Court
 from ..forms import CaseForm, YourDetailsForm, PleaForm, YourMoneyForm, RequiredFormSet
 
 
 class EmailTemplateTests(TestCase):
+
     def get_context_data(self, case_data=None, details_data=None, plea_data=None, money_data=None):
+
+        self.hearing_date = datetime.today() + timedelta(30)
+
         if not case_data:
-            case_data = {"urn_0": "00",
+            case_data = {"urn_0": "06",
                          "urn_1": "AA",
                          "urn_2": "00000",
                          "urn_3": "00",
-                         "date_of_hearing_0": "30",
-                         "date_of_hearing_1": "10",
-                         "date_of_hearing_2": "2015",
-                         "number_of_charges": 1}
+                         "date_of_hearing_0": str(self.hearing_date.day),
+                         "date_of_hearing_1": str(self.hearing_date.month),
+                         "date_of_hearing_2": str(self.hearing_date.year),
+                         "number_of_charges": 1,
+                         "company_plea": False}
 
         if not details_data:
             details_data = {"name": "Joe Public",
@@ -34,7 +39,7 @@ class EmailTemplateTests(TestCase):
                          "form-INITIAL_FORMS": "1",
                          "form-MAX_NUM_FORMS": "1",
                          "form-0-guilty": "guilty",
-                         "form-0-mitigations": "IT wasn't me driving!"}
+                         "form-0-guilty_extra": "IT wasn't me driving!"}
 
         if not money_data:
             money_data = {"you_are": "Employed",
@@ -75,7 +80,8 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertEqual(mail.outbox[0].subject, 'ONLINE PLEA: 00/AA/00000/00 DOH: 2015-10-30 PUBLIC Joe')
+        self.assertEqual(mail.outbox[0].subject, 'ONLINE PLEA: 06/AA/00000/00 DOH: {} PUBLIC Joe'
+            .format(self.hearing_date.strftime('%Y-%m-%d')))
 
     def test_case_details_output(self):
         context_data = self.get_context_data()
@@ -83,8 +89,8 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
-        self.assertContains(response, "<tr><th>URN</th><td>00/AA/00000/00</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>Court hearing</th><td>30 October 2015</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>URN</th><td>06/AA/00000/00</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Court hearing</th><td>{}</td></tr>".format(self.hearing_date.strftime('%d %B %Y')), count=1, html=True)
 
     def test_min_case_details_output(self):
         context_data = self.get_context_data()
@@ -117,7 +123,7 @@ class EmailTemplateTests(TestCase):
     def test_multiple_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
 
-        context_data["plea"]["PleaForms"].append({"mitigations": "test2", "guilty": "guilty"})
+        context_data["plea"]["PleaForms"].append({"guilty_extra": "test2", "guilty": "guilty"})
 
         send_plea_email(context_data)
 
@@ -136,7 +142,7 @@ class EmailTemplateTests(TestCase):
     def test_multiple_not_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
         context_data["plea"]["PleaForms"][0]["guilty"] = "not_guilty"
-        context_data["plea"]["PleaForms"].append({"mitigations": "test2", "guilty": "not_guilty"})
+        context_data["plea"]["PleaForms"].append({"not_guilty_extra": "test2", "guilty": "not_guilty"})
 
         send_plea_email(context_data)
 
@@ -145,7 +151,7 @@ class EmailTemplateTests(TestCase):
 
     def test_mixed_plea_email_plea_output(self):
         context_data = self.get_context_data()
-        context_data["plea"]["PleaForms"].append({"mitigations": "test2", "guilty": "not_guilty"})
+        context_data["plea"]["PleaForms"].append({"not_guilty_extra": "test2", "guilty": "not_guilty"})
 
         send_plea_email(context_data)
 
@@ -170,7 +176,7 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>Take home pay</th><td>£200</td></tr>", count=1, html=True)
 
     def test_self_employed_email_money_output(self):
-        context_data_money = {"you_are": "Self employed",
+        context_data_money = {"you_are": "Self-employed",
                               "your_job": "Tesco",
                               "self_employed_pay_period": "Weekly",
                               "self_employed_pay_amount": "200",
@@ -186,9 +192,9 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>Amount</th><td>£200</td></tr>", count=1, html=True)
 
     def test_self_employed_other_email_money_output(self):
-        context_data_money = {"you_are": "Self employed",
+        context_data_money = {"you_are": "Self-employed",
                               "your_job": "Window cleaner",
-                              "self_employed_pay_period": "self-employed other",
+                              "self_employed_pay_period": "Self-employed other",
                               "self_employed_pay_amount": "20",
                               "self_employed_pay_other": "by the window",
                               "self_employed_hardship": False}
@@ -224,7 +230,7 @@ class EmailTemplateTests(TestCase):
         context_data_money = {"you_are": "Receiving benefits",
                               "benefits_details": "Housing benefit\nUniversal Credit",
                               "benefits_dependents": "Yes",
-                              "benefits_period": "benefits other",
+                              "benefits_period": "Benefits other",
                               "benefits_pay_other": "Other details!",
                               "benefits_amount": "120",
                               "receiving_benefits_hardship": False}
@@ -268,7 +274,8 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertEqual(mail.outbox[1].subject, 'POLICE ONLINE PLEA: 00/AA/00000/00 DOH: 2015-10-30 PUBLIC Joe')
+        self.assertEqual(mail.outbox[1].subject, 'POLICE ONLINE PLEA: 06/AA/00000/00 DOH: {} PUBLIC Joe'
+                         .format(self.hearing_date.strftime('%Y-%m-%d')))
 
     def test_PLP_case_details_output(self):
         context_data = self.get_context_data()
@@ -276,7 +283,7 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
-        self.assertContains(response, "<tr><th>URN</th><td>00/AA/00000/00</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>URN</th><td>06/AA/00000/00</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Court hearing</th><td>30 October 2015</td></tr>", count=1, html=True)
 
     def test_PLP_case_details_output(self):
@@ -298,7 +305,7 @@ class EmailTemplateTests(TestCase):
     def test_PLP_multiple_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
 
-        context_data["plea"]["PleaForms"].append({"mitigations": "test2", "guilty": "guilty"})
+        context_data["plea"]["PleaForms"].append({"guilty_extra": "test2", "guilty": "guilty"})
 
         send_plea_email(context_data)
 
@@ -317,7 +324,7 @@ class EmailTemplateTests(TestCase):
     def test_PLP_multiple_not_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
         context_data["plea"]["PleaForms"][0]["guilty"] = "not_guilty"
-        context_data["plea"]["PleaForms"].append({"mitigations": "test2", "guilty": "not_guilty"})
+        context_data["plea"]["PleaForms"].append({"not_guilty_extra": "test2", "guilty": "not_guilty"})
 
         send_plea_email(context_data)
 
@@ -326,7 +333,7 @@ class EmailTemplateTests(TestCase):
 
     def test_PLP_mixed_plea_email_plea_output(self):
         context_data = self.get_context_data()
-        context_data["plea"]["PleaForms"].append({"mitigations": "test2", "guilty": "not_guilty"})
+        context_data["plea"]["PleaForms"].append({"not_guilty_extra": "test2", "guilty": "not_guilty"})
 
         send_plea_email(context_data)
 
@@ -340,15 +347,15 @@ class EmailTemplateTests(TestCase):
         context_data["plea"]["PleaForms"] = [
             {
                 'guilty': 'guilty',
-                'mitigations': 'asdf'
+                'guilty_extra': 'asdf'
             },
             {
                 'guilty': 'guilty',
-                'mitigations': 'asdf'
+                'guilty_extra': 'asdf'
             },
             {
                 'guilty': 'guilty',
-                'mitigations': 'asdf'
+                'guilty_extra': 'asdf'
             }
         ]
 
@@ -364,15 +371,15 @@ class EmailTemplateTests(TestCase):
         context_data["plea"]["PleaForms"] = [
             {
                 'guilty': 'not_guilty',
-                'mitigations': 'asdf'
+                'not_guilty_extra': 'asdf'
             },
             {
                 'guilty': 'not_guilty',
-                'mitigations': 'asdf'
+                'not_guilty_extra': 'asdf'
             },
             {
                 'guilty': 'not_guilty',
-                'mitigations': 'asdf'
+                'not_guilty_extra': 'asdf'
             }
         ]
 
@@ -388,15 +395,15 @@ class EmailTemplateTests(TestCase):
         context_data["plea"]["PleaForms"] = [
             {
                 'guilty': 'not_guilty',
-                'mitigations': 'asdf'
+                'not_guilty_extra': 'asdf'
             },
             {
                 'guilty': 'guilty',
-                'mitigations': 'asdf'
+                'guilty_extra': 'asdf'
             },
             {
                 'guilty': 'guilty',
-                'mitigations': 'asdf'
+                'guilty_extra': 'asdf'
             }
         ]
 
@@ -433,3 +440,84 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, '101')
         self.assertContains(response, '202')
         self.assertContains(response, '303')
+
+
+class TestCompanyFinancesEmailLogic(TestCase):
+
+    def setUp(self):
+
+        self.test_session_data = {
+            "case": {
+                "complete": True,
+                "date_of_hearing": "2015-01-01",
+                "urn": "06/AA/0000000/00",
+                "number_of_charges": 1,
+                "company_plea": True
+            },
+            'your_details': {
+                "complete": True,
+                "skipped": True
+            },
+            "company_details": {
+                "company_name": "some company plc",
+                "company_address": "some place plc",
+                "name": "mr smith",
+                "position_in_company": "a director",
+                "contact_number": "0800 SOMECOMPANY",
+                "email": "test@companyemail.com"
+            },
+            "plea": {
+                "complete": True,
+                "PleaForms": [
+                    {
+                        "guilty": "not_guilty",
+                        "not_guilty_extra": "something"
+                    }
+                ]
+            },
+            'your_money': {
+                "complete": True,
+                "skipped": True
+            },
+            "company_finances": {
+                "complete": True,
+                "skipped": True
+            },
+            'your_expenses': {
+                "complete": True,
+                "skipped": True
+            },
+            'review': {
+                "complete": True
+            }
+        }
+
+    def test_company_details_without_company_finances(self):
+        """
+        If the user's pleas are all not guilty, there shouldn't be a company
+        finance block
+        """
+
+        send_plea_email(self.test_session_data)
+
+        attachment = mail.outbox[0].attachments[0][1]
+
+        self.assertTrue("<<SHOWCOMPANYDETAILS>>" in attachment)
+        self.assertTrue("<<SHOWYOURDETAILS>>" not in attachment)
+        self.assertTrue("<<SHOWCOMPANYFINANCES>>" not in attachment)
+        self.assertTrue("<<SHOWEXPENSES>>" not in attachment)
+
+    def test_company_details_with_company_finances(self):
+
+        self.test_session_data["plea"]["PleaForms"][0]["guilty"] = "guilty"
+        del self.test_session_data["company_finances"]["skipped"]
+
+        send_plea_email(self.test_session_data)
+
+        attachment = mail.outbox[0].attachments[0][1]
+
+        self.assertTrue("<<SHOWCOMPANYDETAILS>>" in attachment)
+        self.assertTrue("<<SHOWYOURDETAILS>>" not in attachment)
+        self.assertTrue("<<SHOWCOMPANYFINANCES>>" in attachment)
+        self.assertTrue("<<SHOWEXPENSES>>" not in attachment)
+

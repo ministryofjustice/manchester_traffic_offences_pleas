@@ -49,34 +49,6 @@
         <th>Full name</th>
         <td>{{ your_details.name }}</td>
     </tr>
-    {% comment %}
-    <tr>
-        <th>Contact number</th>
-        <td>{{ your_details.contact_number }}</td>
-    </tr>
-    <tr>
-        <th>Email</th>
-        <td>{{ your_details.email }}</td>
-    </tr>
-    {% if your_details.national_insurance_number %}
-        <tr>
-            <th>National Insurance number</th>
-            <td>{{ your_details.national_insurance_number }}</td>
-        </tr>
-    {% endif %}
-    {% if your_details.driving_licence_number %}
-        <tr>
-            <th>UK driving licence number</th>
-            <td>{{ your_details.driving_licence_number }}</td>
-        </tr>
-    {% endif %}
-    {% if your_details.registration_number %}
-        <tr>
-            <th>Registration number</th>
-            <td>{{ your_details.registration_number }}</td>
-        </tr>
-    {% endif %}
-    {% endcomment %}
     <tr>
         <td class="heading" colspan="2"><h2>Charges</h2></td>
     </tr>
@@ -86,20 +58,18 @@
         </tr>
         <tr>
             <th>Plea</th>
-            <td>
-                {% if plea_item.guilty == "guilty" %}
-                    Guilty
-                {% elif plea_item.guilty == "not_guilty" %}
-                    Not guilty
-                {% endif %}
-            </td>
+            <td>{% if plea_item.guilty == "guilty" %}Guilty{% elif plea_item.guilty == "not_guilty" %}Not guilty{% endif %}</td>
         </tr>
-        {% if plea_item.mitigations %}
+        {% if plea_item.guilty == "guilty" and plea_item.guilty_extra %}
         <tr>
-            <th>
-                {% if plea_item.guilty == "guilty" %}Special circumstances{% else %}Not guilty because?{% endif %}
-            </th>
-            <td>{{ plea_item.mitigations|linebreaksbr }}</td>
+            <th>Special circumstances</th>
+            <td>{{ plea_item.guilty_extra|linebreaksbr }}</td>
+        </tr>
+        {% endif %}
+        {% if plea_item.guilty == "not_guilty" and plea_item.not_guilty_extra %}
+        <tr>
+            <th>Not guilty because?</th>
+            <td>{{ plea_item.not_guilty_extra|linebreaksbr }}</td>
         </tr>
         {% endif %}
     {%  endfor %}

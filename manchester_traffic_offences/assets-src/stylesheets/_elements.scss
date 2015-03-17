@@ -14,10 +14,14 @@ hr {
 }
 
 .content-header {
-	margin: 0 0 2em;
+	margin: 0 0 1.675em;
 
 	h1 {
 		margin-bottom: .25em;
+	}
+
+	p:first-of-type {
+		@extend .lede;
 	}
 }
 
@@ -30,31 +34,17 @@ hr {
 	}
 }
 
-p.important {
-	padding: 7px 0 0 40px;
-	min-height: 27px;
-	background: url(../images/icons/icon-important.png) no-repeat top left;
-}
-
 .panel-indent {
 	padding-top: 0;
 	padding-bottom: 0;
 }
 
 .move-up {
-	@include media(tablet) {
-		margin-top: -.75em;
-	}
-}
-
-// It turns out that IE6 can handle dat javascriptz
-@include ie(6) {
-	.js-hidden {
-		display: none;
-	}
+	margin-top: -1em;
 }
 
 #content {
+	// Responsive images
 	img {
 		max-width: 100%;
 		height: auto;
@@ -63,4 +53,30 @@ p.important {
 			width: inherit;
 		}
 	}
+}
+
+p.important {
+	padding: 7px 0 0 40px;
+	min-height: 27px;
+	background: url(../images/icons/icon-important.png) no-repeat top left;
+}
+
+/*== JS classes ======================================*/
+// It turns out that IE6 can handle dat javascriptz
+// So we can override the default from MoJ Template
+@include ie(6) {
+	.js-hidden {
+		display: none;
+	}
+	.js-enabled-only {
+		display: block;
+	}
+}
+
+.js-enabled-only {
+	display: none;
+}
+
+.js-enabled .js-enabled-only {
+	display: block;
 }

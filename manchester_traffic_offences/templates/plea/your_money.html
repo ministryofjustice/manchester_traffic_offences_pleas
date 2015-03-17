@@ -1,11 +1,13 @@
 {% extends "plea/base.html" %}
 
+{% load i18n %}
+
 {% load staticfiles %}
 
-{% block page_title %}{{ block.super }} Your Finances{% endblock %}
+{% block page_title %}{{ block.super }} {% trans "Your Finances" %}{% endblock %}
 
 {% block page_content %}
-<form action="{{ request.path }}" method="post" autocomplete="off">
+<form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
 
     {% csrf_token %}
 
@@ -13,11 +15,11 @@
     
         {% if form.errors %}
         <section class="error-summary">
-            <h2 class="heading-medium">You need to fix the errors on this page before continuing.</h2>
+            <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
 
-            <p>See highlighted errors below.</p>
+            <p>{% trans "See highlighted errors below." %}</p>
             
-            <ul class="errors-list">
+            <ul>
             {% for field in form %}
                 {% if field.errors %}
                 <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
@@ -28,152 +30,165 @@
         {% endif %}
 
     <header class="content-header">
-        <h1 class="heading-xlarge">Your finances</h1>
+        <h1>{% trans "Your finances" %}</h1>
     </header>
 
-    <ul class="list-bullet">
-        <li>For this type of offence you'll usually have to pay a fine</li>
-        <li>You must provide your income details</li>
-        <li>The court will decide your fine based on your finances and the seriousness of the offence</li>
-        <li>Your details will be stored securely by the court</li>
+    <ul>
+        <li>{% trans "For this type of offence you'll usually have to pay a fine" %}</li>
+        <li>{% trans "You must provide your income details" %}</li>
+        <li>{% trans "The court will decide your fine based on your finances and the seriousness of the offence" %}</li>
+        <li>{% trans "Your details will be stored securely by the court" %}</li>
     </ul>
 
-    <div id="section_{{ form.you_are.name }}">
+    {% with form.you_are as field %}
+    {% include "widgets/radio_field.html" %}
+    {% endwith %}
 
-        {% with form.you_are as field %}
-        {% include "widgets/radio_field.html" %}
-        {% endwith %}
-            
-        <div class="move-up js-hidden" id="section-employed">
+    <ul class="js-hidden go-to">
+        <li>{% blocktrans %}If you answered <em>Employed</em>, fill in the section <a href="#section-employed">"You are: Employed"</a>{% endblocktrans %}</li>
+        <li>{% blocktrans %}If you answered <em>Self-employed</em>, fill in the section <a href="#section-self-employed">"You are: Self-employed"</a>{% endblocktrans %}</li>
+        <li>{% blocktrans %}If you answered <em>Receiving benefits</em>, fill in the section <a href="#section-receiving-benefits">"You are: Receiving benefits"</a>{% endblocktrans %}</li>
+        <li>{% blocktrans %}If you answered <em>Other</em>, fill in the section <a href="#section-other">"You are: Other"</a>{% endblocktrans %}</li>
+    </ul>
+        
+    <div id="section-employed" class="js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Employed">
 
-            <div class="panel-indent">
-            
-                {% with form.employed_your_job as field %}
-                {% include "widgets/std_field.html" %}
-                {% endwith %}
+        <h3 class="js-hidden">{% trans "You are: Employed" %}</h3>
 
-                {% with form.employed_take_home_pay_period as field %}
-                {% include "widgets/radio_field.html" %}
-                {% endwith %}
+        <div class="panel-indent move-up">
+        
+            {% with form.employed_your_job as field %}
+            {% include "widgets/std_field.html" %}
+            {% endwith %}
 
-                {% with form.employed_take_home_pay_amount as field %}
-                {% include "widgets/money_field.html" %}
-                {% endwith %}
+            {% with form.employed_take_home_pay_period as field %}
+            {% include "widgets/radio_field.html" %}
+            {% endwith %}
 
-                {% with form.employed_hardship as field %}
-                {% include "widgets/radio_field.html" %}
-                {% endwith %}
+            {% with form.employed_take_home_pay_amount as field %}
+            {% include "widgets/money_field.html" %}
+            {% endwith %}
 
-                <div class="employed_hardship employed_hardship-True">
-                    <h4 class="heading-small">Note:</h4>
-                    <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
-                </div>
+            {% with form.employed_hardship as field %}
+            {% include "widgets/radio_field.html" %}
+            {% endwith %}
 
+            <div id="employed_hardship-True" class="js-Conditional" data-conditional-trigger="employed_hardship" data-conditional-value="True">
+                <h4 class="heading-small">{% trans "Note:" %}</h4>
+                <p>{% trans "For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen." %}</p>
             </div>
+
         </div>
+    </div>
 
-        <div class="move-up js-hidden" id="section-self-employed">
+    <div id="section-self-employed" class="js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Self-employed">
 
-            <div class="panel-indent">
+        <h3 class="js-hidden">{% trans "You are: Self-employed" %}</h3>
 
-                {% with form.your_job as field %}
+        <div class="panel-indent move-up">
+
+            {% with form.your_job as field %}
+            {% include "widgets/std_field.html" %}
+            {% endwith %}
+
+            {% with form.self_employed_pay_period as field %}
+            {% include "widgets/radio_field.html" %}
+            {% endwith %}
+
+            <div id="section-self-employed-other" class="form-group move-up js-Conditional" data-conditional-trigger="self_employed_pay_period" data-conditional-value="Self-employed other">
+                <h4 class="heading-small js-hidden">If you answered "Other":</h4>
+                {% with form.self_employed_pay_other as field %}
                 {% include "widgets/std_field.html" %}
                 {% endwith %}
-
-                {% with form.self_employed_pay_period as field %}
-                {% include "widgets/radio_field.html" %}
-                {% endwith %}
-
-                <div class="move-up js-hidden" id="section-self-employed-other">
-                    {% with form.self_employed_pay_other as field %}
-                    {% include "widgets/std_field.html" %}
-                    {% endwith %}
-                </div>
-
-                {% with form.self_employed_pay_amount as field %}
-                {% include "widgets/money_field.html" %}
-                {% endwith %}
-
-                {% with form.self_employed_hardship as field %}
-                {% include "widgets/radio_field.html" %}
-                {% endwith %}
-
-                <div class="self_employed_hardship self_employed_hardship-True">
-                    <h4 class="heading-small">Note:</h4>
-                    <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
-                </div>
-
             </div>
-        </div>
 
-        <div class="move-up js-hidden" id="section-receiving-benefits">
+            {% with form.self_employed_pay_amount as field %}
+            {% include "widgets/money_field.html" %}
+            {% endwith %}
 
-            <div class="panel-indent">
+            {% with form.self_employed_hardship as field %}
+            {% include "widgets/radio_field.html" %}
+            {% endwith %}
 
-                {% with form.benefits_details as field %}
-                {% include "widgets/std_field.html" %}
-                {% endwith %}
-
-                {% with form.benefits_dependents as field %}
-                {% include "widgets/std_field.html" %}
-                {% endwith %}
-
-                {% with form.benefits_period as field %}
-                {% include "widgets/radio_field.html" %}
-                {% endwith %}
-
-                <div class="move-up js-hidden" id="section-benefits-other">
-                    {% with form.benefits_pay_other as field %}
-                    {% include "widgets/std_field.html" %}
-                    {% endwith %}
-                </div>
-
-                {% with form.benefits_amount as field %}
-                {% include "widgets/money_field.html" %}
-                {% endwith %}
-
-                {% with form.receiving_benefits_hardship as field %}
-                {% include "widgets/radio_field.html" %}
-                {% endwith %}
-
-                <div class="receiving_benefits_hardship receiving_benefits_hardship-True">
-                    <h4 class="heading-small">Note:</h4>
-                    <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
-                </div>
-
+            <div id="self_employed_hardship-True" class="js-Conditional" data-conditional-trigger="self_employed_hardship" data-conditional-value="True">
+                <h4 class="heading-small">{% trans "Note:" %}</h4>
+                <p>{% trans "For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen." %}</p>
             </div>
+
         </div>
+    </div>
 
-        <div class="move-up js-hidden" id="section-other">
+    <div id="section-receiving-benefits" class="js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Receiving benefits">
 
-            <div class="panel-indent">
+        <h3 class="js-hidden">{% trans "You are: Receiving benefits" %}</h3>
 
-                {% with form.other_details as field %}
+        <div class="panel-indent move-up">
+
+            {% with form.benefits_details as field %}
+            {% include "widgets/std_field.html" %}
+            {% endwith %}
+
+            {% with form.benefits_dependents as field %}
+            {% include "widgets/radio_field.html" %}
+            {% endwith %}
+
+            {% with form.benefits_period as field %}
+            {% include "widgets/radio_field.html" %}
+            {% endwith %}
+
+            <div id="section-benefits-other" class="form-group move-up js-Conditional" data-conditional-trigger="benefits_period" data-conditional-value="Benefits other">
+                <h4 class="heading-small js-hidden">If you answered "Other":</h4>
+                {% with form.benefits_pay_other as field %}
                 {% include "widgets/std_field.html" %}
                 {% endwith %}
-
-                {% with form.other_pay_amount as field %}
-                {% include "widgets/money_field.html" %}
-                {% endwith %}
-
-                {% with form.other_hardship as field %}
-                {% include "widgets/radio_field.html" %}
-                {% endwith %}
-
-                <div class="other_hardship other_hardship-True">
-                    <h4 class="heading-small">Note:</h4>
-                    <p>For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen.</p>
-                </div>
-
             </div>
-        </div>
 
+            {% with form.benefits_amount as field %}
+            {% include "widgets/money_field.html" %}
+            {% endwith %}
+
+            {% with form.receiving_benefits_hardship as field %}
+            {% include "widgets/radio_field.html" %}
+            {% endwith %}
+
+            <div id="receiving_benefits_hardship-True" class="js-Conditional" data-conditional-trigger="receiving_benefits_hardship" data-conditional-value="True">
+                <h4 class="heading-small">{% trans "Note:" %}</h4>
+                <p>{% trans "For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen." %}</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="section-other" class="js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Other">
+
+        <h3 class="js-hidden">{% trans "You are: Other" %}</h3>
+
+        <div class="panel-indent move-up">
+
+            {% with form.other_details as field %}
+            {% include "widgets/std_field.html" %}
+            {% endwith %}
+
+            {% with form.other_pay_amount as field %}
+            {% include "widgets/money_field.html" %}
+            {% endwith %}
+
+            {% with form.other_hardship as field %}
+            {% include "widgets/radio_field.html" %}
+            {% endwith %}
+
+            <div id="other_hardship-True" class="js-Conditional" data-conditional-trigger="other_hardship" data-conditional-value="True">
+                <h4 class="heading-small">{% trans "Note:" %}</h4>
+                <p>{% trans "For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen." %}</p>
+            </div>
+
+        </div>
     </div>
 
     {% endwith %}
 
-    <div class="form-group form-submit">
-        <button class="button" type="submit">Continue</button>
+    <div class="form-submit">
+        <button class="button" type="submit">{% trans "Continue" %}</button>
     </div>
 
 </form>

@@ -15,12 +15,10 @@ Forms
 
 /*== Main form styles ===============================*/
 .form-group {
-	@include core-19;
-
 	width: auto;
 	float: none;
 	clear: left;
-	margin-top: 1em;
+	margin: 0 0 2em;
 
 	@include media(tablet) {
 		max-width: 60%;
@@ -33,35 +31,41 @@ Forms
 	label {
 		@include bold-24();
 		display: block;
-		margin-bottom: .25em;
-
-		.errorlist {
-			margin: .25em 0;
-			color: $error-colour;
-		}
 	}
 
 	.block-label {
 		@include core-24;
 		margin-right: 0;
 
-		@include media(tablet) {
-			margin-right: 15px;
-			
+		@include media(tablet) {			
 			input {
 				top: 22px;
-			}	
+			}
 		}
 
 		@include ie(6) {
 			display: inline-block;
 			margin-right: 10px;
+			float: left;
+			clear: left;
+		}
+	}
+
+	@include media(tablet) {
+		.inline .block-label {
+			margin-right: 15px;
+		}
+	}
+
+	@include ie(6) {
+		.inline .block-label {
+			clear: none;
 		}
 	}
 
 	.form-hint {
-		display: block;
 		@include core-16;
+		margin: .25em 0;
 	}
 
 	.form-hint-inline {
@@ -69,15 +73,10 @@ Forms
 		display: inline;
 		vertical-align: baseline;
 	}
-}
 
-@include ie-lte(7) {
-	.form-control {
-		width: 90%;
-	}
-
-	.form-group .button {
-		margin-bottom: 0;
+	.errorlist {
+		margin: .25em 0;
+		color: $error-colour;
 	}
 }
 
@@ -96,6 +95,7 @@ Forms
 		margin-left: 0;
 	}
 }
+
 .form-control-wide {
 	@extend .form-control;
 	
@@ -113,9 +113,18 @@ fieldset {
 }
 
 legend {
-	@include core-24;
 	padding: 0;
-	margin-bottom: -.5em;
+	margin: 0;
+	// @include core-24;
+	// padding: 0;
+	// margin-bottom: -.5em;
+
+	&.form-label {
+		@extend .form-label;
+		@include bold-24();
+		
+		margin-bottom: 0;
+	}
 
 	@include ie-lte(8) {
 		color: #000;
@@ -127,54 +136,60 @@ legend {
 	}
 }
 
-legend.form-label-bold {
-	@extend .form-label;
-	@include bold-24();
-}
-
 .form-submit {
+	@extend .form-group;
 	clear: left;
 	margin-top: 3em;
 }
 
 
 /*== Error styles ==================================*/
-.form-group .validation-message .errorlist {
-	margin: .25em 0;
-	color: $error-colour;
-}
-
 .error-summary {
-	margin: 2em 0;
-	padding: 15px 15px 0;
+	margin: 1.625em 0;
+	padding: 15px;
 	background: $error-background;
 	border: 4px solid $error-colour;
 
 	h2 {
+		@extend .heading-medium;
 		margin-top: 0;
 	}
+	
+	ul {
+		padding: 0;
+		list-style: none;
 
-	.errors-list {
 		a {
 			color: #000;
+
+			&:hover,
+			&:focus {
+				text-decoration: none;
+			}
 		}
 	}
-
-	details {
-		margin-bottom: 1.05263em;
+	ul.list-bullet {
+		@extend .list-bullet;
 	}
 
-	@include ie-lte(7) {
-		ul {
-			margin: 1em 0;
-		}
+	> :last-child {
+		margin-bottom: 0;
 	}
 }
 
 .with-error {
 	padding-left: 15px;
-	// margin-left: -19px;
 	border-left: 4px solid $error-colour;
+}
+
+.errorlist {
+	margin: .25em 0;
+	padding: 0;
+	color: $error-colour;
+
+	li {
+		list-style: none;
+	}
 }
 
 
@@ -188,5 +203,24 @@ legend.form-label-bold {
 	& + input {
 		border-left: none;
 		margin-left: 0;
+	}
+}
+
+.form-field-inline {
+	display: inline-block;
+	margin: 0 5px;
+	vertical-align: baseline;
+
+	&:first-child {
+		margin-left: 0;
+	}
+
+	label {
+		@include core-16;
+		margin-right: -20px;
+	}
+
+	input {
+		margin: 0;
 	}
 }
