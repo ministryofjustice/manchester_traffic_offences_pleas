@@ -14,11 +14,11 @@
 
     {% if formset_has_errors %}
     <section class="error-summary">
-        <h2 class="heading-medium">{% trans "You need to fix the errors on this page before continuing." %}</h2>
+        <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
         
         <p>{% trans "See highlighted errors below." %}</p>
         
-        <ul class="errors-list">
+        <ul>
         {% with forms.0 as formset %}
             {% for form in formset %}
                 {% for field in form %}
@@ -33,10 +33,9 @@
     {% endif %}
 
     <header class="content-header">
-        <h1 class="heading-xlarge">
-            {% blocktrans count charges=charges %}Your plea{% plural %}Your pleas{% endblocktrans %}</h1>
+        <h1>{% blocktrans count charges=charges %}Your plea{% plural %}Your pleas{% endblocktrans %}</h1>
 
-        <p class="lede">{% trans "This is your opportunity to present your case to the court." %}</p>
+        <p>{% trans "This is your opportunity to present your case to the court." %}</p>
     </header>
 
     {% with formset=forms.0 form_count=forms.0|length %}
@@ -51,11 +50,11 @@
             <div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty_{{ forloop.counter }}">
               <fieldset>
                 {% if form_count > 1 %}
-                <legend class="form-label">{% blocktrans with counter=forloop.counter %}Your plea for charge [{{ counter }}]{% endblocktrans %}</legend>
+                <legend>{% blocktrans with counter=forloop.counter %}Your plea for charge [{{ counter }}]{% endblocktrans %}</legend>
                 {% endif %}
 
                 {% if form.guilty.errors %}
-                <div class="validation-message">{{ form.guilty.errors }}</div>
+                {{ form.guilty.errors }}
                 {% endif %}
 
                 <div class="form-field">
@@ -73,12 +72,12 @@
               </fieldset>
             </div>
 
-            <ul class="js-hidden go-to list-bullet">
+            <ul class="js-hidden go-to">
                 <li>{% blocktrans with field_id=form.guilty.0.name %}If you answered <em>Guilty</em>, you can enter <a href="#{{ field_id }}_guilty_extra">special circumstances</a>{% endblocktrans %}</li>
                 <li>{% blocktrans with field_id=form.guilty.0.name %}If you answered <em>Not Guilty</em>, you can tell us <a href="#{{ field_id }}_not_guilty_extra">why you believe you are not guilty</a>{% endblocktrans %}</li>
             </ul>
 
-            <div class="panel-indent" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^(guilty|not_guilty)$">
+            <div class="panel-indent move-up" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^(guilty|not_guilty)$">
 
                 <section id="{{ form.guilty.0.name }}_guilty_extra" class="js-Conditional js-hidden" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^guilty$">
 
@@ -104,7 +103,7 @@
 
     {% endwith %}
 
-    <div class="form-group form-submit">
+    <div class="form-submit">
         <button class="button" type="submit">{% trans "Continue" %}</button>
     </div>
 </form>

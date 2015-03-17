@@ -15,11 +15,11 @@
     
         {% if form.errors %}
         <section class="error-summary">
-            <h2 class="heading-medium">{% trans "You need to fix the errors on this page before continuing." %}</h2>
+            <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
 
             <p>{% trans "See highlighted errors below." %}</p>
             
-            <ul class="errors-list">
+            <ul>
             {% for field in form %}
                 {% if field.errors %}
                 <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
@@ -30,10 +30,10 @@
         {% endif %}
 
     <header class="content-header">
-        <h1 class="heading-xlarge">{% trans "Your finances" %}</h1>
+        <h1>{% trans "Your finances" %}</h1>
     </header>
 
-    <ul class="list-bullet">
+    <ul>
         <li>{% trans "For this type of offence you'll usually have to pay a fine" %}</li>
         <li>{% trans "You must provide your income details" %}</li>
         <li>{% trans "The court will decide your fine based on your finances and the seriousness of the offence" %}</li>
@@ -44,7 +44,7 @@
     {% include "widgets/radio_field.html" %}
     {% endwith %}
 
-    <ul class="js-hidden go-to list-bullet">
+    <ul class="js-hidden go-to">
         <li>{% blocktrans %}If you answered <em>Employed</em>, fill in the section <a href="#section-employed">"You are: Employed"</a>{% endblocktrans %}</li>
         <li>{% blocktrans %}If you answered <em>Self-employed</em>, fill in the section <a href="#section-self-employed">"You are: Self-employed"</a>{% endblocktrans %}</li>
         <li>{% blocktrans %}If you answered <em>Receiving benefits</em>, fill in the section <a href="#section-receiving-benefits">"You are: Receiving benefits"</a>{% endblocktrans %}</li>
@@ -53,7 +53,7 @@
         
     <div id="section-employed" class="js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Employed">
 
-        <h3 class="heading-medium js-hidden">{% trans "You are: Employed" %}</h3>
+        <h3 class="js-hidden">{% trans "You are: Employed" %}</h3>
 
         <div class="panel-indent move-up">
         
@@ -83,7 +83,7 @@
 
     <div id="section-self-employed" class="js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Self-employed">
 
-        <h3 class="heading-medium js-hidden">{% trans "You are: Self-employed" %}</h3>
+        <h3 class="js-hidden">{% trans "You are: Self-employed" %}</h3>
 
         <div class="panel-indent move-up">
 
@@ -95,7 +95,7 @@
             {% include "widgets/radio_field.html" %}
             {% endwith %}
 
-            <div id="section-self-employed-other" class="form-group-extra move-up js-Conditional" data-conditional-trigger="self_employed_pay_period" data-conditional-value="Self-employed other">
+            <div id="section-self-employed-other" class="form-group move-up js-Conditional" data-conditional-trigger="self_employed_pay_period" data-conditional-value="Self-employed other">
                 <h4 class="heading-small js-hidden">If you answered "Other":</h4>
                 {% with form.self_employed_pay_other as field %}
                 {% include "widgets/std_field.html" %}
@@ -120,7 +120,7 @@
 
     <div id="section-receiving-benefits" class="js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Receiving benefits">
 
-        <h3 class="heading-medium js-hidden">{% trans "You are: Receiving benefits" %}</h3>
+        <h3 class="js-hidden">{% trans "You are: Receiving benefits" %}</h3>
 
         <div class="panel-indent move-up">
 
@@ -136,7 +136,7 @@
             {% include "widgets/radio_field.html" %}
             {% endwith %}
 
-            <div id="section-benefits-other" class="form-group-extra move-up js-Conditional" data-conditional-trigger="benefits_period" data-conditional-value="Benefits other">
+            <div id="section-benefits-other" class="form-group move-up js-Conditional" data-conditional-trigger="benefits_period" data-conditional-value="Benefits other">
                 <h4 class="heading-small js-hidden">If you answered "Other":</h4>
                 {% with form.benefits_pay_other as field %}
                 {% include "widgets/std_field.html" %}
@@ -161,7 +161,7 @@
 
     <div id="section-other" class="js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Other">
 
-        <h3 class="heading-medium js-hidden">{% trans "You are: Other" %}</h3>
+        <h3 class="js-hidden">{% trans "You are: Other" %}</h3>
 
         <div class="panel-indent move-up">
 
@@ -187,7 +187,7 @@
 
     {% endwith %}
 
-    <div class="form-group form-submit">
+    <div class="form-submit">
         <button class="button" type="submit">{% trans "Continue" %}</button>
     </div>
 

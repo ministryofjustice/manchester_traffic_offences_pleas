@@ -7,10 +7,10 @@ from django.core.urlresolvers import reverse, NoReverseMatch
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template.loader import render_to_string
+from django.views.decorators.cache import never_cache
 
 from .forms import FeedbackForm
 from .models import UserRating
-
 
 def feedback_form(request):
     kw_args = {k: v for (k, v) in request.GET.items()}
