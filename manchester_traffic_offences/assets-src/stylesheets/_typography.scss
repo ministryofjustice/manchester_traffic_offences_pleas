@@ -4,24 +4,58 @@ Typography
 ====================================================
 */
 
-.heading-collapse {
-	margin-bottom: 0;
+#content {
+  @include core-19;
 }
 
-p,
-ul,
-ol,
-address,
-summary {
-	@include core-19;
+h1 {
+  @extend .heading-xlarge;
+}
 
-	@include ie-lte(7) {
-		margin-left: 0;
-	}
+h2 {
+  @extend .heading-large;
+}
+
+h3 {
+  @extend .heading-medium;
+}
+
+h4 {
+  @extend .heading-small;
+}
+h5 {
+  @extend .heading-small;
+}
+
+.heading-collapse {
+  margin-bottom: 0;
+}
+.headings-collapse {
+  h1, h2, h3, h4, h5 {
+    @extend .heading-collapse;
+  }
+}
+
+
+ul {
+  @extend .list-bullet;
+}
+ol {
+  @extend .list-number;
+}
+
+@include ie-lte(7) {
+  ul, ol {
+    margin-left: 0;
+  }
 }
 
 address {
-	margin-top: 0.3125em;
-	margin-bottom: 1.25em;
-	font-style: normal;
+  font-style: normal;
+}
+
+summary {
+	@include ie-lte(7) {
+		margin-left: 0;
+	}
 }
