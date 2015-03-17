@@ -1,0 +1,70 @@
+{% extends "plea/base.html" %}
+{% load i18n %}
+{% load debug %}
+
+{% block page_title %}{{ block.super }} {% trans "Your Details" %}{% endblock %}
+
+{% block page_content %}
+
+    {% with request.session.case.number_of_charges as charges %}
+<form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
+
+    {% csrf_token %}
+
+    {% with forms.0 as form %}
+
+        {% if form.errors %}
+        <section class="error-summary">
+            <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
+
+            <p>{% trans "See highlighted errors below." %}</p>
+
+            <ul>
+            {% for field in form %}
+                {% if field.errors %}
+                <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+
+     <header class="content-header">
+        <h1>{% trans "Your details" %}</h1>
+
+        <p class="lede">{% trans "We need these in case we have to contact you about your plea." %}</p>
+        <p class="lede">{% trans "<strong>Warning: </strong>You can only make a plea on behalf of a company if you are a director, the company secretary or the company's solicitor." %}</p>
+    </header>
+
+    {% with form.company_name as field %}
+        {% include "widgets/std_field.html" %}
+    {% endwith %}
+
+    {% with form.company_address as field %}
+        {% include "widgets/std_field.html" %}
+    {% endwith %}
+
+    {% with form.name as field %}
+        {% include "widgets/std_field.html" %}
+    {% endwith %}
+
+    {% with form.position_in_company as field %}
+        {% include "widgets/radio_field.html" %}
+    {% endwith %}
+
+    {% with form.contact_number as field %}
+        {% include "widgets/std_field.html" %}
+    {% endwith %}
+
+    {% with form.email as field %}
+        {% include "widgets/std_field.html" %}
+    {% endwith %}
+
+    {% endwith %}
+
+    <div class="form-submit">
+        <button class="button" type="submit">{% trans "Continue" %}</button>
+    </div>
+</form>
+    {% endwith %}
+{% endblock page_content %}
