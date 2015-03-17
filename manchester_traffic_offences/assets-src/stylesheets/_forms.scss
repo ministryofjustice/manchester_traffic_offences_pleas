@@ -71,6 +71,11 @@ Forms
 	}
 }
 
+.form-control {
+	width: 100%;
+	max-width: 20em;
+}
+
 @include ie-lte(7) {
 	.form-control {
 		width: 90%;
@@ -87,10 +92,15 @@ Forms
 	max-width: 100%;
 }
 
+
 .form-control-inline {
 	@extend .form-control;
 	width: auto;
-	margin: 0 5px;
+	margin: 0 3px;
+
+	@include media(tablet) {
+		margin: 0 5px;
+	}
 
 	&:first-child {
 		margin-left: 0;
@@ -108,6 +118,20 @@ Forms
 	}
 }
 
+.form-control-day,
+.form-control-month,
+.form-control-year {
+	@extend .form-control-inline;
+}
+
+.form-control-day,
+.form-control-month {
+	width: 2em;
+}
+.form-control-year {
+	width: 3em;
+}
+
 .form-group-extra {
 	.form-group {
 		margin-top: 0;
@@ -116,12 +140,14 @@ Forms
 
 fieldset {
 	margin: 0;
+
+	-webkit-margin-top-collapse: separate;
 }
 
 legend {
 	@include core-24;
 	padding: 0;
-	margin-bottom: -.5em;
+	margin: 0;
 
 	@include ie-lte(8) {
 		color: #000;
@@ -133,11 +159,12 @@ legend {
 	}
 }
 
+legend + * {
+  -webkit-margin-top-collapse: separate;
+}
+
 legend.form-label-bold {
-	@extend .form-label;
 	@include bold-24();
-	
-	margin-bottom: 0;
 }
 
 .form-submit {
@@ -180,13 +207,21 @@ legend.form-label-bold {
 }
 
 .with-error {
-	padding-left: 15px;
-	// margin-left: -19px;
+	padding-left: 10px;
 	border-left: 4px solid $error-colour;
+
+	@include media(tablet) {
+		padding-left: 15px;
+	}
 }
 
 
 /*== Modifiers ========================================*/
+.money-field {
+	input {
+		width: 7em;
+	}
+}
 .form-field-prefix {
 	float: left;
 	padding: 5px .75em 4px;
@@ -201,8 +236,12 @@ legend.form-label-bold {
 
 .form-field-inline {
 	display: inline-block;
-	margin: 0 5px;
+	margin: 0 3px;
 	vertical-align: baseline;
+
+	@include media(tablet) {
+		margin: 0 5px;
+	}
 
 	&:first-child {
 		margin-left: 0;
