@@ -1,19 +1,14 @@
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -23,25 +18,18 @@
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -60,10 +48,8 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -72,26 +58,19 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -100,16 +79,12 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -152,10 +127,8 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
 .column-half .form-group:after, .form-block:after {
   content: "";
@@ -164,10 +137,8 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 /*  
 ====================================================
 Typography
@@ -220,7 +191,7 @@ address {
   text-decoration: none;
   -webkit-font-smoothing: antialiased;
   cursor: pointer;
-  color: white;
+  color: #fff;
   margin: 0 15px 15px 0;
   padding: 0.52632em 0.78947em 0.26316em 0.78947em;
   vertical-align: top; }
@@ -247,7 +218,7 @@ address {
       box-shadow: 0 2px 0 #003518;
       border-bottom: 2px solid #003518; }
   .button:link, .button-large:link, .button:hover, .button-large:hover, .button:focus, .button-large:focus, .button:visited, .button-large:visited {
-    color: white; }
+    color: #fff; }
   .button:before, .button-large:before {
     content: "";
     height: 110%;
@@ -266,7 +237,7 @@ address {
     margin-left: 0;
     margin-right: 0; }
   .button[type="submit"], [type="submit"].button-large, .button[type="reset"], [type="reset"].button-large, .button[type="button"], [type="button"].button-large {
-    filter: chroma(color=black); }
+    filter: chroma(color=#000000); }
   .button[type=submit].button, [type=submit].button-large {
     filter: none; }
 
@@ -533,7 +504,7 @@ details .panel-indent {
   border-bottom: 1px solid #bfc1c3; }
   .phase-banner p {
     margin: 0;
-    color: black;
+    color: #000;
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
@@ -983,12 +954,12 @@ fieldset {
   margin-bottom: 30px;
   margin-bottom: 45px; }
 
-.form-label, legend.form-label-bold,
+.form-label,
 .form-label-bold {
   display: block;
   color: #0b0c0c; }
 
-.form-label, legend.form-label-bold {
+.form-label {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -996,7 +967,7 @@ fieldset {
   text-transform: none;
   margin-bottom: 5px; }
   @media (max-width: 640px) {
-    .form-label, legend.form-label-bold {
+    .form-label {
       font-size: 16px;
       line-height: 1.25; } }
 
@@ -1032,7 +1003,10 @@ fieldset {
   margin-bottom: 5px;
   margin-top: 8px; }
 
-.form-control, .form-control-inline, .form-control-wide {
+.form-control, .form-control-inline, .form-control-day,
+.form-control-month,
+.form-control-year, .form-control-urn-2,
+.form-control-urn-7, .form-control-wide {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -1043,13 +1017,16 @@ fieldset {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   padding: 4px;
-  background-color: white;
+  background-color: #fff;
   border: 1px solid #bfc1c3;
   -webkit-appearance: none;
   border-radius: 0;
   width: 50%; }
   @media (max-width: 640px) {
-    .form-control, .form-control-inline, .form-control-wide {
+    .form-control, .form-control-inline, .form-control-day,
+    .form-control-month,
+    .form-control-year, .form-control-urn-2,
+    .form-control-urn-7, .form-control-wide {
       font-size: 16px;
       line-height: 1.25; } }
 
@@ -1176,7 +1153,7 @@ input[type=number] {
   margin-right: 15px; }
 
 .js-enabled label.selected {
-  background: white;
+  background: #fff;
   border-color: #0b0c0c; }
 
 .js-enabled label.focused {
@@ -1212,7 +1189,7 @@ input[type=number] {
   margin-right: 15px; }
 
 .js-enabled label.selected {
-  background: white;
+  background: #fff;
   border-color: #0b0c0c; }
 
 .js-enabled label.focused {
@@ -1301,7 +1278,7 @@ GOV.UK Toolkit/Template overrides
   border-bottom: 1px solid #bfc1c3; }
   .phase-banner p {
     margin: 0;
-    color: black;
+    color: #000;
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
@@ -1445,25 +1422,47 @@ Forms
     display: inline;
     vertical-align: baseline; }
 
+.form-control, .form-control-inline, .form-control-day,
+.form-control-month,
+.form-control-year, .form-control-urn-2,
+.form-control-urn-7, .form-control-wide {
+  width: 100%;
+  max-width: 20em; }
+
 .form-group-wide,
 .column-half .form-group-wide,
 .column-half .form-group {
   max-width: 100%; }
 
-.form-control-inline {
+.form-control-inline, .form-control-day,
+.form-control-month,
+.form-control-year, .form-control-urn-2,
+.form-control-urn-7 {
   width: auto;
+  margin: 0 3px;
   margin: 0 5px; }
-  .form-control-inline:first-child {
+  .form-control-inline:first-child, .form-control-day:first-child,
+  .form-control-month:first-child,
+  .form-control-year:first-child, .form-control-urn-2:first-child,
+  .form-control-urn-7:first-child {
     margin-left: 0; }
 
 .form-control-wide {
   width: 75%; }
 
+.form-control-day,
+.form-control-month {
+  width: 2em; }
+
+.form-control-year {
+  width: 3em; }
+
 .form-group-extra .form-group, .form-group-extra .form-group-wide {
   margin-top: 0; }
 
 fieldset {
-  margin: 0; }
+  margin: 0;
+  -webkit-margin-top-collapse: separate; }
 
 legend {
   font-family: "nta", Arial, sans-serif;
@@ -1472,7 +1471,7 @@ legend {
   font-weight: 400;
   text-transform: none;
   padding: 0;
-  margin-bottom: -.5em;
+  margin: 0;
   color: #000;
   margin-left: -7px;
   margin-left: -2px; }
@@ -1481,13 +1480,15 @@ legend {
       font-size: 18px;
       line-height: 1.2; } }
 
+legend + * {
+  -webkit-margin-top-collapse: separate; }
+
 legend.form-label-bold {
   font-family: "nta", Arial, sans-serif;
   font-size: 24px;
   line-height: 1.25;
   font-weight: 700;
-  text-transform: none;
-  margin-bottom: 0; }
+  text-transform: none; }
   @media (max-width: 640px) {
     legend.form-label-bold {
       font-size: 18px;
@@ -1515,10 +1516,14 @@ legend.form-label-bold {
     margin-bottom: 1.05263em; }
 
 .with-error {
-  padding-left: 15px;
-  border-left: 4px solid #df3034; }
+  padding-left: 10px;
+  border-left: 4px solid #df3034;
+  padding-left: 15px; }
 
 /*== Modifiers ========================================*/
+.money-field input {
+  width: 7em; }
+
 .form-field-prefix {
   float: left;
   padding: 5px .75em 4px;
@@ -1530,8 +1535,9 @@ legend.form-label-bold {
 
 .form-field-inline {
   display: inline-block;
-  margin: 0 5px;
-  vertical-align: baseline; }
+  margin: 0 3px;
+  vertical-align: baseline;
+  margin: 0 5px; }
   .form-field-inline:first-child {
     margin-left: 0; }
   .form-field-inline label {
@@ -1551,13 +1557,10 @@ legend.form-label-bold {
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 /*  
 ====================================================
 Elements
@@ -1589,7 +1592,9 @@ p.important, #section_understand .block-label .important {
 
 .panel-indent {
   padding-top: 0;
-  padding-bottom: 0; }
+  padding-bottom: 0;
+  padding-left: 10px;
+  padding-left: 15px; }
 
 .move-up {
   margin-top: -.75em; }
@@ -1631,6 +1636,13 @@ Main styles
   float: right;
   clear: right;
   max-width: 30%; }
+
+.form-control-urn-2,
+#id_number_of_charges {
+  width: 2em; }
+
+.form-control-urn-7 {
+  width: 5em; }
 
 /*== Expenses screen =======================================*/
 #expense-summary th, #expense-summary td {
@@ -1731,7 +1743,7 @@ Main styles
       font-size: 16px;
       line-height: 1.25; } }
   #section_receive_email .grey ul {
-    margin-bottom: 0; }
+    margin: 0; }
     #section_receive_email .grey ul li {
       display: inline-block;
       margin: 0 1em 0 0; }
@@ -1742,6 +1754,7 @@ Main styles
         font-weight: 400;
         text-transform: none;
         padding: .5em .5em .5em 0;
+        margin: 0;
         cursor: pointer; }
         @media (max-width: 640px) {
           #section_receive_email .grey ul li label {
@@ -1757,7 +1770,7 @@ Main styles
   margin: 2em 0;
   padding: 40px;
   background: #28a197;
-  color: white; }
+  color: #fff; }
   #content .success-header h1,
   #content .success-header p {
     margin: 0; }
@@ -1843,3 +1856,5 @@ Main styles
 Shame
 ====================================================
 */
+
+/*# sourceMappingURL=application-ie8.css.map */
