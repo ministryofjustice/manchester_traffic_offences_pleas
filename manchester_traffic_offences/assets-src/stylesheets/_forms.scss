@@ -15,12 +15,10 @@ Forms
 
 /*== Main form styles ===============================*/
 .form-group {
-	@include core-19;
-
 	width: auto;
 	float: none;
 	clear: left;
-	margin-top: 1em;
+	margin: 0 0 2em;
 
 	@include media(tablet) {
 		max-width: 60%;
@@ -33,29 +31,35 @@ Forms
 	label {
 		@include bold-24();
 		display: block;
-		margin-bottom: .25em;
-	}
-
-	.errorlist {
-		margin: .25em 0;
-		color: $error-colour;
 	}
 
 	.block-label {
 		@include core-24;
 		margin-right: 0;
 
-		@include media(tablet) {
-			margin-right: 15px;
-			
+		@include media(tablet) {			
 			input {
 				top: 22px;
-			}	
+			}
 		}
 
 		@include ie(6) {
 			display: inline-block;
 			margin-right: 10px;
+			float: left;
+			clear: left;
+		}
+	}
+
+	@include media(tablet) {
+		.inline .block-label {
+			margin-right: 15px;
+		}
+	}
+
+	@include ie(6) {
+		.inline .block-label {
+			clear: none;
 		}
 	}
 
@@ -92,7 +96,6 @@ Forms
 	max-width: 100%;
 }
 
-
 .form-control-inline {
 	@extend .form-control;
 	width: auto;
@@ -106,6 +109,7 @@ Forms
 		margin-left: 0;
 	}
 }
+
 .form-control-wide {
 	@extend .form-control;
 	
@@ -145,9 +149,15 @@ fieldset {
 }
 
 legend {
-	@include core-24;
 	padding: 0;
 	margin: 0;
+
+	&.form-label {
+		@extend .form-label;
+		@include bold-24();
+		
+		margin-bottom: 0;
+	}
 
 	@include ie-lte(8) {
 		color: #000;
@@ -168,41 +178,43 @@ legend.form-label-bold {
 }
 
 .form-submit {
+	@extend .form-group;
 	clear: left;
 	margin-top: 3em;
 }
 
 
 /*== Error styles ==================================*/
-.form-group .validation-message .errorlist {
-	margin: .25em 0;
-	color: $error-colour;
-}
-
 .error-summary {
-	margin: 2em 0;
-	padding: 15px 15px 0;
+	margin: 1.625em 0;
+	padding: 15px;
 	background: $error-background;
 	border: 4px solid $error-colour;
 
 	h2 {
+		@extend .heading-medium;
 		margin-top: 0;
 	}
+	
+	ul {
+		padding: 0;
+		list-style: none;
 
-	.errors-list {
 		a {
 			color: #000;
+
+			&:hover,
+			&:focus {
+				text-decoration: none;
+			}
 		}
 	}
-
-	details {
-		margin-bottom: 1.05263em;
+	ul.list-bullet {
+		@extend .list-bullet;
 	}
 
-	@include ie-lte(7) {
-		ul {
-			margin: 1em 0;
-		}
+	> :last-child {
+		margin-bottom: 0;
 	}
 }
 
@@ -212,6 +224,16 @@ legend.form-label-bold {
 
 	@include media(tablet) {
 		padding-left: 15px;
+	}
+}
+
+.errorlist {
+	margin: .25em 0;
+	padding: 0;
+	color: $error-colour;
+
+	li {
+		list-style: none;
 	}
 }
 
