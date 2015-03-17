@@ -14,7 +14,6 @@ from stages import (CaseStage, YourDetailsStage, CompanyDetailsStage,
                     PleaStage, YourMoneyStage, YourExpensesStage,
                     CompanyFinancesStage, ReviewStage, CompleteStage)
 
-
 class PleaOnlineForms(MultiStageForm):
     stage_classes = [CaseStage,
                      YourDetailsStage,
@@ -49,6 +48,7 @@ class PleaOnlineForms(MultiStageForm):
 
         super(PleaOnlineForms, self).save(*args, **kwargs)
 
+    @never_cache
     def render(self):
         if self._urn_invalid:
             return redirect('urn_already_used')

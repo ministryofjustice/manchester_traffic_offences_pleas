@@ -16,11 +16,11 @@
         
     {% if form.errors %}
     <section class="error-summary">
-        <h2 class="heading-medium">{% trans "You need to fix the errors on this page before continuing." %}</h2>
+        <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
         
         <p>{% trans "See highlighted errors below." %}</p>
         
-        <ul class="errors-list">
+        <ul>
         {% for field in form %}
             {% if field.errors %}
             <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
@@ -31,12 +31,9 @@
     {% endif %}
 
     <header class="content-header">
-        <h1 class="heading-xlarge">
-            {% blocktrans count charges=case.number_of_charges %}Confirm your plea{% plural %}Confirm your pleas{% endblocktrans %}
-        </h1>
+        <h1>{% blocktrans count charges=case.number_of_charges %}Confirm your plea{% plural %}Confirm your pleas{% endblocktrans %}</h1>
 
-        <p class="lede">
-            {% blocktrans count charges=case.number_of_charges %}Review the information you’ve given before making your plea.{% plural %}Review the information you’ve given before making your pleas.{% endblocktrans %}</p>
+        <p>{% blocktrans count charges=case.number_of_charges %}Review the information you’ve given before making your plea.{% plural %}Review the information you’ve given before making your pleas.{% endblocktrans %}</p>
     </header>
 
     <table class="review-table" id="case-details">
@@ -335,14 +332,12 @@
 
         <div class="form-group-wide{% if form.understand.errors %} with-error{% endif %}">
             
-            {% if form.understand.errors %}
-            <div class="validation-message">{{ form.understand.errors }}</div>
-            {% endif %}
+            {{ form.understand.errors }}
             
             <label for="{{ form.understand.id_for_label }}" class="block-label">
                 <span class="important">{% trans "It is an offence to make a false statement or to deliberately fail to disclose any relevant facts." %}</span>
                 <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
-                {% blocktrans %}<strong>I confirm</strong> that I have read and understand the charge against me and that I am the person named in the Postal Requisition. The facts stated here are correct to the best of my knowledge.{% endblocktrans %}
+                <span class="checkbox-text">{% blocktrans %}<strong>I confirm</strong> that I have read and understand the charge against me and that I am the person named in the Postal Requisition. The facts stated here are correct to the best of my knowledge.{% endblocktrans %}</span>
             </label>
         </div>
     </section>
@@ -350,16 +345,12 @@
     <section id="section_receive_email">
 
         <div class="form-group-wide{% if form.receive_email.errors %} with-error{% endif %}">
-            
-            {% if form.receive_email.errors %}
-            <div class="validation-message">{{ form.receive_email.errors }}</div>
-            {% endif %}
+             
+            {{ form.receive_email.errors }}
 
             <div class="grey">
                 <fieldset>
-                    <legend>
-                        {% blocktrans count charges=case.number_of_charges %} Do you want to receive an email confirming your plea? {% plural %} Do you want to receive an email confirming your pleas? {% endblocktrans %}
-                    </legend>
+                    <legend>{% blocktrans count charges=case.number_of_charges %} Do you want to receive an email confirming your plea? {% plural %} Do you want to receive an email confirming your pleas? {% endblocktrans %}</legend>
 
                     {{ form.receive_email }}
                 </fieldset>
@@ -367,7 +358,7 @@
         </div>
     </section>
 
-    <div class="form-group form-submit">
+    <div class="form-submit">
         <button type="submit" class="button-large">{% blocktrans count charges=case.number_of_charges %} Make your plea {% plural %} Make your pleas {% endblocktrans %}</button>
     </div>
     {% endwith %}
