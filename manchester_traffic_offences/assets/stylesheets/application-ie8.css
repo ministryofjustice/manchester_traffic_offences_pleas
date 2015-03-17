@@ -946,12 +946,12 @@ fieldset {
   margin-bottom: 30px;
   margin-bottom: 45px; }
 
-.form-label, legend.form-label,
+.form-label,
 .form-label-bold {
   display: block;
   color: #0b0c0c; }
 
-.form-label, legend.form-label {
+.form-label {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -959,7 +959,7 @@ fieldset {
   text-transform: none;
   margin-bottom: 5px; }
   @media (max-width: 640px) {
-    .form-label, legend.form-label {
+    .form-label {
       font-size: 16px;
       line-height: 1.25; } }
 
@@ -1365,7 +1365,8 @@ Forms
     line-height: 1.25;
     font-weight: 700;
     text-transform: none;
-    display: block; }
+    display: block;
+    margin-bottom: .25em; }
     @media (max-width: 640px) {
       .form-group label, .form-group-wide label,
       .column-half .form-group label, .form-submit label {
@@ -1387,12 +1388,12 @@ Forms
   .form-group .inline .block-label, .form-group-wide .inline .block-label, .form-submit .inline .block-label {
     margin-right: 15px; }
   .form-group .form-hint, .form-group-wide .form-hint, .form-submit .form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline, .form-submit .form-hint-inline {
+    display: block;
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
     font-weight: 400;
-    text-transform: none;
-    margin: .25em 0; }
+    text-transform: none; }
     @media (max-width: 640px) {
       .form-group .form-hint, .form-group-wide .form-hint, .form-submit .form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline, .form-submit .form-hint-inline {
         font-size: 14px;
@@ -1400,9 +1401,6 @@ Forms
   .form-group .form-hint-inline, .form-group-wide .form-hint-inline, .form-submit .form-hint-inline {
     display: inline;
     vertical-align: baseline; }
-  .form-group .errorlist, .form-group-wide .errorlist, .form-submit .errorlist {
-    margin: .25em 0;
-    color: #df3034; }
 
 .form-control, .form-control-inline, .form-control-day,
 .form-control-month,
@@ -1433,27 +1431,48 @@ Forms
 .form-control-wide {
   width: 75%; }
 
+.form-control-day,
+.form-control-month {
+  width: 2em; }
+
+.form-control-year {
+  width: 3em; }
+
+.form-group-extra .form-group, .form-group-extra .form-group-wide, .form-group-extra .form-submit {
+  margin-top: 0; }
+
 fieldset {
   margin: 0;
   -webkit-margin-top-collapse: separate; }
 
 legend {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 400;
+  text-transform: none;
   padding: 0;
   margin: 0;
   color: #000;
   margin-left: -7px;
   margin-left: -2px; }
+  @media (max-width: 640px) {
+    legend {
+      font-size: 18px;
+      line-height: 1.2; } }
   legend.form-label {
     font-family: "nta", Arial, sans-serif;
     font-size: 24px;
     line-height: 1.25;
-    font-weight: 700;
-    text-transform: none;
-    margin-bottom: 0; }
+    font-weight: 400;
+    text-transform: none; }
     @media (max-width: 640px) {
       legend.form-label {
         font-size: 18px;
         line-height: 1.2; } }
+
+legend + * {
+  -webkit-margin-top-collapse: separate; }
 
 .form-submit {
   clear: left;
@@ -1483,9 +1502,18 @@ legend {
   padding-left: 15px; }
 
 .errorlist {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.31579;
+  font-weight: 400;
+  text-transform: none;
   margin: .25em 0;
   padding: 0;
   color: #df3034; }
+  @media (max-width: 640px) {
+    .errorlist {
+      font-size: 16px;
+      line-height: 1.25; } }
   .errorlist li {
     list-style: none; }
 
@@ -1687,6 +1715,17 @@ Main styles
     text-align: right; }
   .review-table .label {
     color: #6f777b; }
+  .review-table h3 {
+    font-family: "nta", Arial, sans-serif;
+    font-size: 24px;
+    line-height: 1.25;
+    font-weight: 400;
+    text-transform: none;
+    margin: 0; }
+    @media (max-width: 640px) {
+      .review-table h3 {
+        font-size: 18px;
+        line-height: 1.2; } }
 
 #section_understand .block-label {
   font-family: "nta", Arial, sans-serif;
@@ -1725,7 +1764,7 @@ Main styles
   padding: 1em;
   background: #dee0e2; }
   #section_receive_email .grey ul {
-    margin: 1em 0 0;
+    margin: 0;
     padding: 0; }
     #section_receive_email .grey ul li {
       display: inline-block;
@@ -1803,14 +1842,14 @@ Main styles
           line-height: 1.25; } }
 
 /*== Feedback screen ================================================*/
-#section_feedback_satisfaction legend.form-label {
+#section_feedback_satisfaction legend.form-label-bold {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
   font-weight: 400;
   text-transform: none; }
   @media (max-width: 640px) {
-    #section_feedback_satisfaction legend.form-label {
+    #section_feedback_satisfaction legend.form-label-bold {
       font-size: 16px;
       line-height: 1.25; } }
 
