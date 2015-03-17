@@ -27,7 +27,12 @@
       {% if "error" in message.tags %}
 
 <section class="error-summary">
-  {{ message|safe }}
+    {% if "session_timeout" in message.tags %}
+        <h2>{% trans "Session timeout" %}</h2>
+        <p>{% trans "Your session has expired, re-enter your details and try again." %}</p>
+    {% else %}
+        {{ message|safe }}
+    {% endif %}
 </section>
 
       {% endif %}
