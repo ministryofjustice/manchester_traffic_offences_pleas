@@ -126,6 +126,11 @@ Main styles
 	.label {
 		color: $grey-1;
 	}
+
+	h3 {
+		@include core-24;
+		margin: 0;
+	}
 }
 
 #section_understand {
@@ -165,6 +170,7 @@ Main styles
 
 		ul {
 			margin: 0;
+			padding: 0;
 
 			li {
 				display: inline-block;
@@ -254,7 +260,7 @@ Main styles
 
 /*== Feedback screen ================================================*/
 #section_feedback_satisfaction {
-	legend.form-label {
+	legend.form-label-bold {
 		@include core-19;
 	}
 }
