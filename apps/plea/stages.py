@@ -2,9 +2,9 @@ from dateutil.parser import parse
 import datetime
 
 from django.contrib import messages
-from django.core.urlresolvers import reverse_lazy
 from django.forms.formsets import formset_factory
 from django.utils.translation import ugettext as _
+from django.shortcuts import redirect
 
 from apps.govuk_utils.forms import FormStage
 from email import send_plea_email
@@ -261,6 +261,16 @@ class ReviewStage(FormStage):
     def save(self, form_data, next_step=None):
 
         clean_data = super(ReviewStage, self).save(form_data, next_step)
+
+        try:
+            self.all_data["case"]["urn"]
+        except KeyError:
+            # session has timed out
+            self.add_message(messages.ERROR, "Your session has timed out",
+                             extra_tags="session_timeout")
+
+            self.set_next_step("case")
+            return clean_data
 
         send_user_email = bool(clean_data.get('receive_email', False))
 
