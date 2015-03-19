@@ -1,20 +1,14 @@
 import datetime
 from mock import Mock, MagicMock, patch
-from importlib import import_module
 import socket
-import unittest
 
-from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from django.test import Client
 from django.test.client import RequestFactory
 from django.template.context import RequestContext
 
-
 from ..models import Case, Court
 from ..views import PleaOnlineForms
-from ..forms import CompanyFinancesForm
 
 
 class TestMultiPleaFormBase(TestCase):
@@ -29,6 +23,7 @@ class TestMultiPleaFormBase(TestCase):
         request.resolver_match.url_name = url_name
         request.resolver_match.kwargs = url_kwargs
         return request
+
 
 class TestMultiPleaForms(TestMultiPleaFormBase):
     def setUp(self):
@@ -112,6 +107,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
     def test_case_stage_urn_already_submitted(self):
 
+        fake_request = self.get_request_mock("/plea/case/")
+        request_context = RequestContext(fake_request)
+
         case = Case()
         case.urn = "06/AA/0000000/00"
         case.status = "sent"
@@ -120,7 +118,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
         form = PleaOnlineForms("case", "plea_form_step", self.session)
-        form.load(self.request_context)
+        form.load(request_context)
         form.save({"date_of_hearing_0": str(hearing_date.day),
                    "date_of_hearing_1": str(hearing_date.month),
                    "date_of_hearing_2": str(hearing_date.year),
@@ -130,9 +128,17 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "urn_3": "00",
                    "number_of_charges": 1,
                    "company_plea": False},
-                  self.request_context)
+                  request_context)
 
         response = form.render()
+
+        court_obj = Court.objects.get(region_code="06")
+
+        self.assertContains(
+            response,
+            "<br />".join(court_obj.court_address.split("\n")))
+
+        self.assertContains(response, court_obj.court_email)
 
         self.assertEqual(form.current_stage.forms[0].errors.keys()[0], 'urn')
         self.assertEqual(response.status_code, 200)
@@ -810,6 +816,12 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form.load(request_context)
         response = form.render()
+
+        court_obj = Court.objects.get(region_code="06")
+
+        self.assertContains(
+            response,
+            "<br />".join(court_obj.court_address.split("\n")))
 
         self.assertIn(test_data["case"]["urn"], response.content)
 
