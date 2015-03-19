@@ -56,6 +56,18 @@ Main styles
 	}
 }
 
+.form-control-urn-2,
+.form-control-urn-7 {
+	@extend .form-control-inline;
+}
+.form-control-urn-2,
+#id_number_of_charges {
+	width: 2em;
+}
+.form-control-urn-7 {
+	width: 5em;
+}
+
 /*== Expenses screen =======================================*/
 #expense-summary {
 
@@ -114,6 +126,11 @@ Main styles
 	.label {
 		color: $grey-1;
 	}
+
+	h3 {
+		@include core-24;
+		margin: 0;
+	}
 }
 
 #section_understand {
@@ -152,7 +169,7 @@ Main styles
 		background: $grey-3;
 
 		ul {
-			margin: 1em 0 0;
+			margin: 0;
 			padding: 0;
 
 			li {
@@ -166,6 +183,7 @@ Main styles
 				label {
 					@include core-24;
 					padding: .5em .5em .5em 0;
+					margin: 0;
 					cursor: pointer;
 
 					&.selected {
@@ -242,7 +260,7 @@ Main styles
 
 /*== Feedback screen ================================================*/
 #section_feedback_satisfaction {
-	legend.form-label {
+	legend.form-label-bold {
 		@include core-19;
 	}
 }

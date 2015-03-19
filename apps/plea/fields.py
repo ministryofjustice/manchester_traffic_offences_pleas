@@ -201,9 +201,9 @@ class DSURNTemplateWidget(DSTemplateWidgetBase):
 
 class HearingDateWidget(MultiWidget):
     def __init__(self, attrs=None):
-        widgets = [DSDateTemplateWidget(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline first-inline', 'size': '2'}, context={'title': 'Day'}),
-                   DSDateTemplateWidget(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}, context={'title': 'Month'}),
-                   DSDateTemplateWidget(attrs={'maxlength': '4', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '4'}, context={'title': 'Year'}),
+        widgets = [DSDateTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-day"}, context={"title": "Day"}),
+                   DSDateTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-month"}, context={"title": "Month"}),
+                   DSDateTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "4", "size": "4", "class": "form-control-year"}, context={"title": "Year"}),
                    ]
         super(HearingDateWidget, self).__init__(widgets, attrs)
 
@@ -244,7 +244,7 @@ class HearingDateWidget(MultiWidget):
         try:
             return str(datetime.date(day=day, month=month, year=year))
         except (ValueError, TypeError):
-            return [widget.value_from_datadict(data, files, name + '_%s' % i) for i, widget in enumerate(self.widgets)]
+            return [widget.value_from_datadict(data, files, name + "_%s" % i) for i, widget in enumerate(self.widgets)]
 
     def format_output(self, rendered_widgets):
         return '/'.join(rendered_widgets)
@@ -256,10 +256,10 @@ class HearingDateField(forms.DateField):
 
 class URNWidget(MultiWidget):
     def __init__(self, attrs=None):
-        widgets = [DSURNTemplateWidget(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}, context={'title': 'Part 1'}),
-                   DSURNTemplateWidget(attrs={'maxlength': '2', 'class': 'form-control-inline', 'size': '2'}, context={'title': 'Part 2'}),
-                   DSURNTemplateWidget(attrs={'maxlength': '7', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '7'}, context={'title': 'Part 3'}),
-                   DSURNTemplateWidget(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}, context={'title': 'Part 4'}),
+        widgets = [DSURNTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-urn-2"}, context={"title": "Part 1"}),
+                   DSURNTemplateWidget(attrs={"pattern": "[A-Z]*", "maxlength": "2", "size": "2", "class": "form-control-urn-2"}, context={"title": "Part 2"}),
+                   DSURNTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "7", "size": "7", "class": "form-control-urn-7"}, context={"title": "Part 3"}),
+                   DSURNTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-urn-2"}, context={"title": "Part 4"}),
                    ]
         super(URNWidget, self).__init__(widgets, attrs)
 
