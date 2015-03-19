@@ -37,6 +37,11 @@ hr {
 .panel-indent {
 	padding-top: 0;
 	padding-bottom: 0;
+	padding-left: 10px;
+
+	@include media(tablet) {
+		padding-left: 15px;
+	}
 }
 
 .move-up {
