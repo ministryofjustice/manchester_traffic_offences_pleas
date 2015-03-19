@@ -16,6 +16,10 @@ DATABASES = {
     }
 }
 
+BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1',
+                            'queue_name_prefix': 'dev-celery-',
+                            'polling_interval': 1}
+
 INSTALLED_APPS += ('raven.contrib.django.raven_compat', )
 
 ALLOWED_HOSTS = ["dev.makeaplea.dsd.io", ]
