@@ -233,8 +233,6 @@ INTERNAL_IPS = ['127.0.0.1']
 # EMAILS
 BROKER_URL = "SQS://"
 BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1'}
-AWS_ACCESS_KEY_ID = os.environ.get("EMAIL_QUEUE_USER_KEY", "")
-AWS_SECRET_ACCESS_KEY = os.environ.get("EMAIL_QUEUE_USER_SECRET", "")
 
 SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "")
 
