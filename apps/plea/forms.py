@@ -10,7 +10,7 @@ from .fields import (ERROR_MESSAGES, is_date_in_future, is_date_within_range,
                      DSRadioFieldRenderer, 
                      DSStackedRadioFieldRenderer,
                      URNField,
-                     HearingDateWidget, is_urn_not_used)
+                     HearingDateWidget, is_urn_not_used, is_urn_valid)
 
 YESNO_CHOICES = (
     (True, _("Yes")),
@@ -37,7 +37,7 @@ class CaseForm(BasePleaStepForm):
                    required=True,
                    help_text=_("On page 1 of the pack, in the top right corner"),
                    error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]},
-                   validators=[is_urn_not_used])
+                   validators=[is_urn_valid, is_urn_not_used])
 
     date_of_hearing = forms.DateField(label=_("Court hearing date"), widget=HearingDateWidget, validators=[is_date_in_future, is_date_within_range],
                                       required=True,
@@ -537,3 +537,19 @@ class PleaForm(BasePleaStepForm):
                                        help_text=_("Tell us why you believe you are not guilty."),
                                        required=False,
                                        max_length=5000)
+
+
+class CourtFinderForm(forms.Form):
+    urn = URNField(label=_("Unique reference number (URN)"),
+                   required=True,
+                   help_text=_("On page 1 of the pack, in the top right corner.<br>For example, 12/AB/0034567/89"),
+                   error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]})
+
+    def clean_urn(self):
+        urn = self.cleaned_data["urn"]
+
+        try:
+            is_urn_valid(urn)
+        except forms.ValidationError:
+            raise forms.ValidationError("You've entered incorrect details")
+        return urn
