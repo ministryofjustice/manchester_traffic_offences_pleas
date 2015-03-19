@@ -73,10 +73,6 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
 
     email_body = "<<<makeaplea-ref: {}/{}>>>".format(case.id, email_count_id)
 
-    case.add_action("Sent", "Email tasks created")
-    case.sent = True
-    case.save()
-
     email_send_court.delay(case.id, email_count_id, context_data)
 
     case.add_action("Sent", "Email tasks created")
