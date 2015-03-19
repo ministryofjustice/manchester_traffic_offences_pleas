@@ -7,19 +7,19 @@
 {% block page_content %}
 
 <header class="content-header">
-    <h1 class="heading-xlarge">{% trans "Make your plea online" %}</h1>
+    <h1>{% trans "Make your plea online" %}</h1>
 </header>
 
 <div class="grid-row">
 
     <div class="column-two-thirds">
-        <article role="article" class="group">
+        <article role="article" class="headings-collapse">
             <section class="intro">
 
-                <h2 class="heading-medium heading-collapse">{% trans "Use this service to:" %}</h2>
-                <p>{% trans "Plead guilty or not guilty to the driving offence(s) you're charged with." %}</p>
+                <h2 class="heading-medium">{% trans "Use this service to:" %}</h2>
+                <p>{% blocktrans %}Plead guilty or not guilty to your driving offence(s) being considered by the <a href="https://courttribunalfinder.service.gov.uk/courts/manchester-and-salford-magistrates-court" target="_blank" rel="external">Manchester and Salford Magistrates’ Court</a>.{% endblocktrans %}</p>
 
-                <h2 class="heading-medium heading-collapse">{% trans "By making your plea(s) online:" %}</h2>
+                <h2 class="heading-medium">{% trans "By making your plea(s) online:" %}</h2>
                 <p>{% trans "There's no need to come to court on your hearing date." %}</p>
                 
                 <div class="get-started">
@@ -29,11 +29,10 @@
             </section>
 
             <section class="before-start">
-                
-                <h2 class="heading-medium heading-collapse">{% trans "Before you start" %}</h2>
+                <h2 class="heading-medium">{% trans "Before you start" %}</h2>
                 
                 <div class="panel-indent">
-                    <ul class="list-bullet">
+                    <ul>
                         <li>{% trans "you'll need the 'Postal Requisition' pack we sent to you" %}</li>
                         <li>{% trans "you can make your plea at any time up to the day before the court makes a decision" %}</li>
                         <li>{% trans "you must be the person named on the charge sheet" %}</li>
@@ -47,19 +46,14 @@
         </article>
     </div>
 
-    <div class="column-third">
-        <aside>
-            <p class="font-xsmall">{% blocktrans %}If you plead guilty <br>you may get a<br>
-                <span class="bold-xxlarge">33%</span> <br>
-                reduction on your fine{% endblocktrans %}</p>
+    <div class="column-third"> 
+        <aside class="fine-reduction">
+            <p>{% blocktrans %}If you plead guilty <br>you may get a <br><strong>33%</strong> <br>reduction on your fine{% endblocktrans %}</p>
         </aside>   
         
         <aside class="related">
-            <h3 class="heading-medium">{% trans "Legal help and advice" %}</h3>
-            <p><a rel="external" href="http://www.lawsociety.org.uk/for-the-public/common-legal-issues/criminal/" target="_blank">{% trans "Law Society" %}</a></p>
-
-            <h3 class="heading-medium">{% trans "Questions about your plea?" %}</h3>
-            <p><a href="/court-finder">{% trans "Contact your court" %}</a></p>
+            <h3>{% trans "Legal help and advice" %}</h3>
+            <p><a href="http://www.lawsociety.org.uk/for-the-public/common-legal-issues/criminal/" target="_blank">{% trans "Law Society" %}</a></p>
         </aside>
     </div>
 

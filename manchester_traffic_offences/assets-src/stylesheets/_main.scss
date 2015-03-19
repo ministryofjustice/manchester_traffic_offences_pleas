@@ -13,17 +13,18 @@ Main styles
 	}
 
 	.get-started {
-		padding-top: 1em;
+		padding-top: .75em;
 	}
 }
 
-.before-start {
-	.panel-indent {
-		.list-bullet {
-			margin-top: 0;
-			margin-bottom: 0;
+.fine-reduction {
+	p {
+		@include core-16;
+
+		strong {
+			@include bold-80();
 		}
-	}	
+	}
 }
 
 
@@ -37,15 +38,34 @@ Main styles
 	@include media(tablet) {
 		.form-group {
 			float: left;
-			margin-bottom: .5789em;
+
+			@include ie-lte(7) {
+				width: 60%;
+			}
 		}
 		.help-image {
 			display: block;
 			float: right;
 			clear: right;
 			max-width: 30%;
+
+			@include ie-lte(7) {
+				width: 30%;
+			}
 		}
 	}
+}
+
+.form-control-urn-2,
+.form-control-urn-7 {
+	@extend .form-control-inline;
+}
+.form-control-urn-2,
+#id_number_of_charges {
+	width: 2em;
+}
+.form-control-urn-7 {
+	width: 5em;
 }
 
 /*== Expenses screen =======================================*/
@@ -106,6 +126,11 @@ Main styles
 	.label {
 		color: $grey-1;
 	}
+
+	h3 {
+		@include core-24;
+		margin: 0;
+	}
 }
 
 #section_understand {
@@ -122,28 +147,43 @@ Main styles
 
 		input {
 			position: static;
-			margin: 0 .25em 0 0;
+			float: left;
+			margin: 0 .5em;
 			@include core-24;
+
+			@include media(tablet) {
+				margin: .125em .375em;
+			}
+		}
+
+		.checkbox-text {
+			display: block;
+			margin-left: 40px;
 		}
 	}
 }
 
 #section_receive_email {
 	.grey {
-		@include core-19;
 		padding: 1em;
 		background: $grey-3;
 
 		ul {
-			margin-bottom: 0;
+			margin: 0;
+			padding: 0;
 
 			li {
 				display: inline-block;
 				margin: 0 1em 0 0;
 
+				@include ie-lte(7) {
+					float: left;
+				}
+
 				label {
 					@include core-24;
 					padding: .5em .5em .5em 0;
+					margin: 0;
 					cursor: pointer;
 
 					&.selected {
@@ -187,18 +227,31 @@ Main styles
 
 .what-next {
 	ol {
-		margin: 0;
+		padding: 0;
 
 		li {
+			list-style: none;
 			counter-increment: item;
 			margin-bottom: 5px;
 
 			&:before {
-				content: counter(item) ". ";
+				content: counter(item) ".";
 				display: inline-block;
 				@include bold-19();
 				margin-right: .25em;
-				width: 1em;
+				width: 1.125em;
+			}
+		}
+
+		@include ie-lte(7) {
+			padding-left: 2em;
+
+			li {
+				list-style-type: decimal;
+
+				&:before {
+					display: none;
+				}
 			}
 		}
 	}
