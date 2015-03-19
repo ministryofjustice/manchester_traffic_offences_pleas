@@ -73,16 +73,10 @@ Your not guilty pleas have been sent to the court
 
 <h3 class="heading-small">{% trans "By post:" %}</h3>
 
-<address>
-The Operations Manager<br>
-Manchester &amp; Salford Magistrates Court<br>
-Crown Square<br>
-Manchester<br>
-M60 1PR<br>
-</address>
+<address>{{ court.court_address|linebreaksbr }}</address>
 
 <h3 class="heading-small">{% trans "By email:" %}</h3>
-<p><a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">roadtrafficpcr@hmcts.gsi.gov.uk</a></p>
+<p><a href="mailto:{{ court.court_email }}">{{ court.court_email }}</a></p>
 
 
 <h2 class="heading-medium">{% trans "We’re constantly working to improve Make Your Plea." %}</h2>
