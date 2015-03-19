@@ -70,15 +70,10 @@ Your not guilty pleas have been sent to the court
 {% trans "The contact details for the court are:" %}
 
 {% trans "By Post:" %}
-The Operations Manager
-Manchester & Salford
-Magistrates Court
-Crown Square
-Manchester
-M60 1PR
+{{ court_address }}
 
 {% trans "By email:" %}
-roadtrafficpcr@hmcts.gsi.gov.uk
+{{ court_email }}
 
 -------
 

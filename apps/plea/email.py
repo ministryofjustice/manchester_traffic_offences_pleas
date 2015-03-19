@@ -1,3 +1,4 @@
+from copy import deepcopy
 from dateutil import parser
 import logging
 import json
@@ -37,7 +38,9 @@ def send_user_confirmation_email(context_data):
         'urn': context_data['case']['urn'],
         'number_of_charges': context_data['case']['number_of_charges'],
         'plea_type': get_plea_type(context_data),
-        'name': name
+        'name': name,
+        'court_address': context_data["court"].court_address,
+        'court_email': context_data["court"].court_email
     }
 
     html_body = render_to_string("plea/plea_email_confirmation.html", data)
@@ -80,19 +83,22 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
             context_data["case"]["urn"]))
         raise
 
+    email_context = deepcopy(context_data)
+    email_context["court"] = court_obj
+
     if plea_email_to is None:
         plea_email_to = [court_obj.submission_email]
 
     plea_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
                                          settings.PLEA_EMAIL_ATTACHMENT_NAME,
                                          settings.PLEA_EMAIL_TEMPLATE,
-                                         context_data,
+                                         email_context,
                                          "text/html")
 
     plp_email = TemplateAttachmentEmail(settings.PLP_EMAIL_FROM,
                                         settings.PLEA_EMAIL_ATTACHMENT_NAME,
                                         settings.PLP_EMAIL_TEMPLATE,
-                                        context_data,
+                                        email_context,
                                         "text/html")
 
     # add DOH / name to the email subject for compliance with the current format
@@ -117,6 +123,9 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
     case = Case()
     case.urn = context_data["case"]["urn"].upper()
     case.save()
+
+    if "court" in context_data:
+        del context_data["court"]
 
     if getattr(settings, 'STORE_USER_DATA', False):
         encrypt_and_store_user_data(case.urn, case.id, context_data)
@@ -159,13 +168,13 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
     if court_obj.plp_email:
         # only send the plp email if Court.plp_email is occupied
         try:
-            plp_email.send([court_obj.plp_email]    ,
+            plp_email.send([court_obj.plp_email],
                            settings.PLP_EMAIL_SUBJECT.format(**context_data),
                            settings.PLEA_EMAIL_BODY,
                            route="GSI")
         except (smtplib.SMTPException, socket.error, socket.gaierror) as e:
             logger.error("Error sending email: {0}".format(e.message))
 
-    send_user_confirmation_email(context_data)
+    send_user_confirmation_email(email_context)
 
     return True
