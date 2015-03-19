@@ -231,11 +231,12 @@ LOGGING = {
 INTERNAL_IPS = ['127.0.0.1']
 
 # EMAILS
-SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "")
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
-AWS_SECRET_ACCESS_KEY = os.environ.get("EMAIL_QUEUE_USER_SECRET", "")
 BROKER_URL = "SQS://"
 BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1'}
+AWS_ACCESS_KEY_ID = os.environ.get("EMAIL_QUEUE_USER_KEY", "")
+AWS_SECRET_ACCESS_KEY = os.environ.get("EMAIL_QUEUE_USER_SECRET", "")
+
+SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "")
 
 # Secure mail
 SMTP_ROUTES = {"GSI": {"HOST": os.environ.get("GSI_EMAIL_HOST", "localhost"),
