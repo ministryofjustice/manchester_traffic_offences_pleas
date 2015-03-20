@@ -1580,6 +1580,9 @@ hr {
   padding-top: 5px;
   border-top: 10px solid #005ea5; }
   .related h3 {
+    margin-top: 1em;
+    margin-bottom: 0; }
+  .related h3:first-child {
     margin-top: 10px; }
 
 .panel-indent {
@@ -1852,6 +1855,10 @@ Main styles
     #section_feedback_satisfaction legend.form-label-bold {
       font-size: 16px;
       line-height: 1.25; } }
+
+/*== Court Finder ===================================================*/
+.court-details h2.heading-medium, .court-details .error-summary h2, .error-summary .court-details h2 {
+  margin-bottom: 0; }
 
 /*== Terms ==========================================================*/
 .cookies-table {
