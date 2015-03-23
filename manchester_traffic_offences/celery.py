@@ -5,7 +5,8 @@ from celery import Celery
 
 from django.conf import settings
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'manchester_traffic_offences.settings.local')
+if not os.environ.has_key("DJANGO_SETTINGS_MODULE"):
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'manchester_traffic_offences.settings.local')
 
 app = Celery('apps.plea')
 
