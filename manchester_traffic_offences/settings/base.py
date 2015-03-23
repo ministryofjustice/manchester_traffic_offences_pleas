@@ -124,7 +124,6 @@ SESSION_COOKIE_HTTPONLY = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 3600
 
-CELERY_BROKER = ""
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'manchester_traffic_offences.wsgi.application'
@@ -233,6 +232,7 @@ INTERNAL_IPS = ['127.0.0.1']
 # EMAILS
 BROKER_URL = "SQS://"
 BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1'}
+CELERY_SEND_TASK_ERROR_EMAILS = True
 
 SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "")
 
