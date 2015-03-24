@@ -3,7 +3,7 @@
 {% load i18n %}
 {% load humanize %}
 
-{% block page_title %}{{ block.super }} Confirm your plea{{ case.number_of_charges|pluralize }}{% endblock %}
+{% block page_title %}{% blocktrans count charges=case.number_of_charges %}Confirm your plea{% plural %}Confirm your pleas{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 {% load date testing %}
 

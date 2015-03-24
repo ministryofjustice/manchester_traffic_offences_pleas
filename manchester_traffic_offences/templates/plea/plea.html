@@ -3,7 +3,7 @@
 {% load debug %}
 {% load i18n %}
 
-{% block page_title %}{{ block.super }} Your plea{% endblock %}
+{% block page_title %}{% blocktrans count charges=request.session.case.number_of_charges %}Your plea{% plural %}Your pleas{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 {% block page_content %}
 
