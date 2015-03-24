@@ -3,10 +3,10 @@ from django.conf import settings
 def globals(request):
     return {
         # Application Title (Populates <title>)
-        'app_title': 'Make your plea: Traffic offences',
+        'app_title': 'Make a Plea: Traffic offences - GOV.UK',
 
         # Proposition Title (Populates proposition header)
-        'proposition_title': 'Make your plea: Traffic offences',
+        'proposition_title': 'Make a Plea: Traffic offences',
 
         # Current Phase (Sets the current phase and the colour of phase tags). Presumed values: alpha, beta, live
         'phase': 'alpha',
