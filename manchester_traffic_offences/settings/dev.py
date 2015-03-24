@@ -14,7 +14,7 @@ DATABASES = {
         'HOST': os.environ.get('POSTGRES_HOST', ''),
         'PORT': os.environ.get('POSTGRES_PORT', ''),
         'OPTIONS': {
-            'sslmode': 'require',
+            'sslmode': 'verify-full',
 
         },
     }
