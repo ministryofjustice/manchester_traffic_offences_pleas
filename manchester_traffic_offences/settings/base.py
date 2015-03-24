@@ -2,7 +2,7 @@ import sys
 import os
 from os.path import join, abspath, dirname
 
-VERSION = (0, 9, 4)
+VERSION = (0, 9, 5)
 
 # PATH vars
 here = lambda *x: join(abspath(dirname(__file__)), *x)
