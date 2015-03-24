@@ -21,8 +21,6 @@ logger = logging.getLogger(__name__)
 
 @app.task(bind=True, max_retries=5, default_retry_delay=10)
 def email_send_court(self, case_id, count_id, email_data):
-    plea_email_result = False
-
     # No error trapping, let these fail hard if the objects can't be found
     case = Case.objects.get(pk=case_id)
 
@@ -78,30 +76,36 @@ def email_send_court(self, case_id, count_id, email_data):
 
 @app.task(bind=True)
 def email_send_prosecutor(self, email_data, case_id):
+    try:
+        court_obj = Court.objects.get_by_urn(email_data["case"]["urn"])
+    except Court.DoesNotExist:
+        logger.error("URN does not have a matching Court entry: {}".format(
+            email_data["case"]["urn"]))
+        raise
 
     # No error trapping, let these fail hard if the objects can't be found
     case = Case.objects.get(pk=case_id)
     case.add_action("Prosecutor email started", "")
-
-    plp_email_to = settings.PLP_EMAIL_TO
 
     plp_email = TemplateAttachmentEmail(settings.PLP_EMAIL_FROM,
                                         settings.PLEA_EMAIL_ATTACHMENT_NAME,
                                         settings.PLP_EMAIL_TEMPLATE,
                                         email_data,
                                         "text/html")
+    if court_obj.plp_email:
+        try:
+            plp_email.send([court_obj.plp_email],
+                           settings.PLP_EMAIL_SUBJECT.format(**email_data),
+                           settings.PLEA_EMAIL_BODY,
+                           route="GSI")
+        except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
+            logger.error("Error sending email to prosecutor: {0}".format(exc))
+            case.add_action("Prosecutor email network error", unicode(exc))
+            raise self.retry(email_data, exc=exc)
 
-    try:
-        plp_email.send(settings.PLP_EMAIL_TO,
-                       settings.PLP_EMAIL_SUBJECT.format(**email_data),
-                       settings.PLEA_EMAIL_BODY,
-                       route="GSI")
-    except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
-        logger.error("Error sending email to prosecutor: {0}".format(exc))
-        case.add_action("Prosecutor email network error", unicode(exc))
-        raise self.retry(email_data, exc=exc)
-
-    case.add_action("Prosecutor email sent", "")
+        case.add_action("Prosecutor email sent", "")
+    else:
+        case.add_action("Prosecutor email not sent", "No plp email in court data")
 
     return True
 
