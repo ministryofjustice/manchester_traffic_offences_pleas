@@ -13,6 +13,12 @@
 {% endblock %}
 
 {% block before_content %}
+<p>Active language: {{ LANGUAGE_CODE }}</p>
+
+<p>
+    <a href="{% url 'set_language' %}?lang=en">English</a>
+    <a href="{% url 'set_language' %}?lang=cy">Welsh</a>
+</p>
 <div class="phase-banner">
   <nav class="language-switcher">
     <ul>
