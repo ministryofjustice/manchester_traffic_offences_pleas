@@ -15,6 +15,7 @@ GOV.UK Toolkit/Template overrides
 }
 
 .phase-banner {
+	@extend %site-width-container;
 	@include phase-banner(alpha);
 
 	.phase-tag {
@@ -23,6 +24,8 @@ GOV.UK Toolkit/Template overrides
 }
 
 #content {
+	padding-top: 1px;
+
 	@include ie-lte(8) {
 		width: 960px;
 	}
