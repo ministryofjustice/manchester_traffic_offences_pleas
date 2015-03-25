@@ -2,6 +2,8 @@ import sys
 import os
 from os.path import join, abspath, dirname
 
+from django.utils.translation import ugettext_lazy as _
+
 VERSION = (0, 9, 4)
 
 # PATH vars
@@ -48,11 +50,16 @@ TIME_ZONE = 'Europe/London'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-gb'
 
+LANGUAGES = (
+    ('en', _('English')),
+    ('cy', _('Welsh')),
+)
+
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = False
+USE_I18N = True 
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
