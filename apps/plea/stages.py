@@ -76,7 +76,7 @@ class CompanyDetailsStage(FormStage):
                            self).save(form_data, next_step)
 
         if 'complete' in clean_data:
-            self.set_next_step("plea", skip=["your_details", "your_money",
+            self.set_next_step("plea", skip=["your_details", "your_finances",
                                              "your_expenses"])
 
         return clean_data
@@ -84,7 +84,7 @@ class CompanyDetailsStage(FormStage):
 
 class YourDetailsStage(FormStage):
     name = "your_details"
-    template = "plea/about.html"
+    template = "plea/your_details.html"
     form_classes = [YourDetailsForm]
     dependencies = ["case"]
 
@@ -163,17 +163,17 @@ class PleaStage(FormStage):
         if self.all_data["case"].get("company_plea", None):
             if none_guilty:
                 self.set_next_step("review", skip=["company_finances",
-                                                   "your_money"])
+                                                   "your_finances"])
             else:
-                self.set_next_step("company_finances", skip=["your_money"])
+                self.set_next_step("company_finances", skip=["your_finances"])
         else:
-            # determine if your_money needs to be loaded
+            # determine if your_finances needs to be loaded
             if none_guilty:
-                self.all_data["your_money"]["complete"] = True
-                self.all_data["your_money"]["skipped"] = True
+                self.all_data["your_finances"]["complete"] = True
+                self.all_data["your_finances"]["skipped"] = True
                 self.set_next_step("review")
-            elif "skipped" in self.all_data["your_money"]:
-                del self.all_data["your_money"]["skipped"]
+            elif "skipped" in self.all_data["your_finances"]:
+                del self.all_data["your_finances"]["skipped"]
 
         return clean_data
 
@@ -191,8 +191,8 @@ class CompanyFinancesStage(FormStage):
 
 
 class YourMoneyStage(FormStage):
-    name = "your_money"
-    template = "plea/your_money.html"
+    name = "your_finances"
+    template = "plea/your_finances.html"
     form_classes = [YourMoneyForm]
     dependencies = ["case", "your_details", "plea"]
 
@@ -213,7 +213,7 @@ class YourMoneyStage(FormStage):
 
             hardship = clean_data.get(hardship_field, False)
 
-            self.all_data["your_money"]["hardship"] = hardship
+            self.all_data["your_finances"]["hardship"] = hardship
 
             if not hardship:
                 self.set_next_step("review", skip=["your_expenses"])
@@ -225,7 +225,7 @@ class YourExpensesStage(FormStage):
     name = "your_expenses"
     template = "plea/your_expenses.html"
     form_classes = [YourExpensesForm]
-    dependencies = ["case", "your_details", "plea", "your_money"]
+    dependencies = ["case", "your_details", "plea", "your_finances"]
 
     def save(self, form_data, next_step=None):
 
@@ -263,7 +263,7 @@ class ReviewStage(FormStage):
     template = "plea/review.html"
     form_classes = [ConfirmationForm]
     dependencies = ["case", "company_details", "your_details", "plea",
-                    "your_money", "company_finances"]
+                    "your_finances", "company_finances"]
 
     def save(self, form_data, next_step=None):
 
@@ -299,7 +299,7 @@ class CompleteStage(FormStage):
     template = "plea/complete.html"
     form_classes = []
     dependencies = ["case", "your_details", "company_details", "plea",
-                    "your_money", "company_finances", "review"]
+                    "your_finances", "company_finances", "review"]
 
     def render(self, request_context):
 

@@ -3,7 +3,7 @@
 
 {% load testing %}
 
-{% block page_title %}{{ block.super }} {% trans "Sent" %}{% endblock %}
+{% block page_title %}{% blocktrans count charges=case.number_of_charges %}Your plea has been sent{% plural %}Your pleas have been sent{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 {% block page_content %}
 

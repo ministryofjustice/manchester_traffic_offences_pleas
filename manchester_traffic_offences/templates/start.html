@@ -2,12 +2,10 @@
 
 {% load i18n %}
 
-{% block page_title %}{% trans "Traffic offences: Plea online:" %}{% endblock %}
-
 {% block page_content %}
 
 <header class="content-header">
-    <h1>{% trans "Make your plea online" %}</h1>
+    <h1>{% trans "Make a plea online" %}</h1>
 </header>
 
 <div class="grid-row">
@@ -53,7 +51,7 @@
         
         <aside class="related">
             <h3>{% trans "Legal help and advice" %}</h3>
-            <p><a href="http://www.lawsociety.org.uk/for-the-public/common-legal-issues/criminal/" target="_blank">{% trans "Law Society" %}</a></p>
+            <p><a rel="external" href="http://www.lawsociety.org.uk/for-the-public/common-legal-issues/criminal/" target="_blank">{% trans "Law Society" %}</a></p>
 
             <h3>{% trans "Questions about your plea?" %}</h3>
             <p><a href="/court-finder">{% trans "Contact your court" %}</a></p>
