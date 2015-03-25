@@ -36,7 +36,7 @@
   display: block;
   clear: both; }
 
-#content, #global-cookie-message > div, .footer-wrapper p.footer-top {
+#content, #global-cookie-message > div, .phase-banner, .footer-wrapper p.footer-top {
   max-width: 960px;
   width: 960px;
   margin: 0 15px;
@@ -91,7 +91,7 @@
   display: block;
   clear: both; }
 
-#content, #global-cookie-message > div, .footer-wrapper p.footer-top {
+#content, #global-cookie-message > div, .phase-banner, .footer-wrapper p.footer-top {
   max-width: 960px;
   width: 960px;
   margin: 0 15px;
@@ -1312,6 +1312,7 @@ GOV.UK Toolkit/Template overrides
     vertical-align: baseline; }
 
 #content {
+  padding-top: 1px;
   width: 960px; }
 
 .footer-wrapper p.footer-top {
