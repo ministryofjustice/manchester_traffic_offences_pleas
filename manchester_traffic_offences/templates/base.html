@@ -13,22 +13,19 @@
 {% endblock %}
 
 {% block before_content %}
-<p>Active language: {{ LANGUAGE_CODE }}</p>
-
-<p>
-    <a href="{% url 'set_language' %}?lang=en">English</a>
-    <a href="{% url 'set_language' %}?lang=cy">Welsh</a>
-</p>
 <div class="phase-banner">
   <nav class="language-switcher">
     <ul>
-      <li><a rel="alternate" href="?lang=cy" hreflang="cy" lang="cy">Cymraeg</a></li>
+      {% ifequal LANGUAGE_CODE "en" %}
+        <li><a rel="alternate" href="{% url 'set_language' %}?lang=cy" hreflang="cy" lang="cy">Cymraeg</a></li>
+      {% else %}
+        <li><a rel="alternate" href="{% url 'set_language' %}?lang=en" hreflang="en" lang="en">English</a></li>
+      {% endifequal %}
     </ul>
   </nav>
 
   <p><a href="https://www.gov.uk/service-manual/phases/alpha.html" class="phase-tag">alpha</a> {% blocktrans with feedback_url=feedback_url %}This is a new service - <a href="{{ feedback_url }}">your feedback</a> will help us to improve it.{% endblocktrans %}</p>
 </div>
-<!--end phase-banner-->
 {% endblock %}
 
 {% block content %}
