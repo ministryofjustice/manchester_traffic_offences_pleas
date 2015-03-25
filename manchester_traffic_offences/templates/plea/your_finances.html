@@ -4,7 +4,7 @@
 
 {% load staticfiles %}
 
-{% block page_title %}{{ block.super }} {% trans "Your Finances" %}{% endblock %}
+{% block page_title %}{% trans "Your finances" %} - {{ block.super }}{% endblock %}
 
 {% block page_content %}
 <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
