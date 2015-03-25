@@ -14,7 +14,13 @@
 
 {% block before_content %}
 <div class="phase-banner">
-  <p><a href="https://www.gov.uk/service-manual/phases/alpha.html" class="phase-tag">alpha</a> {% blocktrans with feedback_url=feedback_url %}This is a new service - <a href="{{ feedback_url }}">your feedback</a> will help us to improve it{% endblocktrans %}</p>
+  <nav class="language-switcher">
+    <ul>
+      <li><a rel="alternate" href="?lang=cy" hreflang="cy" lang="cy">Cymraeg</a></li>
+    </ul>
+  </nav>
+
+  <p><a href="https://www.gov.uk/service-manual/phases/alpha.html" class="phase-tag">alpha</a> {% blocktrans with feedback_url=feedback_url %}This is a new service - <a href="{{ feedback_url }}">your feedback</a> will help us to improve it.{% endblocktrans %}</p>
 </div>
 <!--end phase-banner-->
 {% endblock %}
