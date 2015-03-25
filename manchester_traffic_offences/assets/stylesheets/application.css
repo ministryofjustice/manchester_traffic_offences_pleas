@@ -1321,56 +1321,12 @@ GOV.UK Toolkit/Template overrides
   text-decoration: none; }
 
 .phase-banner {
-  padding: 10px 0 8px 0;
-  border-bottom: 1px solid #bfc1c3; }
-  @media (min-width: 641px) {
-    .phase-banner {
-      padding-bottom: 10px; } }
+  padding: 0; }
   .phase-banner p {
-    margin: 0;
-    color: #000;
-    font-family: "nta", Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.25;
-    font-weight: 400;
-    text-transform: none; }
-    @media (max-width: 640px) {
-      .phase-banner p {
-        font-size: 14px;
-        line-height: 1.14286; } }
-  .phase-banner .phase-tag {
-    display: -moz-inline-stack;
     display: inline-block;
-    vertical-align: top;
-    margin: 0 8px 0 0;
-    padding: 2px 5px 0;
-    font-family: "nta", Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.25;
-    font-weight: 700;
-    text-transform: none;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-decoration: none;
-    color: #fff;
-    background-color: #d53880; }
-    @media (min-width: 641px) {
-      .phase-banner .phase-tag {
-        vertical-align: baseline; } }
-    @media (max-width: 640px) {
-      .phase-banner .phase-tag {
-        font-size: 14px;
-        line-height: 1.14286; } }
-  .phase-banner span {
-    display: -moz-inline-stack;
-    display: inline-block;
-    width: 75%;
-    vertical-align: top; }
-    @media (min-width: 641px) {
-      .phase-banner span {
-        width: auto;
-        vertical-align: baseline; } }
+    padding: 12px 0 8px; }
   .phase-banner .phase-tag {
+    margin-top: -3px;
     vertical-align: baseline; }
 
 #content {
@@ -1646,6 +1602,26 @@ hr {
   border-top: 1px solid #bfc1c3;
   margin: 1em 0 2em;
   padding: 0; }
+
+.language-switcher {
+  float: right;
+  margin: 0 0 0 2em;
+  padding: 12px 0 8px;
+  font-family: "nta", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.25;
+  font-weight: 400;
+  text-transform: none; }
+  @media (max-width: 640px) {
+    .language-switcher {
+      font-size: 14px;
+      line-height: 1.14286; } }
+  .language-switcher ul {
+    padding: 0;
+    margin: 0; }
+  .language-switcher li {
+    margin: 0;
+    list-style-type: none; }
 
 .content-header {
   margin: 0 0 1.675em; }
