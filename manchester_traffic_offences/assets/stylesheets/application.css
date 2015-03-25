@@ -36,14 +36,14 @@
   display: block;
   clear: both; }
 
-#content, #global-cookie-message > div, .footer-wrapper p.footer-top {
+#content, #global-cookie-message > div, .phase-banner, .footer-wrapper p.footer-top {
   max-width: 960px;
   margin: 0 15px; }
   @media (min-width: 641px) {
-    #content, #global-cookie-message > div, .footer-wrapper p.footer-top {
+    #content, #global-cookie-message > div, .phase-banner, .footer-wrapper p.footer-top {
       margin: 0 30px; } }
   @media (min-width: 1020px) {
-    #content, #global-cookie-message > div, .footer-wrapper p.footer-top {
+    #content, #global-cookie-message > div, .phase-banner, .footer-wrapper p.footer-top {
       margin: 0 auto; } }
 
 .grid-row {
@@ -94,14 +94,14 @@
   display: block;
   clear: both; }
 
-#content, #global-cookie-message > div, .footer-wrapper p.footer-top {
+#content, #global-cookie-message > div, .phase-banner, .footer-wrapper p.footer-top {
   max-width: 960px;
   margin: 0 15px; }
   @media (min-width: 641px) {
-    #content, #global-cookie-message > div, .footer-wrapper p.footer-top {
+    #content, #global-cookie-message > div, .phase-banner, .footer-wrapper p.footer-top {
       margin: 0 30px; } }
   @media (min-width: 1020px) {
-    #content, #global-cookie-message > div, .footer-wrapper p.footer-top {
+    #content, #global-cookie-message > div, .phase-banner, .footer-wrapper p.footer-top {
       margin: 0 auto; } }
 
 .grid-row {
@@ -1372,6 +1372,9 @@ GOV.UK Toolkit/Template overrides
         vertical-align: baseline; } }
   .phase-banner .phase-tag {
     vertical-align: baseline; }
+
+#content {
+  padding-top: 1px; }
 
 .footer-wrapper p.footer-top {
   font-family: "nta", Arial, sans-serif;
