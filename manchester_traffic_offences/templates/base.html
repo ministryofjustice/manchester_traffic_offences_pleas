@@ -5,6 +5,14 @@
 
 {% block page_title %}{% trans "Make a Plea: Traffic offences" %} - GOV.UK{% endblock %}
 
+{% block cookie_message %}
+  <p>GOV.UK uses cookies to make the site simpler. <a href="https://www.gov.uk/help/cookies">Find out more about cookies</a></p>
+{% endblock %}
+
+{% block licence_message %}
+  <p>All content is available under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence v3.0</a>, except where otherwise stated</p>
+{% endblock %}
+
 {% block stylesheets %}
 <link rel="stylesheet" type="text/css" href="{% static "stylesheets/application.css" %}">
 <!--[if IE 6]><link href="{% static "stylesheets/application-ie6.css" %}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
@@ -24,7 +32,7 @@
     </ul>
   </nav>
 
-  <p><a href="https://www.gov.uk/service-manual/phases/alpha.html" class="phase-tag">alpha</a> {% blocktrans with feedback_url=feedback_url %}This is a new service - <a href="{{ feedback_url }}">your feedback</a> will help us to improve it.{% endblocktrans %}</p>
+  <p><a href="https://www.gov.uk/service-manual/phases/{{ phase }}.html" class="phase-tag">{{ phase }}</a> {% blocktrans with feedback_url=feedback_url %}This is a new service - <a href="{{ feedback_url }}">your feedback</a> will help us to improve it.{% endblocktrans %}</p>
 </div>
 {% endblock %}
 
@@ -77,7 +85,7 @@
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-ga('create', 'UA-53811587-1', {'cookieDomain': 'none'});
+ga('create', '{{ ga_id }}', {'cookieDomain': 'none'});
 ga('require', 'linkid', 'linkid.js');
 //ga('set', 'appVersion', '{{ version|join:"." }}');
 

@@ -1,4 +1,6 @@
 from django.conf import settings
+from django.utils.translation import get_language
+from django.utils.safestring import mark_safe
 
 def globals(request):
     return {
@@ -18,5 +20,11 @@ def globals(request):
         'ga_id': 'UA-53811587-1',
 
         # Version number
-        'version': settings.VERSION
+        'version': settings.VERSION,
+
+        'html_lang': get_language,
+
+        'logo_link_title': 'Go to the GOV.UK homepage',
+
+        'crown_copyright_message': mark_safe('&copy; Crown copyright')
         }
