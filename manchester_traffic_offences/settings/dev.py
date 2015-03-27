@@ -15,7 +15,6 @@ DATABASES = {
         'PORT': os.environ.get('POSTGRES_PORT', ''),
         'OPTIONS': {
             'sslmode': 'require',
-
         },
     }
 }
@@ -30,7 +29,7 @@ SMTP_ROUTES["GMP"]["USERNAME"] = os.environ.get("GSI_EMAIL_USERNAME", "")
 SMTP_ROUTES["GMP"]["PASSWORD"] = os.environ.get("GSI_EMAIL_PASSWORD", "")
 
 BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1',
-                            'queue_name_prefix': 'dev-celery-',
+                            'queue_name_prefix': 'dev-',
                             'polling_interval': 1}
 
 INSTALLED_APPS += ('raven.contrib.django.raven_compat', )
