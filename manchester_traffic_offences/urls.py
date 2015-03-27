@@ -25,6 +25,6 @@ urlpatterns = patterns('',
     url(r'^feedback/', include('apps.feedback.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^court-finder/$', CourtFinderView.as_view()),
-    url(r"^i18n/setlang/$", views.set_language, name="set_language"),
+    url(r"^change-language/$", views.set_language, name="set_language"),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
