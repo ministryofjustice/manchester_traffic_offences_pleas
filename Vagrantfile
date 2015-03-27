@@ -16,6 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     config.vm.synced_folder ".", "/pleas/"
     config.vm.synced_folder "../manchester_traffic_offences_ops", "/ops/"
+    config.vm.synced_folder "../froddd/moj_template/pkg/django_moj_template-0.23.1/moj_template", "/pleas/moj_template/"
 
 
     config.vm.provision :shell do |sh|
