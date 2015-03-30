@@ -71,6 +71,10 @@ USE_TZ = False
 # Allow the use of commas in decimal fields and when displaying large numbers
 USE_THOUSAND_SEPARATOR = True
 
+LOCALE_PATHS = (
+    root('conf/locale')
+)
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = root('assets', 'uploads')
