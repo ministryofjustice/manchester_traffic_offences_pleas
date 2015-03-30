@@ -1,17 +1,20 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-30 11:55+0100\n"
-"PO-Revision-Date: Mon Mar 30 2015 11:47:15 GMT+0100 (BST)\n"
+"POT-Creation-Date: 2015-03-30 13:54+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: Unknown locale\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n!=1\n"
-"X-Poedit-SourceCharset: UTF-8\n"
 
 #: apps/feedback/forms.py:8
 msgid "very satisfied"
@@ -207,7 +210,6 @@ msgstr ""
 "Dywedwch wrthym pe bai talu dirwy yn achosi problemau ariannol difrifol i chi"
 
 #: apps/plea/fields.py:49
-#, fuzzy
 msgid ""
 "You must confirm that you have read and understood the charge against you "
 "before you can submit your plea"
@@ -235,7 +237,6 @@ msgstr ""
 "difrifol i chi"
 
 #: apps/plea/fields.py:53
-#, fuzzy
 msgid "You must tell us if anyone else contributes to your household bills"
 msgstr ""
 "Rhaid i chi ddweud wrthym os yw unrhyw un arall yn cyfrannu at dalu biliau "
@@ -427,7 +428,6 @@ msgid "On page 2 of the pack, in numbered boxes.<br>For example, 1"
 msgstr "Ar dudalen dau y pecyn, mewn blychau wedi’u rhifo.<br>Er enghraifft, 1"
 
 #: apps/plea/forms.py:59
-#, fuzzy
 msgid "Are you pleading on behalf of a company?"
 msgstr "Ydych chi’n pledio ar ran cwmni?"
 
@@ -554,7 +554,6 @@ msgid "What's your take home pay (after tax)?"
 msgstr "Beth yw eich cyflog clir wythnosol (ar ôl treth)?"
 
 #: apps/plea/forms.py:169
-#, python-brace-format
 msgid "What's your {value} take home pay (after tax)?"
 msgstr "Beth yw eich cyflog {value} (ar ôl treth)?"
 
@@ -573,7 +572,6 @@ msgid "What's your average take home pay?"
 msgstr "Beth yw eich cyflog clir (ar ôl didyniadau) ar gyfartaledd?"
 
 #: apps/plea/forms.py:199 apps/plea/forms.py:243
-#, python-brace-format
 msgid "What's your average {value} take home pay?"
 msgstr "Beth yw eich cyflog clir {value} (ar ôl didyniadau) ar gyfartaledd?"
 
@@ -825,7 +823,6 @@ msgid ""
 msgstr ""
 
 #: manchester_traffic_offences/templates/base.html:33
-#, python-format
 msgid ""
 "This is a new service - <a href=\"%(feedback_url)s\">your feedback</a> will "
 "help us to improve it."
@@ -860,7 +857,6 @@ msgid "Cymraeg"
 msgstr ""
 
 #: manchester_traffic_offences/templates/start.html:8
-#, fuzzy
 msgid "Make a plea online"
 msgstr "Cofnodi eich ple ar-lein"
 
@@ -915,9 +911,8 @@ msgid "entering your plea takes about 10 minutes"
 msgstr "Mae’n cymryd tua 10 munud i gofnodi ple"
 
 #: manchester_traffic_offences/templates/start.html:49
-#, fuzzy, python-format
 msgid ""
-"If you plead guilty <br>you may get a <br><strong>33%%</strong> "
+"If you plead guilty <br>you may get a <br><strong>33%</strong> "
 "<br>reduction on your fine"
 msgstr ""
 "Os byddwch yn pledio’n euog, <br>mae’n bosib y cewch ostyngiad o "
@@ -958,7 +953,6 @@ msgstr "Gwirio a rhoi cynnig arall arni."
 
 #: manchester_traffic_offences/templates/plea/case.html:27
 #: manchester_traffic_offences/templates/plea/urn_used.html:19
-#, fuzzy
 msgid ""
 "To make changes to a plea you’ve already made online, email or write to the "
 "court before your hearing with:"
@@ -1049,7 +1043,6 @@ msgstr ""
 "â’ch ple."
 
 #: manchester_traffic_offences/templates/plea/company_details.html:36
-#, fuzzy
 msgid ""
 "<strong>Warning:</strong> You can only make a plea on behalf of a company if "
 "you are a director, the company secretary or the company's solicitor."
@@ -1090,7 +1083,6 @@ msgstr[1] "Mae eich pledion ar-lein wedi’u cyflwyno"
 #: manchester_traffic_offences/templates/plea/complete.html:12
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:218
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:8
-#, fuzzy
 msgid "Your guilty plea has been sent to the court"
 msgid_plural "Your guilty pleas have been sent to the court"
 msgstr[0] "Anfonwyd eich ple euog i’r llys"
@@ -1099,7 +1091,6 @@ msgstr[1] "Anfonwyd eich pledion euog i’r llys"
 #: manchester_traffic_offences/templates/plea/complete.html:14
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:220
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:10
-#, fuzzy
 msgid "Your not guilty plea has been sent to the court"
 msgid_plural "Your not guilty pleas have been sent to the court"
 msgstr[0] "Anfonwyd eich ple dieuog i’r llys"
@@ -1127,7 +1118,6 @@ msgstr ""
 
 #: manchester_traffic_offences/templates/plea/complete.html:28
 #: manchester_traffic_offences/templates/plea/complete.html:40
-#, fuzzy
 msgid ""
 "We'll send you a letter with the court's decision <strong>within three "
 "working days after your hearing.</strong>"
@@ -1143,7 +1133,6 @@ msgstr[1] ""
 
 #: manchester_traffic_offences/templates/plea/complete.html:29
 #: manchester_traffic_offences/templates/plea/complete.html:41
-#, python-format
 msgid ""
 "Quote your URN <strong>%(urn)s</strong> if you <a href=\"mailto:"
 "roadtrafficpcr@hmcts.gsi.gov.uk\">contact</a> the court about your case."
@@ -1186,7 +1175,6 @@ msgstr ""
 "llys i gefnogi eich achos."
 
 #: manchester_traffic_offences/templates/plea/complete.html:52
-#, fuzzy
 msgid ""
 "We'll send you a letter with the court's decisions <strong>within three "
 "working days after your hearing.</strong>"
@@ -1198,7 +1186,6 @@ msgstr ""
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:20
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:31
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:42
-#, python-format
 msgid "Quote your URN %(urn)s if you contact the court about your case."
 msgstr ""
 "Dyfynnwch eich cyfeirnod unigryw %(urn)s os byddwch yn cysylltu â’r llys "
@@ -1316,26 +1303,22 @@ msgid "This is your opportunity to present your case to the court."
 msgstr "Dyma’ch cyfle chi i gyflwyno eich achos i’r llys."
 
 #: manchester_traffic_offences/templates/plea/plea.html:45
-#, python-format
 msgid "Enter a plea for the charge below"
 msgid_plural "Enter %(form_count)s pleas for the charges below"
 msgstr[0] "Cofnodwch eich ple ar gyfer y cyhuddiad isod"
 msgstr[1] "Cofnodwch %(form_count)s eich pledion ar gyfer y cyhuddiadau isod"
 
 #: manchester_traffic_offences/templates/plea/plea.html:55
-#, python-format
 msgid "Your plea for charge [%(counter)s]"
 msgstr "Eich ple ar gyfer cyhuddiad [%(counter)s]"
 
 #: manchester_traffic_offences/templates/plea/plea.html:78
-#, python-format
 msgid ""
 "If you answered <em>Guilty</em>, you can enter <a href=\"#"
 "%(field_id)s_guilty_extra\">special circumstances</a>"
 msgstr ""
 
 #: manchester_traffic_offences/templates/plea/plea.html:79
-#, python-format
 msgid ""
 "If you answered <em>Not Guilty</em>, you can tell us <a href=\"#"
 "%(field_id)s_not_guilty_extra\">why you believe you are not guilty</a>"
@@ -1347,7 +1330,6 @@ msgstr "Cadarnhad o gofnodi ple ar-lein"
 
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:214
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:5
-#, fuzzy
 msgid "Your online plea has been submitted"
 msgid_plural "Your online pleas have been submitted"
 msgstr[0] "Mae eich ple ar-lein wedi’i gyflwyno"
@@ -1366,7 +1348,6 @@ msgstr ""
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:231
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:242
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:254
-#, fuzzy
 msgid ""
 "We'll send you a letter with the court's decision <b>within three working "
 "days after your hearing.</b>"
@@ -1382,7 +1363,6 @@ msgstr[1] ""
 
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:232
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:243
-#, python-format
 msgid "Quote your URN <b>%(urn)s</b> if you contact the court about your case."
 msgstr ""
 
@@ -1397,7 +1377,6 @@ msgstr ""
 "Argraffwch gopi o’r cadarnhad hwn o gofnodi ple ar gyfer eich cofnodion."
 
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:255
-#, python-format
 msgid "Quote your URN  %(urn)s if you contact the court about your case."
 msgstr ""
 "Dyfynnwch eich cyfeirnod unigryw %(urn)s os byddwch yn cysylltu â’r llys "
@@ -1476,7 +1455,6 @@ msgstr ""
 "llys i gefnogi eich achos."
 
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:30
-#, fuzzy
 msgid ""
 "We'll send you a letter with the court's decision within three working days "
 "after your hearing."
@@ -1491,7 +1469,6 @@ msgstr[1] ""
 "diwrnod gwaith ar ôl eich gwrandawiad.</b>"
 
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:41
-#, fuzzy
 msgid ""
 "We'll send you a letter with the court's decisions within three working days "
 "after your hearing."
@@ -1515,7 +1492,6 @@ msgstr[0] "Cadarnhau eich ple"
 msgstr[1] "Cadarnhau eich pledion"
 
 #: manchester_traffic_offences/templates/plea/review.html:36
-#, fuzzy
 msgid "Review the information you’ve given before making your plea."
 msgid_plural "Review the information you’ve given before making your pleas."
 msgstr[0] "Adolygwch yr wybodaeth rydych wedi’i rhoi cyn cofnodi eich ple."
@@ -1829,7 +1805,6 @@ msgstr ""
 #~ msgstr[0] "Mae eich ple ar-lein wedi’i gyflwyno"
 #~ msgstr[1] "Mae eich pledion ar-lein wedi’u cyflwyno"
 
-#, fuzzy
 #~ msgid ""
 #~ "\n"
 #~ "Your guilty plea has been sent to the court\n"
@@ -1841,7 +1816,6 @@ msgstr ""
 #~ msgstr[0] "Anfonwyd eich ple euog i’r llys"
 #~ msgstr[1] "Anfonwyd eich pledion euog i’r llys"
 
-#, fuzzy
 #~ msgid ""
 #~ "\n"
 #~ "Your not guilty plea has been sent to the court\n"
