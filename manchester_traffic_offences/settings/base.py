@@ -72,7 +72,7 @@ USE_TZ = False
 USE_THOUSAND_SEPARATOR = True
 
 LOCALE_PATHS = (
-    root('conf/locale')
+    root('../conf/locale'),
 )
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
@@ -117,14 +117,14 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
-    'django.middleware.locale.LocaleMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 )
 
 ROOT_URLCONF = 'manchester_traffic_offences.urls'
