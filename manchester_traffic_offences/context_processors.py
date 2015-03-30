@@ -24,6 +24,8 @@ def globals(request):
 
         'html_lang': get_language,
 
+        'skip_link_message': _('Skip to main content'),
+
         'logo_link_title': _('Go to the GOV.UK homepage'),
 
         'crown_copyright_message': mark_safe(_('&copy; Crown copyright'))
