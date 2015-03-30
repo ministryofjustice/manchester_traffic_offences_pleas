@@ -56,7 +56,7 @@ class CaseForm(BasePleaStepForm):
     company_plea = forms.TypedChoiceField(required=True, widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                           coerce=to_bool,
                                           choices=YESNO_CHOICES,
-                                          label=_("Are you making a plea on behalf of a company?"),
+                                          label=_("Are you pleading on behalf of a company?"),
                                           error_messages={"required": ERROR_MESSAGES["ON_BEHALF_OF_COMPANY"]})
 
 
