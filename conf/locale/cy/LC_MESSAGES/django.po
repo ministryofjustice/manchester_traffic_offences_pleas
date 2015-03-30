@@ -2,20 +2,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-30 16:09+0100\n"
+"POT-Creation-Date: 2015-03-30 16:54+0100\n"
 "PO-Revision-Date: Mon Mar 30 2015 16:21:28 GMT+0100 (BST)\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: Unknown locale\n"
-"Plural-Forms: nplurals=2; plural=n!=1\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Loco-Source-Locale: en_GB\n"
 "X-Loco-Parser: loco_parse_po\n"
 "X-Loco-Target-Locale: zz_ZZ\n"
-"X-Generator: Loco - https://localise.biz/"
+"X-Generator: Loco - https://localise.biz/\n"
 
 #: apps/feedback/forms.py:8
 msgid "very satisfied"
@@ -42,7 +42,8 @@ msgid "Email address"
 msgstr ""
 
 #: apps/feedback/forms.py:20
-msgid "If you'd like us to get back to you, please leave your email address below."
+msgid ""
+"If you'd like us to get back to you, please leave your email address below."
 msgstr ""
 
 #: apps/feedback/forms.py:24
@@ -82,229 +83,6 @@ msgstr ""
 
 #: apps/feedback/templates/feedback/feedback.html:36
 msgid "Submit"
-msgstr ""
-
-#: apps/plea/fields.py:75
-msgid "Loan repayment is a required field"
-msgstr ""
-
-#: apps/plea/forms.py:341
-msgid "Gas, water, electricity etc"
-msgstr ""
-
-#: apps/plea/forms.py:529
-#: manchester_traffic_offences/templates/plea/review.html:148
-msgid "Special circumstances"
-msgstr ""
-
-#: apps/plea/forms.py:531
-msgid "What would you like the court to consider?"
-msgstr ""
-
-#: apps/plea/forms.py:535
-#: manchester_traffic_offences/templates/plea/review.html:158
-msgid "Not guilty because?"
-msgstr ""
-
-#: apps/plea/forms.py:537
-msgid "Tell us why you believe you are not guilty."
-msgstr ""
-
-#: apps/plea/forms.py:545
-msgid ""
-"On page 1 of the pack, in the top right corner.<br>For example, "
-"12/AB/0034567/89"
-msgstr ""
-
-#: apps/plea/stages.py:290
-msgid "Submission Error"
-msgstr ""
-
-# Translation sourced from https://www.carersallowance.service.gov.uk/allowance/benefits
-#: manchester_traffic_offences/context_processors.py:27
-msgid "Skip to main content"
-msgstr "Neidio i'r prif gynnwys"
-
-#: manchester_traffic_offences/settings/base.py:54
-msgid "English"
-msgstr ""
-
-#: manchester_traffic_offences/settings/base.py:55
-msgid "Welsh"
-msgstr ""
-
-#: manchester_traffic_offences/templates/base.html:7
-msgid "GOV.UK uses cookies to make the site simpler."
-msgstr ""
-
-#: manchester_traffic_offences/templates/base.html:7
-msgid "Find out more about cookies"
-msgstr ""
-
-#: manchester_traffic_offences/templates/base.html:33
-#, python-format
-msgid ""
-"This is a new service - <a href=\"%(feedback_url)s\">your feedback</a> will "
-"help us to improve it."
-msgstr ""
-
-#: manchester_traffic_offences/templates/base.html:51
-msgid "Session timeout"
-msgstr ""
-
-#: manchester_traffic_offences/templates/base.html:52
-msgid "Your session has expired, re-enter your details and try again."
-msgstr ""
-
-#: manchester_traffic_offences/templates/base.html:66
-msgid "Terms and Conditions and Privacy Policy"
-msgstr ""
-
-#: manchester_traffic_offences/templates/base.html:67
-msgid "Help"
-msgstr ""
-
-#: manchester_traffic_offences/templates/base.html:68
-msgid "Cookies"
-msgstr ""
-
-#: manchester_traffic_offences/templates/base.html:69
-msgid "Contact"
-msgstr ""
-
-#: manchester_traffic_offences/templates/base.html:70
-msgid "Cymraeg"
-msgstr ""
-
-#: manchester_traffic_offences/templates/start.html:18
-msgid "Plead guilty or not guilty to the driving offence(s) you're charged with."
-msgstr ""
-
-#: manchester_traffic_offences/templates/start.html:56
-msgid "Questions about your plea?"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/case.html:36
-#: manchester_traffic_offences/templates/plea/urn_used.html:28
-msgid "View court contact details"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/case.html:41
-#: manchester_traffic_offences/templates/plea/urn_used.html:40
-msgid "Send email to:"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/complete.html:74
-msgid "We’re constantly working to improve Make Your Plea."
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/court_finder.html:5
-msgid "Court Finder"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/court_finder.html:14
-msgid "We can't find your court"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/court_finder.html:15
-msgid ""
-"You'll find contact details for the court considering your case in your "
-"Postal Requisition pack."
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/court_finder.html:22
-msgid "We don’t recognise the URN you’ve entered"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/court_finder.html:34
-msgid ""
-"Enter your unique reference number (URN) to find contact details for the "
-"court considering your case."
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/court_finder.html:42
-msgid "Find my court"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/court_finder.html:52
-msgid "Court details"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/court_finder.html:66
-msgid "By phone:"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea.html:78
-#, python-format
-msgid ""
-"If you answered <em>Guilty</em>, you can enter <a "
-"href=\"#%(field_id)s_guilty_extra\">special circumstances</a>"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea.html:79
-#, python-format
-msgid ""
-"If you answered <em>Not Guilty</em>, you can tell us <a "
-"href=\"#%(field_id)s_not_guilty_extra\">why you believe you are not guilty</a>"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:232
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:243
-#, python-format
-msgid "Quote your URN <b>%(urn)s</b> if you contact the court about your case."
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:275
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:61
-msgid "We’re constantly working to improve Make a Plea."
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:63
-msgid "Please give us feedback so we can make it better:"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/your_details.html:35
-msgid "We need these in case we have to get in touch with you about your plea."
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/your_finances.html:48
-msgid ""
-"If you answered <em>Employed</em>, fill in the section <a href=\"#section-"
-"employed\">\"You are: Employed\"</a>"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/your_finances.html:49
-msgid ""
-"If you answered <em>Self-employed</em>, fill in the section <a "
-"href=\"#section-self-employed\">\"You are: Self-employed\"</a>"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/your_finances.html:50
-msgid ""
-"If you answered <em>Receiving benefits</em>, fill in the section <a "
-"href=\"#section-receiving-benefits\">\"You are: Receiving benefits\"</a>"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/your_finances.html:51
-msgid ""
-"If you answered <em>Other</em>, fill in the section <a href=\"#section-"
-"other\">\"You are: Other\"</a>"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/your_finances.html:56
-msgid "You are: Employed"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/your_finances.html:86
-msgid "You are: Self-employed"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/your_finances.html:123
-msgid "You are: Receiving benefits"
-msgstr ""
-
-#: manchester_traffic_offences/templates/plea/your_finances.html:164
-msgid "You are: Other"
 msgstr ""
 
 #: apps/plea/fields.py:20
@@ -390,7 +168,8 @@ msgstr "Rhowch rif ffôn fel y gallwn gysylltu â chi ynglŷn â phle’r cwmni"
 
 #: apps/plea/fields.py:39
 msgid "Enter an email address so we can contact you about the company's plea"
-msgstr "Rhowch gyfeiriad e-bost fel y gallwn gysylltu â chi ynglŷn â phle’r cwmni"
+msgstr ""
+"Rhowch gyfeiriad e-bost fel y gallwn gysylltu â chi ynglŷn â phle’r cwmni"
 
 #: apps/plea/fields.py:40
 msgid "Your plea must be selected"
@@ -428,7 +207,8 @@ msgstr "Dywedwch wrthym os yw hyn yn cynnwys talu am ddibynyddion"
 
 #: apps/plea/fields.py:48
 msgid "Tell us if paying a fine would cause you serious financial problems"
-msgstr "Dywedwch wrthym pe bai talu dirwy yn achosi problemau ariannol difrifol i chi"
+msgstr ""
+"Dywedwch wrthym pe bai talu dirwy yn achosi problemau ariannol difrifol i chi"
 
 #: apps/plea/fields.py:49
 msgid ""
@@ -451,7 +231,8 @@ msgstr ""
 "e-bost"
 
 #: apps/plea/fields.py:52
-msgid "You must tell us why paying a fine will cause you serious financial problems"
+msgid ""
+"You must tell us why paying a fine will cause you serious financial problems"
 msgstr ""
 "Rhaid i chi ddweud wrthym pam fyddai talu dirwy yn achosi problemau ariannol "
 "difrifol i chi"
@@ -484,7 +265,8 @@ msgstr "Rhaid i’r costau biliau cyfleustodau fod yn rhif"
 
 #: apps/plea/fields.py:59
 msgid "Utility bills must be a number greater than, or equal to, 0"
-msgstr "Rhaid i’r costau biliau cyfleustodau fod yn rhif mwy na, neu’n hafal i, 0"
+msgstr ""
+"Rhaid i’r costau biliau cyfleustodau fod yn rhif mwy na, neu’n hafal i, 0"
 
 #: apps/plea/fields.py:60
 msgid "Insurance is a required field"
@@ -520,7 +302,8 @@ msgstr "Rhaid i’r tanysgrifiad teledu fod yn rhif"
 
 #: apps/plea/fields.py:68
 msgid "TV subscription must be a number greater than, or equal to, 0"
-msgstr "Rhaid i’r costau tanysgrifiad teledu fod yn rhif mwy na, neu’n hafal i, 0"
+msgstr ""
+"Rhaid i’r costau tanysgrifiad teledu fod yn rhif mwy na, neu’n hafal i, 0"
 
 #: apps/plea/fields.py:69
 msgid "Travel expenses is a required field"
@@ -545,6 +328,10 @@ msgstr "Rhaid i’r rhif ffôn fod yn rhif"
 #: apps/plea/fields.py:74
 msgid "Telephone must be a number greater than, or equal to, 0"
 msgstr "Rhaid i’r rhif ffôn fod yn rhif mwy na, neu’n hafal i, 0"
+
+#: apps/plea/fields.py:75
+msgid "Loan repayment is a required field"
+msgstr ""
 
 #: apps/plea/fields.py:76
 msgid "Loan repayment must be a number"
@@ -579,8 +366,10 @@ msgid "Child maintenance must be a number greater than, or equal to, 0"
 msgstr "Rhaid i’r gynhaliaeth plant fod yn rhif mwy na, neu’n hafal i, 0"
 
 #: apps/plea/fields.py:84
-msgid "You must tell us if the company has been trading for more than 12 months"
-msgstr "Rhaid i chi ddweud wrthym os yw’r cwmni wedi bod yn masnachu am fwy na 12 mis"
+msgid ""
+"You must tell us if the company has been trading for more than 12 months"
+msgstr ""
+"Rhaid i chi ddweud wrthym os yw’r cwmni wedi bod yn masnachu am fwy na 12 mis"
 
 #: apps/plea/fields.py:85
 msgid "Enter the number of employees"
@@ -624,7 +413,8 @@ msgid "Court hearing date"
 msgstr "Dyddiad y gwrandawiad llys"
 
 #: apps/plea/forms.py:44
-msgid "On page 1 of the pack, near the top on the left.<br>For example, 30/07/2014"
+msgid ""
+"On page 1 of the pack, near the top on the left.<br>For example, 30/07/2014"
 msgstr ""
 "Ar dudalen un y pecyn, yn agos i’r brig ar y chwith<br>Er enghraifft, "
 "30/07/2014"
@@ -765,7 +555,7 @@ msgid "What's your take home pay (after tax)?"
 msgstr "Beth yw eich cyflog clir wythnosol (ar ôl treth)?"
 
 #: apps/plea/forms.py:169
-#, brace-format
+#, python-brace-format
 msgid "What's your {value} take home pay (after tax)?"
 msgstr "Beth yw eich cyflog {value} (ar ôl treth)?"
 
@@ -784,7 +574,7 @@ msgid "What's your average take home pay?"
 msgstr "Beth yw eich cyflog clir (ar ôl didyniadau) ar gyfartaledd?"
 
 #: apps/plea/forms.py:199 apps/plea/forms.py:243
-#, brace-format
+#, python-brace-format
 msgid "What's your average {value} take home pay?"
 msgstr "Beth yw eich cyflog clir {value} (ar ôl didyniadau) ar gyfartaledd?"
 
@@ -835,6 +625,10 @@ msgstr "Rhent, morgais neu lety"
 #: apps/plea/forms.py:340
 msgid "Utility bills"
 msgstr "Biliau Cyfleustodau"
+
+#: apps/plea/forms.py:341
+msgid "Gas, water, electricity etc"
+msgstr ""
 
 #: apps/plea/forms.py:353
 msgid "Insurance"
@@ -918,8 +712,37 @@ msgstr "Euog"
 msgid "Not Guilty"
 msgstr "Dieuog"
 
+#: apps/plea/forms.py:529
+#: manchester_traffic_offences/templates/plea/review.html:148
+msgid "Special circumstances"
+msgstr ""
+
+#: apps/plea/forms.py:531
+msgid "What would you like the court to consider?"
+msgstr ""
+
+#: apps/plea/forms.py:535
+#: manchester_traffic_offences/templates/plea/review.html:158
+msgid "Not guilty because?"
+msgstr ""
+
+#: apps/plea/forms.py:537
+msgid "Tell us why you believe you are not guilty."
+msgstr ""
+
+#: apps/plea/forms.py:545
+msgid ""
+"On page 1 of the pack, in the top right corner.<br>For example, 12/"
+"AB/0034567/89"
+msgstr ""
+
+#: apps/plea/stages.py:290
+msgid "Submission Error"
+msgstr ""
+
 #: apps/plea/stages.py:291
-msgid "There seems to have been a problem submitting your plea. Please try again."
+msgid ""
+"There seems to have been a problem submitting your plea. Please try again."
 msgstr ""
 "Gwall wrth gyflwyno. Mae’n ymddangos bod problem wrth gyflwyno eich ple. "
 "Rhowch gynnig arall arni."
@@ -930,6 +753,11 @@ msgid "Make a Plea: Traffic offences"
 msgstr "Troseddau traffig: Cofnodi ple"
 
 # Translation sourced from https://www.carersallowance.service.gov.uk/allowance/benefits
+#: manchester_traffic_offences/context_processors.py:27
+msgid "Skip to main content"
+msgstr "Neidio i'r prif gynnwys"
+
+# Translation sourced from https://www.carersallowance.service.gov.uk/allowance/benefits
 #: manchester_traffic_offences/context_processors.py:29
 msgid "Go to the GOV.UK homepage"
 msgstr "Ewch i hafan GOV.UK"
@@ -938,6 +766,14 @@ msgstr "Ewch i hafan GOV.UK"
 #: manchester_traffic_offences/context_processors.py:31
 msgid "&copy; Crown copyright"
 msgstr "&copy; Hawlfraint y Goron"
+
+#: manchester_traffic_offences/settings/base.py:54
+msgid "English"
+msgstr ""
+
+#: manchester_traffic_offences/settings/base.py:55
+msgid "Welsh"
+msgstr ""
 
 #: manchester_traffic_offences/templates/404.html:5
 #: manchester_traffic_offences/templates/500.html:5
@@ -958,8 +794,8 @@ msgid ""
 "You can <a href=\"/\">start a new plea</a> or go to <a href=\"http://www.gov."
 "uk/\">GOV.UK</a>."
 msgstr ""
-"Gallwch <a href=\"/\">ddechrau ple newydd</a> neu ewch i <a href=\"http://www."
-"gov.uk/\">GOV.UK</a>."
+"Gallwch <a href=\"/\">ddechrau ple newydd</a> neu ewch i <a href=\"http://"
+"www.gov.uk/\">GOV.UK</a>."
 
 #: manchester_traffic_offences/templates/500.html:13
 msgid "We are experiencing technical difficulties"
@@ -975,23 +811,66 @@ msgstr ""
 
 #: manchester_traffic_offences/templates/500.html:15
 msgid ""
-"<a href=\"/\">Please try again in ten minutes</a> or go to <a href=\"http://www."
-"gov.uk/\">GOV.UK</a>."
+"<a href=\"/\">Please try again in ten minutes</a> or go to <a href=\"http://"
+"www.gov.uk/\">GOV.UK</a>."
 msgstr ""
-"<a href=\"/\">Rhowch gynnig arall arni mewn deg munud</a> neu ewch i <a "
-"href=\"http://www.gov.uk/\">GOV.UK</a>."
+"<a href=\"/\">Rhowch gynnig arall arni mewn deg munud</a> neu ewch i <a href="
+"\"http://www.gov.uk/\">GOV.UK</a>."
+
+#: manchester_traffic_offences/templates/base.html:7
+msgid "GOV.UK uses cookies to make the site simpler."
+msgstr ""
+
+#: manchester_traffic_offences/templates/base.html:7
+msgid "Find out more about cookies"
+msgstr ""
 
 # Translation sourced from https://www.carersallowance.service.gov.uk/allowance/benefits
 #: manchester_traffic_offences/templates/base.html:11
 msgid ""
-"All content is available under the <a href=\"https://www.nationalarchives.gov."
-"uk/doc/open-government-licence/version/3/\" rel=\"license\">Open Government "
-"Licence v3.0</a>, except where otherwise stated"
+"All content is available under the <a href=\"https://www.nationalarchives."
+"gov.uk/doc/open-government-licence/version/3/\" rel=\"license\">Open "
+"Government Licence v3.0</a>, except where otherwise stated"
 msgstr ""
 "Mae'r holl gynnwys ar gael o dan yr \n"
-"<a href=\"https://www.nationalarchives.gov.uk/doc/open-government-"
-"licence/version/3/\" rel=\"license\">\n"
+"<a href=\"https://www.nationalarchives.gov.uk/doc/open-government-licence/"
+"version/3/\" rel=\"license\">\n"
 "Open Government Licence v3.0</a>, ac eithro ble y dywedir yn wahanol"
+
+#: manchester_traffic_offences/templates/base.html:33
+#, python-format
+msgid ""
+"This is a new service - <a href=\"%(feedback_url)s\">your feedback</a> will "
+"help us to improve it."
+msgstr ""
+
+#: manchester_traffic_offences/templates/base.html:51
+msgid "Session timeout"
+msgstr ""
+
+#: manchester_traffic_offences/templates/base.html:52
+msgid "Your session has expired, re-enter your details and try again."
+msgstr ""
+
+#: manchester_traffic_offences/templates/base.html:66
+msgid "Terms and Conditions and Privacy Policy"
+msgstr ""
+
+#: manchester_traffic_offences/templates/base.html:67
+msgid "Help"
+msgstr ""
+
+#: manchester_traffic_offences/templates/base.html:68
+msgid "Cookies"
+msgstr ""
+
+#: manchester_traffic_offences/templates/base.html:69
+msgid "Contact"
+msgstr ""
+
+#: manchester_traffic_offences/templates/base.html:70
+msgid "Cymraeg"
+msgstr ""
 
 #: manchester_traffic_offences/templates/start.html:8
 msgid "Make a plea online"
@@ -1000,6 +879,11 @@ msgstr "Cofnodi eich ple ar-lein"
 #: manchester_traffic_offences/templates/start.html:17
 msgid "Use this service to:"
 msgstr "Defnyddiwch y gwasanaeth hwn i:"
+
+#: manchester_traffic_offences/templates/start.html:18
+msgid ""
+"Plead guilty or not guilty to the driving offence(s) you're charged with."
+msgstr ""
 
 #: manchester_traffic_offences/templates/start.html:20
 msgid "By making your plea(s) online:"
@@ -1045,11 +929,11 @@ msgstr "Mae’n cymryd tua 10 munud i gofnodi ple"
 #: manchester_traffic_offences/templates/start.html:49
 #, python-format
 msgid ""
-"If you plead guilty <br>you may get a <br><strong>33%</strong> "
+"If you plead guilty <br>you may get a <br><strong>33%%</strong> "
 "<br>reduction on your fine"
 msgstr ""
 "Os byddwch yn pledio’n euog, <br>mae’n bosib y cewch ostyngiad o "
-"<br><strong>33%</strong> <br>ar eich dirwy"
+"<br><strong>33%%</strong> <br>ar eich dirwy"
 
 #: manchester_traffic_offences/templates/start.html:53
 msgid "Legal help and advice"
@@ -1058,6 +942,10 @@ msgstr "Cyngor a chymorth cyfreithiol"
 #: manchester_traffic_offences/templates/start.html:54
 msgid "Law Society"
 msgstr "Cymdeithas y Cyfreithwyr"
+
+#: manchester_traffic_offences/templates/start.html:56
+msgid "Questions about your plea?"
+msgstr ""
 
 #: manchester_traffic_offences/templates/start.html:57
 #: manchester_traffic_offences/templates/plea/court_finder.html:33
@@ -1099,10 +987,20 @@ msgstr "Manylion unrhyw newidiadau yr hoffech eu gwneud"
 msgid "your unique reference number"
 msgstr "Eich cyfeirnod unigryw"
 
+#: manchester_traffic_offences/templates/plea/case.html:36
+#: manchester_traffic_offences/templates/plea/urn_used.html:28
+msgid "View court contact details"
+msgstr ""
+
 #: manchester_traffic_offences/templates/plea/case.html:38
 #: manchester_traffic_offences/templates/plea/urn_used.html:32
 msgid "Send letters to:"
 msgstr "Anfonwch lythyrau i:"
+
+#: manchester_traffic_offences/templates/plea/case.html:41
+#: manchester_traffic_offences/templates/plea/urn_used.html:40
+msgid "Send email to:"
+msgstr ""
 
 #: manchester_traffic_offences/templates/plea/case.html:48
 #: manchester_traffic_offences/templates/plea/company_details.html:18
@@ -1130,7 +1028,8 @@ msgstr "Gweler y gwallau wedi’u hamlygu isod."
 
 #: manchester_traffic_offences/templates/plea/case.html:73
 msgid "The URN and Court Hearing Date are found on page 1 of the pack"
-msgstr "Mae’r cyfeirnod unigryw a dyddiad y gwrandawiad llys ar dudalen 1 y pecyn"
+msgstr ""
+"Mae’r cyfeirnod unigryw a dyddiad y gwrandawiad llys ar dudalen 1 y pecyn"
 
 #: manchester_traffic_offences/templates/plea/case.html:85
 msgid "The number of charges is found on page 2 of the pack"
@@ -1183,7 +1082,8 @@ msgstr ""
 
 #: manchester_traffic_offences/templates/plea/company_finances.html:49
 msgid "From the first 12 months' trading projections, tell us:"
-msgstr "Ar sail yr amcanestyniadau o'r 12 mis cyntaf o fasnachu, dywedwch wrthym:"
+msgstr ""
+"Ar sail yr amcanestyniadau o'r 12 mis cyntaf o fasnachu, dywedwch wrthym:"
 
 #: manchester_traffic_offences/templates/plea/company_finances.html:49
 msgid "From the most recent audited company accounts, tell us:"
@@ -1255,9 +1155,9 @@ msgid ""
 "Quote your URN <strong>%(urn)s</strong> if you <a href=\"mailto:"
 "roadtrafficpcr@hmcts.gsi.gov.uk\">contact</a> the court about your case."
 msgstr ""
-"Nodwch eich cyfeirnod unigryw <strong>%(urn)s</strong> os byddwch yn <a "
-"href=\"mailto:roadtrafficpcr@hmcts.gsi.gov.uk\">cysylltu</a> â’r llys ynglŷn "
-"â’ch achos."
+"Nodwch eich cyfeirnod unigryw <strong>%(urn)s</strong> os byddwch yn <a href="
+"\"mailto:roadtrafficpcr@hmcts.gsi.gov.uk\">cysylltu</a> â’r llys ynglŷn â’ch "
+"achos."
 
 #: manchester_traffic_offences/templates/plea/complete.html:30
 #: manchester_traffic_offences/templates/plea/complete.html:42
@@ -1266,8 +1166,8 @@ msgid ""
 "<a href=\"javascript:window.print();\">Print a copy</a> of this confirmation "
 "of plea for your records."
 msgstr ""
-"<a href=\"javascript:window.print();\">Argraffwch gopi</a> o’r cadarnhad hwn o "
-"gofnodi ple ar gyfer eich cofnodion."
+"<a href=\"javascript:window.print();\">Argraffwch gopi</a> o’r cadarnhad hwn "
+"o gofnodi ple ar gyfer eich cofnodion."
 
 #: manchester_traffic_offences/templates/plea/complete.html:31
 #: manchester_traffic_offences/templates/plea/complete.html:43
@@ -1344,11 +1244,34 @@ msgstr "Drwy’r post:"
 msgid "By email:"
 msgstr "Drwy e-bost:"
 
-#: manchester_traffic_offences/templates/plea/complete.html:75
-msgid "Please give us <a href=\"/feedback/\">feedback</a> so we can make it better."
+#: manchester_traffic_offences/templates/plea/complete.html:74
+msgid "We’re constantly working to improve Make Your Plea."
 msgstr ""
-"Gwasanaeth newydd yw hwn; rhowch <a href=\"/feedback/\">adborth</a> i ni fel y "
-"gallwn ei wneud yn well."
+
+#: manchester_traffic_offences/templates/plea/complete.html:75
+msgid ""
+"Please give us <a href=\"/feedback/\">feedback</a> so we can make it better."
+msgstr ""
+"Gwasanaeth newydd yw hwn; rhowch <a href=\"/feedback/\">adborth</a> i ni fel "
+"y gallwn ei wneud yn well."
+
+#: manchester_traffic_offences/templates/plea/court_finder.html:5
+msgid "Court Finder"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/court_finder.html:14
+msgid "We can't find your court"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/court_finder.html:15
+msgid ""
+"You'll find contact details for the court considering your case in your "
+"Postal Requisition pack."
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/court_finder.html:22
+msgid "We don’t recognise the URN you’ve entered"
+msgstr ""
 
 #: manchester_traffic_offences/templates/plea/court_finder.html:23
 msgid ""
@@ -1359,6 +1282,20 @@ msgstr ""
 "Nid yw’r cyfeirnod unigryw (URN) yn ddilys.<br>\n"
 "Rhowch y rhif i mewn yn union fel y mae’n ymddangos ar dudalen un o’r pecyn."
 
+#: manchester_traffic_offences/templates/plea/court_finder.html:34
+msgid ""
+"Enter your unique reference number (URN) to find contact details for the "
+"court considering your case."
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/court_finder.html:42
+msgid "Find my court"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/court_finder.html:52
+msgid "Court details"
+msgstr ""
+
 #: manchester_traffic_offences/templates/plea/court_finder.html:53
 msgid ""
 "You can contact the court by post or email quoting your URN before the date "
@@ -1366,6 +1303,10 @@ msgid ""
 msgstr ""
 "Dyfynnwch eich cyfeirnod unigryw (URN) os byddwch yn cysylltu â’r llys "
 "ynglŷn â’ch achos."
+
+#: manchester_traffic_offences/templates/plea/court_finder.html:66
+msgid "By phone:"
+msgstr ""
 
 #: manchester_traffic_offences/templates/plea/plea.html:6
 #: manchester_traffic_offences/templates/plea/plea.html:36
@@ -1391,6 +1332,20 @@ msgstr[1] "Cofnodwch %(form_count)s eich pledion ar gyfer y cyhuddiadau isod"
 #, python-format
 msgid "Your plea for charge [%(counter)s]"
 msgstr "Eich ple ar gyfer cyhuddiad [%(counter)s]"
+
+#: manchester_traffic_offences/templates/plea/plea.html:78
+#, python-format
+msgid ""
+"If you answered <em>Guilty</em>, you can enter <a href=\"#"
+"%(field_id)s_guilty_extra\">special circumstances</a>"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/plea.html:79
+#, python-format
+msgid ""
+"If you answered <em>Not Guilty</em>, you can tell us <a href=\"#"
+"%(field_id)s_not_guilty_extra\">why you believe you are not guilty</a>"
+msgstr ""
 
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:8
 msgid "Online plea submission confirmation"
@@ -1429,6 +1384,12 @@ msgstr[1] ""
 "Byddwn yn anfon llythyr atoch gyda phenderfyniadau’r llys <b>o fewn tri "
 "diwrnod gwaith ar ôl eich gwrandawiad.</b>"
 
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:232
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:243
+#, python-format
+msgid "Quote your URN <b>%(urn)s</b> if you contact the court about your case."
+msgstr ""
+
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:233
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:244
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:256
@@ -1436,7 +1397,8 @@ msgstr[1] ""
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:32
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:43
 msgid "Print a copy of this confirmation of plea for your records."
-msgstr "Argraffwch gopi o’r cadarnhad hwn o gofnodi ple ar gyfer eich cofnodion."
+msgstr ""
+"Argraffwch gopi o’r cadarnhad hwn o gofnodi ple ar gyfer eich cofnodion."
 
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:255
 #, python-format
@@ -1450,14 +1412,20 @@ msgstr ""
 msgid "By Post:"
 msgstr "Drwy’r Post:"
 
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:275
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:61
+msgid "We’re constantly working to improve Make a Plea."
+msgstr ""
+
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:277
 msgid ""
-"Please give us <a class=\"external\" href=\"https://www.makeaplea.justice.gov."
-"uk/feedback/\" style=\"color: #1068AA;\">feedback</a> so we can make it better."
+"Please give us <a class=\"external\" href=\"https://www.makeaplea.justice."
+"gov.uk/feedback/\" style=\"color: #1068AA;\">feedback</a> so we can make it "
+"better."
 msgstr ""
 "Gwasanaeth newydd yw hwn; rhowch <a class=\"external\" href=\"https://www."
-"makeaplea.justice.gov.uk/feedback/\" style=\"color: #1068AA;\">adborth</a> i ni "
-"fel y gallwn ei wneud yn well."
+"makeaplea.justice.gov.uk/feedback/\" style=\"color: #1068AA;\">adborth</a> i "
+"ni fel y gallwn ei wneud yn well."
 
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.html:289
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:68
@@ -1496,12 +1464,11 @@ msgstr ""
 
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:19
 msgid ""
-"We'll send you a letter with the court's decision{{ case."
-"number_of_charges|pluralize}} within three working days after your hearing."
+"We'll send you a letter with the court's decision{{ case.number_of_charges|"
+"pluralize}} within three working days after your hearing."
 msgstr ""
-"Byddwn yn anfon llythyr atoch gyda phenderfyniad{{ case."
-"number_of_charges|pluralize:\"au\"}} y llys o fewn tri diwrnod gwaith ar ôl "
-"eich gwrandawiad."
+"Byddwn yn anfon llythyr atoch gyda phenderfyniad{{ case.number_of_charges|"
+"pluralize:\"au\"}} y llys o fewn tri diwrnod gwaith ar ôl eich gwrandawiad."
 
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:29
 msgid ""
@@ -1533,6 +1500,10 @@ msgid ""
 msgstr ""
 "3. We'll send you a letter with the court's decisions within three working "
 "days after your hearing."
+
+#: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:63
+msgid "Please give us feedback so we can make it better:"
+msgstr ""
 
 #: manchester_traffic_offences/templates/plea/plea_email_confirmation.txt:73
 msgid "Terms and Conditions and Privacy Policy:"
@@ -1740,6 +1711,10 @@ msgstr "Creu ple newydd"
 msgid "Select the button below to start a new plea"
 msgstr "Dewiswch y botwm isod i ddechrau ple newydd"
 
+#: manchester_traffic_offences/templates/plea/your_details.html:35
+msgid "We need these in case we have to get in touch with you about your plea."
+msgstr ""
+
 #: manchester_traffic_offences/templates/plea/your_expenses.html:34
 msgid ""
 "To help the court decide your fine, you must provide information about your "
@@ -1788,6 +1763,34 @@ msgstr ""
 msgid "Your details will be stored securely by the court"
 msgstr "Bydd y llys yn cadw eich manylion yn ddiogel"
 
+#: manchester_traffic_offences/templates/plea/your_finances.html:48
+msgid ""
+"If you answered <em>Employed</em>, fill in the section <a href=\"#section-"
+"employed\">\"You are: Employed\"</a>"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/your_finances.html:49
+msgid ""
+"If you answered <em>Self-employed</em>, fill in the section <a href="
+"\"#section-self-employed\">\"You are: Self-employed\"</a>"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/your_finances.html:50
+msgid ""
+"If you answered <em>Receiving benefits</em>, fill in the section <a href="
+"\"#section-receiving-benefits\">\"You are: Receiving benefits\"</a>"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/your_finances.html:51
+msgid ""
+"If you answered <em>Other</em>, fill in the section <a href=\"#section-other"
+"\">\"You are: Other\"</a>"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/your_finances.html:56
+msgid "You are: Employed"
+msgstr ""
+
 #: manchester_traffic_offences/templates/plea/your_finances.html:77
 #: manchester_traffic_offences/templates/plea/your_finances.html:114
 #: manchester_traffic_offences/templates/plea/your_finances.html:155
@@ -1805,3 +1808,15 @@ msgid ""
 msgstr ""
 "Er mwyn i’r llys ystyried lleihau eich dirwy, mae’n rhaid i chi roi "
 "gwybodaeth am eich treuliau ar y sgrîn nesaf."
+
+#: manchester_traffic_offences/templates/plea/your_finances.html:86
+msgid "You are: Self-employed"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/your_finances.html:123
+msgid "You are: Receiving benefits"
+msgstr ""
+
+#: manchester_traffic_offences/templates/plea/your_finances.html:164
+msgid "You are: Other"
+msgstr ""
