@@ -70,6 +70,7 @@ USE_TZ = False
 
 # Allow the use of commas in decimal fields and when displaying large numbers
 USE_THOUSAND_SEPARATOR = True
+THOUSAND_SEPARATOR = u','
 
 LOCALE_PATHS = (
     root('../conf/locale'),
