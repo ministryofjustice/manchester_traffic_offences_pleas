@@ -67,7 +67,11 @@
         <thead>
             <tr>
                 <th class="header">{% trans "Your details" %}</th>
+                {% if case.company_plea %}
+                <th class="change-link"><a href="{% url "plea_form_step" "company_details" %}" class="review">{% trans "Change your details" %}</a></th>
+                {% else %}
                 <th class="change-link"><a href="{% url "plea_form_step" "your_details" %}" class="review">{% trans "Change your details" %}</a></th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -88,7 +92,7 @@
             </tr>
             <tr>
                 <th class="label">{% trans "Position held" %}</th>
-                <td>{{ company_details.position_in_company }}</td>
+                <td>{% trans company_details.position_in_company %}</td>
             </tr>
             <tr>
                 <th class="label">{% trans "Contact number" %}</th>
