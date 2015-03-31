@@ -50,7 +50,7 @@
             </tr>
             <tr>
                 <th class="label">{% trans "Court hearing date" %}</th>
-                <td>{{ case.date_of_hearing|string_date }}</td>
+                <td>{{ case.date_of_hearing|parse_date|date:"d F Y" }}</td>
             </tr>
             <tr>
                 <th class="label">{% trans "Number of charges against you" %}</th>
@@ -129,11 +129,11 @@
         {% for plea in plea.PleaForms %}
             {% if case.number_of_charges > 1 %}
             <tr>
-                <td colspan="2"><h3>Charge {{ forloop.counter }}</h3></td>
+                <td colspan="2"><h3>{% trans "Charge" %} {{ forloop.counter }}</h3></td>
             </tr>
             {% endif %}
             <tr>
-                <th class="label">{% trans "Your plea" %}</th>
+                <th class="label">{% blocktrans count counter=1 %}Your plea{% plural %}Your pleas{% endblocktrans %}</th>
                 <td>
                     {% if plea.guilty == "guilty" %}
                         {% trans "Guilty" %}
@@ -171,7 +171,7 @@
     <table class="review-table" id="company-details">
         <thead>
             <tr>
-                <th class="header">Company financial details</th>
+                <th class="header">{% trans "Company financial details" %}</th>
                 <th class="change-link"><a href="{% url "plea_form_step" "company_finances" %}" class="review">{% trans "Change details" %}</a></th>
             </tr>
         </thead>
@@ -205,7 +205,7 @@
             <tbody>
                 <tr>
                     <th class="label">{% trans "You are" %}</th>
-                    <td>{{ your_finances.you_are }}</td>
+                    <td>{% trans your_finances.you_are %}</td>
                 </tr>
                 {% if your_finances.you_are == "Employed" %}
                 <tr>
@@ -214,7 +214,7 @@
                 </tr>
                 <tr>
                     <th class="label">{% trans "You get paid" %}</th>
-                    <td>{{ your_finances.employed_take_home_pay_period }}</td>
+                    <td>{% trans your_finances.employed_take_home_pay_period %}</td>
                 </tr>
                 <tr>
                     <th class="label">{% trans "Amount" %}</th>
@@ -232,7 +232,7 @@
                         {% if your_finances.self_employed_pay_period == "Self-employed other" %}
                             {% trans "Other" %}
                         {% else %}
-                        {{ your_finances.self_employed_pay_period }}
+                        {% trans your_finances.self_employed_pay_period %}
                         {% endif %}
                     </td>
                 </tr>
@@ -262,7 +262,7 @@
                         {% if your_finances.benefits_period == "Benefits other" %}
                         {% trans "Other" %}
                         {% else %}
-                        {{ your_finances.benefits_period }}
+                        {% trans your_finances.benefits_period %}
                         {% endif %}
                     </td>
                 </tr>
@@ -307,7 +307,7 @@
                 </tr>
                 <tr>
                     <th class="label">{% trans "Other contributors to household bills" %}</th>
-                    <td>{% if your_expenses.other_bill_payers %}Yes{% else %}No{% endif %}</td>
+                    <td>{% if your_expenses.other_bill_payers %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</td>
                 </tr>
                 <tr>
                     <th class="label">{% trans "Total household expenses" %}</th>
@@ -350,7 +350,7 @@
 
             <div class="grey">
                 <fieldset>
-                    <legend>{% blocktrans count charges=case.number_of_charges %} Do you want to receive an email confirming your plea? {% plural %} Do you want to receive an email confirming your pleas? {% endblocktrans %}</legend>
+                    <legend>{% blocktrans count charges=case.number_of_charges %}Do you want to receive an email confirming your plea?{% plural %}Do you want to receive an email confirming your pleas?{% endblocktrans %}</legend>
 
                     {{ form.receive_email }}
                 </fieldset>
@@ -359,7 +359,7 @@
     </section>
 
     <div class="form-submit">
-        <button type="submit" class="button-large">{% blocktrans count charges=case.number_of_charges %} Make your plea {% plural %} Make your pleas {% endblocktrans %}</button>
+        <button type="submit" class="button-large">{% blocktrans count charges=case.number_of_charges %}Make your plea{% plural %}Make your pleas{% endblocktrans %}</button>
     </div>
     {% endwith %}
 

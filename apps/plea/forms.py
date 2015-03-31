@@ -513,7 +513,7 @@ class ConfirmationForm(BasePleaStepForm):
 
     receive_email = forms.ChoiceField(required=True,
                                       widget=RadioSelect(),
-                                      choices=((True, 'Yes'), (False, 'No')),
+                                      choices=((True, _('Yes')), (False, _('No'))),
                                       error_messages={"required": ERROR_MESSAGES["RECEIVE_EMAIL"]})
 
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-30 16:54+0100\n"
+"POT-Creation-Date: 2015-03-31 11:37+0100\n"
 "PO-Revision-Date: Mon Mar 30 2015 16:21:28 GMT+0100 (BST)\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -392,10 +392,14 @@ msgid "Enter the company's projected net turnover"
 msgstr "Rhowch drosiant net amcanol y cwmni"
 
 #: apps/plea/forms.py:16 apps/plea/forms.py:147 apps/plea/forms.py:376
+#: apps/plea/forms.py:516
+#: manchester_traffic_offences/templates/plea/review.html:310
 msgid "Yes"
 msgstr "Ydw"
 
 #: apps/plea/forms.py:17 apps/plea/forms.py:148 apps/plea/forms.py:376
+#: apps/plea/forms.py:516
+#: manchester_traffic_offences/templates/plea/review.html:310
 msgid "No"
 msgstr "Nac ydw"
 
@@ -1552,9 +1556,17 @@ msgid_plural "Change your pleas"
 msgstr[0] "Newid eich ple"
 msgstr[1] "Newid eich pledion"
 
+#: manchester_traffic_offences/templates/plea/review.html:132
+msgid "Charge"
+msgstr ""
+
 #: manchester_traffic_offences/templates/plea/review.html:141
 msgid "Not guilty"
 msgstr "Dieuog"
+
+#: manchester_traffic_offences/templates/plea/review.html:174
+msgid "Company financial details"
+msgstr "Manylion y cwmni"
 
 #: manchester_traffic_offences/templates/plea/review.html:175
 msgid "Change details"
@@ -1678,14 +1690,14 @@ msgstr ""
 "ffeithiau sydd wedi’u datgan yma yn gywir hyd eithaf fy ngwybodaeth."
 
 #: manchester_traffic_offences/templates/plea/review.html:353
-msgid " Do you want to receive an email confirming your plea? "
-msgid_plural " Do you want to receive an email confirming your pleas? "
+msgid "Do you want to receive an email confirming your plea?"
+msgid_plural "Do you want to receive an email confirming your pleas?"
 msgstr[0] "Ydych chi eisiau neges e-bost yn cadarnhau eich ple?"
 msgstr[1] "Ydych chi eisiau neges e-bost yn cadarnhau eich pledion?"
 
 #: manchester_traffic_offences/templates/plea/review.html:362
-msgid " Make your plea "
-msgid_plural " Make your pleas "
+msgid "Make your plea"
+msgid_plural "Make your pleas"
 msgstr[0] "Cofnodi eich ple"
 msgstr[1] "Cofnodi eich pledion"
 
