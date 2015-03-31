@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-31 11:37+0100\n"
-"PO-Revision-Date: Mon Mar 30 2015 16:21:28 GMT+0100 (BST)\n"
+"POT-Creation-Date: 2015-03-31 15:04+0100\n"
+"PO-Revision-Date: Tue Mar 31 2015 15:01:16 GMT+0100 (BST)\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: Unknown locale\n"
@@ -393,13 +393,14 @@ msgstr "Rhowch drosiant net amcanol y cwmni"
 
 #: apps/plea/forms.py:16 apps/plea/forms.py:147 apps/plea/forms.py:376
 #: apps/plea/forms.py:516
-#: manchester_traffic_offences/templates/plea/review.html:310
+#: manchester_traffic_offences/templates/plea/company_finances.html:49
+#: manchester_traffic_offences/templates/plea/review.html:314
 msgid "Yes"
 msgstr "Ydw"
 
 #: apps/plea/forms.py:17 apps/plea/forms.py:148 apps/plea/forms.py:376
 #: apps/plea/forms.py:516
-#: manchester_traffic_offences/templates/plea/review.html:310
+#: manchester_traffic_offences/templates/plea/review.html:314
 msgid "No"
 msgstr "Nac ydw"
 
@@ -437,8 +438,8 @@ msgid "Are you pleading on behalf of a company?"
 msgstr "Ydych chi’n pledio ar ran cwmni?"
 
 #: apps/plea/forms.py:65
-#: manchester_traffic_offences/templates/plea/review.html:86
-#: manchester_traffic_offences/templates/plea/review.html:104
+#: manchester_traffic_offences/templates/plea/review.html:90
+#: manchester_traffic_offences/templates/plea/review.html:108
 msgid "Full name"
 msgstr "Enw llawn"
 
@@ -447,8 +448,8 @@ msgid "On page 1 of the pack we sent you"
 msgstr "Ar dudalen 1 y pecyn a anfonwyd atoch"
 
 #: apps/plea/forms.py:71 apps/plea/forms.py:113
-#: manchester_traffic_offences/templates/plea/review.html:94
-#: manchester_traffic_offences/templates/plea/review.html:108
+#: manchester_traffic_offences/templates/plea/review.html:98
+#: manchester_traffic_offences/templates/plea/review.html:112
 msgid "Contact number"
 msgstr "Rhif Cyswllt"
 
@@ -457,14 +458,14 @@ msgid "Home or mobile number."
 msgstr "Rhif ffôn cartref neu rif ffôn symudol"
 
 #: apps/plea/forms.py:78 apps/plea/forms.py:125
-#: manchester_traffic_offences/templates/plea/review.html:98
-#: manchester_traffic_offences/templates/plea/review.html:112
+#: manchester_traffic_offences/templates/plea/review.html:102
+#: manchester_traffic_offences/templates/plea/review.html:116
 msgid "Email"
 msgstr "E-bost"
 
 #: apps/plea/forms.py:84
 msgid "a director"
-msgstr "cyfarwyddwr"
+msgstr "Cyfarwyddwr"
 
 #: apps/plea/forms.py:85
 msgid "the company secretary"
@@ -475,7 +476,7 @@ msgid "the company's solicitor"
 msgstr "Cyfreithiwr y cwmni"
 
 #: apps/plea/forms.py:88
-#: manchester_traffic_offences/templates/plea/review.html:78
+#: manchester_traffic_offences/templates/plea/review.html:82
 msgid "Company name"
 msgstr "Enw’r cwmni"
 
@@ -484,7 +485,7 @@ msgid "As written on page 1 of the pack we sent you."
 msgstr "Fel y nodir ar dudalen un y pecyn a anfonwyd atoch."
 
 #: apps/plea/forms.py:95
-#: manchester_traffic_offences/templates/plea/review.html:82
+#: manchester_traffic_offences/templates/plea/review.html:86
 msgid "Company address"
 msgstr "Cyfeiriad y cwmni"
 
@@ -525,8 +526,9 @@ msgid "Receiving benefits"
 msgstr "Derbyn budd-daliadau"
 
 #: apps/plea/forms.py:135 apps/plea/forms.py:142 apps/plea/forms.py:146
-#: manchester_traffic_offences/templates/plea/review.html:233
-#: manchester_traffic_offences/templates/plea/review.html:263
+#: apps/plea/forms.py:200 apps/plea/forms.py:244
+#: manchester_traffic_offences/templates/plea/review.html:237
+#: manchester_traffic_offences/templates/plea/review.html:267
 msgid "Other"
 msgstr "Arall"
 
@@ -695,7 +697,7 @@ msgid "Has the company been trading for more than 12 months?"
 msgstr "A yw’r cwmni wedi bod yn masnachu am fwy na 12 mis?"
 
 #: apps/plea/forms.py:464
-#: manchester_traffic_offences/templates/plea/review.html:180
+#: manchester_traffic_offences/templates/plea/review.html:184
 msgid "Number of employees"
 msgstr "Nifer o gyflogeion"
 
@@ -708,7 +710,7 @@ msgid "For example, 110000"
 msgstr "Er enghraifft, 110000"
 
 #: apps/plea/forms.py:522
-#: manchester_traffic_offences/templates/plea/review.html:139
+#: manchester_traffic_offences/templates/plea/review.html:143
 msgid "Guilty"
 msgstr "Euog"
 
@@ -717,7 +719,7 @@ msgid "Not Guilty"
 msgstr "Dieuog"
 
 #: apps/plea/forms.py:529
-#: manchester_traffic_offences/templates/plea/review.html:148
+#: manchester_traffic_offences/templates/plea/review.html:152
 msgid "Special circumstances"
 msgstr ""
 
@@ -726,7 +728,7 @@ msgid "What would you like the court to consider?"
 msgstr ""
 
 #: apps/plea/forms.py:535
-#: manchester_traffic_offences/templates/plea/review.html:158
+#: manchester_traffic_offences/templates/plea/review.html:162
 msgid "Not guilty because?"
 msgstr ""
 
@@ -1314,8 +1316,8 @@ msgstr ""
 
 #: manchester_traffic_offences/templates/plea/plea.html:6
 #: manchester_traffic_offences/templates/plea/plea.html:36
-#: manchester_traffic_offences/templates/plea/review.html:123
-#: manchester_traffic_offences/templates/plea/review.html:136
+#: manchester_traffic_offences/templates/plea/review.html:127
+#: manchester_traffic_offences/templates/plea/review.html:140
 msgid "Your plea"
 msgid_plural "Your pleas"
 msgstr[0] "Eich ple"
@@ -1542,136 +1544,138 @@ msgstr "yn pledio ar ran cwmni"
 msgid "Yes,No"
 msgstr "Ydw, Nac ydw"
 
-#: manchester_traffic_offences/templates/plea/review.html:70
+#: manchester_traffic_offences/templates/plea/review.html:71
+#: manchester_traffic_offences/templates/plea/review.html:73
 msgid "Change your details"
 msgstr "Newid eich manylion"
 
-#: manchester_traffic_offences/templates/plea/review.html:90
+#: manchester_traffic_offences/templates/plea/review.html:94
 msgid "Position held"
 msgstr "Eich swydd"
 
-#: manchester_traffic_offences/templates/plea/review.html:125
+#: manchester_traffic_offences/templates/plea/review.html:129
 msgid "Change your plea"
 msgid_plural "Change your pleas"
 msgstr[0] "Newid eich ple"
 msgstr[1] "Newid eich pledion"
 
-#: manchester_traffic_offences/templates/plea/review.html:132
+#: manchester_traffic_offences/templates/plea/review.html:136
 msgid "Charge"
 msgstr ""
 
-#: manchester_traffic_offences/templates/plea/review.html:141
+#: manchester_traffic_offences/templates/plea/review.html:145
 msgid "Not guilty"
 msgstr "Dieuog"
 
-#: manchester_traffic_offences/templates/plea/review.html:174
+#: manchester_traffic_offences/templates/plea/review.html:178
+#, fuzzy
 msgid "Company financial details"
 msgstr "Manylion y cwmni"
 
-#: manchester_traffic_offences/templates/plea/review.html:175
+#: manchester_traffic_offences/templates/plea/review.html:179
 msgid "Change details"
 msgstr "Newid manylion"
 
-#: manchester_traffic_offences/templates/plea/review.html:184
+#: manchester_traffic_offences/templates/plea/review.html:188
 msgid "From the most recent audited company accounts"
 msgstr "Ar sail cyfrifon diweddaraf y cwmni sydd wedi cael eu harchwilio"
 
-#: manchester_traffic_offences/templates/plea/review.html:184
+#: manchester_traffic_offences/templates/plea/review.html:188
 msgid "From the first 12 month's trading projections"
 msgstr "Ar sail yr amcanestyniadau o'r 12 mis cyntaf o fasnachu"
 
-#: manchester_traffic_offences/templates/plea/review.html:187
+#: manchester_traffic_offences/templates/plea/review.html:191
 msgid "Gross turnover"
 msgstr "Trosiant gros"
 
-#: manchester_traffic_offences/templates/plea/review.html:191
+#: manchester_traffic_offences/templates/plea/review.html:195
 msgid "Net turnover"
 msgstr "Trosiant net"
 
-#: manchester_traffic_offences/templates/plea/review.html:201
+#: manchester_traffic_offences/templates/plea/review.html:205
 #: manchester_traffic_offences/templates/plea/your_finances.html:7
 #: manchester_traffic_offences/templates/plea/your_finances.html:33
 msgid "Your finances"
 msgstr "Eich cyllid"
 
-#: manchester_traffic_offences/templates/plea/review.html:202
+#: manchester_traffic_offences/templates/plea/review.html:206
 msgid "Change your finances"
 msgstr "Newid eich cyllid"
 
-#: manchester_traffic_offences/templates/plea/review.html:207
+#: manchester_traffic_offences/templates/plea/review.html:211
 msgid "You are"
 msgstr "Chi yw"
 
-#: manchester_traffic_offences/templates/plea/review.html:212
-#: manchester_traffic_offences/templates/plea/review.html:226
+#: manchester_traffic_offences/templates/plea/review.html:216
+#: manchester_traffic_offences/templates/plea/review.html:230
 msgid "Your Job"
 msgstr "Eich swydd"
 
-#: manchester_traffic_offences/templates/plea/review.html:216
-#: manchester_traffic_offences/templates/plea/review.html:230
-#: manchester_traffic_offences/templates/plea/review.html:260
+#: manchester_traffic_offences/templates/plea/review.html:220
+#: manchester_traffic_offences/templates/plea/review.html:234
+#: manchester_traffic_offences/templates/plea/review.html:264
 msgid "You get paid"
 msgstr "Rydych yn cael eich talu"
 
-#: manchester_traffic_offences/templates/plea/review.html:220
-#: manchester_traffic_offences/templates/plea/review.html:246
-#: manchester_traffic_offences/templates/plea/review.html:276
-#: manchester_traffic_offences/templates/plea/review.html:286
+#: manchester_traffic_offences/templates/plea/review.html:224
+#: manchester_traffic_offences/templates/plea/review.html:250
+#: manchester_traffic_offences/templates/plea/review.html:280
+#: manchester_traffic_offences/templates/plea/review.html:290
 msgid "Amount"
 msgstr "Swm"
 
-#: manchester_traffic_offences/templates/plea/review.html:241
-#: manchester_traffic_offences/templates/plea/review.html:271
-#: manchester_traffic_offences/templates/plea/review.html:282
+#: manchester_traffic_offences/templates/plea/review.html:245
+#: manchester_traffic_offences/templates/plea/review.html:275
+#: manchester_traffic_offences/templates/plea/review.html:286
 msgid "Details"
 msgstr "Manylion"
 
-#: manchester_traffic_offences/templates/plea/review.html:252
+#: manchester_traffic_offences/templates/plea/review.html:256
 msgid "Benefits you receive"
 msgstr "Budd-daliadau rydych chi’n eu cael"
 
-#: manchester_traffic_offences/templates/plea/review.html:256
+#: manchester_traffic_offences/templates/plea/review.html:260
 msgid "Includes payment for dependents?"
 msgstr "Yn cynnwys taliadau ar gyfer dibynyddion?"
 
-#: manchester_traffic_offences/templates/plea/review.html:299
+#: manchester_traffic_offences/templates/plea/review.html:303
 #: manchester_traffic_offences/templates/plea/your_expenses.html:5
 #: manchester_traffic_offences/templates/plea/your_expenses.html:32
 msgid "Your expenses"
 msgstr "Eich treuliau"
 
-#: manchester_traffic_offences/templates/plea/review.html:300
+#: manchester_traffic_offences/templates/plea/review.html:304
 msgid "Change your expenses"
 msgstr "Newid eich treuliau"
 
-#: manchester_traffic_offences/templates/plea/review.html:305
+#: manchester_traffic_offences/templates/plea/review.html:309
 msgid "Financial hardship details"
 msgstr "Manylion caledi ariannol"
 
-#: manchester_traffic_offences/templates/plea/review.html:309
+#: manchester_traffic_offences/templates/plea/review.html:313
 msgid "Other contributors to household bills"
 msgstr "Eraill sy’n cyfrannu at filiau’r cartref"
 
-#: manchester_traffic_offences/templates/plea/review.html:313
+#: manchester_traffic_offences/templates/plea/review.html:317
 #: manchester_traffic_offences/templates/plea/your_expenses.html:138
 msgid "Total household expenses"
 msgstr "Cyfanswm treuliau’r cartref"
 
-#: manchester_traffic_offences/templates/plea/review.html:317
+#: manchester_traffic_offences/templates/plea/review.html:321
 #: manchester_traffic_offences/templates/plea/your_expenses.html:142
 msgid "Total other expenses"
 msgstr "Cyfanswm treuliau eraill"
 
-#: manchester_traffic_offences/templates/plea/review.html:321
+#: manchester_traffic_offences/templates/plea/review.html:325
 #: manchester_traffic_offences/templates/plea/your_expenses.html:146
 msgid "Total expenses"
 msgstr "Cyfanswm treuliau"
 
-#: manchester_traffic_offences/templates/plea/review.html:329
+#: manchester_traffic_offences/templates/plea/review.html:333
 msgid "Important"
 msgstr "Pwysig"
 
-#: manchester_traffic_offences/templates/plea/review.html:338
+#: manchester_traffic_offences/templates/plea/review.html:342
 msgid ""
 "It is an offence to make a false statement or to deliberately fail to "
 "disclose any relevant facts."
@@ -1679,7 +1683,7 @@ msgstr ""
 "Mae gwneud datganiad anwir neu fethu datgelu unrhyw ffeithiau perthnasol yn "
 "fwriadol yn drosedd."
 
-#: manchester_traffic_offences/templates/plea/review.html:340
+#: manchester_traffic_offences/templates/plea/review.html:344
 msgid ""
 "<strong>I confirm</strong> that I have read and understand the charge "
 "against me and that I am the person named in the Postal Requisition. The "
@@ -1689,13 +1693,15 @@ msgstr ""
 "fy erbyn ac mai fi yw'r unigolyn a enwir yn y Wŷs drwy'r Post.Mae’r "
 "ffeithiau sydd wedi’u datgan yma yn gywir hyd eithaf fy ngwybodaeth."
 
-#: manchester_traffic_offences/templates/plea/review.html:353
+#: manchester_traffic_offences/templates/plea/review.html:357
+#, fuzzy
 msgid "Do you want to receive an email confirming your plea?"
 msgid_plural "Do you want to receive an email confirming your pleas?"
 msgstr[0] "Ydych chi eisiau neges e-bost yn cadarnhau eich ple?"
 msgstr[1] "Ydych chi eisiau neges e-bost yn cadarnhau eich pledion?"
 
-#: manchester_traffic_offences/templates/plea/review.html:362
+#: manchester_traffic_offences/templates/plea/review.html:366
+#, fuzzy
 msgid "Make your plea"
 msgid_plural "Make your pleas"
 msgstr[0] "Cofnodi eich ple"
@@ -1832,3 +1838,12 @@ msgstr ""
 #: manchester_traffic_offences/templates/plea/your_finances.html:164
 msgid "You are: Other"
 msgstr ""
+
+#~ msgid "Director"
+#~ msgstr "Cyfarwyddwr"
+
+#~ msgid "Company secretary"
+#~ msgstr "Ysgrifennydd y cwmni"
+
+#~ msgid "Company solicitor"
+#~ msgstr "Cyfreithiwr y cwmni"
