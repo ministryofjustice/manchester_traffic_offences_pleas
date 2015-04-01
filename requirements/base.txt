@@ -12,8 +12,12 @@ South==1.0
 Pillow==2.5.3
 
 lxml==3.4.0 
+
 # MOJ Template
-django-moj-template==0.23.1
+# Temporarily using the forked version of moj_template, to bring in
+# new placeholders for translation
+# django-moj-template==0.23.1
+git+https://github.com/froddd/django-moj-template.git
 
 django_extensions==1.3.7
 django-brake==1.3.1
