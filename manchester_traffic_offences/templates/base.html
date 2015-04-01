@@ -20,6 +20,7 @@
 
 {% block before_content %}
 <div class="phase-banner">
+  {% comment "The language switcher is removed until all remaining strings have been translated" %}
   <nav class="language-switcher">
     <ul>
       {% ifequal LANGUAGE_CODE "en" %}
@@ -29,6 +30,7 @@
       {% endifequal %}
     </ul>
   </nav>
+  {% endcomment %}
 
   <p><a href="https://www.gov.uk/service-manual/phases/{{ phase }}.html" class="phase-tag">{{ phase }}</a> {% blocktrans with feedback_url=feedback_url %}This is a new service - <a href="{{ feedback_url }}">your feedback</a> will help us to improve it.{% endblocktrans %}</p>
 </div>
