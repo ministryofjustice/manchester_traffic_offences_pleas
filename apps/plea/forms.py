@@ -56,7 +56,7 @@ class CaseForm(BasePleaStepForm):
     company_plea = forms.TypedChoiceField(required=True, widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                           coerce=to_bool,
                                           choices=YESNO_CHOICES,
-                                          label=_("Are you making a plea on behalf of a company?"),
+                                          label=_("Are you pleading on behalf of a company?"),
                                           error_messages={"required": ERROR_MESSAGES["ON_BEHALF_OF_COMPANY"]})
 
 
@@ -197,7 +197,7 @@ class YourMoneyForm(BasePleaStepForm):
                                                   widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                                 "data-template-trigger": "self_employed_pay_period",
                                                                                 "data-template": _("What's your average {value} take home pay?"),
-                                                                                "data-template-defaults-for": "Self-employed other",
+                                                                                "data-template-defaults-for": _("Other"),
                                                                                 "data-template-delegate": "[for=id_self_employed_pay_amount] .label-text",
                                                                                 "class": "form-control-inline js-TemplatedElement"}),
                                                   error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
@@ -241,7 +241,7 @@ class YourMoneyForm(BasePleaStepForm):
                                          widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                        "data-template-trigger": "benefits_period",
                                                                        "data-template": _("What's your average {value} take home pay?"),
-                                                                       "data-template-defaults-for": "Benefits other",
+                                                                       "data-template-defaults-for": _("Other"),
                                                                        "data-template-delegate": "[for=id_benefits_amount] .label-text",
                                                                        "class": "form-control-inline js-TemplatedElement"}),
                                          error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
@@ -513,7 +513,7 @@ class ConfirmationForm(BasePleaStepForm):
 
     receive_email = forms.ChoiceField(required=True,
                                       widget=RadioSelect(),
-                                      choices=((True, 'Yes'), (False, 'No')),
+                                      choices=((True, _('Yes')), (False, _('No'))),
                                       error_messages={"required": ERROR_MESSAGES["RECEIVE_EMAIL"]})
 
 

@@ -39,7 +39,7 @@
     </tr>
     <tr>
         <th>Court hearing</th>
-        <td>{{ case.date_of_hearing|string_date }}</td>
+        <td>{{ case.date_of_hearing|parse_date|date:"d F Y" }}</td>
     </tr>
 
     <tr>
