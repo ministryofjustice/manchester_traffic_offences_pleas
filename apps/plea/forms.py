@@ -35,7 +35,7 @@ class CaseForm(BasePleaStepForm):
 
     urn = URNField(label=_("Unique reference number (URN)"),
                    required=True,
-                   help_text=_("On page 1 of the pack, in the top right corner"),
+                   help_text=_("On page 1 of the pack, in the top right corner.<br>For example, 12/AB/0034567/89"),
                    error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]},
                    validators=[is_urn_valid, is_urn_not_used])
 
