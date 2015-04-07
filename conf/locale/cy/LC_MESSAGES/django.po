@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-31 15:04+0100\n"
+"POT-Creation-Date: 2015-04-07 09:10+0100\n"
 "PO-Revision-Date: Tue Mar 31 2015 15:01:16 GMT+0100 (BST)\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -408,9 +408,11 @@ msgstr "Nac ydw"
 msgid "Unique reference number (URN)"
 msgstr "Cyfeirnod unigryw (URN)"
 
-#: apps/plea/forms.py:38
-msgid "On page 1 of the pack, in the top right corner"
-msgstr "Ar dudalen un y pecyn, yn y gornel dde uchaf"
+#: apps/plea/forms.py:38 apps/plea/forms.py:545
+msgid ""
+"On page 1 of the pack, in the top right corner.<br>For example, 12/"
+"AB/0034567/89"
+msgstr ""
 
 #: apps/plea/forms.py:42
 #: manchester_traffic_offences/templates/plea/review.html:52
@@ -736,12 +738,6 @@ msgstr ""
 msgid "Tell us why you believe you are not guilty."
 msgstr ""
 
-#: apps/plea/forms.py:545
-msgid ""
-"On page 1 of the pack, in the top right corner.<br>For example, 12/"
-"AB/0034567/89"
-msgstr ""
-
 #: apps/plea/stages.py:290
 msgid "Submission Error"
 msgstr ""
@@ -843,38 +839,38 @@ msgstr ""
 "version/3/\" rel=\"license\">\n"
 "Open Government Licence v3.0</a>, ac eithro ble y dywedir yn wahanol"
 
-#: manchester_traffic_offences/templates/base.html:33
+#: manchester_traffic_offences/templates/base.html:35
 #, python-format
 msgid ""
 "This is a new service - <a href=\"%(feedback_url)s\">your feedback</a> will "
 "help us to improve it."
 msgstr ""
 
-#: manchester_traffic_offences/templates/base.html:51
+#: manchester_traffic_offences/templates/base.html:53
 msgid "Session timeout"
 msgstr ""
 
-#: manchester_traffic_offences/templates/base.html:52
+#: manchester_traffic_offences/templates/base.html:54
 msgid "Your session has expired, re-enter your details and try again."
 msgstr ""
 
-#: manchester_traffic_offences/templates/base.html:66
+#: manchester_traffic_offences/templates/base.html:68
 msgid "Terms and Conditions and Privacy Policy"
 msgstr ""
 
-#: manchester_traffic_offences/templates/base.html:67
+#: manchester_traffic_offences/templates/base.html:69
 msgid "Help"
 msgstr ""
 
-#: manchester_traffic_offences/templates/base.html:68
+#: manchester_traffic_offences/templates/base.html:70
 msgid "Cookies"
 msgstr ""
 
-#: manchester_traffic_offences/templates/base.html:69
+#: manchester_traffic_offences/templates/base.html:71
 msgid "Contact"
 msgstr ""
 
-#: manchester_traffic_offences/templates/base.html:70
+#: manchester_traffic_offences/templates/base.html:72
 msgid "Cymraeg"
 msgstr ""
 
@@ -1838,6 +1834,9 @@ msgstr ""
 #: manchester_traffic_offences/templates/plea/your_finances.html:164
 msgid "You are: Other"
 msgstr ""
+
+#~ msgid "On page 1 of the pack, in the top right corner"
+#~ msgstr "Ar dudalen un y pecyn, yn y gornel dde uchaf"
 
 #~ msgid "Director"
 #~ msgstr "Cyfarwyddwr"
