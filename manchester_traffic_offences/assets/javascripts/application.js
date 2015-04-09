@@ -396,7 +396,7 @@ if(typeof String.prototype.trim !== 'function') {
       });
 
       $(window).on('beforeunload', function() {
-        self.runCheck();
+        return self.runCheck();
       });
     },
 
@@ -426,10 +426,13 @@ if(typeof String.prototype.trim !== 'function') {
   };
 
   moj.Modules._PromptOnChange = PromptOnChange;
-
+  
   moj.Modules.PromptOnChange = {
     init: function() {
-      return new PromptOnChange();
+      var options = {
+        message: $('[name=promptOnChangeMessage]').val() || "You have entered some information"
+      };
+      return new PromptOnChange(options);
     }
   };
 
