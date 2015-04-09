@@ -3,23 +3,15 @@
 
 {% load testing %}
 
-{% block page_title %}{{ block.super }} {% trans "Sent" %}{% endblock %}
+{% block page_title %}{% blocktrans count charges=case.number_of_charges %}Your plea has been sent{% plural %}Your pleas have been sent{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 {% block page_content %}
 
 <header class="success-header">
     <h1 class="ticked">{% if plea_type == "guilty" %}
-    {% blocktrans count charges=case.number_of_charges %}
-Your guilty plea has been sent to the court
-    {% plural %}
-Your guilty pleas have been sent to the court
-    {% endblocktrans %}
+    {% blocktrans count charges=case.number_of_charges %}Your guilty plea has been sent to the court{% plural %}Your guilty pleas have been sent to the court{% endblocktrans %}
 {% elif plea_type == "not_guilty" %}
-    {% blocktrans count charges=case.number_of_charges %}
-Your not guilty plea has been sent to the court
-    {% plural %}
-Your not guilty pleas have been sent to the court
-    {% endblocktrans %}
+    {% blocktrans count charges=case.number_of_charges %}Your not guilty plea has been sent to the court{% plural %}Your not guilty pleas have been sent to the court{% endblocktrans %}
 {% elif plea_type == "mixed" %}
     {% trans "Your pleas have been sent to the court" %}
 {% endif %}</h1>
@@ -33,7 +25,7 @@ Your not guilty pleas have been sent to the court
         {% add_test_tag "<<GUILTY>>" %}
         <ol>
             <li>{% blocktrans %}There's <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}</li>
-            <li>{% blocktrans %}We'll send you a letter with the court's decision{{ case.number_of_charges|pluralize}} <strong>within three working days after your hearing.</strong>{% endblocktrans %}</li>
+            <li>{% blocktrans count charges=case.number_of_charges %}We'll send you a letter with the court's decision <strong>within three working days after your hearing.</strong>{% plural %}We'll send you a letter with the court's decisions <strong>within three working days after your hearing.</strong>{% endblocktrans %}</li>
             <li>{% blocktrans with urn=case.urn|upper  %}Quote your URN <strong>{{ urn }}</strong> if you <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">contact</a> the court about your case.{% endblocktrans %}</li>
             <li>{% blocktrans %}<a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.{% endblocktrans %}</li>
             <li>{% blocktrans %}If you requested email updates you'll be sent a copy of this confirmation of plea.{% endblocktrans %}</li>
@@ -45,7 +37,7 @@ Your not guilty pleas have been sent to the court
         <ol>
             <li>{% blocktrans %}There's <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}</li>
             <li>{% blocktrans %}The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.{% endblocktrans %}</li>
-            <li>{% blocktrans %}We'll send you a letter with the court's decision{{ case.number_of_charges|pluralize}} <strong>within three working days after your hearing.</strong>{% endblocktrans %}</li>
+            <li>{% blocktrans count charges=case.number_of_charges %}We'll send you a letter with the court's decision <strong>within three working days after your hearing.</strong>{% plural %}We'll send you a letter with the court's decisions <strong>within three working days after your hearing.</strong>{% endblocktrans %}</li>
             <li>{% blocktrans with urn=case.urn|upper %}Quote your URN <strong>{{ urn }}</strong> if you <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">contact</a> the court about your case.{% endblocktrans %}</li>
             <li>{% blocktrans %}<a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.{% endblocktrans %}</li>
             <li>{% blocktrans %}If you requested email updates you'll be sent a copy of this confirmation of plea.{% endblocktrans %}</li>
@@ -57,7 +49,7 @@ Your not guilty pleas have been sent to the court
         <ol>
             <li>{% blocktrans %}There's <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}</li>
             <li>{% blocktrans %}The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.{% endblocktrans %}</li>
-            <li>{% blocktrans %}We'll send you a letter with the court's decisions <strong>within three working days after your hearing.{% endblocktrans %}</strong></li>
+            <li>{% blocktrans %}We'll send you a letter with the court's decisions <strong>within three working days after your hearing.</strong>{% endblocktrans %}</li>
             <li>{% blocktrans with urn=case.urn|upper  %}Quote your URN {{ urn }} if you contact the court about your case.{% endblocktrans %}</li>
             <li>{% blocktrans %}<a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.{% endblocktrans %}</li>
             <li>{% blocktrans %}If you requested email updates you'll be sent a copy of this confirmation of plea.{% endblocktrans %}</li>
@@ -73,16 +65,10 @@ Your not guilty pleas have been sent to the court
 
 <h3 class="heading-small">{% trans "By post:" %}</h3>
 
-<address>
-The Operations Manager<br>
-Manchester &amp; Salford Magistrates Court<br>
-Crown Square<br>
-Manchester<br>
-M60 1PR<br>
-</address>
+<address>{{ court.court_address|linebreaksbr }}</address>
 
 <h3 class="heading-small">{% trans "By email:" %}</h3>
-<p><a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">roadtrafficpcr@hmcts.gsi.gov.uk</a></p>
+<p><a href="mailto:{{ court.court_email }}">{{ court.court_email }}</a></p>
 
 
 <h2 class="heading-medium">{% trans "We’re constantly working to improve Make Your Plea." %}</h2>

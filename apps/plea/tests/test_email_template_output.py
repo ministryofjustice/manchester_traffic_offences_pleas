@@ -14,7 +14,7 @@ from ..forms import CaseForm, YourDetailsForm, PleaForm, YourMoneyForm, Required
 
 class EmailTemplateTests(TestCase):
 
-    def get_context_data(self, case_data=None, details_data=None, plea_data=None, money_data=None):
+    def get_context_data(self, case_data=None, details_data=None, plea_data=None, finances_data=None):
 
         self.hearing_date = datetime.today() + timedelta(30)
 
@@ -41,8 +41,8 @@ class EmailTemplateTests(TestCase):
                          "form-0-guilty": "guilty",
                          "form-0-guilty_extra": "IT wasn't me driving!"}
 
-        if not money_data:
-            money_data = {"you_are": "Employed",
+        if not finances_data:
+            finances_data = {"you_are": "Employed",
                           "employed_your_job": "Some Job",
                           "employed_take_home_pay_period": "Weekly",
                           "employed_take_home_pay_amount": "100",
@@ -53,13 +53,13 @@ class EmailTemplateTests(TestCase):
         cf = CaseForm(case_data)
         df = YourDetailsForm(details_data)
         pf = PleaForms(plea_data)
-        mf = YourMoneyForm(money_data)
+        mf = YourMoneyForm(finances_data)
 
         if all([cf.is_valid(), df.is_valid(), pf.is_valid(), mf.is_valid()]):
             data = {"case": cf.cleaned_data,
                     "your_details": df.cleaned_data,
                     "plea": {"PleaForms": pf.cleaned_data},
-                    "your_money": mf.cleaned_data}
+                    "your_finances": mf.cleaned_data}
             return data
         else:
             raise Exception(cf.errors, df.errors, pf.errors, mf.errors)
@@ -159,13 +159,13 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>Plea</th><td>Guilty</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Plea</th><td>Not guilty</td></tr>", count=1, html=True)
 
-    def test_employed_email_money_output(self):
-        context_data_money = {"you_are": "Employed",
+    def test_employed_email_finances_output(self):
+        context_data_finances = {"you_are": "Employed",
                               "employed_your_job": "Some Job",
                               "employed_take_home_pay_period": "Weekly",
                               "employed_take_home_pay_amount": "200",
                               "employed_hardship": False}
-        context_data = self.get_context_data(money_data=context_data_money)
+        context_data = self.get_context_data(finances_data=context_data_finances)
 
         send_plea_email(context_data)
 
@@ -175,13 +175,13 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>You get paid</th><td>Weekly</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Take home pay</th><td>£200</td></tr>", count=1, html=True)
 
-    def test_self_employed_email_money_output(self):
-        context_data_money = {"you_are": "Self-employed",
+    def test_self_employed_email_finances_output(self):
+        context_data_finances = {"you_are": "Self-employed",
                               "your_job": "Tesco",
                               "self_employed_pay_period": "Weekly",
                               "self_employed_pay_amount": "200",
                               "self_employed_hardship": False}
-        context_data = self.get_context_data(money_data=context_data_money)
+        context_data = self.get_context_data(finances_data=context_data_finances)
 
         send_plea_email(context_data)
 
@@ -191,14 +191,14 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>You get paid</th><td>Weekly</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Amount</th><td>£200</td></tr>", count=1, html=True)
 
-    def test_self_employed_other_email_money_output(self):
-        context_data_money = {"you_are": "Self-employed",
+    def test_self_employed_other_email_finances_output(self):
+        context_data_finances = {"you_are": "Self-employed",
                               "your_job": "Window cleaner",
                               "self_employed_pay_period": "Self-employed other",
                               "self_employed_pay_amount": "20",
                               "self_employed_pay_other": "by the window",
                               "self_employed_hardship": False}
-        context_data = self.get_context_data(money_data=context_data_money)
+        context_data = self.get_context_data(finances_data=context_data_finances)
 
         send_plea_email(context_data)
 
@@ -208,14 +208,14 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>You get paid</th><td>Other - by the window</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Amount</th><td>£20</td></tr>", count=1, html=True)
 
-    def test_benefits_email_money_output(self):
-        context_data_money = {"you_are": "Receiving benefits",
+    def test_benefits_email_finances_output(self):
+        context_data_finances = {"you_are": "Receiving benefits",
                               "benefits_details": "Housing benefit\nUniversal Credit",
                               "benefits_dependents": "Yes",
                               "benefits_period": "Weekly",
                               "benefits_amount": "120",
                               "receiving_benefits_hardship": False}
-        context_data = self.get_context_data(money_data=context_data_money)
+        context_data = self.get_context_data(finances_data=context_data_finances)
 
         send_plea_email(context_data)
 
@@ -226,15 +226,15 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>Does this include payment for dependents?</th><td>Yes</td></tr>", count=1, html=True)
 
 
-    def test_benefits_other_email_money_output(self):
-        context_data_money = {"you_are": "Receiving benefits",
+    def test_benefits_other_email_finances_output(self):
+        context_data_finances = {"you_are": "Receiving benefits",
                               "benefits_details": "Housing benefit\nUniversal Credit",
                               "benefits_dependents": "Yes",
                               "benefits_period": "Benefits other",
                               "benefits_pay_other": "Other details!",
                               "benefits_amount": "120",
                               "receiving_benefits_hardship": False}
-        context_data = self.get_context_data(money_data=context_data_money)
+        context_data = self.get_context_data(finances_data=context_data_finances)
 
         send_plea_email(context_data)
 
@@ -245,12 +245,12 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>Does this include payment for dependents?</th><td>Yes</td></tr>", count=1, html=True)
 
 
-    def test_other_email_money_output(self):
-        context_data_money = {"you_are": "Other",
+    def test_other_email_finances_output(self):
+        context_data_finances = {"you_are": "Other",
                               "other_details": u"I am a pensioner and I earn\n£500 a month.",
                               "other_pay_amount": "120",
                               "other_hardship": False}
-        context_data = self.get_context_data(money_data=context_data_money)
+        context_data = self.get_context_data(finances_data=context_data_finances)
 
         send_plea_email(context_data)
 
@@ -258,9 +258,9 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>More information</th><td>I am a pensioner and I earn<br />£500 a month.</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Amount</th><td>£120</td></tr>", count=1, html=True)
 
-    def test_skipped_email_money_output(self):
+    def test_skipped_email_finances_output(self):
         context_data = self.get_context_data()
-        context_data["your_money"] = {"skipped": "True"}
+        context_data["your_finances"] = {"skipped": "True"}
 
         send_plea_email(context_data)
 
@@ -425,7 +425,7 @@ class EmailTemplateTests(TestCase):
     def test_plea_email_with_hardship(self):
         context_data = self.get_context_data()
 
-        context_data['your_money']['hardship'] = True
+        context_data['your_finances']['hardship'] = True
         context_data['your_expenses'] = {}
         context_data['your_expenses']['other_bill_pays'] = True
         context_data['your_expenses']['complete'] = True
@@ -475,7 +475,7 @@ class TestCompanyFinancesEmailLogic(TestCase):
                     }
                 ]
             },
-            'your_money': {
+            'your_finances': {
                 "complete": True,
                 "skipped": True
             },
