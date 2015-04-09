@@ -56,6 +56,9 @@ def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
     case.urn = context_data["case"]["urn"].upper()
     case.save()
 
+    if "court" in context_data:
+        del context_data["court"]
+
     if getattr(settings, 'STORE_USER_DATA', False):
         encrypt_and_store_user_data(case.urn, case.id, context_data)
 

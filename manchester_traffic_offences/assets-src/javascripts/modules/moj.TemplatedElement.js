@@ -53,7 +53,7 @@
 
     cacheElements: function($el) {
       this.$element = $el;
-      this.$inputs = $('[name="' + this.trigger + '"]');
+      this.$inputs = $(':radio[name="' + this.trigger + '"]');
     },
 
     bindEvents: function() {
@@ -67,7 +67,10 @@
     },
 
     getCurrentValue: function() {
-      return this.$inputs.filter(':checked').val();
+      var $currentSelection = this.$inputs.filter(':checked');
+      var currentValue = $currentSelection.attr('data-template-value') || $currentSelection.parent('label').text();
+
+      return currentValue.trim();
     },
 
     formatValue: function(value) {

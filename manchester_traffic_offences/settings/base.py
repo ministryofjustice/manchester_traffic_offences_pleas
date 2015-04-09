@@ -2,6 +2,8 @@ import sys
 import os
 from os.path import join, abspath, dirname
 
+from django.utils.translation import ugettext_lazy as _
+
 VERSION = (0, 9, 5)
 
 # PATH vars
@@ -48,11 +50,16 @@ TIME_ZONE = 'Europe/London'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-gb'
 
+LANGUAGES = (
+    ('en', _('English')),
+    ('cy', _('Welsh')),
+)
+
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = False
+USE_I18N = True 
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
@@ -63,6 +70,11 @@ USE_TZ = False
 
 # Allow the use of commas in decimal fields and when displaying large numbers
 USE_THOUSAND_SEPARATOR = True
+THOUSAND_SEPARATOR = u','
+
+LOCALE_PATHS = (
+    root('../conf/locale'),
+)
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
@@ -106,14 +118,14 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
-    'django.middleware.locale.LocaleMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 )
 
 ROOT_URLCONF = 'manchester_traffic_offences.urls'
@@ -123,7 +135,6 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 SESSION_COOKIE_HTTPONLY = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 3600
-
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'manchester_traffic_offences.wsgi.application'
