@@ -1,14 +1,17 @@
 import datetime as dt
+import json
 
 from django.core import mail
-from django.test import TestCase
+from django.core.urlresolvers import reverse
+from django.test import TestCase, RequestFactory
 
 from mock import Mock, patch
 
 from apps.plea.models import CourtEmailCount, Case
-from apps.receipt.models import ReceiptLog
-from apps.receipt.process import (extract_data_from_email, InvalidFormatError,
+from .models import ReceiptLog
+from .process import (extract_data_from_email, InvalidFormatError,
                                   process_receipts)
+from .views import ReceiptWebhook
 
 
 class TestEmailSubjectProcessing(TestCase):
@@ -24,45 +27,41 @@ class TestEmailSubjectProcessing(TestCase):
         Random content.
         """
 
-        self.mock_email = Mock(body=self.email_body_valid,
-                               subject=self.failed_email_subject)
-
     def test_failed_match(self):
-        self.mock_email.subject = self.failed_email_subject
 
         plea_id, count_id, status, urn, doh = \
-            extract_data_from_email(self.mock_email)
+            extract_data_from_email(self.failed_email_subject,
+                                    self.email_body_valid)
 
         self.assertEqual(status, "Failed")
 
     def test_passed_match(self):
-        self.mock_email.subject = self.passed_email_subject
 
         plea_id, count_id, status, urn, doh = \
-            extract_data_from_email(self.mock_email)
+            extract_data_from_email(self.passed_email_subject,
+                                    self.email_body_valid)
 
         self.assertEqual(status, "Passed")
 
     def test_error_match(self):
 
-        self.mock_email.subject = 'a totally invalid email subject'
-
         with self.assertRaises(InvalidFormatError):
-            extract_data_from_email(self.mock_email)
+            extract_data_from_email('a totally invalid email subject',
+                                    self.email_body_valid)
 
     def test_email_body_valid(self):
         plea_id, count_id, status, urn, doh = \
-            extract_data_from_email(self.mock_email)
+            extract_data_from_email(self.passed_email_subject,
+                                    self.email_body_valid)
 
         self.assertEqual(plea_id, 1)
         self.assertEqual(count_id, 1)
 
     def test_email_body_invaild(self):
 
-        self.mock_email.body = "This is an invalid body"
-
         with self.assertRaises(InvalidFormatError):
-            extract_data_from_email(self.mock_email)
+            extract_data_from_email(self.passed_email_subject,
+                                    "This is an invalid body")
 
 
 class TestProcessReceipts(TestCase):
@@ -272,3 +271,104 @@ class TestProcessReceipts(TestCase):
             process_receipts()
 
         self.assertEqual(len(mail.outbox), 1)
+
+
+class WebHookTestCase(TestCase):
+    def setUp(self):
+
+        self.factory = RequestFactory()
+
+        self.failed_email_subject = "Receipt (Failed) RE: ONLINE PLEA: 66/XX/0050782/14 DOH: 2014-11-07 XXXXXX Xxxxxx"
+        self.passed_email_subject = "Receipt (Passed) RE: FILED! ONLINE PLEA: 06/xa/0051925/14 DOH: 2014-10-31 XXXXXX xxxxx"
+
+        self.urn = "00/AA/0000000/00"
+        self.doh = dt.datetime.now()+dt.timedelta(5)
+
+        self.case = Case.objects.create(
+            urn=self.urn,
+            sent=True,
+            processed=False)
+
+        self.email_count = CourtEmailCount.objects.create(
+            hearing_date=self.doh,
+            total_pleas=1,
+            total_guilty=1,
+            total_not_guilty=0,
+            sent=True,
+            processed=False)
+
+        self.email_body_valid = """
+        Random content.
+        <<<makeaplea-ref: {}/{}>>>
+        Random content.
+        """.format(self.case.id, self.email_count.id)
+
+
+    def _get_mandrill_post_data(self, subject=None, text=None):
+        return {
+            "mandrill_events": json.dumps([{
+                "msg": {
+                    "subject": subject if subject else self.passed_email_subject,
+                    "text": text if text else self.email_body_valid
+                }
+            }])
+        }
+
+    def test_success_entry(self):
+
+        request = self.factory.post(reverse("receipt_webhook"),
+                                    self._get_mandrill_post_data())
+
+        ReceiptWebhook.as_view()(request)
+
+        self.assertEquals(CourtEmailCount.objects.all().count(), 1)
+
+        self.assertEquals(ReceiptLog.objects.all().count(), 1)
+
+        log = ReceiptLog.objects.all()[0]
+
+        self.assertEquals(log.total_emails, 1)
+        self.assertEquals(log.total_success, 1)
+        self.assertEquals(log.total_failed, 0)
+        self.assertEquals(log.total_errors, 0)
+
+
+    def test_failed_entry(self):
+
+        request = self.factory.post(reverse("receipt_webhook"),
+                                    self._get_mandrill_post_data(
+                                        subject=self.failed_email_subject
+                                    ))
+
+        ReceiptWebhook.as_view()(request)
+
+        self.assertEquals(CourtEmailCount.objects.all().count(), 1)
+
+        self.assertEquals(ReceiptLog.objects.all().count(), 1)
+
+        log = ReceiptLog.objects.all()[0]
+
+        self.assertEquals(log.total_emails, 1)
+        self.assertEquals(log.total_success, 0)
+        self.assertEquals(log.total_failed, 1)
+        self.assertEquals(log.total_errors, 0)
+
+    def test_errored_entry(self):
+
+        self.case.delete()
+
+        request = self.factory.post(reverse("receipt_webhook"),
+                                    self._get_mandrill_post_data(
+                                        subject=self.passed_email_subject
+                                    ))
+
+        ReceiptWebhook.as_view()(request)
+
+        self.assertEquals(ReceiptLog.objects.all().count(), 1)
+
+        log = ReceiptLog.objects.all()[0]
+
+        self.assertEquals(log.total_emails, 1)
+        self.assertEquals(log.total_success, 0)
+        self.assertEquals(log.total_failed, 0)
+        self.assertEquals(log.total_errors, 1)
