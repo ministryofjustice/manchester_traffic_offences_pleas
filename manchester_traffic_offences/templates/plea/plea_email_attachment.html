@@ -39,7 +39,7 @@
     </tr>
     <tr>
         <th>Court hearing</th>
-        <td>{{ case.date_of_hearing|string_date }}</td>
+        <td>{{ case.date_of_hearing|parse_date|date:"d F Y" }}</td>
     </tr>
 
     <tr>
@@ -134,7 +134,7 @@
         <tr>
             <td class="heading" colspan="2"><h2>Your money</h2></td>
         </tr>
-        {% if your_money.skipped %}
+        {% if your_finances.skipped %}
         <tr>
             <th>Status</th>
             <td><i>Not completed/provided Financial details must be collected at hearing</i></td>
@@ -142,80 +142,80 @@
         {% else %}
         <tr>
             <th>Status</th>
-            <td>{{ your_money.you_are }}</td>
+            <td>{{ your_finances.you_are }}</td>
         </tr>
-        {% if your_money.you_are == "Employed" %}
+        {% if your_finances.you_are == "Employed" %}
             <tr>
                 <th>Your Job</th>
-                <td>{{ your_money.employed_your_job }}</td>
+                <td>{{ your_finances.employed_your_job }}</td>
             </tr>
             <tr>
                 <th>You get paid</th>
                 <td>
-                    {{ your_money.employed_take_home_pay_period }}
+                    {{ your_finances.employed_take_home_pay_period }}
                 </td>
             </tr>
             <tr>
                 <th>Take home pay</th>
-                <td>£{{ your_money.employed_take_home_pay_amount }}</td>
+                <td>£{{ your_finances.employed_take_home_pay_amount }}</td>
             </tr>
         {% endif %}
-        {% if your_money.you_are == "Self-employed" %}
+        {% if your_finances.you_are == "Self-employed" %}
             <tr>
                 <th>Your Job</th>
-                <td>{{ your_money.your_job }}</td>
+                <td>{{ your_finances.your_job }}</td>
             </tr>
             <tr>
                 <th>You get paid</th>
                 <td>
-                    {%  if your_money.self_employed_pay_period == "Self-employed other" %}
-                        Other - {{ your_money.self_employed_pay_other }}
+                    {%  if your_finances.self_employed_pay_period == "Self-employed other" %}
+                        Other - {{ your_finances.self_employed_pay_other }}
                     {% else %}
-                        {{ your_money.self_employed_pay_period }}
+                        {{ your_finances.self_employed_pay_period }}
                     {% endif %}
                 </td>
             </tr>
             <tr>
                 <th>Amount</th>
-                <td>£{{ your_money.self_employed_pay_amount }}</td>
+                <td>£{{ your_finances.self_employed_pay_amount }}</td>
             </tr>
         {% endif %}
-        {% if your_money.you_are == "Receiving benefits" %}
+        {% if your_finances.you_are == "Receiving benefits" %}
             <tr>
                 <th>Benefits you receive</th>
-                <td>{{ your_money.benefits_details }}</td>
+                <td>{{ your_finances.benefits_details }}</td>
             </tr>
             <tr>
                 <th>Does this include payment for dependents?</th>
-                <td>{{ your_money.benefits_dependents }}</td>
+                <td>{{ your_finances.benefits_dependents }}</td>
             </tr>
             <tr>
                 <th>You get paid</th>
                 <td>
-                    {%  if your_money.benefits_period == "Benefits other" %}
-                        Other - {{ your_money.benefits_pay_other }}
+                    {%  if your_finances.benefits_period == "Benefits other" %}
+                        Other - {{ your_finances.benefits_pay_other }}
                     {% else %}
-                        {{ your_money.benefits_period }}
+                        {{ your_finances.benefits_period }}
                     {% endif %}
                 </td>
             </tr>
             <tr>
                 <th>Amount</th>
-                <td>£{{ your_money.benefits_amount }}</td>
+                <td>£{{ your_finances.benefits_amount }}</td>
             </tr>
         {% endif %}
-        {% if your_money.you_are == "Other" %}
+        {% if your_finances.you_are == "Other" %}
             <tr>
                 <th>More information</th>
-                <td>{{ your_money.other_details|linebreaksbr }}</td>
+                <td>{{ your_finances.other_details|linebreaksbr }}</td>
             </tr>
             <tr>
                 <th>Amount</th>
-                <td>£{{ your_money.other_pay_amount }}</td>
+                <td>£{{ your_finances.other_pay_amount }}</td>
             </tr>
         {% endif %}
         {% endif %}
-        {% if your_money.hardship %}
+        {% if your_finances.hardship %}
             {% add_test_tag "<<SHOWEXPENSES>>" %}
             <tr>
                 <td class="heading" colspan="2"><h2>Your expenses</h2></td>
