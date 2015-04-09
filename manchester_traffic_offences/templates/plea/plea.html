@@ -3,7 +3,7 @@
 {% load debug %}
 {% load i18n %}
 
-{% block page_title %}{{ block.super }} Your plea{% endblock %}
+{% block page_title %}{% blocktrans count charges=request.session.case.number_of_charges %}Your plea{% plural %}Your pleas{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 {% block page_content %}
 
@@ -49,12 +49,14 @@
             
             <div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty_{{ forloop.counter }}">
               <fieldset>
-                {% if form_count > 1 %}
-                <legend>{% blocktrans with counter=forloop.counter %}Your plea for charge [{{ counter }}]{% endblocktrans %}</legend>
-                {% endif %}
+                {% if form_count > 1 or form.guilty.errors %}
+                <legend class="form-label">
+                    {% if form_count > 1 %}
+                    {% blocktrans with counter=forloop.counter %}Your plea for charge [{{ counter }}]{% endblocktrans %}
+                    {% endif %}
 
-                {% if form.guilty.errors %}
-                {{ form.guilty.errors }}
+                    {{ form.guilty.errors }}
+                </legend>
                 {% endif %}
 
                 <div class="form-field">
