@@ -1326,8 +1326,56 @@ GOV.UK Toolkit/Template overrides
     display: inline-block;
     padding: 12px 0 8px; }
   .phase-banner .phase-tag {
+    display: -moz-inline-stack;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 8px 0 0;
+    padding: 2px 5px 0;
+    font-family: "nta", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.25;
+    font-weight: 700;
+    text-transform: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #d53880;
     margin-top: -3px;
     vertical-align: baseline; }
+    @media (min-width: 641px) {
+      .phase-banner .phase-tag {
+        vertical-align: baseline; } }
+    @media (max-width: 640px) {
+      .phase-banner .phase-tag {
+        font-size: 14px;
+        line-height: 1.14286; } }
+
+body.beta .phase-banner .phase-tag {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 8px 0 0;
+  padding: 2px 5px 0;
+  font-family: "nta", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.25;
+  font-weight: 700;
+  text-transform: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+  color: #fff;
+  background-color: #f47738;
+  margin-top: -3px;
+  vertical-align: baseline; }
+  @media (min-width: 641px) {
+    body.beta .phase-banner .phase-tag {
+      vertical-align: baseline; } }
+  @media (max-width: 640px) {
+    body.beta .phase-banner .phase-tag {
+      font-size: 14px;
+      line-height: 1.14286; } }
 
 #content {
   padding-top: 1px; }
