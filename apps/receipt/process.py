@@ -18,9 +18,11 @@ hmcts_subject_re = re.compile("(?:.*?)Receipt \((Failed|Passed)\) RE:(?:.*?)ONLI
 
 
 class InvalidFormatError(Exception):
-    """
-    Unable to parse the incoming email data
-    """
+    pass
+
+
+class ReceiptProcessingError(Exception):
+    pass
 
 
 @contextlib.contextmanager
@@ -42,20 +44,20 @@ def get_receipt_emails(query_from, query_to):
     g.logout()
 
 
-def extract_data_from_email(email):
+def extract_data_from_email(subject, body):
     """
     Extract data from a HMCTS/GMP receipt email
     """
 
-    matches = hmcts_subject_re.search(email.subject)
+    matches = hmcts_subject_re.search(subject)
 
     if not matches:
         raise InvalidFormatError(
-            "Cannot process email subject: {}".format(email.subject))
+            "Cannot process email subject: {}".format(subject))
     else:
         status, urn, doh = matches.groups()
 
-    matches = hmcts_body_re.search(email.body)
+    matches = hmcts_body_re.search(body)
 
     if not matches:
         raise InvalidFormatError(
@@ -161,7 +163,7 @@ def _process_receipts(log_entry):
 
             try:
                 plea_id, count_id, status, urn, doh = \
-                    extract_data_from_email(email)
+                    extract_data_from_email(email.subject, email.body)
 
             except InvalidFormatError as ex:
                 status_text.append(unicode(ex))
@@ -245,3 +247,65 @@ def _process_receipts(log_entry):
     log_entry.status = log_entry.STATUS_COMPLETE
 
     log_entry.status_detail = "\n".join(status_text)
+
+
+def process_receipt(subject, body):
+    """
+
+    Returns a tuple of status (True/False) and message
+    """
+
+    plea_id, count_id, status, urn, doh = \
+        extract_data_from_email(subject, body)
+
+    try:
+        case_obj = Case.objects.get(id=plea_id)
+    except Case.DoesNotExist:
+        raise ReceiptProcessingError('Cannot find Case(<{}>)'
+                                     .format(plea_id))
+    try:
+        count_obj = CourtEmailCount.objects.get(id=count_id)
+    except CourtEmailCount.DoesNotExist:
+        raise ReceiptProcessingError('Cannot find CourtEmailCount(<{}>)'
+                                     .format(count_id))
+
+    if status == "Passed":
+        if case_obj.has_action("receipt_success"):
+            return False, "{} already processed. Skipping.".format(urn)
+
+        if urn.upper() != case_obj.urn:
+            # HMCTS have changed the URN, update our records and log the change
+
+            old_urn, case_obj.urn = case_obj.urn, urn
+
+            case_obj.add_action("receipt_success", "\URN CHANGED! Old Urn: {}".format(old_urn))
+
+            status_text = 'Passed [URN CHANGED! old urn: {}] {}'.format(urn, old_urn)
+        else:
+            case_obj.add_action("receipt_success", "")
+            status_text = 'Passed: {}'.format(urn)
+
+        case_obj.save()
+
+        success = True
+
+        # We can't modify the DOH as the hearing time is not provided by
+        # hmcts, at current
+
+        #
+        # do outbound actions, e.g. send an email to a user.
+        #
+
+    else:
+        case_obj.add_action("receipt_failure", "")
+
+        success = False
+
+        status_text = 'Failed: {}'.format(urn)
+
+    count_obj.get_status_from_case(case_obj)
+    count_obj.save()
+
+    case_obj.save()
+
+    return success, status_text
