@@ -17,6 +17,12 @@ class ReceiptWebhook(View):
 
     See http://help.mandrill.com/entries/22092308-What-is-the-format-of-inbound-email-webhooks-
     """
+    def head(self, *args, **kwargs):
+        """
+        This needs to exist so that Mandrill can validate the URL.
+        """
+        return HttpResponse('')
+
 
     def _get_stack_trace(self):
         ex_type, ex, tb = sys.exc_info()
