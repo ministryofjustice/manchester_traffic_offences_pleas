@@ -2,7 +2,6 @@ from dateutil.parser import parse
 import datetime
 
 from django.contrib import messages
-from django.core.urlresolvers import reverse_lazy
 from django.forms.formsets import formset_factory
 from django.utils.translation import ugettext as _
 
@@ -270,7 +269,7 @@ class ReviewStage(FormStage):
                 self.set_next_step("complete")
             else:
                 self.add_message(messages.ERROR, '<h2 class="heading-medium">{}</h2><p>{}</p>'.format(
-                    _('Submission Error'), 
+                    _('Submission Error'),
                     _('There seems to have been a problem submitting your plea. Please try again.')))
                 self.set_next_step("review")
 
