@@ -6,6 +6,8 @@ import traceback
 
 from django.http import HttpResponse
 from django.views.generic import View
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import ReceiptLog
 from .process import process_receipt, InvalidFormatError, ReceiptProcessingError
@@ -23,6 +25,9 @@ class ReceiptWebhook(View):
         """
         return HttpResponse('')
 
+    @method_decorator(csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super(ReceiptWebhook, self).dispatch(*args, **kwargs)
 
     def _get_stack_trace(self):
         ex_type, ex, tb = sys.exc_info()
