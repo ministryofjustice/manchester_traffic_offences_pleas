@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load debug %}
 
-{% block page_title %}{{ block.super }} {% trans "Your Details" %}{% endblock %}
+{% block page_title %}{% trans "Your details" %} - {{ block.super }}{% endblock %}
 
 {% block page_content %}
 
@@ -33,7 +33,7 @@
         <h1>{% trans "Your details" %}</h1>
 
         <p class="lede">{% trans "We need these in case we have to contact you about your plea." %}</p>
-        <p class="lede">{% trans "<strong>Warning: </strong>You can only make a plea on behalf of a company if you are a director, the company secretary or the company's solicitor." %}</p>
+        <p class="lede">{% trans "<strong>Warning:</strong> You can only make a plea on behalf of a company if you are a director, the company secretary or the company's solicitor." %}</p>
     </header>
 
     {% with form.company_name as field %}
