@@ -283,6 +283,7 @@ def process_receipt(subject, body):
             status_text = 'Passed [URN CHANGED! old urn: {}] {}'.format(urn, old_urn)
         else:
             case_obj.add_action("receipt_success", "")
+            case_obj.processed = True
             status_text = 'Passed: {}'.format(urn)
 
         case_obj.save()
