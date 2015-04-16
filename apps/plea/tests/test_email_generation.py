@@ -206,4 +206,3 @@ class EmailGenerationTests(TestCase):
         send_plea_email(context_data)
 
         self.assertEquals(anon_total, CourtEmailCount.objects.all().count())
-

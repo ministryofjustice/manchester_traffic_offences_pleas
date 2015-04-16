@@ -4,19 +4,14 @@ from importlib import import_module
 from itertools import chain, cycle
 from mock import Mock, MagicMock, patch
 import socket
-import unittest
 
-from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from django.test import Client
 from django.test.client import RequestFactory
 from django.template.context import RequestContext
 
-
 from ..models import Case, Court
 from ..views import PleaOnlineForms
-from ..forms import CompanyFinancesForm
 
 
 class TestMultiPleaFormBase(TestCase):
@@ -31,6 +26,7 @@ class TestMultiPleaFormBase(TestCase):
         request.resolver_match.url_name = url_name
         request.resolver_match.kwargs = url_kwargs
         return request
+
 
 class TestMultiPleaForms(TestMultiPleaFormBase):
     def setUp(self):
@@ -87,7 +83,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                     }
                 ]
             },
-            'your_money': {
+            'your_finances': {
                 "complete": True,
                 "you_are": "Employed",
                 "employer_name": "test",
@@ -114,6 +110,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
     def test_case_stage_urn_already_submitted(self):
 
+        fake_request = self.get_request_mock("/plea/case/")
+        request_context = RequestContext(fake_request)
+
         case = Case()
         case.urn = "06/AA/0000000/00"
         case.sent = True
@@ -122,7 +121,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
         form = PleaOnlineForms("case", "plea_form_step", self.session)
-        form.load(self.request_context)
+        form.load(request_context)
         form.save({"date_of_hearing_0": str(hearing_date.day),
                    "date_of_hearing_1": str(hearing_date.month),
                    "date_of_hearing_2": str(hearing_date.year),
@@ -132,9 +131,17 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "urn_3": "00",
                    "number_of_charges": 1,
                    "company_plea": False},
-                  self.request_context)
+                  request_context)
 
         response = form.render()
+
+        court_obj = Court.objects.get(region_code="06")
+
+        self.assertContains(
+            response,
+            "<br />".join(court_obj.court_address.split("\n")))
+
+        self.assertContains(response, court_obj.court_email)
 
         self.assertEqual(form.current_stage.forms[0].errors.keys()[0], 'urn')
         self.assertEqual(response.status_code, 200)
@@ -181,7 +188,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, '/plea/company_details/')
 
-    def test_case_stage_redirects_to_your_money_stage(self):
+    def test_case_stage_redirects_to_your_finances_stage(self):
         form = PleaOnlineForms("case", "plea_form_step", self.session)
 
         hearing_date = datetime.date.today()+datetime.timedelta(30)
@@ -382,7 +389,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "your_details": {
                 "complete": True
             },
-            "your_money": {
+            "your_finances": {
                 "complete": True
             },
             "plea": {
@@ -423,7 +430,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "your_details": {
                 "complete": True
             },
-            "your_money": {
+            "your_finances": {
                 "complete": True
             },
             "plea": {
@@ -446,7 +453,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/plea/review/")
 
-    def _get_your_money_stage(self):
+    def _get_your_finances_stage(self):
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
         test_data = {
@@ -465,31 +472,31 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             }
         }
 
-        form = PleaOnlineForms("your_money", "plea_form_step", test_data)
+        form = PleaOnlineForms("your_finances", "plea_form_step", test_data)
 
         form.load(self.request_context)
 
         return form
 
-    def test_your_money_stage_loads(self):
+    def test_your_finances_stage_loads(self):
 
-        form = self._get_your_money_stage()
+        form = self._get_your_finances_stage()
 
         response = form.render()
 
         self.assertEqual(response.status_code, 200)
 
-    def test_your_money_employment_type_required(self):
+    def test_your_finances_employment_type_required(self):
 
-        form = self._get_your_money_stage()
+        form = self._get_your_finances_stage()
 
         form.save({}, self.request_context)
 
         self.assertEqual(len(form.current_stage.forms[0].errors), 1)
 
-    def test_your_money_employed_option_with_required_fields_missing(self):
+    def test_your_finances_employed_option_with_required_fields_missing(self):
 
-        form = self._get_your_money_stage()
+        form = self._get_your_finances_stage()
 
         test_data = {
             "you_are": "Employed"
@@ -499,9 +506,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(len(form.current_stage.forms[0].errors), 4)
 
-    def test_your_money_employed_option_with_valid_data(self):
+    def test_your_finances_employed_option_with_valid_data(self):
 
-        form = self._get_your_money_stage()
+        form = self._get_your_finances_stage()
 
         test_data = {
             "you_are": "Employed",
@@ -515,9 +522,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertTrue(form.current_stage.forms[0].is_valid())
 
-    def test_your_money_self_employed_option_with_required_fields_missing(self):
+    def test_your_finances_self_employed_option_with_required_fields_missing(self):
 
-        form = self._get_your_money_stage()
+        form = self._get_your_finances_stage()
 
         test_data = {
             "you_are": "Self-employed"
@@ -527,9 +534,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(len(form.current_stage.forms[0].errors), 4)
 
-    def test_your_money_self_employed_option_with_valid_data(self):
+    def test_your_finances_self_employed_option_with_valid_data(self):
 
-        form = self._get_your_money_stage()
+        form = self._get_your_finances_stage()
 
         test_data = {
             "you_are": "Self-employed",
@@ -543,9 +550,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertTrue(form.current_stage.forms[0].is_valid())
 
-    def test_your_money_benefits_option_with_required_fields_missing(self):
+    def test_your_finances_benefits_option_with_required_fields_missing(self):
 
-        form = self._get_your_money_stage()
+        form = self._get_your_finances_stage()
 
         test_data = {
             "you_are": "Receiving benefits"
@@ -555,9 +562,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(len(form.current_stage.forms[0].errors), 5)
 
-    def test_your_money_benefits_option_with_valid_data(self):
+    def test_your_finances_benefits_option_with_valid_data(self):
 
-        form = self._get_your_money_stage()
+        form = self._get_your_finances_stage()
 
         test_data = {
             "you_are": "Receiving benefits",
@@ -572,9 +579,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertTrue(form.current_stage.forms[0].is_valid())
 
-    def test_your_money_other_option_with_required_fields_missing(self):
+    def test_your_finances_other_option_with_required_fields_missing(self):
 
-        form = self._get_your_money_stage()
+        form = self._get_your_finances_stage()
 
         test_data = {
             "you_are": "Other"
@@ -584,9 +591,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(len(form.current_stage.forms[0].errors), 3)
 
-    def test_your_money_other_option_with_valid_data(self):
+    def test_your_finances_other_option_with_valid_data(self):
 
-        form = self._get_your_money_stage()
+        form = self._get_your_finances_stage()
 
         test_data = {
             "you_are": "Other",
@@ -598,6 +605,26 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.save(test_data, self.request_context)
 
         self.assertTrue(form.current_stage.forms[0].is_valid())
+
+    @patch("apps.govuk_utils.forms.messages.add_message")
+    def test_review_stage_session_timeout_redirects_to_case(self, add_message):
+        # no test data to simulate a timed out session
+        test_data = {
+            "case": {}
+        }
+
+        form = PleaOnlineForms("review", "plea_form_step", test_data)
+
+        form.save({"understand": True, "receive_email": False}, self.request_context)
+        form.process_messages({})
+        response = form.render()
+
+        self.assertEqual(add_message.call_count, 1)
+        self.assertEqual(add_message.call_args[0][0], {})
+        self.assertEqual(add_message.call_args[0][1], 40)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/plea/case/")
 
     def test_review_stage_has_company_details_block(self):
         hearing_date = datetime.date.today()+datetime.timedelta(30)
@@ -632,7 +659,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 ],
                 "complete": True
             },
-            "your_money":  {
+            "your_finances":  {
                 "complete": True,
                 "skipped": True
             },
@@ -691,7 +718,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 ],
                 "complete": True
             },
-            "your_money":  {
+            "your_finances":  {
                 "complete": True,
                 "skipped": True
             },
@@ -733,7 +760,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "plea": {
                 "complete": True
             },
-            "your_money":  {
+            "your_finances":  {
                 "complete": True
             }
         }
@@ -777,7 +804,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                     }
                 ]
             },
-            "your_money":  {
+            "your_finances":  {
                 "complete": True
             },
             "review": {
@@ -791,6 +818,12 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form.load(request_context)
         response = form.render()
+
+        court_obj = Court.objects.get(region_code="06")
+
+        self.assertContains(
+            response,
+            "<br />".join(court_obj.court_address.split("\n")))
 
         self.assertIn(test_data["case"]["urn"], response.content)
 
@@ -1034,7 +1067,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         fake_request = self.get_request_mock("/plea/your_expenses")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+        form = PleaOnlineForms("your_finances", "plea_form_step", session_data)
 
         form.load(request_context)
 
@@ -1087,10 +1120,10 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
     def test_your_finances_employed_no_hardship_redirects_to_review(self):
 
         session_data = self.test_session_data
-        fake_request = self.get_request_mock("/plea/your_money")
+        fake_request = self.get_request_mock("/plea/your_finances")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+        form = PleaOnlineForms("your_finances", "plea_form_step", session_data)
 
         form.load(request_context)
 
@@ -1114,7 +1147,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         fake_request = self.get_request_mock("/plea/your_expenses")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+        form = PleaOnlineForms("your_finances", "plea_form_step", session_data)
 
         form.load(request_context)
 
@@ -1135,10 +1168,10 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
     def test_your_finances_self_employed_no_hardship_redirects_to_review(self):
 
         session_data = self.test_session_data
-        fake_request = self.get_request_mock("/plea/your_money")
+        fake_request = self.get_request_mock("/plea/your_finances")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+        form = PleaOnlineForms("your_finances", "plea_form_step", session_data)
 
         form.load(request_context)
 
@@ -1162,7 +1195,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         fake_request = self.get_request_mock("/plea/your_expenses")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+        form = PleaOnlineForms("your_finances", "plea_form_step", session_data)
 
         form.load(request_context)
 
@@ -1184,10 +1217,10 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
     def test_your_finances_benefits_no_hardship_redirects_to_review(self):
 
         session_data = self.test_session_data
-        fake_request = self.get_request_mock("/plea/your_money")
+        fake_request = self.get_request_mock("/plea/your_finances")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+        form = PleaOnlineForms("your_finances", "plea_form_step", session_data)
 
         form.load(request_context)
 
@@ -1212,7 +1245,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         fake_request = self.get_request_mock("/plea/your_expenses")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+        form = PleaOnlineForms("your_finances", "plea_form_step", session_data)
 
         form.load(request_context)
 
@@ -1235,7 +1268,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         fake_request = self.get_request_mock("/plea/your_expenses")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+        form = PleaOnlineForms("your_finances", "plea_form_step", session_data)
 
         form.load(request_context)
 
@@ -1255,9 +1288,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
     def test_hardship_calculations_on_review_page(self):
 
         session_data = self.test_session_data
-        session_data['your_money']['hardship'] = True
+        session_data['your_finances']['hardship'] = True
 
-        fake_request = self.get_request_mock("/plea/your_money")
+        fake_request = self.get_request_mock("/plea/your_finances")
         request_context = RequestContext(fake_request)
 
         form = PleaOnlineForms("your_expenses", "plea_form_step", session_data)
@@ -1294,10 +1327,10 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
     def test_hardship_on_review(self):
 
         session_data = self.test_session_data
-        fake_request = self.get_request_mock("/plea/your_money")
+        fake_request = self.get_request_mock("/plea/your_finances")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+        form = PleaOnlineForms("your_finances", "plea_form_step", session_data)
 
         form.load(request_context)
 
@@ -1321,10 +1354,10 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
     def test_no_hardship_review(self):
 
         session_data = self.test_session_data
-        fake_request = self.get_request_mock("/plea/your_money")
+        fake_request = self.get_request_mock("/plea/your_finances")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("your_money", "plea_form_step", session_data)
+        form = PleaOnlineForms("your_finances", "plea_form_step", session_data)
 
         form.load(request_context)
 
@@ -1352,7 +1385,7 @@ class TestYourExpensesStage(TestMultiPleaFormBase):
 
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
-        self.fake_request = self.get_request_mock("/plea/your_money")
+        self.fake_request = self.get_request_mock("/plea/your_finances")
         self.request_context = RequestContext(self.fake_request)
 
         self.test_data = {
@@ -1383,7 +1416,7 @@ class TestYourExpensesStage(TestMultiPleaFormBase):
                     }
                 ]
             },
-            "your_money":  {
+            "your_finances":  {
                 "complete": True
             },
             "your_expenses": {

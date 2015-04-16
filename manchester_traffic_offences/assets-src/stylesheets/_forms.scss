@@ -31,6 +31,7 @@ Forms
 	label {
 		@include bold-24();
 		display: block;
+		margin-bottom: .25em;
 	}
 
 	.block-label {
@@ -64,8 +65,8 @@ Forms
 	}
 
 	.form-hint {
+		display: block;
 		@include core-16;
-		margin: .25em 0;
 	}
 
 	.form-hint-inline {
@@ -73,10 +74,20 @@ Forms
 		display: inline;
 		vertical-align: baseline;
 	}
+}
 
-	.errorlist {
-		margin: .25em 0;
-		color: $error-colour;
+.form-control {
+	width: 100%;
+	max-width: 20em;
+}
+
+@include ie-lte(7) {
+	.form-control {
+		width: 90%;
+	}
+
+	.form-group .button {
+		margin-bottom: 0;
 	}
 }
 
@@ -89,7 +100,11 @@ Forms
 .form-control-inline {
 	@extend .form-control;
 	width: auto;
-	margin: 0 5px;
+	margin: 0 3px;
+
+	@include media(tablet) {
+		margin: 0 5px;
+	}
 
 	&:first-child {
 		margin-left: 0;
@@ -108,22 +123,39 @@ Forms
 	}
 }
 
+.form-control-day,
+.form-control-month,
+.form-control-year {
+	@extend .form-control-inline;
+}
+
+.form-control-day,
+.form-control-month {
+	width: 2em;
+}
+.form-control-year {
+	width: 3em;
+}
+
+.form-group-extra {
+	.form-group {
+		margin-top: 0;
+	}
+}
+
 fieldset {
 	margin: 0;
+
+	-webkit-margin-top-collapse: separate;
 }
 
 legend {
+	@include core-24;
 	padding: 0;
 	margin: 0;
-	// @include core-24;
-	// padding: 0;
-	// margin-bottom: -.5em;
 
 	&.form-label {
-		@extend .form-label;
-		@include bold-24();
-		
-		margin-bottom: 0;
+		@include core-24;
 	}
 
 	@include ie-lte(8) {
@@ -134,6 +166,10 @@ legend {
 			margin-left: -2px;
 		}
 	}
+}
+
+legend + * {
+  -webkit-margin-top-collapse: separate;
 }
 
 .form-submit {
@@ -178,11 +214,16 @@ legend {
 }
 
 .with-error {
-	padding-left: 15px;
+	padding-left: 10px;
 	border-left: 4px solid $error-colour;
+
+	@include media(tablet) {
+		padding-left: 15px;
+	}
 }
 
 .errorlist {
+	@include core-19;
 	margin: .25em 0;
 	padding: 0;
 	color: $error-colour;
@@ -194,6 +235,11 @@ legend {
 
 
 /*== Modifiers ========================================*/
+.money-field {
+	input {
+		width: 7em;
+	}
+}
 .form-field-prefix {
 	float: left;
 	padding: 5px .75em 4px;
@@ -208,8 +254,12 @@ legend {
 
 .form-field-inline {
 	display: inline-block;
-	margin: 0 5px;
+	margin: 0 3px;
 	vertical-align: baseline;
+
+	@include media(tablet) {
+		margin: 0 5px;
+	}
 
 	&:first-child {
 		margin-left: 0;

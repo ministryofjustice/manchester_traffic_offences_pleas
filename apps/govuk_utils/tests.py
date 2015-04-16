@@ -171,7 +171,7 @@ class TestMultiStageForm(TestCase):
         form_data.update(mgmt_data)
         msf.save(form_data, request_context)
         msf.process_messages({})
-        add_message.assert_called_once_with({}, 20, "This is a test message")
+        add_message.assert_called_once_with({}, 20, "This is a test message", extra_tags=None)
 
     @patch("apps.govuk_utils.forms.reverse", reverse)
     def test_form_review_loads(self):
