@@ -3,16 +3,19 @@ from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import RequestContext, redirect
 from django.views.decorators.cache import never_cache
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, FormView
 
 from brake.decorators import ratelimit
 
-from .models import Case
-
 from apps.govuk_utils.forms import MultiStageForm
-from stages import (CaseStage, YourDetailsStage, CompanyDetailsStage,
+
+from .models import Case, Court
+from .forms import CourtFinderForm
+from .stages import (CaseStage, YourDetailsStage, CompanyDetailsStage,
                     PleaStage, YourMoneyStage, YourExpensesStage,
                     CompanyFinancesStage, ReviewStage, CompleteStage)
+from .fields import ERROR_MESSAGES
+
 
 class PleaOnlineForms(MultiStageForm):
     stage_classes = [CaseStage,
@@ -97,3 +100,29 @@ class UrnAlreadyUsedView(TemplateView):
         request.session.flush()
 
         return redirect('plea_form_step', stage="case")
+
+
+class CourtFinderView(FormView):
+    template_name = "plea/court_finder.html"
+    form_class = CourtFinderForm
+
+    def form_valid(self, form):
+        try:
+            court = Court.objects.get_by_urn(form.cleaned_data["urn"])
+        except Court.DoesNotExist:
+            court = False
+
+        return self.render_to_response(self.get_context_data(form=form,
+                                                             court=court,
+                                                             submitted=True))
+
+    def form_invalid(self, form):
+
+        urn_is_invalid = False
+        if "urn" in form.errors and ERROR_MESSAGES["URN_INVALID"] in form.errors["urn"]:
+            urn_is_invalid = True
+
+        return self.render_to_response(
+            self.get_context_data(form=form,
+                                  urn_is_invalid=urn_is_invalid))
+

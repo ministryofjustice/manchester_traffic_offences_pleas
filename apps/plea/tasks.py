@@ -126,12 +126,21 @@ def email_send_user(self, email_data, case_id):
         email = email_data['your_details']['email']
         name = email_data['your_details']['name']
 
+    try:
+        court_obj = Court.objects.get_by_urn(email_data["case"]["urn"])
+    except Court.DoesNotExist:
+        logger.error("URN does not have a matching Court entry: {}".format(
+            email_data["case"]["urn"]))
+        raise
+
     data = {
         'email': email,
         'urn': email_data['case']['urn'],
         'number_of_charges': email_data['case']['number_of_charges'],
         'plea_type': get_plea_type(email_data),
-        'name': name
+        'name': name,
+        'court_address': court_obj.court_address,
+        'court_email': court_obj.court_email
     }
 
     case = Case.objects.get(pk=case_id)
