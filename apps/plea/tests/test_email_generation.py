@@ -13,7 +13,17 @@ class EmailGenerationTests(TestCase):
     def setUp(self):
         mail.outbox = []
 
-        self.court_obj = Court.objects.get(region_code="06")
+        self.court_obj = Court.objects.create(
+            court_code="0000",
+            region_code="06",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_email="test@test.com",
+            submission_email="test@test.com",
+            plp_email="test@test.com",
+            enabled=True,
+            test_mode=False)
 
     def test_template_attachment_sends_email(self):
         email_context = {"URN": "062B3C4D5E"}
