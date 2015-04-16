@@ -8,7 +8,7 @@ from django.http import Http404, HttpResponseRedirect, QueryDict
 from django.shortcuts import render_to_response
 
 
-StageMessage = namedtuple("StageMessage", ["importance", "message"])
+StageMessage = namedtuple("StageMessage", ["importance", "message", "tags"])
 
 
 class FormStage(object):
@@ -57,8 +57,8 @@ class FormStage(object):
                 return False
         return True
 
-    def add_message(self, importance, message):
-        self.messages.append(StageMessage(importance=importance, message=message))
+    def add_message(self, importance, message, extra_tags=None):
+        self.messages.append(StageMessage(importance=importance, message=message, tags=extra_tags))
 
     def load_forms(self, data=None, initial=False):
         if initial:
@@ -168,7 +168,7 @@ class MultiStageForm(object):
             raise Exception("Current stage is not set")
 
         for msg in self.current_stage.messages:
-            messages.add_message(request, msg.importance, msg.message)
+            messages.add_message(request, msg.importance, msg.message, extra_tags=msg.tags)
 
     def render(self):
         return self.current_stage.render(self.request_context)

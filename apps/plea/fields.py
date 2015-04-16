@@ -23,7 +23,7 @@ ERROR_MESSAGES = {
     "HEARING_DATE_REQUIRED": _("Provide a court hearing date"),
     "HEARING_DATE_INVALID": _("The court hearing date isn't a valid format"),
     "HEARING_DATE_PASSED": _("The court hearing date must be after today"),
-    "HEARING_DATE_INCORRECT": _("Enter the correct hearing date."),
+    "HEARING_DATE_INCORRECT": _("Enter the correct hearing date"),
     "NUMBER_OF_CHARGES_REQUIRED": _("Select the number of charges against you"),
     "ON_BEHALF_OF_COMPANY": _("Tell us if you're making a plea on behalf of a company"),
     "FULL_NAME_REQUIRED": _("Enter your full name"),
@@ -46,11 +46,11 @@ ERROR_MESSAGES = {
     "BENEFITS_DETAILS_REQUIRED": _("Tell us which benefits you receive"),
     "BENEFITS_DEPENDANTS_REQUIRED": _("Tell us if this includes payment for dependants"),
     "HARDSHIP_REQUIRED": _("Tell us if paying a fine would cause you serious financial problems"),
-    "UNDERSTAND_REQUIRED": _("You must confirm that you have read & understood the charge against you before you can submit your plea"),
+    "UNDERSTAND_REQUIRED": _("You must confirm that you have read and understood the charge against you before you can submit your plea"),
     "OTHER_INFO_REQUIRED": _("Tell us how you earn your money"),
     "RECEIVE_EMAIL": _("You must choose whether you want to receive court correspondence through email"),
     "HARDSHIP_DETAILS_REQUIRED": _("You must tell us why paying a fine will cause you serious financial problems"),
-    "OTHER_BILL_PAYERS_REQUIRED": _("You must tell us if anyone else contributes to your household bills."),
+    "OTHER_BILL_PAYERS_REQUIRED": _("You must tell us if anyone else contributes to your household bills"),
     "HOUSEHOLD_ACCOMMODATION_REQUIRED": _("Accommodation is a required field"),
     "HOUSEHOLD_ACCOMMODATION_INVALID": _("Accommodation must be a number"),
     "HOUSEHOLD_ACCOMMODATION_MIN": _("Accommodation must be a number greater than, or equal to, 0"),
@@ -201,9 +201,9 @@ class DSURNTemplateWidget(DSTemplateWidgetBase):
 
 class HearingDateWidget(MultiWidget):
     def __init__(self, attrs=None):
-        widgets = [DSDateTemplateWidget(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline first-inline', 'size': '2'}, context={'title': 'Day'}),
-                   DSDateTemplateWidget(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}, context={'title': 'Month'}),
-                   DSDateTemplateWidget(attrs={'maxlength': '4', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '4'}, context={'title': 'Year'}),
+        widgets = [DSDateTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-day"}, context={"title": "Day"}),
+                   DSDateTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-month"}, context={"title": "Month"}),
+                   DSDateTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "4", "size": "4", "class": "form-control-year"}, context={"title": "Year"}),
                    ]
         super(HearingDateWidget, self).__init__(widgets, attrs)
 
@@ -244,7 +244,7 @@ class HearingDateWidget(MultiWidget):
         try:
             return str(datetime.date(day=day, month=month, year=year))
         except (ValueError, TypeError):
-            return [widget.value_from_datadict(data, files, name + '_%s' % i) for i, widget in enumerate(self.widgets)]
+            return [widget.value_from_datadict(data, files, name + "_%s" % i) for i, widget in enumerate(self.widgets)]
 
     def format_output(self, rendered_widgets):
         return '/'.join(rendered_widgets)
@@ -256,10 +256,10 @@ class HearingDateField(forms.DateField):
 
 class URNWidget(MultiWidget):
     def __init__(self, attrs=None):
-        widgets = [DSURNTemplateWidget(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}, context={'title': 'Part 1'}),
-                   DSURNTemplateWidget(attrs={'maxlength': '2', 'class': 'form-control-inline', 'size': '2'}, context={'title': 'Part 2'}),
-                   DSURNTemplateWidget(attrs={'maxlength': '7', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '7'}, context={'title': 'Part 3'}),
-                   DSURNTemplateWidget(attrs={'maxlength': '2', 'pattern': '[0-9]+', 'class': 'form-control-inline', 'size': '2'}, context={'title': 'Part 4'}),
+        widgets = [DSURNTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-urn-2"}, context={"title": "Part 1"}),
+                   DSURNTemplateWidget(attrs={"pattern": "[A-Z]*", "maxlength": "2", "size": "2", "class": "form-control-urn-2"}, context={"title": "Part 2"}),
+                   DSURNTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "7", "size": "7", "class": "form-control-urn-7"}, context={"title": "Part 3"}),
+                   DSURNTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-urn-2"}, context={"title": "Part 4"}),
                    ]
         super(URNWidget, self).__init__(widgets, attrs)
 
@@ -284,5 +284,5 @@ class URNField(forms.MultiValueField):
     def compress(self, values):
         return "/".join(values)
 
-    default_validators = [is_urn_valid]
+    #default_validators = [is_urn_valid]
     widget = URNWidget()

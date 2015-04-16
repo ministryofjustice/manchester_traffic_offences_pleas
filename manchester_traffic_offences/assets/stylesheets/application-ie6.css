@@ -1,19 +1,14 @@
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 .grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
@@ -26,25 +21,18 @@
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 .grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
@@ -54,7 +42,7 @@
     display: block;
     clear: both; }
 
-#content, #global-cookie-message > div, .footer-wrapper p.footer-top {
+#content, #global-cookie-message > div, .phase-banner, .footer-wrapper p.footer-top {
   max-width: 960px;
   width: 960px;
   margin: 0 15px; }
@@ -64,10 +52,8 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 .grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
@@ -79,26 +65,19 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 .grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
@@ -110,16 +89,12 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 .grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
@@ -129,7 +104,7 @@
     display: block;
     clear: both; }
 
-#content, #global-cookie-message > div, .footer-wrapper p.footer-top {
+#content, #global-cookie-message > div, .phase-banner, .footer-wrapper p.footer-top {
   max-width: 960px;
   width: 960px;
   margin: 0 15px; }
@@ -165,10 +140,8 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 .grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
@@ -180,10 +153,8 @@
 
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 /*  
 ====================================================
 Typography
@@ -234,7 +205,7 @@ summary {
   text-decoration: none;
   -webkit-font-smoothing: antialiased;
   cursor: pointer;
-  color: white;
+  color: #fff;
   margin: 0 15px 15px 0;
   padding: 0.52632em 0.78947em 0.26316em 0.78947em;
   vertical-align: top; }
@@ -261,7 +232,7 @@ summary {
       box-shadow: 0 2px 0 #003518;
       border-bottom: 2px solid #003518; }
   .button:link, .button-large:link, .button:hover, .button-large:hover, .button:focus, .button-large:focus, .button:visited, .button-large:visited {
-    color: white; }
+    color: #fff; }
   .button:before, .button-large:before {
     content: "";
     height: 110%;
@@ -282,7 +253,7 @@ summary {
     margin-left: 0;
     margin-right: 0; }
   .button[type="submit"], [type="submit"].button-large, .button[type="reset"], [type="reset"].button-large, .button[type="button"], [type="button"].button-large {
-    filter: chroma(color=black); }
+    filter: chroma(color=#000000); }
   .button[type=submit].button, [type=submit].button-large {
     filter: none; }
 
@@ -548,7 +519,7 @@ details .panel-indent {
   border-bottom: 1px solid #bfc1c3; }
   .phase-banner p {
     margin: 0;
-    color: black;
+    color: #000;
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
@@ -982,12 +953,12 @@ fieldset {
 .form-title {
   margin-bottom: 30px; }
 
-.form-label, legend.form-label,
+.form-label,
 .form-label-bold {
   display: block;
   color: #0b0c0c; }
 
-.form-label, legend.form-label {
+.form-label {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -995,7 +966,7 @@ fieldset {
   text-transform: none;
   margin-bottom: 5px; }
   @media (max-width: 640px) {
-    .form-label, legend.form-label {
+    .form-label {
       font-size: 16px;
       line-height: 1.25; } }
 
@@ -1030,7 +1001,10 @@ fieldset {
   color: #6f777b;
   margin-bottom: 5px; }
 
-.form-control, .form-control-inline, .form-control-wide {
+.form-control, .form-control-inline, .form-control-day,
+.form-control-month,
+.form-control-year, .form-control-urn-2,
+.form-control-urn-7, .form-control-wide {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
@@ -1041,12 +1015,15 @@ fieldset {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   padding: 4px;
-  background-color: white;
+  background-color: #fff;
   border: 1px solid #bfc1c3;
   -webkit-appearance: none;
   border-radius: 0; }
   @media (max-width: 640px) {
-    .form-control, .form-control-inline, .form-control-wide {
+    .form-control, .form-control-inline, .form-control-day,
+    .form-control-month,
+    .form-control-year, .form-control-urn-2,
+    .form-control-urn-7, .form-control-wide {
       font-size: 16px;
       line-height: 1.25; } }
 
@@ -1170,7 +1147,7 @@ input[type=number] {
   margin-right: 15px; }
 
 .js-enabled label.selected {
-  background: white;
+  background: #fff;
   border-color: #0b0c0c; }
 
 .js-enabled label.focused {
@@ -1203,7 +1180,7 @@ input[type=number] {
   margin-right: 15px; }
 
 .js-enabled label.selected {
-  background: white;
+  background: #fff;
   border-color: #0b0c0c; }
 
 .js-enabled label.focused {
@@ -1289,53 +1266,16 @@ GOV.UK Toolkit/Template overrides
   text-decoration: none; }
 
 .phase-banner {
-  padding: 10px 0 8px 0;
-  border-bottom: 1px solid #bfc1c3; }
+  padding: 0; }
   .phase-banner p {
-    margin: 0;
-    color: black;
-    font-family: "nta", Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.25;
-    font-weight: 400;
-    text-transform: none; }
-    @media (max-width: 640px) {
-      .phase-banner p {
-        font-size: 14px;
-        line-height: 1.14286; } }
-  .phase-banner .phase-tag {
-    display: -moz-inline-stack;
     display: inline-block;
-    zoom: 1;
-    display: inline;
-    vertical-align: top;
-    margin: 0 8px 0 0;
-    padding: 2px 5px 0;
-    font-family: "nta", Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.25;
-    font-weight: 700;
-    text-transform: none;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-decoration: none;
-    color: #fff;
-    background-color: #d53880; }
-    @media (max-width: 640px) {
-      .phase-banner .phase-tag {
-        font-size: 14px;
-        line-height: 1.14286; } }
-  .phase-banner span {
-    display: -moz-inline-stack;
-    display: inline-block;
-    zoom: 1;
-    display: inline;
-    width: 75%;
-    vertical-align: top; }
+    padding: 12px 0 8px; }
   .phase-banner .phase-tag {
+    margin-top: -3px;
     vertical-align: baseline; }
 
 #content {
+  padding-top: 1px;
   width: 960px; }
 
 .footer-wrapper p.footer-top {
@@ -1389,7 +1329,8 @@ Forms
     line-height: 1.25;
     font-weight: 700;
     text-transform: none;
-    display: block; }
+    display: block;
+    margin-bottom: .25em; }
     @media (max-width: 640px) {
       .form-group label, .form-group-wide label,
       .column-half .form-group label, .form-submit label {
@@ -1413,12 +1354,12 @@ Forms
   .form-group .inline .block-label, .form-group-wide .inline .block-label, .form-submit .inline .block-label {
     clear: none; }
   .form-group .form-hint, .form-group-wide .form-hint, .form-submit .form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline, .form-submit .form-hint-inline {
+    display: block;
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
     font-weight: 400;
-    text-transform: none;
-    margin: .25em 0; }
+    text-transform: none; }
     @media (max-width: 640px) {
       .form-group .form-hint, .form-group-wide .form-hint, .form-submit .form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline, .form-submit .form-hint-inline {
         font-size: 14px;
@@ -1426,9 +1367,22 @@ Forms
   .form-group .form-hint-inline, .form-group-wide .form-hint-inline, .form-submit .form-hint-inline {
     display: inline;
     vertical-align: baseline; }
-  .form-group .errorlist, .form-group-wide .errorlist, .form-submit .errorlist {
-    margin: .25em 0;
-    color: #df3034; }
+
+.form-control, .form-control-inline, .form-control-day,
+.form-control-month,
+.form-control-year, .form-control-urn-2,
+.form-control-urn-7, .form-control-wide {
+  width: 100%;
+  max-width: 20em; }
+
+.form-control, .form-control-inline, .form-control-day,
+.form-control-month,
+.form-control-year, .form-control-urn-2,
+.form-control-urn-7, .form-control-wide {
+  width: 90%; }
+
+.form-group .button, .form-group-wide .button, .form-submit .button, .form-group .button-large, .form-group-wide .button-large, .form-submit .button-large {
+  margin-bottom: 0; }
 
 .form-group-wide,
 .column-half .form-group-wide,
@@ -1436,34 +1390,62 @@ Forms
 .column-half .form-submit {
   max-width: 100%; }
 
-.form-control-inline {
+.form-control-inline, .form-control-day,
+.form-control-month,
+.form-control-year, .form-control-urn-2,
+.form-control-urn-7 {
   width: auto;
-  margin: 0 5px; }
-  .form-control-inline:first-child {
+  margin: 0 3px; }
+  .form-control-inline:first-child, .form-control-day:first-child,
+  .form-control-month:first-child,
+  .form-control-year:first-child, .form-control-urn-2:first-child,
+  .form-control-urn-7:first-child {
     margin-left: 0; }
 
 .form-control-wide {
   width: 75%; }
 
+.form-control-day,
+.form-control-month {
+  width: 2em; }
+
+.form-control-year {
+  width: 3em; }
+
+.form-group-extra .form-group, .form-group-extra .form-group-wide, .form-group-extra .form-submit {
+  margin-top: 0; }
+
 fieldset {
-  margin: 0; }
+  margin: 0;
+  -webkit-margin-top-collapse: separate; }
 
 legend {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 400;
+  text-transform: none;
   padding: 0;
   margin: 0;
   color: #000;
   margin-left: -7px; }
+  @media (max-width: 640px) {
+    legend {
+      font-size: 18px;
+      line-height: 1.2; } }
   legend.form-label {
     font-family: "nta", Arial, sans-serif;
     font-size: 24px;
     line-height: 1.25;
-    font-weight: 700;
-    text-transform: none;
-    margin-bottom: 0; }
+    font-weight: 400;
+    text-transform: none; }
     @media (max-width: 640px) {
       legend.form-label {
         font-size: 18px;
         line-height: 1.2; } }
+
+legend + * {
+  -webkit-margin-top-collapse: separate; }
 
 .form-submit {
   clear: left;
@@ -1488,17 +1470,29 @@ legend {
     margin-bottom: 0; }
 
 .with-error {
-  padding-left: 15px;
+  padding-left: 10px;
   border-left: 4px solid #df3034; }
 
 .errorlist {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.31579;
+  font-weight: 400;
+  text-transform: none;
   margin: .25em 0;
   padding: 0;
   color: #df3034; }
+  @media (max-width: 640px) {
+    .errorlist {
+      font-size: 16px;
+      line-height: 1.25; } }
   .errorlist li {
     list-style: none; }
 
 /*== Modifiers ========================================*/
+.money-field input {
+  width: 7em; }
+
 .form-field-prefix {
   float: left;
   padding: 5px .75em 4px;
@@ -1510,7 +1504,7 @@ legend {
 
 .form-field-inline {
   display: inline-block;
-  margin: 0 5px;
+  margin: 0 3px;
   vertical-align: baseline; }
   .form-field-inline:first-child {
     margin-left: 0; }
@@ -1531,13 +1525,10 @@ legend {
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-
 @-ms-viewport {
   width: device-width; }
-
 @-o-viewport {
   width: device-width; }
-
 /*  
 ====================================================
 Elements
@@ -1551,6 +1542,26 @@ hr {
   margin: 1em 0 2em;
   padding: 0; }
 
+.language-switcher {
+  float: right;
+  margin: 0 0 0 2em;
+  padding: 12px 0 8px;
+  font-family: "nta", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.25;
+  font-weight: 400;
+  text-transform: none; }
+  @media (max-width: 640px) {
+    .language-switcher {
+      font-size: 14px;
+      line-height: 1.14286; } }
+  .language-switcher ul {
+    padding: 0;
+    margin: 0; }
+  .language-switcher li {
+    margin: 0;
+    list-style-type: none; }
+
 .content-header {
   margin: 0 0 1.675em; }
   .content-header h1 {
@@ -1560,11 +1571,15 @@ hr {
   padding-top: 5px;
   border-top: 10px solid #005ea5; }
   .related h3 {
+    margin-top: 1em;
+    margin-bottom: 0; }
+  .related h3:first-child {
     margin-top: 10px; }
 
 .panel-indent {
   padding-top: 0;
-  padding-bottom: 0; }
+  padding-bottom: 0;
+  padding-left: 10px; }
 
 .move-up {
   margin-top: -1em; }
@@ -1628,6 +1643,13 @@ Main styles
 .with-help-images .help-image {
   display: none; }
 
+.form-control-urn-2,
+#id_number_of_charges {
+  width: 2em; }
+
+.form-control-urn-7 {
+  width: 5em; }
+
 /*== Expenses screen =======================================*/
 #expense-summary th, #expense-summary td {
   font-family: "nta", Arial, sans-serif;
@@ -1684,6 +1706,17 @@ Main styles
     text-align: right; }
   .review-table .label {
     color: #6f777b; }
+  .review-table h3 {
+    font-family: "nta", Arial, sans-serif;
+    font-size: 24px;
+    line-height: 1.25;
+    font-weight: 400;
+    text-transform: none;
+    margin: 0; }
+    @media (max-width: 640px) {
+      .review-table h3 {
+        font-size: 18px;
+        line-height: 1.2; } }
 
 #section_understand .block-label {
   font-family: "nta", Arial, sans-serif;
@@ -1721,7 +1754,7 @@ Main styles
   padding: 1em;
   background: #dee0e2; }
   #section_receive_email .grey ul {
-    margin: 1em 0 0;
+    margin: 0;
     padding: 0; }
     #section_receive_email .grey ul li {
       display: inline-block;
@@ -1734,6 +1767,7 @@ Main styles
         font-weight: 400;
         text-transform: none;
         padding: .5em .5em .5em 0;
+        margin: 0;
         cursor: pointer; }
         @media (max-width: 640px) {
           #section_receive_email .grey ul li label {
@@ -1749,7 +1783,7 @@ Main styles
   margin: 2em 0;
   padding: 40px;
   background: #28a197;
-  color: white; }
+  color: #fff; }
   #content .success-header h1,
   #content .success-header p {
     margin: 0; }
@@ -1804,16 +1838,20 @@ Main styles
       display: none; }
 
 /*== Feedback screen ================================================*/
-#section_feedback_satisfaction legend.form-label {
+#section_feedback_satisfaction legend.form-label-bold {
   font-family: "nta", Arial, sans-serif;
   font-size: 19px;
   line-height: 1.31579;
   font-weight: 400;
   text-transform: none; }
   @media (max-width: 640px) {
-    #section_feedback_satisfaction legend.form-label {
+    #section_feedback_satisfaction legend.form-label-bold {
       font-size: 16px;
       line-height: 1.25; } }
+
+/*== Court Finder ===================================================*/
+.court-details h2.heading-medium, .court-details .error-summary h2, .error-summary .court-details h2 {
+  margin-bottom: 0; }
 
 /*== Terms ==========================================================*/
 .cookies-table {
@@ -1841,3 +1879,5 @@ Main styles
 Shame
 ====================================================
 */
+
+/*# sourceMappingURL=application-ie6.css.map */
