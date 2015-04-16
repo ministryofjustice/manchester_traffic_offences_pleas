@@ -31,6 +31,11 @@ class ReceiptWebhook(View):
 
     def post(self, request, *args, **kwargs):
 
+        # temporarily logging to try to figure out structure of webhook
+        ReceiptLog.objects.create(status_detail=str(request.POST["mandrill_events"]))
+
+        return HttpResponse("OK")
+
         time1 = time.time()
         start_date = dt.datetime.now()
 
@@ -72,6 +77,7 @@ class ReceiptWebhook(View):
             total_emails=len(items),
             total_errors=error_count,
             total_failed=failure_count,
-            total_success=success_count)
+            total_success=success_count,
+            status_detail=status_text)
 
         return HttpResponse("OK")
