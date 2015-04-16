@@ -2,7 +2,7 @@
 
 {% load i18n %}
 
-{% block page_title %}{{ block.super }} {% trans "Case details" %}{% endblock %}
+{% block page_title %}{% trans "Case details" %} - {{ block.super }}{% endblock %}
 
 {% load staticfiles %}
 
@@ -36,15 +36,10 @@
             <summary role="button" aria-controls="details-content-0" tabindex="0" aria-expanded="false"><span class="summary">{% trans "View court contact details" %}</span></summary>
             <div id="details-content-0" aria-hidden="true">
                 <h3 class="heading-small">{% trans "Send letters to:" %}</h3>
-                <address>The Operations Manager<br>
-                Manchester & Salford<br>
-                Magistrates Court<br>
-                Crown Square<br>
-                Manchester<br>
-                M60 1PR</address>
+                <address>{{ court.court_address|linebreaksbr }}</address>
 
                 <h3 class="heading-small">{% trans "Send email to:" %}</h3>
-                <p><a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">roadtrafficpcr@hmcts.gsi.gov.uk</a></p>
+                <p><a href="mailto:{{ court.court_email }}">{{ court.court_email }}</a></p>
             </div>
         </details>
 
