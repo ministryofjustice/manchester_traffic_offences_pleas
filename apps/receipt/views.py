@@ -32,7 +32,7 @@ class ReceiptWebhook(View):
     def post(self, request, *args, **kwargs):
 
         # temporarily logging to try to figure out structure of webhook
-        ReceiptLog.objects.create(status_detail=str(request.POST["mandrill_events"]))
+        ReceiptLog.objects.create(status_detail=str(request.POST))
 
         return HttpResponse("OK")
 
