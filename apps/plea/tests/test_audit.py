@@ -21,6 +21,18 @@ from ..encrypt import clear_user_data, gpg
 class CaseCreationTests(TestCase):
     def setUp(self):
 
+        self.court = Court.objects.create(
+            court_code="0000",
+            region_code="06",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_email="test@test.com",
+            submission_email="test@test.com",
+            plp_email="test@test.com",
+            enabled=True,
+            test_mode=False)
+
         self.context_data = {
             'case': {u'urn': u'06/aa/0000000/00',
                       u'date_of_hearing': datetime.date(2015, 1, 1),
