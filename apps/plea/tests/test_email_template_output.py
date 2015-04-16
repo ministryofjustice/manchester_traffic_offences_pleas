@@ -14,6 +14,19 @@ from ..forms import CaseForm, YourDetailsForm, PleaForm, YourMoneyForm, Required
 
 class EmailTemplateTests(TestCase):
 
+    def setUp(self):
+        self.court = Court.objects.create(
+            court_code="0000",
+            region_code="06",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_email="test@test.com",
+            submission_email="test@test.com",
+            plp_email="test@test.com",
+            enabled=True,
+            test_mode="test@test.com")
+
     def get_context_data(self, case_data=None, details_data=None, plea_data=None, finances_data=None):
 
         self.hearing_date = datetime.today() + timedelta(30)
@@ -445,6 +458,18 @@ class EmailTemplateTests(TestCase):
 class TestCompanyFinancesEmailLogic(TestCase):
 
     def setUp(self):
+
+        self.court = Court.objects.create(
+            court_code="0000",
+            region_code="06",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_email="test@test.com",
+            submission_email="test@test.com",
+            plp_email="test@test.com",
+            enabled="test@test.com",
+            test_mode="test@test.com")
 
         self.test_session_data = {
             "case": {
