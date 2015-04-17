@@ -75,6 +75,10 @@
 {% block javascripts %}
 <script src="{% static "javascripts/govuk.js" %}" type="text/javascript"></script>
 <script src="{% static "javascripts/application.js" %}" type="text/javascript"></script>
+
+{% ifequal LANGUAGE_CODE "cy" %}
+<input type="hidden" name="promptOnChangeMessage" value="{% trans "You have entered some information" %}">
+{% endifequal %}
 {% endblock %}
 
 {% block body_end %}
