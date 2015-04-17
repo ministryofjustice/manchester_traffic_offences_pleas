@@ -79,8 +79,9 @@ class PleaOnlineViews(TemplateView):
 
         return form.render()
 
-    @never_cache
+
     @method_decorator(ratelimit(block=True, rate="20/m"))
+    @never_cache
     def post(self, request, stage):
 
         nxt = request.GET.get("next", None)
