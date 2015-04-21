@@ -35,7 +35,7 @@
       });
 
       $(window).on('beforeunload', function() {
-        self.runCheck();
+        return self.runCheck();
       });
     },
 
@@ -65,10 +65,13 @@
   };
 
   moj.Modules._PromptOnChange = PromptOnChange;
-
+  
   moj.Modules.PromptOnChange = {
     init: function() {
-      return new PromptOnChange();
+      var options = {
+        message: $('[name=promptOnChangeMessage]').val() || "You have entered some information"
+      };
+      return new PromptOnChange(options);
     }
   };
 
