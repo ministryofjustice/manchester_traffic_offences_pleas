@@ -23,6 +23,7 @@
     init: function(options) {
       this.settings = $.extend({}, this.defaults, options);
       this.enable();
+      this.initMetaRefresh();
       this.hashedFields = this.hashFields();
       this.bindEvents();
     },
@@ -50,7 +51,7 @@
     runCheck: function() {
       var self = this;
 
-      if (this.isEnabled && this.fieldsHaveChanged()) {
+      if (this.isEnabled && this.fieldsHaveChanged() && this.isMetaRefresh() === false) {
         return self.settings.message;
       }
     },
@@ -61,6 +62,29 @@
 
     disable: function() {
       this.isEnabled = false;
+    },
+
+    isMetaRefresh: function() {      
+      if (typeof this.metaRefreshAt !== 'undefined') {
+        var now = new Date().getTime();
+        
+        if (now >= this.metaRefreshAt) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+
+    initMetaRefresh: function() {
+      var refreshTag = $('head').find('meta[http-equiv=refresh]');
+      
+      if (refreshTag.length) {
+        var refreshTimeoutLength = parseInt(refreshTag.attr('content').match(/^\d*/)[0]);
+        var now = new Date().getTime();
+        
+        this.metaRefreshAt = now + ((refreshTimeoutLength-1)*1000);
+      }
     }
   };
 
