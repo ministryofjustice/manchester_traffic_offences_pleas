@@ -3,9 +3,9 @@ describe("moj.PromptOnChange", function() {
 
 	beforeEach(function() {
 		$fixture = $(
-			'<form>'
-        + '<input name="testField" type="text" value="test value" />'
-      + '</form>'
+			'<form>' +
+        '<input name="testField" type="text" value="test value" />' +
+      '</form>'
     );
 		$fixture.appendTo('body');
 		subject = new moj.Modules._PromptOnChange();
@@ -14,8 +14,6 @@ describe("moj.PromptOnChange", function() {
 	afterEach(function() {
 		$('body').find('form').remove();
 	});
-
-
 
 	it('should be instantiated as an object', function() {
 		expect(typeof subject).toBe('object');
@@ -48,7 +46,7 @@ describe("moj.PromptOnChange", function() {
 		expect(subject.runCheck()).toBe('You have entered some information');
 	});
 
-  it('should set to disabled if a form is submitted', function() {
+  it('should set to disabled when a form is submitted', function() {
   	$('form').on('submit', function(e) {
   		e.preventDefault();
   	}).trigger('submit');
@@ -57,7 +55,11 @@ describe("moj.PromptOnChange", function() {
   });
 
 	it('should update the prompt message default if a new one is specified as an option', function() {
-		subject = new moj.Modules._PromptOnChange({message: 'New message'});
+    $fixture.append('<input type="hidden" name="promptOnChangeMessage" value="New message">');
+    var options = {
+      message: $('[name=promptOnChangeMessage]').val() || "You have entered some information"
+    };
+		subject = new moj.Modules._PromptOnChange(options);
 		expect(subject.settings.message).toBe('New message');
 		
 		$('[name=testField]').val('some other value');
