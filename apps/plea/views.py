@@ -38,7 +38,6 @@ class PleaOnlineForms(MultiStageForm):
         """
         Check that the URN has not already been used.
         """
-
         try:
             saved_urn = self.all_data['case']['urn']
         except KeyError:
@@ -49,7 +48,7 @@ class PleaOnlineForms(MultiStageForm):
 
             return
 
-        super(PleaOnlineForms, self).save(*args, **kwargs)
+        return super(PleaOnlineForms, self).save(*args, **kwargs)
 
     @never_cache
     def render(self):
@@ -87,7 +86,8 @@ class PleaOnlineViews(TemplateView):
 
         form = PleaOnlineForms(stage, "plea_form_step", request.session)
         form.save(request.POST, RequestContext(request), nxt)
-        form.process_messages(request)
+        if not form._urn_invalid:
+            form.process_messages(request)
         return form.render()
 
 
