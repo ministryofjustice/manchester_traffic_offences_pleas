@@ -1,7 +1,10 @@
+from celery.exceptions import Retry, RetryTaskError
 import datetime
 from glob import glob
-import json
+import io
 import os
+from itertools import cycle, chain
+import json
 from mock import patch
 import socket
 import unittest
@@ -17,6 +20,18 @@ from ..encrypt import clear_user_data, gpg
 
 class CaseCreationTests(TestCase):
     def setUp(self):
+
+        self.court = Court.objects.create(
+            court_code="0000",
+            region_code="06",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_email="test@test.com",
+            submission_email="test@test.com",
+            plp_email="test@test.com",
+            enabled=True,
+            test_mode=False)
 
         self.context_data = {
             'case': {u'urn': u'06/aa/0000000/00',
@@ -54,10 +69,10 @@ class CaseCreationTests(TestCase):
 
         case = Case.objects.all()[0]
         self.assertEqual(Case.objects.all()[0].urn, self.context_data['case']['urn'].upper())
-        self.assertEqual(case.status, "sent")
+        self.assertTrue(case.sent)
 
         count_obj = CourtEmailCount.objects.all().order_by('-id')[0]
-        self.assertEqual(case.status, count_obj.status)
+        self.assertEqual(case.sent, count_obj.sent)
 
         file_glob = '{}*.gpg'.format(self.context_data['case']['urn'].replace('/', '-').upper())
 
@@ -86,16 +101,21 @@ class CaseCreationTests(TestCase):
 
         clear_user_data()
 
-        result = send_plea_email(self.context_data)
-
-        self.assertFalse(result)
+        try:
+            send_plea_email(self.context_data)
+        except Retry:
+            pass
+        except socket.error:
+            pass
 
         case = Case.objects.all().order_by('-id')[0]
-        self.assertEqual(case.status, "network_error")
-        self.assertEqual(case.status_info, u"Email failed to send, socket error")
+        action = case.get_actions("Court email network error")
+        self.assertTrue(len(action) > 0)
+        self.assertEqual(action[0].status_info, u"Email failed to send, socket error")
 
         count_obj = CourtEmailCount.objects.all().order_by('-id')[0]
-        self.assertEqual(case.status, count_obj.status)
+        self.assertEqual(case.sent, count_obj.sent)
+        self.assertEqual(case.processed, count_obj.processed)
 
         # confirm we have a new file:
 

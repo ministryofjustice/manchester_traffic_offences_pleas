@@ -1,4 +1,7 @@
+from celery.exceptions import Retry
 import datetime
+from importlib import import_module
+from itertools import chain, cycle
 from mock import Mock, MagicMock, patch
 import socket
 
@@ -27,6 +30,19 @@ class TestMultiPleaFormBase(TestCase):
 
 class TestMultiPleaForms(TestMultiPleaFormBase):
     def setUp(self):
+
+        self.court = Court.objects.create(
+            court_code="0000",
+            region_code="06",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_email="test@test.com",
+            submission_email=True,
+            plp_email="test@test.com",
+            enabled=True,
+            test_mode=False)
+
         self.session = {}
         self.request_context = {}
 
@@ -112,7 +128,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         case = Case()
         case.urn = "06/AA/0000000/00"
-        case.status = "sent"
+        case.sent = True
         case.save()
 
         hearing_date = datetime.date.today()+datetime.timedelta(30)
@@ -771,7 +787,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertIn("06/AA/0000000/00", response.content)
 
     def test_complete_stage_loads(self):
-
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
         test_data = {
@@ -824,33 +839,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "<br />".join(court_obj.court_address.split("\n")))
 
         self.assertIn(test_data["case"]["urn"], response.content)
-
-    @patch("apps.plea.email.TemplateAttachmentEmail.send")
-    @patch("apps.govuk_utils.forms.messages.add_message")
-    def test_email_error_adds_message(self, add_message, send):
-        send.side_effect = socket.error("Email failed to send, socket error")
-
-        fake_session = {"case": {}, "your_details": {}, "plea": {"PleaForms": [{}]}, "review": {}}
-        fake_session["case"]["date_of_hearing"] = datetime.date(2016, 1, 1)
-        fake_session["case"]["urn"] = "06/AA/0000000/00"
-        fake_session["case"]["number_of_charges"] = 1
-        fake_session["case"]["company_plea"] = False
-        fake_session["your_details"]["name"] = "Charlie Brown"
-        fake_session["your_details"]["contact_number"] = "07802639892"
-        fake_session["your_details"]["email"] = "test@example.org"
-        fake_session['your_details']["national_insurance_number"] = "test NI number"
-        fake_session['your_details']["driving_licence_number"] = "test driving number"
-        fake_session['your_details']["registration_number"] = "test registration number"
-        fake_session["plea"]["PleaForms"][0]["guilty"] = "guilty"
-        fake_session["plea"]["PleaForms"][0]["guilty_extra"] = "lorem ipsum 1"
-
-        form = PleaOnlineForms("review", "plea_form_step", fake_session)
-        form.load(self.request_context)
-        form.save({"understand": True, "receive_email": False}, self.request_context)
-        form.process_messages({})
-        self.assertEqual(add_message.call_count, 1)
-        self.assertEqual(add_message.call_args[0][0], {})
-        self.assertEqual(add_message.call_args[0][1], 40)
 
     def test_successful_completion_single_charge(self):
         fake_session = {}
@@ -1053,23 +1041,19 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         case = Case()
         case.urn = urn
-        case.status = "sent"
+        case.sent = True
         case.save()
 
         self.session['case'] = dict(urn=urn)
 
-        stages = ['case', 'your_details', 'plea', 'your_finances', 'review', 'complete']
+        form = PleaOnlineForms("case", "plea_form_step", self.session)
+        form.load(self.request_context)
+        form.save({}, self.request_context)
 
-        for stage in stages:
+        response = form.render()
 
-            form = PleaOnlineForms(stage, "plea_form_step", self.session)
-            form.load(self.request_context)
-            form.save({}, self.request_context)
-
-            response = form.render()
-
-            self.assertEqual(response.status_code, 302)
-            self.assertEqual(response.url, reverse('urn_already_used'))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('urn_already_used'))
 
     def test_urn_not_success_is_not_blocked(self):
 
@@ -1411,6 +1395,18 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 class TestYourExpensesStage(TestMultiPleaFormBase):
 
     def setUp(self):
+
+        self.court = Court.objects.create(
+            court_code="0000",
+            region_code="06",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_email="test@test.com",
+            submission_email="test@test.com",
+            plp_email="test@test.com",
+            enabled="test@test.com",
+            test_mode=False)
 
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
