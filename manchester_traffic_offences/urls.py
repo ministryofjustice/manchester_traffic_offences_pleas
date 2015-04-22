@@ -26,5 +26,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^court-finder/$', CourtFinderView.as_view()),
     url(r"^change-language/$", views.set_language, name="set_language"),
+    url(r'^session-timeout/$', TemplateView.as_view(template_name="session_timeout.html"), name="session_timeout"),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

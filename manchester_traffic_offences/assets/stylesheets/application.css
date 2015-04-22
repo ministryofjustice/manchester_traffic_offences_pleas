@@ -840,7 +840,7 @@ main {
         padding-top: 4px;
         padding-bottom: 6px; } }
 
-.heading-large, h2 {
+.heading-large, h2, .error-summary h1 {
   font-family: "nta", Arial, sans-serif;
   font-size: 36px;
   line-height: 1.11111;
@@ -849,14 +849,14 @@ main {
   margin-top: 1.04167em;
   margin-bottom: 0.41667em; }
   @media (max-width: 640px) {
-    .heading-large, h2 {
+    .heading-large, h2, .error-summary h1 {
       font-size: 24px;
       line-height: 1.04167; } }
   @media (min-width: 641px) {
-    .heading-large, h2 {
+    .heading-large, h2, .error-summary h1 {
       margin-top: 1.25em;
       margin-bottom: 0.55556em; } }
-  .heading-large .heading-secondary, h2 .heading-secondary {
+  .heading-large .heading-secondary, h2 .heading-secondary, .error-summary h1 .heading-secondary {
     font-family: "nta", Arial, sans-serif;
     font-size: 24px;
     line-height: 1.25;
@@ -867,11 +867,11 @@ main {
     display: block;
     color: #6f777b; }
     @media (max-width: 640px) {
-      .heading-large .heading-secondary, h2 .heading-secondary {
+      .heading-large .heading-secondary, h2 .heading-secondary, .error-summary h1 .heading-secondary {
         font-size: 18px;
         line-height: 1.2; } }
     @media (min-width: 641px) {
-      .heading-large .heading-secondary, h2 .heading-secondary {
+      .heading-large .heading-secondary, h2 .heading-secondary, .error-summary h1 .heading-secondary {
         padding-top: 6px;
         padding-bottom: 4px; } }
 
@@ -1560,6 +1560,8 @@ legend + * {
   padding: 15px;
   background: #fef7f7;
   border: 4px solid #df3034; }
+  .error-summary h1 {
+    margin-top: 0; }
   .error-summary h2 {
     margin-top: 0; }
   .error-summary ul {
