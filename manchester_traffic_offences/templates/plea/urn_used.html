@@ -2,59 +2,38 @@
 
 {% load i18n %}
 
-{% block page_title %}{{ block.super }} URN already used{% endblock %}
-{% block body_classes %}{{ block.super }} urn_invalid{% endblock %}
+{% block page_title %}{% trans "URN already used" %} - {{ block.super }}{% endblock %}
+
 {% load staticfiles %}
+
 {% block page_content %}
 
-    <div class="full-width group">
-        <div class="main">
+    <div class="error-summary">
 
-            <section class="flash error-summary no_margin">
+        <h2>{% trans "This URN has already been used to make a plea online" %}</h2>
 
-                <h2 id="error-heading">{% trans "This URN has already been used to make a plea online" %}</h2>
+        <p>{% trans "The unique reference number you entered is no longer valid. Please check and try again." %}</p>
 
-                <p>{% trans "The unique reference number you entered is no longer valid. Please check and try again." %}</p>
+        <p>{% trans "To make changes to a plea you’ve already made online, email or write to the court before your hearing with:" %}</p>
 
-                <p>{% trans "To make changes to a plea you’ve already made online, email or write to the court before your hearing with:" %}</p>
+        <ul class="list-bullet">
+            <li>{% trans "details of the changes you want to make" %}</li>
+            <li>{% trans "your unique reference number" %}</li>
+        </ul>
 
-                <ul class="with-bullets">
-                    <li>{% trans "details of the changes you want to make" %}</li>
-                    <li>{% trans "your unique reference number" %}</li>
-                </ul>
+        <p><a href="/court-finder/">Find court contact details</a></p>
 
-
-                <ul>
-                    <li id="case_contact_link"><a href="/contact">{% trans "View court contact details" %}</a></li>
-                    <li id="case_contact_details" class="js-hidden">
-
-
-                    <h2>{% trans "Send letters to:" %}</h2>
-                    <p>The Operations Manager<br>
-                    Manchester & Salford<br>
-                    Magistrates Court<br>
-                    Crown Square<br>
-                    Manchester<br>
-                    M60 1PR</p>
-
-                    <p><h2>{% trans "Send email to:" %}</h2>
-                    <a href="mailto:roadtrafficpcr@hmcts.gsi.gov.uk">roadtrafficpcr@hmcts.gsi.gov.uk</a></p>
-
-                    </li>
-                </ul>
-
-            </section>
-
-
-            <h2 id="your-details">{% trans "Create a new plea" %}</h2>
-
-            <p>{% trans "Select the button below to start a new plea" %}</p>
-
-            <form method="post">
-                {% csrf_token %}
-                <button class="button button-get-started" href="/plea/" role="button">{% trans "Start now" %}</button>
-            </form>
-        </div>
     </div>
+
+
+    <h2>{% trans "Create a new plea" %}</h2>
+
+    <p>{% trans "Select the button below to start a new plea" %}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button class="button button-get-started" href="/plea/" role="button">{% trans "Start now" %}</button>
+    </form>
+
 
 {% endblock page_content %}
