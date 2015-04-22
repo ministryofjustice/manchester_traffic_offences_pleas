@@ -17,10 +17,27 @@ class CaseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Case
-        fields = ("urn", "title", "name", "forenames", "surname",
+        fields = ("offences", "urn", "title", "name", "forenames", "surname",
                   "case_number")
 
+    def create(self, validated_data):
+
+        # Create the case instance
+
+        offences = validated_data.pop("offences", [])
+
+        case = Case.objects.create(**validated_data)
+
+        # Create or update each page instance
+        for item in offences:
+            page = Offence(**item)
+            page.case = case
+            page.save()
+
+        return case
+
     def validate(self, attrs):
+
         if not Case.objects.can_use_urn(attrs["urn"]):
 
             raise serializers.ValidationError("Case data already exists")
