@@ -4,7 +4,7 @@ from os.path import join, abspath, dirname
 
 from django.utils.translation import ugettext_lazy as _
 
-VERSION = (0, 9, 4)
+VERSION = (0, 9, 5)
 
 # PATH vars
 here = lambda *x: join(abspath(dirname(__file__)), *x)
@@ -190,6 +190,14 @@ INSTALLED_APPS += PROJECT_APPS
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
@@ -200,7 +208,16 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
     },
     'loggers': {
         'django.request': {
@@ -208,12 +225,26 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'apps.plea.email': {
+                'handlers': ['console'],
+                'level': 'ERROR',
+                'propagate': True,
+        },
+        'apps.plea.tasks': {
+                'handlers': ['console'],
+                'level': 'ERROR',
+                'propagate': True,
+        }
     }
 }
 
 INTERNAL_IPS = ['127.0.0.1']
 
 # EMAILS
+BROKER_URL = "SQS://"
+BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1'}
+CELERY_SEND_TASK_ERROR_EMAILS = True
+
 SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "")
 
 # Secure mail
