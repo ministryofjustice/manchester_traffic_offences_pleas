@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.plea.models import UsageStats, Court
+from apps.plea.models import UsageStats, Court, Case, CaseAction
 
 
 class UsageStatsAdmin(admin.ModelAdmin):
@@ -13,6 +13,18 @@ class CourtAdmin(admin.ModelAdmin):
                     'court_telephone', 'court_email', 'submission_email',
                     'enabled', 'test_mode')
 
+class InlineCaseAction(admin.StackedInline):
+    model = CaseAction
+    extra = 0
+    readonly_fields = ('date',)
+
+
+class CaseAdmin(admin.ModelAdmin):
+    list_display = ("urn", "name", "sent", "processed")
+    inlines = [InlineCaseAction,]
+    search_fields = ["urn"]
+
 
 admin.site.register(UsageStats, UsageStatsAdmin)
 admin.site.register(Court, CourtAdmin)
+admin.site.register(Case, CaseAdmin)
