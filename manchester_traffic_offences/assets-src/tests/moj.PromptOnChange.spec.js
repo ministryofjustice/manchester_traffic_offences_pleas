@@ -66,4 +66,19 @@ describe("moj.PromptOnChange", function() {
 		expect(subject.runCheck()).toBe('New message');
 	});
 
+  it('should be disabled when the page is refreshed using a meta refresh tag', function() {
+    jasmine.clock().install();
+    jasmine.clock().mockDate();
+
+    var refreshTag = $('meta').attr('http-equiv', 'refresh').attr('content', '60;url=/session-timeout/').appendTo('head');
+
+    subject = new moj.Modules._PromptOnChange();
+    $('[name=testField]').val('some other value');
+    expect(subject.runCheck()).not.toBeUndefined();
+    jasmine.clock().tick(60*1000);
+    expect(subject.runCheck()).toBeUndefined();
+
+    jasmine.clock().uninstall();
+  });
+
 });
