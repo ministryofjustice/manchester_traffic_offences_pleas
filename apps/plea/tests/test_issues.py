@@ -1,5 +1,7 @@
 import unittest
 
+from django.http.response import HttpResponseRedirect
+
 from ..views import PleaOnlineForms
 from ..models import Case
 
@@ -37,4 +39,6 @@ class TestPleaFormIssues(TestMultiPleaFormBase):
         form = PleaOnlineForms("case", "plea_form_step", self.session)
         form.save(self.plea_stage_pre_data_1_charge, self.request_context)
 
-        self.assertTrue(form._urn_invalid)
+        result = form.render()
+        self.assertIsInstance(result, HttpResponseRedirect)
+
