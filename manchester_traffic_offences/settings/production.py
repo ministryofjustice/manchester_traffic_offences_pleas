@@ -1,6 +1,7 @@
 from .base import *
 import os
 
+
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
@@ -14,8 +15,15 @@ DATABASES = {
         'PASSWORD': os.environ.get('POSTGRES_PASS', ''),
         'HOST': os.environ.get('POSTGRES_HOST', ''),
         'PORT': os.environ.get('POSTGRES_PORT', ''),
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
+
+BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1',
+                            'queue_name_prefix': 'production-',
+                            'polling_interval': 1}
 
 ALLOWED_HOSTS = ["www.makeaplea.justice.gov.uk", ]
 

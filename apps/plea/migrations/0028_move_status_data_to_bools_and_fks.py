@@ -7,60 +7,51 @@ from django.db import models
 class Migration(DataMigration):
 
     def forwards(self, orm):
-        """Add the Manchester & Salford court entry"""
-        orm.Court.objects.create(
-            court_code="1733",
-            region_code="06",
-            court_name="Manchester and Salford Magistrates' Court",
-            court_address=(
-                "The Operations Manager\n"
-                "Crown Square\n"
-                "Manchester\n"
-                "M60 1PR"),
-            court_telephone="n/a",
-            court_email="roadtrafficpcr@hmcts.gsi.gov.uk",
-            submission_email="roadtrafficpcr@hmcts.gsi.gov.uk",
-            plp_email="roadtrafficpcr@hmcts.gsi.gov.uk",
-            enabled=True,
-            test_mode=False)
+        for case in orm.Case.objects.all():
+            case.sent = (case.status not in ["created_not_sent", "network_error"])
+            case.processed = (case.status == "receipt_success")
+            case.save()
+
+        for email_count in orm.CourtEmailCount.objects.all():
+            email_count.sent = (email_count.status not in ["created_not_sent", "network_error"])
+            email_count.processed = (email_count.status == "receipt_success")
+            email_count.save()
+
+        for case in orm.Case.objects.all():
+            ca = orm.CaseAction.objects.create(case=case, status=case.status, status_info=case.status_info)
+            ca.save()
 
     def backwards(self, orm):
-
-        try:
-            orm.Court.objects.get(region_code="06").delete()
-        except orm.Court.DoesNotExist:
-            pass
+        "Write your backwards methods here."
 
     models = {
         u'plea.case': {
             'Meta': {'object_name': 'Case'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'processed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'sent': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'status': ('django.db.models.fields.CharField', [], {'default': "'created_not_sent'", 'max_length': '30'}),
             'status_info': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'urn': ('django.db.models.fields.CharField', [], {'max_length': '16', 'db_index': 'True'})
         },
-        u'plea.court': {
-            'Meta': {'object_name': 'Court'},
-            'court_address': ('django.db.models.fields.TextField', [], {}),
-            'court_code': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
-            'court_email': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'court_name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'court_telephone': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+        u'plea.caseaction': {
+            'Meta': {'object_name': 'CaseAction'},
+            'case': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'actions'", 'to': u"orm['plea.Case']"}),
+            'date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'plp_email': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'region_code': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '2'}),
-            'submission_email': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'test_mode': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
+            'status': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'status_info': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'})
         },
         u'plea.courtemailcount': {
             'Meta': {'object_name': 'CourtEmailCount'},
             'date_sent': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'hearing_date': ('django.db.models.fields.DateTimeField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'processed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'sc_guilty_char_count': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'sc_not_guilty_char_count': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'sent': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'status': ('django.db.models.fields.CharField', [], {'max_length': '30', 'null': 'True', 'blank': 'True'}),
             'status_info': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'total_guilty': ('django.db.models.fields.IntegerField', [], {}),
