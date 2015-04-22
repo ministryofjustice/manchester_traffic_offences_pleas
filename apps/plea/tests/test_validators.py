@@ -8,6 +8,19 @@ from ..fields import is_urn_valid
 class UtilsTestCase(TestCase):
     urls = 'defendant.tests.urls'
 
+    def setUp(self):
+        self.court = Court.objects.create(
+            court_code="0000",
+            region_code="06",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_email="test@test.com",
+            submission_email="test@test.com",
+            plp_email="test@test.com",
+            enabled=True,
+            test_mode=False)
+
     def test_is_valid_urn_format(self):
         good_urns = [
             "06/AA/0000000/00",
