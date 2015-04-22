@@ -163,6 +163,8 @@ class MultiStageForm(object):
         self.all_data[self.current_stage.name].update(self.current_stage.save(form_data, next_step=next_url))
         self.save_to_storage()
 
+        return True
+
     def process_messages(self, request):
         if self.current_stage is None:
             raise Exception("Current stage is not set")
