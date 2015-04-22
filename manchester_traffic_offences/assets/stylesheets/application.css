@@ -162,7 +162,7 @@ Typography
       line-height: 1.25; } }
 
 .heading-collapse, .headings-collapse h1, .headings-collapse h2, .headings-collapse h3, .headings-collapse h4, .headings-collapse h5 {
-  margin-bottom: 0; }
+  margin-bottom: 0 !important; }
 
 address {
   font-style: normal; }
