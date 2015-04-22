@@ -23,16 +23,15 @@ class CaseSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
 
         # Create the case instance
-
         offences = validated_data.pop("offences", [])
 
         case = Case.objects.create(**validated_data)
 
         # Create or update each page instance
         for item in offences:
-            page = Offence(**item)
-            page.case = case
-            page.save()
+            offence = Offence(**item)
+            offence.case = case
+            offence.save()
 
         return case
 
