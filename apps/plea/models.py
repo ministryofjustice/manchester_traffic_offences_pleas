@@ -211,7 +211,18 @@ class Case(models.Model):
     """
 
     urn = models.CharField(max_length=16, db_index=True)
+
+    title = models.CharField(max_length=35, null=True, blank=True)
     name = models.CharField(max_length=255, null=True, blank=True)
+
+    forenames = models.CharField(max_length=105, null=True, blank=True,
+                                 help_text="as supplied by DX")
+    surname = models.CharField(max_length=35, null=True, blank=True,
+                               help_text="as supplied by DX")
+
+    case_number = models.CharField(max_length=10, null=True, blank=True,
+                                   help_text="as supplied by DX")
+
     sent = models.BooleanField(null=False, default=False)
     processed = models.BooleanField(null=False, default=False)
 
@@ -235,6 +246,16 @@ class CaseAction(models.Model):
 
     class Meta:
         get_latest_by = 'date'
+
+
+class Offence(models.Model):
+    case = models.ForeignKey(Case, related_name="offences")
+
+    ou_code = models.CharField(max_length=10, null=True, blank=True)
+    offence_code = models.CharField(max_length=10, null=True, blank=True)
+    offence_short_title = models.CharField(max_length=100)
+    offence_wording = models.TextField(max_length=4000)
+    offence_seq_number = models.CharField(max_length=10, null=True, blank=True)
 
 
 class UsageStatsManager(models.Manager):
