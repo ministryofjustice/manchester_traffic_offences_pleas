@@ -119,12 +119,12 @@ def email_send_user(self, email_data, case_id):
     # No error trapping, let these fail hard if the objects can't be found
     from .stages import get_plea_type
 
-    if email_data['case']['company_plea']:
-        email = email_data['company_details']['email']
-        name = email_data['company_details']['name']
-    else:
+    if email_data['case']['plea_made_by'] == "Defendant":
         email = email_data['your_details']['email']
         name = email_data['your_details']['name']
+    else:
+        email = email_data['company_details']['email']
+        name = email_data['company_details']['name']
 
     try:
         court_obj = Court.objects.get_by_urn(email_data["case"]["urn"])

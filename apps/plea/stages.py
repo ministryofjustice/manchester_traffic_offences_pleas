@@ -57,10 +57,10 @@ class CaseStage(FormStage):
         clean_data = super(CaseStage, self).save(form_data, next_step)
 
         if 'complete' in clean_data:
-            if clean_data.get("company_plea", None):
-                self.set_next_step("company_details")
-            else:
+            if clean_data.get("plea_made_by", "Defendant") == "Defendant":
                 self.set_next_step("your_details")
+            else:
+                self.set_next_step("company_details")
 
         return clean_data
 
@@ -160,7 +160,7 @@ class PleaStage(FormStage):
         else:
             return clean_data
 
-        if self.all_data["case"].get("company_plea", None):
+        if self.all_data["case"].get("plea_made_by", "Defendant") == "Company representative":
             if none_guilty:
                 self.set_next_step("review", skip=["company_finances",
                                                    "your_finances"])
