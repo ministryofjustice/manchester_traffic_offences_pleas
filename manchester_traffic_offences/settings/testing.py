@@ -2,24 +2,28 @@ from .base import *
 
 ADMINS = (
     ('Lyndon Garvey', 'lyndon.garvey@digital.justice.gov.uk'),
+    ('Ian George', 'ian.george@digital.justice.gov.uk'),
 )
 
-LETTUCE_AVOID_APPS = (
-    'south',
-    'moj_template',
-    'django_extensions',
-    'testing',
-)
-LETTUCE_SERVER_PORT = 8100
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'manchester_traffic_offences',
+        'USER': 'jenkins',
+        'PASSWORD': 'moomoo',
+        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',                      # Set to empty string for default.
+    }
+}
 
 CELERY_ALWAYS_EAGER = True
 CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 BROKER_BACKEND = 'memory'
 
 TESTING = True
-DEBUG=False
+DEBUG = False
 
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
+SECRET_KEY = "fjsklfosufcilsft37dGDRR%^$%^^gfsdvf"
 
 # the test user data directory
 USER_DATA_DIRECTORY = os.path.join(PROJECT_ROOT, 'test_user_data')
