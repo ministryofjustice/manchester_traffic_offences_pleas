@@ -19,7 +19,7 @@ class TestPleaFormIssues(TestMultiPleaFormBase):
                                                       "urn_2": "0000000",
                                                       "urn_3": "00",
                                                       "number_of_charges": 1,
-                                                      "company_plea": False},
+                                                      "plea_made_by": "Defendant"},
                                              "your_details": {"name": "Charlie Brown",
                                                               "contact_number": "012345678",
                                                               "email": "charliebrown@example.org"}}
@@ -33,7 +33,7 @@ class TestPleaFormIssues(TestMultiPleaFormBase):
                                  "date_of_hearing": "2015-01-01",
                                  "urn": "06/AA/0000000/00",
                                  "number_of_charges": 1,
-                                 "company_plea": False}}
+                                 "plea_made_by": "Defendant"}}
 
         form = PleaOnlineForms("case", "plea_form_step", self.session)
         form.save(self.plea_stage_pre_data_1_charge, self.request_context)

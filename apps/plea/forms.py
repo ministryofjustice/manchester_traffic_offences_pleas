@@ -32,6 +32,9 @@ class BasePleaStepForm(forms.Form):
 
 
 class CaseForm(BasePleaStepForm):
+    PLEA_MADE_BY_CHOICES = (
+        ("Defendant", _("The person named on the Postal Requisition")),
+        ("Company representative", _("Pleading on behalf of a company")))
 
     urn = URNField(label=_("Unique reference number (URN)"),
                    required=True,
@@ -53,11 +56,11 @@ class CaseForm(BasePleaStepForm):
                                            min_value=1, max_value=10,
                                            error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]})
 
-    company_plea = forms.TypedChoiceField(required=True, widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                          coerce=to_bool,
-                                          choices=YESNO_CHOICES,
-                                          label=_("Are you pleading on behalf of a company?"),
-                                          error_messages={"required": ERROR_MESSAGES["ON_BEHALF_OF_COMPANY"]})
+    plea_made_by = forms.TypedChoiceField(required=True, widget=RadioSelect(renderer=DSStackedRadioFieldRenderer),
+                                          choices=PLEA_MADE_BY_CHOICES,
+                                          label=_("Are you?"),
+                                          help_text=_("Choose one of the following options:"),
+                                          error_messages={"required": ERROR_MESSAGES["PLEA_MADE_BY_REQUIRED"]})
 
 
 class YourDetailsForm(BasePleaStepForm):
