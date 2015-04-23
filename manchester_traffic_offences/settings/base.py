@@ -305,8 +305,3 @@ try:
     from .local import *
 except ImportError:
     pass
-
-# importing test settings file if necessary (TODO could be done better)
-if len(sys.argv) > 1:
-    if 'test' in sys.argv[1] or 'harvest' in sys.argv[1]:
-        from .testing import *
