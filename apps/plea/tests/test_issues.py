@@ -24,7 +24,6 @@ class TestPleaFormIssues(TestMultiPleaFormBase):
                                                               "contact_number": "012345678",
                                                               "email": "charliebrown@example.org"}}
 
-
     def test_used_urn_in_session(self):
         case = Case.objects.create(urn="06/AA/0000000/00", name="Ian George",
                                    sent=True)
