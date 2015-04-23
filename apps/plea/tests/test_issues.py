@@ -27,7 +27,7 @@ class TestPleaFormIssues(TestMultiPleaFormBase):
 
     def test_used_urn_in_session(self):
         case = Case.objects.create(urn="06/AA/0000000/00", name="Ian George",
-                                   status="sent")
+                                   sent=True)
         case.save()
 
         self.session = {"case": {"complete": True,
