@@ -52,7 +52,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                                                       "urn_2": "0000000",
                                                       "urn_3": "00",
                                                       "number_of_charges": 1,
-                                                      "company_plea": False},
+                                                      "plea_made_by": "Defendant"},
                                              "your_details": {"name": "Charlie Brown",
                                                               "contact_number": "012345678",
                                                               "email": "charliebrown@example.org"}}
@@ -63,7 +63,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                                                        "urn_2": "0000000",
                                                        "urn_3": "00",
                                                        "number_of_charges": 3,
-                                                       "company_plea": False},
+                                                       "plea_made_by": "Defendant"},
                                               "your_details": {"name": "Charlie Brown",
                                                                "contact_number": "012345678",
                                                                "email": "charliebrown@example.org"}}
@@ -74,7 +74,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "date_of_hearing": "2015-01-01",
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 3,
-                "company_plea": False
+                "plea_made_by": "Defendant"
             },
             'your_details': {"name": "Charlie Brown",
                    "contact_number": "07802639892",
@@ -143,7 +143,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "urn_2": "0000000",
                    "urn_3": "00",
                    "number_of_charges": 1,
-                   "company_plea": False},
+                   "plea_made_by": "Defendant"},
                   request_context)
 
         response = form.render()
@@ -173,7 +173,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "urn_2": "0000000",
                    "urn_3": "00",
                    "number_of_charges": 1,
-                   "company_plea": False},
+                   "plea_made_by": "Defendant"},
                   self.request_context)
         response = form.render()
 
@@ -193,7 +193,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "urn_2": "0000000",
                    "urn_3": "00",
                    "number_of_charges": 1,
-                   "company_plea": True},
+                   "plea_made_by": "Company representative"},
                   self.request_context)
 
         response = form.render()
@@ -215,7 +215,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "urn_2": "0000000",
                    "urn_3": "00",
                    "number_of_charges": 1,
-                   "company_plea": False},
+                   "plea_made_by": "Defendant"},
                   self.request_context)
 
         response = form.render()
@@ -281,7 +281,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                                       "date_of_hearing": "2015-01-01",
                                       "urn": "06/AA/0000000/00",
                                       "number_of_charges": 2,
-                                      "company_plea": False},
+                                      "plea_made_by": "Defendant"},
                              "your_details": {"name": "Charlie Brown",
                                               "contact_number": "07802639892",
                                               "email": "test@example.org"}})
@@ -397,7 +397,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
-                "company_plea": True
+                "plea_made_by": "Company representative"
             },
             "your_details": {
                 "complete": True
@@ -438,7 +438,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
-                "company_plea": True
+                "plea_made_by": "Company representative"
             },
             "your_details": {
                 "complete": True
@@ -475,7 +475,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
-                "company_plea": False
+                "plea_made_by": "Defendant"
             },
             "your_details": {
                 "complete": True
@@ -648,7 +648,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
-                "company_plea": True
+                "plea_made_by": "Company representative"
             },
             "your_details": {
                 "complete": True,
@@ -707,7 +707,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
-                "company_plea": True
+                "plea_made_by": "Company representative"
             },
             "your_details": {
                 "complete": True,
@@ -765,7 +765,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
-                "company_plea": False
+                "plea_made_by": "Defendant"
             },
             "your_details": {
                 "complete": True
@@ -795,7 +795,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
-                "company_plea": False
+                "plea_made_by": "Defendant"
             },
             "your_details": {
                 "complete": True
@@ -857,7 +857,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "urn_2": "0000000",
                    "urn_3": "00",
                    "number_of_charges": 1,
-                   "company_plea": False},
+                   "plea_made_by": "Defendant"},
                   request_context)
         response = form.render()
         self.assertEqual(response.status_code, 302)
@@ -923,7 +923,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "urn_2": "0000000",
                    "urn_3": "00",
                    "number_of_charges": 2,
-                   "company_plea": False},
+                   "plea_made_by": "Defendant"},
                   request_context)
         response = form.render()
 
@@ -966,7 +966,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertEqual(fake_session["case"]["date_of_hearing"], hearing_date)
         self.assertEqual(fake_session["case"]["urn"], "06/AA/0000000/00")
         self.assertEqual(fake_session["case"]["number_of_charges"], 2)
-        self.assertEqual(fake_session["case"]["company_plea"], False)
+        self.assertEqual(fake_session["case"]["plea_made_by"], "Defendant")
         self.assertEqual(fake_session["your_details"]["name"], "Charlie Brown")
         self.assertEqual(fake_session["your_details"]["contact_number"], "07802639892")
         self.assertEqual(fake_session["your_details"]["email"], "test@example.org")
@@ -1419,7 +1419,7 @@ class TestYourExpensesStage(TestMultiPleaFormBase):
                 "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
-                "company_plea": False
+                "plea_made_by": "Defendant"
             },
             "your_details": {
                 "complete": True
