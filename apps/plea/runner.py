@@ -8,6 +8,11 @@ from .encrypt import clear_user_data
 
 
 class MAPTestRunner(DiscoverRunner):
+    def __init__(self, *args, **kwargs):
+        settings.TESTING = True
+
+        super(MAPTestRunner, self).__init__(*args, **kwargs)
+
     def setup_test_environment(self, **kwargs):
 
         if not os.path.exists(settings.USER_DATA_DIRECTORY):
