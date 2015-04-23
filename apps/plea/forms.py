@@ -10,7 +10,7 @@ from .fields import (ERROR_MESSAGES, is_date_in_future, is_date_within_range,
                      DSRadioFieldRenderer, 
                      DSStackedRadioFieldRenderer,
                      URNField,
-                     HearingDateWidget, is_urn_not_used, is_urn_valid)
+                     DateWidget, is_urn_not_used, is_urn_valid)
 
 YESNO_CHOICES = (
     (True, _("Yes")),
@@ -42,8 +42,10 @@ class CaseForm(BasePleaStepForm):
                    error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]},
                    validators=[is_urn_valid, is_urn_not_used])
 
-    date_of_hearing = forms.DateField(label=_("Court hearing date"), widget=HearingDateWidget, validators=[is_date_in_future, is_date_within_range],
+    date_of_hearing = forms.DateField(widget=DateWidget,
+                                      validators=[is_date_in_future, is_date_within_range],
                                       required=True,
+                                      label=_("Court hearing date"),
                                       help_text=_("On page 1 of the pack, near the top on the left.<br>For example, 30/07/2014"),
                                       error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"],
                                                       "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
@@ -66,21 +68,63 @@ class CaseForm(BasePleaStepForm):
 class YourDetailsForm(BasePleaStepForm):
     name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                            max_length=100, required=True, label=_("Full name"),
-                           help_text=_("On page 1 of the pack we sent you"),
+                           help_text=_("As written on page 1 of the Postal Requistion we sent you"),
                            error_messages={"required": ERROR_MESSAGES["FULL_NAME_REQUIRED"]})
 
-    contact_number = forms.CharField(widget=forms.TextInput(attrs={"type": "tel", 
-                                                                   "class": "form-control"}),
-                                     max_length=30, required=True, label=_("Contact number"),
-                                     help_text=_("Home or mobile number."),
+    correct_address = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                              required=True,
+                                              coerce=to_bool,
+                                              choices=YESNO_CHOICES,
+                                              label=_("Is your address on the Postal Requisition correct?"),
+                                              error_messages={"required": ERROR_MESSAGES["CORRECT_ADDRESS_REQUIRED"]})
+
+    updated_address = forms.CharField(widget=forms.Textarea(attrs={"rows": "4", "class": "form-control"}),
+                                  required=False,
+                                  label="",
+                                  help_text=_("If your address is different from the one shown on page 1 of the Postal Requisition, tell us here"),
+                                  error_messages={"required": ERROR_MESSAGES["UPDATED_ADDRESS_REQUIRED"]})
+
+    contact_number = forms.CharField(widget=forms.TextInput(attrs={"type": "tel", "class": "form-control"}),
+                                     required=True,
+                                     max_length=30,
+                                     label=_("Contact number"),
+                                     help_text=_("Home or mobile number"),
                                      error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
 
     email = forms.EmailField(widget=forms.TextInput(attrs={"type": "email", "class": "form-control"}),
                              required=getattr(settings, "EMAIL_REQUIRED", True), 
                              label=_("Email"),
+                             help_text=_("We'll use this for all future correspondence. We'll also contact you by post"),
                              error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
                                              "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
+
+    date_of_birth = forms.DateField(widget=DateWidget,
+                                    required=True,
+                                    label=_("Date of birth"),
+                                    error_messages={"required": ERROR_MESSAGES["DATE_OF_BIRTH_REQUIRED"],
+                                                    "invalid": ERROR_MESSAGES["DATE_OF_BIRTH_INVALID"]})
+
+    ni_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                                required=False,
+                                label=_("National Insurance number"),
+                                help_text=_("On your National Insurance card, benefit letter, payslip or P60. <br>For example, 'QQ 12 34 56 C'"))
+
+    driving_licence_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                                             required=False,
+                                             label=_("UK driving licence number"),
+                                             help_text=_("Starts with the first five letters from your last name"))
+
+    def __init__(self, *args, **kwargs):
+        super(YourDetailsForm, self).__init__(*args, **kwargs)
+        try:
+            data = args[0]
+        except IndexError:
+            data = {}
+
+        if "correct_address" in data:
+            if data["correct_address"] == "False":
+                self.fields["updated_address"].required = True
 
 class CompanyDetailsForm(BasePleaStepForm):
     COMPANY_POSITION_CHOICES = (
