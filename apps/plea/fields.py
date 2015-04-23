@@ -25,7 +25,7 @@ ERROR_MESSAGES = {
     "HEARING_DATE_PASSED": _("The court hearing date must be after today"),
     "HEARING_DATE_INCORRECT": _("Enter the correct hearing date"),
     "NUMBER_OF_CHARGES_REQUIRED": _("Select the number of charges against you"),
-    "ON_BEHALF_OF_COMPANY": _("Tell us if you're making a plea on behalf of a company"),
+    "PLEA_MADE_BY_REQUIRED": _("You must select one of these options"),
     "FULL_NAME_REQUIRED": _("Enter your full name"),
     "EMAIL_ADDRESS_REQUIRED": _("You must provide an email address"),
     "EMAIL_ADDRESS_INVALID": _("Email address isn't a valid format"),
