@@ -6,7 +6,7 @@
 {% block head %}
 
   {% if case.urn|length %}
-    <meta http-equiv="refresh" content="3600;url=/session-timeout/">
+    <meta http-equiv="refresh" content="3600;url={% url "session_timeout" %}">
   {% endif %}
 
 {% endblock %}
