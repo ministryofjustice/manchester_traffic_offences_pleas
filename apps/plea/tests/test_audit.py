@@ -38,7 +38,7 @@ class CaseCreationTests(TestCase):
                       u'date_of_hearing': datetime.date(2015, 1, 1),
                       u'time_of_hearing': datetime.time(9, 15),
                       u'number_of_charges': 2,
-                      u'company_plea': False},
+                      u'plea_made_by': "Defendant"},
             'your_details': {
                 u'name': u'maverick cobain',
                 u"national_insurance_number": u"test ni number",

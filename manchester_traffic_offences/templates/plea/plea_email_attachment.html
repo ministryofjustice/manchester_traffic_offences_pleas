@@ -45,11 +45,15 @@
     <tr>
         <td colspan="2" class="heading"><h2>Defendant details</h2></td>
     </tr>
-    {% if case.company_plea %}
+    {% if case.plea_made_by == "Company representative" %}
     {% add_test_tag "<<SHOWCOMPANYDETAILS>>" %}
     <tr>
         <th>Company name</th>
         <td>{{ company_details.company_name }}</td>
+    </tr>
+    <tr>
+        <th>Company address</th>
+        <td>{{ company_details.company_address|linebreaksbr }}</td>
     </tr>
     <tr>
         <th>Full name</th>
@@ -107,7 +111,7 @@
         </tr>
         {% endif %}
     {%  endfor %}
-    {% if case.company_plea %}
+    {% if case.plea_made_by == "Company representative" %}
         {% if not company_finances.skipped %}
         {% add_test_tag "<<SHOWCOMPANYFINANCES>>" %}
         <tr>
