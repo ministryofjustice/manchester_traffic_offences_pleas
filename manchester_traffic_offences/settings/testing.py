@@ -5,6 +5,16 @@ ADMINS = (
     ('Ian George', 'ian.george@digital.justice.gov.uk'),
 )
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'manchester_traffic_offences',
+        'USER': 'jenkins',
+        'PASSWORD': 'moomoo',
+        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',                      # Set to empty string for default.
+    }
+}
 
 CELERY_ALWAYS_EAGER = True
 CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
