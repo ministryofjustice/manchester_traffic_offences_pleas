@@ -23,7 +23,6 @@ BROKER_BACKEND = 'memory'
 TESTING = True
 DEBUG = False
 
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
 SECRET_KEY = "fjsklfosufcilsft37dGDRR%^$%^^gfsdvf"
 
 # the test user data directory
