@@ -57,8 +57,8 @@
                 <td>{{ case.number_of_charges }}</td>
             </tr>
             <tr>
-                <th class="label">{% trans "Plea on behalf of a company?" %}</th>
-                <td>{{ case.company_plea|yesno:_("Yes,No") }}</td>
+                <th class="label">{% trans "Plea made by" %}</th>
+                <td>{% if case.plea_made_by == "Defendant" %}{% trans "Defendant" %}{% else %}{% trans "Company representative" %}{% endif %}</td>
             </tr>
         </tbody>
     </table>
@@ -67,16 +67,30 @@
         <thead>
             <tr>
                 <th class="header">{% trans "Your details" %}</th>
-                {% if case.company_plea %}
-                <th class="change-link"><a href="{% url "plea_form_step" "company_details" %}" class="review">{% trans "Change your details" %}</a></th>
-                {% else %}
+                {% if case.plea_made_by == "Defendant" %}
                 <th class="change-link"><a href="{% url "plea_form_step" "your_details" %}" class="review">{% trans "Change your details" %}</a></th>
+                {% else %}
+                <th class="change-link"><a href="{% url "plea_form_step" "company_details" %}" class="review">{% trans "Change your details" %}</a></th>
                 {% endif %}
             </tr>
         </thead>
         <tbody>
 
-        {% if case.company_plea %}
+        {% if case.plea_made_by == "Defendant" %}
+            {% add_test_tag "<<SHOWYOURDETAILS>>" %}
+            <tr>
+                <th class="label">{% trans "Full name" %}</th>
+                <td>{{ your_details.name }}</td>
+            </tr>
+            <tr>
+                <th class="label">{% trans "Contact number" %}</th>
+                <td>{{ your_details.contact_number }}</td>
+            </tr>
+            <tr>
+                <th class="label">{% trans "Email" %}</th>
+                <td>{{ your_details.email }}</td>
+            </tr>
+        {% else %}
             {% add_test_tag "<<SHOWCOMPANYDETAILS>>" %}
             <tr>
                 <th class="label">{% trans "Company name" %}</th>
@@ -101,20 +115,6 @@
             <tr>
                 <th class="label">{% trans "Email" %}</th>
                 <td>{{ company_details.email }}</td>
-            </tr>
-        {% else %}
-            {% add_test_tag "<<SHOWYOURDETAILS>>" %}
-            <tr>
-                <th class="label">{% trans "Full name" %}</th>
-                <td>{{ your_details.name }}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Contact number" %}</th>
-                <td>{{ your_details.contact_number }}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Email" %}</th>
-                <td>{{ your_details.email }}</td>
             </tr>
         {% endif %}
         </tbody>
@@ -170,7 +170,7 @@
         </tbody>
     </table>
 
-{% if case.company_plea and not company_finances.skipped %}
+{% if case.plea_made_by == "Company representative" and not company_finances.skipped %}
     {% add_test_tag "<<SHOWCOMPANYFINANCES>>" %}
     <table class="review-table" id="company-details">
         <thead>

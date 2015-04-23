@@ -40,7 +40,7 @@ class EmailTemplateTests(TestCase):
                          "date_of_hearing_1": str(self.hearing_date.month),
                          "date_of_hearing_2": str(self.hearing_date.year),
                          "number_of_charges": 1,
-                         "company_plea": False}
+                         "plea_made_by": "Defendant"}
 
         if not details_data:
             details_data = {"name": "Joe Public",
@@ -477,7 +477,7 @@ class TestCompanyFinancesEmailLogic(TestCase):
                 "date_of_hearing": "2015-01-01",
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
-                "company_plea": True
+                "plea_made_by": "Company representative"
             },
             'your_details': {
                 "complete": True,

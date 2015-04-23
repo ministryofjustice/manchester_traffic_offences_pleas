@@ -85,7 +85,7 @@
             <img src="{% static "images/img-charge.png" %}" alt="{% trans "The number of charges is found on page 2 of the pack" %}" width="260" height="185">
         </div>
 
-        {% with form.company_plea as field %}
+        {% with form.plea_made_by as field %}
             {% include "widgets/radio_field.html" %}
         {% endwith %}
 
