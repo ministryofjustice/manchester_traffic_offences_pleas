@@ -6,50 +6,17 @@
 
 {% block page_content %}
 
-<form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
-    {% csrf_token %}
-
-        {% if submitted and not court %}
-    <div class="error-summary">
-        <h2 class="heading-medium">{% trans "We can't find your court" %}</h2>
-        <p>{% trans "You'll find contact details for the court considering your case in your Postal Requisition pack." %}</p>
-    </div>
-        {% endif %}
-
-        {% if form.errors %}
-    <div class="error-summary">
-            {% if urn_is_invalid %}
-        <h2 class="heading-medium">{% trans "We don’t recognise the URN you’ve entered" %}</h2>
-        <p>{% blocktrans %}The unique reference number you entered doesn’t match our records.<br>
-        Check your URN (it’s on page 1 of the Postal Requisition pack we sent you, in the top right corner) then try again.{% endblocktrans %}</p>
-            {% else %}
-        <h2 class="heading-medium">{% trans "You need to fix the errors on this page before continuing." %}</h2>
-        <p>{% trans "See highlighted errors below." %}</p>
-            {% endif %}
-    </div>
-        {% endif %}
+{% if submitted and court %}
 
     <header class="content-header">
-        <h1 class="heading-xlarge">{% trans "Contact your court" %}</h1>
-        <p class="lede">{% trans "Enter your unique reference number (URN) to find contact details for the court considering your case." %}</p>
+        <h1>{% trans "Court finder results" %}</h1>
+
+        <a href="{% url "court_finder" %}">{% trans "Back" %}</a>
     </header>
-    
-    {% with form.urn as field %}
-    {% include "widgets/std_field.html" %}
-    {% endwith %}
-    
-    <div class="form-group form-submit">
-        <button class="button" type="submit">{% trans "Find my court" %}</button>
-    </div>
-</form>
 
-{% if submitted %}
+    <div class="text">
 
-<hr>
-
-    {% if court %}
-    <div class="court-details text">
-        <h2 class="heading-medium">{% trans "Court details" %}</h2>
+        <h2 class="heading-medium heading-collapse">{% trans "Court details" %}</h2>
         <p>{% trans "You can contact the court by post or email quoting your URN before the date of your hearing." %}</p>
 
             {% if court.court_address %}
@@ -67,7 +34,46 @@
         <p>{{ court.court_phone }}</p>
             {% endif %}
     </div>
-    {% endif %}
+
+{% else %}
+
+    <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
+        {% csrf_token %}
+
+            {% if submitted and not court %}
+        <div class="error-summary">
+            <h2>{% trans "We can't find your court" %}</h2>
+            <p>{% trans "You'll find contact details for the court considering your case in your Postal Requisition pack." %}</p>
+        </div>
+            {% endif %}
+
+            {% if form.errors %}
+        <div class="error-summary">
+                {% if urn_is_invalid %}
+            <h2>{% trans "We don’t recognise the URN you’ve entered" %}</h2>
+            <p>{% blocktrans %}The unique reference number you entered doesn’t match our records.<br>
+            Check your URN (it’s on page 1 of the Postal Requisition pack we sent you, in the top right corner) then try again.{% endblocktrans %}</p>
+                {% else %}
+            <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
+            <p>{% trans "See highlighted errors below." %}</p>
+                {% endif %}
+        </div>
+            {% endif %}
+
+        <header class="content-header">
+            <h1>{% trans "Contact your court" %}</h1>
+            <p>{% trans "Enter your unique reference number (URN) to find contact details for the court considering your case." %}</p>
+        </header>
+        
+        {% with form.urn as field %}
+        {% include "widgets/std_field.html" %}
+        {% endwith %}
+        
+        <div class="form-group form-submit">
+            <button class="button" type="submit">{% trans "Find my court" %}</button>
+        </div>
+    </form>
+
 {% endif %}
 
 {% endblock page_content %}
