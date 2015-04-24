@@ -44,8 +44,13 @@ class EmailTemplateTests(TestCase):
 
         if not details_data:
             details_data = {"name": "Joe Public",
+                            "correct_address": False,
+                            "updated_address": "7 Ester Rd\nTest\nTE57ER",
                             "contact_number": "0161 123 2345",
-                            "email": "test@example.org"}
+                            "email": "test@example.org",
+                            "date_of_birth_0": "12",
+                            "date_of_birth_1": "03",
+                            "date_of_birth_2": "1980"}
 
         if not plea_data:
             plea_data = {"form-TOTAL_FORMS": "1",

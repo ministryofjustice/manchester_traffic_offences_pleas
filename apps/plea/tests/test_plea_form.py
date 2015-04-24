@@ -228,14 +228,18 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.load(self.request_context)
         form.save({}, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 3)
+        self.assertEqual(len(form.current_stage.forms[0].errors), 5)
 
     def test_your_details_stage_good_data(self):
         form = PleaOnlineForms("your_details", "plea_form_step", self.session)
         form.load(self.request_context)
         form.save({"name": "Test man",
                    "contact_number": "012345678",
-                   "email": "test.man@example.org"},
+                   "email": "test.man@example.org",
+                   "correct_address": True,
+                   "date_of_birth_0": "12",
+                   "date_of_birth_1": "03",
+                   "date_of_birth_2": "1980"},
                   self.request_context)
         response = form.render()
         self.assertEqual(response.status_code, 302)
@@ -866,7 +870,11 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.load(request_context)
         form.save({"name": "Charlie Brown",
                    "contact_number": "07802639892",
-                   "email": "test@example.org"},
+                   "email": "test@example.org",
+                   "correct_address": True,
+                   "date_of_birth_0": "12",
+                   "date_of_birth_1": "03",
+                   "date_of_birth_2": "1980"},
                   request_context)
         response = form.render()
         self.assertEqual(response.status_code, 302)
@@ -933,7 +941,11 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.load(request_context)
         form.save({"name": "Charlie Brown",
                    "contact_number": "07802639892",
-                   "email": "test@example.org"},
+                   "email": "test@example.org",
+                   "correct_address": True,
+                   "date_of_birth_0": "12",
+                   "date_of_birth_1": "03",
+                   "date_of_birth_2": "1980"},
                   request_context)
 
         form = PleaOnlineForms("plea", "plea_form_step", fake_session)
