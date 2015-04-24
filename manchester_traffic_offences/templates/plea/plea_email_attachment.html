@@ -39,13 +39,43 @@
     </tr>
     <tr>
         <th>Court hearing</th>
-        <td>{{ case.date_of_hearing|parse_date|date:"d F Y" }}</td>
+        <td>{{ case.date_of_hearing|parse_date|date:"d/m/Y" }}</td>
     </tr>
 
     <tr>
         <td colspan="2" class="heading"><h2>Defendant details</h2></td>
     </tr>
-    {% if case.plea_made_by == "Company representative" %}
+    {% if case.plea_made_by == "Defendant" %}
+    {% add_test_tag "<<SHOWYOURDETAILS>>" %}
+    <tr>
+        <th>Full name</th>
+        <td>{{ your_details.name }}</td>
+    </tr>
+    <tr>
+        <th>Address</th>
+        <td>{% if your_details.correct_address %}As printed on Postal Requisition{% else %}{{ your_details.updated_address|linebreaksbr }}{% endif %}</td>
+    </tr>
+    <tr>
+        <th>Contact number</th>
+        <td>{{ your_details.contact_number }}</td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td>{{ your_details.email }}</td>
+    </tr>
+    <tr>
+        <th>Date of birth</th>
+        <td>{{ your_details.date_of_birth|parse_date|date:"d/m/Y" }}</td>
+    </tr>
+    <tr>
+        <th>National Insurance number</th>
+        <td>{{ your_details.ni_number|default:"-" }}</td>
+    </tr>
+    <tr>
+        <th>UK driving licence number</th>
+        <td>{{ your_details.driving_licence_number|default:"-" }}</td>
+    </tr>
+    {% else %}
     {% add_test_tag "<<SHOWCOMPANYDETAILS>>" %}
     <tr>
         <th>Company name</th>
@@ -70,20 +100,6 @@
     <tr>
         <th>Email</th>
         <td>{{ company_details.email }}</td>
-    </tr>
-    {% else %}
-    {% add_test_tag "<<SHOWYOURDETAILS>>" %}
-    <tr>
-        <th>Full name</th>
-        <td>{{ your_details.name }}</td>
-    </tr>
-    <tr>
-        <th>Contact number</th>
-        <td>{{ your_details.contact_number }}</td>
-    </tr>
-    <tr>
-        <th>Email</th>
-        <td>{{ your_details.email }}</td>
     </tr>
     {% endif %}
 
