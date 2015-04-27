@@ -65,6 +65,19 @@ hr {
 	}
 }
 
+.panel-grey {
+	background: $grey-3;
+	padding: 10px;
+
+	@include media(tablet) {
+		padding: 10px 15px;
+	}
+}
+
+.panel-grey > :last-child {
+	margin-bottom: 0;
+}
+
 .move-up {
 	margin-top: -1em;
 }
