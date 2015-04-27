@@ -50,7 +50,7 @@
             </tr>
             <tr>
                 <th class="label">{% trans "Court hearing date" %}</th>
-                <td>{{ case.date_of_hearing|parse_date|date:"d F Y" }}</td>
+                <td>{{ case.date_of_hearing|parse_date|date:"d/m/Y" }}</td>
             </tr>
             <tr>
                 <th class="label">{% trans "Number of charges against you" %}</th>
@@ -83,12 +83,28 @@
                 <td>{{ your_details.name }}</td>
             </tr>
             <tr>
+                <th class="label">{% trans "Address" %}</th>
+                <td>{% if your_details.correct_address %}{% trans "As printed on Postal Requisition" %}{% else %}{{ your_details.updated_address|linebreaksbr }}{% endif %}</td>
+            </tr>
+            <tr>
                 <th class="label">{% trans "Contact number" %}</th>
                 <td>{{ your_details.contact_number }}</td>
             </tr>
             <tr>
                 <th class="label">{% trans "Email" %}</th>
                 <td>{{ your_details.email }}</td>
+            </tr>
+            <tr>
+                <th class="label">{% trans "Date of birth" %}</th>
+                <td>{{ your_details.date_of_birth|parse_date|date:"d/m/Y" }}</td>
+            </tr>
+            <tr>
+                <th class="label">{% trans "National Insurance number" %}</th>
+                <td>{{ your_details.ni_number|default:"-" }}</td>
+            </tr>
+            <tr>
+                <th class="label">{% trans "UK driving licence number" %}</th>
+                <td>{{ your_details.driving_licence_number|default:"-" }}</td>
             </tr>
         {% else %}
             {% add_test_tag "<<SHOWCOMPANYDETAILS>>" %}

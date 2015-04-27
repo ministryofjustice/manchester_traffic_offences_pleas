@@ -27,10 +27,14 @@ ERROR_MESSAGES = {
     "NUMBER_OF_CHARGES_REQUIRED": _("Select the number of charges against you"),
     "PLEA_MADE_BY_REQUIRED": _("You must select one of these options"),
     "FULL_NAME_REQUIRED": _("Enter your full name"),
+    "CORRECT_ADDRESS_REQUIRED": _("Tell us if your address on the Postal Requisition is correct"),
+    "UPDATED_ADDRESS_REQUIRED": _("Tell us your address"),
     "EMAIL_ADDRESS_REQUIRED": _("You must provide an email address"),
     "EMAIL_ADDRESS_INVALID": _("Email address isn't a valid format"),
     "CONTACT_NUMBER_REQUIRED": _("You must provide a contact number"),
     "CONTACT_NUMBER_INVALID": _("The contact number isn't a valid format"),
+    "DATE_OF_BIRTH_REQUIRED": _("Enter your date of birth"),
+    "DATE_OF_BIRTH_INVALID": _("The date of birth isn't a valid format"),
     "COMPANY_NAME_REQUIRED": _("Enter the company name"),
     "COMPANY_ADDRESS_REQUIRED": _("Enter the company address"),
     "NAME_REQUIRED": _("Tell us your name"),
@@ -199,13 +203,13 @@ class DSURNTemplateWidget(DSTemplateWidgetBase):
     template = "widgets/DSURNInputWidget.html"
 
 
-class HearingDateWidget(MultiWidget):
+class DateWidget(MultiWidget):
     def __init__(self, attrs=None):
         widgets = [DSDateTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-day"}, context={"title": "Day"}),
                    DSDateTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-month"}, context={"title": "Month"}),
                    DSDateTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "4", "size": "4", "class": "form-control-year"}, context={"title": "Year"}),
                    ]
-        super(HearingDateWidget, self).__init__(widgets, attrs)
+        super(DateWidget, self).__init__(widgets, attrs)
 
     def decompress(self, value):
         if value:
@@ -248,10 +252,6 @@ class HearingDateWidget(MultiWidget):
 
     def format_output(self, rendered_widgets):
         return '/'.join(rendered_widgets)
-
-
-class HearingDateField(forms.DateField):
-    widget = HearingDateWidget
 
 
 class URNWidget(MultiWidget):
