@@ -75,17 +75,15 @@ Main styles
 
 	fieldset {
 		position: relative;
+	}
 
+	.label-line {
 		&:before {
 			content: "";
 			position: absolute;
 			width: 100%;
 			border-top: 2px solid $grey-2;
 			top: .5em;
-
-			@include media(tablet) {
-				top: .675em;
-			}
 		}
 
 		.label-text {
