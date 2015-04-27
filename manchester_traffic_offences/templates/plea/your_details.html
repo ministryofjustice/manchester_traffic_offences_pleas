@@ -1,6 +1,7 @@
 {% extends "plea/base.html" %}
 
 {% load i18n %}
+{% load form_widgets %}
 
 {% block page_title %}{% trans "Your details" %} - {{ block.super }}{% endblock %}
 
@@ -35,9 +36,7 @@
             <p>{% trans "We need these in case we have to get in touch with you about your plea." %}</p>
         </header>
 
-        {% with form.name as field %}
-            {% include "widgets/std_field.html" %}
-        {% endwith %}
+        {% std_field form.name %}
 
         {% with form.correct_address as field %}
             {% include "widgets/std_field.html" %}
@@ -54,9 +53,7 @@
             {% include "widgets/std_field.html" %}
         {% endwith %}
 
-        {% with form.email as field %}
-            {% include "widgets/std_field.html" %}
-        {% endwith %}
+        {% std_field form.email %}
 
         {% with form.date_of_birth as field %}
             {% include "widgets/std_field.html" %}
