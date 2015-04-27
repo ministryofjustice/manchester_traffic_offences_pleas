@@ -1695,6 +1695,16 @@ hr {
     .panel-indent {
       padding-left: 15px; } }
 
+.panel-grey {
+  background: #dee0e2;
+  padding: 10px; }
+  @media (min-width: 641px) {
+    .panel-grey {
+      padding: 10px 15px; } }
+
+.panel-grey > :last-child {
+  margin-bottom: 0; }
+
 .move-up {
   margin-top: -1em; }
 
@@ -1764,6 +1774,27 @@ Main styles
 
 .form-control-urn-7 {
   width: 5em; }
+
+/*== Pleas screen ==========================================*/
+.section-plea {
+  padding-top: 1em; }
+  .section-plea fieldset {
+    position: relative; }
+    .section-plea fieldset:before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      border-top: 2px solid #bfc1c3;
+      top: .5em; }
+      @media (min-width: 641px) {
+        .section-plea fieldset:before {
+          top: .675em; } }
+    .section-plea fieldset .label-text {
+      position: relative;
+      padding-right: 10px;
+      background: #fff; }
+  .section-plea .js-Conditional .form-group, .section-plea .js-Conditional .form-group-wide, .section-plea .js-Conditional .form-submit {
+    margin-bottom: 0; }
 
 /*== Expenses screen =======================================*/
 #expense-summary th, #expense-summary td {
