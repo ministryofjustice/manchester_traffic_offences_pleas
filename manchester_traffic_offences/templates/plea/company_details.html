@@ -1,6 +1,8 @@
 {% extends "plea/base.html" %}
-{% load i18n %}
+
 {% load debug %}
+{% load i18n %}
+{% load form_widgets %}
 
 {% block page_title %}{% trans "Your details" %} - {{ block.super }}{% endblock %}
 
@@ -36,29 +38,17 @@
         <p class="lede">{% trans "<strong>Warning:</strong> You can only make a plea on behalf of a company if you are a director, the company secretary or the company's solicitor." %}</p>
     </header>
 
-    {% with form.company_name as field %}
-        {% include "widgets/std_field.html" %}
-    {% endwith %}
+        {% std_field form.company_name %}
 
-    {% with form.company_address as field %}
-        {% include "widgets/std_field.html" %}
-    {% endwith %}
+        {% std_field form.company_address %}
 
-    {% with form.name as field %}
-        {% include "widgets/std_field.html" %}
-    {% endwith %}
+        {% std_field form.name %}
 
-    {% with form.position_in_company as field %}
-        {% include "widgets/radio_field.html" %}
-    {% endwith %}
+        {% radio_field form.position_in_company %}
 
-    {% with form.contact_number as field %}
-        {% include "widgets/std_field.html" %}
-    {% endwith %}
+        {% std_field form.contact_number %}
 
-    {% with form.email as field %}
-        {% include "widgets/std_field.html" %}
-    {% endwith %}
+        {% std_field form.email %}
 
     {% endwith %}
 
