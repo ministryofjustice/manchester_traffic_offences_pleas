@@ -1,10 +1,10 @@
 {% extends "plea/base.html" %}
 
 {% load i18n %}
+{% load staticfiles %}
+{% load form_widgets %}
 
 {% block page_title %}{% trans "Case details" %} - {{ block.super }}{% endblock %}
-
-{% load staticfiles %}
 
 {% block page_content %}
 <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
@@ -65,30 +65,22 @@
     </header>
 
     <div class="with-help-images">
-        {% with form.urn as field %}
-            {% include "widgets/std_field.html" %}
-        {% endwith %}
+        
+        {% std_field form.urn %}
 
         <div class="help-image">
             <img src="{% static "images/img-urn.png" %}" alt="{% trans "The URN and Court Hearing Date are found on page 1 of the pack" %}" width="260" height="340">
         </div>
 
-        {% with form.date_of_hearing as field %}
-            {% include "widgets/std_field.html" %}
-        {% endwith %}
+        {% std_field form.date_of_hearing %}
 
-        {% with form.number_of_charges as field %}
-            {% include "widgets/std_field.html" %}
-        {% endwith %}
+        {% std_field form.number_of_charges %}
 
         <div class="help-image">
             <img src="{% static "images/img-charge.png" %}" alt="{% trans "The number of charges is found on page 2 of the pack" %}" width="260" height="185">
         </div>
 
-        {% with form.plea_made_by as field %}
-            {% include "widgets/radio_field.html" %}
-        {% endwith %}
-
+        {% radio_field form.plea_made_by %}
 
         <div class="form-submit">
             <button class="button" type="submit">{% trans "Continue" %}</button>
