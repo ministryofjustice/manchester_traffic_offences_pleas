@@ -44,8 +44,12 @@ class EmailTemplateTests(TestCase):
 
         if not details_data:
             details_data = {"name": "Joe Public",
+                            "correct_address": True,
                             "contact_number": "0161 123 2345",
-                            "email": "test@example.org"}
+                            "email": "test@example.org",
+                            "date_of_birth_0": "12",
+                            "date_of_birth_1": "03",
+                            "date_of_birth_2": "1980"}
 
         if not plea_data:
             plea_data = {"form-TOTAL_FORMS": "1",
@@ -103,7 +107,7 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
         self.assertContains(response, "<tr><th>URN</th><td>06/AA/00000/00</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>Court hearing</th><td>{}</td></tr>".format(self.hearing_date.strftime('%d %B %Y')), count=1, html=True)
+        self.assertContains(response, "<tr><th>Court hearing</th><td>{}</td></tr>".format(self.hearing_date.strftime('%d/%m/%Y')), count=1, html=True)
 
     def test_min_case_details_output(self):
         context_data = self.get_context_data()
@@ -112,18 +116,37 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
         self.assertContains(response, "<tr><th>Full name</th><td>Joe Public</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Address</th><td>As printed on Postal Requisition</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Contact number</th><td>0161 123 2345</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Email</th><td>test@example.org</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Date of birth</th><td>12/03/1980</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>National Insurance number</th><td>-</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>UK driving licence number</th><td>-</td></tr>", count=1, html=True)
 
     def test_full_case_details_output(self):
-        context_data = self.get_context_data()
+        context_data_details = {"name": "Joe Public",
+                                "correct_address": False,
+                                "updated_address": "Test address, Somewhere, TE57ER",
+                                "contact_number": "0161 123 2345",
+                                "email": "test@example.org",
+                                "date_of_birth_0": "12",
+                                "date_of_birth_1": "03",
+                                "date_of_birth_2": "1980",
+                                "ni_number": "QQ 12 34 56 Q",
+                                "driving_licence_number": "TESTE12345"}
+
+        context_data = self.get_context_data(details_data=context_data_details)
 
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
         self.assertContains(response, "<tr><th>Full name</th><td>Joe Public</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Address</th><td>Test address, Somewhere, TE57ER</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Contact number</th><td>0161 123 2345</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Email</th><td>test@example.org</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Date of birth</th><td>12/03/1980</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>National Insurance number</th><td>QQ 12 34 56 Q</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>UK driving licence number</th><td>TESTE12345</td></tr>", count=1, html=True)
 
     def test_single_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
