@@ -66,7 +66,13 @@
                 {% if form_count > 1 or form.guilty.errors %}
                 <legend class="form-label-bold">
                     {% if form_count > 1 %}
-                    <span class="label-text">{% blocktrans with counter=forloop.counter %}Your plea for charge {{ counter }}{% endblocktrans %}</span>
+                    <span class="label-text">
+                        {% if case.plea_made_by == "Defendant" %}
+                            {% blocktrans with counter=forloop.counter %}Your plea for charge {{ counter }}{% endblocktrans %}
+                        {% else %}
+                            {% blocktrans with counter=forloop.counter %}Plea for charge {{ counter }}{% endblocktrans %}
+                        {% endif %}
+                    </span>
                     {% endif %}
 
                     {{ form.guilty.errors }}
