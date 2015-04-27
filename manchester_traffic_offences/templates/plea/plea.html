@@ -34,11 +34,19 @@
     {% endif %}
 
     <header class="content-header">
+        {% if case.plea_made_by == "Defendant" %}
         <h1>{% blocktrans count charges=charges %}Your plea{% plural %}Your pleas{% endblocktrans %}</h1>
+        {% else %}
+        <h1>{% blocktrans count charges=charges %}Company plea{% plural %}Company pleas{% endblocktrans %}</h1>
+        {% endif %}
     </header>
 
     <div class="panel-grey">
+        {% if case.plea_made_by == "Defendant" %}
         <p>{% trans "This is your opportunity to present your case to the court:" %}</p>
+        {% else %}
+        <p>{% trans "This is your opportunity to present the company's case to the court:" %}</p>
+        {% endif %}
 
         <ul>
             <li>{% blocktrans %}each offence carries penalty points and a fine{% endblocktrans %}</li>
@@ -66,13 +74,15 @@
                 {% if form_count > 1 or form.guilty.errors %}
                 <legend class="form-label-bold">
                     {% if form_count > 1 %}
-                    <span class="label-text">
-                        {% if case.plea_made_by == "Defendant" %}
-                            {% blocktrans with counter=forloop.counter %}Your plea for charge {{ counter }}{% endblocktrans %}
-                        {% else %}
-                            {% blocktrans with counter=forloop.counter %}Plea for charge {{ counter }}{% endblocktrans %}
-                        {% endif %}
-                    </span>
+                    <div class="label-line">
+                        <span class="label-text">
+                            {% if case.plea_made_by == "Defendant" %}
+                                {% blocktrans with counter=forloop.counter %}Your plea for charge {{ counter }}{% endblocktrans %}
+                            {% else %}
+                                {% blocktrans with counter=forloop.counter %}Plea for charge {{ counter }}{% endblocktrans %}
+                            {% endif %}
+                        </span>
+                    </div>
                     {% endif %}
 
                     {{ form.guilty.errors }}

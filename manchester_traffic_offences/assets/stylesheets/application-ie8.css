@@ -1703,17 +1703,16 @@ Main styles
   padding-top: 1em; }
   .section-plea fieldset {
     position: relative; }
-    .section-plea fieldset:before {
-      content: "";
-      position: absolute;
-      width: 100%;
-      border-top: 2px solid #bfc1c3;
-      top: .5em;
-      top: .675em; }
-    .section-plea fieldset .label-text {
-      position: relative;
-      padding-right: 10px;
-      background: #fff; }
+  .section-plea .label-line:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    border-top: 2px solid #bfc1c3;
+    top: .5em; }
+  .section-plea .label-line .label-text {
+    position: relative;
+    padding-right: 10px;
+    background: #fff; }
   .section-plea .js-Conditional .form-group, .section-plea .js-Conditional .form-group-wide, .section-plea .js-Conditional .form-submit {
     margin-bottom: 0; }
 
