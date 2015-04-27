@@ -41,13 +41,13 @@
 
     <div class="js-Conditional" data-conditional-trigger="trading_period" data-conditional-value="^(True|False)$">
 
-        {% std_field form.number_of_employees %}
+        {% std_field form.number_of_employees hide_optional=True %}
 
         <h3 class="heading-medium js-TemplatedElement" data-template-trigger="trading_period" data-template="{% trans "From the first 12 months' trading projections, tell us:" %}" data-template-defaults-for="{% trans "Yes" %}">{% trans "From the most recent audited company accounts, tell us:" %}</h3>
 
-        {% money_field form.gross_turnover %}
+        {% money_field form.gross_turnover hide_optional=True %}
 
-        {% money_field form.net_turnover %}
+        {% money_field form.net_turnover hide_optional=True %}
 
     </div>
 
