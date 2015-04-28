@@ -3,7 +3,7 @@
         <legend class="form-label-bold">
             <span class="label-text">{{ field.label }}</span>
 
-            {% if not field.field.required and not hide_optional %} <span class="form-hint-inline">(optional)</span>{% endif %}
+            {% if not field.field.required and not field.hide_optional %} <span class="form-hint-inline">(optional)</span>{% endif %}
 
             {% if field.help_text %}
             <span class="form-hint">{{ field.help_text|safe }}</span>
