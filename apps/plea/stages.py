@@ -269,10 +269,8 @@ class ReviewStage(FormStage):
             self.set_next_step("case")
             return clean_data
 
-        send_user_email = bool(clean_data.get('receive_email', False))
-
         if clean_data.get("complete", False):
-            email_result = send_plea_email(self.all_data, send_user_email=send_user_email)
+            email_result = send_plea_email(self.all_data)
             if email_result:
                 self.set_next_step("complete")
             else:

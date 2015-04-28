@@ -1826,34 +1826,6 @@ Main styles
     display: block;
     margin-left: 40px; }
 
-#section_receive_email .grey {
-  padding: 1em;
-  background: #dee0e2; }
-  #section_receive_email .grey ul {
-    margin: 0;
-    padding: 0; }
-    #section_receive_email .grey ul li {
-      display: inline-block;
-      margin: 0 1em 0 0;
-      float: left; }
-      #section_receive_email .grey ul li label {
-        font-family: "nta", Arial, sans-serif;
-        font-size: 24px;
-        line-height: 1.25;
-        font-weight: 400;
-        text-transform: none;
-        padding: .5em .5em .5em 0;
-        margin: 0;
-        cursor: pointer; }
-        @media (max-width: 640px) {
-          #section_receive_email .grey ul li label {
-            font-size: 18px;
-            line-height: 1.2; } }
-        #section_receive_email .grey ul li label.selected {
-          background: transparent; }
-        #section_receive_email .grey ul li label input {
-          vertical-align: middle; }
-
 /*== Complete screen ===============================================*/
 #content .success-header {
   margin: 2em 0;

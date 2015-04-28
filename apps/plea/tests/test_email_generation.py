@@ -100,7 +100,7 @@ class EmailGenerationTests(TestCase):
                                                {"guilty_extra": "test2", "guilty": "guilty"}],
                                  "understand": True}}
 
-        send_plea_email(context_data, send_user_email=True)
+        send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
         self.assertIn(context_data['case']['urn'].upper(), mail.outbox[-1].body)
@@ -128,27 +128,11 @@ class EmailGenerationTests(TestCase):
                                                {"guilty_extra": "test2", "guilty": "guilty"}],
                                  "understand": True}}
 
-        send_plea_email(context_data, send_user_email=True)
+        send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
         self.assertIn(context_data['case']['urn'].upper(), mail.outbox[-1].body)
         self.assertIn(context_data['company_details']['email'], mail.outbox[-1].to)
-
-    def test_user_confirmation_sends_email_opt_out(self):
-        context_data = {"case": {"date_of_hearing": "2014-06-30",
-                                 "time_of_hearing": "12:00:00",
-                                 "urn": "06xcvx89",
-                                 "number_of_charges": 2,
-                                 "plea_made_by": "Defendant"},
-                        "your_details": {"name": "vcx", "email": "lyndon@antlyn.com", "national_insurance_number": "xxx",
-                                         "driving_licence_number": "xxx", "registration_number": "xxx"},
-                        "plea": {"PleaForms": [{"guilty_extra": "test1", "guilty": "guilty"},
-                                               {"guilty_extra": "test2", "guilty": "guilty"}],
-                                 "understand": True}}
-
-        send_plea_email(context_data, send_user_email=False)
-
-        self.assertEqual(len(mail.outbox), 3)
 
     def test_email_addresses_from_court_model(self):
 
