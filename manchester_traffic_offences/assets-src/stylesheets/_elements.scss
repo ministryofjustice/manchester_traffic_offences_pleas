@@ -36,7 +36,7 @@ hr {
 		margin-bottom: .25em;
 	}
 
-	p:first-of-type {
+	> p:first-of-type {
 		@extend .lede;
 	}
 }
@@ -70,10 +70,13 @@ hr {
 	padding: 10px;
 
 	@include media(tablet) {
-		padding: 10px 15px;
+		padding: 15px;
 	}
 }
 
+.panel-grey > :first-child {
+	margin-top: 0;
+}
 .panel-grey > :last-child {
 	margin-bottom: 0;
 }
