@@ -52,7 +52,6 @@ ERROR_MESSAGES = {
     "HARDSHIP_REQUIRED": _("Tell us if paying a fine would cause you serious financial problems"),
     "UNDERSTAND_REQUIRED": _("You must confirm that you have read and understood the charge against you before you can submit your plea"),
     "OTHER_INFO_REQUIRED": _("Tell us how you earn your money"),
-    "RECEIVE_EMAIL": _("You must choose whether you want to receive court correspondence through email"),
     "HARDSHIP_DETAILS_REQUIRED": _("You must tell us why paying a fine will cause you serious financial problems"),
     "OTHER_BILL_PAYERS_REQUIRED": _("You must tell us if anyone else contributes to your household bills"),
     "HOUSEHOLD_ACCOMMODATION_REQUIRED": _("Accommodation is a required field"),

@@ -632,7 +632,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form = PleaOnlineForms("review", "plea_form_step", test_data)
 
-        form.save({"understand": True, "receive_email": False}, self.request_context)
+        form.save({"understand": True}, self.request_context)
         form.process_messages({})
         response = form.render()
 
@@ -896,7 +896,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form = PleaOnlineForms("review", "plea_form_step", fake_session)
         form.load(request_context)
-        form.save({"understand": "True", "receive_email": False},
+        form.save({"understand": "True"},
                   request_context)
         response = form.render()
         self.assertEqual(response.status_code, 302)
@@ -967,7 +967,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form = PleaOnlineForms("review", "plea_form_step", fake_session)
         form.load(request_context)
-        form.save({"understand": "True", "receive_email": False},
+        form.save({"understand": "True"},
                   request_context)
         response = form.render()
         self.assertEqual(response.status_code, 302)
