@@ -184,22 +184,12 @@ class CompanyFinancesStage(FormStage):
     form_classes = [CompanyFinancesForm]
     dependencies = ["case"]
 
-    def render(self, request_context):
-        self.context['hide_optional'] = True
-
-        return super(CompanyFinancesStage, self).render(request_context)
-
 
 class YourMoneyStage(FormStage):
     name = "your_finances"
     template = "plea/your_finances.html"
     form_classes = [YourMoneyForm]
     dependencies = ["case", "your_details", "plea"]
-
-    def render(self, request_context):
-        self.context['hide_optional'] = True
-
-        return super(YourMoneyStage, self).render(request_context)
 
     def save(self, form_data, next_step=None):
 

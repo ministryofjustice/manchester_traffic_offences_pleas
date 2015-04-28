@@ -1620,6 +1620,14 @@ hr {
   padding-left: 10px;
   padding-left: 15px; }
 
+.panel-grey {
+  background: #dee0e2;
+  padding: 10px;
+  padding: 10px 15px; }
+
+.panel-grey > :last-child {
+  margin-bottom: 0; }
+
 .move-up {
   margin-top: -1em; }
 
@@ -1689,6 +1697,24 @@ Main styles
 
 .form-control-urn-7 {
   width: 5em; }
+
+/*== Pleas screen ==========================================*/
+.section-plea {
+  padding-top: 1em; }
+  .section-plea fieldset {
+    position: relative; }
+  .section-plea .label-line:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    border-top: 2px solid #bfc1c3;
+    top: .5em; }
+  .section-plea .label-line .label-text {
+    position: relative;
+    padding-right: 10px;
+    background: #fff; }
+  .section-plea .js-Conditional .form-group, .section-plea .js-Conditional .form-group-wide, .section-plea .js-Conditional .form-submit {
+    margin-bottom: 0; }
 
 /*== Expenses screen =======================================*/
 #expense-summary th, #expense-summary td {

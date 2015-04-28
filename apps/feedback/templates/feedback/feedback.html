@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load i18n %}
+{% load form_widgets %}
 
 {% block page_title %}{% trans "Send feedback" %} - {{ block.super }}{% endblock %}
 
@@ -17,20 +18,13 @@
 <form method="POST">
     {% csrf_token %}
 
-    {% with form.feedback_question as field %}
-    {% include "widgets/std_field.html" %}
-    {% endwith %}
+    {% std_field form.feedback_question %}
 
-    {% with form.feedback_email as field %}
-    {% include "widgets/std_field.html" %}
-    {% endwith %}
+    {% std_field form.feedback_email %}
 
     <h3>{% trans "We’re constantly working to improve the online plea service." %}</h3>
 
-    {% with form.feedback_satisfaction as field %}
-    {% include "widgets/radio_field.html" %}
-    {% endwith %}
-
+    {% radio_field form.feedback_satisfaction %}
 
     <div class="form-group">
         <button class="button" type="submit">{% trans "Submit" %}</button>
