@@ -1,6 +1,7 @@
 {% extends "plea/base.html" %}
 
 {% load i18n %}
+{% load form_widgets %}
 
 {% block page_title %}{% trans "Your expenses" %} - {{ block.super }}{% endblock %}
 
@@ -36,10 +37,7 @@
 
         <hr>
 
-        {% with form.hardship_details as field %}
-        {% include "widgets/wide_field.html" %}
-        {% endwith %}
-
+        {% wide_field form.hardship_details %}
 
         <div id="household_expenses">
             <h2 class="heading-large">{% trans "Household expenses" %}</h2>
@@ -48,33 +46,24 @@
 
             <div class="grid-row">
                 <div class="column-half">
-                    {% with form.household_accommodation as field %}
-                    {% include "widgets/money_field.html" %}
-                    {% endwith %}
+                    {% money_field form.household_accommodation %}
                 </div>
                 <div class="column-half">
-                    {% with form.household_utility_bills as field %}
-                    {% include "widgets/money_field.html" %}
-                    {% endwith %}
+                    {% money_field form.household_utility_bills %}
                 </div>
             </div>
 
             <div class="grid-row">
                 <div class="column-half">
-                    {% with form.household_insurance as field %}
-                    {% include "widgets/money_field.html" %}
-                    {% endwith %}
+                    {% money_field form.household_insurance %}
                 </div>
                 <div class="column-half">
-                    {% with form.household_council_tax as field %}
-                    {% include "widgets/money_field.html" %}
-                    {% endwith %}
+                    {% money_field form.household_council_tax %}
                 </div>
             </div>
 
-            {% with form.other_bill_payers as field %}
-            {% include "widgets/radio_field.html" %}
-            {% endwith %}
+            {% radio_field form.other_bill_payers %}
+
         </div>
 
         <hr>
@@ -87,40 +76,28 @@
 
             <div class="grid-row">
                 <div class="column-half">
-                    {% with form.other_tv_subscription as field %}
-                    {% include "widgets/money_field.html" %}
-                    {% endwith %}
+                    {% money_field form.other_tv_subscription %}
                 </div>
                 <div class="column-half">
-                    {% with form.other_travel_expenses as field %}
-                    {% include "widgets/money_field.html" %}
-                    {% endwith %}
+                    {% money_field form.other_travel_expenses %}
                 </div>
             </div>
 
             <div class="grid-row">
                 <div class="column-half">
-                    {% with form.other_telephone as field %}
-                    {% include "widgets/money_field.html" %}
-                    {% endwith %}
+                    {% money_field form.other_telephone %}
                 </div>
                 <div class="column-half">
-                    {% with form.other_loan_repayments as field %}
-                    {% include "widgets/money_field.html" %}
-                    {% endwith %}
+                    {% money_field form.other_loan_repayments %}
                 </div>
             </div>
 
             <div class="grid-row">
                 <div class="column-half">
-                    {% with form.other_court_payments as field %}
-                    {% include "widgets/money_field.html" %}
-                    {% endwith %}
+                    {% money_field form.other_court_payments %}
                 </div>
                 <div class="column-half">
-                    {% with form.other_child_maintenance as field %}
-                    {% include "widgets/money_field.html" %}
-                    {% endwith %}
+                    {% money_field form.other_child_maintenance %}
                 </div>
             </div>
         </div>
