@@ -567,13 +567,13 @@ class ConfirmationForm(BasePleaStepForm):
 class PleaForm(BasePleaStepForm):
     PLEA_CHOICES = (
         ('guilty', _('Guilty')),
-        ('not_guilty', _('Not Guilty')),
+        ('not_guilty', _('Not guilty')),
     )
 
     guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect(), required=True,
                                error_messages={"required": ERROR_MESSAGES["PLEA_REQUIRED"]})
     
-    guilty_extra = forms.CharField(label=_("Special circumstances"),
+    guilty_extra = forms.CharField(label=_("Mitigation"),
                                    widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
                                    help_text=_("What would you like the court to consider?"),
                                    required=False,
@@ -581,7 +581,7 @@ class PleaForm(BasePleaStepForm):
 
     not_guilty_extra = forms.CharField(label=_("Not guilty because?"),
                                        widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
-                                       help_text=_("Tell us why you believe you are not guilty."),
+                                       help_text=_("Tell us why you believe you are not guilty"),
                                        required=False,
                                        max_length=5000)
 

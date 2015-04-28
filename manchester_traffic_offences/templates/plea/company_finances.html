@@ -1,7 +1,8 @@
 {% extends "plea/base.html" %}
 
-{% load i18n %}
 {% load debug %}
+{% load i18n %}
+{% load form_widgets %}
 
 {% block page_title %}{% trans "Company details" %} - {{ block.super }}{% endblock %}
 
@@ -36,25 +37,17 @@
         <p>{% trans "The court will decide the company's fine based on its size and financial situation." %}</p>
     </header>
 
-    {% with form.trading_period as field %}
-        {% include "widgets/radio_field.html" %}
-    {% endwith %}
+    {% radio_field form.trading_period %}
 
     <div class="js-Conditional" data-conditional-trigger="trading_period" data-conditional-value="^(True|False)$">
 
-        {% with form.number_of_employees as field %}
-            {% include "widgets/std_field.html" %}
-        {% endwith %}
+        {% std_field form.number_of_employees hide_optional=True %}
 
         <h3 class="heading-medium js-TemplatedElement" data-template-trigger="trading_period" data-template="{% trans "From the first 12 months' trading projections, tell us:" %}" data-template-defaults-for="{% trans "Yes" %}">{% trans "From the most recent audited company accounts, tell us:" %}</h3>
 
-        {% with form.gross_turnover as field %}
-            {% include "widgets/money_field.html" %}
-        {% endwith %}
+        {% money_field form.gross_turnover hide_optional=True %}
 
-        {% with form.net_turnover as field %}
-            {% include "widgets/money_field.html" %}
-        {% endwith %}
+        {% money_field form.net_turnover hide_optional=True %}
 
     </div>
 
