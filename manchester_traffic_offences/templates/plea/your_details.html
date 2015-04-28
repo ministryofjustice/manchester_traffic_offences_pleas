@@ -38,34 +38,22 @@
 
         {% std_field form.name %}
 
-        {% with form.correct_address as field %}
-            {% include "widgets/std_field.html" %}
-        {% endwith %}
+        {% std_field form.correct_address %}
 
         <div class="form-group-wide move-up js-Conditional" data-conditional-trigger="correct_address" data-conditional-value="False">
             <h4 class="heading-small js-hidden">{% trans "If you answered \"No\":" %}</h4>
-            {% with field=form.updated_address hide_optional=True %}
-            {% include "widgets/std_field.html" %}
-            {% endwith %}
+            {% std_field form.updated_address hide_optional=True %}
         </div>
 
-        {% with form.contact_number as field %}
-            {% include "widgets/std_field.html" %}
-        {% endwith %}
+        {% std_field form.contact_number %}
 
         {% std_field form.email %}
 
-        {% with form.date_of_birth as field %}
-            {% include "widgets/std_field.html" %}
-        {% endwith %}
+        {% std_field form.date_of_birth %}
 
-        {% with form.ni_number as field %}
-            {% include "widgets/std_field.html" %}
-        {% endwith %}
+        {% std_field form.ni_number %}
 
-        {% with form.driving_licence_number as field %}
-            {% include "widgets/std_field.html" %}
-        {% endwith %}
+        {% std_field form.driving_licence_number %}
 
     {% endwith %}
 
