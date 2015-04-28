@@ -896,14 +896,14 @@ p {
   margin-top: 0.3125em;
   margin-bottom: 1.25em; }
 
-.lede, .content-header p:first-of-type {
+.lede, .content-header > p:first-of-type {
   font-family: "nta", Arial, sans-serif;
   font-size: 24px;
   line-height: 1.25;
   font-weight: 400;
   text-transform: none; }
   @media (max-width: 640px) {
-    .lede, .content-header p:first-of-type {
+    .lede, .content-header > p:first-of-type {
       font-size: 18px;
       line-height: 1.2; } }
 
@@ -1632,6 +1632,9 @@ hr {
 .panel-grey {
   background: #dee0e2;
   padding: 10px; }
+
+.panel-grey > :first-child {
+  margin-top: 0; }
 
 .panel-grey > :last-child {
   margin-bottom: 0; }

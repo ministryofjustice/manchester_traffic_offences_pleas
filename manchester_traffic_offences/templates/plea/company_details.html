@@ -34,8 +34,12 @@
      <header class="content-header">
         <h1>{% trans "Your details" %}</h1>
 
-        <p class="lede">{% trans "We need these in case we have to contact you about your plea." %}</p>
-        <p class="lede">{% trans "<strong>Warning:</strong> You can only make a plea on behalf of a company if you are a director, the company secretary or the company's solicitor." %}</p>
+        <p>{% trans "We need these in case we have to contact you about your plea." %}</p>
+
+        <div class="panel-grey">
+            <h2 class="heading-small">{% trans "Warning:" %}</h2>
+            <p>{% trans "You can only make a plea on behalf of a company if you are a director, the company secretary or the company's solicitor." %}</p>
+        </div>
     </header>
 
         {% std_field form.company_name %}
