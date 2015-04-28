@@ -162,23 +162,23 @@
                     {% endif %}
                 </td>
             </tr>
-            {% if plea.guilty == "guilty" and plea.guilty_extra %}
+            {% if plea.guilty == "guilty" %}
             <tr>
                 <th class="label">
-                    {% trans "Special circumstances" %}
+                    {% trans "Mitigation" %}
                 </th>
                 <td>
-                    {{ plea.guilty_extra|linebreaksbr }}
+                    {{ plea.guilty_extra|linebreaksbr|default:"-" }}
                 </td>
             </tr>
             {% endif %}
-            {% if plea.guilty == "not_guilty" and plea.not_guilty_extra %}
+            {% if plea.guilty == "not_guilty" %}
             <tr>
                 <th class="label">
-                    {% trans "Not guilty because?" %}
+                    {% trans "Not guilty because" %}
                 </th>
                 <td>
-                    {{ plea.not_guilty_extra|linebreaksbr }}
+                    {{ plea.not_guilty_extra|linebreaksbr|default:"-" }}
                 </td>
             </tr>
             {% endif %}

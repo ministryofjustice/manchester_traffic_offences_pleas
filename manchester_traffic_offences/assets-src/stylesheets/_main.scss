@@ -68,6 +68,36 @@ Main styles
 	width: 5em;
 }
 
+
+/*== Pleas screen ==========================================*/
+.section-plea {
+	padding-top: 1em;
+
+	fieldset {
+		position: relative;
+	}
+
+	.label-line {
+		&:before {
+			content: "";
+			position: absolute;
+			width: 100%;
+			border-top: 2px solid $grey-2;
+			top: .5em;
+		}
+
+		.label-text {
+			position: relative;
+			padding-right: 10px;
+			background: #fff;
+		}
+	}
+
+	.js-Conditional .form-group {
+		margin-bottom: 0;
+	}
+}
+
 /*== Expenses screen =======================================*/
 #expense-summary {
 
