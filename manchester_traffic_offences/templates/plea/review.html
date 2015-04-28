@@ -140,7 +140,12 @@
         <thead>
             <tr>
                 <th class="header">
-                    {% blocktrans count charges=case.number_of_charges %}Your plea{% plural %}Your pleas{% endblocktrans %}</th>
+                {% if case.plea_made_by == "Defendant" %}
+                    {% blocktrans count charges=case.number_of_charges %}Your plea{% plural %}Your pleas{% endblocktrans %}
+                {% else %}
+                    {% blocktrans count charges=case.number_of_charges %}Company's plea{% plural %}Company's pleas{% endblocktrans %}
+                {% endif %}
+                </th>
                 <th class="change-link"><a href="{% url "plea_form_step" "plea" %}" class="review">
                     {% blocktrans count charges=case.number_of_charges %}Change your plea{% plural %}Change your pleas{% endblocktrans %}</a></th>
             </tr>
@@ -153,7 +158,13 @@
             </tr>
             {% endif %}
             <tr>
-                <th class="label">{% blocktrans count counter=1 %}Your plea{% plural %}Your pleas{% endblocktrans %}</th>
+                <th class="label">
+                    {% if case.plea_made_by == "Defendant" %}
+                        {% blocktrans count counter=1 %}Your plea{% plural %}Your pleas{% endblocktrans %}
+                    {% else %}
+                        {% trans "Company plea" %}
+                    {% endif %}
+                </th>
                 <td>
                     {% if plea.guilty == "guilty" %}
                         {% trans "Guilty" %}
@@ -186,35 +197,8 @@
         </tbody>
     </table>
 
-{% if case.plea_made_by == "Company representative" and not company_finances.skipped %}
-    {% add_test_tag "<<SHOWCOMPANYFINANCES>>" %}
-    <table class="review-table" id="company-details">
-        <thead>
-            <tr>
-                <th class="header">{% trans "Company financial details" %}</th>
-                <th class="change-link"><a href="{% url "plea_form_step" "company_finances" %}" class="review">{% trans "Change details" %}</a></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th class="label">{% trans "Number of employees" %}</th>
-                <td>{{ company_finances.number_of_employees }}</td>
-            </tr>
-            <tr>
-                <td colspan="2"><h3>{% if company_finances.trading_period %}{% trans "From the most recent audited company accounts" %}{% else %}{% trans "From the first 12 month's trading projections" %}{% endif %}</h3></td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Gross turnover" %}</th>
-                <td>£{{ company_finances.gross_turnover|intcomma }}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Net turnover" %}</th>
-                <td>£{{ company_finances.net_turnover|intcomma }}</td>
-            </tr>
-        </tbody>
-    </table>
-{% else %}
-    {%  if not your_finances.skipped %}
+{% if case.plea_made_by == "Defendant" %}
+    {% if not your_finances.skipped %}
         <table class="review-table" id="your-money">
             <thead>
                 <tr>
@@ -227,74 +211,54 @@
                     <th class="label">{% trans "You are" %}</th>
                     <td>{% trans your_finances.you_are %}</td>
                 </tr>
-                {% if your_finances.you_are == "Employed" %}
-                <tr>
-                    <th class="label">{% trans "Your Job" %}</th>
-                    <td>{{ your_finances.employed_your_job }}</td>
-                </tr>
+            {% if your_finances.you_are == "Employed" %}
                 <tr>
                     <th class="label">{% trans "You get paid" %}</th>
                     <td>{% trans your_finances.employed_take_home_pay_period %}</td>
                 </tr>
                 <tr>
                     <th class="label">{% trans "Amount" %}</th>
-                    <td>£{{ your_finances.employed_take_home_pay_amount|intcomma }}</td>
-                </tr>
-                {% endif %}
-                {% if your_finances.you_are == "Self-employed" %}
-                <tr>
-                    <th class="label">{% trans "Your Job" %}</th>
-                    <td>{{ your_finances.your_job }}</td>
-                </tr>
-                <tr>
-                    <th class="label">{% trans "You get paid" %}</th>
-                    <td>
-                        {% if your_finances.self_employed_pay_period == "Self-employed other" %}
-                            {% trans "Other" %}
-                        {% else %}
-                        {% trans your_finances.self_employed_pay_period %}
-                        {% endif %}
-                    </td>
-                </tr>
-            {% if your_finances.self_employed_pay_period == "Self-employed other" %}
-                <tr>
-                    <th class="label">{% trans "Details" %}</th>
-                    <td>{{ your_finances.self_employed_pay_other }}</td>
+                    <td>£{{ your_finances.employed_take_home_pay_amount|floatformat:2|intcomma }}</td>
                 </tr>
             {% endif %}
+            {% if your_finances.you_are == "Self-employed" %}
+                <tr>
+                    <th class="label">{% trans "You get paid" %}</th>
+                    <td>{% if your_finances.self_employed_pay_period == "Self-employed other" %}{% trans "Other" %}{% else %}{% trans your_finances.self_employed_pay_period %}{% endif %}</td>
+                </tr>
+                {% if your_finances.self_employed_pay_period == "Self-employed other" %}
+                <tr>
+                    <th class="label">{% trans "Details" %}</th>
+                    <td>{{ your_finances.self_employed_pay_other|linebreaksbr|default:"-" }}</td>
+                </tr>
+                {% endif %}
                 <tr>
                     <th class="label">{% trans "Amount" %}</th>
-                    <td>£{{ your_finances.self_employed_pay_amount|intcomma }}</td>
+                    <td>£{{ your_finances.self_employed_pay_amount|floatformat:2|intcomma }}</td>
                 </tr>
             {% endif %}
             {% if your_finances.you_are == "Receiving benefits" %}
                 <tr>
-                    <th class="label">{% trans "Benefits you receive" %}</th>
+                    <th class="label">{% trans "Your benefits" %}</th>
                     <td>{{ your_finances.benefits_details|linebreaksbr }}</td>
+                </tr>
+                <tr>
+                    <th class="label">{% trans "You get paid" %}</th>
+                    <td>{% if your_finances.benefits_period == "Benefits other" %}{% trans "Other" %}{% else %}{% trans your_finances.benefits_period %}{% endif %}</td>
+                </tr>
+                {%  if your_finances.benefits_period == "Benefits other" %}
+                <tr>
+                    <th class="label">{% trans "Details" %}</th>
+                    <td>{{ your_finances.benefits_pay_other|linebreaksbr|default:"-" }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th class="label">{% trans "Amount" %}</th>
+                    <td>£{{ your_finances.benefits_amount|floatformat:2|intcomma }}</td>
                 </tr>
                 <tr>
                     <th class="label">{% trans "Includes payment for dependents?" %}</th>
                     <td>{{ your_finances.benefits_dependents }}</td>
-                </tr>
-                <tr>
-                    <th class="label">{% trans "You get paid" %}</th>
-                    <td>
-                        {% if your_finances.benefits_period == "Benefits other" %}
-                        {% trans "Other" %}
-                        {% else %}
-                        {% trans your_finances.benefits_period %}
-                        {% endif %}
-                    </td>
-                </tr>
-            {%  if your_finances.benefits_period == "Benefits other" %}
-                <tr>
-                    <th class="label">{% trans "Details" %}</th>
-                    <td>{{ your_finances.benefits_pay_other|linebreaksbr }}</td>
-                </tr>
-            {% endif %}
-                <tr>
-                    <th class="label">{% trans "Amount" %}</th>
-                    <td>£{{ your_finances.benefits_amount|intcomma }}</td>
                 </tr>
             {% endif %}
             {% if your_finances.you_are == "Other" %}
@@ -304,14 +268,17 @@
                 </tr>
                 <tr>
                     <th class="label">{% trans "Amount" %}</th>
-                    <td>£{{ your_finances.other_pay_amount|intcomma }}</td>
+                    <td>£{{ your_finances.other_pay_amount|floatformat:2|intcomma }}</td>
                 </tr>
             {% endif %}
+                <tr>
+                    <th class="label">{% trans "Financial hardship" %}</th>
+                    <td>{{ your_finances.hardship|yesno:_("Yes,No") }}</td>
+                </tr>
             </tbody>
         </table>
-    {% endif %}
 
-    {% if your_finances.hardship %}
+        {% if your_finances.hardship %}
         {% add_test_tag "<<SHOWINGEXPENSES>>" %}
         <table class="review-table" id="your-expenses">
             <thead>
@@ -327,19 +294,49 @@
                 </tr>
                 <tr>
                     <th class="label">{% trans "Other contributors to household bills" %}</th>
-                    <td>{% if your_expenses.other_bill_payers %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</td>
+                    <td>{{ your_expenses.other_bill_payers|yesno:_("Yes,No") }}</td>
                 </tr>
                 <tr>
                     <th class="label">{% trans "Total household expenses" %}</th>
-                    <td>£{{ your_expenses.total_household_expenses|intcomma }}</td>
+                    <td>£{{ your_expenses.total_household_expenses|floatformat:2|intcomma }}</td>
                 </tr>
                 <tr>
                     <th class="label">{% trans "Total other expenses" %}</th>
-                    <td>£{{ your_expenses.total_other_expenses|intcomma }}</td>
+                    <td>£{{ your_expenses.total_other_expenses|floatformat:2|intcomma }}</td>
                 </tr>
                 <tr>
                     <th class="label">{% trans "Total expenses" %}</th>
-                    <td>£{{ your_expenses.total_expenses|intcomma }}</td>
+                    <td>£{{ your_expenses.total_expenses|floatformat:2|intcomma }}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% endif %}
+    {% endif %}
+{% else %}
+    {% if not company_finances.skipped %}
+        {% add_test_tag "<<SHOWCOMPANYFINANCES>>" %}
+        <table class="review-table" id="company-details">
+            <thead>
+                <tr>
+                    <th class="header">{% trans "Company financial details" %}</th>
+                    <th class="change-link"><a href="{% url "plea_form_step" "company_finances" %}" class="review">{% trans "Change details" %}</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="label">{% trans "Number of employees" %}</th>
+                    <td>{{ company_finances.number_of_employees }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><h3>{% if company_finances.trading_period %}{% trans "From the most recent audited company accounts" %}{% else %}{% trans "From the first 12 months' trading projections" %}{% endif %}</h3></td>
+                </tr>
+                <tr>
+                    <th class="label">{% trans "Gross turnover" %}</th>
+                    <td>£{{ company_finances.gross_turnover|intcomma }}</td>
+                </tr>
+                <tr>
+                    <th class="label">{% trans "Net turnover" %}</th>
+                    <td>£{{ company_finances.net_turnover|intcomma }}</td>
                 </tr>
             </tbody>
         </table>
@@ -359,22 +356,6 @@
                 <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
                 <span class="checkbox-text">{% blocktrans %}<strong>I confirm</strong> that I have read and understand the charge against me and that I am the person named in the Postal Requisition. The facts stated here are correct to the best of my knowledge.{% endblocktrans %}</span>
             </label>
-        </div>
-    </section>
-
-    <section id="section_receive_email">
-
-        <div class="form-group-wide{% if form.receive_email.errors %} with-error{% endif %}">
-             
-            {{ form.receive_email.errors }}
-
-            <div class="grey">
-                <fieldset>
-                    <legend>{% blocktrans count charges=case.number_of_charges %}Do you want to receive an email confirming your plea?{% plural %}Do you want to receive an email confirming your pleas?{% endblocktrans %}</legend>
-
-                    {{ form.receive_email }}
-                </fieldset>
-            </div>
         </div>
     </section>
 
