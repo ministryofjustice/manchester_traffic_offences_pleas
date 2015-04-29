@@ -38,3 +38,7 @@ ALLOWED_HOSTS = ["dev.makeaplea.dsd.io", ]
 
 # Enable CachedStaticFilesStorage for cache-busting assets
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
+
+TRANSIFEX_USERNAME = os.environ.get("TRANSIFEX_USERNAME", "")
+TRANSIFEX_PASSWORD = os.environ.get("TRANSIFEX_PASSWORD", "")
+TRANSIFEX_PROJECT_SLUG = os.environ.get("TRANSIFEX_PROJECT_SLUG", "")

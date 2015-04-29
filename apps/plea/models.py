@@ -145,13 +145,13 @@ class CourtEmailCount(models.Model):
         self.processed = case_obj.processed
 
     def get_from_context(self, context):
-        if not "plea" in context:
+        if "plea" not in context:
             return
-        if not "PleaForms" in context["plea"]:
+        if "PleaForms" not in context["plea"]:
             return
-        if not "your_details" in context:
+        if "your_details" not in context:
             return
-        if not "case" in context:
+        if "case" not in context:
             return
 
         if self.total_pleas is None:
@@ -346,6 +346,17 @@ class CourtManager(models.Manager):
         return self.get(region_code=urn[:2],
                         enabled=True)
 
+    def validate_emails(self, sending_email, receipt_email):
+        try:
+            self.get(court_receipt_email=sending_email,
+                     local_receipt_email=receipt_email,
+                     enabled=True)
+
+            return True
+
+        except Court.DoesNotExist:
+            return False
+
 
 class Court(models.Model):
     court_code = models.CharField(
@@ -371,6 +382,14 @@ class Court(models.Model):
     submission_email = models.CharField(
         max_length=255,
         help_text="The outbound court email used to send submission data")
+
+    court_receipt_email = models.CharField(
+        max_length=255, null=True, blank=True,
+        help_text="The email address the court uses to send receipt emails to MaP")
+
+    local_receipt_email = models.CharField(
+        max_length=255, null=True, blank=True,
+        help_text="The inbound receipt email address. Used for validation purposes.")
 
     plp_email = models.CharField(
         max_length=255,
