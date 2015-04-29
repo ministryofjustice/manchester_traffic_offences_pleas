@@ -1,0 +1,38 @@
+{% load i18n %}
+{% load testing %}
+{% load humanize %}
+
+{% add_test_tag "<<SHOWINGEXPENSES>>" %}
+
+<table class="review-table" id="your-expenses">
+    <thead>
+        <tr>
+            <th colspan="2">
+                <h2>{% trans "Your expenses" %}</h2>
+                <a class="change-link" href="{% url "plea_form_step" "your_expenses" %}" class="review">{% trans "Change your expenses" %}</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th class="label">{% trans "Financial hardship details" %}</th>
+            <td>{{ your_expenses.hardship_details|linebreaksbr }}</td>
+        </tr>
+        <tr>
+            <th class="label">{% trans "Other contributors to household bills" %}</th>
+            <td>{{ your_expenses.other_bill_payers|yesno:_("Yes,No") }}</td>
+        </tr>
+        <tr>
+            <th class="label">{% trans "Total household expenses" %}</th>
+            <td>£{{ your_expenses.total_household_expenses|floatformat:2|intcomma }}</td>
+        </tr>
+        <tr>
+            <th class="label">{% trans "Total other expenses" %}</th>
+            <td>£{{ your_expenses.total_other_expenses|floatformat:2|intcomma }}</td>
+        </tr>
+        <tr>
+            <th class="label">{% trans "Total expenses" %}</th>
+            <td>£{{ your_expenses.total_expenses|floatformat:2|intcomma }}</td>
+        </tr>
+    </tbody>
+</table>

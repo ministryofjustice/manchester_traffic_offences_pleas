@@ -558,11 +558,6 @@ class ConfirmationForm(BasePleaStepForm):
     understand = forms.BooleanField(required=True,
                                     error_messages={"required": ERROR_MESSAGES["UNDERSTAND_REQUIRED"]})
 
-    receive_email = forms.ChoiceField(required=True,
-                                      widget=RadioSelect(),
-                                      choices=((True, _('Yes')), (False, _('No'))),
-                                      error_messages={"required": ERROR_MESSAGES["RECEIVE_EMAIL"]})
-
 
 class PleaForm(BasePleaStepForm):
     PLEA_CHOICES = (
