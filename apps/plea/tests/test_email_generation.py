@@ -104,6 +104,7 @@ class EmailGenerationTests(TestCase):
 
         self.assertEqual(len(mail.outbox), 3)
         self.assertIn(context_data['case']['urn'].upper(), mail.outbox[-1].body)
+        self.assertIn(context_data['case']['urn'].upper(), mail.outbox[-1].alternatives[0][0])
         self.assertIn(context_data['your_details']['email'], mail.outbox[-1].to)
 
     def test_user_confirmation_for_company_uses_correct_email_address(self):
@@ -132,6 +133,7 @@ class EmailGenerationTests(TestCase):
 
         self.assertEqual(len(mail.outbox), 3)
         self.assertIn(context_data['case']['urn'].upper(), mail.outbox[-1].body)
+        self.assertIn(context_data['case']['urn'].upper(), mail.outbox[-1].alternatives[0][0])
         self.assertIn(context_data['company_details']['email'], mail.outbox[-1].to)
 
     def test_email_addresses_from_court_model(self):
