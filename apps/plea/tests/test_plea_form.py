@@ -521,7 +521,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form.save(test_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 4)
+        self.assertEqual(len(form.current_stage.forms[0].errors), 3)
 
     def test_your_finances_employed_option_with_valid_data(self):
 
@@ -529,7 +529,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         test_data = {
             "you_are": "Employed",
-            "employed_your_job": "Window cleaner",
             "employed_take_home_pay_period": "Fortnightly",
             "employed_take_home_pay_amount": "1000",
             "employed_hardship": True
@@ -549,7 +548,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form.save(test_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 4)
+        self.assertEqual(len(form.current_stage.forms[0].errors), 3)
 
     def test_your_finances_self_employed_option_with_valid_data(self):
 
@@ -557,7 +556,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         test_data = {
             "you_are": "Self-employed",
-            "your_job": "Build trains",
             "self_employed_pay_period": "Fortnightly",
             "self_employed_pay_amount": "1000",
             "self_employed_hardship": False
@@ -1098,7 +1096,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         test_data = {
             "you_are": "Employed",
-            "employed_your_job": "Window cleaner",
             "employed_take_home_pay_period": "Fortnightly",
             "employed_take_home_pay_amount": "1000",
             "employed_hardship": True
@@ -1154,7 +1151,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         test_data = {
             "you_are": "Employed",
-            "employed_your_job": "Window cleaner",
             "employed_take_home_pay_period": "Fortnightly",
             "employed_take_home_pay_amount": "1000",
             "employed_hardship": False
@@ -1178,7 +1174,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         test_data = {
             "you_are": "Self-employed",
-            "your_job": "Build trains",
             "self_employed_pay_period": "Fortnightly",
             "self_employed_pay_amount": "1000",
             "self_employed_hardship": True
@@ -1202,7 +1197,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         test_data = {
             "you_are": "Self-employed",
-            "your_job": "Build trains",
             "self_employed_pay_period": "Fortnightly",
             "self_employed_pay_amount": "1000",
             "self_employed_hardship": False
