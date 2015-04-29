@@ -33,12 +33,14 @@
         <h1>{% trans "Your finances" %}</h1>
     </header>
 
-    <ul>
-        <li>{% trans "For this type of offence you'll usually have to pay a fine" %}</li>
-        <li>{% trans "You must provide your income details" %}</li>
-        <li>{% trans "The court will decide your fine based on your finances and the seriousness of the offence" %}</li>
-        <li>{% trans "Your details will be stored securely by the court" %}</li>
-    </ul>
+    <div class="panel-grey">
+        <p>{% trans "For this type of offence you'll usually have to pay a fine:" %}</p>
+        <ul>
+            <li>{% trans "you must provide your income details" %}</li>
+            <li>{% trans "the court will decide your fine based on your finances and the seriousness of the offence" %}</li>
+            <li>{% trans "your details will be stored securely by the court" %}</li>
+        </ul>
+    </div>
 
     {% radio_field form.you_are %}
 
@@ -54,8 +56,6 @@
         <h3 class="js-hidden">{% trans "You are: Employed" %}</h3>
 
         <div class="panel-indent move-up">
-        
-            {% std_field form.employed_your_job hide_optional=True %}
 
             {% radio_field form.employed_take_home_pay_period hide_optional=True %}
 
@@ -76,8 +76,6 @@
         <h3 class="js-hidden">{% trans "You are: Self-employed" %}</h3>
 
         <div class="panel-indent move-up">
-
-            {% std_field form.your_job hide_optional=True %}
 
             {% radio_field form.self_employed_pay_period hide_optional=True %}
 

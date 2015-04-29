@@ -60,7 +60,6 @@ class EmailTemplateTests(TestCase):
 
         if not finances_data:
             finances_data = {"you_are": "Employed",
-                          "employed_your_job": "Some Job",
                           "employed_take_home_pay_period": "Weekly",
                           "employed_take_home_pay_amount": "100",
                           "employed_hardship": False}
@@ -197,7 +196,6 @@ class EmailTemplateTests(TestCase):
 
     def test_employed_email_finances_output(self):
         context_data_finances = {"you_are": "Employed",
-                              "employed_your_job": "Some Job",
                               "employed_take_home_pay_period": "Weekly",
                               "employed_take_home_pay_amount": "200",
                               "employed_hardship": False}
@@ -207,13 +205,11 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
-        self.assertContains(response, "<tr><th>Your Job</th><td>Some Job</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>You get paid</th><td>Weekly</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Take home pay</th><td>£200</td></tr>", count=1, html=True)
 
     def test_self_employed_email_finances_output(self):
         context_data_finances = {"you_are": "Self-employed",
-                              "your_job": "Tesco",
                               "self_employed_pay_period": "Weekly",
                               "self_employed_pay_amount": "200",
                               "self_employed_hardship": False}
@@ -223,13 +219,11 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
-        self.assertContains(response, "<tr><th>Your Job</th><td>Tesco</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>You get paid</th><td>Weekly</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Amount</th><td>£200</td></tr>", count=1, html=True)
 
     def test_self_employed_other_email_finances_output(self):
         context_data_finances = {"you_are": "Self-employed",
-                              "your_job": "Window cleaner",
                               "self_employed_pay_period": "Self-employed other",
                               "self_employed_pay_amount": "20",
                               "self_employed_pay_other": "by the window",
@@ -240,7 +234,6 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
-        self.assertContains(response, "<tr><th>Your Job</th><td>Window cleaner</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>You get paid</th><td>Other - by the window</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Amount</th><td>£20</td></tr>", count=1, html=True)
 
