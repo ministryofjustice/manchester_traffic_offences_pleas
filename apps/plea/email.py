@@ -18,7 +18,7 @@ from tasks import email_send_court, email_send_prosecutor, email_send_user
 logger = logging.getLogger(__name__)
 
 
-def send_plea_email(context_data, plea_email_to=None, send_user_email=False):
+def send_plea_email(context_data):
     """
     Sends a plea email. All addresses, content etc. are defined in
     settings.
