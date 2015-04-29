@@ -1,0 +1,83 @@
+{% load i18n %}
+{% load humanize %}
+
+<table class="review-table" id="your-finances">
+    <thead>
+        <tr>
+            <th colspan="2">
+                <h2>{% trans "Your finances" %}</h2>
+                <a class="change-link" href="{% url "plea_form_step" "your_finances" %}" class="review">{% trans "Change your finances" %}</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th class="label">{% trans "You are" %}</th>
+            <td>{% trans your_finances.you_are %}</td>
+        </tr>
+    {% if your_finances.you_are == "Employed" %}
+        <tr>
+            <th class="label">{% trans "You get paid" %}</th>
+            <td>{% trans your_finances.employed_take_home_pay_period %}</td>
+        </tr>
+        <tr>
+            <th class="label">{% trans "Amount" %}</th>
+            <td>£{{ your_finances.employed_take_home_pay_amount|floatformat:2|intcomma }}</td>
+        </tr>
+    {% endif %}
+    {% if your_finances.you_are == "Self-employed" %}
+        <tr>
+            <th class="label">{% trans "You get paid" %}</th>
+            <td>{% if your_finances.self_employed_pay_period == "Self-employed other" %}{% trans "Other" %}{% else %}{% trans your_finances.self_employed_pay_period %}{% endif %}</td>
+        </tr>
+        {% if your_finances.self_employed_pay_period == "Self-employed other" %}
+        <tr>
+            <th class="label">{% trans "Details" %}</th>
+            <td>{{ your_finances.self_employed_pay_other|linebreaksbr|default:"-" }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <th class="label">{% trans "Amount" %}</th>
+            <td>£{{ your_finances.self_employed_pay_amount|floatformat:2|intcomma }}</td>
+        </tr>
+    {% endif %}
+    {% if your_finances.you_are == "Receiving benefits" %}
+        <tr>
+            <th class="label">{% trans "Your benefits" %}</th>
+            <td>{{ your_finances.benefits_details|linebreaksbr }}</td>
+        </tr>
+        <tr>
+            <th class="label">{% trans "You get paid" %}</th>
+            <td>{% if your_finances.benefits_period == "Benefits other" %}{% trans "Other" %}{% else %}{% trans your_finances.benefits_period %}{% endif %}</td>
+        </tr>
+        {%  if your_finances.benefits_period == "Benefits other" %}
+        <tr>
+            <th class="label">{% trans "Details" %}</th>
+            <td>{{ your_finances.benefits_pay_other|linebreaksbr|default:"-" }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <th class="label">{% trans "Amount" %}</th>
+            <td>£{{ your_finances.benefits_amount|floatformat:2|intcomma }}</td>
+        </tr>
+        <tr>
+            <th class="label">{% trans "Includes payment for dependents?" %}</th>
+            <td>{{ your_finances.benefits_dependents }}</td>
+        </tr>
+    {% endif %}
+    {% if your_finances.you_are == "Other" %}
+        <tr>
+            <th class="label">{% trans "Details" %}</th>
+            <td>{{ your_finances.other_details|linebreaksbr }}</td>
+        </tr>
+        <tr>
+            <th class="label">{% trans "Amount" %}</th>
+            <td>£{{ your_finances.other_pay_amount|floatformat:2|intcomma }}</td>
+        </tr>
+    {% endif %}
+        <tr>
+            <th class="label">{% trans "Financial hardship" %}</th>
+            <td>{{ your_finances.hardship|yesno:_("Yes,No") }}</td>
+        </tr>
+    </tbody>
+</table>
