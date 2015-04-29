@@ -198,10 +198,6 @@ class YourMoneyForm(BasePleaStepForm):
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
     # Employed
-    employed_your_job = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                                        required=False, max_length=500, label=_("What's your job?"),
-                                        error_messages={"required": ERROR_MESSAGES["YOUR_JOB_REQUIRED"]})
-
     employed_take_home_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                       choices=PERIOD_CHOICES, required=False,
                                                       label=_("How often do you get paid?"),
@@ -228,10 +224,6 @@ class YourMoneyForm(BasePleaStepForm):
                                                error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
     # Self-employed
-    your_job = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                               required=False, max_length=100, label=_("What's your job?"),
-                               error_messages={"required": ERROR_MESSAGES["YOUR_JOB_REQUIRED"]})
-
     self_employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                  choices=SE_PERIOD_CHOICES, required=False,
                                                  label=_("How often do you get paid?"),
@@ -334,13 +326,11 @@ class YourMoneyForm(BasePleaStepForm):
 
         if "you_are" in data:                
             if data["you_are"] == "Employed":
-                self.fields["employed_your_job"].required = True
                 self.fields["employed_take_home_pay_period"].required = True
                 self.fields["employed_take_home_pay_amount"].required = True
                 self.fields["employed_hardship"].required = True
 
             if data["you_are"] == "Self-employed":
-                self.fields["your_job"].required = True
                 self.fields["self_employed_pay_period"].required = True
                 self.fields["self_employed_pay_amount"].required = True
                 self.fields["self_employed_hardship"].required = True
