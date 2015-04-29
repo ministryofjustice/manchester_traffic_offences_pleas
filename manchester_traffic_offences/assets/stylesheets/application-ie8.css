@@ -1741,40 +1741,48 @@ Main styles
 .review-table {
   margin: 0 0 2em;
   border-bottom: 1px solid #bfc1c3; }
-  .review-table th,
-  .review-table td {
+  .review-table thead th {
+    padding: 1.125em 0 0; }
+    .review-table thead th h2 {
+      display: inline-block;
+      margin: 0 0 .5em;
+      font-family: "nta", Arial, sans-serif;
+      font-size: 24px;
+      line-height: 1.25;
+      font-weight: 700;
+      text-transform: none; }
+      @media (max-width: 640px) {
+        .review-table thead th h2 {
+          font-size: 18px;
+          line-height: 1.2; } }
+    .review-table thead th .change-link {
+      float: right;
+      margin: .1em 0 .75em 1em;
+      font-family: "nta", Arial, sans-serif;
+      font-size: 19px;
+      line-height: 1.31579;
+      font-weight: 400;
+      text-transform: none;
+      margin-top: .2em; }
+      @media (max-width: 640px) {
+        .review-table thead th .change-link {
+          font-size: 16px;
+          line-height: 1.25; } }
+  .review-table tbody th, .review-table tbody td {
     font-family: "nta", Arial, sans-serif;
     font-size: 19px;
     line-height: 1.31579;
     font-weight: 400;
     text-transform: none;
-    vertical-align: top; }
+    vertical-align: top;
+    border-bottom: none; }
     @media (max-width: 640px) {
-      .review-table th,
-      .review-table td {
+      .review-table tbody th, .review-table tbody td {
         font-size: 16px;
         line-height: 1.25; } }
-  .review-table thead th {
-    vertical-align: bottom; }
-  .review-table tbody th, .review-table tbody td {
-    border-bottom: none; }
-  .review-table .header {
-    font-family: "nta", Arial, sans-serif;
-    font-size: 24px;
-    line-height: 1.25;
-    font-weight: 700;
-    text-transform: none;
-    width: 45%;
-    padding-right: 0;
-    width: 30%; }
-    @media (max-width: 640px) {
-      .review-table .header {
-        font-size: 18px;
-        line-height: 1.2; } }
-  .review-table .change-link {
-    padding-right: 0;
-    text-align: right; }
   .review-table .label {
+    width: 45%;
+    width: 30%;
     color: #6f777b; }
   .review-table h3 {
     font-family: "nta", Arial, sans-serif;
@@ -1820,33 +1828,6 @@ Main styles
   #section_understand .block-label .checkbox-text {
     display: block;
     margin-left: 40px; }
-
-#section_receive_email .grey {
-  padding: 1em;
-  background: #dee0e2; }
-  #section_receive_email .grey ul {
-    margin: 0;
-    padding: 0; }
-    #section_receive_email .grey ul li {
-      display: inline-block;
-      margin: 0 1em 0 0; }
-      #section_receive_email .grey ul li label {
-        font-family: "nta", Arial, sans-serif;
-        font-size: 24px;
-        line-height: 1.25;
-        font-weight: 400;
-        text-transform: none;
-        padding: .5em .5em .5em 0;
-        margin: 0;
-        cursor: pointer; }
-        @media (max-width: 640px) {
-          #section_receive_email .grey ul li label {
-            font-size: 18px;
-            line-height: 1.2; } }
-        #section_receive_email .grey ul li label.selected {
-          background: transparent; }
-        #section_receive_email .grey ul li label input {
-          vertical-align: middle; }
 
 /*== Complete screen ===============================================*/
 #content .success-header {
