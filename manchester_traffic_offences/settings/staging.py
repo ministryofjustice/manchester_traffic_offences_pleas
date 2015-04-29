@@ -42,3 +42,7 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStora
 SESSION_COOKIE_SECURE = True
 
 STORE_USER_DATA = True
+
+TRANSIFEX_USERNAME = os.environ.get("TRANSIFEX_USERNAME", "")
+TRANSIFEX_PASSWORD = os.environ.get("TRANSIFEX_PASSWORD", "")
+TRANSIFEX_PROJECT_SLUG = os.environ.get("TRANSIFEX_PROJECT_SLUG", "")
