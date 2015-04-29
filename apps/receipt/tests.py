@@ -4,6 +4,7 @@ import json
 from django.core import mail
 from django.core.urlresolvers import reverse
 from django.test import TestCase, RequestFactory
+from django.test.utils import override_settings
 
 from mock import Mock, patch
 
@@ -12,6 +13,7 @@ from .models import ReceiptLog
 from .process import (extract_data_from_email, InvalidFormatError,
                                   process_receipts)
 from .views import ReceiptWebhook
+from apps.plea.models import Court
 
 
 class TestEmailSubjectProcessing(TestCase):
@@ -81,8 +83,7 @@ class TestProcessReceipts(TestCase):
         self.case = Case.objects.create(
             urn=self.urn,
             sent=True,
-            processed=False
-        )
+            processed=False)
 
         self.email_count = CourtEmailCount.objects.create(
             hearing_date=self.doh,
@@ -90,8 +91,7 @@ class TestProcessReceipts(TestCase):
             total_guilty=1,
             total_not_guilty=0,
             sent=True,
-            processed=False
-        )
+            processed=False)
 
         patcher = patch('apps.receipt.process.get_receipt_emails')
         self.addCleanup(patcher.stop)
@@ -303,13 +303,30 @@ class WebHookTestCase(TestCase):
         Random content.
         """.format(self.case.id, self.email_count.id)
 
+        self.court = Court.objects.create(
+            court_code="51",
+            region_code="06",
+            court_name="whatever",
+            court_address="asdf",
+            enabled=True,
+            court_telephone="00000",
+            court_email="test@test.com",
+            submission_email="",
+            court_receipt_email="sending@test.com",
+            local_receipt_email="incoming@test.com",
+            test_mode=False)
 
-    def _get_mandrill_post_data(self, subject=None, text=None):
+    def _get_mandrill_post_data(self, subject=None, text=None, from_email=None, email=None):
         return {
             "mandrill_events": json.dumps([{
                 "msg": {
-                    "subject": subject if subject else self.passed_email_subject,
-                    "text": text if text else self.email_body_valid
+                    "subject": subject or self.passed_email_subject,
+                    "text": text or self.email_body_valid,
+                    "from_email": from_email or "sending@test.com",
+                    "email": email or "incoming@test.com",
+                    "headers": [
+                        "DKIMwhatever: somerequiredtext"
+                    ]
                 }
             }])
         }
@@ -332,13 +349,11 @@ class WebHookTestCase(TestCase):
         self.assertEquals(log.total_failed, 0)
         self.assertEquals(log.total_errors, 0)
 
-
     def test_failed_entry(self):
 
         request = self.factory.post(reverse("receipt_webhook"),
                                     self._get_mandrill_post_data(
-                                        subject=self.failed_email_subject
-                                    ))
+                                        subject=self.failed_email_subject))
 
         ReceiptWebhook.as_view()(request)
 
@@ -359,8 +374,39 @@ class WebHookTestCase(TestCase):
 
         request = self.factory.post(reverse("receipt_webhook"),
                                     self._get_mandrill_post_data(
-                                        subject=self.passed_email_subject
-                                    ))
+                                        subject=self.passed_email_subject))
+
+        ReceiptWebhook.as_view()(request)
+
+        self.assertEquals(ReceiptLog.objects.all().count(), 1)
+
+        log = ReceiptLog.objects.all()[0]
+
+        self.assertEquals(log.total_emails, 1)
+        self.assertEquals(log.total_success, 0)
+        self.assertEquals(log.total_failed, 0)
+        self.assertEquals(log.total_errors, 1)
+
+    @override_settings(RECEIPT_HEADER_FRAGMENT_CHECK="MUSTHAVETHISTEXT")
+    def test_missing_header(self):
+        request = self.factory.post(reverse("receipt_webhook"),
+                                    self._get_mandrill_post_data())
+
+        ReceiptWebhook.as_view()(request)
+
+        self.assertEquals(ReceiptLog.objects.all().count(), 1)
+
+        log = ReceiptLog.objects.all()[0]
+
+        self.assertEquals(log.total_emails, 1)
+        self.assertEquals(log.total_success, 0)
+        self.assertEquals(log.total_failed, 0)
+        self.assertEquals(log.total_errors, 1)
+
+    def test_invalid_emails(self):
+
+        request = self.factory.post(reverse("receipt_webhook"),
+                                    self._get_mandrill_post_data(from_email="invalid@invalid.com"))
 
         ReceiptWebhook.as_view()(request)
 
