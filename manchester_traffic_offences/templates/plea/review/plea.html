@@ -1,0 +1,62 @@
+{% load i18n %}
+
+<table class="review-table" id="your-plea">
+    <thead>
+        <tr>
+            <th colspan="2">
+                {% if case.plea_made_by == "Defendant" %}
+                <h2>{% blocktrans count charges=case.number_of_charges %}Your plea{% plural %}Your pleas{% endblocktrans %}</h2>
+                {% elif case.plea_made_by == "Company representative" %}
+                <h2>{% blocktrans count charges=case.number_of_charges %}Company's plea{% plural %}Company's pleas{% endblocktrans %}</h2>
+                {% endif %}
+                
+                <a class="change-link" href="{% url "plea_form_step" "plea" %}" class="review">{% blocktrans count charges=case.number_of_charges %}Change your plea{% plural %}Change your pleas{% endblocktrans %}</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for plea in plea.PleaForms %}
+        {% if case.number_of_charges > 1 %}
+        <tr>
+            <td colspan="2"><h3>{% trans "Charge" %} {{ forloop.counter }}</h3></td>
+        </tr>
+        {% endif %}
+        <tr>
+            <th class="label">
+                {% if case.plea_made_by == "Defendant" %}
+                    {% blocktrans count counter=1 %}Your plea{% plural %}Your pleas{% endblocktrans %}
+                {% else %}
+                    {% trans "Company plea" %}
+                {% endif %}
+            </th>
+            <td>
+                {% if plea.guilty == "guilty" %}
+                    {% trans "Guilty" %}
+                {% elif plea.guilty == "not_guilty" %}
+                    {% trans "Not guilty" %}
+                {% endif %}
+            </td>
+        </tr>
+        {% if plea.guilty == "guilty" %}
+        <tr>
+            <th class="label">
+                {% trans "Mitigation" %}
+            </th>
+            <td>
+                {{ plea.guilty_extra|linebreaksbr|default:"-" }}
+            </td>
+        </tr>
+        {% endif %}
+        {% if plea.guilty == "not_guilty" %}
+        <tr>
+            <th class="label">
+                {% trans "Not guilty because" %}
+            </th>
+            <td>
+                {{ plea.not_guilty_extra|linebreaksbr|default:"-" }}
+            </td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+    </tbody>
+</table>
