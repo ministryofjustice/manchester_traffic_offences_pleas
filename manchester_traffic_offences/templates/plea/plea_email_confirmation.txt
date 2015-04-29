@@ -12,36 +12,10 @@
 
 {% trans "What happens next?" %}
 
-{% if plea_type == "guilty" %}
-    {% add_test_tag "<<GUILTY>>" %}
-
-1. {% trans "There's no need to come to court on the hearing date shown in the pack we sent you." %}
-2. {% trans "We'll send you a letter with the court's decision{{ case.number_of_charges|pluralize}} within three working days after your hearing." %}
-3. {% blocktrans with urn=urn|upper %}Quote your URN {{ urn }} if you contact the court about your case.{% endblocktrans %}
-4. {% trans "Print a copy of this confirmation of plea for your records." %}
-
-{% endif %}
-
-{% if plea_type == "not_guilty" %}
-    {% add_test_tag "<<NOTGUILTY>>" %}
-
-1. {% blocktrans %}There's no need to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}
-2. {% blocktrans %}The court will tell you if you need to attend for your trial, and what evidence you may need to send to the court in support of your case.{% endblocktrans %}
-3. {% blocktrans count charges=number_of_charges %}We'll send you a letter with the court's decision within three working days after your hearing.{% plural %}We'll send you a letter with the court's decisions within three working days after your hearing.{% endblocktrans %}
-4. {% blocktrans with urn=urn|upper %}Quote your URN {{ urn }} if you contact the court about your case.{% endblocktrans %}
-5. {% trans "Print a copy of this confirmation of plea for your records." %}
-
-{% endif %}
-
-{% if plea_type == "mixed" %}
-    {% add_test_tag "<<MIXED>>" %}
-
-1. {% trans "There's no need to come to court on the hearing date shown in the pack we sent you." %}
-2. {% trans "The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case." %}
-3. {% trans "We'll send you a letter with the court's decisions within three working days after your hearing." %}
-4. {% blocktrans with urn=urn|upper %}Quote your URN {{ urn }} if you contact the court about your case.{% endblocktrans %}
-5. {% trans "Print a copy of this confirmation of plea for your records." %}
-
+{% if plea_made_by == "Defendant" %}
+    {% include "plea/complete/email_txt/whats_next_defendant.txt" %}
+{% elif plea_made_by == "Company representative" %}
+    {% include "plea/complete/email_txt/whats_next_company.txt" %}
 {% endif %}
 
 {% trans "Need to change a plea?" %}
