@@ -1697,7 +1697,8 @@ hr {
 
 .panel-grey {
   background: #dee0e2;
-  padding: 10px; }
+  padding: 10px;
+  margin: 30px 0 45px; }
   @media (min-width: 641px) {
     .panel-grey {
       padding: 15px; } }

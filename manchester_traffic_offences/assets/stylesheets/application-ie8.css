@@ -1623,6 +1623,7 @@ hr {
 .panel-grey {
   background: #dee0e2;
   padding: 10px;
+  margin: 30px 0 45px;
   padding: 15px; }
 
 .panel-grey > :first-child {
