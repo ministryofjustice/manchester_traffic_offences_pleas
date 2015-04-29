@@ -46,7 +46,6 @@ ERROR_MESSAGES = {
     "EMPLOYERS_ADDRESS_REQUIRED": _("You must provide your employer's full address"),
     "PAY_PERIOD_REQUIRED": _("Tell us how often you get paid"),
     "PAY_AMOUNT_REQUIRED": _("Enter your take home pay"),
-    "YOUR_JOB_REQUIRED": _("Tell us what your job is"),
     "BENEFITS_DETAILS_REQUIRED": _("Tell us which benefits you receive"),
     "BENEFITS_DEPENDANTS_REQUIRED": _("Tell us if this includes payment for dependants"),
     "HARDSHIP_REQUIRED": _("Tell us if paying a fine would cause you serious financial problems"),
