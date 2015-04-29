@@ -136,6 +136,7 @@ def email_send_user(self, email_data, case_id):
     data = {
         'email': email,
         'urn': email_data['case']['urn'],
+        'plea_made_by': email_data['case']['plea_made_by'],
         'number_of_charges': email_data['case']['number_of_charges'],
         'plea_type': get_plea_type(email_data),
         'name': name,

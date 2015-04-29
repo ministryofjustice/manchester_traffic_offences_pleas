@@ -3,58 +3,31 @@
 
 {% load testing %}
 
-{% block page_title %}{% blocktrans count charges=case.number_of_charges %}Your plea has been sent{% plural %}Your pleas have been sent{% endblocktrans %} - {{ block.super }}{% endblock %}
+{% block page_title %}{% blocktrans count charges=case.number_of_charges %}Your plea has been submitted{% plural %}Your pleas have been submitted{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 {% block page_content %}
 
 <header class="success-header">
-    <h1 class="ticked">{% if plea_type == "guilty" %}
-    {% blocktrans count charges=case.number_of_charges %}Your guilty plea has been sent to the court{% plural %}Your guilty pleas have been sent to the court{% endblocktrans %}
-{% elif plea_type == "not_guilty" %}
-    {% blocktrans count charges=case.number_of_charges %}Your not guilty plea has been sent to the court{% plural %}Your not guilty pleas have been sent to the court{% endblocktrans %}
-{% elif plea_type == "mixed" %}
-    {% trans "Your pleas have been sent to the court" %}
-{% endif %}</h1>
+    <h1 class="ticked">
+    {% if case.plea_made_by == "Defendant" %}
+        {% blocktrans count charges=case.number_of_charges %}Your plea has been sent to the court{% plural %}Your pleas have been sent to the court{% endblocktrans %}
+    {% elif case.plea_made_by == "Company representative" %}
+        {% blocktrans count charges=case.number_of_charges %}Company plea has been submitted{% plural %}Company pleas have been submitted{% endblocktrans %}
+    {% endif %}
+    </h1>
 </header>
 
 
 <h2 class="heading-medium">{% trans "What happens next?" %}</h2>
 
 <div class="panel-indent what-next">
-    {% if plea_type == "guilty" %}
-        {% add_test_tag "<<GUILTY>>" %}
-        <ol>
-            <li>{% blocktrans %}There's <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}</li>
-            <li>{% blocktrans count charges=case.number_of_charges %}We'll send you a letter with the court's decision <strong>within three working days after your hearing.</strong>{% plural %}We'll send you a letter with the court's decisions <strong>within three working days after your hearing.</strong>{% endblocktrans %}</li>
-            <li>{% blocktrans with urn=case.urn|upper email=court.court_email  %}Quote your URN <strong>{{ urn }}</strong> if you <a href="mailto:{{ email }}">contact</a> the court about your case.{% endblocktrans %}</li>
-            <li>{% blocktrans %}<a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.{% endblocktrans %}</li>
-            <li>{% blocktrans %}If you requested email updates you'll be sent a copy of this confirmation of plea.{% endblocktrans %}</li>
-        </ol>
+    
+    {% if case.plea_made_by == "Defendant" %}
+        {% include "plea/complete/screen/whats_next_defendant.html" %}
+    {% elif case.plea_made_by == "Company representative" %}
+        {% include "plea/complete/screen/whats_next_company.html" %}
     {% endif %}
-
-    {% if plea_type == "not_guilty" %}
-        {% add_test_tag "<<NOTGUILTY>>" %}
-        <ol>
-            <li>{% blocktrans %}There's <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}</li>
-            <li>{% blocktrans %}The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.{% endblocktrans %}</li>
-            <li>{% blocktrans count charges=case.number_of_charges %}We'll send you a letter with the court's decision <strong>within three working days after your hearing.</strong>{% plural %}We'll send you a letter with the court's decisions <strong>within three working days after your hearing.</strong>{% endblocktrans %}</li>
-            <li>{% blocktrans with urn=case.urn|upper email=court.court_email %}Quote your URN <strong>{{ urn }}</strong> if you <a href="mailto:{{ email }}">contact</a> the court about your case.{% endblocktrans %}</li>
-            <li>{% blocktrans %}<a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.{% endblocktrans %}</li>
-            <li>{% blocktrans %}If you requested email updates you'll be sent a copy of this confirmation of plea.{% endblocktrans %}</li>
-        </ol>
-    {% endif %}
-
-    {% if plea_type == "mixed" %}
-        {% add_test_tag "<<MIXED>>" %}
-        <ol>
-            <li>{% blocktrans %}There's <strong>no need</strong> to come to court on the hearing date shown in the pack we sent you.{% endblocktrans %}</li>
-            <li>{% blocktrans %}The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.{% endblocktrans %}</li>
-            <li>{% blocktrans %}We'll send you a letter with the court's decisions <strong>within three working days after your hearing.</strong>{% endblocktrans %}</li>
-            <li>{% blocktrans with urn=case.urn|upper email=court.court_email %}Quote your URN <strong>{{ urn }}</strong> if you <a href="mailto:{{ email }}">contact</a> the court about your case.{% endblocktrans %}</li>
-            <li>{% blocktrans %}<a href="javascript:window.print();">Print a copy</a> of this confirmation of plea for your records.{% endblocktrans %}</li>
-            <li>{% blocktrans %}If you requested email updates you'll be sent a copy of this confirmation of plea.{% endblocktrans %}</li>
-        </ol>
-    {% endif %}
+    
 </div>
 
 <h2 class="heading-medium">{% trans "Need to change a plea?" %}</h2>
