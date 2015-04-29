@@ -170,7 +170,6 @@ INSTALLED_APPS = [
     'south',
     'django_extensions',
     'waffle',
-    'djangotransifex'
 ]
 
 PROJECT_APPS = [
