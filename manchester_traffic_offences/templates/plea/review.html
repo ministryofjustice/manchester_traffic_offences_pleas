@@ -1,11 +1,8 @@
 {% extends "plea/base.html" %}
 
 {% load i18n %}
-{% load humanize %}
 
 {% block page_title %}{% blocktrans count charges=case.number_of_charges %}Confirm your plea{% plural %}Confirm your pleas{% endblocktrans %} - {{ block.super }}{% endblock %}
-
-{% load date testing %}
 
 {% block page_content %}
 <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
@@ -36,347 +33,29 @@
         <p>{% blocktrans count charges=case.number_of_charges %}Review the information you’ve given before making your plea.{% plural %}Review the information you’ve given before making your pleas.{% endblocktrans %}</p>
     </header>
 
-    <table class="review-table" id="case-details">
-        <thead>
-            <tr>
-                <th class="header">{% trans "Case details" %}</th>
-                <th class="change-link"><a href="{% url "plea_form_step" "case" %}" class="review">{% trans "Change case details" %}</a></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th class="label">{% trans "Unique reference number" %}</th>
-                <td>{{ case.urn }}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Court hearing date" %}</th>
-                <td>{{ case.date_of_hearing|parse_date|date:"d/m/Y" }}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Number of charges against you" %}</th>
-                <td>{{ case.number_of_charges }}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Plea made by" %}</th>
-                <td>{% if case.plea_made_by == "Defendant" %}{% trans "Defendant" %}{% else %}{% trans "Company representative" %}{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
+    {% include "plea/review/case.html" %}
 
-    <table class="review-table" id="your-details">
-        <thead>
-            <tr>
-                <th class="header">{% trans "Your details" %}</th>
-                {% if case.plea_made_by == "Defendant" %}
-                <th class="change-link"><a href="{% url "plea_form_step" "your_details" %}" class="review">{% trans "Change your details" %}</a></th>
-                {% else %}
-                <th class="change-link"><a href="{% url "plea_form_step" "company_details" %}" class="review">{% trans "Change your details" %}</a></th>
-                {% endif %}
-            </tr>
-        </thead>
-        <tbody>
+    {% include "plea/review/details.html" %}
 
-        {% if case.plea_made_by == "Defendant" %}
-            {% add_test_tag "<<SHOWYOURDETAILS>>" %}
-            <tr>
-                <th class="label">{% trans "Full name" %}</th>
-                <td>{{ your_details.name }}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Address" %}</th>
-                <td>{% if your_details.correct_address %}{% trans "As printed on Postal Requisition" %}{% else %}{{ your_details.updated_address|linebreaksbr }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Contact number" %}</th>
-                <td>{{ your_details.contact_number }}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Email" %}</th>
-                <td>{{ your_details.email }}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Date of birth" %}</th>
-                <td>{{ your_details.date_of_birth|parse_date|date:"d/m/Y" }}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "National Insurance number" %}</th>
-                <td>{{ your_details.ni_number|default:"-" }}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "UK driving licence number" %}</th>
-                <td>{{ your_details.driving_licence_number|default:"-" }}</td>
-            </tr>
-        {% else %}
-            {% add_test_tag "<<SHOWCOMPANYDETAILS>>" %}
-            <tr>
-                <th class="label">{% trans "Company name" %}</th>
-                <td>{{ company_details.company_name }}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Company address" %}</th>
-                <td>{{ company_details.company_address|linebreaksbr }}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Full name" %}</th>
-                <td>{{ company_details.name }}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Position held" %}</th>
-                <td>{% trans company_details.position_in_company %}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Contact number" %}</th>
-                <td>{{ company_details.contact_number }}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Email" %}</th>
-                <td>{{ company_details.email }}</td>
-            </tr>
+    {% include "plea/review/plea.html" %}
+
+    {% if case.plea_made_by == "Defendant" %}
+        {% if not your_finances.skipped %}
+
+            {% include "plea/review/finances.html" %}
+
+            {% if your_finances.hardship %}
+                {% include "plea/review/expenses.html" %}
+            {% endif %}
+
         {% endif %}
-        </tbody>
-    </table>
-
-    <table class="review-table" id="your-plea">
-        <thead>
-            <tr>
-                <th class="header">
-                    {% blocktrans count charges=case.number_of_charges %}Your plea{% plural %}Your pleas{% endblocktrans %}</th>
-                <th class="change-link"><a href="{% url "plea_form_step" "plea" %}" class="review">
-                    {% blocktrans count charges=case.number_of_charges %}Change your plea{% plural %}Change your pleas{% endblocktrans %}</a></th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for plea in plea.PleaForms %}
-            {% if case.number_of_charges > 1 %}
-            <tr>
-                <td colspan="2"><h3>{% trans "Charge" %} {{ forloop.counter }}</h3></td>
-            </tr>
-            {% endif %}
-            <tr>
-                <th class="label">{% blocktrans count counter=1 %}Your plea{% plural %}Your pleas{% endblocktrans %}</th>
-                <td>
-                    {% if plea.guilty == "guilty" %}
-                        {% trans "Guilty" %}
-                    {% elif plea.guilty == "not_guilty" %}
-                        {% trans "Not guilty" %}
-                    {% endif %}
-                </td>
-            </tr>
-            {% if plea.guilty == "guilty" %}
-            <tr>
-                <th class="label">
-                    {% trans "Mitigation" %}
-                </th>
-                <td>
-                    {{ plea.guilty_extra|linebreaksbr|default:"-" }}
-                </td>
-            </tr>
-            {% endif %}
-            {% if plea.guilty == "not_guilty" %}
-            <tr>
-                <th class="label">
-                    {% trans "Not guilty because" %}
-                </th>
-                <td>
-                    {{ plea.not_guilty_extra|linebreaksbr|default:"-" }}
-                </td>
-            </tr>
-            {% endif %}
-        {% endfor %}
-        </tbody>
-    </table>
-
-{% if case.plea_made_by == "Company representative" and not company_finances.skipped %}
-    {% add_test_tag "<<SHOWCOMPANYFINANCES>>" %}
-    <table class="review-table" id="company-details">
-        <thead>
-            <tr>
-                <th class="header">{% trans "Company financial details" %}</th>
-                <th class="change-link"><a href="{% url "plea_form_step" "company_finances" %}" class="review">{% trans "Change details" %}</a></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th class="label">{% trans "Number of employees" %}</th>
-                <td>{{ company_finances.number_of_employees }}</td>
-            </tr>
-            <tr>
-                <td colspan="2"><h3>{% if company_finances.trading_period %}{% trans "From the most recent audited company accounts" %}{% else %}{% trans "From the first 12 month's trading projections" %}{% endif %}</h3></td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Gross turnover" %}</th>
-                <td>£{{ company_finances.gross_turnover|intcomma }}</td>
-            </tr>
-            <tr>
-                <th class="label">{% trans "Net turnover" %}</th>
-                <td>£{{ company_finances.net_turnover|intcomma }}</td>
-            </tr>
-        </tbody>
-    </table>
-{% else %}
-    {%  if not your_finances.skipped %}
-        <table class="review-table" id="your-money">
-            <thead>
-                <tr>
-                    <th class="header">{% trans "Your finances" %}</th>
-                    <th class="change-link"><a href="{% url "plea_form_step" "your_finances" %}" class="review">{% trans "Change your finances" %}</a></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th class="label">{% trans "You are" %}</th>
-                    <td>{% trans your_finances.you_are %}</td>
-                </tr>
-                {% if your_finances.you_are == "Employed" %}
-                <tr>
-                    <th class="label">{% trans "Your Job" %}</th>
-                    <td>{{ your_finances.employed_your_job }}</td>
-                </tr>
-                <tr>
-                    <th class="label">{% trans "You get paid" %}</th>
-                    <td>{% trans your_finances.employed_take_home_pay_period %}</td>
-                </tr>
-                <tr>
-                    <th class="label">{% trans "Amount" %}</th>
-                    <td>£{{ your_finances.employed_take_home_pay_amount|intcomma }}</td>
-                </tr>
-                {% endif %}
-                {% if your_finances.you_are == "Self-employed" %}
-                <tr>
-                    <th class="label">{% trans "Your Job" %}</th>
-                    <td>{{ your_finances.your_job }}</td>
-                </tr>
-                <tr>
-                    <th class="label">{% trans "You get paid" %}</th>
-                    <td>
-                        {% if your_finances.self_employed_pay_period == "Self-employed other" %}
-                            {% trans "Other" %}
-                        {% else %}
-                        {% trans your_finances.self_employed_pay_period %}
-                        {% endif %}
-                    </td>
-                </tr>
-            {% if your_finances.self_employed_pay_period == "Self-employed other" %}
-                <tr>
-                    <th class="label">{% trans "Details" %}</th>
-                    <td>{{ your_finances.self_employed_pay_other }}</td>
-                </tr>
-            {% endif %}
-                <tr>
-                    <th class="label">{% trans "Amount" %}</th>
-                    <td>£{{ your_finances.self_employed_pay_amount|intcomma }}</td>
-                </tr>
-            {% endif %}
-            {% if your_finances.you_are == "Receiving benefits" %}
-                <tr>
-                    <th class="label">{% trans "Benefits you receive" %}</th>
-                    <td>{{ your_finances.benefits_details|linebreaksbr }}</td>
-                </tr>
-                <tr>
-                    <th class="label">{% trans "Includes payment for dependents?" %}</th>
-                    <td>{{ your_finances.benefits_dependents }}</td>
-                </tr>
-                <tr>
-                    <th class="label">{% trans "You get paid" %}</th>
-                    <td>
-                        {% if your_finances.benefits_period == "Benefits other" %}
-                        {% trans "Other" %}
-                        {% else %}
-                        {% trans your_finances.benefits_period %}
-                        {% endif %}
-                    </td>
-                </tr>
-            {%  if your_finances.benefits_period == "Benefits other" %}
-                <tr>
-                    <th class="label">{% trans "Details" %}</th>
-                    <td>{{ your_finances.benefits_pay_other|linebreaksbr }}</td>
-                </tr>
-            {% endif %}
-                <tr>
-                    <th class="label">{% trans "Amount" %}</th>
-                    <td>£{{ your_finances.benefits_amount|intcomma }}</td>
-                </tr>
-            {% endif %}
-            {% if your_finances.you_are == "Other" %}
-                <tr>
-                    <th class="label">{% trans "Details" %}</th>
-                    <td>{{ your_finances.other_details|linebreaksbr }}</td>
-                </tr>
-                <tr>
-                    <th class="label">{% trans "Amount" %}</th>
-                    <td>£{{ your_finances.other_pay_amount|intcomma }}</td>
-                </tr>
-            {% endif %}
-            </tbody>
-        </table>
+    {% elif case.plea_made_by == "Company representative" %}
+        {% if not company_finances.skipped %}
+            {% include "plea/review/company_finances.html" %}
+        {% endif %}
     {% endif %}
 
-    {% if your_finances.hardship %}
-        {% add_test_tag "<<SHOWINGEXPENSES>>" %}
-        <table class="review-table" id="your-expenses">
-            <thead>
-                <tr>
-                    <th class="header">{% trans "Your expenses" %}</th>
-                    <th class="change-link"><a href="{% url "plea_form_step" "your_expenses" %}" class="review">{% trans "Change your expenses" %}</a></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th class="label">{% trans "Financial hardship details" %}</th>
-                    <td>{{ your_expenses.hardship_details|linebreaksbr }}</td>
-                </tr>
-                <tr>
-                    <th class="label">{% trans "Other contributors to household bills" %}</th>
-                    <td>{% if your_expenses.other_bill_payers %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</td>
-                </tr>
-                <tr>
-                    <th class="label">{% trans "Total household expenses" %}</th>
-                    <td>£{{ your_expenses.total_household_expenses|intcomma }}</td>
-                </tr>
-                <tr>
-                    <th class="label">{% trans "Total other expenses" %}</th>
-                    <td>£{{ your_expenses.total_other_expenses|intcomma }}</td>
-                </tr>
-                <tr>
-                    <th class="label">{% trans "Total expenses" %}</th>
-                    <td>£{{ your_expenses.total_expenses|intcomma }}</td>
-                </tr>
-            </tbody>
-        </table>
-    {% endif %}
-{% endif %}
-
-    <h2 class="heading-medium">{% trans "Important" %}</h2>
-
-    <section id="section_understand">
-
-        <div class="form-group-wide{% if form.understand.errors %} with-error{% endif %}">
-            
-            {{ form.understand.errors }}
-            
-            <label for="{{ form.understand.id_for_label }}" class="block-label">
-                <span class="important">{% trans "It is an offence to make a false statement or to deliberately fail to disclose any relevant facts." %}</span>
-                <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
-                <span class="checkbox-text">{% blocktrans %}<strong>I confirm</strong> that I have read and understand the charge against me and that I am the person named in the Postal Requisition. The facts stated here are correct to the best of my knowledge.{% endblocktrans %}</span>
-            </label>
-        </div>
-    </section>
-
-    <section id="section_receive_email">
-
-        <div class="form-group-wide{% if form.receive_email.errors %} with-error{% endif %}">
-             
-            {{ form.receive_email.errors }}
-
-            <div class="grey">
-                <fieldset>
-                    <legend>{% blocktrans count charges=case.number_of_charges %}Do you want to receive an email confirming your plea?{% plural %}Do you want to receive an email confirming your pleas?{% endblocktrans %}</legend>
-
-                    {{ form.receive_email }}
-                </fieldset>
-            </div>
-        </div>
-    </section>
+    {% include "plea/review/important.html" %}
 
     <div class="form-submit">
         <button type="submit" class="button-large">{% blocktrans count charges=case.number_of_charges %}Make your plea{% plural %}Make your pleas{% endblocktrans %}</button>
