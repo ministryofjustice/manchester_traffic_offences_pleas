@@ -1,4 +1,6 @@
+{% load i18n %}
 {% load date %}
+
 <!doctype html>
 <html>
 <head>
@@ -26,54 +28,46 @@
 
 <body>
 <h1>Online plea</h1>
-<table>
+   <table class="review-table" id="case-details">
     <thead>
-    <tr>
-        <td colspan="2" class="heading"><h2>Case Details</h2></td>
-    </tr>
+        <tr>
+            <th colspan="2">
+                <h2>{% trans "Case details" %}</h2>
+            </th>
+        </tr>
     </thead>
-    <tbody>
-    <tr>
-        <th>URN</th>
-        <td>{{ case.urn }}</td>
-    </tr>
-    <tr>
-        <th>Court hearing</th>
-        <td>{{ case.date_of_hearing|parse_date|date:"d F Y" }}</td>
-    </tr>
+    {% include "plea/review/case.html" %}
+    </table>
 
-    <tr>
-        <td colspan="2" class="heading"><h2>Defendant details</h2></td>
-    </tr>
-    <tr>
-        <th>Full name</th>
-        <td>{{ your_details.name }}</td>
-    </tr>
-    <tr>
-        <td class="heading" colspan="2"><h2>Charges</h2></td>
-    </tr>
-    {% for plea_item in plea.PleaForms %}
+    <table class="review-table" id="your-details">
+    <thead>
         <tr>
-            <td colspan="2" class="label"><h3>Charge {{ forloop.counter }}</h3></td>
+            <th colspan="2">
+            {% if case.plea_made_by == "Defendant" %}
+                <h2>{% trans "Your details" %}</h2>
+            {% elif case.plea_made_by == "Company representative" %}
+                <h2>{% trans "Company representative details" %}</h2>
+            {% endif %}
+            </th>
         </tr>
+    </thead>
+    {% include "plea/review/details.html" %}
+    </table>
+
+    <table class="review-table" id="your-plea">
+    <thead>
         <tr>
-            <th>Plea</th>
-            <td>{% if plea_item.guilty == "guilty" %}Guilty{% elif plea_item.guilty == "not_guilty" %}Not guilty{% endif %}</td>
+            <th colspan="2">
+                {% if case.plea_made_by == "Defendant" %}
+                <h2>{% blocktrans count charges=case.number_of_charges %}Your plea{% plural %}Your pleas{% endblocktrans %}</h2>
+                {% elif case.plea_made_by == "Company representative" %}
+                <h2>{% blocktrans count charges=case.number_of_charges %}Company's plea{% plural %}Company's pleas{% endblocktrans %}</h2>
+                {% endif %}
+            </th>
         </tr>
-        {% if plea_item.guilty == "guilty" and plea_item.guilty_extra %}
-        <tr>
-            <th>Special circumstances</th>
-            <td>{{ plea_item.guilty_extra|linebreaksbr }}</td>
-        </tr>
-        {% endif %}
-        {% if plea_item.guilty == "not_guilty" and plea_item.not_guilty_extra %}
-        <tr>
-            <th>Not guilty because?</th>
-            <td>{{ plea_item.not_guilty_extra|linebreaksbr }}</td>
-        </tr>
-        {% endif %}
-    {%  endfor %}
-    </tbody>
-</table>
+    </thead>
+    {% include "plea/review/plea.html" %}
+    </table>
+
 </body>
 </html>
