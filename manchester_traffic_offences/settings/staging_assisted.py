@@ -18,7 +18,7 @@ DATABASES = {
 
 INSTALLED_APPS += ('raven.contrib.django.raven_compat', )
 
-ALLOWED_HOSTS = ["assisted-staging.makeaplea.dsd.io", ]
+ALLOWED_HOSTS = ["assisted.makeaplea.dsd.io", ]
 SESSION_COOKIE_SECURE = True
 STORE_USER_DATA = True
 
