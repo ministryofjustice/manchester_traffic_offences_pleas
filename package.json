@@ -7,7 +7,6 @@
     "doc": "docs"
   },
   "dependencies": {
-    "del": "^1.1.1",
     "govuk_frontend_toolkit": "^3.1.0",
     "gulp": "^3.8.10",
     "gulp-concat": "^2.4.3",
@@ -20,7 +19,6 @@
   },
   "devDependencies": {
     "del": "^1.1.1",
-    "gulp": "^3.8.10",
     "gulp-jasmine": "^2.0.0",
     "jasmine-core": "^2.2.0",
     "karma": "^0.12.31",
