@@ -357,7 +357,6 @@ class YourExpensesForm(BasePleaStepForm):
         error_messages={'required': ERROR_MESSAGES['HARDSHIP_DETAILS_REQUIRED']})
 
     household_accommodation = forms.DecimalField(
-        initial=0,
         min_value=0,
         decimal_places=2,
         localize=True,
@@ -370,7 +369,6 @@ class YourExpensesForm(BasePleaStepForm):
                         'min_value': ERROR_MESSAGES['HOUSEHOLD_ACCOMMODATION_MIN']})
 
     household_utility_bills = forms.DecimalField(
-        initial=0,
         min_value=0,
         decimal_places=2,
         localize=True,
@@ -383,7 +381,6 @@ class YourExpensesForm(BasePleaStepForm):
                         'min_value': ERROR_MESSAGES['HOUSEHOLD_UTILITY_BILLS_MIN']})
 
     household_insurance = forms.DecimalField(
-        initial=0,
         min_value=0,
         decimal_places=2,
         localize=True,
@@ -396,7 +393,6 @@ class YourExpensesForm(BasePleaStepForm):
                         'min_value': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_MIN']})
 
     household_council_tax = forms.DecimalField(
-        initial=0,
         min_value=0,
         decimal_places=2,
         localize=True,
@@ -414,7 +410,6 @@ class YourExpensesForm(BasePleaStepForm):
         error_messages={'required': ERROR_MESSAGES['OTHER_BILL_PAYERS_REQUIRED']})
 
     other_tv_subscription = forms.DecimalField(
-        initial=0,
         min_value=0,
         decimal_places=2,
         localize=True,
@@ -427,7 +422,6 @@ class YourExpensesForm(BasePleaStepForm):
                         'min_value': ERROR_MESSAGES['OTHER_TV_SUBSCRIPTION_MIN']})
 
     other_travel_expenses = forms.DecimalField(
-        initial=0,
         min_value=0,
         decimal_places=2,
         localize=True,
@@ -440,7 +434,6 @@ class YourExpensesForm(BasePleaStepForm):
                         'min_value': ERROR_MESSAGES['OTHER_TRAVEL_EXPENSES_MIN']})
 
     other_telephone = forms.DecimalField(
-        initial=0,
         min_value=0,
         decimal_places=2,
         localize=True,
@@ -453,7 +446,6 @@ class YourExpensesForm(BasePleaStepForm):
                         'min_value': ERROR_MESSAGES['OTHER_TELEPHONE_MIN']})
 
     other_loan_repayments = forms.DecimalField(
-        initial=0,
         min_value=0,
         decimal_places=2,
         localize=True,
@@ -466,7 +458,6 @@ class YourExpensesForm(BasePleaStepForm):
                         'min_value': ERROR_MESSAGES['OTHER_LOAN_REPAYMENTS_MIN']})
 
     other_court_payments = forms.DecimalField(
-        initial=0,
         min_value=0,
         decimal_places=2,
         localize=True,
@@ -478,7 +469,6 @@ class YourExpensesForm(BasePleaStepForm):
                         'min_value': ERROR_MESSAGES['OTHER_COURT_PAYMENTS_MIN']})
 
     other_child_maintenance = forms.DecimalField(
-        initial=0,
         min_value=0,
         decimal_places=2,
         localize=True,
@@ -554,6 +544,21 @@ class PleaForm(BasePleaStepForm):
         ('guilty', _('Guilty')),
         ('not_guilty', _('Not guilty')),
     )
+
+    def __init__(self, *args, **kwargs):
+
+        super(PleaForm, self).__init__(*args, **kwargs)
+
+        prefix = kwargs.get("prefix", "")
+
+        if "data" in kwargs:
+
+            plea = kwargs["data"].get("{}-guilty".format(prefix), None)
+
+            if plea == "not_guilty":
+                self.fields["not_guilty_extra"].required = True
+            else:
+                self.fields["not_guilty_extra"].required = False
 
     guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect(), required=True,
                                error_messages={"required": ERROR_MESSAGES["PLEA_REQUIRED"]})
