@@ -46,19 +46,19 @@
 
             <div class="grid-row">
                 <div class="column-half">
-                    {% money_field form.household_accommodation %}
+                    {% money_field form.household_accommodation hide_optional=True %}
                 </div>
                 <div class="column-half">
-                    {% money_field form.household_utility_bills %}
+                    {% money_field form.household_utility_bills hide_optional=True %}
                 </div>
             </div>
 
             <div class="grid-row">
                 <div class="column-half">
-                    {% money_field form.household_insurance %}
+                    {% money_field form.household_insurance hide_optional=True %}
                 </div>
                 <div class="column-half">
-                    {% money_field form.household_council_tax %}
+                    {% money_field form.household_council_tax hide_optional=True %}
                 </div>
             </div>
 
@@ -76,28 +76,28 @@
 
             <div class="grid-row">
                 <div class="column-half">
-                    {% money_field form.other_tv_subscription %}
+                    {% money_field form.other_tv_subscription hide_optional=True %}
                 </div>
                 <div class="column-half">
-                    {% money_field form.other_travel_expenses %}
-                </div>
-            </div>
-
-            <div class="grid-row">
-                <div class="column-half">
-                    {% money_field form.other_telephone %}
-                </div>
-                <div class="column-half">
-                    {% money_field form.other_loan_repayments %}
+                    {% money_field form.other_travel_expenses hide_optional=True %}
                 </div>
             </div>
 
             <div class="grid-row">
                 <div class="column-half">
-                    {% money_field form.other_court_payments %}
+                    {% money_field form.other_telephone hide_optional=True %}
                 </div>
                 <div class="column-half">
-                    {% money_field form.other_child_maintenance %}
+                    {% money_field form.other_loan_repayments hide_optional=True %}
+                </div>
+            </div>
+
+            <div class="grid-row">
+                <div class="column-half">
+                    {% money_field form.other_court_payments hide_optional=True %}
+                </div>
+                <div class="column-half">
+                    {% money_field form.other_child_maintenance hide_optional=True %}
                 </div>
             </div>
         </div>
