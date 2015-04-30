@@ -66,10 +66,17 @@ class CaseForm(BasePleaStepForm):
 
 
 class YourDetailsForm(BasePleaStepForm):
-    name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                           max_length=100, required=True, label=_("Full name"),
-                           help_text=_("As written on page 1 of the Postal Requistion we sent you"),
-                           error_messages={"required": ERROR_MESSAGES["FULL_NAME_REQUIRED"]})
+    first_name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                                 max_length=100,
+                                 required=True,
+                                 label=_("First name"),
+                                 error_messages={"required": ERROR_MESSAGES["FIRST_NAME_REQUIRED"]})
+
+    last_name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                                max_length=100,
+                                required=True,
+                                label=_("Last name"),
+                                error_messages={"required": ERROR_MESSAGES["LAST_NAME_REQUIRED"]})
 
     correct_address = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                               required=True,
@@ -145,10 +152,15 @@ class CompanyDetailsForm(BasePleaStepForm):
                                       required=True,
                                       error_messages={"required": ERROR_MESSAGES["COMPANY_ADDRESS_REQUIRED"]})
 
-    name = forms.CharField(label=_("Your name"),
-                           widget=forms.TextInput(attrs={"class": "form-control"}),
-                           required=True,
-                           error_messages={"required": ERROR_MESSAGES["NAME_REQUIRED"]})
+    first_name = forms.CharField(label=_("Your first name"),
+                                 widget=forms.TextInput(attrs={"class": "form-control"}),
+                                 required=True,
+                                 error_messages={"required": ERROR_MESSAGES["FIRST_NAME_REQUIRED"]})
+
+    last_name = forms.CharField(label=_("Your last name"),
+                                 widget=forms.TextInput(attrs={"class": "form-control"}),
+                                 required=True,
+                                 error_messages={"required": ERROR_MESSAGES["LAST_NAME_REQUIRED"]})
 
     position_in_company = forms.ChoiceField(label=_("Your position in the company"),
                                             choices=COMPANY_POSITION_CHOICES,
