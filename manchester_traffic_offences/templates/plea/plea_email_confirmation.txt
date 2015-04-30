@@ -32,7 +32,7 @@
 
 -------
 
-{% trans "We’re constantly working to improve Make a Plea." %}
+{% trans "We’re constantly working to improve this service." %}
 
 {% trans "Please give us feedback so we can make it better:" %}
 https://www.makeaplea.justice.gov.uk/feedback/
