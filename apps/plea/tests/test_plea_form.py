@@ -951,7 +951,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form = PleaOnlineForms("your_details", "plea_form_step", fake_session)
         form.load(request_context)
         form.save({"first_name": "Charlie",
-                         "last_name": "Brown",
+                   "last_name": "Brown",
                    "contact_number": "07802639892",
                    "email": "test@example.org",
                    "correct_address": True,
