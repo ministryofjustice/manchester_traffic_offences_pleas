@@ -1,15 +1,7 @@
 {% load i18n %}
 {% load date testing %}
 
-<table class="review-table" id="case-details">
-    <thead>
-        <tr>
-            <th colspan="2">
-                <h2>{% trans "Case details" %}</h2>
-                <a class="change-link" href="{% url "plea_form_step" "case" %}" class="review">{% trans "Change case details" %}</a>
-            </th>
-        </tr>
-    </thead>
+
     <tbody>
         <tr>
             <th class="label">{% trans "Unique reference number" %}</th>
@@ -28,4 +20,3 @@
             <td>{% if case.plea_made_by == "Defendant" %}{% trans "Defendant" %}{% else %}{% trans "Company representative" %}{% endif %}</td>
         </tr>
     </tbody>
-</table>
