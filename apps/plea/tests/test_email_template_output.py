@@ -43,7 +43,8 @@ class EmailTemplateTests(TestCase):
                          "plea_made_by": "Defendant"}
 
         if not details_data:
-            details_data = {"name": "Joe Public",
+            details_data = {"first_name": "Joe",
+                            "last_name": "Public",
                             "correct_address": True,
                             "contact_number": "0161 123 2345",
                             "email": "test@example.org",
@@ -115,7 +116,8 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
-        self.assertContains(response, "<tr><th class=\"label\">Full name</th><td>Joe Public</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th class=\"label\">First name</th><td>Joe</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th class=\"label\">Last name</th><td>Public</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th class=\"label\">Address</th><td>As printed on Postal Requisition</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th class=\"label\">Contact number</th><td>0161 123 2345</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th class=\"label\">Email</th><td>test@example.org</td></tr>", count=1, html=True)
@@ -124,7 +126,8 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th class=\"label\">UK driving licence number</th><td>-</td></tr>", count=1, html=True)
 
     def test_full_case_details_output(self):
-        context_data_details = {"name": "Joe Public",
+        context_data_details = {"first_name": "Joe",
+                                "last_name": "Public",
                                 "correct_address": False,
                                 "updated_address": "Test address, Somewhere, TE57ER",
                                 "contact_number": "0161 123 2345",
@@ -140,7 +143,8 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
-        self.assertContains(response, "<tr><th class=\"label\">Full name</th><td>Joe Public</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th class=\"label\">First name</th><td>Joe</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th class=\"label\">Last name</th><td>Public</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th class=\"label\">Address</th><td>Test address, Somewhere, TE57ER</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th class=\"label\">Contact number</th><td>0161 123 2345</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th class=\"label\">Email</th><td>test@example.org</td></tr>", count=1, html=True)
@@ -325,7 +329,8 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
-        self.assertContains(response, "<tr><th class=\"label\">Full name</th><td>Joe Public</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th class=\"label\">First name</th><td>Joe</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th class=\"label\">Last name</th><td>Public</td></tr>", count=1, html=True)
 
     def test_PLP_single_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
@@ -506,7 +511,8 @@ class TestCompanyFinancesEmailLogic(TestCase):
             "company_details": {
                 "company_name": "some company plc",
                 "company_address": "some place plc",
-                "name": "mr smith",
+                "first_name": "John",
+                "last_name": "Smith",
                 "position_in_company": "a director",
                 "contact_number": "0800 SOMECOMPANY",
                 "email": "test@companyemail.com"

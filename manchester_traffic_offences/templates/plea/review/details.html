@@ -8,8 +8,12 @@
     {% if case.plea_made_by == "Defendant" %}
         {% add_test_tag "<<SHOWYOURDETAILS>>" %}
         <tr>
-            <th class="label">{% trans "Full name" %}</th>
-            <td>{{ your_details.name }}</td>
+            <th class="label">{% trans "First name" %}</th>
+            <td>{{ your_details.first_name }}</td>
+        </tr>
+        <tr>
+            <th class="label">{% trans "Last name" %}</th>
+            <td>{{ your_details.last_name }}</td>
         </tr>
         <tr>
             <th class="label">{% trans "Address" %}</th>
@@ -46,8 +50,13 @@
             <td>{{ company_details.company_address|linebreaksbr }}</td>
         </tr>
         <tr>
-            <th class="label">{% trans "Full name" %}</th>
-            <td>{{ company_details.name }}</td>
+            <th class="label">{% trans "First name" %}</th>
+            <td>{{ company_details.first_name }}</td>
+        </tr>
+
+        <tr>
+            <th class="label">{% trans "Last name" %}</th>
+            <td>{{ company_details.last_name }}</td>
         </tr>
         <tr>
             <th class="label">{% trans "Position held" %}</th>
