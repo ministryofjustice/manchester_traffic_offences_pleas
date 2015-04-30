@@ -18,7 +18,7 @@ DATABASES = {
 }
 
 
-ALLOWED_HOSTS = ["assisted.makeaplea.dsd.io", ]
+ALLOWED_HOSTS = ["assisted.makeaplea.dsd.io", "assisted.makeaplea.justice.gov.uk"]
 SESSION_COOKIE_SECURE = True
 
 # Emails
