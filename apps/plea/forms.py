@@ -88,7 +88,7 @@ class YourDetailsForm(BasePleaStepForm):
                                      required=True,
                                      max_length=30,
                                      label=_("Contact number"),
-                                     help_text=_("Home or mobile number"),
+                                     help_text=_("Landline or mobile number"),
                                      error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
 
