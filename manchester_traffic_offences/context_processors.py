@@ -11,7 +11,7 @@ def globals(request):
         'proposition_title': _('Make a Plea: Traffic offences'),
 
         # Current Phase (Sets the current phase and the colour of phase tags). Presumed values: alpha, beta, live
-        'phase': 'alpha',
+        'phase': 'beta',
 
         # Product Type (Adds class to body based on service type). Presumed values: information, service
         'product_type': 'service',
