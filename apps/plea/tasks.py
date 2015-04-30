@@ -121,10 +121,12 @@ def email_send_user(self, email_data, case_id):
 
     if email_data['case']['plea_made_by'] == "Defendant":
         email = email_data['your_details']['email']
-        name = email_data['your_details']['name']
+        first_name = email_data['your_details']['first_name']
+        last_name = email_data['your_details']['last_name']
     else:
         email = email_data['company_details']['email']
-        name = email_data['company_details']['name']
+        first_name = email_data['company_details']['first_name']
+        last_name = email_data['company_details']['last_name']
 
     try:
         court_obj = Court.objects.get_by_urn(email_data["case"]["urn"])
@@ -139,7 +141,8 @@ def email_send_user(self, email_data, case_id):
         'plea_made_by': email_data['case']['plea_made_by'],
         'number_of_charges': email_data['case']['number_of_charges'],
         'plea_type': get_plea_type(email_data),
-        'name': name,
+        'first_name': first_name,
+        'last_name': last_name,
         'court_address': court_obj.court_address,
         'court_email': court_obj.court_email
     }
