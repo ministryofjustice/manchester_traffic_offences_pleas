@@ -572,7 +572,7 @@ class PleaForm(BasePleaStepForm):
     not_guilty_extra = forms.CharField(label=_("Not guilty because?"),
                                        widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
                                        help_text=_("Tell us why you believe you are not guilty"),
-                                       required=False,
+                                       required=True,
                                        max_length=5000)
 
 
