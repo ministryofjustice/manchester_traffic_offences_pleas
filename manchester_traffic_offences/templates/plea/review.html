@@ -2,7 +2,15 @@
 
 {% load i18n %}
 
-{% block page_title %}{% blocktrans count charges=case.number_of_charges %}Confirm your plea{% plural %}Confirm your pleas{% endblocktrans %} - {{ block.super }}{% endblock %}
+{% spaceless %}
+{% block page_title %}
+        {% if case.plea_made_by == "Company representative" %}
+            {% blocktrans count charges=case.number_of_charges %}Confirm your company's plea{% plural %}Confirm your company's pleas{% endblocktrans %} - {{ block.super }}
+        {% else %}
+            {% blocktrans count charges=case.number_of_charges %}Confirm your plea{% plural %}Confirm your pleas{% endblocktrans %} - {{ block.super }}
+        {% endif %}
+{% endblock %}
+{% endspaceless %}
 
 {% block page_content %}
 <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
@@ -28,7 +36,11 @@
     {% endif %}
 
     <header class="content-header">
-        <h1>{% blocktrans count charges=case.number_of_charges %}Confirm your plea{% plural %}Confirm your pleas{% endblocktrans %}</h1>
+        {% if case.plea_made_by == "Company representative" %}
+            <h1>{% blocktrans count charges=case.number_of_charges %}Confirm your company's plea{% plural %}Confirm your company's pleas{% endblocktrans %}</h1>
+        {% else %}
+            <h1>{% blocktrans count charges=case.number_of_charges %}Confirm your plea{% plural %}Confirm your pleas{% endblocktrans %}</h1>
+        {% endif %}
 
         <p>{% blocktrans count charges=case.number_of_charges %}Review the information you’ve given before making your plea.{% plural %}Review the information you’ve given before making your pleas.{% endblocktrans %}</p>
     </header>
