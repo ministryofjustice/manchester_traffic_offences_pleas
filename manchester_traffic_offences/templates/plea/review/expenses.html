@@ -7,23 +7,23 @@
 
     <tbody>
         <tr>
-            <th class="label">{% trans "Financial hardship details" %}</th>
+            <th>{% trans "Financial hardship details" %}</th>
             <td>{{ your_expenses.hardship_details|linebreaksbr }}</td>
         </tr>
         <tr>
-            <th class="label">{% trans "Other contributors to household bills" %}</th>
+            <th>{% trans "Other contributors to household bills" %}</th>
             <td>{{ your_expenses.other_bill_payers|yesno:_("Yes,No") }}</td>
         </tr>
         <tr>
-            <th class="label">{% trans "Total household expenses" %}</th>
+            <th>{% trans "Total household expenses" %}</th>
             <td>£{{ your_expenses.total_household_expenses|floatformat:2|intcomma }}</td>
         </tr>
         <tr>
-            <th class="label">{% trans "Total other expenses" %}</th>
+            <th>{% trans "Total other expenses" %}</th>
             <td>£{{ your_expenses.total_other_expenses|floatformat:2|intcomma }}</td>
         </tr>
         <tr>
-            <th class="label">{% trans "Total expenses" %}</th>
+            <th>{% trans "Total expenses" %}</th>
             <td>£{{ your_expenses.total_expenses|floatformat:2|intcomma }}</td>
         </tr>
     </tbody>
