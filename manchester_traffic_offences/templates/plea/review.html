@@ -45,25 +45,95 @@
         <p>{% blocktrans count charges=case.number_of_charges %}Review the information you’ve given before making your plea.{% plural %}Review the information you’ve given before making your pleas.{% endblocktrans %}</p>
     </header>
 
+    <table class="review-table" id="case-details">
+    <thead>
+        <tr>
+            <th colspan="2">
+                <h2>{% trans "Case details" %}</h2>
+                <a class="change-link" href="{% url "plea_form_step" "case" %}" class="review">{% trans "Change case details" %}</a>
+            </th>
+        </tr>
+    </thead>
     {% include "plea/review/case.html" %}
+    </table>
 
+    <table class="review-table" id="your-details">
+    <thead>
+        <tr>
+            <th colspan="2">
+            {% if case.plea_made_by == "Defendant" %}
+                <h2>{% trans "Your details" %}</h2>
+                <a class="change-link" href="{% url "plea_form_step" "your_details" %}" class="review">{% trans "Change your details" %}</a>
+            {% elif case.plea_made_by == "Company representative" %}
+                <h2>{% trans "Company representative details" %}</h2>
+                <a class="change-link" href="{% url "plea_form_step" "company_details" %}" class="review">{% trans "Change your details" %}</a>
+            {% endif %}
+            </th>
+        </tr>
+    </thead>
     {% include "plea/review/details.html" %}
+    </table>
 
+    <table class="review-table" id="your-plea">
+    <thead>
+        <tr>
+            <th colspan="2">
+                {% if case.plea_made_by == "Defendant" %}
+                <h2>{% blocktrans count charges=case.number_of_charges %}Your plea{% plural %}Your pleas{% endblocktrans %}</h2>
+                {% elif case.plea_made_by == "Company representative" %}
+                <h2>{% blocktrans count charges=case.number_of_charges %}Company's plea{% plural %}Company's pleas{% endblocktrans %}</h2>
+                {% endif %}
+
+                <a class="change-link" href="{% url "plea_form_step" "plea" %}" class="review">{% blocktrans count charges=case.number_of_charges %}Change your plea{% plural %}Change your pleas{% endblocktrans %}</a>
+            </th>
+        </tr>
+    </thead>
     {% include "plea/review/plea.html" %}
+    </table>
 
     {% if case.plea_made_by == "Defendant" %}
         {% if not your_finances.skipped %}
 
+        <table class="review-table" id="your-finances">
+            <thead>
+            <tr>
+                <th colspan="2">
+                    <h2>{% trans "Your finances" %}</h2>
+                    <a class="change-link" href="{% url "plea_form_step" "your_finances" %}" class="review">{% trans "Change your finances" %}</a>
+                </th>
+            </tr>
+            </thead>
             {% include "plea/review/finances.html" %}
+        </table>
 
             {% if your_finances.hardship %}
-                {% include "plea/review/expenses.html" %}
+                <table class="review-table" id="your-expenses">
+                    <thead>
+                    <tr>
+                        <th colspan="2">
+                            <h2>{% trans "Your expenses" %}</h2>
+                            <a class="change-link" href="{% url "plea_form_step" "your_expenses" %}" class="review">{% trans "Change your expenses" %}</a>
+                        </th>
+                    </tr>
+                    </thead>
+                    {% include "plea/review/expenses.html" %}
+                    </table>
             {% endif %}
 
         {% endif %}
     {% elif case.plea_made_by == "Company representative" %}
         {% if not company_finances.skipped %}
-            {% include "plea/review/company_finances.html" %}
+            <table class="review-table" id="company-details">
+                <thead>
+                <tr>
+                    <th colspan="2">
+                        <h2>{% trans "Company financial details" %}</h2>
+                        <a class="change-link" href="{% url "plea_form_step" "company_finances" %}" class="review">{% trans "Change details" %}</a>
+                    </th>
+                </tr>
+                </thead>
+                {% include "plea/review/company_finances.html" %}
+                </table>
         {% endif %}
     {% endif %}
 

@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load date testing %}
 <!doctype html>
 <html>
@@ -26,243 +27,104 @@
 
 <body>
 <h1>Online plea</h1>
-<table>
+   <table class="review-table" id="case-details">
     <thead>
-    <tr>
-        <td colspan="2" class="heading"><h2>Case Details</h2></td>
-    </tr>
+        <tr>
+            <th colspan="2">
+                <h2>{% trans "Case details" %}</h2>
+            </th>
+        </tr>
     </thead>
-    <tbody>
-    <tr>
-        <th>URN</th>
-        <td>{{ case.urn }}</td>
-    </tr>
-    <tr>
-        <th>Court hearing</th>
-        <td>{{ case.date_of_hearing|parse_date|date:"d/m/Y" }}</td>
-    </tr>
+    {% include "plea/review/case.html" %}
+    </table>
 
-    <tr>
-        <td colspan="2" class="heading"><h2>Defendant details</h2></td>
-    </tr>
+    <table class="review-table" id="your-details">
+    <thead>
+        <tr>
+            <th colspan="2">
+            {% if case.plea_made_by == "Defendant" %}
+                <h2>{% trans "Your details" %}</h2>
+            {% elif case.plea_made_by == "Company representative" %}
+                <h2>{% trans "Company representative details" %}</h2>
+            {% endif %}
+            </th>
+        </tr>
+    </thead>
+    {% include "plea/review/details.html" %}
+    </table>
+
+    <table class="review-table" id="your-plea">
+    <thead>
+        <tr>
+            <th colspan="2">
+                {% if case.plea_made_by == "Defendant" %}
+                <h2>{% blocktrans count charges=case.number_of_charges %}Your plea{% plural %}Your pleas{% endblocktrans %}</h2>
+                {% elif case.plea_made_by == "Company representative" %}
+                <h2>{% blocktrans count charges=case.number_of_charges %}Company's plea{% plural %}Company's pleas{% endblocktrans %}</h2>
+                {% endif %}
+            </th>
+        </tr>
+    </thead>
+    {% include "plea/review/plea.html" %}
+    </table>
+
     {% if case.plea_made_by == "Defendant" %}
-    {% add_test_tag "<<SHOWYOURDETAILS>>" %}
-    <tr>
-        <th>Full name</th>
-        <td>{{ your_details.name }}</td>
-    </tr>
-    <tr>
-        <th>Address</th>
-        <td>{% if your_details.correct_address %}As printed on Postal Requisition{% else %}{{ your_details.updated_address|linebreaksbr }}{% endif %}</td>
-    </tr>
-    <tr>
-        <th>Contact number</th>
-        <td>{{ your_details.contact_number }}</td>
-    </tr>
-    <tr>
-        <th>Email</th>
-        <td>{{ your_details.email }}</td>
-    </tr>
-    <tr>
-        <th>Date of birth</th>
-        <td>{{ your_details.date_of_birth|parse_date|date:"d/m/Y" }}</td>
-    </tr>
-    <tr>
-        <th>National Insurance number</th>
-        <td>{{ your_details.ni_number|default:"-" }}</td>
-    </tr>
-    <tr>
-        <th>UK driving licence number</th>
-        <td>{{ your_details.driving_licence_number|default:"-" }}</td>
-    </tr>
-    {% else %}
-    {% add_test_tag "<<SHOWCOMPANYDETAILS>>" %}
-    <tr>
-        <th>Company name</th>
-        <td>{{ company_details.company_name }}</td>
-    </tr>
-    <tr>
-        <th>Company address</th>
-        <td>{{ company_details.company_address|linebreaksbr }}</td>
-    </tr>
-    <tr>
-        <th>Full name</th>
-        <td>{{ company_details.name }}</td>
-    </tr>
-    <tr>
-        <th>Position held</th>
-        <td>{{ company_details.position_in_company }}</td>
-    </tr>
-    <tr>
-        <th>Contact number</th>
-        <td>{{ company_details.contact_number }}</td>
-    </tr>
-    <tr>
-        <th>Email</th>
-        <td>{{ company_details.email }}</td>
-    </tr>
-    {% endif %}
-
-    <tr>
-        <td class="heading" colspan="2"><h2>Charges</h2></td>
-    </tr>
-    {% for plea_item in plea.PleaForms %}
-        <tr>
-            <td colspan="2" class="label"><h3>Charge {{ forloop.counter }}</h3></td>
-        </tr>
-        <tr>
-            <th>Plea</th>
-            <td>{% if plea_item.guilty == "guilty" %}Guilty{% elif plea_item.guilty == "not_guilty" %}Not guilty{% endif %}</td>
-        </tr>
-        {% if plea_item.guilty == "guilty" and plea_item.guilty_extra %}
-        <tr>
-            <th>Special circumstances</th>
-            <td>{{ plea_item.guilty_extra|linebreaksbr }}</td>
-        </tr>
-        {% endif %}
-        {% if plea_item.guilty == "not_guilty" and plea_item.not_guilty_extra %}
-        <tr>
-            <th>Not guilty because?</th>
-            <td>{{ plea_item.not_guilty_extra|linebreaksbr }}</td>
-        </tr>
-        {% endif %}
-    {%  endfor %}
-    {% if case.plea_made_by == "Company representative" %}
-        {% if not company_finances.skipped %}
-        {% add_test_tag "<<SHOWCOMPANYFINANCES>>" %}
-        <tr>
-            <td class="heading" colspan="2"><h2>Company finances</h2></td>
-        </tr>
-        <tr>
-            <th>Number of employees</th>
-            <td>{{ company_finances.number_of_employees }}</td>
-        </tr>
-        <tr>
-            <th>Trading greater than 12 months?</th>
-            <td>{{ company_finances.trading_period |yesno:"yes,no" }}</td>
-        </tr>
-        <tr>
-            <th>Gross turnover </th>
-            <td>£{{ company_finances.gross_turnover }}</td>
-        </tr>
-        <tr>
-            <th>Net turnover </th>
-            <td>£{{ company_finances.net_turnover }}</td>
-        </tr>
-        {% endif %}
-    {% else %}
-        <tr>
-            <td class="heading" colspan="2"><h2>Your money</h2></td>
-        </tr>
         {% if your_finances.skipped %}
-        <tr>
-            <th>Status</th>
-            <td><i>Not completed/provided Financial details must be collected at hearing</i></td>
-        </tr>
+        <table class="review-table" id="your-finances">
+            <thead>
+            <tr>
+                <th colspan="2">
+                    <h2>{% trans "Your finances" %}</h2>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th class="label">Status</th>
+                <td><i>Not completed/provided Financial details must be collected at hearing</i></td>
+            </tr>
+            </tbody>
+        </table>
         {% else %}
-        <tr>
-            <th>Status</th>
-            <td>{{ your_finances.you_are }}</td>
-        </tr>
-        {% if your_finances.you_are == "Employed" %}
+
+        <table class="review-table" id="your-finances">
+            <thead>
             <tr>
-                <th>Your Job</th>
-                <td>{{ your_finances.employed_your_job }}</td>
+                <th colspan="2">
+                    <h2>{% trans "Your finances" %}</h2>
+                </th>
             </tr>
-            <tr>
-                <th>You get paid</th>
-                <td>
-                    {{ your_finances.employed_take_home_pay_period }}
-                </td>
-            </tr>
-            <tr>
-                <th>Take home pay</th>
-                <td>£{{ your_finances.employed_take_home_pay_amount }}</td>
-            </tr>
+            </thead>
+            {% include "plea/review/finances.html" %}
+        </table>
+
+            {% if your_finances.hardship %}
+                <table class="review-table" id="your-expenses">
+                    <thead>
+                    <tr>
+                        <th colspan="2">
+                            <h2>{% trans "Your expenses" %}</h2>
+                        </th>
+                    </tr>
+                    </thead>
+                    {% include "plea/review/expenses.html" %}
+                    </table>
+            {% endif %}
+
         {% endif %}
-        {% if your_finances.you_are == "Self-employed" %}
-            <tr>
-                <th>Your Job</th>
-                <td>{{ your_finances.your_job }}</td>
-            </tr>
-            <tr>
-                <th>You get paid</th>
-                <td>
-                    {%  if your_finances.self_employed_pay_period == "Self-employed other" %}
-                        Other - {{ your_finances.self_employed_pay_other }}
-                    {% else %}
-                        {{ your_finances.self_employed_pay_period }}
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>Amount</th>
-                <td>£{{ your_finances.self_employed_pay_amount }}</td>
-            </tr>
-        {% endif %}
-        {% if your_finances.you_are == "Receiving benefits" %}
-            <tr>
-                <th>Benefits you receive</th>
-                <td>{{ your_finances.benefits_details }}</td>
-            </tr>
-            <tr>
-                <th>Does this include payment for dependents?</th>
-                <td>{{ your_finances.benefits_dependents }}</td>
-            </tr>
-            <tr>
-                <th>You get paid</th>
-                <td>
-                    {%  if your_finances.benefits_period == "Benefits other" %}
-                        Other - {{ your_finances.benefits_pay_other }}
-                    {% else %}
-                        {{ your_finances.benefits_period }}
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>Amount</th>
-                <td>£{{ your_finances.benefits_amount }}</td>
-            </tr>
-        {% endif %}
-        {% if your_finances.you_are == "Other" %}
-            <tr>
-                <th>More information</th>
-                <td>{{ your_finances.other_details|linebreaksbr }}</td>
-            </tr>
-            <tr>
-                <th>Amount</th>
-                <td>£{{ your_finances.other_pay_amount }}</td>
-            </tr>
-        {% endif %}
-        {% endif %}
-        {% if your_finances.hardship %}
-            {% add_test_tag "<<SHOWEXPENSES>>" %}
-            <tr>
-                <td class="heading" colspan="2"><h2>Your expenses</h2></td>
-            </tr>
-            <tr>
-                <th>Financial hardship details</th>
-                <td>{{ your_expenses.hardship_details|linebreaksbr }}</td>
-            </tr>
-            <tr>
-                <th>Other contributors to household bills</th>
-                <td>{% if your_expenses.other_bill_payers %}Yes{% else %}No{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Total household expenses</th>
-                <td>£{{ your_expenses.total_household_expenses }}</td>
-            </tr>
-            <tr>
-                <th>Total other expenses</th>
-                <td>£{{ your_expenses.total_other_expenses }}</td>
-            </tr>
-            <tr>
-                <th>Total expenses</th>
-                <td>£{{ your_expenses.total_expenses }}</td>
-            </tr>
+    {% elif case.plea_made_by == "Company representative" %}
+        {% if not company_finances.skipped %}
+            <table class="review-table" id="company-details">
+                <thead>
+                <tr>
+                    <th colspan="2">
+                        <h2>{% trans "Company financial details" %}</h2>
+                    </th>
+                </tr>
+                </thead>
+                {% include "plea/review/company_finances.html" %}
+                </table>
         {% endif %}
     {% endif %}
-    </tbody>
-</table>
 </body>
 </html>
