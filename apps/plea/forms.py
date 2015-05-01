@@ -38,7 +38,7 @@ class CaseForm(BasePleaStepForm):
 
     urn = URNField(label=_("Unique reference number (URN)"),
                    required=True,
-                   help_text=_("On page 1 of the pack, in the top right corner.<br>For example, 12/AB/0034567/89"),
+                   help_text=_("On page 1 of the pack, in the top right corner.<br>For example, 12/AB/34567/00"),
                    error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]},
                    validators=[is_urn_valid, is_urn_not_used])
 
@@ -66,10 +66,17 @@ class CaseForm(BasePleaStepForm):
 
 
 class YourDetailsForm(BasePleaStepForm):
-    name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                           max_length=100, required=True, label=_("Full name"),
-                           help_text=_("As written on page 1 of the Postal Requistion we sent you"),
-                           error_messages={"required": ERROR_MESSAGES["FULL_NAME_REQUIRED"]})
+    first_name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                                 max_length=100,
+                                 required=True,
+                                 label=_("First name"),
+                                 error_messages={"required": ERROR_MESSAGES["FIRST_NAME_REQUIRED"]})
+
+    last_name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                                max_length=100,
+                                required=True,
+                                label=_("Last name"),
+                                error_messages={"required": ERROR_MESSAGES["LAST_NAME_REQUIRED"]})
 
     correct_address = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                               required=True,
@@ -88,7 +95,7 @@ class YourDetailsForm(BasePleaStepForm):
                                      required=True,
                                      max_length=30,
                                      label=_("Contact number"),
-                                     help_text=_("Home or mobile number"),
+                                     help_text=_("Landline or mobile number"),
                                      error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
 
@@ -145,10 +152,15 @@ class CompanyDetailsForm(BasePleaStepForm):
                                       required=True,
                                       error_messages={"required": ERROR_MESSAGES["COMPANY_ADDRESS_REQUIRED"]})
 
-    name = forms.CharField(label=_("Your name"),
-                           widget=forms.TextInput(attrs={"class": "form-control"}),
-                           required=True,
-                           error_messages={"required": ERROR_MESSAGES["NAME_REQUIRED"]})
+    first_name = forms.CharField(label=_("Your first name"),
+                                 widget=forms.TextInput(attrs={"class": "form-control"}),
+                                 required=True,
+                                 error_messages={"required": ERROR_MESSAGES["FIRST_NAME_REQUIRED"]})
+
+    last_name = forms.CharField(label=_("Your last name"),
+                                 widget=forms.TextInput(attrs={"class": "form-control"}),
+                                 required=True,
+                                 error_messages={"required": ERROR_MESSAGES["LAST_NAME_REQUIRED"]})
 
     position_in_company = forms.ChoiceField(label=_("Your position in the company"),
                                             choices=COMPANY_POSITION_CHOICES,
@@ -360,6 +372,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         decimal_places=2,
         localize=True,
+        required=False,
         label=_("Accommodation"),
         help_text=_("Rent, mortgage or lodgings"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
@@ -372,6 +385,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         decimal_places=2,
         localize=True,
+        required=False,
         label=_("Utility bills"),
         help_text=_("Gas, water, electricity etc"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
@@ -384,6 +398,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         decimal_places=2,
         localize=True,
+        required=False,
         label=_("Insurance"),
         help_text=_("Home, life insurance etc"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
@@ -396,6 +411,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         decimal_places=2,
         localize=True,
+        required=False,
         label=_("Council tax"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                       "class": "form-control-inline"}),
@@ -413,6 +429,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         decimal_places=2,
         localize=True,
+        required=False,
         label=_("Television subscription"),
         help_text=_("TV licence, satellite etc"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
@@ -425,6 +442,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         decimal_places=2,
         localize=True,
+        required=False,
         label=_("Travel expenses"),
         help_text=_("Fuel, car, public transport etc"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
@@ -437,6 +455,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         decimal_places=2,
         localize=True,
+        required=False,
         label=_("Telephone"),
         help_text=_("Landline and/or mobile"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
@@ -449,6 +468,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         decimal_places=2,
         localize=True,
+        required=False,
         label=_("Loan repayments"),
         help_text=_("Credit card, bank etc"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
@@ -461,6 +481,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         decimal_places=2,
         localize=True,
+        required=False,
         label=_("County court orders"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                       "class": "form-control-inline"}),
@@ -472,6 +493,7 @@ class YourExpensesForm(BasePleaStepForm):
         min_value=0,
         decimal_places=2,
         localize=True,
+        required=False,
         label=_("Child maintenance"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                       "class": "form-control-inline"}),
@@ -579,7 +601,7 @@ class PleaForm(BasePleaStepForm):
 class CourtFinderForm(forms.Form):
     urn = URNField(label=_("Unique reference number (URN)"),
                    required=True,
-                   help_text=_("On page 1 of the pack, in the top right corner.<br>For example, 12/AB/0034567/89"),
+                   help_text=_("On page 1 of the pack, in the top right corner.<br>For example, 12/AB/34567/00"),
                    error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]})
 
     def clean_urn(self):

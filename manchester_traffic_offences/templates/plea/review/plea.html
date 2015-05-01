@@ -9,7 +9,7 @@
         </tr>
         {% endif %}
         <tr>
-            <th class="label">
+            <th>
                 {% if case.plea_made_by == "Defendant" %}
                     {% blocktrans count counter=1 %}Your plea{% plural %}Your pleas{% endblocktrans %}
                 {% else %}
@@ -26,7 +26,7 @@
         </tr>
         {% if plea.guilty == "guilty" %}
         <tr>
-            <th class="label">
+            <th>
                 {% trans "Mitigation" %}
             </th>
             <td>
@@ -36,7 +36,7 @@
         {% endif %}
         {% if plea.guilty == "not_guilty" %}
         <tr>
-            <th class="label">
+            <th>
                 {% trans "Not guilty because" %}
             </th>
             <td>
