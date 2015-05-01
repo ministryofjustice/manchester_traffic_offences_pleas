@@ -36,7 +36,9 @@
             <p>{% trans "We need these in case we have to get in touch with you about your plea." %}</p>
         </header>
 
-        {% std_field form.name %}
+        {% std_field form.first_name %}
+
+        {% std_field form.last_name %}
 
         {% std_field form.correct_address %}
 
