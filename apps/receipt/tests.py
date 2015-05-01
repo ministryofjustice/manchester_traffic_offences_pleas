@@ -324,9 +324,11 @@ class WebHookTestCase(TestCase):
                     "text": text or self.email_body_valid,
                     "from_email": from_email or "sending@test.com",
                     "email": email or "incoming@test.com",
-                    "headers": [
-                        "DKIMwhatever: somerequiredtext"
-                    ]
+                    "headers": {
+                        "Received": [
+                            "DKIMwhatever: somerequiredtext"
+                        ]
+                    }
                 }
             }])
         }
