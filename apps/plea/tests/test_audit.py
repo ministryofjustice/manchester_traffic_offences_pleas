@@ -5,7 +5,7 @@ import io
 import os
 from itertools import cycle, chain
 import json
-from mock import patch
+from mock import patch, Mock
 import socket
 import unittest
 
@@ -16,6 +16,7 @@ from django.test.utils import override_settings
 from ..email import send_plea_email
 from ..models import Case, CourtEmailCount, Court
 from ..encrypt import clear_user_data, gpg
+from ..tasks import email_send_user
 
 
 class CaseCreationTests(TestCase):
@@ -128,6 +129,33 @@ class CaseCreationTests(TestCase):
 
         if len(files) != 1:
             self.fail('Should be one file in {}'.format(file_glob))
+
+    @override_settings(STORE_USER_DATA=True)
+    @patch("apps.plea.tasks.EmailMultiAlternatives.send")
+    def test_user_email_failure(self, send):
+        send.side_effect = iter([socket.error("Email failed to send, socket error"), True])
+
+        case = Case.objects.create(
+            urn="00/AA/00000/00")
+
+        try:
+            email_send_user.delay(self.context_data, case.id)
+        except socket.error:
+            pass
+        except Retry:
+            pass
+
+        case = Case.objects.all().order_by('-id')[0]
+
+        correct_actions = [u'User email started',
+                           u'User email network error',
+                           u'User email started',
+                           u'User email sent']
+
+        for i, action in enumerate(case.actions.all()):
+            if correct_actions[i] != action.status:
+                self.fail("Wrong action got {} expected {}".format(
+                    action.status, correct_actions[i]))
 
     @override_settings(STORE_USER_DATA=False)
     def test_data_not_stored(self):
