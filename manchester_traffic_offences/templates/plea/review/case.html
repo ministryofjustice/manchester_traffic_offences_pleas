@@ -4,19 +4,19 @@
 
     <tbody>
         <tr>
-            <th class="label">{% trans "Unique reference number" %}</th>
+            <th>{% trans "Unique reference number" %}</th>
             <td>{{ case.urn }}</td>
         </tr>
         <tr>
-            <th class="label">{% trans "Court hearing date" %}</th>
+            <th>{% trans "Court hearing date" %}</th>
             <td>{{ case.date_of_hearing|parse_date|date:"d/m/Y" }}</td>
         </tr>
         <tr>
-            <th class="label">{% trans "Number of charges against you" %}</th>
+            <th>{% trans "Number of charges against you" %}</th>
             <td>{{ case.number_of_charges }}</td>
         </tr>
         <tr>
-            <th class="label">{% trans "Plea made by" %}</th>
+            <th>{% trans "Plea made by" %}</th>
             <td>{% if case.plea_made_by == "Defendant" %}{% trans "Defendant" %}{% else %}{% trans "Company representative" %}{% endif %}</td>
         </tr>
     </tbody>

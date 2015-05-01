@@ -154,16 +154,16 @@ Main styles
 			vertical-align: top;
 			border-bottom: none;
 		}
-	}
 
-	.label {
-		width: 45%;
+		th {
+			width: 45%;
 
-		@include media(tablet) {
-			width: 30%;
+			@include media(tablet) {
+				width: 30%;
+			}
+
+			color: $grey-1;
 		}
-
-		color: $grey-1;
 	}
 
 	h3 {
