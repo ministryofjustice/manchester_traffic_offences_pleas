@@ -60,7 +60,7 @@ def email_send_court(self, case_id, count_id, email_data):
         case.sent = False
         case.save()
 
-        raise self.retry(exc=exc)
+        raise self.retry([case_id, count_id, email_data], exc=exc)
 
     case.add_action("Court email sent", "")
 
@@ -101,7 +101,7 @@ def email_send_prosecutor(self, email_data, case_id):
         except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
             logger.error("Error sending email to prosecutor: {0}".format(exc))
             case.add_action("Prosecutor email network error", unicode(exc))
-            raise self.retry(email_data, exc=exc)
+            raise self.retry([email_data, case_id], exc=exc)
 
         case.add_action("Prosecutor email sent", "")
     else:
@@ -116,7 +116,9 @@ def email_send_user(self, email_data, case_id):
     Dispatch an email to the user to confirm that their plea submission
     was successful.
     """
+
     # No error trapping, let these fail hard if the objects can't be found
+
     from .stages import get_plea_type
 
     if email_data['case']['plea_made_by'] == "Defendant":
@@ -161,9 +163,8 @@ def email_send_user(self, email_data, case_id):
                                 password=settings.USER_SMTP_EMAIL_HOST_PASSWORD,
                                 use_tls=True)
 
-    email = EmailMultiAlternatives(
-        subject, txt_body, settings.PLEA_CONFIRMATION_EMAIL_FROM,
-        [data['email']], connection=connection)
+    email = EmailMultiAlternatives(subject, txt_body, settings.PLEA_CONFIRMATION_EMAIL_FROM,
+                                   [data['email']], connection=connection)
 
     email.attach_alternative(html_body, "text/html")
 
@@ -171,8 +172,8 @@ def email_send_user(self, email_data, case_id):
         email.send(fail_silently=False)
     except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
         logger.error("Error sending user confirmation email: {0}".format(exc))
-        case.add_action("Prosecutor email network error", unicode(exc))
-        self.retry(email_data, exc=exc)
+        case.add_action("User email network error", unicode(exc))
+        raise self.retry([email_data, case_id], exc=exc)
 
     case.add_action("User email sent", "")
 
