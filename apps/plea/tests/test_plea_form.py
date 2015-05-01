@@ -53,7 +53,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                                                       "urn_3": "00",
                                                       "number_of_charges": 1,
                                                       "plea_made_by": "Defendant"},
-                                             "your_details": {"name": "Charlie Brown",
+                                             "your_details": {"first_name": "Charlie",
+                                                              "last_name": "Brown",
                                                               "contact_number": "012345678",
                                                               "email": "charliebrown@example.org"}}
 
@@ -64,7 +65,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                                                        "urn_3": "00",
                                                        "number_of_charges": 3,
                                                        "plea_made_by": "Defendant"},
-                                              "your_details": {"name": "Charlie Brown",
+                                              "your_details": {"first_name": "Charlie",
+                                                               "last_name": "Brown",
                                                                "contact_number": "012345678",
                                                                "email": "charliebrown@example.org"}}
 
@@ -76,7 +78,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "number_of_charges": 3,
                 "plea_made_by": "Defendant"
             },
-            'your_details': {"name": "Charlie Brown",
+            'your_details': {"first_name": "Charlie",
+                             "last_name": "Brown",
                    "contact_number": "07802639892",
                    "email": "test@example.org"},
             "plea": {
@@ -228,12 +231,13 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.load(self.request_context)
         form.save({}, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 5)
+        self.assertEqual(len(form.current_stage.forms[0].errors), 6)
 
     def test_your_details_stage_good_data(self):
         form = PleaOnlineForms("your_details", "plea_form_step", self.session)
         form.load(self.request_context)
-        form.save({"name": "Test man",
+        form.save({"first_name": "Test",
+                   "last_name": "Man",
                    "contact_number": "012345678",
                    "email": "test.man@example.org",
                    "correct_address": True,
@@ -249,7 +253,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                                       "date_of_hearing": "2015-01-01",
                                       "urn": "06/AA/0000000/00",
                                       "number_of_charges": 2},
-                             "your_details": {"name": "Charlie Brown",
+                             "your_details": {"first_name": "Charlie",
+                                              "last_name": "Brown",
                                               "contact_number": "07802639892",
                                               "email": "test@example.org"}})
 
@@ -258,7 +263,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
         form.load(self.request_context)
-        form.save({"name": "Test man",
+        form.save({"first_name": "Test",
+                   "last_name": "Man",
                    "contact_number": "012345678",
                    "email": "test.man@example.org",
                    "date_of_hearing_0": str(hearing_date.day),
@@ -286,7 +292,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                                       "urn": "06/AA/0000000/00",
                                       "number_of_charges": 2,
                                       "plea_made_by": "Defendant"},
-                             "your_details": {"name": "Charlie Brown",
+                             "your_details": {"first_name": "Charlie",
+                                              "last_name": "Brown",
                                               "contact_number": "07802639892",
                                               "email": "test@example.org"}})
 
@@ -659,7 +666,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "company_details": {
                 "company_name": "TEST COMPANY",
                 "company_address": "TEST ADDRESS",
-                "name": "TEST NAME",
+                "first_name": "TEST",
+                "last_name": "NAME",
                 "position_in_company": "a director",
                 "contact_number": "0800 TEST",
                 "email": "test@test.com",
@@ -691,7 +699,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertContains(response, "<<SHOWCOMPANYDETAILS>>")
         self.assertContains(response, test_data["company_details"]["company_name"])
-        self.assertContains(response, test_data["company_details"]["name"])
+        self.assertContains(response, test_data["company_details"]["first_name"])
+        self.assertContains(response, test_data["company_details"]["last_name"])
         self.assertContains(response, test_data["company_details"]["position_in_company"])
         self.assertContains(response, test_data["company_details"]["email"])
         self.assertContains(response, test_data["company_details"]["contact_number"])
@@ -718,7 +727,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "company_details": {
                 "company_name": "TEST COMPANY",
                 "company_address": "TEST ADDRESS",
-                "name": "TEST NAME",
+                "first_name": "TEST",
+                "last_name": "NAME",
                 "position_in_company": "a director",
                 "contact_number": "0800 TEST",
                 "email": "test@test.com",
@@ -749,7 +759,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertContains(response, "<<SHOWCOMPANYDETAILS>>")
         self.assertContains(response, test_data["company_details"]["company_name"])
-        self.assertContains(response, test_data["company_details"]["name"])
+        self.assertContains(response, test_data["company_details"]["first_name"])
+        self.assertContains(response, test_data["company_details"]["last_name"])
         self.assertContains(response, test_data["company_details"]["position_in_company"])
         self.assertContains(response, test_data["company_details"]["email"])
         self.assertContains(response, test_data["company_details"]["contact_number"])
@@ -866,7 +877,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form = PleaOnlineForms("your_details", "plea_form_step", fake_session)
         form.load(request_context)
-        form.save({"name": "Charlie Brown",
+        form.save({"first_name": "Charlie",
+                   "last_name": "Brown",
                    "contact_number": "07802639892",
                    "email": "test@example.org",
                    "correct_address": True,
@@ -905,7 +917,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertEqual(fake_session["case"]["date_of_hearing"], hearing_date)
         self.assertEqual(fake_session["case"]["urn"], "06/AA/0000000/00")
         self.assertEqual(fake_session["case"]["number_of_charges"], 1)
-        self.assertEqual(fake_session["your_details"]["name"], "Charlie Brown")
+        self.assertEqual(fake_session["your_details"]["first_name"], "Charlie")
+        self.assertEqual(fake_session["your_details"]["last_name"], "Brown")
         self.assertEqual(fake_session["your_details"]["contact_number"], "07802639892")
         self.assertEqual(fake_session["your_details"]["email"], "test@example.org")
         self.assertEqual(fake_session["plea"]["PleaForms"][0]["guilty"], "guilty")
@@ -937,7 +950,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form = PleaOnlineForms("your_details", "plea_form_step", fake_session)
         form.load(request_context)
-        form.save({"name": "Charlie Brown",
+        form.save({"first_name": "Charlie",
+                   "last_name": "Brown",
                    "contact_number": "07802639892",
                    "email": "test@example.org",
                    "correct_address": True,
@@ -977,7 +991,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertEqual(fake_session["case"]["urn"], "06/AA/0000000/00")
         self.assertEqual(fake_session["case"]["number_of_charges"], 2)
         self.assertEqual(fake_session["case"]["plea_made_by"], "Defendant")
-        self.assertEqual(fake_session["your_details"]["name"], "Charlie Brown")
+        self.assertEqual(fake_session["your_details"]["first_name"], "Charlie")
+        self.assertEqual(fake_session["your_details"]["last_name"], "Brown")
         self.assertEqual(fake_session["your_details"]["contact_number"], "07802639892")
         self.assertEqual(fake_session["your_details"]["email"], "test@example.org")
         self.assertEqual(fake_session["plea"]["PleaForms"][0]["guilty"], "guilty")

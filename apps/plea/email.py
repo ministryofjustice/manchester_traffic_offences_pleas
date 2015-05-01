@@ -39,17 +39,13 @@ def send_plea_email(context_data):
         date_of_hearing = context_data["case"]["date_of_hearing"]
 
     if context_data["case"]["plea_made_by"] == "Defendant":
-        name = context_data["your_details"]["name"]
+        first_name = context_data["your_details"]["first_name"]
+        last_name = context_data["your_details"]["last_name"]
     else:
-        name = context_data["company_details"]["name"]
+        first_name = context_data["company_details"]["first_name"]
+        last_name = context_data["company_details"]["last_name"]
 
-    names = [name.rsplit(" ", 1)[-1].upper()]
-    first_names = " ".join(name.rsplit(" ", 1)[:-1])
-
-    if first_names:
-        names.append(first_names)
-
-    context_data["email_name"] = " ".join(names)
+    context_data["email_name"] = " ".join([last_name.upper(), first_name])
     context_data["email_date_of_hearing"] = date_of_hearing.strftime("%Y-%m-%d")
 
     case = Case()
