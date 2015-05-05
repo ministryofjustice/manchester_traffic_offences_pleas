@@ -42,3 +42,4 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStora
 SESSION_COOKIE_SECURE = True
 
 STORE_USER_DATA = True
+
