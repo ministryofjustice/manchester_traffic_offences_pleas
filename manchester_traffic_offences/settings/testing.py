@@ -20,7 +20,6 @@ CELERY_ALWAYS_EAGER = True
 CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 BROKER_BACKEND = 'memory'
 
-TESTING = True
 DEBUG = False
 
 SECRET_KEY = "fjsklfosufcilsft37dGDRR%^$%^^gfsdvf"
