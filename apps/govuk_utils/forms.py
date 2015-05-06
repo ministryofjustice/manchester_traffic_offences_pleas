@@ -77,6 +77,7 @@ class FormStage(object):
         return form_data
 
     def load(self):
+        self.all_data[self.name].pop("nojs_first_question_done", None)
         self.load_forms(initial=True)
 
     def save(self, form_data, next_step=None):
@@ -91,7 +92,7 @@ class FormStage(object):
         for form in self.forms:
             all_valid = form.is_valid() and all_valid
 
-        if all_valid:
+        if all_valid and not "nojs_first_question" in form_data:
             clean_data.update(self.save_forms())
             clean_data["complete"] = True
             self.next_step = self.get_next(next_step)
