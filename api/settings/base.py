@@ -6,7 +6,6 @@ INSTALLED_APPS = (
     #'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.formtools',
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.sites',
