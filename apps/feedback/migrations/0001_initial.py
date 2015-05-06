@@ -1,55 +1,38 @@
 # -*- coding: utf-8 -*-
-from south.utils import datetime_utils as datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'UserRating'
-        db.create_table(u'feedback_userrating', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('timestamp', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('rating', self.gf('django.db.models.fields.PositiveIntegerField')()),
-        ))
-        db.send_create_signal(u'feedback', ['UserRating'])
+    dependencies = [
+    ]
 
-        # Adding model 'UserRatingAggregate'
-        db.create_table(u'feedback_userratingaggregate', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('start_date', self.gf('django.db.models.fields.DateTimeField')()),
-            ('feedback_count', self.gf('django.db.models.fields.PositiveIntegerField')()),
-            ('feedback_total', self.gf('django.db.models.fields.PositiveIntegerField')()),
-            ('feedback_avg', self.gf('django.db.models.fields.DecimalField')(max_digits=5, decimal_places=2)),
-        ))
-        db.send_create_signal(u'feedback', ['UserRatingAggregate'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'UserRating'
-        db.delete_table(u'feedback_userrating')
-
-        # Deleting model 'UserRatingAggregate'
-        db.delete_table(u'feedback_userratingaggregate')
-
-
-    models = {
-        u'feedback.userrating': {
-            'Meta': {'object_name': 'UserRating'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'rating': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            'timestamp': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'})
-        },
-        u'feedback.userratingaggregate': {
-            'Meta': {'object_name': 'UserRatingAggregate'},
-            'feedback_avg': ('django.db.models.fields.DecimalField', [], {'max_digits': '5', 'decimal_places': '2'}),
-            'feedback_count': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            'feedback_total': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'start_date': ('django.db.models.fields.DateTimeField', [], {})
-        }
-    }
-
-    complete_apps = ['feedback']
+    operations = [
+        migrations.CreateModel(
+            name='UserRating',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('timestamp', models.DateTimeField(auto_now_add=True)),
+                ('rating', models.PositiveIntegerField(choices=[(5, 'very satisfied'), (4, 'satisfied'), (3, 'neither satisfied nor dissatisfied'), (2, 'dissatisfied'), (1, 'very dissatisfied')])),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='UserRatingAggregate',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('start_date', models.DateTimeField()),
+                ('feedback_count', models.PositiveIntegerField()),
+                ('feedback_total', models.PositiveIntegerField()),
+                ('feedback_avg', models.DecimalField(max_digits=5, decimal_places=2)),
+            ],
+            options={
+                'ordering': ('start_date',),
+            },
+            bases=(models.Model,),
+        ),
+    ]

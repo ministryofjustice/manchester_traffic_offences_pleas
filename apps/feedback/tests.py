@@ -68,10 +68,10 @@ class FeedbackFormTestCase(TestCase):
         request = self.request_factory.post(reverse("feedback_form"), {},
                                             HTTP_USER_AGENT='Mozilla/5.0')
 
-        response = feedback_form(request)
+        with self.assertTemplateUsed("feedback/feedback.html"):
+            response = feedback_form(request)
 
-        self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, "feedback.html")
+            self.assertEquals(response.status_code, 200)
 
 
 class UserRatingTestCase(TestCase):
