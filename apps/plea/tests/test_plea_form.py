@@ -138,6 +138,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form = PleaOnlineForms("case", "plea_form_step", self.session)
         form.load(request_context)
+
         form.save({"date_of_hearing_0": str(hearing_date.day),
                    "date_of_hearing_1": str(hearing_date.month),
                    "date_of_hearing_2": str(hearing_date.year),
@@ -794,10 +795,11 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form = PleaOnlineForms("review", "plea_form_step", test_data)
 
         form.load(self.request_context)
-        response = form.render()
 
-        self.assertTemplateUsed(response, "plea/review.html")
-        self.assertIn("06/AA/0000000/00", response.content)
+
+        with self.assertTemplateUsed("plea/review.html"):
+             response = form.render()
+             self.assertIn("06/AA/0000000/00", response.content)
 
     def test_complete_stage_loads(self):
         hearing_date = datetime.date.today()+datetime.timedelta(30)
