@@ -135,9 +135,9 @@ class YourDetailsForm(BasePleaStepForm):
 
 class CompanyDetailsForm(BasePleaStepForm):
     COMPANY_POSITION_CHOICES = (
-        ("Director", _("a director")),
-        ("Company secretary", _("the company secretary")),
-        ("Company solicitor", _("the company's solicitor")))
+        ("Director", _("director")),
+        ("Company secretary", _("company secretary")),
+        ("Company solicitor", _("company solicitor")))
 
     company_name = forms.CharField(label=_("Company name"),
                                    widget=forms.TextInput(attrs={"class": "form-control"}),
@@ -165,7 +165,6 @@ class CompanyDetailsForm(BasePleaStepForm):
     position_in_company = forms.ChoiceField(label=_("Your position in the company"),
                                             choices=COMPANY_POSITION_CHOICES,
                                             widget=RadioSelect(renderer=DSStackedRadioFieldRenderer),
-                                            help_text=_("You must confirm that you are:"),
                                             required=True,
                                             error_messages={"required": ERROR_MESSAGES["POSITION_REQUIRED"]})
 
