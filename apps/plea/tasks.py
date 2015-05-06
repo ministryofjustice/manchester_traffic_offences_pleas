@@ -74,7 +74,7 @@ def email_send_court(self, case_id, count_id, email_data):
     email_send_user.delay(email_data, case_id)
 
 
-@app.task(bind=True)
+@app.task(bind=True, max_retries=5, default_retry_delay=10)
 def email_send_prosecutor(self, email_data, case_id):
     try:
         court_obj = Court.objects.get_by_urn(email_data["case"]["urn"])
@@ -110,7 +110,7 @@ def email_send_prosecutor(self, email_data, case_id):
     return True
 
 
-@app.task(bind=True)
+@app.task(bind=True, max_retries=5, default_retry_delay=10)
 def email_send_user(self, email_data, case_id):
     """
     Dispatch an email to the user to confirm that their plea submission
@@ -151,6 +151,10 @@ def email_send_user(self, email_data, case_id):
 
     case = Case.objects.get(pk=case_id)
     case.add_action("User email started", "")
+
+    if not email:
+        case.add_action("No email entered, user email not sent.", "")
+        return True
 
     html_body = render_to_string("plea/plea_email_confirmation.html", data)
     txt_body = render_to_string("plea/plea_email_confirmation.txt", data)
