@@ -161,18 +161,13 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.formtools',
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'south',
     'django_extensions',
     'waffle',
-]
-
-PROJECT_APPS = [
     'apps.govuk_utils',
     'moj_template',
     'apps.plea',
@@ -180,7 +175,8 @@ PROJECT_APPS = [
     'apps.receipt',
 ]
 
-INSTALLED_APPS += PROJECT_APPS
+INSTALLED_APPS
+print INSTALLED_APPS
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
