@@ -184,6 +184,17 @@ class CompanyFinancesStage(FormStage):
     form_classes = [CompanyFinancesForm]
     dependencies = ["case"]
 
+    def save(self, form_data, next_step=None):
+        clean_data = super(CompanyFinancesStage, self).save(form_data, next_step)
+
+        if "nojs" in form_data:
+            if "trading_period" in form_data:
+                self.all_data["company_finances"]["nojs_first_question_done"]=True
+            else:
+                self.all_data["company_finances"].pop("nojs_first_question_done", None)
+
+        return clean_data
+
 
 class YourMoneyStage(FormStage):
     name = "your_finances"
