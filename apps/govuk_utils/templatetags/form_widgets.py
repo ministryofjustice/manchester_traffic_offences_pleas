@@ -21,3 +21,7 @@ def radio_field(context, field, **kwargs):
 def money_field(context, field, **kwargs):
     field.__dict__.update(kwargs)
     return {"field": field}
+
+@register.inclusion_tag("widgets/nojs.html", takes_context=True)
+def no_js(context, nojs_form):
+    return {"form": nojs_form}
