@@ -1722,10 +1722,10 @@ p.important, #section_understand .block-label .important {
   background: url(../images/icons/icon-important.png) no-repeat top left; }
 
 /*== JS classes ======================================*/
-.js-enabled-only {
+.nojs-hidden {
   display: none; }
 
-.js-enabled .js-enabled-only {
+.js-enabled .nojs-hidden {
   display: block; }
 
 /*  

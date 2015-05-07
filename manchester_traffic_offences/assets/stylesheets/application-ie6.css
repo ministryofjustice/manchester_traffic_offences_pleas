@@ -1657,13 +1657,13 @@ p.important, #section_understand .block-label .important {
 .js-hidden {
   display: none; }
 
-.js-enabled-only {
+.nojs-hidden {
   display: block; }
 
-.js-enabled-only {
+.nojs-hidden {
   display: none; }
 
-.js-enabled .js-enabled-only {
+.js-enabled .nojs-hidden {
   display: block; }
 
 /*  
