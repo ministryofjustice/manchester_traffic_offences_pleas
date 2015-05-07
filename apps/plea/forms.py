@@ -31,6 +31,10 @@ class BasePleaStepForm(forms.Form):
     pass
 
 
+class NoJSPleaStepForm(BasePleaStepForm):
+    nojs = forms.CharField(required=False, widget=forms.HiddenInput)
+
+
 class CaseForm(BasePleaStepForm):
     PLEA_MADE_BY_CHOICES = (
         ("Defendant", _("The person named on the Postal Requisition")),
@@ -502,7 +506,18 @@ class YourExpensesForm(BasePleaStepForm):
                         'min_value': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_MIN']})
 
 
-class CompanyFinancesForm(BasePleaStepForm):
+class CompanyFinancesForm(NoJSPleaStepForm):
+    dependencies={
+        "number_of_employees": {
+            "field": "trading_period"
+        },
+        "gross_turnover": {
+            "field": "trading_period"
+        },
+        "net_turnover": {
+            "field": "trading_period"
+        }
+    }
 
     trading_period = forms.TypedChoiceField(required=True, widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YESNO_CHOICES,
@@ -516,8 +531,7 @@ class CompanyFinancesForm(BasePleaStepForm):
                                                                            "class": "form-control-inline"}),
                                              min_value=1, max_value=10000,
                                              localize=True,
-                                             error_messages={"required": ERROR_MESSAGES["COMPANY_NUMBER_EMPLOYEES"]},
-                                             required=False)
+                                             error_messages={"required": ERROR_MESSAGES["COMPANY_NUMBER_EMPLOYEES"]})
 
     gross_turnover = forms.DecimalField(widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                       "maxlength": "10",
@@ -526,7 +540,6 @@ class CompanyFinancesForm(BasePleaStepForm):
                                         decimal_places=2,
                                         localize=True,
                                         help_text=_("For example, 150000"),
-                                        required=False,
                                         error_messages={"required": ERROR_MESSAGES["COMPANY_GROSS_TURNOVER"]})
 
     net_turnover = forms.DecimalField(widget=forms.TextInput(attrs={"pattern": "[0-9]*",
@@ -536,7 +549,6 @@ class CompanyFinancesForm(BasePleaStepForm):
                                       max_digits=10,
                                       decimal_places=2,
                                       localize=True,
-                                      required=False,
                                       error_messages={"required": ERROR_MESSAGES["COMPANY_NET_TURNOVER"]})
 
     def __init__(self, *args, **kwargs):
@@ -545,6 +557,22 @@ class CompanyFinancesForm(BasePleaStepForm):
             data = args[0]
         except IndexError:
             data = {}
+
+        if data:
+            for field_name, dependency in self.depdencies.items():
+                dependency_field = dependency["required"].get("field", None)
+                dependency_value = dependency["required"].get("value", None)
+                if dependency_field:
+                    if dependency_value:
+                        if data.get(dependency_field, None) != dependency_value:
+                            self.fields[field_name].required = True
+                        else:
+                            self.fields[field_name].required = False
+                    else:
+                        if data.get(dependency_field, None) is not None:
+                            self.fields[field_name].required = True
+                        else:
+                            self.fields[field_name].required = False
 
         if "trading_period" in data:
             if not "nojs_first_question" in data:
