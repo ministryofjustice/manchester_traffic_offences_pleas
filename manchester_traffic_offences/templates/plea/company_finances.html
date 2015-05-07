@@ -10,13 +10,10 @@
 
     {% with request.session.case.number_of_charges as charges %}
 <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
-
     {% csrf_token %}
 
-    <input type="hidden" name="nojs" value="1">
-
     {% with forms.0 as form %}
-
+        {% no_js form %}
         {% if form.errors %}
         <section class="error-summary">
             <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
@@ -57,7 +54,7 @@
     {% radio_field form.trading_period %}
     {% endif %}
 
-    <div class="js-Conditional{% if not company_finances.nojs_first_question_done %} hidden{% endif %}" data-conditional-trigger="trading_period" data-conditional-value="^(True|False)$">
+    <div class="js-Conditional{% if not company_finances.nojs_first_question_done %} hxidden{% endif %}" data-conditional-trigger="trading_period" data-conditional-value="^(True|False)$">
 
         {% std_field form.number_of_employees hide_optional=True %}
 
