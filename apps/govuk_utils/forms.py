@@ -76,8 +76,10 @@ class FormStage(object):
 
         return form_data
 
-    def load(self):
-        self.all_data[self.name].pop("nojs_first_question_done", None)
+    def load(self, request_context=None):
+        # Reset nojs state if returning to trigger question
+        if "reset" in request_context["request"].GET:
+            self.all_data[self.name].pop("nojs_next", None)
         self.load_forms(initial=True)
 
     def save(self, form_data, next_step=None):
@@ -92,10 +94,20 @@ class FormStage(object):
         for form in self.forms:
             all_valid = form.is_valid() and all_valid
 
-        if all_valid and not "nojs_first_question" in form_data:
+        # Only save the data if this submission was NOT the first past of a no JS question
+        if all_valid and not "nojs_trigger_submitted" in form_data:
             clean_data.update(self.save_forms())
             clean_data["complete"] = True
             self.next_step = self.get_next(next_step)
+
+        # Set the nojs state to proceed to second part
+        if "nojs" in form_data:
+            clean_data["nojs_next"] = True
+
+            for form in self.forms:
+                if form.nojs_options.get("trigger", None) not in form_data:
+                    clean_data["nojs_next"] = False
+                    break
 
         return clean_data
 
@@ -149,7 +161,7 @@ class MultiStageForm(object):
         if not self.current_stage.check_dependencies():
             return HttpResponseRedirect(self.urls[self.stage_classes[0].name])
 
-        self.current_stage.load()
+        self.current_stage.load(request_context)
 
     def save(self, form_data, request_context, next_step=None):
         self.request_context = request_context
