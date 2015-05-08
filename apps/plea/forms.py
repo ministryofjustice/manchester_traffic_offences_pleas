@@ -46,18 +46,27 @@ class NoJSPleaStepForm(BasePleaStepForm):
             self.data = {}
         
         if self.data and hasattr(self, "dependencies"):
-            for field, dependency in self.dependencies.items():
-                dependency_field = dependency.get("field", None)
-                dependency_value = dependency.get("value", None)
+            self.check_dependencies(self.dependencies)
 
-                self.fields[field].required = False
+    def check_dependencies(self, dependencies_list):
+        for field, dependency in dependencies_list.items():
+            dependency_field = dependency.get("field", None)
+            dependency_value = dependency.get("value", None)
+            sub_dependencies = dependency.get("dependencies", None)
 
+            self.fields[field].required = False
+
+            if self.fields[dependency_field].required:
                 if not "nojs_trigger_submitted" in self.data:
                     if dependency_value and self.data.get(dependency_field, None) == dependency_value:
                         self.fields[field].required = True
                     
                     if not dependency_value and self.data.get(dependency_field, None) is not None:
                         self.fields[field].required = True
+
+                if sub_dependencies:
+                    self.check_dependencies(sub_dependencies)
+
 
 
 class CaseForm(BasePleaStepForm):
@@ -235,27 +244,35 @@ class YourMoneyForm(NoJSPleaStepForm):
     YES_NO = (("Yes", _("Yes")),
               ("No", _("No")))
 
-    dependencies={
+    dependencies = {
         "employed_take_home_pay_period": { "field": "you_are", "value": "Employed"},
         "employed_take_home_pay_amount": { "field": "you_are", "value": "Employed"},
         "employed_hardship": { "field": "you_are", "value": "Employed"},
 
-        "self_employed_pay_period": { "field": "you_are", "value": "Self-employed"},
+        "self_employed_pay_period": {"field": "you_are", 
+                                     "value": "Self-employed", 
+                                     "dependencies": {"self_employed_pay_other": {"field": "self_employed_pay_period",
+                                                                                  "value": "Self-employed other" }}},
+
         "self_employed_pay_amount": { "field": "you_are", "value": "Self-employed"},
         "self_employed_hardship": { "field": "you_are", "value": "Self-employed"},
-        
-        # TODO: nested dependencies
-        # "self_employed_pay_other": { "field": "self_employed_pay_period", "value": "Self-employed other"},
 
         "benefits_details": { "field": "you_are", "value": "Receiving benefits"},
         "benefits_dependents": { "field": "you_are", "value": "Receiving benefits"},
-        "benefits_period": { "field": "you_are", "value": "Receiving benefits"},
+        "benefits_period": {"field": "you_are",
+                            "value": "Receiving benefits",
+                            "dependencies": {"benefits_pay_other": {"field": "benefits_period",
+                                                                    "value": "Benefits other"}}},
         "benefits_amount": { "field": "you_are", "value": "Receiving benefits"},
         "receiving_benefits_hardship": { "field": "you_are", "value": "Receiving benefits"},
 
         "other_details": { "field": "you_are", "value": "Other"},
         "other_pay_amount": { "field": "you_are", "value": "Other"},
         "other_hardship": { "field": "you_are", "value": "Other"}
+    }
+
+    nojs_options = {
+        "trigger": "you_are"
     }
 
     you_are = forms.ChoiceField(label=_("Are you?"), choices=YOU_ARE_CHOICES,
@@ -313,7 +330,6 @@ class YourMoneyForm(NoJSPleaStepForm):
                                                     widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                     choices=YESNO_CHOICES,
                                                     coerce=to_bool,
-                                                    required=False,
                                                     error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
     # On benefits
@@ -334,7 +350,6 @@ class YourMoneyForm(NoJSPleaStepForm):
 
     benefits_pay_other = forms.CharField(label="",
                                          max_length=500,
-                                         required=False,
                                          widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
                                          help_text=_("Tell us about how often you get paid"))
 
