@@ -32,7 +32,32 @@ class BasePleaStepForm(forms.Form):
 
 
 class NoJSPleaStepForm(BasePleaStepForm):
-    nojs = forms.CharField(required=False, widget=forms.HiddenInput)
+    nojs = forms.CharField(required=False, widget=forms.HiddenInput(attrs={"value": "1"}))
+    nojs_trigger_submitted = forms.CharField(required=False, widget=forms.HiddenInput(attrs={"value": "1"}))
+
+    nojs_options = {}
+
+    def __init__(self, *args, **kwargs):
+        super(NoJSPleaStepForm, self).__init__(*args, **kwargs)
+
+        try:
+            self.data = args[0]
+        except IndexError:
+            self.data = {}
+        
+        if self.data and hasattr(self, "dependencies"):
+            for field, dependency in self.dependencies.items():
+                dependency_field = dependency.get("field", None)
+                dependency_value = dependency.get("value", None)
+
+                self.fields[field].required = False
+
+                if not "nojs_trigger_submitted" in self.data:
+                    if dependency_value and self.data.get(dependency_field, None) == dependency_value:
+                        self.fields[field].required = True
+                    
+                    if not dependency_value and self.data.get(dependency_field, None) is not None:
+                        self.fields[field].required = True
 
 
 class CaseForm(BasePleaStepForm):
@@ -190,7 +215,7 @@ class CompanyDetailsForm(BasePleaStepForm):
                                              "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
 
-class YourMoneyForm(BasePleaStepForm):
+class YourMoneyForm(NoJSPleaStepForm):
 
     YOU_ARE_CHOICES = (("Employed", _("Employed")),
                        ("Self-employed", _("Self-employed")),
@@ -210,18 +235,40 @@ class YourMoneyForm(BasePleaStepForm):
     YES_NO = (("Yes", _("Yes")),
               ("No", _("No")))
 
+    dependencies={
+        "employed_take_home_pay_period": { "field": "you_are", "value": "Employed"},
+        "employed_take_home_pay_amount": { "field": "you_are", "value": "Employed"},
+        "employed_hardship": { "field": "you_are", "value": "Employed"},
+
+        "self_employed_pay_period": { "field": "you_are", "value": "Self-employed"},
+        "self_employed_pay_amount": { "field": "you_are", "value": "Self-employed"},
+        "self_employed_hardship": { "field": "you_are", "value": "Self-employed"},
+        
+        # TODO: nested dependencies
+        # "self_employed_pay_other": { "field": "self_employed_pay_period", "value": "Self-employed other"},
+
+        "benefits_details": { "field": "you_are", "value": "Receiving benefits"},
+        "benefits_dependents": { "field": "you_are", "value": "Receiving benefits"},
+        "benefits_period": { "field": "you_are", "value": "Receiving benefits"},
+        "benefits_amount": { "field": "you_are", "value": "Receiving benefits"},
+        "receiving_benefits_hardship": { "field": "you_are", "value": "Receiving benefits"},
+
+        "other_details": { "field": "you_are", "value": "Other"},
+        "other_pay_amount": { "field": "you_are", "value": "Other"},
+        "other_hardship": { "field": "you_are", "value": "Other"}
+    }
+
     you_are = forms.ChoiceField(label=_("Are you?"), choices=YOU_ARE_CHOICES,
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
     # Employed
     employed_take_home_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                                      choices=PERIOD_CHOICES, required=False,
+                                                      choices=PERIOD_CHOICES,
                                                       label=_("How often do you get paid?"),
                                                       error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                                       "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
 
-    employed_take_home_pay_amount = forms.DecimalField(label=_("What's your take home pay (after tax)?"), 
-                                                       required=False,
+    employed_take_home_pay_amount = forms.DecimalField(label=_("What's your take home pay (after tax)?"),
                                                        localize=True,
                                                        widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                                      "data-template-trigger": "employed_take_home_pay_period",
@@ -236,18 +283,16 @@ class YourMoneyForm(BasePleaStepForm):
                                                widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                choices=YESNO_CHOICES,
                                                coerce=to_bool,
-                                               required=False,
                                                error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
     # Self-employed
     self_employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                                 choices=SE_PERIOD_CHOICES, required=False,
+                                                 choices=SE_PERIOD_CHOICES,
                                                  label=_("How often do you get paid?"),
                                                  error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                                  "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
 
     self_employed_pay_amount = forms.DecimalField(label=_("What's your average take home pay?"),
-                                                  required=False,
                                                   localize=True,
                                                   widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                                 "data-template-trigger": "self_employed_pay_period",
@@ -258,7 +303,8 @@ class YourMoneyForm(BasePleaStepForm):
                                                   error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                                   "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
-    self_employed_pay_other = forms.CharField(required=False, max_length=500, label="",
+    self_employed_pay_other = forms.CharField(label="",
+                                              max_length=500,
                                               widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
                                               help_text=_("Tell us about how often you get paid"))
 
@@ -271,27 +317,28 @@ class YourMoneyForm(BasePleaStepForm):
                                                     error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
     # On benefits
-    benefits_details = forms.CharField(required=False, max_length=500, label=_("Which benefits do you receive?"),
+    benefits_details = forms.CharField(max_length=500, label=_("Which benefits do you receive?"),
                                        widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
                                        error_messages={"required": ERROR_MESSAGES["BENEFITS_DETAILS_REQUIRED"]})
 
-    benefits_dependents = forms.ChoiceField(required=False, widget=RadioSelect(renderer=DSRadioFieldRenderer),
+    benefits_dependents = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YES_NO,
                                             label=_("Does this include payment for dependants?"),
                                             error_messages={"required": ERROR_MESSAGES["BENEFITS_DEPENDANTS_REQUIRED"]})
     
     benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                        choices=BEN_PERIOD_CHOICES, required=False,
+                                        choices=BEN_PERIOD_CHOICES,
                                         label=_("How often are your benefits paid?"),
                                         error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                         "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
 
-    benefits_pay_other = forms.CharField(required=False, max_length=500, label="",
+    benefits_pay_other = forms.CharField(label="",
+                                         max_length=500,
+                                         required=False,
                                          widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
                                          help_text=_("Tell us about how often you get paid"))
 
     benefits_amount = forms.DecimalField(label=_("What's your average take home pay?"),
-                                         required=False,
                                          localize=True,
                                          widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                        "data-template-trigger": "benefits_period",
@@ -307,17 +354,15 @@ class YourMoneyForm(BasePleaStepForm):
                                                          widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                          choices=YESNO_CHOICES,
                                                          coerce=to_bool,
-                                                         required=False,
                                                          error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
     # Other
-    other_details = forms.CharField(required=False, max_length=500, label=_("Please provide details"),
+    other_details = forms.CharField(max_length=500, label=_("Please provide details"),
                                     help_text=_("eg retired, student etc."),
                                     widget=forms.TextInput(attrs={"class": "form-control"}), 
                                     error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
 
     other_pay_amount = forms.DecimalField(label=_("What is your monthly disposable income?"),
-                                          required=False,
                                           localize=True,
                                           widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                         "class": "form-control-inline"}),
@@ -329,39 +374,7 @@ class YourMoneyForm(BasePleaStepForm):
                                             widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YESNO_CHOICES,
                                             coerce=to_bool,
-                                            required=False,
                                             error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
-
-
-    def __init__(self, *args, **kwargs):
-        super(YourMoneyForm, self).__init__(*args, **kwargs)
-        try:
-            data = args[0]
-        except IndexError:
-            data = {}
-
-        if "you_are" in data:                
-            if data["you_are"] == "Employed":
-                self.fields["employed_take_home_pay_period"].required = True
-                self.fields["employed_take_home_pay_amount"].required = True
-                self.fields["employed_hardship"].required = True
-
-            if data["you_are"] == "Self-employed":
-                self.fields["self_employed_pay_period"].required = True
-                self.fields["self_employed_pay_amount"].required = True
-                self.fields["self_employed_hardship"].required = True
-
-            if data["you_are"] == "Receiving benefits":
-                self.fields["benefits_details"].required = True
-                self.fields["benefits_dependents"].required = True
-                self.fields["benefits_period"].required = True
-                self.fields["benefits_amount"].required = True
-                self.fields["receiving_benefits_hardship"].required = True
-
-            if data["you_are"] == "Other":
-                self.fields["other_details"].required = True
-                self.fields["other_pay_amount"].required = True
-                self.fields["other_hardship"].required = True
 
 
 class YourExpensesForm(BasePleaStepForm):
@@ -507,7 +520,7 @@ class YourExpensesForm(BasePleaStepForm):
 
 
 class CompanyFinancesForm(NoJSPleaStepForm):
-    dependencies={
+    dependencies = {
         "number_of_employees": {
             "field": "trading_period"
         },
@@ -517,6 +530,10 @@ class CompanyFinancesForm(NoJSPleaStepForm):
         "net_turnover": {
             "field": "trading_period"
         }
+    }
+
+    nojs_options = {
+        "trigger": "trading_period"
     }
 
     trading_period = forms.TypedChoiceField(required=True, widget=RadioSelect(renderer=DSRadioFieldRenderer),
@@ -553,34 +570,9 @@ class CompanyFinancesForm(NoJSPleaStepForm):
 
     def __init__(self, *args, **kwargs):
         super(CompanyFinancesForm, self).__init__(*args, **kwargs)
-        try:
-            data = args[0]
-        except IndexError:
-            data = {}
 
-        if data:
-            for field_name, dependency in self.depdencies.items():
-                dependency_field = dependency["required"].get("field", None)
-                dependency_value = dependency["required"].get("value", None)
-                if dependency_field:
-                    if dependency_value:
-                        if data.get(dependency_field, None) != dependency_value:
-                            self.fields[field_name].required = True
-                        else:
-                            self.fields[field_name].required = False
-                    else:
-                        if data.get(dependency_field, None) is not None:
-                            self.fields[field_name].required = True
-                        else:
-                            self.fields[field_name].required = False
-
-        if "trading_period" in data:
-            if not "nojs_first_question" in data:
-              self.fields["number_of_employees"].required = True
-              self.fields["gross_turnover"].required = True
-              self.fields["net_turnover"].required = True
-
-            if data["trading_period"] == "False":
+        if "trading_period" in self.data:
+            if self.data["trading_period"] == "False":
                 self.fields["gross_turnover"].error_messages = {"required": ERROR_MESSAGES["COMPANY_GROSS_TURNOVER_PROJECTED"]}
                 self.fields["net_turnover"].error_messages = {"required": ERROR_MESSAGES["COMPANY_NET_TURNOVER_PROJECTED"]}
 
