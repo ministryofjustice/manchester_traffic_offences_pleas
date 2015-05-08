@@ -12,6 +12,8 @@
     {% csrf_token %}
 
     {% with forms.0 as form %}
+
+        {% no_js form %}
     
         {% if form.errors %}
         <section class="error-summary">
@@ -42,18 +44,22 @@
         </ul>
     </div>
 
+    {% if your_finances.nojs_next %}
+    <div class="nojs-hidden">
+        {% radio_field form.you_are %}
+    </div>
+    <div class="form-step-header js-hidden">
+        <h3><span>You are:</span>
+            {{ form.you_are.value }}
+        </h3>
+        <a href="{{ request.path }}?reset">Change</a>
+    </div>
+    {% else %}
+    {{ form.nojs_trigger_submitted }}
     {% radio_field form.you_are %}
-
-    <ul class="js-hidden go-to">
-        <li>{% blocktrans %}If you answered <em>Employed</em>, fill in the section <a href="#section-employed">"You are: Employed"</a>{% endblocktrans %}</li>
-        <li>{% blocktrans %}If you answered <em>Self-employed</em>, fill in the section <a href="#section-self-employed">"You are: Self-employed"</a>{% endblocktrans %}</li>
-        <li>{% blocktrans %}If you answered <em>Receiving benefits</em>, fill in the section <a href="#section-receiving-benefits">"You are: Receiving benefits"</a>{% endblocktrans %}</li>
-        <li>{% blocktrans %}If you answered <em>Other</em>, fill in the section <a href="#section-other">"You are: Other"</a>{% endblocktrans %}</li>
-    </ul>
+    {% endif %}
         
-    <div id="section-employed" class="js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Employed">
-
-        <h3 class="js-hidden">{% trans "You are: Employed" %}</h3>
+    <div id="section-employed" class="js-hidden js-Conditional{% if not your_finances.nojs_next or form.you_are.value != "Employed" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Employed">
 
         <div class="panel-indent move-up">
 
@@ -71,9 +77,7 @@
         </div>
     </div>
 
-    <div id="section-self-employed" class="js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Self-employed">
-
-        <h3 class="js-hidden">{% trans "You are: Self-employed" %}</h3>
+    <div id="section-self-employed" class="js-hidden js-Conditional{% if not your_finances.nojs_next or form.you_are.value != "Self-employed" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Self-employed">
 
         <div class="panel-indent move-up">
 
@@ -96,9 +100,7 @@
         </div>
     </div>
 
-    <div id="section-receiving-benefits" class="js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Receiving benefits">
-
-        <h3 class="js-hidden">{% trans "You are: Receiving benefits" %}</h3>
+    <div id="section-receiving-benefits" class="js-hidden js-Conditional{% if not your_finances.nojs_next or form.you_are.value != "Receiving benefits" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Receiving benefits">
 
         <div class="panel-indent move-up">
 
@@ -125,9 +127,7 @@
         </div>
     </div>
 
-    <div id="section-other" class="js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Other">
-
-        <h3 class="js-hidden">{% trans "You are: Other" %}</h3>
+    <div id="section-other" class="js-hidden js-Conditional{% if not your_finances.nojs_next or form.you_are.value != "Other" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Other">
 
         <div class="panel-indent move-up">
 
