@@ -13,7 +13,9 @@
     {% csrf_token %}
 
     {% with forms.0 as form %}
+
         {% no_js form %}
+
         {% if form.errors %}
         <section class="error-summary">
             <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
@@ -36,7 +38,7 @@
         <p>{% trans "The court will decide the company's fine based on its size and financial situation." %}</p>
     </header>
 
-    {% if company_finances.nojs_first_question_done %}
+    {% if company_finances.nojs_next %}
     <div class="nojs-hidden">
         {% radio_field form.trading_period %}
     </div>
@@ -48,14 +50,14 @@
             The company has been trading for less than 12 months
             {% endif %}
         </h3>
-        <a href="{{ request.path }}">Change</a>
+        <a href="{{ request.path }}?reset">Change</a>
     </div>
     {% else %}
-    <input type="hidden" name="nojs_first_question" value="1">
+    {{ form.nojs_trigger_submitted }}
     {% radio_field form.trading_period %}
     {% endif %}
 
-    <div class="js-Conditional{% if not company_finances.nojs_first_question_done %} nojs-hidden{% endif %}" data-conditional-trigger="trading_period" data-conditional-value="^(True|False)$">
+    <div class="js-Conditional{% if not company_finances.nojs_next %} nojs-hidden{% endif %}" data-conditional-trigger="trading_period" data-conditional-value="^(True|False)$">
 
         {% std_field form.number_of_employees hide_optional=True %}
 
