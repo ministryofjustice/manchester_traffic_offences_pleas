@@ -61,13 +61,13 @@
         
     <div id="section-employed" class="js-hidden js-Conditional{% if not your_finances.nojs_next or form.you_are.value != "Employed" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Employed">
 
-        <div class="panel-indent move-up">
+        <div class="panel-indent">
 
-            {% radio_field form.employed_take_home_pay_period hide_optional=True %}
+            {% radio_field form.employed_take_home_pay_period %}
 
-            {% money_field form.employed_take_home_pay_amount hide_optional=True %}
+            {% money_field form.employed_take_home_pay_amount %}
 
-            {% radio_field form.employed_hardship hide_optional=True %}
+            {% radio_field form.employed_hardship %}
 
             <div id="employed_hardship-True" class="js-Conditional" data-conditional-trigger="employed_hardship" data-conditional-value="True">
                 <h4 class="heading-small">{% trans "Note:" %}</h4>
@@ -79,18 +79,18 @@
 
     <div id="section-self-employed" class="js-hidden js-Conditional{% if not your_finances.nojs_next or form.you_are.value != "Self-employed" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Self-employed">
 
-        <div class="panel-indent move-up">
+        <div class="panel-indent">
 
-            {% radio_field form.self_employed_pay_period hide_optional=True %}
+            {% radio_field form.self_employed_pay_period %}
 
             <div id="section-self-employed-other" class="form-group move-up js-Conditional" data-conditional-trigger="self_employed_pay_period" data-conditional-value="Self-employed other">
                 <h4 class="heading-small js-hidden">If you answered "Other":</h4>
-                {% std_field form.self_employed_pay_other hide_optional=True %}
+                {% std_field form.self_employed_pay_other %}
             </div>
 
-            {% money_field form.self_employed_pay_amount hide_optional=True %}
+            {% money_field form.self_employed_pay_amount %}
 
-            {% radio_field form.self_employed_hardship hide_optional=True %}
+            {% radio_field form.self_employed_hardship %}
 
             <div id="self_employed_hardship-True" class="js-Conditional" data-conditional-trigger="self_employed_hardship" data-conditional-value="True">
                 <h4 class="heading-small">{% trans "Note:" %}</h4>
@@ -102,22 +102,22 @@
 
     <div id="section-receiving-benefits" class="js-hidden js-Conditional{% if not your_finances.nojs_next or form.you_are.value != "Receiving benefits" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Receiving benefits">
 
-        <div class="panel-indent move-up">
+        <div class="panel-indent">
 
-            {% std_field form.benefits_details hide_optional=True %}
+            {% std_field form.benefits_details %}
 
-            {% radio_field form.benefits_dependents hide_optional=True %}
+            {% radio_field form.benefits_dependents %}
 
-            {% radio_field form.benefits_period hide_optional=True %}
+            {% radio_field form.benefits_period %}
 
             <div id="section-benefits-other" class="form-group move-up js-Conditional" data-conditional-trigger="benefits_period" data-conditional-value="Benefits other">
                 <h4 class="heading-small js-hidden">If you answered "Other":</h4>
-                {% std_field form.benefits_pay_other hide_optional=True %}
+                {% std_field form.benefits_pay_other %}
             </div>
 
-            {% money_field form.benefits_amount hide_optional=True %}
+            {% money_field form.benefits_amount %}
 
-            {% radio_field form.receiving_benefits_hardship hide_optional=True %}
+            {% radio_field form.receiving_benefits_hardship %}
 
             <div id="receiving_benefits_hardship-True" class="js-Conditional" data-conditional-trigger="receiving_benefits_hardship" data-conditional-value="True">
                 <h4 class="heading-small">{% trans "Note:" %}</h4>
@@ -129,13 +129,13 @@
 
     <div id="section-other" class="js-hidden js-Conditional{% if not your_finances.nojs_next or form.you_are.value != "Other" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Other">
 
-        <div class="panel-indent move-up">
+        <div class="panel-indent">
 
-            {% std_field form.other_details hide_optional=True %}
+            {% std_field form.other_details %}
 
-            {% money_field form.other_pay_amount hide_optional=True %}
+            {% money_field form.other_pay_amount %}
 
-            {% radio_field form.other_hardship hide_optional=True %}
+            {% radio_field form.other_hardship %}
 
             <div id="other_hardship-True" class="js-Conditional" data-conditional-trigger="other_hardship" data-conditional-value="True">
                 <h4 class="heading-small">{% trans "Note:" %}</h4>
