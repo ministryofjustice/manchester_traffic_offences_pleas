@@ -44,28 +44,51 @@ class NoJSPleaStepForm(BasePleaStepForm):
             self.data = args[0]
         except IndexError:
             self.data = {}
+
+        # Multiple forms store their data in kwargs, it seems
+        if not self.data:
+            kwargs_data = kwargs.get("data", None)
+            if kwargs_data:
+                self.data = kwargs_data
         
         if self.data and hasattr(self, "dependencies"):
-            self.check_dependencies(self.dependencies)
+            prefix = kwargs.get("prefix", None)
+            self.check_dependencies(self.dependencies, prefix)
 
-    def check_dependencies(self, dependencies_list):
+    def check_dependencies(self, dependencies_list, prefix=None):
+        """
+        Set the required attribute depending on the dependencies map
+        and the already submitted data
+        """
         for field, dependency in dependencies_list.items():
             dependency_field = dependency.get("field", None)
             dependency_value = dependency.get("value", None)
             sub_dependencies = dependency.get("dependencies", None)
 
-            self.fields[field].required = False
+            """
+            When a form has a prefix, the key in the field is the original,
+            but the key in data is updated. Would there be a nicer way of
+            handling this?
+            """
+            if prefix:
+                dependency_field_data_key = prefix + "-" + dependency_field
+            else:
+                dependency_field_data_key = dependency_field
 
-            if self.fields[dependency_field].required:
-                if not "nojs_trigger_submitted" in self.data:
-                    if dependency_value and self.data.get(dependency_field, None) == dependency_value:
-                        self.fields[field].required = True
-                    
-                    if not dependency_value and self.data.get(dependency_field, None) is not None:
-                        self.fields[field].required = True
+            if self.fields.get(field, None):
 
-                if sub_dependencies:
-                    self.check_dependencies(sub_dependencies)
+                self.fields[field].required = False
+
+                if self.fields[dependency_field].required:
+                    if not "nojs_trigger_submitted" in self.data:
+                        if dependency_value and self.data.get(dependency_field_data_key, None) == dependency_value:
+                            self.fields[field].required = True
+                        
+                        if not dependency_value and self.data.get(dependency_field_data_key, None) is not None:
+                            self.fields[field].required = True
+
+                    if sub_dependencies:
+                        self.check_dependencies(sub_dependencies, prefix)
 
 
 
@@ -597,26 +620,22 @@ class ConfirmationForm(BasePleaStepForm):
                                     error_messages={"required": ERROR_MESSAGES["UNDERSTAND_REQUIRED"]})
 
 
-class PleaForm(BasePleaStepForm):
+class PleaForm(NoJSPleaStepForm):
     PLEA_CHOICES = (
         ('guilty', _('Guilty')),
         ('not_guilty', _('Not guilty')),
     )
 
-    def __init__(self, *args, **kwargs):
+    dependencies = {
+        "not_guilty_extra": {
+            "field": "guilty",
+            "value": "not_guilty"
+        }
+    }
 
-        super(PleaForm, self).__init__(*args, **kwargs)
-
-        prefix = kwargs.get("prefix", "")
-
-        if "data" in kwargs:
-
-            plea = kwargs["data"].get("{}-guilty".format(prefix), None)
-
-            if plea == "not_guilty":
-                self.fields["not_guilty_extra"].required = True
-            else:
-                self.fields["not_guilty_extra"].required = False
+    nojs_options = {
+        "trigger": "guilty"
+    }
 
     guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect(), required=True,
                                error_messages={"required": ERROR_MESSAGES["PLEA_REQUIRED"]})
@@ -630,7 +649,6 @@ class PleaForm(BasePleaStepForm):
     not_guilty_extra = forms.CharField(label=_("Not guilty because?"),
                                        widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
                                        help_text=_("Tell us why you believe you are not guilty"),
-                                       required=False,
                                        max_length=5000)
 
 
