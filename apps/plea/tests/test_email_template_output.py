@@ -87,7 +87,7 @@ class EmailTemplateTests(TestCase):
         response.content = html.encode("utf-8")
         response.__str__ = Mock()
         response.__str__.return_value = html.encode("utf-8")
-        response.charset = "utf-8"
+        response._charset = "utf-8"
         response.streaming = False
         return response
 
