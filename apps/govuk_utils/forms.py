@@ -78,7 +78,7 @@ class FormStage(object):
 
     def load(self, request_context=None):
         # Reset nojs state if returning to trigger question
-        if "reset" in request_context["request"].GET:
+        if "request" in request_context and "reset" in request_context["request"].GET:
             self.all_data[self.name].pop("nojs_next", None)
         self.load_forms(initial=True)
 

@@ -39,7 +39,6 @@ class NoJSPleaStepForm(BasePleaStepForm):
 
     def __init__(self, *args, **kwargs):
         super(NoJSPleaStepForm, self).__init__(*args, **kwargs)
-
         try:
             self.data = args[0]
         except IndexError:
@@ -51,7 +50,7 @@ class NoJSPleaStepForm(BasePleaStepForm):
             if kwargs_data:
                 self.data = kwargs_data
         
-        if self.data and hasattr(self, "dependencies"):
+        if hasattr(self, "dependencies"):
             prefix = kwargs.get("prefix", None)
             self.check_dependencies(self.dependencies, prefix)
 
