@@ -9,7 +9,7 @@ from django.test import TestCase
 
 from ..email import send_plea_email
 from ..models import Court
-from ..forms import CaseForm, YourDetailsForm, PleaForm, YourMoneyForm, RequiredFormSet
+from ..forms import CaseForm, YourDetailsForm, PleaForm, YourMoneyForm, RequiredFormSet, YourExpensesForm
 
 
 class EmailTemplateTests(TestCase):
@@ -27,7 +27,7 @@ class EmailTemplateTests(TestCase):
             enabled=True,
             test_mode="test@test.com")
 
-    def get_context_data(self, case_data=None, details_data=None, plea_data=None, finances_data=None):
+    def get_context_data(self, case_data=None, details_data=None, plea_data=None, finances_data=None, expenses_data=None):
 
         self.hearing_date = datetime.today() + timedelta(30)
 
@@ -65,18 +65,61 @@ class EmailTemplateTests(TestCase):
                           "employed_take_home_pay_amount": "100",
                           "employed_hardship": False}
 
+        if not expenses_data:
+            expenses_data = {"hardship_details": "Lorem\nIpsum",
+                             "household_accommodation": 10,
+                             "household_utility_bills": 11,
+                             "household_insurance": 12,
+                             "household_council_tax": 13,
+                             "other_bill_payers": False,
+                             "other_tv_subscription": 14,
+                             "other_travel_expenses": 15,
+                             "other_telephone": 16,
+                             "other_loan_repayments": 17,
+                             "other_court_payments": 18,
+                             "other_child_maintenance": 19}
+
         PleaForms = formset_factory(PleaForm, formset=RequiredFormSet, extra=1, max_num=1)
 
         cf = CaseForm(case_data)
         df = YourDetailsForm(details_data)
         pf = PleaForms(plea_data)
         mf = YourMoneyForm(finances_data)
+        ef = YourExpensesForm(expenses_data)
 
-        if all([cf.is_valid(), df.is_valid(), pf.is_valid(), mf.is_valid()]):
+        household_expense_fields = ['household_accommodation',
+                                    'household_utility_bills',
+                                    'household_insurance',
+                                    'household_council_tax']
+
+        other_expense_fields = ['other_tv_subscription',
+                                'other_travel_expenses',
+                                'other_telephone',
+                                'other_loan_repayments',
+                                'other_court_payments',
+                                'other_child_maintenance']
+
+        if all([cf.is_valid(), df.is_valid(), pf.is_valid(), mf.is_valid(), ef.is_valid()]):
             data = {"case": cf.cleaned_data,
                     "your_details": df.cleaned_data,
                     "plea": {"PleaForms": pf.cleaned_data},
-                    "your_finances": mf.cleaned_data}
+                    "your_finances": mf.cleaned_data,
+                    "your_expenses": ef.cleaned_data}
+
+            data["your_finances"]["hardship"] = any([
+                mf.cleaned_data.get("employed_hardship", False),
+                mf.cleaned_data.get("self_employed_hardship", False),
+                mf.cleaned_data.get("receiving_benefits_hardship", False),
+                mf.cleaned_data.get("other_hardship", False)])
+
+            total_household = sum(int(ef.cleaned_data[field] or 0) for field in household_expense_fields)
+            total_other = sum(int(ef.cleaned_data[field] or 0) for field in other_expense_fields)
+            total_expenses = total_household + total_other
+
+            data["your_expenses"]["total_household_expenses"] = total_household
+            data["your_expenses"]["total_other_expenses"] = total_other
+            data["your_expenses"]["total_expenses"] = total_expenses
+
             return data
         else:
             raise Exception(cf.errors, df.errors, pf.errors, mf.errors)
@@ -246,7 +289,7 @@ class EmailTemplateTests(TestCase):
     def test_benefits_email_finances_output(self):
         context_data_finances = {"you_are": "Receiving benefits",
                               "benefits_details": "Housing benefit\nUniversal Credit",
-                              "benefits_dependents": "Yes",
+                              "benefits_dependents": "True",
                               "benefits_period": "Weekly",
                               "benefits_amount": "120",
                               "receiving_benefits_hardship": False}
@@ -265,7 +308,7 @@ class EmailTemplateTests(TestCase):
     def test_benefits_other_email_finances_output(self):
         context_data_finances = {"you_are": "Receiving benefits",
                               "benefits_details": "Housing benefit\nUniversal Credit",
-                              "benefits_dependents": "Yes",
+                              "benefits_dependents": "True",
                               "benefits_period": "Benefits other",
                               "benefits_pay_other": "Other details!",
                               "benefits_amount": "120",
@@ -295,6 +338,51 @@ class EmailTemplateTests(TestCase):
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
         self.assertContains(response, "<tr><th>Details</th><td>I am a pensioner and I earn<br />£500 a month.</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Amount</th><td>£120.00</td></tr>", count=1, html=True)
+
+
+    def test_expenses_output_default(self):
+        context_data_finances = {"you_are": "Employed",
+                                 "employed_take_home_pay_period": "Weekly",
+                                 "employed_take_home_pay_amount": "100",
+                                 "employed_hardship": "True"}
+
+        context_data = self.get_context_data(finances_data=context_data_finances)
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        self.assertContains(response, "<tr><th>Financial hardship details</th><td>Lorem<br />Ipsum</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Other contributors to household bills</th><td>No</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Total household expenses</th><td>£46.00</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Total other expenses</th><td>£99.00</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Total expenses</th><td>£145.00</td></tr>", count=1, html=True)
+
+    def test_expenses_output_other_contributors_yes(self):
+        context_data_finances = {"you_are": "Employed",
+                                 "employed_take_home_pay_period": "Weekly",
+                                 "employed_take_home_pay_amount": "100",
+                                 "employed_hardship": "True"}
+
+        expenses_data = {"hardship_details": "Lorem\nIpsum",
+                         "household_accommodation": 10,
+                         "household_utility_bills": 11,
+                         "household_insurance": 12,
+                         "household_council_tax": 13,
+                         "other_bill_payers": True,
+                         "other_tv_subscription": 14,
+                         "other_travel_expenses": 15,
+                         "other_telephone": 16,
+                         "other_loan_repayments": 17,
+                         "other_court_payments": 18,
+                         "other_child_maintenance": 19}
+
+        context_data = self.get_context_data(finances_data=context_data_finances, expenses_data=expenses_data)
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        self.assertContains(response, "<tr><th>Other contributors to household bills</th><td>Yes</td></tr>", count=1, html=True)
+
 
     def test_skipped_email_finances_output(self):
         context_data = self.get_context_data()
