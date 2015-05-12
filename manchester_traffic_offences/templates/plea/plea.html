@@ -13,6 +13,8 @@
 
     {% csrf_token %}
 
+    <input type="hidden" name="nojs" value="1">
+
     {% if formset_has_errors %}
     <section class="error-summary">
         <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
@@ -73,51 +75,26 @@
         <h2 class="heading-medium">{% blocktrans with form_count=form_count count charges=charges %}Enter a plea for the charge below{% plural %}Enter {{ form_count }} pleas for the charges below{% endblocktrans %}</h2>
 
         {% for form in formset %}
-        <section id="section_guilty_{{ forloop.counter }}" class="section-plea">
-            
-            <div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty_{{ forloop.counter }}">
-              <fieldset>
-                {% if form_count > 1 or form.guilty.errors %}
-                <legend class="form-label-bold">
-                    {% if form_count > 1 %}
-                    <div class="label-line">
-                        <span class="label-text">
-                            {% if case.plea_made_by == "Defendant" %}
-                                {% blocktrans with counter=forloop.counter %}Your plea for charge {{ counter }}{% endblocktrans %}
-                            {% else %}
-                                {% blocktrans with counter=forloop.counter %}Plea for charge {{ counter }}{% endblocktrans %}
-                            {% endif %}
-                        </span>
-                    </div>
-                    {% endif %}
+        <section class="section-plea">
 
-                    {{ form.guilty.errors }}
-                </legend>
-                {% endif %}
-                
-                <div class="form-field">
-                    <div class="inline">
-
-                        {% for choice in form.guilty %}
-                        <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
-                            <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
-                            {{ choice.choice_label }}
-                        </label>
-                        {% endfor %}
-                      
-                    </div>
-                </div>
-              </fieldset>
+            {% if plea.nojs_next %}
+            <div class="nojs-hidden">
+                {% include "widgets/plea_radio_field.html" %}
             </div>
-
-            <ul class="js-hidden go-to">
-                <li>{% blocktrans with field_id=form.guilty.0.name %}If you answered <em>Guilty</em>, you can enter <a href="#{{ field_id }}_guilty_extra">special circumstances</a>{% endblocktrans %}</li>
-                <li>{% blocktrans with field_id=form.guilty.0.name %}If you answered <em>Not Guilty</em>, you can tell us <a href="#{{ field_id }}_not_guilty_extra">why you believe you are not guilty</a>{% endblocktrans %}</li>
-            </ul>
+            <div class="form-step-header js-hidden">
+                <h3><span>You are:</span>
+                    {{ form.guilty.value }}
+                </h3>
+                <a href="{{ request.path }}?reset">Change</a>
+            </div>
+            {% else %}
+            {{ form.nojs_trigger_submitted }}
+            {% include "widgets/plea_radio_field.html" %}
+            {% endif %}
 
             <div class="panel-indent move-up" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^(guilty|not_guilty)$">
 
-                <section id="{{ form.guilty.0.name }}_guilty_extra" class="js-Conditional js-hidden" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^guilty$">
+                <section id="section_guilty_extra_{{ forloop.counter }}" class="js-Conditional js-hidden{% if not plea.nojs_next or form.guilty.0.value != "guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^guilty$">
 
                     {% if case.plea_made_by == "Defendant" %}
                         {% std_field form.guilty_extra %}
@@ -136,7 +113,7 @@
                     </ul>
                 </section>
 
-                <section id="{{ form.guilty.0.name }}_not_guilty_extra" class="js-Conditional js-hidden" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^not_guilty$">
+                <section id="section_not_guilty_extra_{{ forloop.counter }}" class="js-Conditional js-hidden{% if not plea.nojs_next or form.guilty.0.value != "not_guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^not_guilty$">
 
                     {% if case.plea_made_by == "Defendant" %}
                         {% std_field form.not_guilty_extra hide_optional=True %}
