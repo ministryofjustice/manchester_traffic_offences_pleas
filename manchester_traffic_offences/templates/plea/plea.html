@@ -22,9 +22,9 @@
         <p>{% trans "See highlighted errors below." %}</p>
         
         <ul>
-        {% with forms.0 as formset %}
-            {% for form in formset %}
-                {% for field in form %}
+        {% with form as formset %}
+            {% for plea_form in formset %}
+                {% for field in plea_form %}
                     {% if field.errors %}
             <li><a href="#section_{{ field.name }}_{{ forloop.parentloop.counter }}">{{ field.errors|striptags }}</a></li>
                     {% endif %}
@@ -68,13 +68,13 @@
         </ul>
     </div>
 
-    {% with formset=forms.0 form_count=forms.0|length %}
+    {% with formset=form form_count=forms.0|length %}
 
         {{ formset.management_form }}
 
         <h2 class="heading-medium">{% blocktrans with form_count=form_count count charges=charges %}Enter a plea for the charge below{% plural %}Enter {{ form_count }} pleas for the charges below{% endblocktrans %}</h2>
 
-        {% for form in formset %}
+        {% for plea_form in formset %}
         <section class="section-plea">
 
             {% if plea.nojs_next %}
@@ -83,23 +83,23 @@
             </div>
             <div class="form-step-header js-hidden">
                 <h3><span>You are:</span>
-                    {{ form.guilty.value }}
+                    {{ plea_form.guilty.value }}
                 </h3>
                 <a href="{{ request.path }}?reset">Change</a>
             </div>
             {% else %}
-            {{ form.nojs_trigger_submitted }}
+            {{ plea_form.nojs_trigger_submitted }}
             {% include "widgets/plea_radio_field.html" %}
             {% endif %}
 
-            <div class="panel-indent move-up" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^(guilty|not_guilty)$">
+            <div class="panel-indent" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^(guilty|not_guilty)$">
 
-                <section id="section_guilty_extra_{{ forloop.counter }}" class="js-Conditional js-hidden{% if not plea.nojs_next or form.guilty.0.value != "guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^guilty$">
+                <section id="section_guilty_extra_{{ forloop.counter }}" class="js-Conditional js-hidden{% if not plea.nojs_next or plea_form.guilty.0.value != "guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^guilty$">
 
                     {% if case.plea_made_by == "Defendant" %}
-                        {% std_field form.guilty_extra %}
+                        {% std_field plea_form.guilty_extra %}
                     {% else %}
-                        {% std_field form.guilty_extra help_text=_("What would the defendant like the court to consider?") %}
+                        {% std_field plea_form.guilty_extra help_text=_("What would the defendant like the court to consider?") %}
                     {% endif %}
 
                     <h4 class="heading-small">{% trans "Pleading guilty to this charge means:" %}</h4>
@@ -113,12 +113,12 @@
                     </ul>
                 </section>
 
-                <section id="section_not_guilty_extra_{{ forloop.counter }}" class="js-Conditional js-hidden{% if not plea.nojs_next or form.guilty.0.value != "not_guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^not_guilty$">
+                <section id="section_not_guilty_extra_{{ forloop.counter }}" class="js-Conditional js-hidden{% if not plea.nojs_next or plea_form.guilty.0.value != "not_guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^not_guilty$">
 
                     {% if case.plea_made_by == "Defendant" %}
-                        {% std_field form.not_guilty_extra hide_optional=True %}
+                        {% std_field plea_form.not_guilty_extra hide_optional=True %}
                     {% else %}
-                        {% std_field form.not_guilty_extra hide_optional=True help_text=_("Tell us why the company believes they are not guilty") %}
+                        {% std_field plea_form.not_guilty_extra hide_optional=True help_text=_("Tell us why the company believes they are not guilty") %}
                     {% endif %}
 
                     <h4 class="heading-small">{% trans "Pleading not guilty to this charge means:" %}</h4>
