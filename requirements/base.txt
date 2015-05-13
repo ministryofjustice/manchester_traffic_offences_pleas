@@ -8,7 +8,7 @@ git+https://github.com/charlierguo/gmail.git
 Pillow==2.8.1
 psycopg2==2.5.4
 python-dateutil==2.4.2
-python-gnupg==0/3/7
+python-gnupg==0.3.7
 sh==1.11
 
 django_extensions==1.5.3
