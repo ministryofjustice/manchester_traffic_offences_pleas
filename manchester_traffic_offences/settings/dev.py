@@ -19,12 +19,8 @@ DATABASES = {
     }
 }
 
-SMTP_ROUTES["GSI"]["HOST"] = os.environ.get("GSI_EMAIL_HOST", "localhost")
-SMTP_ROUTES["GSI"]["PORT"] = os.environ.get("GSI_EMAIL_PORT", 25)
 SMTP_ROUTES["GSI"]["USERNAME"] = os.environ.get("GSI_EMAIL_USERNAME", "")
 SMTP_ROUTES["GSI"]["PASSWORD"] = os.environ.get("GSI_EMAIL_PASSWORD", "")
-SMTP_ROUTES["PNN"]["HOST"] = os.environ.get("GSI_EMAIL_HOST", "localhost")
-SMTP_ROUTES["PNN"]["PORT"] = os.environ.get("GSI_EMAIL_PORT", 25)
 SMTP_ROUTES["PNN"]["USERNAME"] = os.environ.get("GSI_EMAIL_USERNAME", "")
 SMTP_ROUTES["PNN"]["PASSWORD"] = os.environ.get("GSI_EMAIL_PASSWORD", "")
 
