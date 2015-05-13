@@ -10,27 +10,26 @@
 
     {% with request.session.case.number_of_charges as charges %}
 <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
+    
     {% csrf_token %}
 
-    {% with forms.0 as form %}
+    {% no_js form %}
 
-        {% no_js form %}
+    {% if form.errors %}
+    <section class="error-summary">
+        <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
 
-        {% if form.errors %}
-        <section class="error-summary">
-            <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
+        <p>{% trans "See highlighted errors below." %}</p>
 
-            <p>{% trans "See highlighted errors below." %}</p>
-
-            <ul>
-            {% for field in form %}
-                {% if field.errors %}
-                <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
-                {% endif %}
-            {% endfor %}
-            </ul>
-        </section>
-        {% endif %}
+        <ul>
+        {% for field in form %}
+            {% if field.errors %}
+            <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
 
      <header class="content-header">
         <h1>{% trans "Company details" %}</h1>
@@ -75,5 +74,5 @@
         <button class="button" type="submit">{% trans "Continue" %}</button>
     </div>
 </form>
-    {% endwith %}
+
 {% endblock page_content %}
