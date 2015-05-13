@@ -250,21 +250,15 @@ SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "")
 # Secure mail
 SMTP_ROUTES = {"GSI": {"HOST": os.environ.get("GSI_EMAIL_HOST", "localhost"),
                        "PORT": os.environ.get("GSI_EMAIL_PORT", 25)},
-               "GMP": {"HOST": os.environ.get("GMP_EMAIL_HOST", "localhost"),
+               "PNN": {"HOST": os.environ.get("GMP_EMAIL_HOST", "localhost"),
                        "PORT": os.environ.get("GMP_EMAIL_PORT", 25),}}
 
-# Private email
+# Public email
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "localhost")
 EMAIL_PORT = os.environ.get("EMAIL_PORT", 25)
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USERNAME", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 EMAIL_USE_TLS = True
-
-# Public email
-USER_SMTP_EMAIL_HOST = os.environ.get("SENDGRID_EMAIL_HOST", "localhost")
-USER_SMTP_EMAIL_PORT = os.environ.get("SENDGRID_EMAIL_PORT", 25)
-USER_SMTP_EMAIL_HOST_USERNAME = os.environ.get("SENDGRID_EMAIL_HOST_USERNAME", "")
-USER_SMTP_EMAIL_HOST_PASSWORD = os.environ.get("SENDGRID_EMAIL_HOST_PASSWORD", "")
 
 # Full plea email sent to court mailbox
 PLEA_EMAIL_FROM = os.environ.get("PLEA_EMAIL_FROM", "plea_from@example.org")

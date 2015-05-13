@@ -161,11 +161,11 @@ def email_send_user(self, email_data, case_id):
 
     subject = settings.PLEA_CONFIRMATION_EMAIL_SUBJECT.format(**data)
 
-    connection = get_connection(host=settings.USER_SMTP_EMAIL_HOST,
-                                port=settings.USER_SMTP_EMAIL_PORT,
-                                username=settings.USER_SMTP_EMAIL_HOST_USERNAME,
-                                password=settings.USER_SMTP_EMAIL_HOST_PASSWORD,
-                                use_tls=True)
+    connection = get_connection(host=settings.EMAIL_HOST,
+                                port=settings.EMAIL_PORT,
+                                username=settings.EMAIL_HOST_USER,
+                                password=settings.EMAIL_HOST_PASSWORD,
+                                use_tls=settings.EMAIL_USE_TLS)
 
     email = EmailMultiAlternatives(subject, txt_body, settings.PLEA_CONFIRMATION_EMAIL_FROM,
                                    [data['email']], connection=connection)
