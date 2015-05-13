@@ -241,8 +241,6 @@ class YourExpensesStage(FormStage):
             total_other = sum(int(clean_data[field] or 0) for field in other_expense_fields)
             total_expenses = total_household + total_other
 
-            clean_data["other_bill_payers"], type(clean_data["other_bill_payers"])
-
             clean_data['total_household_expenses'] = total_household
             clean_data['total_other_expenses'] = total_other
             clean_data['total_expenses'] = total_expenses
