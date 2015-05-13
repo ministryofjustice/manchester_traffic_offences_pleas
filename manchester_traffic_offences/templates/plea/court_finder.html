@@ -39,6 +39,7 @@
 {% else %}
 
     <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
+        
         {% csrf_token %}
 
             {% if submitted and not court %}
