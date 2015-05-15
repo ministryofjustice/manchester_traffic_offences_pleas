@@ -19,7 +19,7 @@ from apps.plea.models import Case, CourtEmailCount, Court
 logger = logging.getLogger(__name__)
 
 
-@app.task(bind=True, max_retries=5, default_retry_delay=10)
+@app.task(bind=True, max_retries=5, default_retry_delay=90)
 def email_send_court(self, case_id, count_id, email_data):
     smtp_route = "GSI"
 
@@ -77,7 +77,7 @@ def email_send_court(self, case_id, count_id, email_data):
     email_send_user.delay(email_data, case_id)
 
 
-@app.task(bind=True, max_retries=5, default_retry_delay=10)
+@app.task(bind=True, max_retries=5, default_retry_delay=90)
 def email_send_prosecutor(self, email_data, case_id):
     smtp_route = "PNN"
 
@@ -116,7 +116,7 @@ def email_send_prosecutor(self, email_data, case_id):
     return True
 
 
-@app.task(bind=True, max_retries=5, default_retry_delay=10)
+@app.task(bind=True, max_retries=5, default_retry_delay=90)
 def email_send_user(self, email_data, case_id):
     """
     Dispatch an email to the user to confirm that their plea submission
