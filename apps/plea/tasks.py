@@ -21,6 +21,8 @@ logger = logging.getLogger(__name__)
 
 @app.task(bind=True, max_retries=5, default_retry_delay=10)
 def email_send_court(self, case_id, count_id, email_data):
+    smtp_route = "GSI"
+
     # No error trapping, let these fail hard if the objects can't be found
     case = Case.objects.get(pk=case_id)
 
@@ -51,7 +53,7 @@ def email_send_court(self, case_id, count_id, email_data):
         plea_email.send(plea_email_to,
                         settings.PLEA_EMAIL_SUBJECT.format(**email_data),
                         email_body,
-                        route="GSI")
+                        route=smtp_route)
     except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
         logger.error("Error sending email to court: {0}".format(exc))
         case.add_action("Court email network error", unicode(exc))
@@ -63,6 +65,7 @@ def email_send_court(self, case_id, count_id, email_data):
         raise self.retry([case_id, count_id, email_data], exc=exc)
 
     case.add_action("Court email sent", "")
+    case.add_action("Court email sent", "Sent mail to {0} via {1}".format(plea_email_to, smtp_route))
 
     if not court_obj.test_mode:
         email_count.get_status_from_case(case)
@@ -76,6 +79,8 @@ def email_send_court(self, case_id, count_id, email_data):
 
 @app.task(bind=True, max_retries=5, default_retry_delay=10)
 def email_send_prosecutor(self, email_data, case_id):
+    smtp_route = "PNN"
+
     try:
         court_obj = Court.objects.get_by_urn(email_data["case"]["urn"])
     except Court.DoesNotExist:
@@ -97,13 +102,14 @@ def email_send_prosecutor(self, email_data, case_id):
             plp_email.send([court_obj.plp_email],
                            settings.PLP_EMAIL_SUBJECT.format(**email_data),
                            settings.PLEA_EMAIL_BODY,
-                           route="GSI")
+                           route=smtp_route)
         except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
             logger.error("Error sending email to prosecutor: {0}".format(exc))
             case.add_action("Prosecutor email network error", unicode(exc))
             raise self.retry([email_data, case_id], exc=exc)
 
-        case.add_action("Prosecutor email sent", "")
+        case.add_action("Prosecutor email sent", "Sent mail to {0} via {1}".format(court_obj.plp_email, smtp_route))
+
     else:
         case.add_action("Prosecutor email not sent", "No plp email in court data")
 
