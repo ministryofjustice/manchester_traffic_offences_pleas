@@ -53,7 +53,7 @@
         </tr>
         <tr>
             <th>{% trans "Includes payment for dependents?" %}</th>
-            <td>{{ your_finances.benefits_dependents }}</td>
+            <td>{{ your_finances.benefits_dependents|yesno:_("Yes,No") }}</td>
         </tr>
     {% endif %}
     {% if your_finances.you_are == "Other" %}
