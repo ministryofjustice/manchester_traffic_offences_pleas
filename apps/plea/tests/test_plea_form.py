@@ -592,7 +592,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         test_data = {
             "you_are": "Receiving benefits",
             "benefits_details": "Some data about my benefits",
-            "benefits_dependents": "Yes",
+            "benefits_dependents": True,
             "benefits_period": "Fortnightly",
             "benefits_amount": "1000",
             "receiving_benefits_hardship": False
@@ -1238,7 +1238,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         test_data = {
             "you_are": "Receiving benefits",
             "benefits_details": "Some data about my benefits",
-            "benefits_dependents": "Yes",
+            "benefits_dependents": True,
             "benefits_period": "Fortnightly",
             "benefits_amount": "1000",
             "receiving_benefits_hardship": True
@@ -1263,7 +1263,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         test_data = {
             "you_are": "Receiving benefits",
             "benefits_details": "Some data about my benefits",
-            "benefits_dependents": "Yes",
+            "benefits_dependents": True,
             "benefits_period": "Fortnightly",
             "benefits_amount": "1000",
             "receiving_benefits_hardship": False
