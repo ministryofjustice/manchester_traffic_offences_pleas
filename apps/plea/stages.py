@@ -157,18 +157,10 @@ class PleaStage(FormStage):
 
         self.load_forms(form_data)
 
-        # Only save the data if this submission was NOT the first past of a no JS question
-        if self.form and self.form.is_valid() and not "nojs_trigger_submitted" in form_data:
+        if self.form and self.form.is_valid():
             clean_data.update(self.save_forms())
             clean_data["complete"] = True
             self.next_step = self.get_next(next_step)
-
-        # Set the nojs state to proceed to second part
-        if "nojs" in form_data:
-            clean_data["nojs_next"] = True
-
-            if self.form and self.form.nojs_options.get("trigger", None) not in form_data:
-                clean_data["nojs_next"] = False
 
         none_guilty = True
         if "PleaForms" in clean_data:
