@@ -122,6 +122,7 @@ class PleaStage(FormStage):
                 forms_count = forms_wanted
 
             if forms_count < forms_wanted:
+                self.all_data["plea"].pop("nojs", None)
                 extra_forms = forms_wanted - forms_count
 
         else:
@@ -135,8 +136,13 @@ class PleaStage(FormStage):
         else:
             self.form = PleaForms(data)
 
+        formset_has_errors = False
         if self.form.errors:
-            self.context["formset_has_errors"] = True
+            for error in self.form.errors:
+                if error:
+                    formset_has_errors = True
+
+        self.context["formset_has_errors"] = formset_has_errors
 
     def save_forms(self):
         form_data = {}
@@ -149,18 +155,7 @@ class PleaStage(FormStage):
         return form_data
 
     def save(self, form_data, next_step=None):
-        all_valid = True
-        clean_data = {}
-
-        if isinstance(form_data, QueryDict):
-            form_data = {k: v for (k, v) in form_data.items()}
-
-        self.load_forms(form_data)
-
-        if self.form and self.form.is_valid():
-            clean_data.update(self.save_forms())
-            clean_data["complete"] = True
-            self.next_step = self.get_next(next_step)
+        clean_data = super(PleaStage, self).save(form_data, next_step)
 
         none_guilty = True
         if "PleaForms" in clean_data:
