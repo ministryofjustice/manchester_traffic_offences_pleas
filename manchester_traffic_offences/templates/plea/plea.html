@@ -13,7 +13,7 @@
 
     {% csrf_token %}
 
-    <input type="hidden" name="nojs" value="1">
+    <input type="hidden" name="nojs" value="{{plea.nojs|default:"guilty"}}">
 
     {% if formset_has_errors %}
     <section class="error-summary">
@@ -22,15 +22,13 @@
         <p>{% trans "See highlighted errors below." %}</p>
         
         <ul>
-        {% with form as formset %}
-            {% for plea_form in formset %}
-                {% for field in plea_form %}
-                    {% if field.errors %}
-            <li><a href="#section_{{ field.name }}_{{ forloop.parentloop.counter }}">{{ field.errors|striptags }}</a></li>
-                    {% endif %}
-                {% endfor %}
+        {% for plea_form in form %}
+            {% for field in plea_form %}
+                {% if field.errors %}
+        <li><a href="#section_{{ field.name }}_{{ forloop.parentloop.counter }}">{{ field.errors|striptags }}</a></li>
+                {% endif %}
             {% endfor %}
-        {% endwith %}
+        {% endfor %}
         </ul>
     </section>
     {% endif %}
@@ -68,18 +66,20 @@
         </ul>
     </div>
 
-    {% with formset=form form_count=forms.0|length %}
+    {% with form_count=form|length %}
 
-        {{ formset.management_form }}
+        {{ form.management_form }}
 
         <h2 class="heading-medium">{% blocktrans with form_count=form_count count charges=charges %}Enter a plea for the charge below{% plural %}Enter {{ form_count }} pleas for the charges below{% endblocktrans %}</h2>
 
-        {% for plea_form in formset %}
+        {% for plea_form in form %}
         <section class="section-plea">
 
-            {% if plea.nojs_next %}
+            {% if plea.nojs == "nojs_last_step" %}
             <div class="nojs-hidden">
-                {% include "widgets/plea_radio_field.html" %}
+                {% with plea_form as form %}
+                    {% include "widgets/plea_radio_field.html" %}
+                {% endwith %}
             </div>
             <div class="form-step-header js-hidden">
                 <h3><span>You are:</span>
@@ -88,13 +88,14 @@
                 <a href="{{ request.path }}?reset">Change</a>
             </div>
             {% else %}
-            {{ plea_form.nojs_trigger_submitted }}
-            {% include "widgets/plea_radio_field.html" %}
+                {% with plea_form as form %}
+                    {% include "widgets/plea_radio_field.html" %}
+                {% endwith %}
             {% endif %}
 
             <div class="panel-indent" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^(guilty|not_guilty)$">
 
-                <section id="section_guilty_extra_{{ forloop.counter }}" class="js-Conditional js-hidden{% if not plea.nojs_next or plea_form.guilty.0.value != "guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^guilty$">
+                <section id="section_guilty_extra_{{ forloop.counter }}" class="js-Conditional js-hidden{% if plea.nojs != "nojs_last_step" or plea_form.guilty.0.value != "guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^guilty$">
 
                     {% if case.plea_made_by == "Defendant" %}
                         {% std_field plea_form.guilty_extra %}
@@ -113,7 +114,7 @@
                     </ul>
                 </section>
 
-                <section id="section_not_guilty_extra_{{ forloop.counter }}" class="js-Conditional js-hidden{% if not plea.nojs_next or plea_form.guilty.0.value != "not_guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^not_guilty$">
+                <section id="section_not_guilty_extra_{{ forloop.counter }}" class="js-Conditional js-hidden{% if plea.nojs != "nojs_last_step" or plea_form.guilty.0.value != "not_guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^not_guilty$">
 
                     {% if case.plea_made_by == "Defendant" %}
                         {% std_field plea_form.not_guilty_extra hide_optional=True %}
