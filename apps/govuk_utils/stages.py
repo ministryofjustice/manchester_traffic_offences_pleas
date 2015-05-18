@@ -77,11 +77,10 @@ class FormStage(object):
     def load(self, request_context=None):
         # Reset nojs state if returning to trigger question
         if "request" in request_context and "reset" in request_context["request"].GET:
-            self.all_data[self.name].pop("nojs_next", None)
+            self.all_data[self.name].pop("nojs", None)
         self.load_forms(initial=True)
 
     def save(self, form_data, next_step=None):
-        all_valid = True
         clean_data = {}
 
         if isinstance(form_data, QueryDict):
@@ -89,18 +88,17 @@ class FormStage(object):
 
         self.load_forms(form_data)
 
-        # Only save the data if this submission was NOT the first past of a no JS question
-        if self.form and self.form.is_valid() and not "nojs_trigger_submitted" in form_data:
-            clean_data.update(self.save_forms())
-            clean_data["complete"] = True
-            self.next_step = self.get_next(next_step)
+        nojs = form_data.get("nojs", None)
 
-        # Set the nojs state to proceed to second part
-        if "nojs" in form_data:
-            clean_data["nojs_next"] = True
-
-            if self.form and self.form.nojs_options.get("trigger", None) not in form_data:
-                clean_data["nojs_next"] = False
+        if self.form and self.form.is_valid():
+            
+            if nojs is None or nojs == "nojs_last_step":
+                clean_data.update(self.save_forms())
+                clean_data["complete"] = True
+                self.next_step = self.get_next(next_step)
+            else:
+                self.form.data["nojs"] = "nojs_last_step"
+                clean_data["nojs"] = "nojs_last_step"
 
         return clean_data
 

@@ -32,8 +32,7 @@ class BasePleaStepForm(forms.Form):
 
 
 class NoJSPleaStepForm(BasePleaStepForm):
-    nojs = forms.CharField(required=False, widget=forms.HiddenInput(attrs={"value": "1"}))
-    nojs_trigger_submitted = forms.CharField(required=False, widget=forms.HiddenInput(attrs={"value": "1"}))
+    nojs = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     nojs_options = {}
 
@@ -44,9 +43,14 @@ class NoJSPleaStepForm(BasePleaStepForm):
         except IndexError:
             self.data = kwargs.get("data", {})
 
+        self.nojs = self.data.get("nojs", None)
+
         if hasattr(self, "dependencies"):
             prefix = kwargs.get("prefix", None)
             self.check_dependencies(self.dependencies, prefix)
+
+        if self.nojs is None:
+            self.fields["nojs"].initial = self.nojs_options.get("trigger", False)
 
     def check_dependencies(self, dependencies_list, prefix=None):
         """
@@ -73,7 +77,7 @@ class NoJSPleaStepForm(BasePleaStepForm):
                 self.fields[field].required = False
 
                 if self.fields[dependency_field].required:
-                    if not "nojs_trigger_submitted" in self.data:
+                    if self.nojs is None or self.nojs != dependency_field:
                         if dependency_value and self.data.get(dependency_field_data_key, None) == dependency_value:
                             self.fields[field].required = True
                         
