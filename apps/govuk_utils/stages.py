@@ -78,6 +78,7 @@ class FormStage(object):
         # Reset nojs state if returning to trigger question
         if "request" in request_context and "reset" in request_context["request"].GET:
             self.all_data[self.name].pop("nojs", None)
+
         self.load_forms(initial=True)
 
     def save(self, form_data, next_step=None):
@@ -90,8 +91,9 @@ class FormStage(object):
 
         nojs = form_data.get("nojs", None)
 
-        if self.form and self.form.is_valid():
-            
+        clean_data["nojs"] = nojs
+
+        if self.form and self.form.is_valid():            
             if nojs is None or nojs == "nojs_last_step":
                 clean_data.update(self.save_forms())
                 clean_data["complete"] = True
