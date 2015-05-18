@@ -46,7 +46,7 @@ class CaseStage(FormStage):
             self.context['urn_already_used'] = True
 
             try:
-                request_context["court"] = Court.objects.get_by_urn(
+                self.context["court"] = Court.objects.get_by_urn(
                     self.forms[0].data['urn_0'])
             except Court.DoesNotExist:
                 pass
@@ -291,10 +291,10 @@ class CompleteStage(FormStage):
 
     def render(self, request_context):
 
-        request_context['plea_type'] = get_plea_type(self.all_data)
+        self.context['plea_type'] = get_plea_type(self.all_data)
 
         try:
-            request_context["court"] = Court.objects.get_by_urn(
+            self.context["court"] = Court.objects.get_by_urn(
                 self.all_data["case"]["urn"])
         except Court.DoesNotExist:
             pass
