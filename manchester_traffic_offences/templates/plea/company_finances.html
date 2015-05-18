@@ -15,8 +15,6 @@
 
     {% no_js form %}
 
-    {{company_finances}}
-
     {% if form.errors %}
     <section class="error-summary">
         <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
@@ -43,7 +41,7 @@
     <div class="nojs-hidden">
         {% radio_field form.trading_period %}
     </div>
-    <div class="form-step-header js-hidden">
+    <div class="form-header js-hidden">
         <h3><span>You selected:</span>
             {% if form.trading_period.value == "True" %}
             The company has been trading for more than 12 months
@@ -61,7 +59,15 @@
 
         {% std_field form.number_of_employees hide_optional=True %}
 
-        <h3 class="heading-medium js-TemplatedElement" data-template-trigger="trading_period" data-template="{% blocktrans %}From the first 12 months' trading projections, tell us:{% endblocktrans %}" data-template-defaults-for="{% trans "Yes" %}">{% trans "From the most recent audited company accounts, tell us:" %}</h3>
+        {% if company_finances.nojs == "nojs_last_step" %}
+            {% if form.trading_period.value == "True" %}
+                <p>{% blocktrans %}From the most recent audited company accounts, tell us:{% endblocktrans %}</p>
+            {% else %}
+                <p>{% blocktrans %}From the first 12 months' trading projections, tell us:{% endblocktrans %}</p>
+            {% endif %}
+        {% else %}
+        <h3 class="heading-medium js-TemplatedElement" data-template-trigger="trading_period" data-template="{% blocktrans %}From the first 12 months' trading projections, tell us:{% endblocktrans %}" data-template-defaults-for="{% trans "Yes" %}">{% blocktrans %}From the most recent audited company accounts, tell us:{% endblocktrans %}</h3>
+        {% endif %}
 
         {% money_field form.gross_turnover hide_optional=True %}
 
