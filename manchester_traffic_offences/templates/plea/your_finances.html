@@ -13,6 +13,8 @@
 
     {% no_js form %}
 
+    {{ your_finances }}
+
     {% if form.errors %}
     <section class="error-summary">
         <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
@@ -42,7 +44,7 @@
         </ul>
     </div>
 
-    {% if your_finances.nojs_next %}
+    {% if your_finances.nojs == "nojs_last_step" %}
     <div class="nojs-hidden">
         {% radio_field form.you_are %}
     </div>
@@ -57,7 +59,7 @@
     {% radio_field form.you_are %}
     {% endif %}
         
-    <div id="section-employed" class="js-hidden js-Conditional{% if not your_finances.nojs_next or form.you_are.value != "Employed" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Employed">
+    <div id="section-employed" class="js-Conditional{% if your_finances.nojs != "nojs_last_step" or form.you_are.value != "Employed" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Employed">
 
         <div class="panel-indent">
 
@@ -75,7 +77,7 @@
         </div>
     </div>
 
-    <div id="section-self-employed" class="js-hidden js-Conditional{% if not your_finances.nojs_next or form.you_are.value != "Self-employed" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Self-employed">
+    <div id="section-self-employed" class="js-Conditional{% if your_finances.nojs != "nojs_last_step" or form.you_are.value != "Self-employed" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Self-employed">
 
         <div class="panel-indent">
 
@@ -98,7 +100,7 @@
         </div>
     </div>
 
-    <div id="section-receiving-benefits" class="js-hidden js-Conditional{% if not your_finances.nojs_next or form.you_are.value != "Receiving benefits" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Receiving benefits">
+    <div id="section-receiving-benefits" class="js-Conditional{% if your_finances.nojs != "nojs_last_step" or form.you_are.value != "Receiving benefits" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Receiving benefits">
 
         <div class="panel-indent">
 
@@ -125,7 +127,7 @@
         </div>
     </div>
 
-    <div id="section-other" class="js-hidden js-Conditional{% if not your_finances.nojs_next or form.you_are.value != "Other" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Other">
+    <div id="section-other" class="js-Conditional{% if your_finances.nojs != "nojs_last_step" or form.you_are.value != "Other" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Other">
 
         <div class="panel-indent">
 
