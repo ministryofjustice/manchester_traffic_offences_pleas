@@ -46,10 +46,10 @@
     <div class="nojs-hidden">
         {% radio_field form.you_are %}
     </div>
-    <div class="form-step-header js-hidden">
-        <h3><span>You are:</span>
+    <div class="form-header js-hidden">
+        <h2><span>You are:</span>
             {{ form.you_are.value }}
-        </h3>
+        </h2>
         <a href="{{ request.path }}?reset">Change</a>
     </div>
     {% else %}
@@ -82,7 +82,6 @@
             {% radio_field form.self_employed_pay_period %}
 
             <div id="section-self-employed-other" class="form-group move-up js-Conditional" data-conditional-trigger="self_employed_pay_period" data-conditional-value="Self-employed other">
-                <h4 class="heading-small js-hidden">If you answered "Other":</h4>
                 {% std_field form.self_employed_pay_other %}
             </div>
 
@@ -109,7 +108,6 @@
             {% radio_field form.benefits_period %}
 
             <div id="section-benefits-other" class="form-group move-up js-Conditional" data-conditional-trigger="benefits_period" data-conditional-value="Benefits other">
-                <h4 class="heading-small js-hidden">If you answered "Other":</h4>
                 {% std_field form.benefits_pay_other %}
             </div>
 
