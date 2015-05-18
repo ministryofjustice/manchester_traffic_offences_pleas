@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 
-from apps.receipt import process_receipts
+from apps.receipt.process import process_receipts
 
 
 class Command(BaseCommand):
