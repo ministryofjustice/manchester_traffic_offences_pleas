@@ -98,6 +98,22 @@ Main styles
 	}
 }
 
+
+.form-header-pleas {
+	@extend .form-header;
+
+	border-bottom: none;
+
+	.form-selected {
+		margin-bottom: 0;
+		color: $grey-1;
+	}
+
+	a {
+		margin: .25em 0 0;
+	}
+}
+
 /*== Expenses screen =======================================*/
 #expense-summary {
 
