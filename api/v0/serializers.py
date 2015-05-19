@@ -35,13 +35,13 @@ class CaseSerializer(serializers.ModelSerializer):
 
         return case
 
-    def validate_case_number(self, value, key):
+    def validate_case_number(self, value):
         """
         Make sure case number is unique
         """
-        #import pdb; pdb.set_trace()
+
         try:
-            Case.objects.get(case_number=value[key])
+            Case.objects.get(case_number=value)
         except (Case.DoesNotExist, Case.MultipleObjectsReturned ):
             return value
         else:
