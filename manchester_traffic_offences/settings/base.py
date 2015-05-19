@@ -161,18 +161,13 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.formtools',
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'south',
     'django_extensions',
     'waffle',
-]
-
-PROJECT_APPS = [
     'apps.govuk_utils',
     'moj_template',
     'apps.plea',
@@ -180,7 +175,7 @@ PROJECT_APPS = [
     'apps.receipt',
 ]
 
-INSTALLED_APPS += PROJECT_APPS
+INSTALLED_APPS
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -250,21 +245,15 @@ SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "")
 # Secure mail
 SMTP_ROUTES = {"GSI": {"HOST": os.environ.get("GSI_EMAIL_HOST", "localhost"),
                        "PORT": os.environ.get("GSI_EMAIL_PORT", 25)},
-               "GMP": {"HOST": os.environ.get("GMP_EMAIL_HOST", "localhost"),
-                       "PORT": os.environ.get("GMP_EMAIL_PORT", 25),}}
-
-# Private email
-EMAIL_HOST = os.environ.get("EMAIL_HOST", "localhost")
-EMAIL_PORT = os.environ.get("EMAIL_PORT", 25)
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USERNAME", "")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
-EMAIL_USE_TLS = True
+               "PNN": {"HOST": os.environ.get("PNN_EMAIL_HOST", "localhost"),
+                       "PORT": os.environ.get("PNN_EMAIL_PORT", 25),}}
 
 # Public email
-USER_SMTP_EMAIL_HOST = os.environ.get("SENDGRID_EMAIL_HOST", "localhost")
-USER_SMTP_EMAIL_PORT = os.environ.get("SENDGRID_EMAIL_PORT", 25)
-USER_SMTP_EMAIL_HOST_USERNAME = os.environ.get("SENDGRID_EMAIL_HOST_USERNAME", "")
-USER_SMTP_EMAIL_HOST_PASSWORD = os.environ.get("SENDGRID_EMAIL_HOST_PASSWORD", "")
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "localhost")
+EMAIL_PORT = os.environ.get("EMAIL_PORT", 25)
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = True
 
 # Full plea email sent to court mailbox
 PLEA_EMAIL_FROM = os.environ.get("PLEA_EMAIL_FROM", "plea_from@example.org")
@@ -295,6 +284,7 @@ RECEIPT_INBOX_PASSWORD = os.environ.get('RECEIPT_GMAIL_PASSWORD', '')
 RECEIPT_INBOX_OAUTH_API_KEY = ""
 RECEIPT_ADMIN_EMAIL_ENABLED = True
 RECEIPT_ADMIN_EMAIL_SUBJECT = "Makeaplea receipt processing script"
+RECEIPT_HEADER_FRAGMENT_CHECK = os.environ.get("RECEIPT_HEADER_FRAGMENT_CHECK", "")
 
 USER_DATA_DIRECTORY = os.environ.get('USER_DATA_DIRECTORY', os.path.abspath(here('../../user_data')))
 GPG_RECIPIENT = os.environ.get('GPG_RECIPIENT', 'test@test.com')
