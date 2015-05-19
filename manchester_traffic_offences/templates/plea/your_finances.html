@@ -18,7 +18,7 @@
         <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
 
         <p>{% trans "See highlighted errors below." %}</p>
-        
+
         <ul>
         {% for field in form %}
             {% if field.errors %}
@@ -56,16 +56,16 @@
     {{ form.nojs_trigger_submitted }}
     {% radio_field form.you_are %}
     {% endif %}
-        
+
     <div id="section-employed" class="js-Conditional{% if your_finances.nojs != "nojs_last_step" or form.you_are.value != "Employed" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Employed">
 
         <div class="panel-indent">
 
-            {% radio_field form.employed_take_home_pay_period %}
+            {% radio_field form.employed_take_home_pay_period hide_optional=True %}
 
-            {% money_field form.employed_take_home_pay_amount %}
+            {% money_field form.employed_take_home_pay_amount hide_optional=True %}
 
-            {% radio_field form.employed_hardship %}
+            {% radio_field form.employed_hardship hide_optional=True %}
 
             <div id="employed_hardship-True" class="js-Conditional" data-conditional-trigger="employed_hardship" data-conditional-value="True">
                 <h4 class="heading-small">{% trans "Note:" %}</h4>
@@ -79,15 +79,15 @@
 
         <div class="panel-indent">
 
-            {% radio_field form.self_employed_pay_period %}
+            {% radio_field form.self_employed_pay_period hide_optional=True %}
 
             <div id="section-self-employed-other" class="form-group move-up js-Conditional" data-conditional-trigger="self_employed_pay_period" data-conditional-value="Self-employed other">
-                {% std_field form.self_employed_pay_other %}
+                {% std_field form.self_employed_pay_other hide_optional=True %}
             </div>
 
-            {% money_field form.self_employed_pay_amount %}
+            {% money_field form.self_employed_pay_amount hide_optional=True %}
 
-            {% radio_field form.self_employed_hardship %}
+            {% radio_field form.self_employed_hardship hide_optional=True %}
 
             <div id="self_employed_hardship-True" class="js-Conditional" data-conditional-trigger="self_employed_hardship" data-conditional-value="True">
                 <h4 class="heading-small">{% trans "Note:" %}</h4>
@@ -101,19 +101,19 @@
 
         <div class="panel-indent">
 
-            {% std_field form.benefits_details %}
+            {% std_field form.benefits_details hide_optional=True %}
 
-            {% radio_field form.benefits_dependents %}
+            {% radio_field form.benefits_dependents hide_optional=True %}
 
-            {% radio_field form.benefits_period %}
+            {% radio_field form.benefits_period hide_optional=True %}
 
             <div id="section-benefits-other" class="form-group move-up js-Conditional" data-conditional-trigger="benefits_period" data-conditional-value="Benefits other">
-                {% std_field form.benefits_pay_other %}
+                {% std_field form.benefits_pay_other hide_optional=True %}
             </div>
 
-            {% money_field form.benefits_amount %}
+            {% money_field form.benefits_amount hide_optional=True %}
 
-            {% radio_field form.receiving_benefits_hardship %}
+            {% radio_field form.receiving_benefits_hardship hide_optional=True %}
 
             <div id="receiving_benefits_hardship-True" class="js-Conditional" data-conditional-trigger="receiving_benefits_hardship" data-conditional-value="True">
                 <h4 class="heading-small">{% trans "Note:" %}</h4>
@@ -127,11 +127,11 @@
 
         <div class="panel-indent">
 
-            {% std_field form.other_details %}
+            {% std_field form.other_details hide_optional=True %}
 
-            {% money_field form.other_pay_amount %}
+            {% money_field form.other_pay_amount hide_optional=True %}
 
-            {% radio_field form.other_hardship %}
+            {% radio_field form.other_hardship hide_optional=True %}
 
             <div id="other_hardship-True" class="js-Conditional" data-conditional-trigger="other_hardship" data-conditional-value="True">
                 <h4 class="heading-small">{% trans "Note:" %}</h4>
