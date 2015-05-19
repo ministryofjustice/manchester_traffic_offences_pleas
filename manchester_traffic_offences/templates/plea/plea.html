@@ -16,9 +16,9 @@
     {% if formset_has_errors %}
     <section class="error-summary">
         <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
-        
+
         <p>{% trans "See highlighted errors below." %}</p>
-        
+
         <ul>
         {% with forms.0 as formset %}
             {% for form in formset %}
@@ -43,27 +43,22 @@
 
     <div class="panel-grey">
         {% if case.plea_made_by == "Defendant" %}
-        <p>{% trans "This is your opportunity to present your case to the court:" %}</p>
-        {% else %}
-        <p>{% trans "This is your opportunity to present the company's case to the court:" %}</p>
+        <p>{% blocktrans %}This is your opportunity to present your case to the court:{% endblocktrans %}</p>
+        <ul>
+            <li>{% blocktrans %}each offence may carry penalty points and a fine{% endblocktrans %}</li>
+            <li>{% blocktrans %}if you're convicted you'll have to pay the Criminal Courts Charge – this is added to any other penalty imposed by the court{% endblocktrans %}</li>
+            <li>{% blocktrans %}if you plead guilty you may get a 33% reduction on any fine{% endblocktrans %}</li>
+        </ul>
         {% endif %}
 
+        {% if case.plea_made_by == "Company representative" %}
+        <p>{% blocktrans %}This is your opportunity to present the company's case to the court:{% endblocktrans %}</p>
         <ul>
-            <li>{% blocktrans %}each offence carries penalty points and a fine{% endblocktrans %}</li>
-            {% if case.plea_made_by == "Defendant" %}
-            {% comment %}
-            <li>{% blocktrans %}if you're convicted you will have to pay the <a rel="external" href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/336085/fact-sheet-criminal-courts-charge.pdf" target="_blank">Criminal Courts Charge</a>{% endblocktrans %}</li>
-            {% endcomment %}
-            <li>{% blocktrans %}if you're convicted you will have to pay the Criminal Courts Charge{% endblocktrans %}</li>
-            <li>{% blocktrans %}if you plead guilty you may get a 33% reduction on any fine{% endblocktrans %}</li>
-            {% else %}
-            {% comment %}
-            <li>{% blocktrans %}a conviction means the defendant will have to pay the <a rel="external" href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/336085/fact-sheet-criminal-courts-charge.pdf" target="_blank">Criminal Courts Charge</a>{% endblocktrans %}</li>    
-            {% endcomment %}
-            <li>{% blocktrans %}a conviction means the defendant will have to pay the Criminal Courts Charge{% endblocktrans %}</li>
-            <li>{% blocktrans %}a guilty plea may get a 33% reduction on any fine{% endblocktrans %}</li>
-            {% endif %}
+            <li>{% blocktrans %}each offence may result in a fine{% endblocktrans %}</li>
+            <li>{% blocktrans %}if convicted, the company will have to pay the Criminal Courts Charge – this is added to any other penalty imposed by the court{% endblocktrans %}</li>
+            <li>{% blocktrans %}if you plead guilty on its behalf, the company may get a 33% reduction on any fine{% endblocktrans %}</li>
         </ul>
+        {% endif %}
     </div>
 
     {% with formset=forms.0 form_count=forms.0|length %}
@@ -74,7 +69,7 @@
 
         {% for form in formset %}
         <section id="section_guilty_{{ forloop.counter }}" class="section-plea">
-            
+
             <div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty_{{ forloop.counter }}">
               <fieldset>
                 {% if form_count > 1 or form.guilty.errors %}
@@ -104,7 +99,7 @@
                             {{ choice.choice_label }}
                         </label>
                         {% endfor %}
-                      
+
                     </div>
                 </div>
               </fieldset>
@@ -126,27 +121,30 @@
                     {% endif %}
 
                     <h4 class="heading-small">{% trans "Pleading guilty to this charge means:" %}</h4>
-                    <ul>
+                    <ul class="hint">
                         {% if case.plea_made_by == "Defendant" %}
                         <li>{% blocktrans %}you <strong>do not</strong> need to come to court to respond to this charge{% endblocktrans %}</li>
-                        {% else %}
-                        <li>{% blocktrans %}a company representative <strong>does not</strong> need to come to court to respond to this charge{% endblocktrans %}</li>
+                        <li>{% blocktrans %}we'll send you details of the court's decision and what happens next{% endblocktrans %}</li>
                         {% endif %}
-                        <li>{% blocktrans %}we'll send you details of the court's decision and what to do next{% endblocktrans %}</li>
+
+                        {% if case.plea_made_by == "Company representative" %}
+                        <li>{% blocktrans %}a company representative <strong>does not</strong> need to come to court to respond to this charge{% endblocktrans %}</li>
+                        <li>{% blocktrans %}we'll send details of the court's decision and what to do next{% endblocktrans %}</li>
+                        {% endif %}
                     </ul>
                 </section>
 
                 <section id="{{ form.guilty.0.name }}_not_guilty_extra" class="js-Conditional js-hidden" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^not_guilty$">
 
                     {% if case.plea_made_by == "Defendant" %}
-                        {% std_field form.not_guilty_extra hide_optional=True %}
+                        {% wide_field form.not_guilty_extra hide_optional=True %}
                     {% else %}
-                        {% std_field form.not_guilty_extra hide_optional=True help_text=_("Tell us why the company believes they are not guilty") %}
+                        {% wide_field form.not_guilty_extra hide_optional=True help_text=_("Tell us why the company believes they are not guilty") %}
                     {% endif %}
 
                     <h4 class="heading-small">{% trans "Pleading not guilty to this charge means:" %}</h4>
                     <ul>
-                        <li>{% blocktrans %}<strong>Do not</strong> come to court on the hearing date in the Postal Requisition - we'll send you details of what happens next.{% endblocktrans %}</li>
+                        <li>{% blocktrans %}<strong>Do not</strong> come to court on the hearing date in the requisition pack – we'll send you details of what happens next.{% endblocktrans %}</li>
                     </ul>
 
                 </section>
