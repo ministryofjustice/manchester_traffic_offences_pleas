@@ -14,7 +14,7 @@ sh==1.11
 django_extensions==1.5.3
 django-brake==1.3.1
 django-waffle==0.10.1
-djangorestframework==2.4.3
+djangorestframework==3.1.2
 
 # MOJ Template
 # Temporarily using the forked version of moj_template, to bring in
