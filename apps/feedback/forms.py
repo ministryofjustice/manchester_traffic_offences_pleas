@@ -31,5 +31,6 @@ class FeedbackForm(forms.Form):
     feedback_satisfaction = forms.ChoiceField(
         label=_("Overall, how satisfied were you with this service?"),
         choices=SATISFACTION_CHOICES,
-        required=False,
+        required=True,
+        error_messages={"required": _("Please select one of the options below")},
         widget=RadioSelect(renderer=DSStackedRadioFieldRenderer))
