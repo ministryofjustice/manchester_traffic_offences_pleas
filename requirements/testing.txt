@@ -1,4 +1,4 @@
 -r dev.txt
 
 django-jenkins
-coverage==3.7.1
+coverage

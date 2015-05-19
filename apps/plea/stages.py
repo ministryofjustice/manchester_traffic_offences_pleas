@@ -183,7 +183,6 @@ class PleaStage(FormStage):
         return clean_data
 
 
-
 class CompanyFinancesStage(FormStage):
     name = "company_finances"
     template = "plea/company_finances.html"
