@@ -1,48 +1,32 @@
 # -*- coding: utf-8 -*-
-from south.utils import datetime_utils as datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'ReceiptLog'
-        db.create_table(u'receipt_receiptlog', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('status', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
-            ('started', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('run_time', self.gf('django.db.models.fields.PositiveIntegerField')(null=True, blank=True)),
-            ('query_from', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('query_to', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('total_emails', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
-            ('total_errors', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
-            ('total_failed', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
-            ('status_detail', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-        ))
-        db.send_create_signal(u'receipt', ['ReceiptLog'])
+    dependencies = [
+    ]
 
-
-    def backwards(self, orm):
-        # Deleting model 'ReceiptLog'
-        db.delete_table(u'receipt_receiptlog')
-
-
-    models = {
-        u'receipt.receiptlog': {
-            'Meta': {'object_name': 'ReceiptLog'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'query_from': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'query_to': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'run_time': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'started': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
-            'status': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'status_detail': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'total_emails': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'total_errors': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'total_failed': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'})
-        }
-    }
-
-    complete_apps = ['receipt']
+    operations = [
+        migrations.CreateModel(
+            name='ReceiptLog',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('status', models.PositiveIntegerField(default=0, choices=[(0, b'Error'), (1, b'Completed')])),
+                ('started', models.DateTimeField(help_text=b'The time the script started processing', auto_now=True)),
+                ('run_time', models.PositiveIntegerField(help_text=b'Time the script took to complete in seconds', null=True, blank=True)),
+                ('query_from', models.DateTimeField(null=True, blank=True)),
+                ('query_to', models.DateTimeField(null=True, blank=True)),
+                ('total_emails', models.PositiveIntegerField(default=0, help_text=b'Number of entries received from the API')),
+                ('total_errors', models.PositiveIntegerField(default=0, help_text=b'Number of entries that were not processable')),
+                ('total_failed', models.PositiveIntegerField(default=0, help_text=b'Number of entries recorded as failed by the PA')),
+                ('total_success', models.PositiveIntegerField(default=0, help_text=b'Number of entries that the PA indicated were successfully processed')),
+                ('status_detail', models.TextField(null=True, blank=True)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+    ]

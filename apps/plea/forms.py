@@ -193,9 +193,9 @@ class YourDetailsForm(BasePleaStepForm):
 
 class CompanyDetailsForm(BasePleaStepForm):
     COMPANY_POSITION_CHOICES = (
-        ("Director", _("a director")),
-        ("Company secretary", _("the company secretary")),
-        ("Company solicitor", _("the company's solicitor")))
+        ("Director", _("director")),
+        ("Company secretary", _("company secretary")),
+        ("Company solicitor", _("company solicitor")))
 
     company_name = forms.CharField(label=_("Company name"),
                                    widget=forms.TextInput(attrs={"class": "form-control"}),
@@ -223,7 +223,6 @@ class CompanyDetailsForm(BasePleaStepForm):
     position_in_company = forms.ChoiceField(label=_("Your position in the company"),
                                             choices=COMPANY_POSITION_CHOICES,
                                             widget=RadioSelect(renderer=DSStackedRadioFieldRenderer),
-                                            help_text=_("You must confirm that you are:"),
                                             required=True,
                                             error_messages={"required": ERROR_MESSAGES["POSITION_REQUIRED"]})
 
@@ -261,8 +260,6 @@ class YourMoneyForm(NoJSPleaStepForm):
                          ("Fortnightly", _("Fortnightly")),
                          ("Monthly", _("Monthly")),
                          ("Benefits other", _("Other")),)
-    YES_NO = (("Yes", _("Yes")),
-              ("No", _("No")))
 
     dependencies = {
         "employed_take_home_pay_period": { "field": "you_are", "value": "Employed"},
@@ -357,8 +354,9 @@ class YourMoneyForm(NoJSPleaStepForm):
                                        widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
                                        error_messages={"required": ERROR_MESSAGES["BENEFITS_DETAILS_REQUIRED"]})
 
-    benefits_dependents = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                            choices=YES_NO,
+    benefits_dependents = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                            choices=YESNO_CHOICES,
+                                            coerce=to_bool,
                                             label=_("Does this include payment for dependants?"),
                                             error_messages={"required": ERROR_MESSAGES["BENEFITS_DEPENDANTS_REQUIRED"]})
     
@@ -471,10 +469,11 @@ class YourExpensesForm(BasePleaStepForm):
                         'invalid': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_INVALID'],
                         'min_value': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_MIN']})
 
-    other_bill_payers = forms.ChoiceField(
+    other_bill_payers = forms.TypedChoiceField(
         widget=RadioSelect(renderer=DSRadioFieldRenderer),
         label=_("Does anyone else contribute to these bills?"),
-        choices=((True, _('Yes')), (False, _('No'))),
+        choices=YESNO_CHOICES,
+        coerce=to_bool,
         error_messages={'required': ERROR_MESSAGES['OTHER_BILL_PAYERS_REQUIRED']})
 
     other_tv_subscription = forms.DecimalField(
