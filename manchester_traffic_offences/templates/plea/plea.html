@@ -3,6 +3,7 @@
 {% load debug %}
 {% load i18n %}
 {% load form_widgets %}
+{% load testing %}
 
 {% block page_title %}{% blocktrans count charges=request.session.case.number_of_charges %}Your plea{% plural %}Your pleas{% endblocktrans %} - {{ block.super }}{% endblock %}
 
@@ -18,9 +19,9 @@
     {% if formset_has_errors %}
     <section class="error-summary">
         <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
-        
+
         <p>{% trans "See highlighted errors below." %}</p>
-        
+
         <ul>
         {% for plea_form in form %}
             {% for field in plea_form %}
@@ -58,7 +59,7 @@
             <li>{% blocktrans %}if you plead guilty you may get a 33% reduction on any fine{% endblocktrans %}</li>
             {% else %}
             {% comment %}
-            <li>{% blocktrans %}a conviction means the defendant will have to pay the <a rel="external" href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/336085/fact-sheet-criminal-courts-charge.pdf" target="_blank">Criminal Courts Charge</a>{% endblocktrans %}</li>    
+            <li>{% blocktrans %}a conviction means the defendant will have to pay the <a rel="external" href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/336085/fact-sheet-criminal-courts-charge.pdf" target="_blank">Criminal Courts Charge</a>{% endblocktrans %}</li>
             {% endcomment %}
             <li>{% blocktrans %}a conviction means the defendant will have to pay the Criminal Courts Charge{% endblocktrans %}</li>
             <li>{% blocktrans %}a guilty plea may get a 33% reduction on any fine{% endblocktrans %}</li>
@@ -78,6 +79,7 @@
         <section class="section-plea">
 
             {% if plea.nojs == "nojs_last_step" %}
+            {% add_test_tag "<<NOJSTRIGGERSUMMARY>>" %}
             <div class="nojs-hidden">
                 {% with plea_form as form %}
                     {% include "widgets/plea_radio_field.html" %}
