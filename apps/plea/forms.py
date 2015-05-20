@@ -7,7 +7,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from .fields import (ERROR_MESSAGES, is_date_in_future, is_date_within_range,
-                     DSRadioFieldRenderer, 
+                     DSRadioFieldRenderer,
                      DSStackedRadioFieldRenderer,
                      URNField,
                      DateWidget, is_urn_not_used, is_urn_valid)
@@ -100,7 +100,7 @@ class YourDetailsForm(BasePleaStepForm):
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
 
     email = forms.EmailField(widget=forms.TextInput(attrs={"type": "email", "class": "form-control"}),
-                             required=getattr(settings, "EMAIL_REQUIRED", True), 
+                             required=getattr(settings, "EMAIL_REQUIRED", True),
                              label=_("Email"),
                              help_text=_("We'll use this for all future correspondence. We'll also contact you by post"),
                              error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
@@ -141,8 +141,8 @@ class CompanyDetailsForm(BasePleaStepForm):
 
     company_name = forms.CharField(label=_("Company name"),
                                    widget=forms.TextInput(attrs={"class": "form-control"}),
-                                   max_length=100, 
-                                   required=True, 
+                                   max_length=100,
+                                   required=True,
                                    help_text=_("As written on page 1 of the Postal Requistion we sent you."),
                                    error_messages={"required": ERROR_MESSAGES["COMPANY_NAME_REQUIRED"]})
 
@@ -169,10 +169,10 @@ class CompanyDetailsForm(BasePleaStepForm):
                                             error_messages={"required": ERROR_MESSAGES["POSITION_REQUIRED"]})
 
     contact_number = forms.CharField(label=_("Contact number"),
-                                     widget=forms.TextInput(attrs={"type": "tel", 
+                                     widget=forms.TextInput(attrs={"type": "tel",
                                                                    "class": "form-control"}),
                                      max_length=30,
-                                     required=True, 
+                                     required=True,
                                      help_text=_("Office or mobile number."),
                                      error_messages={"required": ERROR_MESSAGES["COMPANY_CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
@@ -212,7 +212,7 @@ class YourMoneyForm(BasePleaStepForm):
                                                       error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                                       "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
 
-    employed_take_home_pay_amount = forms.DecimalField(label=_("What's your take home pay (after tax)?"), 
+    employed_take_home_pay_amount = forms.DecimalField(label=_("What's your take home pay (after tax)?"),
                                                        required=False,
                                                        localize=True,
                                                        widget=forms.TextInput(attrs={"pattern": "[0-9]*",
@@ -272,7 +272,7 @@ class YourMoneyForm(BasePleaStepForm):
                                             coerce=to_bool,
                                             label=_("Does this include payment for dependants?"),
                                             error_messages={"required": ERROR_MESSAGES["BENEFITS_DEPENDANTS_REQUIRED"]})
-    
+
     benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                         choices=BEN_PERIOD_CHOICES, required=False,
                                         label=_("How often are your benefits paid?"),
@@ -306,7 +306,7 @@ class YourMoneyForm(BasePleaStepForm):
     # Other
     other_details = forms.CharField(required=False, max_length=500, label=_("Please provide details"),
                                     help_text=_("eg retired, student etc."),
-                                    widget=forms.TextInput(attrs={"class": "form-control"}), 
+                                    widget=forms.TextInput(attrs={"class": "form-control"}),
                                     error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
 
     other_pay_amount = forms.DecimalField(label=_("What is your monthly disposable income?"),
@@ -333,7 +333,7 @@ class YourMoneyForm(BasePleaStepForm):
         except IndexError:
             data = {}
 
-        if "you_are" in data:                
+        if "you_are" in data:
             if data["you_are"] == "Employed":
                 self.fields["employed_take_home_pay_period"].required = True
                 self.fields["employed_take_home_pay_amount"].required = True
@@ -582,7 +582,7 @@ class PleaForm(BasePleaStepForm):
 
     guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect(), required=True,
                                error_messages={"required": ERROR_MESSAGES["PLEA_REQUIRED"]})
-    
+
     guilty_extra = forms.CharField(label=_("Mitigation"),
                                    widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
                                    help_text=_("What would you like the court to consider?"),
@@ -591,7 +591,7 @@ class PleaForm(BasePleaStepForm):
 
     not_guilty_extra = forms.CharField(label=_("Not guilty because?"),
                                        widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
-                                       help_text=_("Tell us why you believe you are not guilty"),
+                                       help_text=_("Tell us here:<ul><li>why you believe you are not guilty</li><li>if you disagree with any evidence from a witness statement in the requisition pack &ndash; tell us the name of the witness  and what you disagree with</li><li>the name, address and date of birth of any witnesses you want to call  to support your case</li></ul>"),
                                        required=False,
                                        max_length=5000)
 
