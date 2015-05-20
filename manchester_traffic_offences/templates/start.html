@@ -5,56 +5,52 @@
 {% block page_content %}
 
 <header class="content-header">
-    <h1>{% trans "Make a plea online" %}</h1>
+    <h1>{% blocktrans %}Make a plea online{% endblocktrans %}</h1>
 </header>
 
 <div class="grid-row">
 
     <div class="column-two-thirds">
-        <article role="article" class="headings-collapse">
+        <article role="article" class="text headings-collapse">
+
             <section class="intro">
+                <h2 class="heading-medium">{% blocktrans %}Use this service to:{% endblocktrans %}</h2>
+                <p>{% blocktrans %}Plead <strong>guilty</strong> or <strong>not guilty</strong> for each traffic offence listed on the charge sheet in the requisition pack.{% endblocktrans %}</p>
 
-                <h2 class="heading-medium">{% trans "Use this service to:" %}</h2>
-                <p>{% trans "Plead guilty or not guilty to the driving offence(s) you're charged with." %}</p>
+                <h2 class="heading-medium">{% blocktrans %}After pleading online:{% endblocktrans %}</h2>
+                <p>{% blocktrans %}<strong>Do not</strong> come to court on the hearing date.{% endblocktrans %}</p>
 
-                <h2 class="heading-medium">{% trans "By making your plea(s) online:" %}</h2>
-                <p>{% trans "There's no need to come to court on your hearing date." %}</p>
-                
                 <div class="get-started">
-                    <a class="button button-get-started" role="button" href="{% url "plea_form" %}">{% trans "Start now" %}</a>
+                    <a class="button button-get-started" role="button" href="{% url "plea_form" %}">{% blocktrans %}Start now{% endblocktrans %}</a>
                 </div>
-                
             </section>
 
-            <section class="before-start">
-                <h2 class="heading-medium">{% trans "Before you start" %}</h2>
-                
+            <section>
+                <h2 class="heading-medium">{% blocktrans %}Before you start{% endblocktrans %}</h2>
+
                 <div class="panel-indent">
                     <ul>
-                        <li>{% trans "you'll need the 'Postal Requisition' pack we sent to you" %}</li>
-                        <li>{% trans "you can make your plea at any time up to the day before the court makes a decision" %}</li>
-                        <li>{% trans "you must be the person named on the charge sheet" %}</li>
-                        <li>{% trans "it is against the law to enter a plea for anyone else" %}</li>
-                        <li>{% trans "entering your plea takes about 10 minutes" %}</li>
+                        <li>{% blocktrans %}you'll need information from the police requisition pack{% endblocktrans %}</li>
+                        <li>{% blocktrans %}entering a plea takes about 10 minutes{% endblocktrans %}</li>
+                        <li>{% blocktrans %}you must be the person, or an official representative of the company, named on the requisition{% endblocktrans %}</li>
                     </ul>
                 </div>
-
             </section>
 
         </article>
     </div>
 
-    <div class="column-third"> 
+    <div class="column-third">
         <aside class="fine-reduction">
             <p>{% blocktrans %}If you plead guilty <br>you may get a <br><strong>33%</strong> <br>reduction on your fine{% endblocktrans %}</p>
-        </aside>   
-        
-        <aside class="related">
-            <h3>{% trans "Legal help and advice" %}</h3>
-            <p><a rel="external" href="http://www.lawsociety.org.uk/for-the-public/common-legal-issues/criminal/" target="_blank">{% trans "Law Society" %}</a></p>
+        </aside>
 
-            <h3>{% trans "Questions about your plea?" %}</h3>
-            <p><a href="{% url "court_finder" %}">{% trans "Contact your court" %}</a></p>
+        <aside class="related">
+            <h3>{% blocktrans %}Legal help and advice{% endblocktrans %}</h3>
+            <p><a rel="external" href="http://www.lawsociety.org.uk/for-the-public/common-legal-issues/criminal/" target="_blank">{% blocktrans %}Law Society{% endblocktrans %}</a></p>
+
+            <h3>{% blocktrans %}Questions about your plea?{% endblocktrans %}</h3>
+            <p><a href="{% url "court_finder" %}">{% blocktrans %}Contact your court{% endblocktrans %}</a></p>
         </aside>
     </div>
 
