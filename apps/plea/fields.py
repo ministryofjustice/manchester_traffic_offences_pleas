@@ -30,6 +30,8 @@ ERROR_MESSAGES = {
     "LAST_NAME_REQUIRED": _("Enter your last name"),
     "CORRECT_ADDRESS_REQUIRED": _("Tell us if your address on the Postal Requisition is correct"),
     "UPDATED_ADDRESS_REQUIRED": _("Tell us your address"),
+    "COMPANY_CORRECT_ADDRESS_REQUIRED": _("Tell us if the company's address on the Postal Requisition is correct"),
+    "COMPANY_UPDATED_ADDRESS_REQUIRED": _("Tell us your address"),
     "EMAIL_ADDRESS_REQUIRED": _("You must provide an email address"),
     "EMAIL_ADDRESS_INVALID": _("Email address isn't a valid format"),
     "CONTACT_NUMBER_REQUIRED": _("You must provide a contact number"),

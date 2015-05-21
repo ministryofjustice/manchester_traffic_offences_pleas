@@ -146,11 +146,18 @@ class CompanyDetailsForm(BasePleaStepForm):
                                    help_text=_("As written on page 1 of the Postal Requistion we sent you."),
                                    error_messages={"required": ERROR_MESSAGES["COMPANY_NAME_REQUIRED"]})
 
-    company_address = forms.CharField(label=_("Company address"),
-                                      widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
-                                      help_text=_("This is the address we will use for all future correspondence about this case."),
-                                      required=True,
-                                      error_messages={"required": ERROR_MESSAGES["COMPANY_ADDRESS_REQUIRED"]})
+    correct_address = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                             coerce=to_bool,
+                                             choices=YESNO_CHOICES,
+                                             required=True,
+                                             label=_("Is the company's address on the requisition pack correct?"),
+                                             error_messages={"required": ERROR_MESSAGES["COMPANY_CORRECT_ADDRESS_REQUIRED"]})
+
+    updated_address = forms.CharField(widget=forms.Textarea(attrs={"rows": "4", "class": "form-control"}),
+                                      label="",
+                                      required=False,
+                                      help_text=_("If the company address is different from the one shown on page 1 of the requisition pack, tell us here:"),
+                                      error_messages={"required": ERROR_MESSAGES["COMPANY_UPDATED_ADDRESS_REQUIRED"]})
 
     first_name = forms.CharField(label=_("Your first name"),
                                  widget=forms.TextInput(attrs={"class": "form-control"}),
@@ -183,6 +190,17 @@ class CompanyDetailsForm(BasePleaStepForm):
                              label=_("Email"),
                              error_messages={"required": ERROR_MESSAGES["COMPANY_EMAIL_ADDRESS_REQUIRED"],
                                              "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
+
+    def __init__(self, *args, **kwargs):
+        super(CompanyDetailsForm, self).__init__(*args, **kwargs)
+        try:
+            data = args[0]
+        except IndexError:
+            data = {}
+
+        if "correct_address" in data:
+            if data["correct_address"] == "False":
+                self.fields["updated_address"].required = True
 
 
 class YourMoneyForm(BasePleaStepForm):
