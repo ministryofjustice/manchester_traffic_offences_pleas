@@ -44,7 +44,12 @@
 
         {% std_field form.company_name %}
 
-        {% std_field form.company_address %}
+        {% std_field form.correct_address %}
+
+        <div class="form-group-wide move-up js-Conditional" data-conditional-trigger="correct_address" data-conditional-value="False">
+            <h4 class="heading-small js-hidden">{% trans "If you answered \"No\":" %}</h4>
+            {% std_field form.updated_address hide_optional=True %}
+        </div>
 
         {% std_field form.first_name %}
 
