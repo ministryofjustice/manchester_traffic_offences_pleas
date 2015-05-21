@@ -3,6 +3,7 @@
 {% load debug %}
 {% load i18n %}
 {% load form_widgets %}
+{% load testing %}
 
 {% block page_title %}{% trans "Company details" %} - {{ block.super }}{% endblock %}
 
@@ -38,6 +39,7 @@
     </header>
 
     {% if company_finances.nojs == "nojs_last_step" %}
+    {% add_test_tag "<<NOJSTRIGGERSUMMARY>>" %}
     <div class="nojs-hidden">
         {% radio_field form.trading_period %}
     </div>
