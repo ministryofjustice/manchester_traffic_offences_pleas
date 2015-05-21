@@ -220,8 +220,10 @@ class Case(models.Model):
     surname = models.CharField(max_length=35, null=True, blank=True,
                                help_text="as supplied by DX")
 
-    case_number = models.CharField(max_length=10, null=True, blank=True,
+    case_number = models.CharField(max_length=12, null=True, blank=True,
                                    help_text="as supplied by DX")
+
+    ou_code = models.CharField(max_length=10, null=True, blank=True)
 
     sent = models.BooleanField(null=False, default=False)
     processed = models.BooleanField(null=False, default=False)
@@ -251,7 +253,6 @@ class CaseAction(models.Model):
 class Offence(models.Model):
     case = models.ForeignKey(Case, related_name="offences")
 
-    ou_code = models.CharField(max_length=10, null=True, blank=True)
     offence_code = models.CharField(max_length=10, null=True, blank=True)
     offence_short_title = models.CharField(max_length=100)
     offence_wording = models.TextField(max_length=4000)

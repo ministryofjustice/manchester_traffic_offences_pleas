@@ -7,7 +7,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from .fields import (ERROR_MESSAGES, is_date_in_future, is_date_within_range,
-                     DSRadioFieldRenderer, 
+                     DSRadioFieldRenderer,
                      DSStackedRadioFieldRenderer,
                      URNField,
                      DateWidget, is_urn_not_used, is_urn_valid)
@@ -158,7 +158,7 @@ class YourDetailsForm(BasePleaStepForm):
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
 
     email = forms.EmailField(widget=forms.TextInput(attrs={"type": "email", "class": "form-control"}),
-                             required=getattr(settings, "EMAIL_REQUIRED", True), 
+                             required=getattr(settings, "EMAIL_REQUIRED", True),
                              label=_("Email"),
                              help_text=_("We'll use this for all future correspondence. We'll also contact you by post"),
                              error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
@@ -199,8 +199,8 @@ class CompanyDetailsForm(BasePleaStepForm):
 
     company_name = forms.CharField(label=_("Company name"),
                                    widget=forms.TextInput(attrs={"class": "form-control"}),
-                                   max_length=100, 
-                                   required=True, 
+                                   max_length=100,
+                                   required=True,
                                    help_text=_("As written on page 1 of the Postal Requistion we sent you."),
                                    error_messages={"required": ERROR_MESSAGES["COMPANY_NAME_REQUIRED"]})
 
@@ -227,10 +227,10 @@ class CompanyDetailsForm(BasePleaStepForm):
                                             error_messages={"required": ERROR_MESSAGES["POSITION_REQUIRED"]})
 
     contact_number = forms.CharField(label=_("Contact number"),
-                                     widget=forms.TextInput(attrs={"type": "tel", 
+                                     widget=forms.TextInput(attrs={"type": "tel",
                                                                    "class": "form-control"}),
                                      max_length=30,
-                                     required=True, 
+                                     required=True,
                                      help_text=_("Office or mobile number."),
                                      error_messages={"required": ERROR_MESSAGES["COMPANY_CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
@@ -359,7 +359,7 @@ class YourMoneyForm(NoJSPleaStepForm):
                                             coerce=to_bool,
                                             label=_("Does this include payment for dependants?"),
                                             error_messages={"required": ERROR_MESSAGES["BENEFITS_DEPENDANTS_REQUIRED"]})
-    
+
     benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                         choices=BEN_PERIOD_CHOICES,
                                         label=_("How often are your benefits paid?"),
@@ -392,7 +392,7 @@ class YourMoneyForm(NoJSPleaStepForm):
     # Other
     other_details = forms.CharField(max_length=500, label=_("Please provide details"),
                                     help_text=_("eg retired, student etc."),
-                                    widget=forms.TextInput(attrs={"class": "form-control"}), 
+                                    widget=forms.TextInput(attrs={"class": "form-control"}),
                                     error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
 
     other_pay_amount = forms.DecimalField(label=_("What is your monthly disposable income?"),
@@ -635,7 +635,7 @@ class PleaForm(NoJSPleaStepForm):
 
     guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect(), required=True,
                                error_messages={"required": ERROR_MESSAGES["PLEA_REQUIRED"]})
-    
+
     guilty_extra = forms.CharField(label=_("Mitigation"),
                                    widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
                                    help_text=_("What would you like the court to consider?"),
