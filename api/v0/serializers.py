@@ -11,7 +11,7 @@ class OffenceSerializer(serializers.ModelSerializer):
 
 
 class CaseSerializer(serializers.ModelSerializer):
-    urn = serializers.RegexField("^\d{2}/[a-zA-Z]{2}/\d+/\d{2}$", max_length=16, min_length=14)\
+    case_number = serializers.CharField(required=True)
 
     offences = OffenceSerializer(many=True)
 
@@ -35,13 +35,17 @@ class CaseSerializer(serializers.ModelSerializer):
 
         return case
 
-    def validate(self, attrs):
+    def validate_case_number(self, value):
+        """
+        Make sure case number is unique
+        """
 
-        if not Case.objects.can_use_urn(attrs["urn"]):
-
-            raise serializers.ValidationError("Case data already exists")
-
-        return attrs
+        try:
+            Case.objects.get(case_number=value)
+        except (Case.DoesNotExist, Case.MultipleObjectsReturned ):
+            return value
+        else:
+            raise serializers.ValidationError("Case with this case number already exists")
 
 
 class UsageStatsSerializer(serializers.ModelSerializer):
