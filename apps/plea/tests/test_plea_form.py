@@ -241,13 +241,69 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "last_name": "Man",
                    "contact_number": "012345678",
                    "email": "test.man@example.org",
-                   "correct_address": True,
+                   "correct_address": "True",
                    "date_of_birth_0": "12",
                    "date_of_birth_1": "03",
                    "date_of_birth_2": "1980"},
                   self.request_context)
         response = form.render()
         self.assertEqual(response.status_code, 302)
+
+    def test_your_details_stage_updated_address_required(self):
+        form = PleaOnlineForms("your_details", "plea_form_step", self.session)
+        form.load(self.request_context)
+
+        form_data = {"first_name": "Test",
+                     "last_name": "Man",
+                     "contact_number": "012345678",
+                     "email": "test.man@example.org",
+                     "correct_address": "False",
+                     "date_of_birth_0": "12",
+                     "date_of_birth_1": "03",
+                     "date_of_birth_2": "1980"}
+
+        form.save(form_data, self.request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("updated_address", form.current_stage.forms[0].errors)
+        self.assertEqual(len(form.current_stage.forms[0].errors), 1)
+
+        form_data.update({"updated_address": "Test address"})
+        form.save(form_data, self.request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.status_code, 302)
+
+    def test_company_details_stage_updated_address_required(self):
+        form = PleaOnlineForms("company_details", "plea_form_step", self.session)
+        form.load(self.request_context)
+
+        form_data = {"company_name": "Test Company",
+                     "correct_address": "False",
+                     "first_name": "John",
+                     "last_name": "Smith",
+                     "position_in_company": "Director",
+                     "contact_number": "07000000000",
+                     "email": "test@example.com"}
+
+        form.save(form_data, self.request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("updated_address", form.current_stage.forms[0].errors)
+        self.assertEqual(len(form.current_stage.forms[0].errors), 1)
+
+        form_data.update({"updated_address": "Test address"})
+        form.save(form_data, self.request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.status_code, 302)
+
 
     def test_plea_form_shows_errors_when_invalid(self):
         self.session.update({"case": {"complete": True,
@@ -883,7 +939,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "last_name": "Brown",
                    "contact_number": "07802639892",
                    "email": "test@example.org",
-                   "correct_address": True,
+                   "correct_address": "True",
                    "date_of_birth_0": "12",
                    "date_of_birth_1": "03",
                    "date_of_birth_2": "1980"},
@@ -956,7 +1012,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "last_name": "Brown",
                    "contact_number": "07802639892",
                    "email": "test@example.org",
-                   "correct_address": True,
+                   "correct_address": "True",
                    "date_of_birth_0": "12",
                    "date_of_birth_1": "03",
                    "date_of_birth_2": "1980"},
