@@ -666,7 +666,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             },
             "company_details": {
                 "company_name": "TEST COMPANY",
-                "company_address": "TEST ADDRESS",
+                "updated_address": "TEST ADDRESS",
                 "first_name": "TEST",
                 "last_name": "NAME",
                 "position_in_company": "a director",
@@ -727,7 +727,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             },
             "company_details": {
                 "company_name": "TEST COMPANY",
-                "company_address": "TEST ADDRESS",
+                "updated_address": "TEST ADDRESS",
                 "first_name": "TEST",
                 "last_name": "NAME",
                 "position_in_company": "a director",
