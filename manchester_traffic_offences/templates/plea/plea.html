@@ -129,9 +129,9 @@
                 <section id="section_not_guilty_extra_{{ forloop.counter }}" class="js-Conditional js-hidden{% if plea.nojs != "nojs_last_step" or plea_form.guilty.0.value != "not_guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^not_guilty$">
 
                     {% if case.plea_made_by == "Defendant" %}
-                        {% wide_field form.not_guilty_extra hide_optional=True %}
+                        {% wide_field plea_form.not_guilty_extra hide_optional=True %}
                     {% else %}
-                        {% wide_field form.not_guilty_extra hide_optional=True help_text=_("Tell us why the company believes they are not guilty") %}
+                        {% wide_field plea_form.not_guilty_extra hide_optional=True help_text=_("Tell us why the company believes they are not guilty") %}
                     {% endif %}
 
                     <h4 class="heading-small">{% trans "Pleading not guilty to this charge means:" %}</h4>
