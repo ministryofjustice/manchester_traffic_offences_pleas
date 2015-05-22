@@ -262,30 +262,30 @@ class YourMoneyForm(NoJSPleaStepForm):
                          ("Benefits other", _("Other")),)
 
     dependencies = {
-        "employed_take_home_pay_period": { "field": "you_are", "value": "Employed"},
-        "employed_take_home_pay_amount": { "field": "you_are", "value": "Employed"},
-        "employed_hardship": { "field": "you_are", "value": "Employed"},
+        "employed_take_home_pay_period": {"field": "you_are", "value": "Employed"},
+        "employed_take_home_pay_amount": {"field": "you_are", "value": "Employed"},
+        "employed_hardship": {"field": "you_are", "value": "Employed"},
 
         "self_employed_pay_period": {"field": "you_are", 
                                      "value": "Self-employed", 
                                      "dependencies": {"self_employed_pay_other": {"field": "self_employed_pay_period",
                                                                                   "value": "Self-employed other" }}},
 
-        "self_employed_pay_amount": { "field": "you_are", "value": "Self-employed"},
-        "self_employed_hardship": { "field": "you_are", "value": "Self-employed"},
+        "self_employed_pay_amount": {"field": "you_are", "value": "Self-employed"},
+        "self_employed_hardship": {"field": "you_are", "value": "Self-employed"},
 
-        "benefits_details": { "field": "you_are", "value": "Receiving benefits"},
-        "benefits_dependents": { "field": "you_are", "value": "Receiving benefits"},
+        "benefits_details": {"field": "you_are", "value": "Receiving benefits"},
+        "benefits_dependents": {"field": "you_are", "value": "Receiving benefits"},
         "benefits_period": {"field": "you_are",
                             "value": "Receiving benefits",
                             "dependencies": {"benefits_pay_other": {"field": "benefits_period",
                                                                     "value": "Benefits other"}}},
-        "benefits_amount": { "field": "you_are", "value": "Receiving benefits"},
-        "receiving_benefits_hardship": { "field": "you_are", "value": "Receiving benefits"},
+        "benefits_amount": {"field": "you_are", "value": "Receiving benefits"},
+        "receiving_benefits_hardship": {"field": "you_are", "value": "Receiving benefits"},
 
-        "other_details": { "field": "you_are", "value": "Other"},
-        "other_pay_amount": { "field": "you_are", "value": "Other"},
-        "other_hardship": { "field": "you_are", "value": "Other"}
+        "other_details": {"field": "you_are", "value": "Other"},
+        "other_pay_amount": {"field": "you_are", "value": "Other"},
+        "other_hardship": {"field": "you_are", "value": "Other"}
     }
 
     nojs_options = {
