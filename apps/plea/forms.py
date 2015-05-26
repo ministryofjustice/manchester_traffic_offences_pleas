@@ -644,7 +644,7 @@ class PleaForm(NoJSPleaStepForm):
 
     not_guilty_extra = forms.CharField(label=_("Not guilty because?"),
                                        widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
-                                       help_text=_("Tell us why you believe you are not guilty"),
+                                       help_text=_("Tell us here:<ul><li>why you believe you are not guilty</li><li>if you disagree with any evidence from a witness statement in the requisition pack &ndash; tell us the name of the witness  and what you disagree with</li><li>the name, address and date of birth of any witnesses you want to call  to support your case</li></ul>"),
                                        max_length=5000)
 
 
