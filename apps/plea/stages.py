@@ -3,10 +3,11 @@ import datetime
 
 from django.contrib import messages
 from django.forms.formsets import formset_factory
+from django.http import QueryDict
 from django.utils.translation import ugettext as _
 from django.shortcuts import redirect
 
-from apps.govuk_utils.forms import FormStage
+from apps.govuk_utils.stages import FormStage
 from email import send_plea_email
 from forms import (CaseForm, YourDetailsForm, CompanyDetailsForm,
                    PleaForm, YourMoneyForm, YourExpensesForm,
@@ -38,16 +39,16 @@ def get_plea_type(context_data):
 class CaseStage(FormStage):
     name = "case"
     template = "plea/case.html"
-    form_classes = [CaseForm]
+    form_class = CaseForm
     dependencies = []
 
     def render(self, request_context):
-        if 'urn' in self.forms[0].errors and ERROR_MESSAGES['URN_ALREADY_USED'] in self.forms[0].errors['urn']:
+        if 'urn' in self.form.errors and ERROR_MESSAGES['URN_ALREADY_USED'] in self.form.errors['urn']:
             self.context['urn_already_used'] = True
 
             try:
                 self.context["court"] = Court.objects.get_by_urn(
-                    self.forms[0].data['urn_0'])
+                    self.form.data['urn_0'])
             except Court.DoesNotExist:
                 pass
 
@@ -68,7 +69,7 @@ class CaseStage(FormStage):
 class CompanyDetailsStage(FormStage):
     name = "company_details"
     template = "plea/company_details.html"
-    form_classes = [CompanyDetailsForm]
+    form_class = CompanyDetailsForm
     dependencies = ["case"]
 
     def save(self, form_data, next_step=None):
@@ -85,7 +86,7 @@ class CompanyDetailsStage(FormStage):
 class YourDetailsStage(FormStage):
     name = "your_details"
     template = "plea/your_details.html"
-    form_classes = [YourDetailsForm]
+    form_class = YourDetailsForm
     dependencies = ["case"]
 
     def save(self, form_data, next_step=None):
@@ -102,7 +103,7 @@ class YourDetailsStage(FormStage):
 class PleaStage(FormStage):
     name = "plea"
     template = "plea/plea.html"
-    form_classes = [PleaForm]
+    form_class = PleaForm
     dependencies = ["case", "your_details", "company_details"]
 
     def load_forms(self, data=None, initial=False):
@@ -121,6 +122,7 @@ class PleaStage(FormStage):
                 forms_count = forms_wanted
 
             if forms_count < forms_wanted:
+                self.all_data["plea"].pop("nojs", None)
                 extra_forms = forms_wanted - forms_count
 
         else:
@@ -130,22 +132,25 @@ class PleaStage(FormStage):
 
         if initial:
             initial_plea_data = self.all_data[self.name].get("PleaForms", [])
-            self.forms.append(PleaForms(initial=initial_plea_data))
+            self.form = PleaForms(initial=initial_plea_data)
         else:
-            self.forms.append(PleaForms(data))
+            self.form = PleaForms(data)
 
-        for form in self.forms:
-            if form.errors:
-                self.context["formset_has_errors"] = True
+        formset_has_errors = False
+        if self.form.errors:
+            for error in self.form.errors:
+                if error:
+                    formset_has_errors = True
+
+        self.context["formset_has_errors"] = formset_has_errors
 
     def save_forms(self):
         form_data = {}
 
-        for form in self.forms:
-            if hasattr(form, "management_form"):
-                form_data["PleaForms"] = form.cleaned_data
-            else:
-                form_data.update(form.cleaned_data)
+        if hasattr(self.form, "management_form"):
+            form_data["PleaForms"] = self.form.cleaned_data
+        else:
+            form_data.update(self.form.cleaned_data)
 
         return form_data
 
@@ -160,20 +165,21 @@ class PleaStage(FormStage):
         else:
             return clean_data
 
-        if self.all_data["case"].get("plea_made_by", "Defendant") == "Company representative":
-            if none_guilty:
-                self.set_next_step("review", skip=["company_finances",
-                                                   "your_finances"])
+        if self.nojs is None or self.nojs == "nojs_last_step":
+            if self.all_data["case"].get("plea_made_by", "Defendant") == "Company representative":
+                if none_guilty:
+                    self.set_next_step("review", skip=["company_finances",
+                                                       "your_finances"])
+                else:
+                    self.set_next_step("company_finances", skip=["your_finances"])
             else:
-                self.set_next_step("company_finances", skip=["your_finances"])
-        else:
-            # determine if your_finances needs to be loaded
-            if none_guilty:
-                self.all_data["your_finances"]["complete"] = True
-                self.all_data["your_finances"]["skipped"] = True
-                self.set_next_step("review")
-            elif "skipped" in self.all_data["your_finances"]:
-                del self.all_data["your_finances"]["skipped"]
+                # determine if your_finances needs to be loaded
+                if none_guilty:
+                    self.all_data["your_finances"]["complete"] = True
+                    self.all_data["your_finances"]["skipped"] = True
+                    self.set_next_step("review")
+                elif "skipped" in self.all_data["your_finances"]:
+                    del self.all_data["your_finances"]["skipped"]
 
         return clean_data
 
@@ -181,14 +187,14 @@ class PleaStage(FormStage):
 class CompanyFinancesStage(FormStage):
     name = "company_finances"
     template = "plea/company_finances.html"
-    form_classes = [CompanyFinancesForm]
+    form_class = CompanyFinancesForm
     dependencies = ["case"]
 
 
 class YourMoneyStage(FormStage):
     name = "your_finances"
     template = "plea/your_finances.html"
-    form_classes = [YourMoneyForm]
+    form_class = YourMoneyForm
     dependencies = ["case", "your_details", "plea"]
 
     def save(self, form_data, next_step=None):
@@ -214,7 +220,7 @@ class YourMoneyStage(FormStage):
 class YourExpensesStage(FormStage):
     name = "your_expenses"
     template = "plea/your_expenses.html"
-    form_classes = [YourExpensesForm]
+    form_class = YourExpensesForm
     dependencies = ["case", "your_details", "plea", "your_finances"]
 
     def save(self, form_data, next_step=None):
@@ -251,7 +257,7 @@ class YourExpensesStage(FormStage):
 class ReviewStage(FormStage):
     name = "review"
     template = "plea/review.html"
-    form_classes = [ConfirmationForm]
+    form_class = ConfirmationForm
     dependencies = ["case", "company_details", "your_details", "plea",
                     "your_finances", "company_finances"]
 
@@ -285,7 +291,7 @@ class ReviewStage(FormStage):
 class CompleteStage(FormStage):
     name = "complete"
     template = "plea/complete.html"
-    form_classes = []
+    form_class = None
     dependencies = ["case", "your_details", "company_details", "plea",
                     "your_finances", "company_finances", "review"]
 

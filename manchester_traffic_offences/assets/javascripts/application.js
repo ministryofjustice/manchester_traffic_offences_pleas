@@ -648,5 +648,7 @@ $(document).ready(function () {
 
     var selectionButtons = new GOVUK.SelectionButtons($("label input[type='radio'], label input[type='checkbox']"));
 
-    $("details").details();
+    $('details').details();
+
+    $('[name^=nojs]').remove();
 });
