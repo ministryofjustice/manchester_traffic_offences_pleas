@@ -3,6 +3,7 @@
 {% load debug %}
 {% load i18n %}
 {% load form_widgets %}
+{% load testing %}
 
 {% block page_title %}{% blocktrans count charges=request.session.case.number_of_charges %}Your plea{% plural %}Your pleas{% endblocktrans %} - {{ block.super }}{% endblock %}
 
@@ -13,6 +14,8 @@
 
     {% csrf_token %}
 
+    <input type="hidden" name="nojs" value="{{plea.nojs|default:"guilty"}}">
+
     {% if formset_has_errors %}
     <section class="error-summary">
         <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
@@ -20,15 +23,13 @@
         <p>{% trans "See highlighted errors below." %}</p>
 
         <ul>
-        {% with forms.0 as formset %}
-            {% for form in formset %}
-                {% for field in form %}
-                    {% if field.errors %}
-            <li><a href="#section_{{ field.name }}_{{ forloop.parentloop.counter }}">{{ field.errors|striptags }}</a></li>
-                    {% endif %}
-                {% endfor %}
+        {% for plea_form in form %}
+            {% for field in plea_form %}
+                {% if field.errors %}
+        <li><a href="#section_{{ field.name }}_{{ forloop.parentloop.counter }}">{{ field.errors|striptags }}</a></li>
+                {% endif %}
             {% endfor %}
-        {% endwith %}
+        {% endfor %}
         </ul>
     </section>
     {% endif %}
@@ -61,63 +62,54 @@
         {% endif %}
     </div>
 
-    {% with formset=forms.0 form_count=forms.0|length %}
+    {% with form_count=form|length %}
 
-        {{ formset.management_form }}
+        {{ form.management_form }}
 
+        {% if plea.nojs != "nojs_last_step" %}
         <h2 class="heading-medium">{% blocktrans with form_count=form_count count charges=charges %}Enter a plea for the charge below{% plural %}Enter {{ form_count }} pleas for the charges below{% endblocktrans %}</h2>
+        {% endif %}
 
-        {% for form in formset %}
-        <section id="section_guilty_{{ forloop.counter }}" class="section-plea">
+        {% for plea_form in form %}
+        <section class="section-plea">
 
-            <div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty_{{ forloop.counter }}">
-              <fieldset>
+            {% if plea.nojs == "nojs_last_step" %}
+            {% add_test_tag "<<NOJSTRIGGERSUMMARY>>" %}
+            <div class="nojs-hidden">
+                {% with plea_form as form %}
+                    {% include "widgets/plea_radio_field.html" %}
+                {% endwith %}
+            </div>
+            <div class="form-header-pleas js-hidden">
                 {% if form_count > 1 or form.guilty.errors %}
-                <legend class="form-label-bold">
+                <fieldset>
+                    <legend class="form-label-bold">
                     {% if form_count > 1 %}
-                    <div class="label-line">
-                        <span class="label-text">
-                            {% if case.plea_made_by == "Defendant" %}
-                                {% blocktrans with counter=forloop.counter %}Your plea for charge {{ counter }}{% endblocktrans %}
-                            {% else %}
-                                {% blocktrans with counter=forloop.counter %}Plea for charge {{ counter }}{% endblocktrans %}
-                            {% endif %}
-                        </span>
-                    </div>
+                        <div class="label-line">
+                            <span class="label-text">{% blocktrans with counter=forloop.counter %}Charge {{ counter }}{% endblocktrans %}</span>
+                        </div>
                     {% endif %}
-
-                    {{ form.guilty.errors }}
-                </legend>
+                    </legend>
+                </fieldset>
                 {% endif %}
 
-                <div class="form-field">
-                    <div class="inline">
-
-                        {% for choice in form.guilty %}
-                        <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
-                            <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
-                            {{ choice.choice_label }}
-                        </label>
-                        {% endfor %}
-
-                    </div>
-                </div>
-              </fieldset>
+                <p class="form-selected">{% if plea_form.guilty.value == "guilty" %}{% trans "Your plea - Guilty" %}{% else %} {% trans "Your plea - Not guilty" %}{% endif %}</p>
+                <a href="{{ request.path }}?reset">{% trans "Change this plea" %}</a>
             </div>
+            {% else %}
+                {% with plea_form as form %}
+                    {% include "widgets/plea_radio_field.html" %}
+                {% endwith %}
+            {% endif %}
 
-            <ul class="js-hidden go-to">
-                <li>{% blocktrans with field_id=form.guilty.0.name %}If you answered <em>Guilty</em>, you can enter <a href="#{{ field_id }}_guilty_extra">special circumstances</a>{% endblocktrans %}</li>
-                <li>{% blocktrans with field_id=form.guilty.0.name %}If you answered <em>Not Guilty</em>, you can tell us <a href="#{{ field_id }}_not_guilty_extra">why you believe you are not guilty</a>{% endblocktrans %}</li>
-            </ul>
+            <div class="panel-indent" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^(guilty|not_guilty)$">
 
-            <div class="panel-indent move-up" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^(guilty|not_guilty)$">
-
-                <section id="{{ form.guilty.0.name }}_guilty_extra" class="js-Conditional js-hidden" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^guilty$">
+                <section id="section_guilty_extra_{{ forloop.counter }}" class="js-Conditional js-hidden{% if plea.nojs != "nojs_last_step" or plea_form.guilty.0.value != "guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^guilty$">
 
                     {% if case.plea_made_by == "Defendant" %}
-                        {% std_field form.guilty_extra %}
+                        {% std_field plea_form.guilty_extra %}
                     {% else %}
-                        {% std_field form.guilty_extra help_text=_("What would the defendant like the court to consider?") %}
+                        {% std_field plea_form.guilty_extra help_text=_("What would the defendant like the court to consider?") %}
                     {% endif %}
 
                     <h4 class="heading-small">{% trans "Pleading guilty to this charge means:" %}</h4>
@@ -134,12 +126,12 @@
                     </ul>
                 </section>
 
-                <section id="{{ form.guilty.0.name }}_not_guilty_extra" class="js-Conditional js-hidden" data-conditional-trigger="{{ form.prefix }}-guilty" data-conditional-value="^not_guilty$">
+                <section id="section_not_guilty_extra_{{ forloop.counter }}" class="js-Conditional js-hidden{% if plea.nojs != "nojs_last_step" or plea_form.guilty.0.value != "not_guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^not_guilty$">
 
                     {% if case.plea_made_by == "Defendant" %}
-                        {% wide_field form.not_guilty_extra hide_optional=True %}
+                        {% wide_field plea_form.not_guilty_extra hide_optional=True %}
                     {% else %}
-                        {% wide_field form.not_guilty_extra hide_optional=True help_text=_("Tell us why the company believes they are not guilty") %}
+                        {% wide_field plea_form.not_guilty_extra hide_optional=True help_text=_("Tell us why the company believes they are not guilty") %}
                     {% endif %}
 
                     <h4 class="heading-small">{% trans "Pleading not guilty to this charge means:" %}</h4>
