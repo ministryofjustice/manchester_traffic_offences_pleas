@@ -16,8 +16,6 @@
 <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
     
     {% csrf_token %}
-    
-    {% with forms.0 as form %}
         
     {% if form.errors %}
     <section class="error-summary">
@@ -141,7 +139,6 @@
     <div class="form-submit">
         <button type="submit" class="button-large">{% blocktrans count charges=case.number_of_charges %}Make your plea{% plural %}Make your pleas{% endblocktrans %}</button>
     </div>
-    {% endwith %}
 
 </form>
 {% endblock page_content %}
