@@ -1,0 +1,36 @@
+{% load i18n %}
+
+<div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty_{{ forloop.counter }}">
+  <fieldset>
+    {% if form_count > 1 or form.guilty.errors %}
+    <legend class="form-label-bold">
+        {% if form_count > 1 %}
+        <div class="label-line">
+            <span class="label-text">
+                {% if case.plea_made_by == "Defendant" %}
+                    {% blocktrans with counter=forloop.counter %}Your plea for charge {{ counter }}{% endblocktrans %}
+                {% else %}
+                    {% blocktrans with counter=forloop.counter %}Plea for charge {{ counter }}{% endblocktrans %}
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+
+        {{ form.guilty.errors }}
+    </legend>
+    {% endif %}
+    
+    <div class="form-field">
+        <div class="inline">
+
+            {% for choice in form.guilty %}
+            <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
+                <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
+                {{ choice.choice_label }}
+            </label>
+            {% endfor %}
+          
+        </div>
+    </div>
+  </fieldset>
+</div>
