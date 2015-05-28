@@ -165,20 +165,21 @@ class PleaStage(FormStage):
         else:
             return clean_data
 
-        if self.all_data["case"].get("plea_made_by", "Defendant") == "Company representative":
-            if none_guilty:
-                self.set_next_step("review", skip=["company_finances",
-                                                   "your_finances"])
+        if self.nojs is None or self.nojs == "nojs_last_step":
+            if self.all_data["case"].get("plea_made_by", "Defendant") == "Company representative":
+                if none_guilty:
+                    self.set_next_step("review", skip=["company_finances",
+                                                       "your_finances"])
+                else:
+                    self.set_next_step("company_finances", skip=["your_finances"])
             else:
-                self.set_next_step("company_finances", skip=["your_finances"])
-        else:
-            # determine if your_finances needs to be loaded
-            if none_guilty:
-                self.all_data["your_finances"]["complete"] = True
-                self.all_data["your_finances"]["skipped"] = True
-                self.set_next_step("review")
-            elif "skipped" in self.all_data["your_finances"]:
-                del self.all_data["your_finances"]["skipped"]
+                # determine if your_finances needs to be loaded
+                if none_guilty:
+                    self.all_data["your_finances"]["complete"] = True
+                    self.all_data["your_finances"]["skipped"] = True
+                    self.set_next_step("review")
+                elif "skipped" in self.all_data["your_finances"]:
+                    del self.all_data["your_finances"]["skipped"]
 
         return clean_data
 
