@@ -78,10 +78,11 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
   function MultivariateTest(options) {
     this.$el = $(options.el);
     this._loadOption(options, 'name');
-    this._loadOption(options, 'customVarIndex');
+    this._loadOption(options, 'customDimensionIndex', null);
     this._loadOption(options, 'cohorts');
     this._loadOption(options, 'runImmediately', true);
     this._loadOption(options, 'defaultWeight', 1);
+    this._loadOption(options, 'contentExperimentId', null);
 
     if (this.runImmediately) {
       this.run();
@@ -105,8 +106,10 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
   MultivariateTest.prototype.run = function() {
     var cohort = this.getCohort();
     if (cohort) {
+      this.setUpContentExperiment(cohort);
       this.setCustomVar(cohort);
       this.executeCohort(cohort);
+      this.createDummyEvent(cohort);
     }
   };
 
@@ -137,18 +140,32 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
   };
 
   MultivariateTest.prototype.setCustomVar = function(cohort) {
-    window._gaq = window._gaq || [];
-    window._gaq.push([
-      '_setCustomVar',
-      this.customVarIndex,
-      this.cookieName(),
-      cohort,
-      2 // session level
-    ]);
-    // Fire off a dummy event to set the custom var on the page.
+    if (this.customDimensionIndex) {
+      GOVUK.analytics.setDimension(
+        this.customDimensionIndex,
+        this.cookieName(),
+        cohort,
+        2 // session level
+      );
+    }
+  };
+
+  MultivariateTest.prototype.setUpContentExperiment = function(cohort) {
+    var contentExperimentId = this.contentExperimentId;
+    var cohortVariantId = this.cohorts[cohort]['variantId'];
+    if(typeof contentExperimentId !== 'undefined' &&
+      typeof cohortVariantId !== 'undefined' &&
+      typeof window.ga === "function"){
+      window.ga('set', 'expId', contentExperimentId);
+      window.ga('set', 'expVar', cohortVariantId);
+    };
+  };
+
+  MultivariateTest.prototype.createDummyEvent = function(cohort) {
+    // Fire off a dummy event to set the custom var and the content experiment on the page.
     // Ideally we'd be able to call setCustomVar before trackPageview,
     // but would need reordering the existing GA code.
-    window._gaq.push(['_trackEvent', this.cookieName(), 'run', '-', 0, true]);
+    GOVUK.analytics.trackEvent(this.cookieName(), 'run', {nonInteraction:true});
   };
 
   MultivariateTest.prototype.weightedCohortNames = function() {
@@ -698,8 +715,24 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
 
   // https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingCustomVariables
   GoogleAnalyticsClassicTracker.prototype.setCustomVariable = function(index, value, name, scope) {
+    var PAGE_LEVEL_SCOPE = 3;
+    scope = scope || PAGE_LEVEL_SCOPE;
+
+    if (typeof index !== "number") {
+      index = parseInt(index, 10);
+    }
+
+    if (typeof scope !== "number") {
+      scope = parseInt(scope, 10);
+    }
+
     _gaq.push(['_setCustomVar', index, name, String(value), scope]);
   };
+
+  // Match tracker and universal API
+  GoogleAnalyticsClassicTracker.prototype.setDimension = function(index, value, name, scope) {
+    this.setCustomVariable(index, value, name, scope);
+  }
 
   GOVUK.GoogleAnalyticsClassicTracker = GoogleAnalyticsClassicTracker;
 })();
@@ -891,17 +924,6 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
     Check this for your app before using this
    */
   Tracker.prototype.setDimension = function(index, value, name, scope) {
-    var PAGE_LEVEL_SCOPE = 3;
-    scope = scope || PAGE_LEVEL_SCOPE;
-
-    if (typeof index !== "number") {
-      index = parseInt(index, 10);
-    }
-
-    if (typeof scope !== "number") {
-      scope = parseInt(scope, 10);
-    }
-
     this.universal.setDimension(index, value);
     this.classic.setCustomVariable(index, value, name, scope);
   };

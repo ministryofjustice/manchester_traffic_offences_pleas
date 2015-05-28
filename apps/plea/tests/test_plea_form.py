@@ -122,7 +122,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.load(self.request_context)
         form.save({}, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 4)
+        self.assertEqual(len(form.current_stage.form.errors), 4)
 
     def test_case_stage_urn_already_submitted(self):
 
@@ -160,7 +160,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertContains(response, court_obj.court_email)
 
-        self.assertEqual(form.current_stage.forms[0].errors.keys()[0], 'urn')
+        self.assertEqual(form.current_stage.form.errors.keys()[0], 'urn')
         self.assertEqual(response.status_code, 200)
 
     def test_case_stage_good_data(self):
@@ -232,7 +232,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.load(self.request_context)
         form.save({}, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 6)
+        self.assertEqual(len(form.current_stage.form.errors), 6)
 
     def test_your_details_stage_good_data(self):
         form = PleaOnlineForms("your_details", "plea_form_step", self.session)
@@ -282,8 +282,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                   self.request_context)
         response = form.render()
 
-        self.assertEqual(len(form.current_stage.forms[0][0].errors), 1)
-        self.assertEqual(len(form.current_stage.forms[0][1].errors), 1)
+        self.assertEqual(len(form.current_stage.form.forms[0].errors), 1)
+        self.assertEqual(len(form.current_stage.form.forms[1].errors), 1)
 
         self.assertEqual(response.status_code, 200)
 
@@ -311,8 +311,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                   self.request_context)
         response = form.render()
 
-        self.assertEqual(len(form.current_stage.forms[0][0].errors), 0)
-        self.assertEqual(len(form.current_stage.forms[0][1].errors), 0)
+        self.assertEqual(len(form.current_stage.form[0].errors), 0)
+        self.assertEqual(len(form.current_stage.form[1].errors), 0)
         self.assertEqual(response.status_code, 302)
 
     def test_plea_stage_bad_data_single_charge(self):
@@ -328,7 +328,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         # no form data, just the management stuff
         form.save(mgmt_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors[0]), 1)
+        self.assertEqual(len(form.current_stage.form.errors[0]), 1)
 
     def test_plea_stage_good_data_single_charge(self):
         self.session.update(self.plea_stage_pre_data_1_charge)
@@ -359,9 +359,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form.save(mgmt_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors[0]), 0)
-        self.assertEqual(len(form.current_stage.forms[0].errors[1]), 1)
-        self.assertEqual(len(form.current_stage.forms[0].errors[2]), 1)
+        self.assertEqual(len(form.current_stage.form.errors[0]), 0)
+        self.assertEqual(len(form.current_stage.form.errors[1]), 1)
+        self.assertEqual(len(form.current_stage.form.errors[2]), 1)
 
     def test_plea_stage_bad_data_multiple_charges(self):
         self.session.update(self.plea_stage_pre_data_1_charge)
@@ -376,7 +376,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form.save(mgmt_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].forms), 1)
+        self.assertEqual(len(form.current_stage.form.forms), 1)
 
     def test_plea_stage_good_data_multiple_charges(self):
         self.session.update(self.plea_stage_pre_data_1_charge)
@@ -517,7 +517,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form.save({}, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 1)
+        self.assertEqual(len(form.current_stage.form.errors), 1)
 
     def test_your_finances_employed_option_with_required_fields_missing(self):
 
@@ -529,7 +529,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form.save(test_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 3)
+        self.assertEqual(len(form.current_stage.form.errors), 3)
 
     def test_your_finances_employed_option_with_valid_data(self):
 
@@ -544,7 +544,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form.save(test_data, self.request_context)
 
-        self.assertTrue(form.current_stage.forms[0].is_valid())
+        self.assertTrue(form.current_stage.form.is_valid())
 
     def test_your_finances_self_employed_option_with_required_fields_missing(self):
 
@@ -556,7 +556,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form.save(test_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 3)
+        self.assertEqual(len(form.current_stage.form.errors), 3)
 
     def test_your_finances_self_employed_option_with_valid_data(self):
 
@@ -571,7 +571,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form.save(test_data, self.request_context)
 
-        self.assertTrue(form.current_stage.forms[0].is_valid())
+        self.assertTrue(form.current_stage.form.is_valid())
 
     def test_your_finances_benefits_option_with_required_fields_missing(self):
 
@@ -583,7 +583,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form.save(test_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 5)
+        self.assertEqual(len(form.current_stage.form.errors), 5)
 
     def test_your_finances_benefits_option_with_valid_data(self):
 
@@ -600,7 +600,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form.save(test_data, self.request_context)
 
-        self.assertTrue(form.current_stage.forms[0].is_valid())
+        self.assertTrue(form.current_stage.form.is_valid())
 
     def test_your_finances_other_option_with_required_fields_missing(self):
 
@@ -612,7 +612,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form.save(test_data, self.request_context)
 
-        self.assertEqual(len(form.current_stage.forms[0].errors), 3)
+        self.assertEqual(len(form.current_stage.form.errors), 3)
 
     def test_your_finances_other_option_with_valid_data(self):
 
@@ -627,9 +627,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         form.save(test_data, self.request_context)
 
-        self.assertTrue(form.current_stage.forms[0].is_valid())
+        self.assertTrue(form.current_stage.form.is_valid())
 
-    @patch("apps.govuk_utils.forms.messages.add_message")
+    @patch("apps.govuk_utils.stages.messages.add_message")
     def test_review_stage_session_timeout_redirects_to_case(self, add_message):
         # no test data to simulate a timed out session
         test_data = {

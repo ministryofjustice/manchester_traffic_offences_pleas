@@ -11,9 +11,7 @@
 
     {% csrf_token %}
 
-    {% with forms.0 as form %}
-
-        {% if form.errors %}
+    {% if form.errors %}
     <div class="error-summary">
         {% if urn_already_used %}
         <h2>{% trans "The details you've entered have already been used to make a plea online" %}</h2>
@@ -58,7 +56,7 @@
         </ul>
         {% endif %}
     </div>
-        {% endif %}
+    {% endif %}
 
     <header class="content-header">
         <h1>{% trans "Case details" %}</h1>
@@ -86,7 +84,7 @@
             <button class="button" type="submit">{% trans "Continue" %}</button>
         </div>
     </div>
-    {% endwith %}
+    
 </form>
 
 {% endblock page_content %}

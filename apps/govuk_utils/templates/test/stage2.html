@@ -1,7 +1,5 @@
 <h1>Stage 2</h1>
 <form name="frm" method="POST">
     {% csrf_token %}
-    {% for form in forms %}
     {{ form }}
-    {% endfor %}
 </form>
