@@ -5,6 +5,8 @@ import os
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+GOOGLE_ANALYTICS_ID = "UA-63449650-1"
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
