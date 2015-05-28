@@ -580,7 +580,8 @@ class CompanyFinancesForm(NoJSPleaStepForm):
                                              widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                           "maxlength": "5",
                                                                            "class": "form-control-inline"}),
-                                             min_value=1, max_value=10000,
+                                             min_value=1,
+                                             max_value=10000,
                                              localize=True,
                                              error_messages={"required": ERROR_MESSAGES["COMPANY_NUMBER_EMPLOYEES"]})
 
@@ -607,8 +608,8 @@ class CompanyFinancesForm(NoJSPleaStepForm):
 
         if "trading_period" in self.data:
             if self.data["trading_period"] == "False":
-                self.fields["gross_turnover"].error_messages = {"required": ERROR_MESSAGES["COMPANY_GROSS_TURNOVER_PROJECTED"]}
-                self.fields["net_turnover"].error_messages = {"required": ERROR_MESSAGES["COMPANY_NET_TURNOVER_PROJECTED"]}
+                self.fields["gross_turnover"].error_messages.update({"required": ERROR_MESSAGES["COMPANY_GROSS_TURNOVER_PROJECTED"]})
+                self.fields["net_turnover"].error_messages.update({"required": ERROR_MESSAGES["COMPANY_NET_TURNOVER_PROJECTED"]})
 
 
 class ConfirmationForm(BasePleaStepForm):
