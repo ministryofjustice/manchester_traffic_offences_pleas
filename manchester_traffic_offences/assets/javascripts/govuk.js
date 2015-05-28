@@ -797,10 +797,7 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
   // Match tracker and universal API
   GoogleAnalyticsClassicTracker.prototype.setDimension = function(index, value, name, scope) {
     this.setCustomVariable(index, value, name, scope);
-  };
-
-  // Match tracker and universal API
-  GoogleAnalyticsClassicTracker.prototype.addLinkedTrackerDomain = function() {};
+  }
 
   GOVUK.GoogleAnalyticsClassicTracker = GoogleAnalyticsClassicTracker;
 })();
@@ -1023,18 +1020,8 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
     Check this for your app before using this
    */
   Tracker.prototype.setDimension = function(index, value, name, scope) {
-    for (var i=0; i < this.trackers.length; i++) {
-      this.trackers[i].setDimension(index, value, name, scope);
-    }
-  };
-
-  /*
-   Add a beacon to track a page in another GA account on another domain.
-   */
-  Tracker.prototype.addLinkedTrackerDomain = function(trackerId, name, domain) {
-    for (var i=0; i < this.trackers.length; i++) {
-      this.trackers[i].addLinkedTrackerDomain(trackerId, name, domain);
-    }
+    this.universal.setDimension(index, value);
+    this.classic.setCustomVariable(index, value, name, scope);
   };
 
   GOVUK.Tracker = Tracker;

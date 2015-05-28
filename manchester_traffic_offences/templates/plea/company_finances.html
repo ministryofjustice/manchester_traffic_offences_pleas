@@ -3,6 +3,7 @@
 {% load debug %}
 {% load i18n %}
 {% load form_widgets %}
+{% load testing %}
 
 {% block page_title %}{% trans "Company details" %} - {{ block.super }}{% endblock %}
 
@@ -10,26 +11,26 @@
 
     {% with request.session.case.number_of_charges as charges %}
 <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
-
+    
     {% csrf_token %}
 
-    {% with forms.0 as form %}
+    {% no_js form %}
 
-        {% if form.errors %}
-        <section class="error-summary">
-            <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
+    {% if form.errors %}
+    <section class="error-summary">
+        <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
 
-            <p>{% trans "See highlighted errors below." %}</p>
+        <p>{% trans "See highlighted errors below." %}</p>
 
-            <ul>
-            {% for field in form %}
-                {% if field.errors %}
-                <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
-                {% endif %}
-            {% endfor %}
-            </ul>
-        </section>
-        {% endif %}
+        <ul>
+        {% for field in form %}
+            {% if field.errors %}
+            <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
 
      <header class="content-header">
         <h1>{% trans "Company details" %}</h1>
@@ -37,13 +38,38 @@
         <p>{% trans "The court will decide the company's fine based on its size and financial situation." %}</p>
     </header>
 
+    {% if company_finances.nojs == "nojs_last_step" %}
+    {% add_test_tag "<<NOJSTRIGGERSUMMARY>>" %}
+    <div class="nojs-hidden">
+        {% radio_field form.trading_period %}
+    </div>
+    <div class="form-header js-hidden">
+        <h3><span>You selected:</span>
+            {% if form.trading_period.value == "True" %}
+            The company has been trading for more than 12 months
+            {% else %}
+            The company has been trading for less than 12 months
+            {% endif %}
+        </h3>
+        <a href="{{ request.path }}?reset">Change</a>
+    </div>
+    {% else %}
     {% radio_field form.trading_period %}
+    {% endif %}
 
-    <div class="js-Conditional" data-conditional-trigger="trading_period" data-conditional-value="^(True|False)$">
+    <div class="js-Conditional{% if company_finances.nojs != "nojs_last_step" %} nojs-hidden{% endif %}" data-conditional-trigger="trading_period" data-conditional-value="^(True|False)$">
 
         {% std_field form.number_of_employees hide_optional=True %}
 
-        <h3 class="heading-medium js-TemplatedElement" data-template-trigger="trading_period" data-template="{% trans "From the first 12 months' trading projections, tell us:" %}" data-template-defaults-for="{% trans "Yes" %}">{% trans "From the most recent audited company accounts, tell us:" %}</h3>
+        {% if company_finances.nojs == "nojs_last_step" %}
+            {% if form.trading_period.value == "True" %}
+                <p>{% blocktrans %}From the most recent audited company accounts, tell us:{% endblocktrans %}</p>
+            {% else %}
+                <p>{% blocktrans %}From the first 12 months' trading projections, tell us:{% endblocktrans %}</p>
+            {% endif %}
+        {% else %}
+        <h3 class="heading-medium js-TemplatedElement" data-template-trigger="trading_period" data-template="{% blocktrans %}From the first 12 months' trading projections, tell us:{% endblocktrans %}" data-template-defaults-for="{% trans "Yes" %}">{% blocktrans %}From the most recent audited company accounts, tell us:{% endblocktrans %}</h3>
+        {% endif %}
 
         {% money_field form.gross_turnover hide_optional=True %}
 
@@ -57,5 +83,5 @@
         <button class="button" type="submit">{% trans "Continue" %}</button>
     </div>
 </form>
-    {% endwith %}
+
 {% endblock page_content %}

@@ -11,99 +11,97 @@
 <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
     
     {% csrf_token %}
-    
-    {% with forms.0 as form %}
-        {% if form.errors %}
-        <section class="error-summary">
-            <h2 class="heading-medium">{% trans "You need to fix the errors on this page before continuing." %}</h2>
-            
-            <p>{% trans "See highlighted errors below." %}</p>
-            
-            <ul class="errors-list">
-            {% for field in form %}
-                {% if field.errors %}
-                <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
-                {% endif %}
-            {% endfor %}
-            </ul>
-        </section>
-        {% endif %}
 
-        <header class="content-header">
-            <h1 class="heading-xlarge">{% trans "Your expenses" %}</h1>
+    {% if form.errors %}
+    <section class="error-summary">
+        <h2 class="heading-medium">{% trans "You need to fix the errors on this page before continuing." %}</h2>
+        
+        <p>{% trans "See highlighted errors below." %}</p>
+        
+        <ul class="errors-list">
+        {% for field in form %}
+            {% if field.errors %}
+            <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
 
-            <p class="lede">{% trans "To help the court decide your fine, you must provide information about your expenses." %}</p>
-        </header>
+    <header class="content-header">
+        <h1 class="heading-xlarge">{% trans "Your expenses" %}</h1>
 
-        <hr>
+        <p class="lede">{% trans "To help the court decide your fine, you must provide information about your expenses." %}</p>
+    </header>
 
-        {% wide_field form.hardship_details %}
+    <hr>
 
-        <div id="household_expenses">
-            <h2 class="heading-large">{% trans "Household expenses" %}</h2>
+    {% wide_field form.hardship_details %}
 
-            <p>{% trans "What are your monthly household bills for the following?" %}</p>
+    <div id="household_expenses">
+        <h2 class="heading-large">{% trans "Household expenses" %}</h2>
 
-            <div class="grid-row">
-                <div class="column-half">
-                    {% money_field form.household_accommodation hide_optional=True %}
-                </div>
-                <div class="column-half">
-                    {% money_field form.household_utility_bills hide_optional=True %}
-                </div>
+        <p>{% trans "What are your monthly household bills for the following?" %}</p>
+
+        <div class="grid-row">
+            <div class="column-half">
+                {% money_field form.household_accommodation hide_optional=True %}
             </div>
-
-            <div class="grid-row">
-                <div class="column-half">
-                    {% money_field form.household_insurance hide_optional=True %}
-                </div>
-                <div class="column-half">
-                    {% money_field form.household_council_tax hide_optional=True %}
-                </div>
-            </div>
-
-            {% radio_field form.other_bill_payers %}
-
-        </div>
-
-        <hr>
-
-
-        <div id="other_expenses">
-            <h2 class="heading-medium">{% trans "Other expenses" %}</h2>
-
-            <p>{% trans "What are your monthly bills for the following?" %}</p>
-
-            <div class="grid-row">
-                <div class="column-half">
-                    {% money_field form.other_tv_subscription hide_optional=True %}
-                </div>
-                <div class="column-half">
-                    {% money_field form.other_travel_expenses hide_optional=True %}
-                </div>
-            </div>
-
-            <div class="grid-row">
-                <div class="column-half">
-                    {% money_field form.other_telephone hide_optional=True %}
-                </div>
-                <div class="column-half">
-                    {% money_field form.other_loan_repayments hide_optional=True %}
-                </div>
-            </div>
-
-            <div class="grid-row">
-                <div class="column-half">
-                    {% money_field form.other_court_payments hide_optional=True %}
-                </div>
-                <div class="column-half">
-                    {% money_field form.other_child_maintenance hide_optional=True %}
-                </div>
+            <div class="column-half">
+                {% money_field form.household_utility_bills hide_optional=True %}
             </div>
         </div>
-    {% endwith %}
 
-    <div class="js-enabled-only">
+        <div class="grid-row">
+            <div class="column-half">
+                {% money_field form.household_insurance hide_optional=True %}
+            </div>
+            <div class="column-half">
+                {% money_field form.household_council_tax hide_optional=True %}
+            </div>
+        </div>
+
+        {% radio_field form.other_bill_payers %}
+
+    </div>
+
+    <hr>
+
+
+    <div id="other_expenses">
+        <h2 class="heading-medium">{% trans "Other expenses" %}</h2>
+
+        <p>{% trans "What are your monthly bills for the following?" %}</p>
+
+        <div class="grid-row">
+            <div class="column-half">
+                {% money_field form.other_tv_subscription hide_optional=True %}
+            </div>
+            <div class="column-half">
+                {% money_field form.other_travel_expenses hide_optional=True %}
+            </div>
+        </div>
+
+        <div class="grid-row">
+            <div class="column-half">
+                {% money_field form.other_telephone hide_optional=True %}
+            </div>
+            <div class="column-half">
+                {% money_field form.other_loan_repayments hide_optional=True %}
+            </div>
+        </div>
+
+        <div class="grid-row">
+            <div class="column-half">
+                {% money_field form.other_court_payments hide_optional=True %}
+            </div>
+            <div class="column-half">
+                {% money_field form.other_child_maintenance hide_optional=True %}
+            </div>
+        </div>
+    </div>
+
+    <div class="nojs-hidden">
         
         <hr>
 
