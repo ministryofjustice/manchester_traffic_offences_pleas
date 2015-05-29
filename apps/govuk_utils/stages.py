@@ -92,15 +92,15 @@ class FormStage(object):
         self.nojs = form_data.get("nojs", None)
 
         clean_data["nojs"] = self.nojs
-        
-        # self.all_data[self.name].pop("complete", None)
 
         if self.form and self.form.is_valid():
             clean_data.update(self.save_forms())
+            
             if self.nojs is None or self.nojs == "nojs_last_step":
                 clean_data["complete"] = True
                 self.next_step = self.get_next(next_step)
             else:
+                self.all_data[self.name].pop("complete", None)
                 self.form.data["nojs"] = "nojs_last_step"
                 clean_data["nojs"] = "nojs_last_step"
         
