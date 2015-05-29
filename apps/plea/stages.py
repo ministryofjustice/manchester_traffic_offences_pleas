@@ -203,16 +203,17 @@ class YourMoneyStage(FormStage):
 
         you_are = clean_data.get('you_are', None)
 
-        if you_are:
+        if self.nojs is None or self.nojs == "nojs_last_step":
+            if you_are:
 
-            hardship_field = you_are.replace(' ', '_').replace('-', '_').lower() + "_hardship"
+                hardship_field = you_are.replace(' ', '_').replace('-', '_').lower() + "_hardship"
 
-            hardship = clean_data.get(hardship_field, False)
+                hardship = clean_data.get(hardship_field, False)
 
-            self.all_data["your_finances"]["hardship"] = hardship
+                self.all_data["your_finances"]["hardship"] = hardship
 
-            if not hardship:
-                self.set_next_step("review", skip=["your_expenses"])
+                if not hardship:
+                    self.set_next_step("review", skip=["your_expenses"])
 
         return clean_data
 
