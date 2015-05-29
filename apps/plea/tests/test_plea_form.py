@@ -267,8 +267,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         response = form.render()
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn("updated_address", form.current_stage.forms[0].errors)
-        self.assertEqual(len(form.current_stage.forms[0].errors), 1)
+        self.assertIn("updated_address", form.current_stage.form.errors)
+        self.assertEqual(len(form.current_stage.form.errors), 1)
 
         form_data.update({"updated_address": "Test address"})
         form.save(form_data, self.request_context)
@@ -294,8 +294,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         response = form.render()
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn("updated_address", form.current_stage.forms[0].errors)
-        self.assertEqual(len(form.current_stage.forms[0].errors), 1)
+        self.assertIn("updated_address", form.current_stage.form.errors)
+        self.assertEqual(len(form.current_stage.form.errors), 1)
 
         form_data.update({"updated_address": "Test address"})
         form.save(form_data, self.request_context)
