@@ -598,7 +598,7 @@ class TestCompanyFinancesEmailLogic(TestCase):
             },
             "company_details": {
                 "company_name": "some company plc",
-                "company_address": "some place plc",
+                "updated_address": "some place plc",
                 "first_name": "John",
                 "last_name": "Smith",
                 "position_in_company": "a director",
