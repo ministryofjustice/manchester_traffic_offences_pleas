@@ -91,7 +91,7 @@ class NoJSPleaStepForm(BasePleaStepForm):
 
 class CaseForm(BasePleaStepForm):
     PLEA_MADE_BY_CHOICES = (
-        ("Defendant", _("The person named on the Postal Requisition")),
+        ("Defendant", _("The person named in the requisition pack")),
         ("Company representative", _("Pleading on behalf of a company")))
 
     urn = URNField(label=_("Unique reference number (URN)"),
@@ -140,27 +140,27 @@ class YourDetailsForm(BasePleaStepForm):
                                               required=True,
                                               coerce=to_bool,
                                               choices=YESNO_CHOICES,
-                                              label=_("Is your address on the Postal Requisition correct?"),
+                                              label=_("Is your address on the requisition pack correct?"),
                                               error_messages={"required": ERROR_MESSAGES["CORRECT_ADDRESS_REQUIRED"]})
 
     updated_address = forms.CharField(widget=forms.Textarea(attrs={"rows": "4", "class": "form-control"}),
                                   required=False,
                                   label="",
-                                  help_text=_("If your address is different from the one shown on page 1 of the Postal Requisition, tell us here"),
+                                  help_text=_("If your address is different from the one shown on page 1 of the requisition pack, tell us here:"),
                                   error_messages={"required": ERROR_MESSAGES["UPDATED_ADDRESS_REQUIRED"]})
 
     contact_number = forms.CharField(widget=forms.TextInput(attrs={"type": "tel", "class": "form-control"}),
                                      required=True,
                                      max_length=30,
                                      label=_("Contact number"),
-                                     help_text=_("Landline or mobile number"),
+                                     help_text=_("Landline or mobile number."),
                                      error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
 
     email = forms.EmailField(widget=forms.TextInput(attrs={"type": "email", "class": "form-control"}),
                              required=getattr(settings, "EMAIL_REQUIRED", True),
-                             label=_("Email"),
-                             help_text=_("We'll use this for all future correspondence. We'll also contact you by post"),
+                             label=_("Email address"),
+                             help_text=_("We'll use this for all future correspondence. We'll also contact you by post."),
                              error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
                                              "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
@@ -178,7 +178,7 @@ class YourDetailsForm(BasePleaStepForm):
     driving_licence_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                                              required=False,
                                              label=_("UK driving licence number"),
-                                             help_text=_("Starts with the first five letters from your last name"))
+                                             help_text=_("Starts with the first five letters from your last name."))
 
     def __init__(self, *args, **kwargs):
         super(YourDetailsForm, self).__init__(*args, **kwargs)
@@ -245,7 +245,7 @@ class CompanyDetailsForm(BasePleaStepForm):
     email = forms.EmailField(widget=forms.TextInput(attrs={"type": "email",
                                                            "class": "form-control"}),
                              required=getattr(settings, "EMAIL_REQUIRED", True),
-                             label=_("Email"),
+                             label=_("Email address"),
                              error_messages={"required": ERROR_MESSAGES["COMPANY_EMAIL_ADDRESS_REQUIRED"],
                                              "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
@@ -331,7 +331,7 @@ class YourMoneyForm(NoJSPleaStepForm):
                                                                        "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
     employed_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
-                                               help_text=_("For example, you would become homeless"),
+                                               help_text=_("For example, you would become homeless."),
                                                widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                choices=YESNO_CHOICES,
                                                coerce=to_bool,
@@ -358,10 +358,10 @@ class YourMoneyForm(NoJSPleaStepForm):
     self_employed_pay_other = forms.CharField(label="",
                                               max_length=500,
                                               widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
-                                              help_text=_("If 'other' tell us how often you get paid?"))
+                                              help_text=_("If you selected 'other', tell us how often you get paid."))
 
     self_employed_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
-                                                    help_text=_("For example, you would become homeless"),
+                                                    help_text=_("For example, you would become homeless."),
                                                     widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                     choices=YESNO_CHOICES,
                                                     coerce=to_bool,
@@ -387,7 +387,7 @@ class YourMoneyForm(NoJSPleaStepForm):
     benefits_pay_other = forms.CharField(label="",
                                          max_length=500,
                                          widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
-                                         help_text=_("If 'other' tell us how often you get paid?"))
+                                         help_text=_("If you selected 'other', tell us how often you get paid."))
 
     benefits_amount = forms.DecimalField(label=_("What's your average take home pay?"),
                                          localize=True,
@@ -401,15 +401,15 @@ class YourMoneyForm(NoJSPleaStepForm):
                                                          "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
     receiving_benefits_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
-                                                         help_text=_("For example, you would become homeless"),
+                                                         help_text=_("For example, you would become homeless."),
                                                          widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                          choices=YESNO_CHOICES,
                                                          coerce=to_bool,
                                                          error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
     # Other
-    other_details = forms.CharField(max_length=500, label=_("Please provide details"),
-                                    help_text=_("eg retired, student etc."),
+    other_details = forms.CharField(max_length=500, label=_("Provide details"),
+                                    help_text=_("For example, retired, student etc."),
                                     widget=forms.TextInput(attrs={"class": "form-control"}),
                                     error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
 
@@ -421,7 +421,7 @@ class YourMoneyForm(NoJSPleaStepForm):
                                                           "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
     other_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
-                                            help_text=_("For example, you would become homeless"),
+                                            help_text=_("For example, you would become homeless."),
                                             widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YESNO_CHOICES,
                                             coerce=to_bool,
@@ -664,7 +664,8 @@ class PleaForm(NoJSPleaStepForm):
     not_guilty_extra = forms.CharField(label=_("Not guilty because?"),
                                        widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
                                        help_text=_("Tell us here:<ul><li>why you believe you are not guilty</li><li>if you disagree with any evidence from a witness statement in the requisition pack &ndash; tell us the name of the witness  and what you disagree with</li><li>the name, address and date of birth of any witnesses you want to call  to support your case</li></ul>"),
-                                       max_length=5000)
+                                       max_length=5000,
+                                       error_messages={"required": ERROR_MESSAGES["NOT_GUILTY_REQUIRED"]})
 
 
 class CourtFinderForm(forms.Form):
