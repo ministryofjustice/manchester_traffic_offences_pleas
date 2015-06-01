@@ -36,6 +36,11 @@
 
     <header class="content-header">
         <h1>{% include "plea/plea/page_title.html" %}</h1>
+        {% if plea.nojs == "nojs_last_step" %}
+        <div>
+            <p>This is your opportunity to present your case to the court.</p>
+        </div>
+        {% endif %}
     </header>
 
     {% if plea.nojs != "nojs_last_step" %}
