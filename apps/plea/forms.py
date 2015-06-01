@@ -96,9 +96,11 @@ class CaseForm(BasePleaStepForm):
 
     urn = URNField(label=_("Unique reference number (URN)"),
                    required=True,
+                   validators=[is_urn_valid, is_urn_not_used],
                    help_text=_("On page 1 of the pack, in the top right corner.<br>For example, 12/AB/34567/00"),
-                   error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]},
-                   validators=[is_urn_valid, is_urn_not_used])
+                   error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"],
+                                   "is_urn_valid": ERROR_MESSAGES["URN_INVALID"],
+                                   "is_urn_not_used": ERROR_MESSAGES['URN_ALREADY_USED']})
 
     date_of_hearing = forms.DateField(widget=DateWidget,
                                       validators=[is_date_in_future, is_date_within_range],
@@ -106,7 +108,9 @@ class CaseForm(BasePleaStepForm):
                                       label=_("Court hearing date"),
                                       help_text=_("On page 1 of the pack, near the top on the left.<br>For example, 30/07/2014"),
                                       error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"],
-                                                      "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
+                                                      "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"],
+                                                      "is_date_in_future": ERROR_MESSAGES["HEARING_DATE_PASSED"],
+                                                      "is_date_within_range": ERROR_MESSAGES["HEARING_DATE_INCORRECT"]})
 
     number_of_charges = forms.IntegerField(label=_("Number of charges against you"),
                                            widget=forms.TextInput(attrs={"pattern": "[0-9]*",
