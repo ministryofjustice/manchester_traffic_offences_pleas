@@ -5,7 +5,7 @@
 {% load form_widgets %}
 {% load testing %}
 
-{% block page_title %}{% blocktrans count charges=request.session.case.number_of_charges %}Your plea{% plural %}Your pleas{% endblocktrans %} - {{ block.super }}{% endblock %}
+{% block page_title %}{% include "plea/plea/page_title.html" with charges=request.session.case.number_of_charges %} - {{ block.super }}{% endblock %}
 
 {% block page_content %}
 
@@ -35,13 +35,10 @@
     {% endif %}
 
     <header class="content-header">
-        {% if case.plea_made_by == "Defendant" %}
-        <h1>{% blocktrans count charges=charges %}Your plea{% plural %}Your pleas{% endblocktrans %}</h1>
-        {% else %}
-        <h1>{% blocktrans count charges=charges %}Company plea{% plural %}Company pleas{% endblocktrans %}</h1>
-        {% endif %}
+        <h1>{% include "plea/plea/page_title.html" %}</h1>
     </header>
 
+    {% if plea.nojs != "nojs_last_step" %}
     <div class="panel-grey">
         {% if case.plea_made_by == "Defendant" %}
         <p>{% blocktrans %}This is your opportunity to present your case to the court:{% endblocktrans %}</p>
@@ -61,6 +58,7 @@
         </ul>
         {% endif %}
     </div>
+    {% endif %}
 
     {% with form_count=form|length %}
 
