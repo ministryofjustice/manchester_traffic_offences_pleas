@@ -108,28 +108,27 @@ def is_urn_valid(urn):
     pattern = r"[0-9]{2}/[a-zA-Z]{2}/(?:[0-9]{5}|[0-9]{7})/[0-9]{2}"
 
     if not re.match(pattern, urn) or not Court.objects.has_court(urn):
-        raise exceptions.ValidationError(_(ERROR_MESSAGES["URN_INVALID"]))
+        raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
 
     return True
 
 
 def is_date_in_past(date):
     if date >= datetime.datetime.today().date():
-        raise exceptions.ValidationError(ERROR_MESSAGES["DATE_OF_BIRTH_IN_FUTURE"], code="is_date_in_past")
+        raise exceptions.ValidationError("The date must be in the past", code="is_date_in_past")
 
     return True
 
 def is_date_in_future(date):
     if date <= datetime.datetime.today().date():
-        raise exceptions.ValidationError(ERROR_MESSAGES["HEARING_DATE_PASSED"])
+        raise exceptions.ValidationError("The date must be in the future", code="is_date_in_future")
 
     return True
 
 
 def is_date_within_range(date):
-
     if date > datetime.datetime.today().date()+datetime.timedelta(178):
-        raise exceptions.ValidationError(ERROR_MESSAGES["HEARING_DATE_INCORRECT"])
+        raise exceptions.ValidationError("The date must be within the next 6 months", code="is_date_within_range")
 
     return True
 
@@ -140,8 +139,7 @@ def is_urn_not_used(urn):
     """
 
     if not Case.objects.can_use_urn(urn):
-        raise exceptions.ValidationError(
-            _(ERROR_MESSAGES['URN_ALREADY_USED']))
+        raise exceptions.ValidationError("The URN has already been used", code="is_urn_not_used")
 
     return True
 
