@@ -38,6 +38,7 @@ ERROR_MESSAGES = {
     "CONTACT_NUMBER_INVALID": _("The contact number isn't a valid format"),
     "DATE_OF_BIRTH_REQUIRED": _("Enter your date of birth"),
     "DATE_OF_BIRTH_INVALID": _("The date of birth isn't a valid format"),
+    "DATE_OF_BIRTH_IN_FUTURE": _("The date of birth must be before today"),
     "COMPANY_NAME_REQUIRED": _("Enter the company name"),
     "COMPANY_ADDRESS_REQUIRED": _("Enter the company address"),
     "POSITION_REQUIRED": _("Confirm your position in the company"),
@@ -111,6 +112,12 @@ def is_urn_valid(urn):
 
     return True
 
+
+def is_date_in_past(date):
+    if date >= datetime.datetime.today().date():
+        raise exceptions.ValidationError(ERROR_MESSAGES["DATE_OF_BIRTH_IN_FUTURE"], code="is_date_in_past")
+
+    return True
 
 def is_date_in_future(date):
     if date <= datetime.datetime.today().date():
