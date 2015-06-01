@@ -109,6 +109,10 @@ def is_urn_valid(urn):
     if not re.match(pattern, urn) or not Court.objects.has_court(urn):
         raise exceptions.ValidationError(_(ERROR_MESSAGES["URN_INVALID"]))
 
+    court = Court.objects.get_by_urn(urn)
+    if court.validate_urn and not Case.objects.filter(urn__iexact=urn, sent=False).exists():
+        raise exceptions.ValidationError(_(ERROR_MESSAGES["URN_INVALID"]))
+
     return True
 
 
