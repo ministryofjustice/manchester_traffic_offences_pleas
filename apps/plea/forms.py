@@ -358,7 +358,7 @@ class YourMoneyForm(NoJSPleaStepForm):
     self_employed_pay_other = forms.CharField(label="",
                                               max_length=500,
                                               widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
-                                              help_text=_("Tell us about how often you get paid"))
+                                              help_text=_("If 'other' tell us how often you get paid?"))
 
     self_employed_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
                                                     help_text=_("For example, you would become homeless"),
@@ -387,7 +387,7 @@ class YourMoneyForm(NoJSPleaStepForm):
     benefits_pay_other = forms.CharField(label="",
                                          max_length=500,
                                          widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
-                                         help_text=_("Tell us about how often you get paid"))
+                                         help_text=_("If 'other' tell us how often you get paid?"))
 
     benefits_amount = forms.DecimalField(label=_("What's your average take home pay?"),
                                          localize=True,
