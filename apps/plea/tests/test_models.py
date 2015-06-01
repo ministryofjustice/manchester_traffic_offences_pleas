@@ -3,10 +3,23 @@ import datetime as dt
 
 from django.test import TestCase
 
-from ..models import CourtEmailCount, UsageStats
+from ..models import CourtEmailCount, UsageStats, Court
 
 
 class CourtEmailCountModelTestCase(TestCase):
+    def setUp(self):
+
+        self.court = Court.objects.create(
+            court_code="0000",
+            region_code="06",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_email="test@test.com",
+            submission_email=True,
+            plp_email="test@test.com",
+            enabled=True,
+            test_mode=False)
 
     def test_get_from_context_hearing_date_is_combined_date_and_time(self):
         context = {
@@ -22,9 +35,8 @@ class CourtEmailCountModelTestCase(TestCase):
                 "date_of_hearing": "2014-09-22"
             }
         }
-
         emailcount = CourtEmailCount()
-        emailcount.get_from_context(context)
+        emailcount.get_from_context(context, self.court)
 
         self.assertEqual(emailcount.hearing_date, dt.datetime(2014, 9, 22, 0, 0, 0))
 
@@ -34,17 +46,20 @@ class CourtEmailCountModelTestCase(TestCase):
         """
         now = dt.datetime.today()
 
-        CourtEmailCount(total_pleas=2,
+        CourtEmailCount(court=self.court,
+                        total_pleas=2,
                         total_guilty=1,
                         total_not_guilty=1,
                         hearing_date=now).save()
 
-        CourtEmailCount(total_pleas=2,
+        CourtEmailCount(court=self.court,
+                        total_pleas=2,
                         total_guilty=1,
                         total_not_guilty=1,
                         hearing_date=now).save()
 
-        CourtEmailCount(total_pleas=2,
+        CourtEmailCount(court=self.court,
+                        total_pleas=2,
                         total_guilty=1,
                         total_not_guilty=1,
                         hearing_date=now).save()
@@ -77,17 +92,20 @@ class CourtEmailCountModelTestCase(TestCase):
     def test_get_stats_last_week(self):
         now = dt.datetime.today()
 
-        CourtEmailCount(total_pleas=2,
+        CourtEmailCount(court=self.court,
+                        total_pleas=2,
                         total_guilty=1,
                         total_not_guilty=1,
                         hearing_date=now).save()
 
-        CourtEmailCount(total_pleas=2,
+        CourtEmailCount(court=self.court,
+                        total_pleas=2,
                         total_guilty=1,
                         total_not_guilty=1,
                         hearing_date=now).save()
 
-        CourtEmailCount(total_pleas=2,
+        CourtEmailCount(court=self.court,
+                        total_pleas=2,
                         total_guilty=1,
                         total_not_guilty=1,
                         hearing_date=now).save()
@@ -116,19 +134,22 @@ class CourtEmailCountModelTestCase(TestCase):
 
         tomorrow = dt.datetime.today() + dt.timedelta(1)
 
-        CourtEmailCount(date_sent=tomorrow,
+        CourtEmailCount(court=self.court,
+                        date_sent=tomorrow,
                         total_pleas=2,
                         total_guilty=1,
                         total_not_guilty=1,
                         hearing_date=tomorrow).save()
 
-        CourtEmailCount(date_sent=tomorrow,
+        CourtEmailCount(court=self.court,
+                        date_sent=tomorrow,
                         total_pleas=2,
                         total_guilty=1,
                         total_not_guilty=1,
                         hearing_date=tomorrow).save()
 
-        CourtEmailCount(date_sent=tomorrow,
+        CourtEmailCount(court=self.court,
+                        date_sent=tomorrow,
                         total_pleas=2,
                         total_guilty=1,
                         total_not_guilty=1,
@@ -171,19 +192,31 @@ class CourtEmailCountModelTestCase(TestCase):
 
         email_count = CourtEmailCount()
 
-        email_count.get_from_context(context)
+        email_count.get_from_context(context, self.court)
 
         self.assertEqual(email_count.sc_guilty_char_count, 13)
         self.assertEqual(email_count.sc_not_guilty_char_count, 16)
 
 class UsageStatsTestCase(TestCase):
-
     def setUp(self):
+        self.court = Court.objects.create(
+            court_code="0000",
+            region_code="06",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_email="test@test.com",
+            submission_email=True,
+            plp_email="test@test.com",
+            enabled=True,
+            test_mode=False)
+
         # wednesday
         self.to_date = dt.date(2015, 01, 21)
 
         # should be included in entry with start_date of 5/01/2015
         obj = CourtEmailCount()
+        obj.court = self.court
         obj.total_pleas = 50
         obj.total_guilty = 25
         obj.total_not_guilty = 5
@@ -192,6 +225,7 @@ class UsageStatsTestCase(TestCase):
 
         # should be included in entry with start_date of 5/01/2015
         obj = CourtEmailCount()
+        obj.court = self.court
         obj.total_pleas = 50
         obj.total_guilty = 25
         obj.total_not_guilty = 5
@@ -200,6 +234,7 @@ class UsageStatsTestCase(TestCase):
 
         # should be included in entry with start_date of 5/01/2015
         obj = CourtEmailCount()
+        obj.court = self.court
         obj.total_pleas = 50
         obj.total_guilty = 25
         obj.total_not_guilty = 5
@@ -208,6 +243,7 @@ class UsageStatsTestCase(TestCase):
 
         # should be included in entry with start_date of 5/01/2015
         obj = CourtEmailCount()
+        obj.court = self.court
         obj.total_pleas = 50
         obj.total_guilty = 25
         obj.total_not_guilty = 5
@@ -216,6 +252,7 @@ class UsageStatsTestCase(TestCase):
 
         # should be included in entry with start_date of 5/01/2015
         obj = CourtEmailCount()
+        obj.court = self.court
         obj.total_pleas = 100
         obj.total_guilty = 50
         obj.total_not_guilty = 5
@@ -224,6 +261,7 @@ class UsageStatsTestCase(TestCase):
 
         # should be included in entry with start_date of 5/01/2015
         obj = CourtEmailCount()
+        obj.court = self.court
         obj.total_pleas = 100
         obj.total_guilty = 50
         obj.total_not_guilty = 5
