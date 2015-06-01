@@ -25,7 +25,7 @@ ERROR_MESSAGES = {
     "HEARING_DATE_PASSED": _("The court hearing date must be after today"),
     "HEARING_DATE_INCORRECT": _("Enter the correct hearing date"),
     "NUMBER_OF_CHARGES_REQUIRED": _("Select the number of charges against you"),
-    "PLEA_MADE_BY_REQUIRED": _("You must tell us if you are the person named in the postal requisition or pleading on behalf of a company"),
+    "PLEA_MADE_BY_REQUIRED": _("You must tell us if you are the person named in the requisition pack or pleading on behalf of a company"),
     "FIRST_NAME_REQUIRED": _("Enter your first name"),
     "LAST_NAME_REQUIRED": _("Enter your last name"),
     "CORRECT_ADDRESS_REQUIRED": _("Tell us if your address on the requisition pack is correct "),
