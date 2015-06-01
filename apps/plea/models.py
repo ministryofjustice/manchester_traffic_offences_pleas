@@ -126,6 +126,8 @@ class CourtEmailCountManager(models.Manager):
 
 class CourtEmailCount(models.Model):
     date_sent = models.DateTimeField(auto_now_add=True)
+    court = models.ForeignKey("Court")
+
     total_pleas = models.IntegerField()
     total_guilty = models.IntegerField()
     total_not_guilty = models.IntegerField()
@@ -144,7 +146,7 @@ class CourtEmailCount(models.Model):
         self.sent = case_obj.sent
         self.processed = case_obj.processed
 
-    def get_from_context(self, context):
+    def get_from_context(self, context, court):
         if "plea" not in context:
             return
         if "PleaForms" not in context["plea"]:
@@ -162,6 +164,8 @@ class CourtEmailCount(models.Model):
 
         if self.total_not_guilty is None:
             self.total_not_guilty = 0
+
+        self.court = court
 
         try:
             if isinstance(context["case"]["date_of_hearing"], dt.date):

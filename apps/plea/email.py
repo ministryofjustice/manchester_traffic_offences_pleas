@@ -61,7 +61,7 @@ def send_plea_email(context_data):
     if not court_obj.test_mode:
         # don't add test court entries to the anon stat data
         email_count = CourtEmailCount()
-        email_count.get_from_context(context_data)
+        email_count.get_from_context(context_data, court=court_obj)
         email_count.save()
 
         email_count_id = email_count.id
