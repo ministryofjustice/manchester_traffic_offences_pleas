@@ -4,7 +4,14 @@
 {% load staticfiles %}
 {% load form_widgets %}
 
-{% block page_title %}{% trans "Your finances" %} - {{ block.super }}{% endblock %}
+{% block page_title %}
+    {% if your_finances.nojs != "nojs_last_step" %}
+        {% blocktrans %}Your finances{% endblocktrans %}
+    {% else %}
+        {% blocktrans %}Your finances continued{% endblocktrans %}
+    {% endif %}
+     - {{ block.super }}
+{% endblock %}
 
 {% block page_content %}
 <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
@@ -30,9 +37,16 @@
     {% endif %}
 
     <header class="content-header">
-        <h1>{% trans "Your finances" %}</h1>
+        <h1>
+        {% if your_finances.nojs != "nojs_last_step" %}
+            {% blocktrans %}Your finances{% endblocktrans %}
+        {% else %}
+            {% blocktrans %}Your finances continued{% endblocktrans %}
+        {% endif %}
+        </h1>
     </header>
 
+    {% if your_finances.nojs != "nojs_last_step" %}
     <div class="panel-grey">
         <p>{% trans "For this type of offence you'll usually have to pay a fine:" %}</p>
         <ul>
@@ -41,6 +55,7 @@
             <li>{% trans "your details will be stored securely by the court" %}</li>
         </ul>
     </div>
+    {% endif %}
 
     {% if your_finances.nojs == "nojs_last_step" %}
     <div class="nojs-hidden">
