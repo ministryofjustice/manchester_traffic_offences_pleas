@@ -5,7 +5,14 @@
 {% load form_widgets %}
 {% load testing %}
 
-{% block page_title %}{% trans "Company details" %} - {{ block.super }}{% endblock %}
+{% block page_title %}
+    {% if company_finances.nojs != "nojs_last_step" %}
+        {% blocktrans %}Company details{% endblocktrans %}
+    {% else %}
+        {% blocktrans %}Company details continued{% endblocktrans %}
+    {% endif %}
+     - {{ block.super }}
+{% endblock %}
 
 {% block page_content %}
 
@@ -33,7 +40,13 @@
     {% endif %}
 
      <header class="content-header">
-        <h1>{% trans "Company details" %}</h1>
+        <h1>
+        {% if company_finances.nojs != "nojs_last_step" %}
+            {% blocktrans %}Company details{% endblocktrans %}
+        {% else %}
+            {% blocktrans %}Company details continued{% endblocktrans %}
+        {% endif %}
+        </h1>
 
         <p>{% trans "The court will decide the company's fine based on its size and financial situation." %}</p>
     </header>
