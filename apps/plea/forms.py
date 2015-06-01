@@ -6,7 +6,7 @@ from django.forms.widgets import Textarea, RadioSelect
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from .fields import (ERROR_MESSAGES, is_date_in_future, is_date_within_range,
+from .fields import (ERROR_MESSAGES, is_date_in_past, is_date_in_future, is_date_within_range,
                      DSRadioFieldRenderer,
                      DSStackedRadioFieldRenderer,
                      URNField,
@@ -137,17 +137,17 @@ class YourDetailsForm(BasePleaStepForm):
                                 error_messages={"required": ERROR_MESSAGES["LAST_NAME_REQUIRED"]})
 
     correct_address = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                              required=True,
-                                              coerce=to_bool,
-                                              choices=YESNO_CHOICES,
-                                              label=_("Is your address on the requisition pack correct?"),
-                                              error_messages={"required": ERROR_MESSAGES["CORRECT_ADDRESS_REQUIRED"]})
+                                             required=True,
+                                             coerce=to_bool,
+                                             choices=YESNO_CHOICES,
+                                             label=_("Is your address on the requisition pack correct?"),
+                                             error_messages={"required": ERROR_MESSAGES["CORRECT_ADDRESS_REQUIRED"]})
 
     updated_address = forms.CharField(widget=forms.Textarea(attrs={"rows": "4", "class": "form-control"}),
-                                  required=False,
-                                  label="",
-                                  help_text=_("If your address is different from the one shown on page 1 of the requisition pack, tell us here:"),
-                                  error_messages={"required": ERROR_MESSAGES["UPDATED_ADDRESS_REQUIRED"]})
+                                      required=False,
+                                      label="",
+                                      help_text=_("If your address is different from the one shown on page 1 of the requisition pack, tell us here:"),
+                                      error_messages={"required": ERROR_MESSAGES["UPDATED_ADDRESS_REQUIRED"]})
 
     contact_number = forms.CharField(widget=forms.TextInput(attrs={"type": "tel", "class": "form-control"}),
                                      required=True,
@@ -166,9 +166,11 @@ class YourDetailsForm(BasePleaStepForm):
 
     date_of_birth = forms.DateField(widget=DateWidget,
                                     required=True,
+                                    validators=[is_date_in_past],
                                     label=_("Date of birth"),
                                     error_messages={"required": ERROR_MESSAGES["DATE_OF_BIRTH_REQUIRED"],
-                                                    "invalid": ERROR_MESSAGES["DATE_OF_BIRTH_INVALID"]})
+                                                    "invalid": ERROR_MESSAGES["DATE_OF_BIRTH_INVALID"],
+                                                    "is_date_in_past": ERROR_MESSAGES["DATE_OF_BIRTH_IN_FUTURE"]})
 
     ni_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                                 required=False,
