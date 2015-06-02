@@ -406,9 +406,7 @@ if(typeof String.prototype.trim !== 'function') {
          self.settings.eventCategory,
          href,
          self.settings.eventAction,
-         {"hitCallback": function() {
-            self.openLink(href, target);
-         }}
+         {"hitCallback": self.openLink(href, target)}
       );
     },
 
@@ -426,7 +424,9 @@ if(typeof String.prototype.trim !== 'function') {
 
   moj.Modules.ExternalLinksTracker = {
     init: function() {
-      $('a[rel=external]').data('ExternalLinksTracker', new ExternalLinksTracker($(this), $(this).data()));
+      $('a[rel=external]').each(function() {
+        $(this).data('ExternalLinksTracker', new ExternalLinksTracker($(this), $(this).data()));
+      });
     }
   };
 }());
