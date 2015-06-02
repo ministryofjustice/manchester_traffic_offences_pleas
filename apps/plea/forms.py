@@ -207,7 +207,7 @@ class CompanyDetailsForm(BasePleaStepForm):
                                    widget=forms.TextInput(attrs={"class": "form-control"}),
                                    max_length=100,
                                    required=True,
-                                   help_text=_("As written on page 1 of the Postal Requistion we sent you."),
+                                   help_text=_("As written on page 1 of the requisition pack we sent you."),
                                    error_messages={"required": ERROR_MESSAGES["COMPANY_NAME_REQUIRED"]})
 
     correct_address = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
