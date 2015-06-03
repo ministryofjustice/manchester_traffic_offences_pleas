@@ -161,7 +161,7 @@ class EmailTemplateTests(TestCase):
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
         self.assertContains(response, "<tr><th>First name</th><td>Joe</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Last name</th><td>Public</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>Address</th><td>As printed on Postal Requisition</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Address</th><td>As printed on requisition pack</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Contact number</th><td>0161 123 2345</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Email</th><td>test@example.org</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Date of birth</th><td>12/03/1980</td></tr>", count=1, html=True)
@@ -598,7 +598,7 @@ class TestCompanyFinancesEmailLogic(TestCase):
             },
             "company_details": {
                 "company_name": "some company plc",
-                "company_address": "some place plc",
+                "updated_address": "some place plc",
                 "first_name": "John",
                 "last_name": "Smith",
                 "position_in_company": "a director",

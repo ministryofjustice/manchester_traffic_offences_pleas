@@ -17,7 +17,7 @@
         </tr>
         <tr>
             <th>{% trans "Address" %}</th>
-            <td>{% if your_details.correct_address %}{% trans "As printed on Postal Requisition" %}{% else %}{{ your_details.updated_address|linebreaksbr }}{% endif %}</td>
+            <td>{% if your_details.correct_address %}{% trans "As printed on requisition pack" %}{% else %}{{ your_details.updated_address|linebreaksbr }}{% endif %}</td>
         </tr>
         <tr>
             <th>{% trans "Contact number" %}</th>
@@ -47,7 +47,7 @@
         </tr>
         <tr>
             <th>{% trans "Company address" %}</th>
-            <td>{{ company_details.company_address|linebreaksbr }}</td>
+            <td>{% if company_details.correct_address %}{% trans "As printed on requisition pack" %}{% else %}{{ company_details.updated_address|linebreaksbr }}{% endif %}</td>
         </tr>
         <tr>
             <th>{% trans "First name" %}</th>
