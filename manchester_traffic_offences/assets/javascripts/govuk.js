@@ -78,10 +78,11 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
   function MultivariateTest(options) {
     this.$el = $(options.el);
     this._loadOption(options, 'name');
-    this._loadOption(options, 'customVarIndex');
+    this._loadOption(options, 'customDimensionIndex', null);
     this._loadOption(options, 'cohorts');
     this._loadOption(options, 'runImmediately', true);
     this._loadOption(options, 'defaultWeight', 1);
+    this._loadOption(options, 'contentExperimentId', null);
 
     if (this.runImmediately) {
       this.run();
@@ -105,8 +106,10 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
   MultivariateTest.prototype.run = function() {
     var cohort = this.getCohort();
     if (cohort) {
+      this.setUpContentExperiment(cohort);
       this.setCustomVar(cohort);
       this.executeCohort(cohort);
+      this.createDummyEvent(cohort);
     }
   };
 
@@ -137,18 +140,32 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
   };
 
   MultivariateTest.prototype.setCustomVar = function(cohort) {
-    window._gaq = window._gaq || [];
-    window._gaq.push([
-      '_setCustomVar',
-      this.customVarIndex,
-      this.cookieName(),
-      cohort,
-      2 // session level
-    ]);
-    // Fire off a dummy event to set the custom var on the page.
+    if (this.customDimensionIndex) {
+      GOVUK.analytics.setDimension(
+        this.customDimensionIndex,
+        this.cookieName(),
+        cohort,
+        2 // session level
+      );
+    }
+  };
+
+  MultivariateTest.prototype.setUpContentExperiment = function(cohort) {
+    var contentExperimentId = this.contentExperimentId;
+    var cohortVariantId = this.cohorts[cohort]['variantId'];
+    if(typeof contentExperimentId !== 'undefined' &&
+      typeof cohortVariantId !== 'undefined' &&
+      typeof window.ga === "function"){
+      window.ga('set', 'expId', contentExperimentId);
+      window.ga('set', 'expVar', cohortVariantId);
+    };
+  };
+
+  MultivariateTest.prototype.createDummyEvent = function(cohort) {
+    // Fire off a dummy event to set the custom var and the content experiment on the page.
     // Ideally we'd be able to call setCustomVar before trackPageview,
     // but would need reordering the existing GA code.
-    window._gaq.push(['_trackEvent', this.cookieName(), 'run', '-', 0, true]);
+    GOVUK.analytics.trackEvent(this.cookieName(), 'run', {nonInteraction:true});
   };
 
   MultivariateTest.prototype.weightedCohortNames = function() {
@@ -564,6 +581,71 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
   $(root).load(function(){ $(root).trigger('govuk.pageSizeChanged'); });
 }).call(this);
 
+(function() {
+  "use strict";
+  window.GOVUK = window.GOVUK || {};
+
+  // For usage and initialisation see:
+  // https://github.com/alphagov/govuk_frontend_toolkit/blob/master/docs/analytics.md#create-an-analytics-tracker
+
+  var Analytics = function(config) {
+    this.trackers = [];
+    if (typeof config.universalId != 'undefined') {
+      this.trackers.push(new GOVUK.GoogleAnalyticsUniversalTracker(config.universalId, config.cookieDomain));
+    }
+  };
+
+  Analytics.prototype.sendToTrackers = function(method, args) {
+    for (var i = 0, l = this.trackers.length; i < l; i++) {
+      var tracker = this.trackers[i],
+          fn = tracker[method];
+
+      if (typeof fn === "function") {
+        fn.apply(tracker, args);
+      }
+    }
+  };
+
+  Analytics.load = function() {
+    GOVUK.GoogleAnalyticsUniversalTracker.load();
+  };
+
+  Analytics.prototype.trackPageview = function(path, title) {
+    this.sendToTrackers('trackPageview', arguments);
+  };
+
+  /*
+    https://developers.google.com/analytics/devguides/collection/analyticsjs/events
+    options.label – Useful for categorizing events (eg nav buttons)
+    options.value – Values must be non-negative. Useful to pass counts
+    options.nonInteraction – Prevent event from impacting bounce rate
+  */
+  Analytics.prototype.trackEvent = function(category, action, options) {
+    this.sendToTrackers('trackEvent', arguments);
+  };
+
+  Analytics.prototype.trackShare = function(network) {
+    this.sendToTrackers('trackSocial', [network, 'share', location.pathname]);
+  };
+
+  /*
+    The custom dimension index must be configured within the
+    Universal Analytics profile
+   */
+  Analytics.prototype.setDimension = function(index, value) {
+    this.sendToTrackers('setDimension', arguments);
+  };
+
+  /*
+   Add a beacon to track a page in another GA account on another domain.
+   */
+  Analytics.prototype.addLinkedTrackerDomain = function(trackerId, name, domain) {
+    this.sendToTrackers('addLinkedTrackerDomain', arguments);
+  };
+
+  GOVUK.Analytics = Analytics;
+})();
+
 // Extension to track errors using google analytics as a data store.
 (function() {
 
@@ -698,8 +780,27 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
 
   // https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingCustomVariables
   GoogleAnalyticsClassicTracker.prototype.setCustomVariable = function(index, value, name, scope) {
+    var PAGE_LEVEL_SCOPE = 3;
+    scope = scope || PAGE_LEVEL_SCOPE;
+
+    if (typeof index !== "number") {
+      index = parseInt(index, 10);
+    }
+
+    if (typeof scope !== "number") {
+      scope = parseInt(scope, 10);
+    }
+
     _gaq.push(['_setCustomVar', index, name, String(value), scope]);
   };
+
+  // Match tracker and universal API
+  GoogleAnalyticsClassicTracker.prototype.setDimension = function(index, value, name, scope) {
+    this.setCustomVariable(index, value, name, scope);
+  };
+
+  // Match tracker and universal API
+  GoogleAnalyticsClassicTracker.prototype.addLinkedTrackerDomain = function() {};
 
   GOVUK.GoogleAnalyticsClassicTracker = GoogleAnalyticsClassicTracker;
 })();
@@ -795,6 +896,29 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
     });
   };
 
+  /*
+   https://developers.google.com/analytics/devguides/collection/analyticsjs/cross-domain
+   trackerId - the UA account code to track the domain against
+   name      - name for the tracker
+   domain    - the domain to track
+  */
+  GoogleAnalyticsUniversalTracker.prototype.addLinkedTrackerDomain = function(trackerId, name, domain) {
+    sendToGa('create',
+             trackerId,
+             'auto',
+             {'name': name});
+    // Load the plugin.
+    sendToGa('require', 'linker');
+    sendToGa(name + '.require', 'linker');
+
+    // Define which domains to autoLink.
+    sendToGa('linker:autoLink', [domain]);
+    sendToGa(name + '.linker:autoLink', [domain]);
+
+    sendToGa(name + '.set', 'anonymizeIp', true);
+    sendToGa(name + '.send', 'pageview');
+  };
+
   // https://developers.google.com/analytics/devguides/collection/analyticsjs/custom-dims-mets
   GoogleAnalyticsUniversalTracker.prototype.setDimension = function(index, value) {
     sendToGa('set', 'dimension' + index, String(value));
@@ -855,8 +979,13 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
   // https://github.com/alphagov/govuk_frontend_toolkit/blob/master/docs/analytics.md#create-an-analytics-tracker
 
   var Tracker = function(config) {
-    this.universal = new GOVUK.GoogleAnalyticsUniversalTracker(config.universalId, config.cookieDomain);
-    this.classic = new GOVUK.GoogleAnalyticsClassicTracker(config.classicId, config.cookieDomain);
+    this.trackers = [];
+    if (typeof config.universalId != 'undefined') {
+      this.trackers.push(new GOVUK.GoogleAnalyticsUniversalTracker(config.universalId, config.cookieDomain));
+    }
+    if (typeof config.classicId != 'undefined') {
+      this.trackers.push(new GOVUK.GoogleAnalyticsClassicTracker(config.classicId, config.cookieDomain));
+    }
   };
 
   Tracker.load = function() {
@@ -865,8 +994,9 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
   };
 
   Tracker.prototype.trackPageview = function(path, title) {
-    this.classic.trackPageview(path);
-    this.universal.trackPageview(path, title);
+    for (var i=0; i < this.trackers.length; i++) {
+      this.trackers[i].trackPageview(path, title);
+    }
   };
 
   /*
@@ -876,14 +1006,16 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
     options.nonInteraction – Prevent event from impacting bounce rate
   */
   Tracker.prototype.trackEvent = function(category, action, options) {
-    this.classic.trackEvent(category, action, options);
-    this.universal.trackEvent(category, action, options);
+    for (var i=0; i < this.trackers.length; i++) {
+      this.trackers[i].trackEvent(category, action, options);
+    }
   };
 
   Tracker.prototype.trackShare = function(network) {
     var target = location.pathname;
-    this.classic.trackSocial(network, 'share', target);
-    this.universal.trackSocial(network, 'share', target);
+    for (var i=0; i < this.trackers.length; i++) {
+      this.trackers[i].trackSocial(network, 'share', target);
+    }
   };
 
   /*
@@ -891,19 +1023,18 @@ GOVUK.performance.sendGoogleAnalyticsEvent = function (category, event, label) {
     Check this for your app before using this
    */
   Tracker.prototype.setDimension = function(index, value, name, scope) {
-    var PAGE_LEVEL_SCOPE = 3;
-    scope = scope || PAGE_LEVEL_SCOPE;
-
-    if (typeof index !== "number") {
-      index = parseInt(index, 10);
+    for (var i=0; i < this.trackers.length; i++) {
+      this.trackers[i].setDimension(index, value, name, scope);
     }
+  };
 
-    if (typeof scope !== "number") {
-      scope = parseInt(scope, 10);
+  /*
+   Add a beacon to track a page in another GA account on another domain.
+   */
+  Tracker.prototype.addLinkedTrackerDomain = function(trackerId, name, domain) {
+    for (var i=0; i < this.trackers.length; i++) {
+      this.trackers[i].addLinkedTrackerDomain(trackerId, name, domain);
     }
-
-    this.universal.setDimension(index, value);
-    this.classic.setCustomVariable(index, value, name, scope);
   };
 
   GOVUK.Tracker = Tracker;

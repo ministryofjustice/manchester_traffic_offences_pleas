@@ -7,7 +7,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from .fields import (ERROR_MESSAGES, is_date_in_future, is_date_within_range,
-                     DSRadioFieldRenderer, 
+                     DSRadioFieldRenderer,
                      DSStackedRadioFieldRenderer,
                      URNField,
                      DateWidget, is_urn_not_used, is_urn_valid)
@@ -31,9 +31,67 @@ class BasePleaStepForm(forms.Form):
     pass
 
 
+class NoJSPleaStepForm(BasePleaStepForm):
+    nojs = forms.CharField(widget=forms.HiddenInput(), required=False)
+
+    nojs_options = {}
+
+    def __init__(self, *args, **kwargs):
+        super(NoJSPleaStepForm, self).__init__(*args, **kwargs)
+        try:
+            self.data = args[0]
+        except IndexError:
+            self.data = kwargs.get("data", {})
+
+        self.nojs = self.data.get("nojs", None)
+
+        if hasattr(self, "dependencies"):
+            prefix = kwargs.get("prefix", None)
+            self.check_dependencies(self.dependencies, prefix)
+
+        if self.nojs is None:
+            self.fields["nojs"].initial = self.nojs_options.get("trigger", False)
+
+    def check_dependencies(self, dependencies_list, prefix=None):
+        """
+        Set the required attribute depending on the dependencies map
+        and the already submitted data
+        """
+        for field, dependency in dependencies_list.items():
+            dependency_field = dependency.get("field", None)
+            dependency_value = dependency.get("value", None)
+            sub_dependencies = dependency.get("dependencies", None)
+
+            """
+            When a form has a prefix, the key in the field is the original,
+            but the key in data is updated. Would there be a nicer way of
+            handling this?
+            """
+            if prefix:
+                dependency_field_data_key = prefix + "-" + dependency_field
+            else:
+                dependency_field_data_key = dependency_field
+
+            if self.fields.get(field, None):
+
+                self.fields[field].required = False
+
+                if self.fields[dependency_field].required:
+                    if self.nojs is None or self.nojs != dependency_field:
+                        if dependency_value and self.data.get(dependency_field_data_key, None) == dependency_value:
+                            self.fields[field].required = True
+                        
+                        if not dependency_value and self.data.get(dependency_field_data_key, None) is not None:
+                            self.fields[field].required = True
+
+                    if sub_dependencies:
+                        self.check_dependencies(sub_dependencies, prefix)
+
+
+
 class CaseForm(BasePleaStepForm):
     PLEA_MADE_BY_CHOICES = (
-        ("Defendant", _("The person named on the Postal Requisition")),
+        ("Defendant", _("The person named in the requisition pack")),
         ("Company representative", _("Pleading on behalf of a company")))
 
     urn = URNField(label=_("Unique reference number (URN)"),
@@ -82,27 +140,27 @@ class YourDetailsForm(BasePleaStepForm):
                                               required=True,
                                               coerce=to_bool,
                                               choices=YESNO_CHOICES,
-                                              label=_("Is your address on the Postal Requisition correct?"),
+                                              label=_("Is your address on the requisition pack correct?"),
                                               error_messages={"required": ERROR_MESSAGES["CORRECT_ADDRESS_REQUIRED"]})
 
     updated_address = forms.CharField(widget=forms.Textarea(attrs={"rows": "4", "class": "form-control"}),
                                   required=False,
                                   label="",
-                                  help_text=_("If your address is different from the one shown on page 1 of the Postal Requisition, tell us here"),
+                                  help_text=_("If your address is different from the one shown on page 1 of the requisition pack, tell us here:"),
                                   error_messages={"required": ERROR_MESSAGES["UPDATED_ADDRESS_REQUIRED"]})
 
     contact_number = forms.CharField(widget=forms.TextInput(attrs={"type": "tel", "class": "form-control"}),
                                      required=True,
                                      max_length=30,
                                      label=_("Contact number"),
-                                     help_text=_("Landline or mobile number"),
+                                     help_text=_("Landline or mobile number."),
                                      error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
 
     email = forms.EmailField(widget=forms.TextInput(attrs={"type": "email", "class": "form-control"}),
-                             required=getattr(settings, "EMAIL_REQUIRED", True), 
-                             label=_("Email"),
-                             help_text=_("We'll use this for all future correspondence. We'll also contact you by post"),
+                             required=getattr(settings, "EMAIL_REQUIRED", True),
+                             label=_("Email address"),
+                             help_text=_("We'll use this for all future correspondence. We'll also contact you by post."),
                              error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
                                              "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
@@ -120,7 +178,7 @@ class YourDetailsForm(BasePleaStepForm):
     driving_licence_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                                              required=False,
                                              label=_("UK driving licence number"),
-                                             help_text=_("Starts with the first five letters from your last name"))
+                                             help_text=_("Starts with the first five letters from your last name."))
 
     def __init__(self, *args, **kwargs):
         super(YourDetailsForm, self).__init__(*args, **kwargs)
@@ -141,16 +199,23 @@ class CompanyDetailsForm(BasePleaStepForm):
 
     company_name = forms.CharField(label=_("Company name"),
                                    widget=forms.TextInput(attrs={"class": "form-control"}),
-                                   max_length=100, 
-                                   required=True, 
+                                   max_length=100,
+                                   required=True,
                                    help_text=_("As written on page 1 of the Postal Requistion we sent you."),
                                    error_messages={"required": ERROR_MESSAGES["COMPANY_NAME_REQUIRED"]})
 
-    company_address = forms.CharField(label=_("Company address"),
-                                      widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
-                                      help_text=_("This is the address we will use for all future correspondence about this case."),
-                                      required=True,
-                                      error_messages={"required": ERROR_MESSAGES["COMPANY_ADDRESS_REQUIRED"]})
+    correct_address = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                             coerce=to_bool,
+                                             choices=YESNO_CHOICES,
+                                             required=True,
+                                             label=_("Is the company's address on the requisition pack correct?"),
+                                             error_messages={"required": ERROR_MESSAGES["COMPANY_CORRECT_ADDRESS_REQUIRED"]})
+
+    updated_address = forms.CharField(widget=forms.Textarea(attrs={"rows": "4", "class": "form-control"}),
+                                      label="",
+                                      required=False,
+                                      help_text=_("If the company address is different from the one shown on page 1 of the requisition pack, tell us here:"),
+                                      error_messages={"required": ERROR_MESSAGES["COMPANY_UPDATED_ADDRESS_REQUIRED"]})
 
     first_name = forms.CharField(label=_("Your first name"),
                                  widget=forms.TextInput(attrs={"class": "form-control"}),
@@ -169,10 +234,10 @@ class CompanyDetailsForm(BasePleaStepForm):
                                             error_messages={"required": ERROR_MESSAGES["POSITION_REQUIRED"]})
 
     contact_number = forms.CharField(label=_("Contact number"),
-                                     widget=forms.TextInput(attrs={"type": "tel", 
+                                     widget=forms.TextInput(attrs={"type": "tel",
                                                                    "class": "form-control"}),
                                      max_length=30,
-                                     required=True, 
+                                     required=True,
                                      help_text=_("Office or mobile number."),
                                      error_messages={"required": ERROR_MESSAGES["COMPANY_CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
@@ -180,12 +245,24 @@ class CompanyDetailsForm(BasePleaStepForm):
     email = forms.EmailField(widget=forms.TextInput(attrs={"type": "email",
                                                            "class": "form-control"}),
                              required=getattr(settings, "EMAIL_REQUIRED", True),
-                             label=_("Email"),
+                             label=_("Email address"),
                              error_messages={"required": ERROR_MESSAGES["COMPANY_EMAIL_ADDRESS_REQUIRED"],
                                              "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
+    def __init__(self, *args, **kwargs):
+        super(CompanyDetailsForm, self).__init__(*args, **kwargs)
+        try:
+            data = args[0]
+        except IndexError:
+            data = {}
 
-class YourMoneyForm(BasePleaStepForm):
+        if "correct_address" in data:
+            if data["correct_address"] == "False":
+                self.fields["updated_address"].required = True
+
+
+class YourMoneyForm(NoJSPleaStepForm):
+
     YOU_ARE_CHOICES = (("Employed", _("Employed")),
                        ("Self-employed", _("Self-employed")),
                        ("Receiving benefits", _("Receiving benefits")),
@@ -202,18 +279,48 @@ class YourMoneyForm(BasePleaStepForm):
                          ("Monthly", _("Monthly")),
                          ("Benefits other", _("Other")),)
 
+    dependencies = {
+        "employed_take_home_pay_period": {"field": "you_are", "value": "Employed"},
+        "employed_take_home_pay_amount": {"field": "you_are", "value": "Employed"},
+        "employed_hardship": {"field": "you_are", "value": "Employed"},
+
+        "self_employed_pay_period": {"field": "you_are", 
+                                     "value": "Self-employed", 
+                                     "dependencies": {"self_employed_pay_other": {"field": "self_employed_pay_period",
+                                                                                  "value": "Self-employed other" }}},
+
+        "self_employed_pay_amount": {"field": "you_are", "value": "Self-employed"},
+        "self_employed_hardship": {"field": "you_are", "value": "Self-employed"},
+
+        "benefits_details": {"field": "you_are", "value": "Receiving benefits"},
+        "benefits_dependents": {"field": "you_are", "value": "Receiving benefits"},
+        "benefits_period": {"field": "you_are",
+                            "value": "Receiving benefits",
+                            "dependencies": {"benefits_pay_other": {"field": "benefits_period",
+                                                                    "value": "Benefits other"}}},
+        "benefits_amount": {"field": "you_are", "value": "Receiving benefits"},
+        "receiving_benefits_hardship": {"field": "you_are", "value": "Receiving benefits"},
+
+        "other_details": {"field": "you_are", "value": "Other"},
+        "other_pay_amount": {"field": "you_are", "value": "Other"},
+        "other_hardship": {"field": "you_are", "value": "Other"}
+    }
+
+    nojs_options = {
+        "trigger": "you_are"
+    }
+
     you_are = forms.ChoiceField(label=_("Are you?"), choices=YOU_ARE_CHOICES,
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
     # Employed
     employed_take_home_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                                      choices=PERIOD_CHOICES, required=False,
+                                                      choices=PERIOD_CHOICES,
                                                       label=_("How often do you get paid?"),
                                                       error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                                       "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
 
-    employed_take_home_pay_amount = forms.DecimalField(label=_("What's your take home pay (after tax)?"), 
-                                                       required=False,
+    employed_take_home_pay_amount = forms.DecimalField(label=_("What's your take home pay (after tax)?"),
                                                        localize=True,
                                                        widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                                      "data-template-trigger": "employed_take_home_pay_period",
@@ -224,22 +331,20 @@ class YourMoneyForm(BasePleaStepForm):
                                                                        "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
     employed_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
-                                               help_text=_("For example, you would become homeless"),
+                                               help_text=_("For example, you would become homeless."),
                                                widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                choices=YESNO_CHOICES,
                                                coerce=to_bool,
-                                               required=False,
                                                error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
     # Self-employed
     self_employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                                 choices=SE_PERIOD_CHOICES, required=False,
+                                                 choices=SE_PERIOD_CHOICES,
                                                  label=_("How often do you get paid?"),
                                                  error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                                  "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
 
     self_employed_pay_amount = forms.DecimalField(label=_("What's your average take home pay?"),
-                                                  required=False,
                                                   localize=True,
                                                   widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                                 "data-template-trigger": "self_employed_pay_period",
@@ -250,41 +355,41 @@ class YourMoneyForm(BasePleaStepForm):
                                                   error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                                   "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
-    self_employed_pay_other = forms.CharField(required=False, max_length=500, label="",
+    self_employed_pay_other = forms.CharField(label="",
+                                              max_length=500,
                                               widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
-                                              help_text=_("Tell us about how often you get paid"))
+                                              help_text=_("If you selected 'other', tell us how often you get paid."))
 
     self_employed_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
-                                                    help_text=_("For example, you would become homeless"),
+                                                    help_text=_("For example, you would become homeless."),
                                                     widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                     choices=YESNO_CHOICES,
                                                     coerce=to_bool,
-                                                    required=False,
                                                     error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
     # On benefits
-    benefits_details = forms.CharField(required=False, max_length=500, label=_("Which benefits do you receive?"),
+    benefits_details = forms.CharField(max_length=500, label=_("Which benefits do you receive?"),
                                        widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
                                        error_messages={"required": ERROR_MESSAGES["BENEFITS_DETAILS_REQUIRED"]})
 
-    benefits_dependents = forms.TypedChoiceField(required=False, widget=RadioSelect(renderer=DSRadioFieldRenderer),
+    benefits_dependents = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YESNO_CHOICES,
                                             coerce=to_bool,
                                             label=_("Does this include payment for dependants?"),
                                             error_messages={"required": ERROR_MESSAGES["BENEFITS_DEPENDANTS_REQUIRED"]})
-    
+
     benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                        choices=BEN_PERIOD_CHOICES, required=False,
+                                        choices=BEN_PERIOD_CHOICES,
                                         label=_("How often are your benefits paid?"),
                                         error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                         "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
 
-    benefits_pay_other = forms.CharField(required=False, max_length=500, label="",
+    benefits_pay_other = forms.CharField(label="",
+                                         max_length=500,
                                          widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
-                                         help_text=_("Tell us about how often you get paid"))
+                                         help_text=_("If you selected 'other', tell us how often you get paid."))
 
     benefits_amount = forms.DecimalField(label=_("What's your average take home pay?"),
-                                         required=False,
                                          localize=True,
                                          widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                        "data-template-trigger": "benefits_period",
@@ -296,21 +401,19 @@ class YourMoneyForm(BasePleaStepForm):
                                                          "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
     receiving_benefits_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
-                                                         help_text=_("For example, you would become homeless"),
+                                                         help_text=_("For example, you would become homeless."),
                                                          widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                          choices=YESNO_CHOICES,
                                                          coerce=to_bool,
-                                                         required=False,
                                                          error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
     # Other
-    other_details = forms.CharField(required=False, max_length=500, label=_("Please provide details"),
-                                    help_text=_("eg retired, student etc."),
-                                    widget=forms.TextInput(attrs={"class": "form-control"}), 
+    other_details = forms.CharField(max_length=500, label=_("Provide details"),
+                                    help_text=_("For example, retired, student etc."),
+                                    widget=forms.TextInput(attrs={"class": "form-control"}),
                                     error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
 
     other_pay_amount = forms.DecimalField(label=_("What is your monthly disposable income?"),
-                                          required=False,
                                           localize=True,
                                           widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                         "class": "form-control-inline"}),
@@ -318,43 +421,11 @@ class YourMoneyForm(BasePleaStepForm):
                                                           "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
     other_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
-                                            help_text=_("For example, you would become homeless"),
+                                            help_text=_("For example, you would become homeless."),
                                             widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YESNO_CHOICES,
                                             coerce=to_bool,
-                                            required=False,
                                             error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
-
-
-    def __init__(self, *args, **kwargs):
-        super(YourMoneyForm, self).__init__(*args, **kwargs)
-        try:
-            data = args[0]
-        except IndexError:
-            data = {}
-
-        if "you_are" in data:                
-            if data["you_are"] == "Employed":
-                self.fields["employed_take_home_pay_period"].required = True
-                self.fields["employed_take_home_pay_amount"].required = True
-                self.fields["employed_hardship"].required = True
-
-            if data["you_are"] == "Self-employed":
-                self.fields["self_employed_pay_period"].required = True
-                self.fields["self_employed_pay_amount"].required = True
-                self.fields["self_employed_hardship"].required = True
-
-            if data["you_are"] == "Receiving benefits":
-                self.fields["benefits_details"].required = True
-                self.fields["benefits_dependents"].required = True
-                self.fields["benefits_period"].required = True
-                self.fields["benefits_amount"].required = True
-                self.fields["receiving_benefits_hardship"].required = True
-
-            if data["you_are"] == "Other":
-                self.fields["other_details"].required = True
-                self.fields["other_pay_amount"].required = True
-                self.fields["other_hardship"].required = True
 
 
 class YourExpensesForm(BasePleaStepForm):
@@ -500,7 +571,22 @@ class YourExpensesForm(BasePleaStepForm):
                         'min_value': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_MIN']})
 
 
-class CompanyFinancesForm(BasePleaStepForm):
+class CompanyFinancesForm(NoJSPleaStepForm):
+    dependencies = {
+        "number_of_employees": {
+            "field": "trading_period"
+        },
+        "gross_turnover": {
+            "field": "trading_period"
+        },
+        "net_turnover": {
+            "field": "trading_period"
+        }
+    }
+
+    nojs_options = {
+        "trigger": "trading_period"
+    }
 
     trading_period = forms.TypedChoiceField(required=True, widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YESNO_CHOICES,
@@ -512,10 +598,10 @@ class CompanyFinancesForm(BasePleaStepForm):
                                              widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                           "maxlength": "5",
                                                                            "class": "form-control-inline"}),
-                                             min_value=1, max_value=10000,
+                                             min_value=1,
+                                             max_value=10000,
                                              localize=True,
-                                             error_messages={"required": ERROR_MESSAGES["COMPANY_NUMBER_EMPLOYEES"]},
-                                             required=False)
+                                             error_messages={"required": ERROR_MESSAGES["COMPANY_NUMBER_EMPLOYEES"]})
 
     gross_turnover = forms.DecimalField(widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                       "maxlength": "10",
@@ -524,7 +610,6 @@ class CompanyFinancesForm(BasePleaStepForm):
                                         decimal_places=2,
                                         localize=True,
                                         help_text=_("For example, 150000"),
-                                        required=False,
                                         error_messages={"required": ERROR_MESSAGES["COMPANY_GROSS_TURNOVER"]})
 
     net_turnover = forms.DecimalField(widget=forms.TextInput(attrs={"pattern": "[0-9]*",
@@ -534,24 +619,15 @@ class CompanyFinancesForm(BasePleaStepForm):
                                       max_digits=10,
                                       decimal_places=2,
                                       localize=True,
-                                      required=False,
                                       error_messages={"required": ERROR_MESSAGES["COMPANY_NET_TURNOVER"]})
 
     def __init__(self, *args, **kwargs):
         super(CompanyFinancesForm, self).__init__(*args, **kwargs)
-        try:
-            data = args[0]
-        except IndexError:
-            data = {}
 
-        if "trading_period" in data:
-            self.fields["number_of_employees"].required = True
-            self.fields["gross_turnover"].required = True
-            self.fields["net_turnover"].required = True
-
-            if data["trading_period"] == "False":
-                self.fields["gross_turnover"].error_messages = {"required": ERROR_MESSAGES["COMPANY_GROSS_TURNOVER_PROJECTED"]}
-                self.fields["net_turnover"].error_messages = {"required": ERROR_MESSAGES["COMPANY_NET_TURNOVER_PROJECTED"]}
+        if "trading_period" in self.data:
+            if self.data["trading_period"] == "False":
+                self.fields["gross_turnover"].error_messages.update({"required": ERROR_MESSAGES["COMPANY_GROSS_TURNOVER_PROJECTED"]})
+                self.fields["net_turnover"].error_messages.update({"required": ERROR_MESSAGES["COMPANY_NET_TURNOVER_PROJECTED"]})
 
 
 class ConfirmationForm(BasePleaStepForm):
@@ -559,30 +635,26 @@ class ConfirmationForm(BasePleaStepForm):
                                     error_messages={"required": ERROR_MESSAGES["UNDERSTAND_REQUIRED"]})
 
 
-class PleaForm(BasePleaStepForm):
+class PleaForm(NoJSPleaStepForm):
     PLEA_CHOICES = (
         ('guilty', _('Guilty')),
         ('not_guilty', _('Not guilty')),
     )
 
-    def __init__(self, *args, **kwargs):
+    dependencies = {
+        "not_guilty_extra": {
+            "field": "guilty",
+            "value": "not_guilty"
+        }
+    }
 
-        super(PleaForm, self).__init__(*args, **kwargs)
-
-        prefix = kwargs.get("prefix", "")
-
-        if "data" in kwargs:
-
-            plea = kwargs["data"].get("{}-guilty".format(prefix), None)
-
-            if plea == "not_guilty":
-                self.fields["not_guilty_extra"].required = True
-            else:
-                self.fields["not_guilty_extra"].required = False
+    nojs_options = {
+        "trigger": "guilty"
+    }
 
     guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect(), required=True,
                                error_messages={"required": ERROR_MESSAGES["PLEA_REQUIRED"]})
-    
+
     guilty_extra = forms.CharField(label=_("Mitigation"),
                                    widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
                                    help_text=_("What would you like the court to consider?"),
@@ -591,9 +663,9 @@ class PleaForm(BasePleaStepForm):
 
     not_guilty_extra = forms.CharField(label=_("Not guilty because?"),
                                        widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
-                                       help_text=_("Tell us why you believe you are not guilty"),
-                                       required=False,
-                                       max_length=5000)
+                                       help_text=_("Tell us here:<ul><li>why you believe you are not guilty</li><li>if you disagree with any evidence from a witness statement in the requisition pack &ndash; tell us the name of the witness  and what you disagree with</li><li>the name, address and date of birth of any witnesses you want to call  to support your case</li></ul>"),
+                                       max_length=5000,
+                                       error_messages={"required": ERROR_MESSAGES["NOT_GUILTY_REQUIRED"]})
 
 
 class CourtFinderForm(forms.Form):

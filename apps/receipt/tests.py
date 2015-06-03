@@ -85,7 +85,21 @@ class TestProcessReceipts(TestCase):
             sent=True,
             processed=False)
 
+        self.court = Court.objects.create(
+            court_code="51",
+            region_code="06",
+            court_name="whatever",
+            court_address="asdf",
+            enabled=True,
+            court_telephone="00000",
+            court_email="test@test.com",
+            submission_email="",
+            court_receipt_email="sending@test.com",
+            local_receipt_email="incoming@test.com",
+            test_mode=False)
+
         self.email_count = CourtEmailCount.objects.create(
+            court=self.court,
             hearing_date=self.doh,
             total_pleas=1,
             total_guilty=1,
@@ -289,20 +303,6 @@ class WebHookTestCase(TestCase):
             sent=True,
             processed=False)
 
-        self.email_count = CourtEmailCount.objects.create(
-            hearing_date=self.doh,
-            total_pleas=1,
-            total_guilty=1,
-            total_not_guilty=0,
-            sent=True,
-            processed=False)
-
-        self.email_body_valid = """
-        Random content.
-        <<<makeaplea-ref: {}/{}>>>
-        Random content.
-        """.format(self.case.id, self.email_count.id)
-
         self.court = Court.objects.create(
             court_code="51",
             region_code="06",
@@ -315,6 +315,21 @@ class WebHookTestCase(TestCase):
             court_receipt_email="sending@test.com",
             local_receipt_email="incoming@test.com",
             test_mode=False)
+
+        self.email_count = CourtEmailCount.objects.create(
+            hearing_date=self.doh,
+            court=self.court,
+            total_pleas=1,
+            total_guilty=1,
+            total_not_guilty=0,
+            sent=True,
+            processed=False)
+
+        self.email_body_valid = """
+        Random content.
+        <<<makeaplea-ref: {}/{}>>>
+        Random content.
+        """.format(self.case.id, self.email_count.id)
 
     def _get_mandrill_post_data(self, subject=None, text=None, from_email=None, email=None):
         return {

@@ -10,7 +10,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.staticfiles',
-    'south',
     'django_extensions',
     'rest_framework',
 )
