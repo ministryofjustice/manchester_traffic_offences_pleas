@@ -279,3 +279,25 @@ legend + * {
 		margin: 0;
 	}
 }
+
+
+/*== NOJS headers ======================================*/
+.form-header {
+	margin-bottom: 2em;
+	border-bottom: 2px solid $grey-2;
+
+	h2, h3 {
+		margin-bottom: 0;
+
+		span {
+			@include core-24;
+			display: block;
+		}
+	}
+
+	a {
+		@include core-16;
+		display: inline-block;
+		margin: 1em 0 .5em;
+	}
+}

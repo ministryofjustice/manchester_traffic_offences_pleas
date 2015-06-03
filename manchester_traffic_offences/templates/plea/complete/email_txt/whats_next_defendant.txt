@@ -3,7 +3,7 @@
 
 {% if plea_type == "guilty" %}
 {% add_test_tag "<<GUILTY>>" %}
-1. {% blocktrans %}There’s no need to come to court on the hearing date shown in the Postal Requisition.{% endblocktrans %}
+1. {% blocktrans %}There’s no need to come to court on the hearing date shown in the requisition pack.{% endblocktrans %}
 2. {% blocktrans count charges=number_of_charges %}We’ll send you a letter with the court’s decision within 3  working days after your hearing date.{% plural %}We’ll send you a letter with the court’s decisions within 3 working days after your hearing date.{% endblocktrans %}
 3. {% blocktrans %}Do not send your driving licence to the court.{% endblocktrans %}
 4. {% blocktrans %}The DVLA will contact you if they need you to send in your driving licence.{% endblocktrans %}
@@ -13,7 +13,7 @@
 
 {% if plea_type == "not_guilty" %}
 {% add_test_tag "<<NOTGUILTY>>" %}
-1. {% blocktrans %}There’s no need to come to court on the hearing date shown in the Postal Requisition.{% endblocktrans %}
+1. {% blocktrans %}There’s no need to come to court on the hearing date shown in the requisition pack.{% endblocktrans %}
 2. {% blocktrans %}The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.{% endblocktrans %}        
 3. {% blocktrans count charges=number_of_charges %}We’ll send you a letter with the court’s decision within 3 working days after your hearing date.{% plural %}We’ll send you a letter with the court’s decisions within 3  working days after your hearing date.{% endblocktrans %}
 4. {% blocktrans with urn=urn|upper %}Quote your URN {{ urn }} if you contact the court about your case.{% endblocktrans %}
@@ -22,7 +22,7 @@
 
 {% if plea_type == "mixed" %}
 {% add_test_tag "<<MIXED>>" %}
-1. {% blocktrans %}There’s no need to come to court on the hearing date shown in the Postal Requisition.{% endblocktrans %}
+1. {% blocktrans %}There’s no need to come to court on the hearing date shown in the requisition pack.{% endblocktrans %}
 2. {% blocktrans %}The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.{% endblocktrans %}
 3. {% blocktrans %}We’ll send you a letter with the court’s decisions within 3 working days after your hearing date.{% endblocktrans %}
 4. {% blocktrans %}Do not send your driving licence to the court.{% endblocktrans %}

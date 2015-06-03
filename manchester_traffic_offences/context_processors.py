@@ -17,7 +17,7 @@ def globals(request):
         'product_type': 'service',
 
         # Google Analytics ID (Tracking ID for the service)
-        'ga_id': 'UA-53811587-1',
+        'google_analytics_id': getattr(settings, "GOOGLE_ANALYTICS_ID", None),
 
         # Version number
         'version': settings.VERSION,

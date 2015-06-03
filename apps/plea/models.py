@@ -126,6 +126,8 @@ class CourtEmailCountManager(models.Manager):
 
 class CourtEmailCount(models.Model):
     date_sent = models.DateTimeField(auto_now_add=True)
+    court = models.ForeignKey("Court")
+
     total_pleas = models.IntegerField()
     total_guilty = models.IntegerField()
     total_not_guilty = models.IntegerField()
@@ -144,7 +146,7 @@ class CourtEmailCount(models.Model):
         self.sent = case_obj.sent
         self.processed = case_obj.processed
 
-    def get_from_context(self, context):
+    def get_from_context(self, context, court):
         if "plea" not in context:
             return
         if "PleaForms" not in context["plea"]:
@@ -162,6 +164,8 @@ class CourtEmailCount(models.Model):
 
         if self.total_not_guilty is None:
             self.total_not_guilty = 0
+
+        self.court = court
 
         try:
             if isinstance(context["case"]["date_of_hearing"], dt.date):
@@ -220,8 +224,10 @@ class Case(models.Model):
     surname = models.CharField(max_length=35, null=True, blank=True,
                                help_text="as supplied by DX")
 
-    case_number = models.CharField(max_length=10, null=True, blank=True,
+    case_number = models.CharField(max_length=12, null=True, blank=True,
                                    help_text="as supplied by DX")
+
+    ou_code = models.CharField(max_length=10, null=True, blank=True)
 
     sent = models.BooleanField(null=False, default=False)
     processed = models.BooleanField(null=False, default=False)
@@ -251,7 +257,6 @@ class CaseAction(models.Model):
 class Offence(models.Model):
     case = models.ForeignKey(Case, related_name="offences")
 
-    ou_code = models.CharField(max_length=10, null=True, blank=True)
     offence_code = models.CharField(max_length=10, null=True, blank=True)
     offence_short_title = models.CharField(max_length=100)
     offence_wording = models.TextField(max_length=4000)

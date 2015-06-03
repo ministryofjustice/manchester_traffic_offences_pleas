@@ -72,7 +72,7 @@ gulp.task('js', function() {
     .pipe(gulp.dest(paths.dest_dir + 'javascripts/'));
 });
 
-// jshint js code
+// jshint
 gulp.task('lint', function() {
   var files = paths.scripts.slice(0);
 

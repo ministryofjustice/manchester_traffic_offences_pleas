@@ -39,12 +39,13 @@
 {% else %}
 
     <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
+        
         {% csrf_token %}
 
             {% if submitted and not court %}
         <div class="error-summary">
             <h2>{% trans "We can't find your court" %}</h2>
-            <p>{% trans "You'll find contact details for the court considering your case in your Postal Requisition pack." %}</p>
+            <p>{% trans "You'll find contact details for the court considering your case in your requisition pack pack." %}</p>
         </div>
             {% endif %}
 
@@ -53,7 +54,7 @@
                 {% if urn_is_invalid %}
             <h2>{% trans "We don’t recognise the URN you’ve entered" %}</h2>
             <p>{% blocktrans %}The unique reference number you entered doesn’t match our records.<br>
-            Check your URN (it’s on page 1 of the Postal Requisition pack we sent you, in the top right corner) then try again.{% endblocktrans %}</p>
+            Check your URN (it’s on page 1 of the requisition pack pack we sent you, in the top right corner) then try again.{% endblocktrans %}</p>
                 {% else %}
             <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
             <p>{% trans "See highlighted errors below." %}</p>
