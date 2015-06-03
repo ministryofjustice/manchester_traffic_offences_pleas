@@ -13,12 +13,28 @@ def performance_platform_export(modeladmin, request, queryset):
 
     writer = csv.writer(response)
 
+    writer.writerow(["_timestamp",
+                     "period",
+                     "question_tag",
+                     "question_text",
+                     "rating_1",
+                     "rating_2",
+                     "rating_3",
+                     "rating_4",
+                     "rating_5",
+                     "total"])
+
     for data in queryset.all().order_by("start_date"):
 
         start_date = unicode(data.start_date.strftime("%Y-%m-%dT%H:%M:%SZ"))
-        feedback_avg = unicode(data.feedback_avg)
+        rating_1 = unicode(data.rating_1)
+        rating_2 = unicode(data.rating_2)
+        rating_3 = unicode(data.rating_3)
+        rating_4 = unicode(data.rating_4)
+        rating_5 = unicode(data.rating_5)
+        total = unicode(data.total)
 
-        writer.writerow([start_date, u"week", feedback_avg])
+        writer.writerow([start_date, u"week", "", "", rating_1, rating_2, rating_3, rating_4, rating_5, total])
 
     return response
 performance_platform_export.short_description = "Export for performance platform"
@@ -29,7 +45,7 @@ class UserRatingAdmin(admin.ModelAdmin):
 
 
 class UserRatingAggregateAdmin(admin.ModelAdmin):
-    list_display = ("start_date", "feedback_count", "feedback_total", "feedback_avg")
+    list_display = ("start_date", "rating_1", "rating_2", "rating_3", "rating_4", "rating_5", "total")
 
     actions = [performance_platform_export]
 
