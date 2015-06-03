@@ -4,35 +4,49 @@
 {% load staticfiles %}
 {% load form_widgets %}
 
-{% block page_title %}{% trans "Your finances" %} - {{ block.super }}{% endblock %}
+{% block page_title %}
+    {% if your_finances.nojs != "nojs_last_step" %}
+        {% blocktrans %}Your finances{% endblocktrans %}
+    {% else %}
+        {% blocktrans %}Your finances continued{% endblocktrans %}
+    {% endif %}
+     - {{ block.super }}
+{% endblock %}
 
 {% block page_content %}
 <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
 
     {% csrf_token %}
 
-    {% with forms.0 as form %}
-    
-        {% if form.errors %}
-        <section class="error-summary">
-            <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
+    {% no_js form %}
 
-            <p>{% trans "See highlighted errors below." %}</p>
-            
-            <ul>
-            {% for field in form %}
-                {% if field.errors %}
-                <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
-                {% endif %}
-            {% endfor %}
-            </ul>
-        </section>
-        {% endif %}
+    {% if form.errors %}
+    <section class="error-summary">
+        <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
+
+        <p>{% trans "See highlighted errors below." %}</p>
+
+        <ul>
+        {% for field in form %}
+            {% if field.errors %}
+            <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
 
     <header class="content-header">
-        <h1>{% trans "Your finances" %}</h1>
+        <h1>
+        {% if your_finances.nojs != "nojs_last_step" %}
+            {% blocktrans %}Your finances{% endblocktrans %}
+        {% else %}
+            {% blocktrans %}Your finances continued{% endblocktrans %}
+        {% endif %}
+        </h1>
     </header>
 
+    {% if your_finances.nojs != "nojs_last_step" %}
     <div class="panel-grey">
         <p>{% trans "For this type of offence you'll usually have to pay a fine:" %}</p>
         <ul>
@@ -41,21 +55,26 @@
             <li>{% trans "your details will be stored securely by the court" %}</li>
         </ul>
     </div>
+    {% endif %}
 
+    {% if your_finances.nojs == "nojs_last_step" %}
+    <div class="nojs-hidden">
+        {% radio_field form.you_are %}
+    </div>
+    <div class="form-header js-hidden">
+        <h2><span>You are:</span>
+            {{ form.you_are.value }}
+        </h2>
+        <a href="{{ request.path }}?reset">Change</a>
+    </div>
+    {% else %}
+    {{ form.nojs_trigger_submitted }}
     {% radio_field form.you_are %}
+    {% endif %}
 
-    <ul class="js-hidden go-to">
-        <li>{% blocktrans %}If you answered <em>Employed</em>, fill in the section <a href="#section-employed">"You are: Employed"</a>{% endblocktrans %}</li>
-        <li>{% blocktrans %}If you answered <em>Self-employed</em>, fill in the section <a href="#section-self-employed">"You are: Self-employed"</a>{% endblocktrans %}</li>
-        <li>{% blocktrans %}If you answered <em>Receiving benefits</em>, fill in the section <a href="#section-receiving-benefits">"You are: Receiving benefits"</a>{% endblocktrans %}</li>
-        <li>{% blocktrans %}If you answered <em>Other</em>, fill in the section <a href="#section-other">"You are: Other"</a>{% endblocktrans %}</li>
-    </ul>
-        
-    <div id="section-employed" class="js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Employed">
+    <div id="section-employed" class="js-Conditional{% if your_finances.nojs != "nojs_last_step" or form.you_are.value != "Employed" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Employed">
 
-        <h3 class="js-hidden">{% trans "You are: Employed" %}</h3>
-
-        <div class="panel-indent move-up">
+        <div class="panel-indent">
 
             {% radio_field form.employed_take_home_pay_period hide_optional=True %}
 
@@ -71,16 +90,13 @@
         </div>
     </div>
 
-    <div id="section-self-employed" class="js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Self-employed">
+    <div id="section-self-employed" class="js-Conditional{% if your_finances.nojs != "nojs_last_step" or form.you_are.value != "Self-employed" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Self-employed">
 
-        <h3 class="js-hidden">{% trans "You are: Self-employed" %}</h3>
-
-        <div class="panel-indent move-up">
+        <div class="panel-indent">
 
             {% radio_field form.self_employed_pay_period hide_optional=True %}
 
             <div id="section-self-employed-other" class="form-group move-up js-Conditional" data-conditional-trigger="self_employed_pay_period" data-conditional-value="Self-employed other">
-                <h4 class="heading-small js-hidden">If you answered "Other":</h4>
                 {% std_field form.self_employed_pay_other hide_optional=True %}
             </div>
 
@@ -96,11 +112,9 @@
         </div>
     </div>
 
-    <div id="section-receiving-benefits" class="js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Receiving benefits">
+    <div id="section-receiving-benefits" class="js-Conditional{% if your_finances.nojs != "nojs_last_step" or form.you_are.value != "Receiving benefits" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Receiving benefits">
 
-        <h3 class="js-hidden">{% trans "You are: Receiving benefits" %}</h3>
-
-        <div class="panel-indent move-up">
+        <div class="panel-indent">
 
             {% std_field form.benefits_details hide_optional=True %}
 
@@ -109,7 +123,6 @@
             {% radio_field form.benefits_period hide_optional=True %}
 
             <div id="section-benefits-other" class="form-group move-up js-Conditional" data-conditional-trigger="benefits_period" data-conditional-value="Benefits other">
-                <h4 class="heading-small js-hidden">If you answered "Other":</h4>
                 {% std_field form.benefits_pay_other hide_optional=True %}
             </div>
 
@@ -125,11 +138,9 @@
         </div>
     </div>
 
-    <div id="section-other" class="js-hidden js-Conditional" data-conditional-trigger="you_are" data-conditional-value="Other">
+    <div id="section-other" class="js-Conditional{% if your_finances.nojs != "nojs_last_step" or form.you_are.value != "Other" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Other">
 
-        <h3 class="js-hidden">{% trans "You are: Other" %}</h3>
-
-        <div class="panel-indent move-up">
+        <div class="panel-indent">
 
             {% std_field form.other_details hide_optional=True %}
 
@@ -144,8 +155,6 @@
 
         </div>
     </div>
-
-    {% endwith %}
 
     <div class="form-submit">
         <button class="button" type="submit">{% trans "Continue" %}</button>
