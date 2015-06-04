@@ -34,7 +34,16 @@ def performance_platform_export(modeladmin, request, queryset):
         rating_5 = unicode(data.rating_5)
         total = unicode(data.total)
 
-        writer.writerow([start_date, u"week", "", "", rating_1, rating_2, rating_3, rating_4, rating_5, total])
+        writer.writerow([start_date,
+                         "week",
+                         "overall",
+                         "Overall, how satisfied were you with this service?",
+                         rating_1,
+                         rating_2,
+                         rating_3,
+                         rating_4,
+                         rating_5,
+                         total])
 
     return response
 performance_platform_export.short_description = "Export for performance platform"
