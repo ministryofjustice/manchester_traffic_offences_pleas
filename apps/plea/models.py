@@ -258,7 +258,7 @@ class Offence(models.Model):
     case = models.ForeignKey(Case, related_name="offences")
 
     offence_code = models.CharField(max_length=10, null=True, blank=True)
-    offence_short_title = models.CharField(max_length=100)
+    offence_short_title = models.CharField(max_length=120)
     offence_wording = models.TextField(max_length=4000)
     offence_seq_number = models.CharField(max_length=10, null=True, blank=True)
 
