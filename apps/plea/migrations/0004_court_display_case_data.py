@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='court',
-            name='validate_urn',
-            field=models.BooleanField(default=False, help_text=b'Do we have a full set of incoming DX data?'),
+            name='display_case_data',
+            field=models.BooleanField(default=False, help_text=b'Display DX offence data on plea page if available?'),
         ),
     ]
