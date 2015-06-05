@@ -45,14 +45,20 @@ class UserRatingAggregateManager(models.Manager):
         except UserRatingAggregate.DoesNotExist:
             aggregate_obj = UserRatingAggregate(
                 start_date=start_date,
-                feedback_count=0,
-                feedback_total=0,
-                feedback_avg=0)
+                rating_1=0,
+                rating_2=0,
+                rating_3=0,
+                rating_4=0,
+                rating_5=0,
+                total=0)
 
-        aggregate_obj.feedback_count += 1
-        aggregate_obj.feedback_total += rating_obj.rating
-        aggregate_obj.feedback_avg = \
-            float(aggregate_obj.feedback_total) / aggregate_obj.feedback_count
+        rating_key = "rating_" + str(rating_obj.rating)
+
+        current_rating = getattr(aggregate_obj, rating_key, 0)
+        current_rating += 1
+
+        setattr(aggregate_obj, rating_key, current_rating)
+        aggregate_obj.total += 1
 
         aggregate_obj.save()
 
@@ -65,9 +71,13 @@ class UserRatingAggregate(models.Model):
 
     start_date = models.DateTimeField()
 
-    feedback_count = models.PositiveIntegerField()
-    feedback_total = models.PositiveIntegerField()
-    feedback_avg = models.DecimalField(max_digits=5, decimal_places=2)
+    rating_1 = models.PositiveIntegerField(default=0)
+    rating_2 = models.PositiveIntegerField(default=0)
+    rating_3 = models.PositiveIntegerField(default=0)
+    rating_4 = models.PositiveIntegerField(default=0)
+    rating_5 = models.PositiveIntegerField(default=0)
+
+    total = models.PositiveIntegerField(default=0)
 
     objects = UserRatingAggregateManager()
 
