@@ -6,7 +6,7 @@ from django.forms.widgets import Textarea, RadioSelect
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from .fields import (ERROR_MESSAGES, is_date_in_future, is_date_within_range,
+from .fields import (ERROR_MESSAGES, is_date_in_past, is_date_in_future, is_date_within_range,
                      DSRadioFieldRenderer,
                      DSStackedRadioFieldRenderer,
                      URNField,
@@ -96,9 +96,11 @@ class CaseForm(BasePleaStepForm):
 
     urn = URNField(label=_("Unique reference number (URN)"),
                    required=True,
+                   validators=[is_urn_valid, is_urn_not_used],
                    help_text=_("On page 1 of the pack, in the top right corner.<br>For example, 12/AB/34567/00"),
-                   error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]},
-                   validators=[is_urn_valid, is_urn_not_used])
+                   error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"],
+                                   "is_urn_valid": ERROR_MESSAGES["URN_INVALID"],
+                                   "is_urn_not_used": ERROR_MESSAGES['URN_ALREADY_USED']})
 
     date_of_hearing = forms.DateField(widget=DateWidget,
                                       validators=[is_date_in_future, is_date_within_range],
@@ -106,7 +108,9 @@ class CaseForm(BasePleaStepForm):
                                       label=_("Court hearing date"),
                                       help_text=_("On page 1 of the pack, near the top on the left.<br>For example, 30/07/2014"),
                                       error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"],
-                                                      "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"]})
+                                                      "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"],
+                                                      "is_date_in_future": ERROR_MESSAGES["HEARING_DATE_PASSED"],
+                                                      "is_date_within_range": ERROR_MESSAGES["HEARING_DATE_INCORRECT"]})
 
     number_of_charges = forms.IntegerField(label=_("Number of charges against you"),
                                            widget=forms.TextInput(attrs={"pattern": "[0-9]*",
@@ -137,17 +141,17 @@ class YourDetailsForm(BasePleaStepForm):
                                 error_messages={"required": ERROR_MESSAGES["LAST_NAME_REQUIRED"]})
 
     correct_address = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                              required=True,
-                                              coerce=to_bool,
-                                              choices=YESNO_CHOICES,
-                                              label=_("Is your address on the requisition pack correct?"),
-                                              error_messages={"required": ERROR_MESSAGES["CORRECT_ADDRESS_REQUIRED"]})
+                                             required=True,
+                                             coerce=to_bool,
+                                             choices=YESNO_CHOICES,
+                                             label=_("Is your address on the requisition pack correct?"),
+                                             error_messages={"required": ERROR_MESSAGES["CORRECT_ADDRESS_REQUIRED"]})
 
     updated_address = forms.CharField(widget=forms.Textarea(attrs={"rows": "4", "class": "form-control"}),
-                                  required=False,
-                                  label="",
-                                  help_text=_("If your address is different from the one shown on page 1 of the requisition pack, tell us here:"),
-                                  error_messages={"required": ERROR_MESSAGES["UPDATED_ADDRESS_REQUIRED"]})
+                                      required=False,
+                                      label="",
+                                      help_text=_("If your address is different from the one shown on page 1 of the requisition pack, tell us here:"),
+                                      error_messages={"required": ERROR_MESSAGES["UPDATED_ADDRESS_REQUIRED"]})
 
     contact_number = forms.CharField(widget=forms.TextInput(attrs={"type": "tel", "class": "form-control"}),
                                      required=True,
@@ -166,9 +170,11 @@ class YourDetailsForm(BasePleaStepForm):
 
     date_of_birth = forms.DateField(widget=DateWidget,
                                     required=True,
+                                    validators=[is_date_in_past],
                                     label=_("Date of birth"),
                                     error_messages={"required": ERROR_MESSAGES["DATE_OF_BIRTH_REQUIRED"],
-                                                    "invalid": ERROR_MESSAGES["DATE_OF_BIRTH_INVALID"]})
+                                                    "invalid": ERROR_MESSAGES["DATE_OF_BIRTH_INVALID"],
+                                                    "is_date_in_past": ERROR_MESSAGES["DATE_OF_BIRTH_IN_FUTURE"]})
 
     ni_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                                 required=False,
@@ -201,7 +207,7 @@ class CompanyDetailsForm(BasePleaStepForm):
                                    widget=forms.TextInput(attrs={"class": "form-control"}),
                                    max_length=100,
                                    required=True,
-                                   help_text=_("As written on page 1 of the Postal Requistion we sent you."),
+                                   help_text=_("As written on page 1 of the requisition pack we sent you."),
                                    error_messages={"required": ERROR_MESSAGES["COMPANY_NAME_REQUIRED"]})
 
     correct_address = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
