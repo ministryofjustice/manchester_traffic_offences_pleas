@@ -87,20 +87,26 @@ class UserRatingTestCase(TestCase):
         aggregate = UserRatingAggregate.objects.all()[0]
 
         self.assertEquals(rating.rating, 5)
-        self.assertEquals(aggregate.feedback_count, 1)
-        self.assertEquals(aggregate.feedback_total, 5)
-        self.assertEquals(aggregate.feedback_total, 5.0)
+        self.assertEquals(aggregate.rating_1, 0)
+        self.assertEquals(aggregate.rating_2, 0)
+        self.assertEquals(aggregate.rating_3, 0)
+        self.assertEquals(aggregate.rating_4, 0)
+        self.assertEquals(aggregate.rating_5, 1)
+        self.assertEquals(aggregate.total, 1)
 
-        UserRating.objects.record("1")
+        UserRating.objects.record(1)
 
         self.assertEquals(UserRating.objects.all().count(), 2)
         self.assertEquals(UserRatingAggregate.objects.all().count(), 1)
 
         aggregate = UserRatingAggregate.objects.all()[0]
 
-        self.assertEquals(aggregate.feedback_count, 2)
-        self.assertEquals(aggregate.feedback_total, 6)
-        self.assertEquals(aggregate.feedback_avg, 3.0)
+        self.assertEquals(aggregate.rating_1, 1)
+        self.assertEquals(aggregate.rating_2, 0)
+        self.assertEquals(aggregate.rating_3, 0)
+        self.assertEquals(aggregate.rating_4, 0)
+        self.assertEquals(aggregate.rating_5, 1)
+        self.assertEquals(aggregate.total, 2)
 
     def test_submits_to_correct_week(self):
 
@@ -117,10 +123,16 @@ class UserRatingTestCase(TestCase):
 
         week1, week2 = UserRatingAggregate.objects.all()
 
-        self.assertEquals(week1.feedback_count, 2)
-        self.assertEquals(week1.feedback_total, 6)
-        self.assertEquals(week1.feedback_avg, 3.0)
+        self.assertEquals(week1.rating_1, 1)
+        self.assertEquals(week1.rating_2, 0)
+        self.assertEquals(week1.rating_3, 0)
+        self.assertEquals(week1.rating_4, 0)
+        self.assertEquals(week1.rating_5, 1)
+        self.assertEquals(week1.total, 2)
 
-        self.assertEquals(week2.feedback_count, 1)
-        self.assertEquals(week2.feedback_total, 3)
-        self.assertEquals(week2.feedback_avg, 3.0)
+        self.assertEquals(week2.rating_1, 0)
+        self.assertEquals(week2.rating_2, 0)
+        self.assertEquals(week2.rating_3, 1)
+        self.assertEquals(week2.rating_4, 0)
+        self.assertEquals(week2.rating_5, 0)
+        self.assertEquals(week2.total, 1)
