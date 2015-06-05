@@ -409,6 +409,11 @@ class Court(models.Model):
         default=False,
         help_text="Is this court entry used for testing purposes?")
 
+    validate_urn = models.BooleanField(
+        default=False,
+        help_text="Do we have a full set of incoming DX data?"
+    )
+
     def __unicode__(self):
         return "{} / {} / {}".format(self.court_code,
                                      self.region_code,
