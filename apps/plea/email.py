@@ -48,9 +48,12 @@ def send_plea_email(context_data):
     context_data["email_name"] = " ".join([last_name.upper(), first_name])
     context_data["email_date_of_hearing"] = date_of_hearing.strftime("%Y-%m-%d")
 
-    case = Case()
-    case.urn = context_data["case"]["urn"].upper()
-    case.save()
+    # Get or create case
+    try:
+        case = Case.objects.get(urn__iexact=context_data["case"]["urn"].upper(), sent=False)
+    except Case.DoesNotExist:
+        case = Case(urn=context_data["case"]["urn"].upper(), sent=False)
+        case.save()
 
     if "court" in context_data:
         del context_data["court"]
