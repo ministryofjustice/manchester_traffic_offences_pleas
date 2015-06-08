@@ -13,7 +13,7 @@
     "gulp-imagemin": "^2.2.1",
     "gulp-jshint": "^1.11.0",
     "gulp-load-plugins": "^0.10.0",
-    "gulp-ruby-sass": "^1.0.5",
+    "gulp-ruby-sass": "0.7.1",
     "jshint-stylish": "^2.0.0",
     "run-sequence": "^1.1.0"
   },
