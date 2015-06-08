@@ -1,36 +1,50 @@
 {% load i18n %}
 
 <div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty_{{ forloop.counter }}">
-  <fieldset>
-    {% if form_count > 1 or form.guilty.errors %}
-    <legend class="form-label-bold">
-        {% if form_count > 1 %}
-        <div class="label-line">
-            <span class="label-text">
+    <fieldset>
+
+        {% if form.case_data or form.guilty.errors or form_count > 1 %}
+        <legend class="form-label-bold">
+            <div class="label-line">
+                <span class="label-text">
+            {% if form.case_data %}
+                {{ form.case_data.short_description }}
+            {% else %}
                 {% if case.plea_made_by == "Defendant" %}
                     {% blocktrans with counter=forloop.counter %}Your plea for charge {{ counter }}{% endblocktrans %}
                 {% else %}
                     {% blocktrans with counter=forloop.counter %}Plea for charge {{ counter }}{% endblocktrans %}
                 {% endif %}
-            </span>
-        </div>
+            {% endif %}
+                </span>
+            </div>
+
+            {% if form.case_data %}
+            <details class="charge-details" role="group" data-summary-open="{% trans "Hide charge information" %}">
+                <summary role="button" aria-controls="charge-details-{{ forloop.counter }}" tabindex="0" aria-expanded="false"><span class="summary">{% trans "View charge information" %}</span></summary>
+                <div id="charge-details-{{ forloop.counter }}" class="panel-indent" aria-hidden="true">
+                    <p>{{ form.case_data.long_description }}</p>
+                </div>
+            </details>
+
+            <h4>Your plea for this charge</h4>
+            {% endif %}
+
+            {{ form.guilty.errors }}
+        </legend>
         {% endif %}
+        
+        <div class="form-field">
+            <div class="inline">
 
-        {{ form.guilty.errors }}
-    </legend>
-    {% endif %}
-    
-    <div class="form-field">
-        <div class="inline">
-
-            {% for choice in form.guilty %}
-            <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
-                <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
-                {{ choice.choice_label }}
-            </label>
-            {% endfor %}
-          
+                {% for choice in form.guilty %}
+                <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
+                    <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
+                    {{ choice.choice_label }}
+                </label>
+                {% endfor %}
+              
+            </div>
         </div>
-    </div>
-  </fieldset>
+    </fieldset>
 </div>

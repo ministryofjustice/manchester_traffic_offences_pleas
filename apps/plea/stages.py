@@ -136,6 +136,10 @@ class PleaStage(FormStage):
         else:
             self.form = PleaForms(data)
 
+        # Add case information each individual form if found -- mocking for now:
+        self.form.forms[0].case_data = {"short_description": "Failed to give information",
+                                        "long_description": "On 28/08/2014 at Greater Manchester, having been required by or on behalf of the Chief Officer of Police for Greater Manchester, failed to give information relating to the identification of the driver of a vehicle, namely VAUXHALL INSIGNIA N15REP, who was alleged to have been guilty of an offence. Contrary to section 172(3) of the Road Traffic Act 1988 and Schedule 2 to the Road Traffic Offenders Act 1988."}
+
         formset_has_errors = False
         if self.form.errors:
             for error in self.form.errors:
