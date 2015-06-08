@@ -1,11 +1,15 @@
 {% load i18n %}
-
-
     <tbody>
-    {% for plea in plea.PleaForms %}
-        {% if case.number_of_charges > 1 %}
+    {% for pleaform in plea.PleaForms %}
+        {% if plea.PleaForms|length > 1 or pleaform.title %}
         <tr>
-            <td colspan="2"><h3>{% trans "Charge" %} {{ forloop.counter }}</h3></td>
+            <td colspan="2">
+                {% if pleaform.title  %}
+                <h3>{{ pleaform.title }}</h3>
+                {% else %}
+                <h3>{% trans "Charge" %} {{ forloop.counter }}</h3>
+                {% endif %}
+            </td>
         </tr>
         {% endif %}
         <tr>
@@ -17,30 +21,30 @@
                 {% endif %}
             </th>
             <td>
-                {% if plea.guilty == "guilty" %}
+                {% if pleaform.guilty == "guilty" %}
                     {% trans "Guilty" %}
-                {% elif plea.guilty == "not_guilty" %}
+                {% elif pleaform.guilty == "not_guilty" %}
                     {% trans "Not guilty" %}
                 {% endif %}
             </td>
         </tr>
-        {% if plea.guilty == "guilty" %}
+        {% if pleaform.guilty == "guilty" %}
         <tr>
             <th>
                 {% trans "Mitigation" %}
             </th>
             <td>
-                {{ plea.guilty_extra|linebreaksbr|default:"-" }}
+                {{ pleaform.guilty_extra|linebreaksbr|default:"-" }}
             </td>
         </tr>
         {% endif %}
-        {% if plea.guilty == "not_guilty" %}
+        {% if pleaform.guilty == "not_guilty" %}
         <tr>
             <th>
                 {% trans "Not guilty because" %}
             </th>
             <td>
-                {{ plea.not_guilty_extra|linebreaksbr|default:"-" }}
+                {{ pleaform.not_guilty_extra|linebreaksbr|default:"-" }}
             </td>
         </tr>
         {% endif %}
