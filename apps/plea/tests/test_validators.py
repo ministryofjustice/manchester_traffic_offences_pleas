@@ -1,7 +1,8 @@
 from django.test import TestCase
 from django import forms
+from django.forms import ValidationError
 
-from ..models import Court
+from ..models import Court, Case
 from ..fields import is_urn_valid
 
 
@@ -20,6 +21,22 @@ class UtilsTestCase(TestCase):
             plp_email="test@test.com",
             enabled=True,
             test_mode=False)
+
+    def test_urn_valid_database(self):
+        self.court.validate_urn = True
+        self.court.save()
+
+        case = Case(urn="06/QQ/00000/00", sent=False)
+        case.save()
+
+        self.assertTrue(is_urn_valid("06/QQ/00000/00"))
+
+    def test_urn_invalid_database(self):
+        self.court.validate_urn = True
+        self.court.save()
+
+        with self.assertRaises(ValidationError):
+            is_urn_valid("06/QQ/00000/01")
 
     def test_is_valid_urn_format(self):
         good_urns = [
