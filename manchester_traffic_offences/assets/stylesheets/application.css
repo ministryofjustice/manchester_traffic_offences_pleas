@@ -1105,7 +1105,7 @@ fieldset {
     width: 100%; } }
 
 .validation-summary {
-  border: 3px solid #af1324;
+  border: 3px solid #b10e1e;
   padding: 15px 30px;
   margin-bottom: 30px; }
 
@@ -1130,7 +1130,7 @@ fieldset {
   margin-bottom: 5px; }
 
 .validation-summary a {
-  color: #af1324; }
+  color: #b10e1e; }
 
 .validation-summary .heading-small, .validation-summary h4, .validation-summary h5 {
   margin-top: 15px; }
@@ -1142,7 +1142,7 @@ fieldset {
   line-height: 1.25;
   font-weight: 400;
   text-transform: none;
-  color: #af1324; }
+  color: #b10e1e; }
   @media (max-width: 640px) {
     .validation-message {
       font-size: 14px;
@@ -1269,7 +1269,7 @@ input[type=number] {
   width: 70px; }
 
 .validation-summary {
-  border: 3px solid #af1324;
+  border: 3px solid #b10e1e;
   padding: 15px 30px;
   margin-bottom: 30px; }
 
@@ -1294,7 +1294,7 @@ input[type=number] {
   margin-bottom: 5px; }
 
 .validation-summary a {
-  color: #af1324; }
+  color: #b10e1e; }
 
 .validation-summary .heading-small, .validation-summary h4, .validation-summary h5 {
   margin-top: 15px; }
@@ -1306,7 +1306,7 @@ input[type=number] {
   line-height: 1.25;
   font-weight: 400;
   text-transform: none;
-  color: #af1324; }
+  color: #b10e1e; }
   @media (max-width: 640px) {
     .validation-message {
       font-size: 14px;
@@ -1531,7 +1531,8 @@ legend {
   font-weight: 400;
   text-transform: none;
   padding: 0;
-  margin: 0; }
+  margin: 0;
+  width: 100%; }
   @media (max-width: 640px) {
     legend {
       font-size: 18px;
@@ -1559,7 +1560,7 @@ legend + * {
   margin: 1.625em 0;
   padding: 15px;
   background: #fef7f7;
-  border: 4px solid #af1324; }
+  border: 4px solid #b10e1e; }
   .error-summary h1 {
     margin-top: 0; }
   .error-summary h2 {
@@ -1576,7 +1577,7 @@ legend + * {
 
 .with-error {
   padding-left: 10px;
-  border-left: 4px solid #af1324; }
+  border-left: 4px solid #b10e1e; }
   @media (min-width: 641px) {
     .with-error {
       padding-left: 15px; } }
@@ -1589,7 +1590,7 @@ legend + * {
   text-transform: none;
   margin: .25em 0;
   padding: 0;
-  color: #af1324; }
+  color: #b10e1e; }
   @media (max-width: 640px) {
     .errorlist {
       font-size: 16px;
@@ -1814,16 +1815,18 @@ Main styles
   padding-top: 1em; }
   .section-plea fieldset {
     position: relative; }
-  .section-plea .label-line:before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    border-top: 2px solid #bfc1c3;
-    top: .5em; }
-  .section-plea .label-line .label-text {
-    position: relative;
-    padding-right: 10px;
-    background: #fff; }
+  .section-plea .label-line {
+    position: relative; }
+    .section-plea .label-line:before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      border-top: 2px solid #bfc1c3;
+      bottom: .575em; }
+    .section-plea .label-line .label-text {
+      position: relative;
+      padding-right: 10px;
+      background: #fff; }
   .section-plea .js-Conditional .form-group, .section-plea .js-Conditional .form-group-wide, .section-plea .js-Conditional .form-submit {
     margin-bottom: 0; }
 
@@ -1834,6 +1837,20 @@ Main styles
     color: #6f777b; }
   .form-header-pleas a {
     margin: .25em 0 0; }
+
+.charge-details {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.25;
+  font-weight: 400;
+  text-transform: none;
+  margin-top: .5em; }
+  @media (max-width: 640px) {
+    .charge-details {
+      font-size: 14px;
+      line-height: 1.14286; } }
+  .charge-details .panel-indent {
+    margin-bottom: 0; }
 
 /*== Expenses screen =======================================*/
 #expense-summary th, #expense-summary td {
