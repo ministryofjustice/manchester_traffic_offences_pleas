@@ -199,6 +199,8 @@ class CourtEmailCount(models.Model):
 
 
 class CaseManager(models.Manager):
+    class Meta:
+        ordering = ["offence_seq_number"]
 
     def can_use_urn(self, urn):
         return not self.filter(
