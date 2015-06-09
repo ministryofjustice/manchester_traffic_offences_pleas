@@ -120,10 +120,11 @@ Main styles
 	@include core-16;
 
 	margin-top: .5em;
+}
 
-	.panel-indent {
-		margin-bottom: 0;
-	}
+.js-enabled .charge-details	.details-content {
+	@extend .panel-indent;
+	margin-top: 0;
 }
 
 /*== Expenses screen =======================================*/
