@@ -8,7 +8,7 @@
             <div class="label-line">
                 <span class="label-text">
             {% if form.case_data %}
-                {{ form.case_data.short_description }}
+                {{ form.case_data.offence_short_title }}
             {% else %}
                 {% if case.plea_made_by == "Defendant" %}
                     {% blocktrans with counter=forloop.counter %}Your plea for charge {{ counter }}{% endblocktrans %}
@@ -21,9 +21,9 @@
 
             {% if form.case_data %}
             <div class="charge-details js-Details" data-summary-open="{% trans "Hide charge information" %}">
-                <a class="details-trigger" href="#charge-details"><span class="summary">{% trans "View charge information" %}</span></a>
-                <div class="details-content" id="charge-details">
-                    <p>{{ form.case_data.long_description }}</p>
+                <a class="details-trigger" href="#charge-details-{{ forloop.counter }}"><span class="summary">{% trans "View charge information" %}</span></a>
+                <div class="details-content" id="charge-details-{{ forloop.counter }}">
+                    <p>{{ form.case_data.offence_wording|linebreaksbr }}</p>
                 </div>
             </div>
 
