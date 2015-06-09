@@ -20,12 +20,12 @@
             </div>
 
             {% if form.case_data %}
-            <details class="charge-details" role="group" data-summary-open="{% trans "Hide charge information" %}">
-                <summary role="button" aria-controls="charge-details-{{ forloop.counter }}" tabindex="0" aria-expanded="false"><span class="summary">{% trans "View charge information" %}</span></summary>
-                <div id="charge-details-{{ forloop.counter }}" class="panel-indent" aria-hidden="true">
+            <div class="charge-details js-Details" data-summary-open="{% trans "Hide charge information" %}">
+                <a class="details-trigger" href="#charge-details"><span class="summary">{% trans "View charge information" %}</span></a>
+                <div class="details-content" id="charge-details">
                     <p>{{ form.case_data.long_description }}</p>
                 </div>
-            </details>
+            </div>
 
             <h4>Your plea for this charge</h4>
             {% endif %}

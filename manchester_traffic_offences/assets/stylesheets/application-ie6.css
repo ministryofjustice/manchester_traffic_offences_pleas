@@ -9,10 +9,10 @@
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
+.grid-row, #content, .panel-indent, .js-enabled .charge-details .details-content, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
-  .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+  .grid-row:after, #content:after, .panel-indent:after, .js-enabled .charge-details .details-content:after, fieldset:after, .form-group:after, .form-group-wide:after,
   .column-half .form-group:after, .form-submit:after, .form-block:after {
     content: "";
     display: block;
@@ -33,10 +33,10 @@
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
+.grid-row, #content, .panel-indent, .js-enabled .charge-details .details-content, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
-  .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+  .grid-row:after, #content:after, .panel-indent:after, .js-enabled .charge-details .details-content:after, fieldset:after, .form-group:after, .form-group-wide:after,
   .column-half .form-group:after, .form-submit:after, .form-block:after {
     content: "";
     display: block;
@@ -54,10 +54,10 @@
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
+.grid-row, #content, .panel-indent, .js-enabled .charge-details .details-content, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
-  .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+  .grid-row:after, #content:after, .panel-indent:after, .js-enabled .charge-details .details-content:after, fieldset:after, .form-group:after, .form-group-wide:after,
   .column-half .form-group:after, .form-submit:after, .form-block:after {
     content: "";
     display: block;
@@ -78,10 +78,10 @@
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
+.grid-row, #content, .panel-indent, .js-enabled .charge-details .details-content, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
-  .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+  .grid-row:after, #content:after, .panel-indent:after, .js-enabled .charge-details .details-content:after, fieldset:after, .form-group:after, .form-group-wide:after,
   .column-half .form-group:after, .form-submit:after, .form-block:after {
     content: "";
     display: block;
@@ -95,10 +95,10 @@
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
+.grid-row, #content, .panel-indent, .js-enabled .charge-details .details-content, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
-  .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+  .grid-row:after, #content:after, .panel-indent:after, .js-enabled .charge-details .details-content:after, fieldset:after, .form-group:after, .form-group-wide:after,
   .column-half .form-group:after, .form-submit:after, .form-block:after {
     content: "";
     display: block;
@@ -142,10 +142,10 @@
   width: device-width; }
 @-o-viewport {
   width: device-width; }
-.grid-row, #content, .panel-indent, fieldset, .form-group, .form-group-wide,
+.grid-row, #content, .panel-indent, .js-enabled .charge-details .details-content, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
-  .grid-row:after, #content:after, .panel-indent:after, fieldset:after, .form-group:after, .form-group-wide:after,
+  .grid-row:after, #content:after, .panel-indent:after, .js-enabled .charge-details .details-content:after, fieldset:after, .form-group:after, .form-group-wide:after,
   .column-half .form-group:after, .form-submit:after, .form-block:after {
     content: "";
     display: block;
@@ -289,32 +289,6 @@ summary {
     .button-get-started {
       background-image: url("/static/images/icons/icon-pointer-2x.png");
       background-size: 30px 19px; } }
-
-details {
-  display: block; }
-
-details summary {
-  display: inline-block;
-  color: #005ea5;
-  cursor: pointer;
-  position: relative;
-  margin-bottom: 0.26316em; }
-
-details summary:hover {
-  color: #2e8aca; }
-
-details summary:focus {
-  outline: 3px solid #ffbf47; }
-
-details .summary {
-  text-decoration: underline; }
-
-details .arrow {
-  margin-right: 0.35em;
-  font-style: normal; }
-
-details .panel-indent {
-  margin-top: 0; }
 
 .icon {
   background-position: 0 0;
@@ -612,20 +586,21 @@ ol {
 ol li {
   margin-bottom: 5px; }
 
-.panel-indent {
+.panel-indent, .js-enabled .charge-details .details-content {
   clear: both;
   border-left: 4px solid #bfc1c3;
   padding: 10px 0 10px 15px;
   margin: 30px 15px 45px 0; }
 
-.panel-indent legend {
+.panel-indent legend, .js-enabled .charge-details .details-content legend {
   margin-top: 0; }
 
-.panel-indent p:only-child,
-.panel-indent p:last-child {
+.panel-indent p:only-child, .js-enabled .charge-details .details-content p:only-child,
+.panel-indent p:last-child,
+.js-enabled .charge-details .details-content p:last-child {
   margin-bottom: 0; }
 
-.panel-indent .form-group:last-child, .panel-indent .form-group-wide:last-child, .panel-indent .form-submit:last-child {
+.panel-indent .form-group:last-child, .js-enabled .charge-details .details-content .form-group:last-child, .panel-indent .form-group-wide:last-child, .js-enabled .charge-details .details-content .form-group-wide:last-child, .panel-indent .form-submit:last-child, .js-enabled .charge-details .details-content .form-submit:last-child {
   margin-bottom: 0; }
 
 table {
@@ -1655,7 +1630,7 @@ hr {
   .related h3:first-child {
     margin-top: 10px; }
 
-.panel-indent {
+.panel-indent, .js-enabled .charge-details .details-content {
   padding-top: 0;
   padding-bottom: 0;
   padding-left: 10px; }
@@ -1683,6 +1658,21 @@ p.important, #section_understand .block-label .important {
   padding: 7px 0 0 40px;
   min-height: 27px;
   background: url(../images/icons/icon-important.png) no-repeat top left; }
+
+/*== Details pseudo-element ===============================*/
+.js-Details .details-trigger {
+  display: none; }
+
+.js-enabled .js-Details .details-trigger {
+  display: inline-block;
+  margin-bottom: 0.263158em;
+  text-decoration: none; }
+  .js-enabled .js-Details .details-trigger .arrow {
+    margin-right: .35em; }
+  .js-enabled .js-Details .details-trigger .summary {
+    text-decoration: underline; }
+.js-enabled .js-Details .details-content {
+  display: none; }
 
 /*== JS classes ======================================*/
 .js-hidden {
@@ -1779,8 +1769,9 @@ Main styles
     .charge-details {
       font-size: 14px;
       line-height: 1.14286; } }
-  .charge-details .panel-indent {
-    margin-bottom: 0; }
+
+.js-enabled .charge-details .details-content {
+  margin-top: 0; }
 
 /*== Expenses screen =======================================*/
 #expense-summary th, #expense-summary td {
