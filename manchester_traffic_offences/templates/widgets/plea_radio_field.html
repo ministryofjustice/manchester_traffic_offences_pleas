@@ -23,7 +23,7 @@
             <div class="charge-details js-Details" data-summary-open="{% trans "Hide charge information" %}">
                 <a class="details-trigger" href="#charge-details-{{ forloop.counter }}"><span class="summary">{% trans "View charge information" %}</span></a>
                 <div class="details-content" id="charge-details-{{ forloop.counter }}">
-                    <p>{{ form.case_data.offence_wording|linebreaksbr }}</p>
+                    {{ form.case_data.offence_wording|linebreaks }}
                 </div>
             </div>
 
