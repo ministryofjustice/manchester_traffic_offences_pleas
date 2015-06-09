@@ -1,154 +1,3 @@
-/*! http://mths.be/details v0.1.0 by @mathias | includes http://mths.be/noselect v1.0.3 */
-;(function(document, $) {
-
-	var proto = $.fn,
-	    details,
-	    // :'(
-	    isOpera = Object.prototype.toString.call(window.opera) == '[object Opera]',
-	    // Feature test for native `<details>` support
-	    isDetailsSupported = (function(doc) {
-	    	var el = doc.createElement('details'),
-	    	    fake,
-	    	    root,
-	    	    diff;
-	    	if (!('open' in el)) {
-	    		return false;
-	    	}
-	    	root = doc.body || (function() {
-	    		var de = doc.documentElement;
-	    		fake = true;
-	    		return de.insertBefore(doc.createElement('body'), de.firstElementChild || de.firstChild);
-	    	}());
-	    	el.innerHTML = '<summary>a</summary>b';
-	    	el.style.display = 'block';
-	    	root.appendChild(el);
-	    	diff = el.offsetHeight;
-	    	el.open = true;
-	    	diff = diff != el.offsetHeight;
-	    	root.removeChild(el);
-	    	if (fake) {
-	    		root.parentNode.removeChild(root);
-	    	}
-	    	return diff;
-	    }(document)),
-	    toggleOpen = function($details, $detailsSummary, $detailsNotSummary, toggle) {
-	    	var isOpen = $details.prop('open'),
-	    	    close = isOpen && toggle || !isOpen && !toggle;
-	    	if (close) {
-	    		$details.removeClass('open').prop('open', false).triggerHandler('close.details');
-	    		$detailsSummary.attr('aria-expanded', false);
-	    		$detailsNotSummary.hide();
-	    	} else {
-	    		$details.addClass('open').prop('open', true).triggerHandler('open.details');
-	    		$detailsSummary.attr('aria-expanded', true);
-	    		$detailsNotSummary.show();
-	    	}
-	    };
-
-	/* http://mths.be/noselect v1.0.3 */
-	proto.noSelect = function() {
-
-		// Since the string 'none' is used three times, storing it in a variable gives better results after minification
-		var none = 'none';
-
-		// onselectstart and ondragstart for WebKit & IE
-		// onmousedown for WebKit & Opera
-		return this.bind('selectstart dragstart mousedown', function() {
-			return false;
-		}).css({
-			'MozUserSelect': none,
-			'msUserSelect': none,
-			'webkitUserSelect': none,
-			'userSelect': none
-		});
-
-	};
-
-	// Execute the fallback only if there’s no native `details` support
-	if (isDetailsSupported) {
-
-		details = proto.details = function() {
-
-			return this.each(function() {
-				var $details = $(this),
-				    $summary = $('summary', $details).first();
-				$summary.attr({
-					'role': 'button',
-					'aria-expanded': $details.prop('open')
-				}).on('click', function() {
-					// the value of the `open` property is the old value
-					var close = $details.prop('open');
-					$summary.attr('aria-expanded', !close);
-					$details.triggerHandler((close ? 'close' : 'open') + '.details');
-				});
-			});
-
-		};
-
-		details.support = isDetailsSupported;
-
-	} else {
-
-		details = proto.details = function() {
-
-			// Loop through all `details` elements
-			return this.each(function() {
-
-				// Store a reference to the current `details` element in a variable
-				var $details = $(this),
-				    // Store a reference to the `summary` element of the current `details` element (if any) in a variable
-				    $detailsSummary = $('summary', $details).first(),
-				    // Do the same for the info within the `details` element
-				    $detailsNotSummary = $details.children(':not(summary)'),
-				    // This will be used later to look for direct child text nodes
-				    $detailsNotSummaryContents = $details.contents(':not(summary)');
-
-				// If there is no `summary` in the current `details` element…
-				if (!$detailsSummary.length) {
-					// …create one with default text
-					$detailsSummary = $('<summary>').text('Details').prependTo($details);
-				}
-
-				// Look for direct child text nodes
-				if ($detailsNotSummary.length != $detailsNotSummaryContents.length) {
-					// Wrap child text nodes in a `span` element
-					$detailsNotSummaryContents.filter(function() {
-						// Only keep the node in the collection if it’s a text node containing more than only whitespace
-						// http://www.whatwg.org/specs/web-apps/current-work/multipage/common-microsyntaxes.html#space-character
-						return this.nodeType == 3 && /[^ \t\n\f\r]/.test(this.data);
-					}).wrap('<span>');
-					// There are now no direct child text nodes anymore — they’re wrapped in `span` elements
-					$detailsNotSummary = $details.children(':not(summary)');
-				}
-
-				// Hide content unless there’s an `open` attribute
-				$details.prop('open', typeof $details.attr('open') == 'string');
-				toggleOpen($details, $detailsSummary, $detailsNotSummary);
-
-				// Add `role=button` and set the `tabindex` of the `summary` element to `0` to make it keyboard accessible
-				$detailsSummary.attr('role', 'button').noSelect().prop('tabIndex', 0).on('click', function() {
-					// Focus on the `summary` element
-					$detailsSummary.focus();
-					// Toggle the `open` and `aria-expanded` attributes and the `open` property of the `details` element and display the additional info
-					toggleOpen($details, $detailsSummary, $detailsNotSummary, true);
-				}).keyup(function(event) {
-					if (32 == event.keyCode || (13 == event.keyCode && !isOpera)) {
-						// Space or Enter is pressed — trigger the `click` event on the `summary` element
-						// Opera already seems to trigger the `click` event when Enter is pressed
-						event.preventDefault();
-						$detailsSummary.click();
-					}
-				});
-
-			});
-
-		};
-
-		details.support = isDetailsSupported;
-
-	}
-
-}(document, jQuery));
 /**
  * Fallback for browsers not supporting native trim()
  */
@@ -354,6 +203,135 @@ if(typeof String.prototype.trim !== 'function') {
     init: function() {
       return $('.js-Conditional').each(function() {
         $(this).data('Conditional', new Conditional($(this), $(this).data()));
+      });
+    }
+  };
+
+}());
+/**
+ * Details Element
+ *
+ * Replicate <details> functionality that's entirely cross-browser
+ * compatible and offers options to update text depending on state
+ *
+ * -----------------------------------------------------------------------
+ * Usage:
+ *
+ * <div class="js-Details [open]" data-summary-open="Alternative text">
+ *   <a class="details-trigger" href="#details-content"><span class="summary">View details</span></a>
+ *   <div class="details-content" id="details-content">
+ *     Content here
+ *   </div>
+ * </div>
+ *
+ * If summaryOpen is set, the summary text is replaced when open. Copy in markup
+ * should always be for the closed state.
+ */
+(function() {
+  "use strict";
+
+  window.moj = window.moj || { Modules: {}, Events: $({}) };
+
+  var Details = function($el, options) {
+    this.init($el, options);
+    return this;
+  };
+
+  Details.prototype = {
+
+    init: function($el, options) {
+      
+      $("<i>").addClass("arrow arrow-closed").text("\u25ba").prependTo($('.details-trigger', $el));
+
+      this.cacheElements($el);
+      this.addAriaAttributes();
+      this.bindEvents();
+
+      this.isOpera = Object.prototype.toString.call(window.opera) == "[object Opera]";
+
+      this.openText = this.$details.data("summary-open");
+      this.closedText = this.$summaryText.text();
+
+      this.updateState();
+    },
+
+    cacheElements: function($el) {
+      this.$details = $el;
+      this.$summary = $(".details-trigger", $el);
+      this.$summaryText = $(".summary", this.$summary);
+      this.$content = $(".details-content", $el);
+      this.$icon = $("i.arrow", this.$summary);
+    },
+
+    addAriaAttributes: function() {
+      var id = this.$content.attr("id");
+
+      if (!id) {
+        id = "js-details-" + this.$details.index(".js-Details");
+        this.$content.attr("id", id);
+      }
+
+      this.$summary.attr({
+        "role": "button",
+        "aria-controls": id,
+        "aria-expanded": "false"
+      });
+
+      this.$content.attr({
+        "aria-hidden": "true"
+      });
+    },
+
+    bindEvents: function() {
+      var self = this;
+
+      this.$summary.off("click.details keydown.details").on({
+        "click.details": function(event) {
+          event.preventDefault();
+          self.toggleContent();
+        },
+        "keydown.details": function(event) {
+          if (event.keyCode == 32 || (event.keyCode == 13 && !self.isOpera)) {
+            event.preventDefault();
+            self.$summary.click();
+          }
+        }
+      });
+    },
+
+    updateState: function() {
+      if (this.$details.hasClass("open")) {
+        this.$summary.attr("aria-expanded", "true");
+        this.$content.show().attr("aria-hidden", "false");
+        this.$icon.removeClass("arrow-closed").addClass("arrow-open").text("\u25bc");
+
+        if (this.openText) {
+          this.$summaryText.text(this.openText);
+        }
+      }
+      else {
+        this.$summary.attr("aria-expanded", "false");
+        this.$content.hide().attr("aria-hidden", "true");
+        this.$icon.removeClass("arrow-open").addClass("arrow-closed").text("\u25ba");
+
+        if (this.openText) {
+          this.$summaryText.text(this.closedText);
+        }
+      }
+    },
+
+    toggleContent: function() {
+      this.$details.toggleClass("open");
+      this.updateState();
+    }
+  };
+
+  moj.Modules._Details = Details;
+
+  moj.Modules.Details = {
+    init: function() {
+      return $(".js-Details").each(function() {
+        $(this).data("Details", new Details($(this), $(this).data()));
       });
     }
   };
@@ -647,8 +625,6 @@ $(document).ready(function () {
     jQuery.fx.off = true;
 
     var selectionButtons = new GOVUK.SelectionButtons($("label input[type='radio'], label input[type='checkbox']"));
-
-    $('details').details();
 
     $('[name^=nojs]').remove();
 });
