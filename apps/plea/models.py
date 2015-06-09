@@ -414,6 +414,11 @@ class Court(models.Model):
         help_text="Do we have a full set of incoming DX data?"
     )
 
+    display_case_data = models.BooleanField(
+        default=False,
+        help_text="Display the updated plea page for cases that have offence data attached"
+    )
+
     def __unicode__(self):
         return "{} / {} / {}".format(self.court_code,
                                      self.region_code,
