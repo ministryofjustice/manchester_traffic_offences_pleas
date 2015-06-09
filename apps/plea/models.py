@@ -199,6 +199,8 @@ class CourtEmailCount(models.Model):
 
 
 class CaseManager(models.Manager):
+    class Meta:
+        ordering = ["offence_seq_number"]
 
     def can_use_urn(self, urn):
         return not self.filter(
@@ -412,6 +414,11 @@ class Court(models.Model):
     validate_urn = models.BooleanField(
         default=False,
         help_text="Do we have a full set of incoming DX data?"
+    )
+
+    display_case_data = models.BooleanField(
+        default=False,
+        help_text="Display the updated plea page for cases that have offence data attached"
     )
 
     def __unicode__(self):
