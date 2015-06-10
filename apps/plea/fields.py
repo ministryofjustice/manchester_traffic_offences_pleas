@@ -206,9 +206,9 @@ class DSURNTemplateWidget(DSTemplateWidgetBase):
 
 class DateWidget(MultiWidget):
     def __init__(self, attrs=None):
-        widgets = [DSDateTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-day"}, context={"title": "Day"}),
-                   DSDateTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-month"}, context={"title": "Month"}),
-                   DSDateTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "4", "size": "4", "class": "form-control-year"}, context={"title": "Year"}),
+        widgets = [DSDateTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-day"}, context={"title": _("Day")}),
+                   DSDateTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-month"}, context={"title": _("Month")}),
+                   DSDateTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "4", "size": "4", "class": "form-control-year"}, context={"title": _("Year")}),
                    ]
         super(DateWidget, self).__init__(widgets, attrs)
 
@@ -257,10 +257,10 @@ class DateWidget(MultiWidget):
 
 class URNWidget(MultiWidget):
     def __init__(self, attrs=None):
-        widgets = [DSURNTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-urn-2"}, context={"title": "Part 1"}),
-                   DSURNTemplateWidget(attrs={"pattern": "[A-Z]*", "maxlength": "2", "size": "2", "class": "form-control-urn-2"}, context={"title": "Part 2"}),
-                   DSURNTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "7", "size": "7", "class": "form-control-urn-7"}, context={"title": "Part 3"}),
-                   DSURNTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-urn-2"}, context={"title": "Part 4"}),
+        widgets = [DSURNTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-urn-2"}, context={"title": _("Part 1")}),
+                   DSURNTemplateWidget(attrs={"pattern": "[A-Z]*", "maxlength": "2", "size": "2", "class": "form-control-urn-2"}, context={"title": _("Part 2")}),
+                   DSURNTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "7", "size": "7", "class": "form-control-urn-7"}, context={"title": _("Part 3")}),
+                   DSURNTemplateWidget(attrs={"pattern": "[0-9]*", "maxlength": "2", "size": "2", "class": "form-control-urn-2"}, context={"title": _("Part 4")}),
                    ]
         super(URNWidget, self).__init__(widgets, attrs)
 
