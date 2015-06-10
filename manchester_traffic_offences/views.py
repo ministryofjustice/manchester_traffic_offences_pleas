@@ -25,14 +25,14 @@ def set_language(request):
     A couple of minor amends have been made to enable the view to work
     with a ?lang=cy querystring.
     """
-    next = request.REQUEST.get('next')
+    next = request.GET.get('next')
     if not is_safe_url(url=next, host=request.get_host()):
         next = request.META.get('HTTP_REFERER')
         if not is_safe_url(url=next, host=request.get_host()):
             next = '/'
     response = http.HttpResponseRedirect(next)
 
-    lang_code = request.GET.get('lang', None)
+    lang_code = request.GET.get('lang')
     if lang_code and check_for_language(lang_code):
         if hasattr(request, 'session'):
             request.session['_language'] = lang_code
