@@ -1711,6 +1711,7 @@ p.important, #section_understand .block-label .important {
   margin-bottom: 0.263158em;
   text-decoration: none; }
   .js-enabled .js-Details .details-trigger .arrow {
+    font-style: normal;
     margin-right: .35em; }
   .js-enabled .js-Details .details-trigger .summary {
     text-decoration: underline; }
