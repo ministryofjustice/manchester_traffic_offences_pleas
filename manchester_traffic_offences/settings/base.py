@@ -171,6 +171,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django_extensions',
+    'djcelery',
     'waffle',
     'apps.govuk_utils',
     'moj_template',
