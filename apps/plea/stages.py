@@ -244,8 +244,8 @@ class YourExpensesStage(FormStage):
 
             self.set_next_step("review", skip=["company_finances"])
 
-            total_household = sum(int(clean_data[field] or 0) for field in household_expense_fields)
-            total_other = sum(int(clean_data[field] or 0) for field in other_expense_fields)
+            total_household = sum(float(clean_data[field] or 0) for field in household_expense_fields)
+            total_other = sum(float(clean_data[field] or 0) for field in other_expense_fields)
             total_expenses = total_household + total_other
 
             clean_data['total_household_expenses'] = total_household
