@@ -164,6 +164,8 @@ class TestProcessReceipts(TestCase):
         case_obj = Case.objects.get(pk=self.case.id)
         count_obj = CourtEmailCount.objects.get(pk=self.email_count.id)
 
+        self.assertTrue(case_obj.processed)
+
         self.assertTrue(case_obj.has_action("receipt_success"))
         self.assertEquals(case_obj.sent, count_obj.sent)
         self.assertEquals(case_obj.processed, count_obj.processed)
@@ -361,6 +363,9 @@ class WebHookTestCase(TestCase):
 
         log = ReceiptLog.objects.all()[0]
 
+        case = Case.objects.get(pk=self.case.id)
+
+        self.assertEquals(case.processed, True)
         self.assertEquals(log.total_emails, 1)
         self.assertEquals(log.total_success, 1)
         self.assertEquals(log.total_failed, 0)
