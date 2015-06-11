@@ -220,6 +220,7 @@ def _process_receipts(log_entry):
                     case_obj.add_action("receipt_success", "")
                     status_text.append('Passed: {}'.format(urn))
 
+                case_obj.processed = True
                 case_obj.save()
 
                 # We can't modify the DOH as the hearing time is not provided by
