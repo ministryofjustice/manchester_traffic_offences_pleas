@@ -355,8 +355,8 @@ class CourtManager(models.Manager):
 
     def validate_emails(self, sending_email, receipt_email):
         try:
-            self.get(court_receipt_email=sending_email,
-                     local_receipt_email=receipt_email,
+            self.get(court_receipt_email__iexact=sending_email,
+                     local_receipt_email__iexact=receipt_email,
                      enabled=True)
 
             return True
