@@ -104,6 +104,36 @@ p.important {
 	background: url(../images/icons/icon-important.png) no-repeat top left;
 }
 
+
+
+/*== Details pseudo-element ===============================*/
+.js-Details {
+	.details-trigger {
+		display: none;
+	}
+}
+
+.js-enabled .js-Details {
+
+	.details-trigger {
+		display: inline-block;
+		margin-bottom: 0.263158em;
+		text-decoration: none;
+
+		.arrow {
+			font-style: normal;
+			margin-right: .35em;
+		}
+		.summary {
+			text-decoration: underline;
+		}
+	}
+
+	.details-content {
+		display: none;
+	}
+}
+
 /*== JS classes ======================================*/
 // It turns out that IE6 can handle dat javascriptz
 // So we can override the default from MoJ Template
