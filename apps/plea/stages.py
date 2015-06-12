@@ -14,7 +14,7 @@ from forms import (CaseForm, YourDetailsForm, CompanyDetailsForm,
                    CompanyFinancesForm, ConfirmationForm, RequiredFormSet)
 
 from .fields import ERROR_MESSAGES
-from .models import Court
+from .models import Court, Case, Offence
 
 
 def get_plea_type(context_data):
@@ -34,6 +34,12 @@ def get_plea_type(context_data):
         return "guilty"
     else:
         return "mixed"
+
+def get_case(urn):
+    try:
+        return Case.objects.get(urn__iexact=urn, sent=False)
+    except Case.DoesNotExist:
+        return None
 
 
 class CaseStage(FormStage):
@@ -106,8 +112,32 @@ class PleaStage(FormStage):
     form_class = PleaForm
     dependencies = ["case", "your_details", "company_details"]
 
+    def get_offences(self, urn):
+        offences = []
+        if urn:
+            case = get_case(urn)
+            court = Court.objects.get_by_urn(urn)
+
+            # offence_seq_number is a char field so best to cast and order by
+            # rather than just grabbing case.offences.all() and hoping it's
+            # in the right order
+            if court.display_case_data:
+                offences = Offence.objects.filter(case=case).extra(
+                    select={'seq_number': "cast(coalesce(nullif(offence_seq_number,''),'0') as float)"}
+                ).order_by('seq_number', "id")
+
+        return offences
+
     def load_forms(self, data=None, initial=False):
+        urn = self.all_data["case"].get("urn")
+        # TODO: change this to grabbing by case OU or a FK at some point
+        offences = self.get_offences(urn)
+
         forms_wanted = self.all_data["case"].get("number_of_charges", 1)
+        if offences:
+            forms_wanted = len(offences)
+            self.all_data["case"]["number_of_charges"] = forms_wanted
+
         if data:
             data["form-TOTAL_FORMS"] = forms_wanted
             data["form-MAX_NUM_FORMS"] = forms_wanted
@@ -136,6 +166,13 @@ class PleaStage(FormStage):
         else:
             self.form = PleaForms(data)
 
+        if offences:
+            for idx, plea_form in enumerate(self.form.forms):
+                try:
+                    plea_form.case_data = offences[idx]
+                except IndexError:
+                    pass
+
         formset_has_errors = False
         if self.form.errors:
             for error in self.form.errors:
@@ -146,11 +183,22 @@ class PleaStage(FormStage):
 
     def save_forms(self):
         form_data = {}
+        urn = self.all_data["case"].get("urn")
 
         if hasattr(self.form, "management_form"):
             form_data["PleaForms"] = self.form.cleaned_data
         else:
             form_data.update(self.form.cleaned_data)
+
+        # TODO: change this to grabbing by case OU or a FK at some point
+        offences = self.get_offences(urn)
+
+        if offences:
+            for idx, plea_data in enumerate(form_data["PleaForms"]):
+                try:
+                    plea_data["title"] = offences[idx].offence_short_title
+                except IndexError:
+                    pass
 
         return form_data
 
@@ -205,7 +253,6 @@ class YourMoneyStage(FormStage):
 
         if self.nojs is None or self.nojs == "nojs_last_step":
             if you_are:
-
                 hardship_field = you_are.replace(' ', '_').replace('-', '_').lower() + "_hardship"
 
                 hardship = clean_data.get(hardship_field, False)

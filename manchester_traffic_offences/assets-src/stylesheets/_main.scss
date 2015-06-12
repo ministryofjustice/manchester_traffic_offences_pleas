@@ -78,12 +78,14 @@ Main styles
 	}
 
 	.label-line {
+		position: relative;
+
 		&:before {
 			content: "";
 			position: absolute;
 			width: 100%;
 			border-top: 2px solid $grey-2;
-			top: .5em;
+			bottom: .575em;
 		}
 
 		.label-text {
@@ -112,6 +114,17 @@ Main styles
 	a {
 		margin: .25em 0 0;
 	}
+}
+
+.charge-details {
+	@include core-16;
+
+	margin-top: .5em;
+}
+
+.js-enabled .charge-details .details-content {
+	@extend .panel-indent;
+	margin-top: 0;
 }
 
 /*== Expenses screen =======================================*/

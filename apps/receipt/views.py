@@ -91,8 +91,10 @@ class ReceiptWebhook(View):
                 continue
 
             try:
-                processed, status_text = process_receipt(item["msg"]["subject"],
-                                                         item["msg"]["text"])
+                processed, status = process_receipt(item["msg"]["subject"],
+                                                    item["msg"]["text"])
+
+                status_text.append(status)
 
             except (ReceiptProcessingError, InvalidFormatError) as ex:
                 status_text.append("Processing error {}".format(str(ex)))
