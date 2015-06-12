@@ -75,7 +75,7 @@ class ReceiptWebhook(View):
 
         items = json.loads(data)
 
-        status_text = ["WebHook"]
+        status_text = ["Webhook"]
 
         for item in items:
 

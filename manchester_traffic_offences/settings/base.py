@@ -76,6 +76,9 @@ LOCALE_PATHS = (
     root('../conf/locale'),
 )
 
+# Force admin language
+ADMIN_LANGUAGE_CODE = "en"
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = root('assets', 'uploads')
@@ -125,7 +128,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'apps.govuk_utils.middleware.AdminLocaleURLMiddleware',
 )
 
 ROOT_URLCONF = 'manchester_traffic_offences.urls'
@@ -167,6 +171,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django_extensions',
+    'djcelery',
     'waffle',
     'apps.govuk_utils',
     'moj_template',
