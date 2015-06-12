@@ -30,16 +30,16 @@
         </ul>
 
 
-        <details role="group">
-            <summary role="button" aria-controls="details-content-0" tabindex="0" aria-expanded="false"><span class="summary">{% trans "View court contact details" %}</span></summary>
-            <div id="details-content-0" aria-hidden="true">
+        <div class="js-Details" data-summary-open="{% trans "Hide court contact details" %}">
+            <a class="details-trigger" href="#court-details"><span class="summary">{% trans "View court contact details" %}</span></a>
+            <div class="details-content" id="court-details">
                 <h3 class="heading-small">{% trans "Send letters to:" %}</h3>
                 <address>{{ court.court_address|linebreaksbr }}</address>
 
                 <h3 class="heading-small">{% trans "Send email to:" %}</h3>
                 <p><a href="mailto:{{ court.court_email }}">{{ court.court_email }}</a></p>
             </div>
-        </details>
+        </div>
 
         {% else %}
 

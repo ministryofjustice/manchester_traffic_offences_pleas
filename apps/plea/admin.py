@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.plea.models import UsageStats, Court, Case, CaseAction, CourtEmailCount
+from apps.plea.models import UsageStats, Court, Case, CaseAction, CourtEmailCount, Offence
 
 
 class UsageStatsAdmin(admin.ModelAdmin):
@@ -18,10 +18,14 @@ class InlineCaseAction(admin.StackedInline):
     extra = 0
     readonly_fields = ('date',)
 
+class InlineOffence(admin.StackedInline):
+    model = Offence
+    extra = 0
+
 
 class CaseAdmin(admin.ModelAdmin):
     list_display = ("urn", "name", "sent", "processed")
-    inlines = [InlineCaseAction,]
+    inlines = [InlineCaseAction, InlineOffence]
     search_fields = ["urn"]
 
 class CourtEmailCountAdmin(admin.ModelAdmin):
