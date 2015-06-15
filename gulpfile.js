@@ -44,6 +44,7 @@ gulp.task('sass', function() {
     .src(paths.styles)
     .pipe(sourcemaps.init())
     .pipe(sass({
+      outputStyle: 'compressed',
       includePaths: [
         'node_modules/govuk_frontend_toolkit/',
         'node_modules/govuk_frontend_toolkit/stylesheets/',
