@@ -1,19 +1,24 @@
 var gulp = require('gulp'),
-    plugins = require('gulp-load-plugins')(),
     del = require('del'),
+    imagemin = require('gulp-imagemin'),
+    concat = require('gulp-concat'),
     stylish = require('jshint-stylish'),
+    jshint = require('gulp-jshint'),
     runSequence = require('run-sequence'),
     vinylPaths = require('vinyl-paths'),
     jasmine = require('gulp-jasmine'),
     karma = require('karma'),
     uglify = require('gulp-uglify'),
-    sourcemaps = require('gulp-sourcemaps');
+    sourcemaps = require('gulp-sourcemaps'),
+    sass = require('gulp-sass');
 
 var paths = {
   dest_dir: 'manchester_traffic_offences/assets/',
   src_dir: 'manchester_traffic_offences/assets-src/',
-  styles: ['manchester_traffic_offences/assets-src/stylesheets/**/*.scss',
-           'node_modules/govuk_frontend_toolkit/stylesheets/**/*.scss'],
+  styles: [
+    'manchester_traffic_offences/assets-src/stylesheets/**/*.scss',
+    'node_modules/govuk_frontend_toolkit/stylesheets/**/*.scss'
+  ],
   scripts: [
     'manchester_traffic_offences/assets-src/javascripts/shims/**/*.js',
     'node_modules/govuk_frontend_toolkit/javascripts/vendor/polyfills/bind.js',
@@ -37,10 +42,15 @@ gulp.task('clean', function() {
 gulp.task('sass', function() {
   gulp
     .src(paths.styles)
-    .pipe(plugins.rubySass({
-      loadPath: ['node_modules/govuk_frontend_toolkit/',
-                 'manchester_traffic_offences/assets-src/stylesheets/']
+    .pipe(sourcemaps.init())
+    .pipe(sass({
+      includePaths: [
+        'node_modules/govuk_frontend_toolkit/',
+        'node_modules/govuk_frontend_toolkit/stylesheets/',
+        'manchester_traffic_offences/assets-src/stylesheets/'
+      ]
     }))
+    .pipe(sourcemaps.write('../maps'))
     .pipe(gulp.dest(paths.dest_dir + 'stylesheets'));
 });
 
@@ -55,7 +65,7 @@ gulp.task('js', function() {
   gulp
     .src(paths.main_scripts)
     .pipe(sourcemaps.init())
-    .pipe(plugins.concat('application.js'))
+    .pipe(concat('application.js'))
     .pipe(uglify())
     .pipe(sourcemaps.write('../maps'))
     .pipe(gulp.dest(paths.dest_dir + 'javascripts'));
@@ -68,7 +78,7 @@ gulp.task('js', function() {
   // create debug js file
   gulp
     .src(paths.src_dir + 'javascripts/**/*debug*')
-    .pipe(plugins.concat('debug.js'))
+    .pipe(concat('debug.js'))
     .pipe(gulp.dest(paths.dest_dir + 'javascripts/'));
 });
 
@@ -84,8 +94,8 @@ gulp.task('lint', function() {
 
   gulp
     .src(files)
-    .pipe(plugins.jshint())
-    .pipe(plugins.jshint.reporter(stylish));
+    .pipe(jshint())
+    .pipe(jshint.reporter(stylish));
 });
 
 // JS Tests
@@ -101,7 +111,7 @@ gulp.task('test', function (done) {
 gulp.task('images', function() {
   gulp
     .src(paths.images)
-    .pipe(plugins.imagemin({optimizationLevel: 5}))
+    .pipe(imagemin({optimizationLevel: 5}))
     .pipe(gulp.dest(paths.dest_dir + 'images'));
 });
 
