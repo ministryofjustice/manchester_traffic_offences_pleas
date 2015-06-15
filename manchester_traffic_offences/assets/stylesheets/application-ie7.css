@@ -1,14 +1,19 @@
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row, #content, .panel-indent, .js-enabled .charge-details .details-content, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
@@ -21,18 +26,25 @@
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row, #content, .panel-indent, .js-enabled .charge-details .details-content, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
@@ -54,8 +66,10 @@
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row, #content, .panel-indent, .js-enabled .charge-details .details-content, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
@@ -67,19 +81,26 @@
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @font-face {
   font-family: GDS-Logo;
   src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row, #content, .panel-indent, .js-enabled .charge-details .details-content, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
@@ -91,12 +112,16 @@
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row, #content, .panel-indent, .js-enabled .charge-details .details-content, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
@@ -118,6 +143,7 @@
 
 .example-highlight-grid .grid-row {
   background: #bfc1c3; }
+
 .example-highlight-grid .column-highlight {
   background: #dee0e2;
   width: 100%; }
@@ -144,8 +170,10 @@
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 .grid-row, #content, .panel-indent, .js-enabled .charge-details .details-content, fieldset, .form-group, .form-group-wide,
 .column-half .form-group, .form-submit, .form-block {
   zoom: 1; }
@@ -157,8 +185,10 @@
 
 @-ms-viewport {
   width: device-width; }
+
 @-o-viewport {
   width: device-width; }
+
 /*  
 ====================================================
 Typography
@@ -215,27 +245,47 @@ summary {
   vertical-align: top; }
   .button:visited, .button-large:visited {
     background-color: #00823b; }
-  .button:hover, .button-large:hover, .button:focus, .button-large:focus {
+  .button:hover,
+  .button-large:hover,
+  .button:focus, .button-large:focus {
     background-color: #00692f; }
   .button:active, .button-large:active {
     top: 2px;
     -webkit-box-shadow: 0 0 0 #00823b;
     -moz-box-shadow: 0 0 0 #00823b;
     box-shadow: 0 0 0 #00823b; }
-  .button.disabled, .disabled.button-large, .button[disabled="disabled"], [disabled="disabled"].button-large, .button[disabled], [disabled].button-large {
+  .button.disabled,
+  .disabled.button-large,
+  .button[disabled="disabled"],
+  [disabled="disabled"].button-large,
+  .button[disabled], [disabled].button-large {
     zoom: 1;
     filter: alpha(opacity=50);
     opacity: 0.5; }
-    .button.disabled:hover, .disabled.button-large:hover, .button[disabled="disabled"]:hover, [disabled="disabled"].button-large:hover, .button[disabled]:hover, [disabled].button-large:hover {
+    .button.disabled:hover,
+    .disabled.button-large:hover,
+    .button[disabled="disabled"]:hover,
+    [disabled="disabled"].button-large:hover,
+    .button[disabled]:hover, [disabled].button-large:hover {
       cursor: default;
       background-color: #00823b; }
-    .button.disabled:active, .disabled.button-large:active, .button[disabled="disabled"]:active, [disabled="disabled"].button-large:active, .button[disabled]:active, [disabled].button-large:active {
+    .button.disabled:active,
+    .disabled.button-large:active,
+    .button[disabled="disabled"]:active,
+    [disabled="disabled"].button-large:active,
+    .button[disabled]:active, [disabled].button-large:active {
       top: 0;
       -webkit-box-shadow: 0 2px 0 #003518;
       -moz-box-shadow: 0 2px 0 #003518;
       box-shadow: 0 2px 0 #003518;
       border-bottom: 2px solid #003518; }
-  .button:link, .button-large:link, .button:hover, .button-large:hover, .button:focus, .button-large:focus, .button:visited, .button-large:visited {
+  .button:link,
+  .button-large:link,
+  .button:hover,
+  .button-large:hover,
+  .button:focus,
+  .button-large:focus,
+  .button:visited, .button-large:visited {
     color: #fff; }
   .button:before, .button-large:before {
     content: "";
@@ -254,7 +304,11 @@ summary {
     content: none;
     margin-left: 0;
     margin-right: 0; }
-  .button[type="submit"], [type="submit"].button-large, .button[type="reset"], [type="reset"].button-large, .button[type="button"], [type="button"].button-large {
+  .button[type="submit"],
+  [type="submit"].button-large,
+  .button[type="reset"],
+  [type="reset"].button-large,
+  .button[type="button"], [type="button"].button-large {
     filter: chroma(color=#000000); }
   .button[type=submit].button, [type=submit].button-large {
     filter: none; }
@@ -286,7 +340,7 @@ summary {
     .button-get-started {
       font-size: 18px;
       line-height: 1.2; } }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .button-get-started {
       background-image: url("/static/images/icons/icon-pointer-2x.png");
       background-size: 30px 19px; } }
@@ -299,7 +353,7 @@ summary {
   background-image: url("/static/images/icons/icon-calendar.png");
   width: 27px;
   height: 27px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-calendar {
       background-image: url("/static/images/icons/icon-calendar-2x.png");
       background-size: 100%; } }
@@ -308,7 +362,7 @@ summary {
   background-image: url("/static/images/icons/icon-file-download.png");
   width: 30px;
   height: 39px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-download {
       background-image: url("/static/images/icons/icon-file-download-2x.png");
       background-size: 100%; } }
@@ -317,7 +371,7 @@ summary {
   background-image: url("/static/images/icons/icon-important.png");
   width: 34px;
   height: 34px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-important {
       background-image: url("/static/images/icons/icon-important-2x.png");
       background-size: 100%; } }
@@ -326,7 +380,7 @@ summary {
   background-image: url("/static/images/icons/icon-information.png");
   width: 27px;
   height: 27px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-information {
       background-image: url("/static/images/icons/icon-information-2x.png");
       background-size: 100%; } }
@@ -335,7 +389,7 @@ summary {
   background-image: url("/static/images/icons/icon-locator.png");
   width: 26px;
   height: 36px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-locator {
       background-image: url("/static/images/icons/icon-locator-2x.png");
       background-size: 100%; } }
@@ -345,7 +399,7 @@ summary {
   width: 30px;
   height: 22px;
   background-color: black; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-search {
       background-image: url("/static/images/icons/icon-search-2x.png");
       background-size: 100%; } }
@@ -355,7 +409,7 @@ summary {
   width: 30px;
   height: 19px;
   background-color: black; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-pointer {
       background-image: url("/static/images/icons/icon-pointer-2x.png");
       background-size: 100%; } }
@@ -364,7 +418,7 @@ summary {
   background-image: url("/static/images/icons/icon-pointer-black.png");
   width: 23px;
   height: 23px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-pointer-black {
       background-image: url("/static/images/icons/icon-pointer-black-2x.png");
       background-size: 100%; } }
@@ -373,7 +427,7 @@ summary {
   background-image: url("/static/images/icons/icon-steps/icon-step-1.png");
   width: 23px;
   height: 23px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-1 {
       background-image: url("/static/images/icons/icon-steps/icon-step-1-2x.png");
       background-size: 100%; } }
@@ -382,7 +436,7 @@ summary {
   background-image: url("/static/images/icons/icon-steps/icon-step-2.png");
   width: 23px;
   height: 23px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-2 {
       background-image: url("/static/images/icons/icon-steps/icon-step-2-2x.png");
       background-size: 100%; } }
@@ -391,7 +445,7 @@ summary {
   background-image: url("/static/images/icons/icon-steps/icon-step-3.png");
   width: 23px;
   height: 23px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-3 {
       background-image: url("/static/images/icons/icon-steps/icon-step-3-2x.png");
       background-size: 100%; } }
@@ -400,7 +454,7 @@ summary {
   background-image: url("/static/images/icons/icon-steps/icon-step-4.png");
   width: 23px;
   height: 23px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-4 {
       background-image: url("/static/images/icons/icon-steps/icon-step-4-2x.png");
       background-size: 100%; } }
@@ -409,7 +463,7 @@ summary {
   background-image: url("/static/images/icons/icon-steps/icon-step-5.png");
   width: 23px;
   height: 23px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-5 {
       background-image: url("/static/images/icons/icon-steps/icon-step-5-2x.png");
       background-size: 100%; } }
@@ -418,7 +472,7 @@ summary {
   background-image: url("/static/images/icons/icon-steps/icon-step-6.png");
   width: 23px;
   height: 23px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-6 {
       background-image: url("/static/images/icons/icon-steps/icon-step-6-2x.png");
       background-size: 100%; } }
@@ -427,7 +481,7 @@ summary {
   background-image: url("/static/images/icons/icon-steps/icon-step-7.png");
   width: 23px;
   height: 23px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-7 {
       background-image: url("/static/images/icons/icon-steps/icon-step-7-2x.png");
       background-size: 100%; } }
@@ -436,7 +490,7 @@ summary {
   background-image: url("/static/images/icons/icon-steps/icon-step-8.png");
   width: 23px;
   height: 23px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-8 {
       background-image: url("/static/images/icons/icon-steps/icon-step-8-2x.png");
       background-size: 100%; } }
@@ -445,7 +499,7 @@ summary {
   background-image: url("/static/images/icons/icon-steps/icon-step-9.png");
   width: 23px;
   height: 23px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-9 {
       background-image: url("/static/images/icons/icon-steps/icon-step-9-2x.png");
       background-size: 100%; } }
@@ -454,7 +508,7 @@ summary {
   background-image: url("/static/images/icons/icon-steps/icon-step-10.png");
   width: 23px;
   height: 23px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-10 {
       background-image: url("/static/images/icons/icon-steps/icon-step-10-2x.png");
       background-size: 100%; } }
@@ -463,7 +517,7 @@ summary {
   background-image: url("/static/images/icons/icon-steps/icon-step-11.png");
   width: 23px;
   height: 23px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-11 {
       background-image: url("/static/images/icons/icon-steps/icon-step-11-2x.png");
       background-size: 100%; } }
@@ -472,7 +526,7 @@ summary {
   background-image: url("/static/images/icons/icon-steps/icon-step-12.png");
   width: 23px;
   height: 23px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-12 {
       background-image: url("/static/images/icons/icon-steps/icon-step-12-2x.png");
       background-size: 100%; } }
@@ -481,7 +535,7 @@ summary {
   background-image: url("/static/images/icons/icon-steps/icon-step-13.png");
   width: 23px;
   height: 23px; }
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20/10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .icon-step-13 {
       background-image: url("/static/images/icons/icon-steps/icon-step-13-2x.png");
       background-size: 100%; } }
@@ -580,7 +634,7 @@ ol {
   list-style-type: none;
   padding: 0; }
 
-.list-bullet, ul, .error-summary ul.list-bullet {
+.list-bullet, ul, .error-summary ul.list-bullet, .error-summary ul {
   list-style-type: disc;
   padding-left: 20px; }
 
@@ -589,15 +643,19 @@ ol {
   padding-left: 20px;
   padding-left: 28px; }
 
-.list-bullet, ul, .error-summary ul.list-bullet,
-.list-number,
-ol {
+.list-bullet,
+ul,
+.error-summary ul.list-bullet,
+.error-summary ul,
+.list-number, ol {
   margin-top: 5px;
   margin-bottom: 20px; }
 
-.list-bullet li, ul li, .error-summary ul.list-bullet li,
-.list-number li,
-ol li {
+.list-bullet li,
+ul li,
+.error-summary ul.list-bullet li,
+.error-summary ul li,
+.list-number li, ol li {
   margin-bottom: 5px; }
 
 .panel-indent, .js-enabled .charge-details .details-content {
@@ -609,9 +667,9 @@ ol li {
 .panel-indent legend, .js-enabled .charge-details .details-content legend {
   margin-top: 0; }
 
-.panel-indent p:only-child, .js-enabled .charge-details .details-content p:only-child,
-.panel-indent p:last-child,
-.js-enabled .charge-details .details-content p:last-child {
+.panel-indent p:only-child,
+.js-enabled .charge-details .details-content p:only-child,
+.panel-indent p:last-child, .js-enabled .charge-details .details-content p:last-child {
   margin-bottom: 0; }
 
 .panel-indent .form-group:last-child, .js-enabled .charge-details .details-content .form-group:last-child, .panel-indent .form-group-wide:last-child, .js-enabled .charge-details .details-content .form-group-wide:last-child, .panel-indent .form-submit:last-child, .js-enabled .charge-details .details-content .form-submit:last-child {
@@ -986,14 +1044,16 @@ fieldset {
     .form-label-bold {
       font-size: 18px;
       line-height: 1.2; } }
-  .form-label-bold .form-hint, .form-label-bold .form-group .form-hint-inline, .form-group .form-label-bold .form-hint-inline, .form-label-bold .form-group-wide .form-hint-inline, .form-group-wide .form-label-bold .form-hint-inline, .form-label-bold .form-submit .form-hint-inline, .form-submit .form-label-bold .form-hint-inline {
+  .form-label-bold .form-hint, .form-label-bold .form-group .form-hint-inline, .form-group .form-label-bold .form-hint-inline, .form-label-bold .form-group-wide .form-hint-inline, .form-group-wide .form-label-bold .form-hint-inline,
+  .form-label-bold .form-submit .form-hint-inline, .form-submit .form-label-bold .form-hint-inline {
     font-family: "nta", Arial, sans-serif;
     font-size: 19px;
     line-height: 1.31579;
     font-weight: 400;
     text-transform: none; }
     @media (max-width: 640px) {
-      .form-label-bold .form-hint, .form-label-bold .form-group .form-hint-inline, .form-group .form-label-bold .form-hint-inline, .form-label-bold .form-group-wide .form-hint-inline, .form-group-wide .form-label-bold .form-hint-inline, .form-label-bold .form-submit .form-hint-inline, .form-submit .form-label-bold .form-hint-inline {
+      .form-label-bold .form-hint, .form-label-bold .form-group .form-hint-inline, .form-group .form-label-bold .form-hint-inline, .form-label-bold .form-group-wide .form-hint-inline, .form-group-wide .form-label-bold .form-hint-inline,
+      .form-label-bold .form-submit .form-hint-inline, .form-submit .form-label-bold .form-hint-inline {
         font-size: 16px;
         line-height: 1.25; } }
 
@@ -1001,7 +1061,8 @@ fieldset {
   float: left;
   width: 100%; }
 
-.form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline, .form-submit .form-hint-inline {
+.form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline,
+.form-submit .form-hint-inline {
   display: block;
   color: #6f777b;
   margin-bottom: 5px;
@@ -1127,6 +1188,7 @@ input[type=number] {
     margin-bottom: 5px; }
   .form-date .form-group input, .form-date .form-group-wide input, .form-date .form-submit input {
     width: 100%; }
+
 .form-date .form-group-year {
   width: 70px; }
 
@@ -1221,6 +1283,7 @@ input[type=number] {
     margin-bottom: 5px; }
   .form-date .form-group input, .form-date .form-group-wide input, .form-date .form-submit input {
     width: 100%; }
+
 .form-date .form-group-year {
   width: 70px; }
 
@@ -1381,7 +1444,10 @@ Forms
   clear: left;
   margin: 0 0 2em;
   max-width: 60%; }
-  .form-group .form-group, .form-group-wide .form-group, .form-submit .form-group, .form-group .form-group-wide, .form-group-wide .form-group-wide, .form-submit .form-group-wide, .form-group .form-submit, .form-group-wide .form-submit, .form-submit .form-submit {
+  .form-group .form-group, .form-group-wide .form-group,
+  .form-submit .form-group, .form-group .form-group-wide, .form-group-wide .form-group-wide,
+  .form-submit .form-group-wide, .form-group .form-submit, .form-group-wide .form-submit,
+  .form-submit .form-submit {
     max-width: 100%; }
   .form-group label, .form-group-wide label,
   .column-half .form-group label, .form-submit label {
@@ -1397,7 +1463,8 @@ Forms
       .column-half .form-group label, .form-submit label {
         font-size: 18px;
         line-height: 1.2; } }
-  .form-group .block-label, .form-group-wide .block-label, .form-submit .block-label {
+  .form-group .block-label, .form-group-wide .block-label,
+  .form-submit .block-label {
     font-family: "nta", Arial, sans-serif;
     font-size: 24px;
     line-height: 1.25;
@@ -1405,14 +1472,19 @@ Forms
     text-transform: none;
     margin-right: 0; }
     @media (max-width: 640px) {
-      .form-group .block-label, .form-group-wide .block-label, .form-submit .block-label {
+      .form-group .block-label, .form-group-wide .block-label,
+      .form-submit .block-label {
         font-size: 18px;
         line-height: 1.2; } }
-    .form-group .block-label input, .form-group-wide .block-label input, .form-submit .block-label input {
+    .form-group .block-label input, .form-group-wide .block-label input,
+    .form-submit .block-label input {
       top: 22px; }
-  .form-group .inline .block-label, .form-group-wide .inline .block-label, .form-submit .inline .block-label {
+  .form-group .inline .block-label, .form-group-wide .inline .block-label,
+  .form-submit .inline .block-label {
     margin-right: 15px; }
-  .form-group .form-hint, .form-group-wide .form-hint, .form-submit .form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline, .form-submit .form-hint-inline {
+  .form-group .form-hint, .form-group-wide .form-hint,
+  .form-submit .form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline,
+  .form-submit .form-hint-inline {
     display: block;
     font-family: "nta", Arial, sans-serif;
     font-size: 16px;
@@ -1420,10 +1492,13 @@ Forms
     font-weight: 400;
     text-transform: none; }
     @media (max-width: 640px) {
-      .form-group .form-hint, .form-group-wide .form-hint, .form-submit .form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline, .form-submit .form-hint-inline {
+      .form-group .form-hint, .form-group-wide .form-hint,
+      .form-submit .form-hint, .form-group .form-hint-inline, .form-group-wide .form-hint-inline,
+      .form-submit .form-hint-inline {
         font-size: 14px;
         line-height: 1.14286; } }
-  .form-group .form-hint-inline, .form-group-wide .form-hint-inline, .form-submit .form-hint-inline {
+  .form-group .form-hint-inline, .form-group-wide .form-hint-inline,
+  .form-submit .form-hint-inline {
     display: inline;
     vertical-align: baseline; }
 
@@ -1440,13 +1515,13 @@ Forms
 .form-control-urn-7, .form-control-wide {
   width: 90%; }
 
-.form-group .button, .form-group-wide .button, .form-submit .button, .form-group .button-large, .form-group-wide .button-large, .form-submit .button-large {
+.form-group .button, .form-group-wide .button,
+.form-submit .button, .form-group .button-large, .form-group-wide .button-large,
+.form-submit .button-large {
   margin-bottom: 0; }
 
 .form-group-wide,
-.column-half .form-group-wide,
-.column-half .form-group,
-.column-half .form-submit {
+.column-half .form-group-wide, .column-half .form-group, .column-half .form-submit {
   max-width: 100%; }
 
 .form-control-inline, .form-control-day,
@@ -1527,7 +1602,8 @@ legend + * {
     list-style: none; }
     .error-summary ul a {
       color: #000; }
-      .error-summary ul a:hover, .error-summary ul a:focus {
+      .error-summary ul a:hover,
+      .error-summary ul a:focus {
         text-decoration: none; }
   .error-summary > :last-child {
     margin-bottom: 0; }
@@ -1559,7 +1635,7 @@ legend + * {
 
 .form-field-prefix {
   float: left;
-  padding: 5px .75em 4px;
+  padding: 5px 0.75em 4px;
   background: #dee0e2;
   border: 1px solid #bfc1c3; }
   .form-field-prefix + input {
@@ -1611,19 +1687,40 @@ legend + * {
     font-weight: 400;
     text-transform: none;
     display: inline-block;
-    margin: 1em 0 .5em; }
+    margin: 1em 0 0.5em; }
     @media (max-width: 640px) {
       .form-header a, .form-header-pleas a {
         font-size: 14px;
         line-height: 1.14286; } }
 
-@font-face {
-  font-family: GDS-Logo;
-  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica"); }
-@-ms-viewport {
-  width: device-width; }
-@-o-viewport {
-  width: device-width; }
+/*  
+====================================================
+Typography
+====================================================
+*/
+#content {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 1.31579;
+  font-weight: 400;
+  text-transform: none; }
+  @media (max-width: 640px) {
+    #content {
+      font-size: 16px;
+      line-height: 1.25; } }
+
+.heading-collapse, .headings-collapse h1, .headings-collapse h2, .headings-collapse h3, .headings-collapse h4, .headings-collapse h5 {
+  margin-bottom: 0 !important; }
+
+ul, ol {
+  margin-left: 0; }
+
+address {
+  font-style: normal; }
+
+summary {
+  margin-left: 0; }
+
 /*  
 ====================================================
 Elements
@@ -1715,6 +1812,7 @@ p.important, #section_understand .block-label .important {
     margin-right: .35em; }
   .js-enabled .js-Details .details-trigger .summary {
     text-decoration: underline; }
+
 .js-enabled .js-Details .details-content {
   display: none; }
 
@@ -1733,6 +1831,7 @@ Main styles
 /*== Start screen ==================================================*/
 .intro h2:first-child {
   margin-top: 0; }
+
 .intro .get-started {
   padding-top: .75em; }
 
@@ -1760,9 +1859,11 @@ Main styles
 /*== Case screen =============================================*/
 .with-help-images .help-image {
   display: none; }
+
 .with-help-images .form-group, .with-help-images .form-group-wide, .with-help-images .form-submit {
   float: left;
   width: 60%; }
+
 .with-help-images .help-image {
   display: block;
   float: right;
@@ -1833,8 +1934,10 @@ Main styles
     #expense-summary th, #expense-summary td {
       font-size: 16px;
       line-height: 1.25; } }
+
 #expense-summary td {
   text-align: right; }
+
 #expense-summary .total th, #expense-summary .total td {
   font-weight: 700; }
 
@@ -1846,7 +1949,7 @@ Main styles
     padding: 1.125em 0 0; }
     .review-table thead th h2 {
       display: inline-block;
-      margin: 0 0 .5em;
+      margin: 0 0 0.5em;
       font-family: "nta", Arial, sans-serif;
       font-size: 24px;
       line-height: 1.25;
@@ -1859,7 +1962,7 @@ Main styles
           line-height: 1.2; } }
     .review-table thead th .change-link {
       float: right;
-      margin: .1em 0 .75em 1em;
+      margin: 0.1em 0 0.75em 1em;
       font-family: "nta", Arial, sans-serif;
       font-size: 19px;
       line-height: 1.31579;
@@ -1916,13 +2019,13 @@ Main styles
   #section_understand .block-label input {
     position: static;
     float: left;
-    margin: 0 .5em;
+    margin: 0 0.5em;
     font-family: "nta", Arial, sans-serif;
     font-size: 24px;
     line-height: 1.25;
     font-weight: 400;
     text-transform: none;
-    margin: .125em .375em; }
+    margin: 0.125em 0.375em; }
     @media (max-width: 640px) {
       #section_understand .block-label input {
         font-size: 18px;
@@ -2033,4 +2136,4 @@ Shame
 ====================================================
 */
 
-/*# sourceMappingURL=application-ie7.css.map */
+/*# sourceMappingURL=../maps/application-ie7.css.map */
