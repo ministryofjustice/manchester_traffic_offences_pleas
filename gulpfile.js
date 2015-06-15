@@ -5,7 +5,9 @@ var gulp = require('gulp'),
     runSequence = require('run-sequence'),
     vinylPaths = require('vinyl-paths'),
     jasmine = require('gulp-jasmine'),
-    karma = require('karma');
+    karma = require('karma'),
+    uglify = require('gulp-uglify'),
+    sourcemaps = require('gulp-sourcemaps');
 
 var paths = {
   dest_dir: 'manchester_traffic_offences/assets/',
@@ -15,6 +17,7 @@ var paths = {
   scripts: [
     'manchester_traffic_offences/assets-src/javascripts/shims/**/*.js',
     'node_modules/govuk_frontend_toolkit/javascripts/vendor/polyfills/bind.js',
+    'node_modules/govuk_frontend_toolkit/javascripts/govuk/selection-buttons.js',
     'manchester_traffic_offences/assets-src/javascripts/modules/**/*.js',
     'manchester_traffic_offences/assets-src/javascripts/application.js'
   ],
@@ -51,7 +54,10 @@ gulp.task('js', function() {
   // create concatenated main js file
   gulp
     .src(paths.main_scripts)
+    .pipe(sourcemaps.init())
     .pipe(plugins.concat('application.js'))
+    .pipe(uglify())
+    .pipe(sourcemaps.write('../maps'))
     .pipe(gulp.dest(paths.dest_dir + 'javascripts'));
 
   // copy static vendor files
