@@ -14,11 +14,11 @@ var paths = {
            'node_modules/govuk_frontend_toolkit/stylesheets/**/*.scss'],
   scripts: [
     'manchester_traffic_offences/assets-src/javascripts/shims/**/*.js',
+    'node_modules/govuk_frontend_toolkit/javascripts/vendor/polyfills/bind.js',
     'manchester_traffic_offences/assets-src/javascripts/modules/**/*.js',
     'manchester_traffic_offences/assets-src/javascripts/application.js'
   ],
   vendor_scripts: 'manchester_traffic_offences/assets-src/javascripts/vendor/**/*.js',
-  govuk_scripts: 'node_modules/govuk_frontend_toolkit/javascripts/**/*.js',
   test_scripts: 'manchester_traffic_offences/assets-src/tests/**/*.js',
   images: 'manchester_traffic_offences/assets-src/images/**/*'
 };
@@ -58,12 +58,6 @@ gulp.task('js', function() {
   gulp
     .src(paths.vendor_scripts)
     .pipe(gulp.dest(paths.dest_dir + 'javascripts/vendor'));
-
-  // Concatenate govuk scripts
-  gulp
-    .src(paths.govuk_scripts)
-    .pipe(plugins.concat('govuk.js'))
-    .pipe(gulp.dest(paths.dest_dir + 'javascripts'));
 
   // create debug js file
   gulp
