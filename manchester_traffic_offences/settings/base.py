@@ -244,6 +244,7 @@ INTERNAL_IPS = ['127.0.0.1']
 BROKER_URL = "SQS://"
 BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1'}
 CELERY_SEND_TASK_ERROR_EMAILS = True
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 
 SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "")
 
