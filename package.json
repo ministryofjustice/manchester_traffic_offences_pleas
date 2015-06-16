@@ -12,6 +12,7 @@
     "govuk_frontend_toolkit": "^4.0.1",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.5.2",
+    "gulp-file": "^0.2.0",
     "gulp-imagemin": "^2.2.1",
     "gulp-jasmine": "^2.0.1",
     "gulp-jshint": "^1.11.0",
