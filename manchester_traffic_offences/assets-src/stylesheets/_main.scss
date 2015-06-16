@@ -23,6 +23,8 @@ Main styles
 
 		strong {
 			@include bold-80();
+			position: relative;
+			top: .075em;
 		}
 	}
 }
