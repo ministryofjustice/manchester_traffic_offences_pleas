@@ -21,7 +21,6 @@ var paths = {
   ],
   scripts: [
     'manchester_traffic_offences/assets-src/javascripts/shims/**/*.js',
-    'node_modules/govuk_frontend_toolkit/javascripts/vendor/polyfills/bind.js',
     'node_modules/govuk_frontend_toolkit/javascripts/govuk/selection-buttons.js',
     'manchester_traffic_offences/assets-src/javascripts/modules/**/*.js',
     'manchester_traffic_offences/assets-src/javascripts/application.js'
