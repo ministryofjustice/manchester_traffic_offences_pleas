@@ -10,7 +10,8 @@ var gulp = require('gulp'),
     karma = require('karma'),
     uglify = require('gulp-uglify'),
     sourcemaps = require('gulp-sourcemaps'),
-    sass = require('gulp-sass');
+    sass = require('gulp-sass'),
+    file = require('gulp-file');
 
 var paths = {
   dest_dir: 'manchester_traffic_offences/assets/',
@@ -34,6 +35,12 @@ gulp.task('clean', function() {
   return gulp
     .src(paths.dest_dir, {read: false})
     .pipe(vinylPaths(del));
+});
+
+// Create healthcheck.txt
+gulp.task('healthcheck', function() {
+  return file('healthcheck.txt', "OK", {src: true})
+    .pipe(gulp.dest(paths.dest_dir));
 });
 
 // compile scss
@@ -125,5 +132,5 @@ gulp.task('watch', function() {
 gulp.task('default', ['build']);
 // run build
 gulp.task('build', function() {
-  runSequence('clean', ['lint', 'js', 'images', 'sass']);
+  runSequence('clean', 'healthcheck', ['lint', 'js', 'images', 'sass']);
 });
