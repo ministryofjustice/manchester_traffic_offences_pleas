@@ -1,24 +1,31 @@
 var gulp = require('gulp'),
-    plugins = require('gulp-load-plugins')(),
     del = require('del'),
+    imagemin = require('gulp-imagemin'),
+    concat = require('gulp-concat'),
     stylish = require('jshint-stylish'),
+    jshint = require('gulp-jshint'),
     runSequence = require('run-sequence'),
     vinylPaths = require('vinyl-paths'),
     jasmine = require('gulp-jasmine'),
-    karma = require('karma');
+    karma = require('karma'),
+    uglify = require('gulp-uglify'),
+    sourcemaps = require('gulp-sourcemaps'),
+    sass = require('gulp-sass'),
+    file = require('gulp-file');
 
 var paths = {
   dest_dir: 'manchester_traffic_offences/assets/',
   src_dir: 'manchester_traffic_offences/assets-src/',
-  styles: ['manchester_traffic_offences/assets-src/stylesheets/**/*.scss',
-           'node_modules/govuk_frontend_toolkit/stylesheets/**/*.scss'],
+  styles: [
+    'manchester_traffic_offences/assets-src/stylesheets/**/*.scss',
+    'node_modules/govuk_frontend_toolkit/stylesheets/**/*.scss'
+  ],
   scripts: [
     'manchester_traffic_offences/assets-src/javascripts/shims/**/*.js',
     'manchester_traffic_offences/assets-src/javascripts/modules/**/*.js',
     'manchester_traffic_offences/assets-src/javascripts/application.js'
   ],
   vendor_scripts: 'manchester_traffic_offences/assets-src/javascripts/vendor/**/*.js',
-  govuk_scripts: 'node_modules/govuk_frontend_toolkit/javascripts/**/*.js',
   test_scripts: 'manchester_traffic_offences/assets-src/tests/**/*.js',
   images: 'manchester_traffic_offences/assets-src/images/**/*'
 };
@@ -30,14 +37,26 @@ gulp.task('clean', function() {
     .pipe(vinylPaths(del));
 });
 
+// Create healthcheck.txt
+gulp.task('healthcheck', function() {
+  return file('healthcheck.txt', "OK", {src: true})
+    .pipe(gulp.dest(paths.dest_dir));
+});
+
 // compile scss
 gulp.task('sass', function() {
   gulp
     .src(paths.styles)
-    .pipe(plugins.rubySass({
-      loadPath: ['node_modules/govuk_frontend_toolkit/',
-                 'manchester_traffic_offences/assets-src/stylesheets/']
+    .pipe(sourcemaps.init())
+    .pipe(sass({
+      outputStyle: 'compressed',
+      includePaths: [
+        'node_modules/govuk_frontend_toolkit/',
+        'node_modules/govuk_frontend_toolkit/stylesheets/',
+        'manchester_traffic_offences/assets-src/stylesheets/'
+      ]
     }))
+    .pipe(sourcemaps.write('../maps'))
     .pipe(gulp.dest(paths.dest_dir + 'stylesheets'));
 });
 
@@ -51,7 +70,10 @@ gulp.task('js', function() {
   // create concatenated main js file
   gulp
     .src(paths.main_scripts)
-    .pipe(plugins.concat('application.js'))
+    .pipe(sourcemaps.init())
+    .pipe(concat('application.js'))
+    .pipe(uglify())
+    .pipe(sourcemaps.write('../maps'))
     .pipe(gulp.dest(paths.dest_dir + 'javascripts'));
 
   // copy static vendor files
@@ -59,16 +81,10 @@ gulp.task('js', function() {
     .src(paths.vendor_scripts)
     .pipe(gulp.dest(paths.dest_dir + 'javascripts/vendor'));
 
-  // Concatenate govuk scripts
-  gulp
-    .src(paths.govuk_scripts)
-    .pipe(plugins.concat('govuk.js'))
-    .pipe(gulp.dest(paths.dest_dir + 'javascripts'));
-
   // create debug js file
   gulp
     .src(paths.src_dir + 'javascripts/**/*debug*')
-    .pipe(plugins.concat('debug.js'))
+    .pipe(concat('debug.js'))
     .pipe(gulp.dest(paths.dest_dir + 'javascripts/'));
 });
 
@@ -84,8 +100,8 @@ gulp.task('lint', function() {
 
   gulp
     .src(files)
-    .pipe(plugins.jshint())
-    .pipe(plugins.jshint.reporter(stylish));
+    .pipe(jshint())
+    .pipe(jshint.reporter(stylish));
 });
 
 // JS Tests
@@ -101,7 +117,7 @@ gulp.task('test', function (done) {
 gulp.task('images', function() {
   gulp
     .src(paths.images)
-    .pipe(plugins.imagemin({optimizationLevel: 5}))
+    .pipe(imagemin({optimizationLevel: 5}))
     .pipe(gulp.dest(paths.dest_dir + 'images'));
 });
 
@@ -116,5 +132,5 @@ gulp.task('watch', function() {
 gulp.task('default', ['build']);
 // run build
 gulp.task('build', function() {
-  runSequence('clean', ['lint', 'js', 'images', 'sass']);
+  runSequence('clean', 'healthcheck', ['lint', 'js', 'images', 'sass']);
 });
