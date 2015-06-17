@@ -76,34 +76,9 @@
         {% for plea_form in form %}
         <section class="section-plea">
 
-            {% if plea.nojs == "nojs_last_step" %}
-            {% add_test_tag "<<NOJSTRIGGERSUMMARY>>" %}
-            <div class="nojs-hidden">
-                {% with plea_form as form %}
-                    {% include "widgets/plea_radio_field.html" %}
-                {% endwith %}
-            </div>
-            <div class="form-header-pleas js-hidden">
-                {% if form_count > 1 or form.guilty.errors %}
-                <fieldset>
-                    <legend class="form-label-bold">
-                    {% if form_count > 1 %}
-                        <div class="label-line">
-                            <span class="label-text">{% blocktrans with counter=forloop.counter %}Charge {{ counter }}{% endblocktrans %}</span>
-                        </div>
-                    {% endif %}
-                    </legend>
-                </fieldset>
-                {% endif %}
-
-                <p class="form-selected">{% if plea_form.guilty.value == "guilty" %}{% trans "Your plea - Guilty" %}{% else %} {% trans "Your plea - Not guilty" %}{% endif %}</p>
-                <a href="{{ request.path }}?reset">{% trans "Change this plea" %}</a>
-            </div>
-            {% else %}
-                {% with plea_form as form %}
-                    {% include "widgets/plea_radio_field.html" %}
-                {% endwith %}
-            {% endif %}
+            {% with plea_form as form %}
+                {% include "widgets/plea_radio_field.html" %}
+            {% endwith %}
 
             <div class="panel-indent" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^(guilty|not_guilty)$">
 
