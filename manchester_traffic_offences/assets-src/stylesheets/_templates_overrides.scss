@@ -16,27 +16,18 @@ GOV.UK Toolkit/Template overrides
 
 .phase-banner {
 	@extend %site-width-container;
-	padding: 0;
-
-	p {
-		display: inline-block;
-		padding: 12px 0 8px;
-	}
+	padding-bottom: 0;
 
 	.phase-tag {
-		@include phase-tag(alpha);
-		margin-top: -3px;
+		@include phase-tag(beta);
+		margin-bottom: 8px;
 		vertical-align: baseline;
 	}
-}
 
-body.beta {
-	.phase-banner {
-		.phase-tag {
-			@include phase-tag(beta);
-			margin-top: -3px;
-			vertical-align: baseline;
-		}	
+	span {
+		width: auto;
+		margin-bottom: 8px;
+		vertical-align: baseline;
 	}
 }
 
