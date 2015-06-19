@@ -111,7 +111,7 @@
 
                     {% std_field plea_form.guilty_extra counter=forloop.counter %}
 
-                    <h4 class="heading-small">{% trans "Pleading guilty to this charge means:" %}</h4>
+                    <h3 class="heading-small">{% trans "Pleading guilty to this charge means:" %}</h3>
                     <ul>
                         {% if case.plea_made_by == "Defendant" %}
                         <li>{% blocktrans %}you <strong>do not</strong> need to come to court to respond to this charge{% endblocktrans %}</li>
@@ -133,7 +133,7 @@
                         {% wide_field plea_form.not_guilty_extra hide_optional=True counter=forloop.counter help_text=_("Tell us why you believe the defendant is not guilty.") %}
                     {% endif %}
 
-                    <h4 class="heading-small">{% trans "Pleading not guilty to this charge means:" %}</h4>
+                    <h3 class="heading-small">{% trans "Pleading not guilty to this charge means:" %}</h3>
                     <ul>
                         {% if case.plea_made_by == "Defendant" %}
                         <li>{% blocktrans %}you <strong>do not</strong> need to come to court on the hearing date in the requisition pack{% endblocktrans %}</li>
