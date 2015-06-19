@@ -1,23 +1,26 @@
 {% load i18n %}
+{% load testing %}
 
 <div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty_{{ forloop.counter }}">
     <fieldset>
 
         {% if form.case_data or form.guilty.errors or form_count > 1 %}
         <legend class="form-label-bold">
+            {% if form.case_data or form_count > 1 %}
             <div class="label-line">
                 <span class="label-text">
-            {% if form.case_data %}
-                {{ form.case_data.offence_short_title }}
-            {% else %}
-                {% if case.plea_made_by == "Defendant" %}
-                    {% blocktrans with counter=forloop.counter %}Your plea for charge {{ counter }}{% endblocktrans %}
+                {% if form.case_data %}
+                    {{ form.case_data.offence_short_title }}
                 {% else %}
-                    {% blocktrans with counter=forloop.counter %}Plea for charge {{ counter }}{% endblocktrans %}
+                    {% if case.plea_made_by == "Defendant" %}
+                        {% blocktrans with counter=forloop.counter %}Your plea for charge {{ counter }}{% endblocktrans %}
+                    {% else %}
+                        {% blocktrans with counter=forloop.counter %}Plea for charge {{ counter }}{% endblocktrans %}
+                    {% endif %}
                 {% endif %}
-            {% endif %}
                 </span>
             </div>
+            {% endif %}
 
             {% if form.case_data %}
             <div class="charge-details js-Details{% if forloop.counter == 1 %} open{% endif %}" data-summary-open="{% trans "Hide charge information" %}">
@@ -26,15 +29,24 @@
                     {{ form.case_data.offence_wording|linebreaks }}
                 </div>
             </div>
-
-            <h3 class="heading-small">Your plea for this charge</h3>
+                {% if plea.nojs != "nojs_last_step" %}
+                <h3 class="heading-small">Your plea for this charge</h3>
+                {% endif %}
             {% endif %}
 
             {{ form.guilty.errors }}
         </legend>
         {% endif %}
         
-        <div class="form-field">
+        {% if plea.nojs == "nojs_last_step" %}
+        {% add_test_tag "<<NOJSTRIGGERSUMMARY>>" %}
+        <div class="form-header-pleas js-hidden">
+            <p class="form-selected">{% trans "Your plea" %} - <strong>{% if plea_form.guilty.value == "guilty" %}{% trans "Guilty" %}{% else %}{% trans "Not guilty" %}{% endif %}</strong></p>
+            <a href="{{ request.path }}?reset">{% trans "Change this plea" %}</a>
+        </div>
+        {% endif %}
+        
+        <div class="form-field{% if plea.nojs == "nojs_last_step" %} nojs-hidden{% endif %}">
             <div class="inline">
 
                 {% for choice in form.guilty %}
@@ -46,5 +58,6 @@
               
             </div>
         </div>
+
     </fieldset>
 </div>
