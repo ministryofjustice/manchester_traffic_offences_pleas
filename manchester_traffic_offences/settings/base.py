@@ -130,6 +130,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'apps.govuk_utils.middleware.AdminLocaleURLMiddleware',
+    'apps.plea.middleware.TimeoutRedirectMiddleware',
 )
 
 ROOT_URLCONF = 'manchester_traffic_offences.urls'
