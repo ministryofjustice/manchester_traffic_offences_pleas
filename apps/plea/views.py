@@ -1,4 +1,5 @@
 from django.utils.decorators import method_decorator
+from django.conf import settings
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import RequestContext, redirect
@@ -78,7 +79,7 @@ class PleaOnlineViews(TemplateView):
 
         return form.render()
 
-    @method_decorator(ratelimit(block=True, rate="20/m"))
+    @method_decorator(ratelimit(block=True, rate=settings.RATE_LIMIT))
     @never_cache
     def post(self, request, stage):
 
