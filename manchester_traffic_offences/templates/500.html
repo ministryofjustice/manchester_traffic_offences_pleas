@@ -2,16 +2,16 @@
 
 {% load i18n %}
 
-{% block title %}{% trans "Page Not found" %}{% endblock %}
+{% block page_title %}{% trans "Service unavailable" %} - {{ block.super }}{% endblock %}
 
 {% block page_content %}
-    <header class="page-header group">
-        <div><h1>{% blocktrans %}<span>Service</span> Make your plea{% endblocktrans %}</h1></div>
+
+    <header class="content-header" style="margin-top:20%;">
+        <h1>{% blocktrans %}We are experiencing technical difficulties{% endblocktrans %}</h1>
     </header>
 
-    <section class="confirmation">
-        <p class="lead"><strong>{% trans "We are experiencing technical difficulties" %}</strong></p>
-        <p>{% trans "The online plea service is not available right now, but we're working hard to get things up and running again." %}<p>
-        <p>{% blocktrans %}<a href="/">Please try again in ten minutes</a> or go to <a href="http://www.gov.uk/">GOV.UK</a>.{% endblocktrans %}</p>
+    <section class="lede">
+        <p>{% blocktrans %}The online plea service is not available right now, but we're working hard to get things up and running again. Try again later.{% endblocktrans %}</p>
     </section>
+
 {% endblock page_content %}
