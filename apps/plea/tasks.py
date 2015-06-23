@@ -29,10 +29,9 @@ def email_send_court(self, case_id, count_id, email_data):
     try:
         court_obj = Court.objects.get_by_urn(email_data["case"]["urn"])
     except Court.DoesNotExist:
-        logger.error("URN does not have a matching Court entry: {}".format(
+        logger.warning("URN does not have a matching Court entry: {}".format(
             email_data["case"]["urn"]))
         raise
-
 
     plea_email_to = [court_obj.submission_email]
 
@@ -56,14 +55,14 @@ def email_send_court(self, case_id, count_id, email_data):
                         email_body,
                         route=smtp_route)
     except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
-        logger.error("Error sending email to court: {0}".format(exc))
+        logger.warning("Error sending email to court: {0}".format(exc))
         case.add_action("Court email network error", unicode(exc))
         email_count.get_status_from_case(case)
         email_count.save()
         case.sent = False
         case.save()
 
-        raise self.retry([case_id, count_id, email_data], exc=exc)
+        raise self.retry(args=[case_id, count_id, email_data], exc=exc)
 
     case.add_action("Court email sent", "Sent mail to {0} via {1}".format(plea_email_to, smtp_route))
 
@@ -71,20 +70,17 @@ def email_send_court(self, case_id, count_id, email_data):
         email_count.get_status_from_case(case)
         email_count.save()
 
-    if court_obj.plp_email:
-        email_send_prosecutor.delay(email_data, case_id)
-
-    email_send_user.delay(email_data, case_id)
+    return True
 
 
 @app.task(bind=True, max_retries=5)
-def email_send_prosecutor(self, email_data, case_id):
+def email_send_prosecutor(self, case_id, email_data):
     smtp_route = "PNN"
 
     try:
         court_obj = Court.objects.get_by_urn(email_data["case"]["urn"])
     except Court.DoesNotExist:
-        logger.error("URN does not have a matching Court entry: {}".format(
+        logger.warning("URN does not have a matching Court entry: {}".format(
             email_data["case"]["urn"]))
         raise
 
@@ -104,9 +100,9 @@ def email_send_prosecutor(self, email_data, case_id):
                            settings.PLEA_EMAIL_BODY,
                            route=smtp_route)
         except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
-            logger.error("Error sending email to prosecutor: {0}".format(exc))
+            logger.warning("Error sending email to prosecutor: {0}".format(exc))
             case.add_action("Prosecutor email network error", unicode(exc))
-            raise self.retry([email_data, case_id], exc=exc)
+            raise self.retry(args=[case_id, email_data], exc=exc)
 
         case.add_action("Prosecutor email sent", "Sent mail to {0} via {1}".format(court_obj.plp_email, smtp_route))
 
@@ -117,7 +113,7 @@ def email_send_prosecutor(self, email_data, case_id):
 
 
 @app.task(bind=True, max_retries=5)
-def email_send_user(self, email_data, case_id):
+def email_send_user(self, case_id, email_data):
     """
     Dispatch an email to the user to confirm that their plea submission
     was successful.
@@ -139,7 +135,7 @@ def email_send_user(self, email_data, case_id):
     try:
         court_obj = Court.objects.get_by_urn(email_data["case"]["urn"])
     except Court.DoesNotExist:
-        logger.error("URN does not have a matching Court entry: {}".format(
+        logger.warning("URN does not have a matching Court entry: {}".format(
             email_data["case"]["urn"]))
         raise
 
@@ -181,9 +177,9 @@ def email_send_user(self, email_data, case_id):
     try:
         email.send(fail_silently=False)
     except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
-        logger.error("Error sending user confirmation email: {0}".format(exc))
+        logger.warning("Error sending user confirmation email: {0}".format(exc))
         case.add_action("User email network error", unicode(exc))
-        raise self.retry([email_data, case_id], exc=exc)
+        raise self.retry(args=[case_id, email_data], exc=exc)
 
     case.add_action("User email sent", "")
 

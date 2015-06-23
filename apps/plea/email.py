@@ -85,4 +85,9 @@ def send_plea_email(context_data):
         email_count.sent = True
         email_count.save()
 
+    if court_obj.plp_email:
+        email_send_prosecutor.delay(case.id, context_data)
+
+    email_send_user.delay(case.id, context_data)
+
     return True
