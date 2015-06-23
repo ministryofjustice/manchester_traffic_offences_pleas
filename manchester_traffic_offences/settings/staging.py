@@ -21,11 +21,12 @@ DATABASES = {
     }
 }
 
-
 SMTP_ROUTES["GSI"]["USERNAME"] = os.environ.get("GSI_EMAIL_USERNAME", "")
 SMTP_ROUTES["GSI"]["PASSWORD"] = os.environ.get("GSI_EMAIL_PASSWORD", "")
 SMTP_ROUTES["PNN"]["USERNAME"] = os.environ.get("PNN_EMAIL_USERNAME", "")
 SMTP_ROUTES["PNN"]["PASSWORD"] = os.environ.get("PNN_EMAIL_PASSWORD", "")
+
+RATE_LIMIT = "120/m"
 
 BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1',
                             'queue_name_prefix': 'staging-',
