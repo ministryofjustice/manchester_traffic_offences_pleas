@@ -23,6 +23,8 @@ Main styles
 
 		strong {
 			@include bold-80();
+			position: relative;
+			top: .075em;
 		}
 	}
 }
@@ -105,10 +107,17 @@ Main styles
 	@extend .form-header;
 
 	border-bottom: none;
+	margin-bottom: 0;
+	margin-top: 1em;
 
 	.form-selected {
+		@include core-24;
 		margin-bottom: 0;
 		color: $grey-1;
+
+		strong {
+			color: $black;
+		}
 	}
 
 	a {
