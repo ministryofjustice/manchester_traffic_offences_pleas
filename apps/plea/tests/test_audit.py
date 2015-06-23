@@ -139,7 +139,7 @@ class CaseCreationTests(TestCase):
             urn="00/AA/00000/00")
 
         try:
-            email_send_user.delay(self.context_data, case.id)
+            email_send_user.delay(case.id, self.context_data)
         except socket.error:
             pass
         except Retry:
