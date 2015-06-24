@@ -32,6 +32,7 @@ GOV.UK Toolkit/Template overrides
 }
 
 #content {
+	outline: none;
 	padding-top: 1px;
 
 	@include ie-lte(8) {

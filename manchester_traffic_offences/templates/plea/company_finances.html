@@ -57,13 +57,13 @@
         {% radio_field form.trading_period %}
     </div>
     <div class="form-header js-hidden">
-        <h3><span>You selected:</span>
+        <h2><span>You selected:</span>
             {% if form.trading_period.value == "True" %}
             The company has been trading for more than 12 months
             {% else %}
             The company has been trading for less than 12 months
             {% endif %}
-        </h3>
+        </h2>
         <a href="{{ request.path }}?reset">Change</a>
     </div>
     {% else %}
@@ -81,7 +81,7 @@
                 <p>{% blocktrans %}From the first 12 months' trading projections, tell us:{% endblocktrans %}</p>
             {% endif %}
         {% else %}
-        <h3 class="heading-medium js-TemplatedElement" data-template-trigger="trading_period" data-template="{% blocktrans %}From the first 12 months' trading projections, tell us:{% endblocktrans %}" data-template-defaults-for="{% trans "Yes" %}">{% blocktrans %}From the most recent audited company accounts, tell us:{% endblocktrans %}</h3>
+        <h2 class="heading-medium js-TemplatedElement" data-template-trigger="trading_period" data-template="{% blocktrans %}From the first 12 months' trading projections, tell us:{% endblocktrans %}" data-template-defaults-for="{% trans "Yes" %}">{% blocktrans %}From the most recent audited company accounts, tell us:{% endblocktrans %}</h2>
         {% endif %}
 
         {% money_field form.gross_turnover hide_optional=True %}
