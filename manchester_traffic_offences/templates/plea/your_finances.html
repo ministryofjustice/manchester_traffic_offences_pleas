@@ -68,8 +68,8 @@
         <a href="{{ request.path }}?reset">Change</a>
     </div>
     {% else %}
-    {{ form.nojs_trigger_submitted }}
-    {% radio_field form.you_are %}
+        {{ form.nojs_trigger_submitted }}
+        {% radio_field form.you_are %}
     {% endif %}
 
     <div id="section-employed" class="js-Conditional{% if your_finances.nojs != "nojs_last_step" or form.you_are.value != "Employed" %} nojs-hidden{% endif %}" data-conditional-trigger="you_are" data-conditional-value="Employed">
@@ -83,7 +83,7 @@
             {% radio_field form.employed_hardship hide_optional=True %}
 
             <div id="employed_hardship-True" class="js-Conditional" data-conditional-trigger="employed_hardship" data-conditional-value="True">
-                <h4 class="heading-small">{% trans "Note:" %}</h4>
+                <h2 class="heading-small">{% trans "Note:" %}</h2>
                 <p>{% trans "For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen." %}</p>
             </div>
 
@@ -105,7 +105,7 @@
             {% radio_field form.self_employed_hardship hide_optional=True %}
 
             <div id="self_employed_hardship-True" class="js-Conditional" data-conditional-trigger="self_employed_hardship" data-conditional-value="True">
-                <h4 class="heading-small">{% trans "Note:" %}</h4>
+                <h2 class="heading-small">{% trans "Note:" %}</h2>
                 <p>{% trans "For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen." %}</p>
             </div>
 
@@ -131,7 +131,7 @@
             {% radio_field form.receiving_benefits_hardship hide_optional=True %}
 
             <div id="receiving_benefits_hardship-True" class="js-Conditional" data-conditional-trigger="receiving_benefits_hardship" data-conditional-value="True">
-                <h4 class="heading-small">{% trans "Note:" %}</h4>
+                <h2 class="heading-small">{% trans "Note:" %}</h2>
                 <p>{% trans "For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen." %}</p>
             </div>
 
@@ -149,7 +149,7 @@
             {% radio_field form.other_hardship hide_optional=True %}
 
             <div id="other_hardship-True" class="js-Conditional" data-conditional-trigger="other_hardship" data-conditional-value="True">
-                <h4 class="heading-small">{% trans "Note:" %}</h4>
+                <h2 class="heading-small">{% trans "Note:" %}</h2>
                 <p>{% trans "For the court to consider a reduction to your fine, you must provide information about your expenses on the next screen." %}</p>
             </div>
 

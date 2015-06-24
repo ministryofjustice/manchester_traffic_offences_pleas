@@ -1,4 +1,4 @@
-<div class="form-group-wide{% if field.errors %} with-error{% endif %}" id="section_{{ field.name }}">
+<div class="form-group-wide{% if field.errors %} with-error{% endif %}" id="section_{{ field.name }}{% if field.counter %}_{{field.counter}}{% endif %}">
     <fieldset>
         <legend class="form-label-bold">
             <span class="label-text">{{ field.label }}</span>
