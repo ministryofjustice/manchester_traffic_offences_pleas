@@ -42,7 +42,7 @@
 
         {% std_field form.company_name %}
 
-        {% std_field form.correct_address %}
+        {% radio_field form.correct_address %}
 
         <div class="form-group-wide move-up js-Conditional" data-conditional-trigger="correct_address" data-conditional-value="False">
             {% std_field form.updated_address hide_optional=True %}
