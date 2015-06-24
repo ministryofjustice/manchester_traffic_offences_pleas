@@ -4,6 +4,7 @@ from django.conf import settings
 from importlib import import_module
 
 from ..views import PleaOnlineForms
+from ..middleware import TimeoutRedirectMiddleware
 
 class TestTimeout(TestCase):
 
@@ -21,6 +22,14 @@ class TestTimeout(TestCase):
         response = self.client.get('/plea/case/')
 
         self.assertEqual(response.has_header('Refresh'), False)
+
+    def test_no_session_in_request(self):
+        request = {}
+        response = {}
+        mw = TimeoutRedirectMiddleware()
+
+        response = mw.process_response(request, response)
+        self.assertTrue(len(response.keys()) == 0)
 
     def test_when_urn_has_refresh_headers(self):
         session = self.session
