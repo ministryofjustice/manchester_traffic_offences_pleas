@@ -24,34 +24,6 @@ Forms
 		max-width: 60%;
 	}
 
-	.form-group {
-		max-width: 100%;
-	}
-
-	label {
-		@include bold-24();
-		display: block;
-		margin-bottom: .25em;
-	}
-
-	.block-label {
-		@include core-24;
-		margin-right: 0;
-
-		@include media(tablet) {			
-			input {
-				top: 22px;
-			}
-		}
-
-		@include ie(6) {
-			display: inline-block;
-			margin-right: 10px;
-			float: left;
-			clear: left;
-		}
-	}
-
 	@include media(tablet) {
 		.inline .block-label {
 			margin-right: 15px;
@@ -64,16 +36,48 @@ Forms
 		}
 	}
 
-	.form-hint {
-		display: block;
-		@include core-16;
+	.form-group {
+		max-width: 100%;
+	}
+}
+
+label {
+	@include core-24;
+	display: block;
+	margin-bottom: .25em;
+}
+
+.block-label {
+	@include core-19;
+	margin-right: 0;
+
+	@include ie(6) {
+		display: inline-block;
+		margin-right: 10px;
+		float: left;
+		clear: left;
 	}
 
-	.form-hint-inline {
-		@extend .form-hint;
-		display: inline;
-		vertical-align: baseline;
+	input {
+		font-size: inherit;
+		top: 16px;
+
+		@include media(tablet) {
+			top: 18px;
+		}
 	}
+}
+
+.form-hint {
+	display: block;
+	margin: .5em 0 .75em;
+	@include core-16;
+}
+
+.form-hint-inline {
+	@extend .form-hint;
+	display: inline;
+	vertical-align: baseline;
 }
 
 .form-control {
@@ -152,7 +156,7 @@ fieldset {
 legend {
 	@include core-24;
 	padding: 0;
-	margin: 0;
+	margin: 0 0 .25em;
 	width: 100%;
 
 	&.form-label {
