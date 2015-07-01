@@ -57,7 +57,7 @@ class HealthCheckTestCase(unittest.TestCase):
         self.assertTrue(output["mandrill"]["ok"])
         self.assertTrue(output["ftp"]["ok"])
 
-        self.assertEquals(output["ok"], True)
+        self.assertTrue(output["ok"])
 
     @patch("apps.monitoring.check_methods.FTP.connect")
     def test_ftp_failure(self, ftp_mock):
