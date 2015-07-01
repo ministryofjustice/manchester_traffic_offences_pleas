@@ -317,10 +317,10 @@ class YourMoneyForm(NoJSPleaStepForm):
     }
 
     you_are = forms.ChoiceField(label=_("Are you?"), choices=YOU_ARE_CHOICES,
-                                widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
+                                widget=forms.RadioSelect(renderer=DSStackedRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
     # Employed
-    employed_take_home_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+    employed_take_home_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSStackedRadioFieldRenderer),
                                                       choices=PERIOD_CHOICES,
                                                       label=_("How often do you get paid?"),
                                                       error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
@@ -344,7 +344,7 @@ class YourMoneyForm(NoJSPleaStepForm):
                                                error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
     # Self-employed
-    self_employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+    self_employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSStackedRadioFieldRenderer),
                                                  choices=SE_PERIOD_CHOICES,
                                                  label=_("How often do you get paid?"),
                                                  error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
@@ -384,7 +384,7 @@ class YourMoneyForm(NoJSPleaStepForm):
                                             label=_("Does this include payment for dependants?"),
                                             error_messages={"required": ERROR_MESSAGES["BENEFITS_DEPENDANTS_REQUIRED"]})
 
-    benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+    benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=DSStackedRadioFieldRenderer),
                                         choices=BEN_PERIOD_CHOICES,
                                         label=_("How often are your benefits paid?"),
                                         error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
