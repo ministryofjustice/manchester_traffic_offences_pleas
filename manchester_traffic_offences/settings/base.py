@@ -301,6 +301,9 @@ USER_DATA_DIRECTORY = os.environ.get('USER_DATA_DIRECTORY', os.path.abspath(here
 GPG_RECIPIENT = os.environ.get('GPG_RECIPIENT', 'test@test.com')
 GPG_HOME_DIRECTORY = os.environ.get('GPG_HOME_DIRECTORY', '/home/vagrant/.gnupg/')
 
+ENV_BASE_URL = os.environ.get("ENV_BASE_URL", "")
+FTP_SERVER_IP = os.environ.get("FTP_SERVER_IP", "")
+
 # .local.py overrides all the common settings.
 try:
     from .local import *
