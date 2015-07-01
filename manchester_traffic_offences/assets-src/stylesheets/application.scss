@@ -15,10 +15,16 @@ $path: '/static/images/';
 @import "stylesheets/design-patterns/alpha-beta";
 
 // GOV.UK Elements
-// @import "elements/reset";
+/*
+ *  SASS is currently still unable to detect
+ *  whether a resource has already been imported.
+ *  To prevent some duplication in the resulting CSS,
+ *  the following have had their GOV.uk Toolkit
+ *  imports removed, as we're already including
+ *  them above.
+ */
 @import "elements/helpers";
 @import "elements/buttons";
-// @import "elements/details";
 @import "elements/icons";
 @import "elements/layout";
 @import "elements/lists";
@@ -26,19 +32,13 @@ $path: '/static/images/';
 @import "elements/tables";
 @import "elements/elements-typography";
 @import "elements/forms";
-@import "elements/forms/form-block-labels";
-@import "elements/forms/form-date";
-@import "elements/forms/form-validation";
 
-
-
-
-// Main CSS
+// Make a Plea CSS
 @import "templates_overrides";
 @import "forms";
 @import "typography";
 @import "elements";
 @import "main";
 
-// Shame !
+// Shame!
 @import "shame";

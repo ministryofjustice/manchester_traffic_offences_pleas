@@ -70,7 +70,7 @@
         {{ form.management_form }}
 
         {% if plea.nojs != "nojs_last_step" %}
-        <h2 class="heading-medium">{% blocktrans with form_count=form_count count charges=charges %}Enter a plea for the charge below{% plural %}Enter {{ form_count }} pleas for the charges below{% endblocktrans %}</h2>
+        <h2 class="font-medium">{% blocktrans with form_count=form_count count charges=charges %}Enter a plea for the charge below{% plural %}Enter {{ form_count }} pleas for the charges below{% endblocktrans %}</h2>
         {% endif %}
 
         {% for plea_form in form %}
@@ -84,7 +84,7 @@
 
                 <section class="js-Conditional js-hidden{% if plea.nojs != "nojs_last_step" or plea_form.guilty.0.value != "guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^guilty$">
 
-                    {% std_field plea_form.guilty_extra counter=forloop.counter %}
+                    {% wide_field plea_form.guilty_extra counter=forloop.counter %}
 
                     <h3 class="heading-small">{% trans "Pleading guilty to this charge means:" %}</h3>
                     <ul>
