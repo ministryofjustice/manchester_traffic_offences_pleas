@@ -269,7 +269,17 @@ Main styles
 	}
 }
 
-.what-next {
+.next-steps {
+	.heading-medium,
+	.heading-small {
+		margin-bottom: .5em;
+		font-weight: 400;
+	}
+
+	.panel-indent {
+		margin-top: .5em;
+	}
+
 	ol {
 		padding: 0;
 
