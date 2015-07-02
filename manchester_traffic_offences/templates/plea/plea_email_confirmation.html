@@ -211,6 +211,18 @@
                         <table width="100%" cellpadding="30">
                             <tr>
                                 <td style="font-family:Arial, Helvetica; line-height: 21px;">
+
+                                {% if plea_type == "guilty" %}
+                                    {% add_test_tag "<<GUILTY>>" %}
+                                {% endif %}
+
+                                {% if plea_type == "not_guilty" %}
+                                    {% add_test_tag "<<NOTGUILTY>>" %}
+                                {% endif %}
+
+                                {% if plea_type == "mixed" %}
+                                    {% add_test_tag "<<MIXED>>" %}
+                                {% endif %}
                                 
                                 {% if plea_made_by == "Defendant" %}
                                     
@@ -242,15 +254,11 @@
 
                                 {% endif %}
 
-                                    
-
-                                    <h2 style="font-size: 25px; margin-top: 50px;">{% trans "What happens next?" %}</h2>
-
-                                    {% if plea_made_by == "Defendant" %}
-                                        {% include "plea/complete/email_html/whats_next_defendant.html" %}
-                                    {% elif plea_made_by == "Company representative" %}
-                                        {% include "plea/complete/email_html/whats_next_company.html" %}
-                                    {% endif %}
+                                {% if plea_made_by == "Defendant" %}
+                                    {% include "plea/complete/email_html/whats_next_defendant.html" %}
+                                {% elif plea_made_by == "Company representative" %}
+                                    {% include "plea/complete/email_html/whats_next_company.html" %}
+                                {% endif %}
 
                                     <h2 style="font-size: 25px; margin-top: 50px;">{% trans "Need to change a plea?" %}</h2>
 
