@@ -10,8 +10,6 @@
 {% blocktrans count charges=number_of_charges %}Your not guilty plea has been sent to the court{% plural %}Your not guilty pleas have been sent to the court{% endblocktrans %}
 {% endif %}
 
-{% trans "What happens next?" %}
-
 {% if plea_made_by == "Defendant" %}
     {% include "plea/complete/email_txt/whats_next_defendant.txt" %}
 {% elif plea_made_by == "Company representative" %}

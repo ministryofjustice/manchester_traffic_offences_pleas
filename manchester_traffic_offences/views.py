@@ -65,9 +65,9 @@ def test_template(request):
     """
     template = "plea/complete.html"
 
-    context = {"plea_type": "guilty",
+    context = {"plea_type": "mixed",
                "case": {"plea_made_by": "Defendant",
-                        "number_of_charges": 1},
+                        "number_of_charges": 3},
                "court": {"court_address": "Court address\nSome Place\nT357TER",
                          "court_email": "email@court.com"}}
 
