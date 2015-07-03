@@ -63,13 +63,21 @@ def test_template(request):
 
     Requires a Waffle switch named 'test_template' and enabled.
     """
-    template = "plea/complete.html"
+    template = "plea/plea_email_confirmation.txt"
 
-    context = {"plea_type": "mixed",
-               "case": {"plea_made_by": "Defendant",
-                        "number_of_charges": 3},
-               "court": {"court_address": "Court address\nSome Place\nT357TER",
-                         "court_email": "email@court.com"}}
+    complete_context = {"plea_type": "mixed",
+                        "case": {"plea_made_by": "Company representative",
+                                 "urn": "51/aa/00000/00",
+                                 "number_of_charges": 1},
+                        "court": {"court_address": "Court address\nSome Place\nT357TER",
+                                  "court_email": "email@court.com"}}
 
-    response = render(request, template, context)
+    email_context = {"plea_type": "mixed",
+                     "plea_made_by": "Company representative",
+                     "number_of_charges": 3,
+                     "urn": "51/aa/00000/00",
+                     "court_address": "Some address\nSomeplace\nT357ER",
+                     "court_email": "court@test.com"}
+
+    response = render(request, template, email_context, content_type="text/plain")
     return response
