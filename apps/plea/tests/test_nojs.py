@@ -32,10 +32,10 @@ class TestNoJS(TestCase):
         request.resolver_match.kwargs = url_kwargs
         return request
 
-    def test_nojs_plea_stage_bad_data_no_trigger_summary(self):
+    def test_split_form_plea_stage_bad_data_no_trigger_summary(self):
         form = PleaOnlineForms("plea", "plea_form_step", self.plea_session)
 
-        form.save({"nojs": "guilty",
+        form.save({"split_form": "guilty",
                    "form-TOTAL_FORMS": "1",
                    "form-INITIAL_FORMS": "0",
                    "form-MAX_NUM_FORMS": "1"},
@@ -46,10 +46,10 @@ class TestNoJS(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "<<NOJSTRIGGERSUMMARY>>")
 
-    def test_nojs_plea_stage_good_data_trigger_summary(self):
+    def test_split_form_plea_stage_good_data_trigger_summary(self):
         form = PleaOnlineForms("plea", "plea_form_step", self.plea_session)
 
-        form.save({"nojs": "guilty",
+        form.save({"split_form": "guilty",
                    "form-TOTAL_FORMS": "1",
                    "form-INITIAL_FORMS": "0",
                    "form-MAX_NUM_FORMS": "1",
@@ -61,10 +61,10 @@ class TestNoJS(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "<<NOJSTRIGGERSUMMARY>>")
 
-    def test_nojs_plea_stage_last_step_summary_and_errors(self):
+    def test_split_form_plea_stage_last_step_summary_and_errors(self):
         form = PleaOnlineForms("plea", "plea_form_step", self.plea_session)
 
-        form.save({"nojs": "nojs_last_step",
+        form.save({"split_form": "split_form_last_step",
                    "form-TOTAL_FORMS": "1",
                    "form-INITIAL_FORMS": "0",
                    "form-MAX_NUM_FORMS": "1",
@@ -77,8 +77,8 @@ class TestNoJS(TestCase):
         self.assertContains(response, "<<NOJSTRIGGERSUMMARY>>")
         self.assertEqual(len(form.current_stage.form.errors), 1)
 
-    def test_nojs_plea_stage_change_link_no_summary(self):
-        self.plea_session.update({"plea": {"nojs": "nojs_last_step",
+    def test_split_form_plea_stage_change_link_no_summary(self):
+        self.plea_session.update({"plea": {"split_form": "split_form_last_step",
                                       "form-0-guilty": "guilty"}})
 
         fake_request = self.get_request_mock("/plea/plea/?reset")
@@ -92,10 +92,10 @@ class TestNoJS(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "<<NOJSTRIGGERSUMMARY>>")
 
-    def test_nojs_plea_stage_submits(self):
+    def test_split_form_plea_stage_submits(self):
         form = PleaOnlineForms("plea", "plea_form_step", self.plea_session)
 
-        form.save({"nojs": "nojs_last_step",
+        form.save({"split_form": "split_form_last_step",
                    "form-TOTAL_FORMS": "1",
                    "form-INITIAL_FORMS": "0",
                    "form-MAX_NUM_FORMS": "1",
@@ -110,10 +110,10 @@ class TestNoJS(TestCase):
         self.assertEqual(response.url, '/plea/review/')
 
 
-    def test_nojs_company_finances_stage_bad_data_no_trigger_summary(self):
+    def test_split_form_company_finances_stage_bad_data_no_trigger_summary(self):
         form = PleaOnlineForms("company_finances", "plea_form_step", self.company_finances_session)
 
-        form.save({"nojs": "trading_period"},
+        form.save({"split_form": "trading_period"},
                   self.request_context)
 
         response = form.render()
@@ -121,10 +121,10 @@ class TestNoJS(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "<<NOJSTRIGGERSUMMARY>>")
 
-    def test_nojs_company_finances_stage_good_data_trigger_summary(self):
+    def test_split_form_company_finances_stage_good_data_trigger_summary(self):
         form = PleaOnlineForms("company_finances", "plea_form_step", self.company_finances_session)
 
-        form.save({"nojs": "trading_period",
+        form.save({"split_form": "trading_period",
                    "trading_period": "True"},
                   self.request_context)
 
@@ -133,10 +133,10 @@ class TestNoJS(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "<<NOJSTRIGGERSUMMARY>>")
 
-    def test_nojs_company_finances_stage_last_step_summary_and_errors(self):
+    def test_split_form_company_finances_stage_last_step_summary_and_errors(self):
         form = PleaOnlineForms("company_finances", "plea_form_step", self.company_finances_session)
 
-        form.save({"nojs": "nojs_last_step",
+        form.save({"split_form": "split_form_last_step",
                    "trading_period": "True"},
                   self.request_context)
 
@@ -146,8 +146,8 @@ class TestNoJS(TestCase):
         self.assertContains(response, "<<NOJSTRIGGERSUMMARY>>")
         self.assertEqual(len(form.current_stage.form.errors), 3)
 
-    def test_nojs_company_finances_stage_change_link_no_summary(self):
-        self.company_finances_session.update({"company_finances": {"nojs": "nojs_last_step",
+    def test_split_form_company_finances_stage_change_link_no_summary(self):
+        self.company_finances_session.update({"company_finances": {"split_form": "split_form_last_step",
                                                                    "trading_period": "True"}})
 
         fake_request = self.get_request_mock("/plea/company_finances/?reset")
@@ -161,10 +161,10 @@ class TestNoJS(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "<<NOJSTRIGGERSUMMARY>>")
 
-    def test_nojs_company_finances_stage_submits(self):
+    def test_split_form_company_finances_stage_submits(self):
         form = PleaOnlineForms("company_finances", "plea_form_step", self.company_finances_session)
 
-        form.save({"nojs": "nojs_last_step",
+        form.save({"split_form": "split_form_last_step",
                    "trading_period": "True",
                    "number_of_employees": "10",
                    "gross_turnover": "19000",
