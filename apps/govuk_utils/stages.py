@@ -75,9 +75,9 @@ class FormStage(object):
         return form_data
 
     def load(self, request_context=None):
-        # Reset nojs state if returning to trigger question
+        # Reset split_form state if returning to trigger question
         if hasattr(request_context, "request") and ("reset" in request_context.request.GET):
-            self.all_data[self.name].pop("nojs", None)
+            self.all_data[self.name].pop("split_form", None)
 
         self.load_forms(initial=True)
 
@@ -89,20 +89,20 @@ class FormStage(object):
 
         self.load_forms(form_data)
 
-        self.nojs = form_data.get("nojs", None)
+        self.split_form = form_data.get("split_form", None)
 
-        clean_data["nojs"] = self.nojs
+        clean_data["split_form"] = self.split_form
 
         if self.form and self.form.is_valid():
             clean_data.update(self.save_forms())
             
-            if self.nojs is None or self.nojs == "nojs_last_step":
+            if self.split_form is None or self.split_form == "split_form_last_step":
                 clean_data["complete"] = True
                 self.next_step = self.get_next(next_step)
             else:
                 self.all_data[self.name].pop("complete", None)
-                self.form.data["nojs"] = "nojs_last_step"
-                clean_data["nojs"] = "nojs_last_step"
+                self.form.data["split_form"] = "split_form_last_step"
+                clean_data["split_form"] = "split_form_last_step"
         
         return clean_data
 

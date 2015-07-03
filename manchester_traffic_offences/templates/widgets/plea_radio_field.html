@@ -29,7 +29,7 @@
                     {{ form.case_data.offence_wording|linebreaks }}
                 </div>
             </div>
-                {% if plea.nojs != "nojs_last_step" %}
+                {% if plea.split_form != "split_form_last_step" %}
                 <h3 class="heading-small">Your plea for this charge</h3>
                 {% endif %}
             {% endif %}
@@ -38,7 +38,7 @@
         </legend>
         {% endif %}
         
-        {% if plea.nojs == "nojs_last_step" %}
+        {% if plea.split_form == "split_form_last_step" %}
         {% add_test_tag "<<NOJSTRIGGERSUMMARY>>" %}
         <div class="form-header-pleas js-hidden">
             <p class="form-selected">{% trans "Your plea" %} - <strong>{% if plea_form.guilty.value == "guilty" %}{% trans "Guilty" %}{% else %}{% trans "Not guilty" %}{% endif %}</strong></p>
@@ -46,7 +46,7 @@
         </div>
         {% endif %}
         
-        <div class="form-field{% if plea.nojs == "nojs_last_step" %} nojs-hidden{% endif %}">
+        <div class="form-field{% if plea.split_form == "split_form_last_step" %} nojs-hidden{% endif %}">
             <div class="inline">
 
                 {% for choice in form.guilty %}
