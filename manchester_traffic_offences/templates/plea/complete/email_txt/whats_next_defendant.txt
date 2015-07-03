@@ -1,27 +1,13 @@
-{% load i18n %}
-{% load counter %}
-
+{% load i18n counter %}
 {% blocktrans %}What happens next{% endblocktrans %}
-{% counter name="c1" %}. {% blocktrans count charges=case.number_of_charges %}We’ll send you a letter with the court’s decision within 3  working days after your hearing date.{% plural %}We’ll send you a letter with the court’s decisions within 3 working days after your hearing date.{% endblocktrans %}
-
-{% if plea_type != "guilty" %}{% counter name="c1" %}. {% blocktrans %}The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.{% endblocktrans %}
-{% endif %}
-
-{% if plea_type != "not_guilty" %}
-{% counter name="c1" %}. {% blocktrans %}The DVLA will contact you if they need you to send in your driving licence.{% endblocktrans %}
-{% endif %}
-
+{% counter name="c1" start=1 %}. {% blocktrans count charges=number_of_charges %}We'll send you a letter with the court's decision within 3 working days after your hearing date.{% plural %}We'll send you a letter with the court's decisions within 3 working days after your hearing date.{% endblocktrans %}{% if plea_type != "guilty" %}
+{% counter name="c1" %}. {% blocktrans %}The court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case.{% endblocktrans %}{% endif %}{% if plea_type != "not_guilty" %}
+{% counter name="c1" %}. {% blocktrans %}The DVLA will contact you if they need you to send in your driving licence.{% endblocktrans %}{% endif %}
 
 {% blocktrans %}What you need to do{% endblocktrans %}
-
-{% counter name="c2" %}. {% blocktrans with urn=case.urn|upper email=court.court_email  %}Quote your URN {{ urn }} if you <a href="mailto:{{ email }}">contact</a> the court about your case.{% endblocktrans %}
-{% counter name="c2" %}{% blocktrans %}<a href="javascript:window.print();">Print a copy</a> of this plea confirmation for your records.{% endblocktrans %}
-
+{% counter name="c2" start=1 %}. {% blocktrans with urn=urn|upper %}Quote your URN {{ urn }} if you contact the court about your case.{% endblocktrans %}
+{% counter name="c2" %}. {% blocktrans %}Print a copy of this plea confirmation for your records.{% endblocktrans %}
 
 {% blocktrans %}What you do not need to do{% endblocktrans %}
-
-{% counter name="not_to_do" %}. {% blocktrans %}There’s no need to come to court on the hearing date shown in the requisition pack.{% endblocktrans %}
-
-{% if plea_type != "not_guilty" %}
-{% counter %}. {% blocktrans %}Do not send your driving licence to the court.{% endblocktrans %}
-{% endif %}
+{% counter name="not_to_do" start=1 %}. {% blocktrans %}There's no need to come to court on the hearing date shown in the requisition pack.{% endblocktrans %}{% if plea_type != "not_guilty" %}
+{% counter name="not_to_do" %}. {% blocktrans %}Do not send your driving licence to the court.{% endblocktrans %}{% endif %}
