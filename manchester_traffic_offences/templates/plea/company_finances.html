@@ -6,7 +6,7 @@
 {% load testing %}
 
 {% block page_title %}
-    {% if company_finances.nojs != "nojs_last_step" %}
+    {% if company_finances.split_form != "split_form_last_step" %}
         {% blocktrans %}Company details{% endblocktrans %}
     {% else %}
         {% blocktrans %}Company details continued{% endblocktrans %}
@@ -21,7 +21,7 @@
     
     {% csrf_token %}
 
-    {% no_js form %}
+    {% split_form form %}
 
     {% if form.errors %}
     <section class="error-summary">
@@ -41,7 +41,7 @@
 
      <header class="content-header">
         <h1>
-        {% if company_finances.nojs != "nojs_last_step" %}
+        {% if company_finances.split_form != "split_form_last_step" %}
             {% blocktrans %}Company details{% endblocktrans %}
         {% else %}
             {% blocktrans %}Company details continued{% endblocktrans %}
@@ -51,12 +51,10 @@
         <p>{% trans "The court will decide the company's fine based on its size and financial situation." %}</p>
     </header>
 
-    {% if company_finances.nojs == "nojs_last_step" %}
+    {% if company_finances.split_form == "split_form_last_step" %}
     {% add_test_tag "<<NOJSTRIGGERSUMMARY>>" %}
-    <div class="nojs-hidden">
-        {% radio_field form.trading_period %}
-    </div>
-    <div class="form-header js-hidden">
+    {% hidden_field form.trading_period %}
+    <div class="form-header">
         <h2><span>You selected:</span>
             {% if form.trading_period.value == "True" %}
             The company has been trading for more than 12 months
@@ -70,11 +68,11 @@
     {% radio_field form.trading_period %}
     {% endif %}
 
-    <div class="js-Conditional{% if company_finances.nojs != "nojs_last_step" %} nojs-hidden{% endif %}" data-conditional-trigger="trading_period" data-conditional-value="^(True|False)$">
+    <div class="js-Conditional{% if company_finances.split_form != "split_form_last_step" %} nojs-hidden{% endif %}" data-conditional-trigger="trading_period" data-conditional-value="^(True|False)$">
 
         {% std_field form.number_of_employees hide_optional=True %}
 
-        {% if company_finances.nojs == "nojs_last_step" %}
+        {% if company_finances.split_form == "split_form_last_step" %}
             {% if form.trading_period.value == "True" %}
                 <p>{% blocktrans %}From the most recent audited company accounts, tell us:{% endblocktrans %}</p>
             {% else %}

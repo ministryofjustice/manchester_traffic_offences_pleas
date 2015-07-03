@@ -28,29 +28,18 @@ class RequiredFormSet(BaseFormSet):
 
 
 class BasePleaStepForm(forms.Form):
-    pass
-
-
-class NoJSPleaStepForm(BasePleaStepForm):
-    nojs = forms.CharField(widget=forms.HiddenInput(), required=False)
-
-    nojs_options = {}
-
     def __init__(self, *args, **kwargs):
-        super(NoJSPleaStepForm, self).__init__(*args, **kwargs)
+        super(BasePleaStepForm, self).__init__(*args, **kwargs)
         try:
             self.data = args[0]
         except IndexError:
             self.data = kwargs.get("data", {})
 
-        self.nojs = self.data.get("nojs", None)
+        self.split_form = self.data.get("split_form", None)
 
         if hasattr(self, "dependencies"):
             prefix = kwargs.get("prefix", None)
             self.check_dependencies(self.dependencies, prefix)
-
-        if self.nojs is None:
-            self.fields["nojs"].initial = self.nojs_options.get("trigger", False)
 
     def check_dependencies(self, dependencies_list, prefix=None):
         """
@@ -77,7 +66,7 @@ class NoJSPleaStepForm(BasePleaStepForm):
                 self.fields[field].required = False
 
                 if self.fields[dependency_field].required:
-                    if self.nojs is None or self.nojs != dependency_field:
+                    if self.split_form is None or self.split_form != dependency_field:
                         if dependency_value and self.data.get(dependency_field_data_key, None) == dependency_value:
                             self.fields[field].required = True
                         
@@ -87,6 +76,20 @@ class NoJSPleaStepForm(BasePleaStepForm):
                     if sub_dependencies:
                         self.check_dependencies(sub_dependencies, prefix)
 
+
+class SplitPleaStepForm(BasePleaStepForm):
+    split_form = forms.CharField(widget=forms.HiddenInput(), required=False)
+
+    split_form_options = {}
+
+    def __init__(self, *args, **kwargs):
+        super(SplitPleaStepForm, self).__init__(*args, **kwargs)
+
+        if self.split_form is None:
+            self.fields["split_form"].initial = self.split_form_options.get("trigger", False)
+
+        if self.split_form_options.get("nojs_only", False):
+            self.fields["split_form"].widget.attrs.update({"class": "nojs-only"})
 
 
 class CaseForm(BasePleaStepForm):
@@ -267,7 +270,7 @@ class CompanyDetailsForm(BasePleaStepForm):
                 self.fields["updated_address"].required = True
 
 
-class YourMoneyForm(NoJSPleaStepForm):
+class YourMoneyForm(SplitPleaStepForm):
 
     YOU_ARE_CHOICES = (("Employed", _("Employed")),
                        ("Self-employed", _("Self-employed")),
@@ -312,7 +315,7 @@ class YourMoneyForm(NoJSPleaStepForm):
         "other_hardship": {"field": "you_are", "value": "Other"}
     }
 
-    nojs_options = {
+    split_form_options = {
         "trigger": "you_are"
     }
 
@@ -577,7 +580,7 @@ class YourExpensesForm(BasePleaStepForm):
                         'min_value': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_MIN']})
 
 
-class CompanyFinancesForm(NoJSPleaStepForm):
+class CompanyFinancesForm(SplitPleaStepForm):
     dependencies = {
         "number_of_employees": {
             "field": "trading_period"
@@ -590,8 +593,9 @@ class CompanyFinancesForm(NoJSPleaStepForm):
         }
     }
 
-    nojs_options = {
-        "trigger": "trading_period"
+    split_form_options = {
+        "trigger": "trading_period",
+        "nojs_only": True
     }
 
     trading_period = forms.TypedChoiceField(required=True, widget=RadioSelect(renderer=DSRadioFieldRenderer),
@@ -641,7 +645,7 @@ class ConfirmationForm(BasePleaStepForm):
                                     error_messages={"required": ERROR_MESSAGES["UNDERSTAND_REQUIRED"]})
 
 
-class PleaForm(NoJSPleaStepForm):
+class PleaForm(SplitPleaStepForm):
     PLEA_CHOICES = (
         ('guilty', _('Guilty')),
         ('not_guilty', _('Not guilty')),
@@ -654,8 +658,9 @@ class PleaForm(NoJSPleaStepForm):
         }
     }
 
-    nojs_options = {
-        "trigger": "guilty"
+    split_form_options = {
+        "trigger": "guilty",
+        "nojs_only": True
     }
 
     guilty = forms.ChoiceField(choices=PLEA_CHOICES, widget=RadioSelect(), required=True,
