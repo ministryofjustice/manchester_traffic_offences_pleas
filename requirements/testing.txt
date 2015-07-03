@@ -1,4 +1,4 @@
--r dev.txt
+-r base.txt
 
 celery==3.1.17
 django-jenkins
