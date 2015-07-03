@@ -1,46 +1,48 @@
-{% load testing %}
-{% load i18n %}
-{% trans "GOV.UK - Online plea submission confirmation" %}
+{% load testing i18n %}{% blocktrans %}GOV.UK - Online plea submission confirmation{% endblocktrans %}
 
 {% blocktrans count charges=number_of_charges %}Your online plea has been submitted{% plural %}Your online pleas have been submitted{% endblocktrans %}
-
-{% if plea_type == "guilty" %}
-{% blocktrans count charges=number_of_charges %}Your guilty plea has been sent to the court{% plural %}Your guilty pleas have been sent to the court{% endblocktrans %}
-{% else %}
-{% blocktrans count charges=number_of_charges %}Your not guilty plea has been sent to the court{% plural %}Your not guilty pleas have been sent to the court{% endblocktrans %}
-{% endif %}
-
 {% if plea_made_by == "Defendant" %}
-    {% include "plea/complete/email_txt/whats_next_defendant.txt" %}
+{% if plea_type == "guilty" %}{% blocktrans count charges=number_of_charges %}Your guilty plea has been sent to the court{% plural %}Your guilty pleas have been sent to the court{% endblocktrans %}
+{% elif plea_type == "not_guilty" %}{% blocktrans count charges=number_of_charges %}Your not guilty plea has been sent to the court{% plural %}Your not guilty pleas have been sent to the court{% endblocktrans %}
+{% elif plea_type == "mixed" %}{% blocktrans count charges=number_of_charges %}Your plea has been sent to the court.{% plural %}Your pleas have been sent to the court.{% endblocktrans %}{% endif %}
+
+{% include "plea/complete/email_txt/whats_next_defendant.txt" %}
 {% elif plea_made_by == "Company representative" %}
-    {% include "plea/complete/email_txt/whats_next_company.txt" %}
+{% if plea_type == "guilty" %}{% blocktrans count charges=number_of_charges %}The guilty plea you made on behalf of your company has been sent to the court.{% plural %}The guilty pleas you made on behalf of your company have been sent to the court.{% endblocktrans %}
+{% elif plea_type == "not_guilty" %}{% blocktrans count charges=number_of_charges %}The not guilty plea you made on behalf of your company has been sent to the court.{% plural %}The not guilty pleas you made on behalf of your company have been sent to the court.{% endblocktrans %}
+{% elif plea_type == "mixed" %}{% blocktrans count charges=number_of_charges %}The plea you made on behalf of your company has been sent to the court.{% plural %}The pleas you made on behalf of your company have been sent to the court.{% endblocktrans %}{% endif %}
+
+{% include "plea/complete/email_txt/whats_next_company.txt" %}
 {% endif %}
 
-{% trans "Need to change a plea?" %}
+{% blocktrans %}Need to change a plea?{% endblocktrans %}
+{% blocktrans %}Contact the court by post or email quoting your URN before the date of your hearing.{% endblocktrans %}
 
-{% trans "Contact the court by post or email quoting your URN before the date of your hearing." %}
+{% blocktrans %}The contact details for the court are:{% endblocktrans %}
 
-{% trans "The contact details for the court are:" %}
-
-{% trans "By Post:" %}
+{% blocktrans %}By Post:{% endblocktrans %}
 {{ court_address }}
 
-{% trans "By email:" %}
+{% blocktrans %}By email:{% endblocktrans %}
 {{ court_email }}
 
 -------
 
-{% trans "We’re constantly working to improve this service." %}
+{% blocktrans %}We're constantly working to improve this service.{% endblocktrans %}
 
-{% trans "Please give us feedback so we can make it better:" %}
+{% blocktrans %}Please give us feedback so we can make it better:{% endblocktrans %}
 https://www.makeaplea.justice.gov.uk/feedback/
 
 -------
 
-{% trans "If you're unsure an email is from the Ministry of Justice:" %}
+{% blocktrans %}If you're unsure an email is from the Ministry of Justice:{% endblocktrans %}
 
-* {% trans "do not reply to it or click any links" %}
-* {% trans "forward it to" %} feedback@makeaplea.gov.uk
+* {% blocktrans %}do not reply to it or click any links{% endblocktrans %}
+* {% blocktrans %}forward it to{% endblocktrans %} feedback@makeaplea.gov.uk
 
-{% trans "Terms and Conditions and Privacy Policy:" %}
+{% blocktrans %}Terms and Conditions and Privacy Policy:{% endblocktrans %}
 https://www.makeaplea.justice.gov.uk/terms-and-conditions-and-privacy-policy
+
+{% if plea_type == "guilty" %}{% add_test_tag "<<GUILTY>>" %}{% endif %}
+{% if plea_type == "not_guilty" %}{% add_test_tag "<<NOTGUILTY>>" %}{% endif %}
+{% if plea_type == "mixed" %}{% add_test_tag "<<MIXED>>" %}{% endif %}
