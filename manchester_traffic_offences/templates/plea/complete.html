@@ -1,50 +1,57 @@
 {% extends "base.html" %}
-{% load i18n %}
 
+{% load i18n %}
 {% load testing %}
 
 {% block page_title %}{% blocktrans count charges=case.number_of_charges %}Your plea has been submitted{% plural %}Your pleas have been submitted{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 {% block page_content %}
 
-<header class="success-header">
-    <h1 class="ticked">
-    {% if case.plea_made_by == "Defendant" %}
-        {% blocktrans count charges=case.number_of_charges %}Your plea has been sent to the court{% plural %}Your pleas have been sent to the court{% endblocktrans %}
-    {% elif case.plea_made_by == "Company representative" %}
-        {% blocktrans count charges=case.number_of_charges %}Company plea has been submitted{% plural %}Company pleas have been submitted{% endblocktrans %}
+    {% if plea_type == "guilty" %}
+        {% add_test_tag "<<GUILTY>>" %}
     {% endif %}
-    </h1>
-</header>
 
-
-<h2 class="heading-medium">{% trans "What happens next?" %}</h2>
-
-<div class="panel-indent what-next">
-    
-    {% if case.plea_made_by == "Defendant" %}
-        {% include "plea/complete/screen/whats_next_defendant.html" %}
-    {% elif case.plea_made_by == "Company representative" %}
-        {% include "plea/complete/screen/whats_next_company.html" %}
+    {% if plea_type == "not_guilty" %}
+        {% add_test_tag "<<NOTGUILTY>>" %}
     {% endif %}
+
+    {% if plea_type == "mixed" %}
+        {% add_test_tag "<<MIXED>>" %}
+    {% endif %}
+
+    <header class="success-header">
+        <h1 class="ticked">
+        {% if case.plea_made_by == "Defendant" %}
+            {% blocktrans count charges=case.number_of_charges %}Your plea has been sent to the court{% plural %}Your pleas have been sent to the court{% endblocktrans %}
+        {% elif case.plea_made_by == "Company representative" %}
+            {% blocktrans count charges=case.number_of_charges %}Company plea has been submitted{% plural %}Company pleas have been submitted{% endblocktrans %}
+        {% endif %}
+        </h1>
+    </header>
+
+    <section class="next-steps">
+        {% if case.plea_made_by == "Defendant" %}
+            {% include "plea/complete/whats_next_defendant.html" %}
+        {% elif case.plea_made_by == "Company representative" %}
+            {% include "plea/complete/whats_next_company.html" %}
+        {% endif %}
+
+
+        <h2 class="heading-medium">{% trans "Need to change a plea?" %}</h2>
+
+        <p>{% trans "Contact the court by post or email quoting your URN before the date of your hearing." %}</p>
+
+        <p>{% trans "The contact details for the court are:" %}</p>
+
+        <h3 class="heading-small">{% trans "By post:" %}</h3>
+
+        <address>{{ court.court_address|linebreaksbr }}</address>
+
+        <h3 class="heading-small">{% trans "By email:" %}</h3>
+        <p><a href="mailto:{{ court.court_email }}">{{ court.court_email }}</a></p>
+
+        <h2 class="heading-medium">{% trans "We’re constantly working to improve this service." %}</h2>
+        <p>{% blocktrans %}Please give us <a href="/feedback/">feedback</a> so we can make it better.{% endblocktrans %}</p>
+    </section>
     
-</div>
-
-<h2 class="heading-medium">{% trans "Need to change a plea?" %}</h2>
-
-<p>{% trans "Contact the court by post or email quoting your URN before the date of your hearing." %}</p>
-
-<p>{% trans "The contact details for the court are:" %}</p>
-
-<h3 class="heading-small">{% trans "By post:" %}</h3>
-
-<address>{{ court.court_address|linebreaksbr }}</address>
-
-<h3 class="heading-small">{% trans "By email:" %}</h3>
-<p><a href="mailto:{{ court.court_email }}">{{ court.court_email }}</a></p>
-
-
-<h2 class="heading-medium">{% trans "We’re constantly working to improve this service." %}</h2>
-<p>{% blocktrans %}Please give us <a href="/feedback/">feedback</a> so we can make it better.{% endblocktrans %}</p>
-
 {% endblock page_content %}

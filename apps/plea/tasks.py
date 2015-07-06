@@ -10,6 +10,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.core.mail import get_connection
 from django.conf import settings
 from django.template.loader import render_to_string
+from django.utils.text import wrap
 
 from apps.govuk_utils.email import TemplateAttachmentEmail
 
@@ -159,7 +160,7 @@ def email_send_user(self, case_id, email_data):
         return True
 
     html_body = render_to_string("plea/plea_email_confirmation.html", data)
-    txt_body = render_to_string("plea/plea_email_confirmation.txt", data)
+    txt_body = wrap(render_to_string("plea/plea_email_confirmation.txt", data), 72)
 
     subject = settings.PLEA_CONFIRMATION_EMAIL_SUBJECT.format(**data)
 
