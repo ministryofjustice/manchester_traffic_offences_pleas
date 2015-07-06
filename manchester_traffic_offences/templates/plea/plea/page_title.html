@@ -1,6 +1,6 @@
 {% load i18n %}
 
-{% if plea.nojs != "nojs_last_step" %}
+{% if plea.split_form != "split_form_last_step" %}
     {% if case.plea_made_by == "Defendant" %}
         {% blocktrans count charges=charges %}Your plea{% plural %}Your pleas{% endblocktrans %}
     {% endif %}

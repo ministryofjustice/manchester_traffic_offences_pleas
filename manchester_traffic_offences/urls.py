@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 from django.contrib import admin
@@ -27,5 +26,6 @@ urlpatterns = patterns("",
     url(r"^change-language/$", views.set_language, name="set_language"),
     url(r"^session-timeout/$", TemplateView.as_view(template_name="session_timeout.html"), name="session_timeout"),
     url(r"^", include("apps.monitoring.urls")),
+    url(r"^test-template/$", views.test_template, name="test_template"),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
