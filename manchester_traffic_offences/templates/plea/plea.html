@@ -80,7 +80,7 @@
                 {% include "widgets/plea_radio_field.html" %}
             {% endwith %}
 
-            <div class="panel-indent" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^(guilty|not_guilty)$">
+            <div{% if plea.split_form != "split_form_last_step" %} class="panel-indent"{% endif %} data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^(guilty|not_guilty)$">
 
                 <section class="js-Conditional js-hidden{% if plea.split_form != "split_form_last_step" or plea_form.guilty.0.value != "guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^guilty$">
 
