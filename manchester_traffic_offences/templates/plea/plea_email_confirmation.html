@@ -209,10 +209,22 @@
                         <table width="100%" cellpadding="30">
                             <tr>
                                 <td style="font-family:Arial, Helvetica; line-height: 21px;">
+
+                                {% if plea_type == "guilty" %}
+                                    {% add_test_tag "<<GUILTY>>" %}
+                                {% endif %}
+
+                                {% if plea_type == "not_guilty" %}
+                                    {% add_test_tag "<<NOTGUILTY>>" %}
+                                {% endif %}
+
+                                {% if plea_type == "mixed" %}
+                                    {% add_test_tag "<<MIXED>>" %}
+                                {% endif %}
                                 
                                 {% if plea_made_by == "Defendant" %}
                                     
-                                    <h1 style="margin-bottom: 30px; margin-top:0px;">{% blocktrans count charges=number_of_charges %}Your online plea has been submitted{% plural %}Your online pleas have been submitted{% endblocktrans %}</h1>
+                                    <h1 style="font-weight: 400; margin-bottom: 30px; margin-top:0px;">{% blocktrans count charges=number_of_charges %}Your online plea has been submitted{% plural %}Your online pleas have been submitted{% endblocktrans %}</h1>
 
                                     <p style="font-size: 18px;">
                                     {% if plea_type == "guilty" %}
@@ -226,7 +238,7 @@
 
                                 {% elif plea_made_by == "Company representative" %}
 
-                                    <h1 style="margin-bottom: 30px; margin-top:0px;">{% blocktrans count charges=number_of_charges %}Online plea submitted{% plural %}Online pleas submitted{% endblocktrans %}</h1>
+                                    <h1 style="font-weight: 400; margin-bottom: 30px; margin-top:0px;">{% blocktrans count charges=number_of_charges %}Online plea submitted{% plural %}Online pleas submitted{% endblocktrans %}</h1>
 
                                     <p style="font-size: 18px;">
                                     {% if plea_type == "guilty" %}
@@ -240,30 +252,26 @@
 
                                 {% endif %}
 
-                                    
+                                {% if plea_made_by == "Defendant" %}
+                                    {% include "plea/complete/email_html/whats_next_defendant.html" %}
+                                {% elif plea_made_by == "Company representative" %}
+                                    {% include "plea/complete/email_html/whats_next_company.html" %}
+                                {% endif %}
 
-                                    <h2 style="font-size: 25px; margin-top: 50px;">{% trans "What happens next?" %}</h2>
-
-                                    {% if plea_made_by == "Defendant" %}
-                                        {% include "plea/complete/email_html/whats_next_defendant.html" %}
-                                    {% elif plea_made_by == "Company representative" %}
-                                        {% include "plea/complete/email_html/whats_next_company.html" %}
-                                    {% endif %}
-
-                                    <h2 style="font-size: 25px; margin-top: 50px;">{% trans "Need to change a plea?" %}</h2>
+                                    <h2 style="font-weight: 400; font-size: 25px; margin-top: 50px;">{% trans "Need to change a plea?" %}</h2>
 
                                     <p style="font-size: 18px;">{% trans "Contact the court by post or email quoting your URN before the date of your hearing." %}</p>
 
                                     <p style="font-size: 18px;">{% trans "The contact details for the court are:" %}</p>
 
-                                    <p style="font-size: 18px;"><strong>{% trans "By Post:" %}</strong><br>
+                                    <p style="font-size: 18px;">{% trans "By Post:" %}<br>
                                         {{ court_address|linebreaksbr }}</p>
 
-                                    <p style="font-size: 18px;"><strong>{% trans "By email:" %}</strong><br>
-                                        <a href="mailto:{{ court.court_email }}" style="color: #1068AA;">{{ court_email }}</a></p>
+                                    <p style="font-size: 18px;">{% trans "By email:" %}<br>
+                                        <a href="mailto:{{ court_email }}" style="color: #1068AA;">{{ court_email }}</a></p>
 
 
-                                    <h2 style="font-size: 25px; margin-top: 50px;">{% trans "We’re constantly working to improve this service." %}</h2>
+                                    <h2 style="font-weight: 400; font-size: 25px; margin-top: 50px;">{% trans "We’re constantly working to improve this service." %}</h2>
 
                                     <p style="font-size: 18px;">{% blocktrans %}Please give us <a class="external" href="https://www.makeaplea.justice.gov.uk/feedback/" style="color: #1068AA;">feedback</a> so we can make it better.{% endblocktrans %}</p>
 

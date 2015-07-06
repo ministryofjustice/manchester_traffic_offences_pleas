@@ -152,7 +152,7 @@ class PleaStage(FormStage):
                 forms_count = forms_wanted
 
             if forms_count < forms_wanted:
-                self.all_data["plea"].pop("nojs", None)
+                self.all_data["plea"].pop("split_form", None)
                 extra_forms = forms_wanted - forms_count
 
         else:
@@ -213,7 +213,7 @@ class PleaStage(FormStage):
         else:
             return clean_data
 
-        if self.nojs is None or self.nojs == "nojs_last_step":
+        if self.split_form is None or self.split_form == "split_form_last_step":
             if self.all_data["case"].get("plea_made_by", "Defendant") == "Company representative":
                 if none_guilty:
                     self.set_next_step("review", skip=["company_finances",
@@ -251,7 +251,7 @@ class YourMoneyStage(FormStage):
 
         you_are = clean_data.get('you_are', None)
 
-        if self.nojs is None or self.nojs == "nojs_last_step":
+        if self.split_form is None or self.split_form == "split_form_last_step":
             if you_are:
                 hardship_field = you_are.replace(' ', '_').replace('-', '_').lower() + "_hardship"
 

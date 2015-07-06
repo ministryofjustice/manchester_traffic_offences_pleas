@@ -1,39 +1,29 @@
 {% load i18n %}
-{% load testing %}
 
-{% if plea_type == "guilty" %}
-    {% add_test_tag "<<GUILTY>>" %}
+
+<h2 style="font-weight: 400; font-size: 25px; margin-top: 50px;">{% blocktrans %}What happens next{% endblocktrans %}</h2>
 <ol style="margin-left: 0px;padding-left:25px;">
-    <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}There’s <strong>no need</strong> to come to court on the hearing date shown in the requisition pack.{% endblocktrans %}</li>
     <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}The court will tell you if a company representative needs to attend a trial, and what evidence might be needed by the court.{% endblocktrans %}</li>
     <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans count charges=number_of_charges %}We’ll send you a letter with the court’s decision <strong>within 3  working days after your hearing date</strong>.</strong>{% plural %}We’ll send you a letter with the court’s decisions <strong>within 3 working days after your hearing date</strong>.{% endblocktrans %}</li>
-    <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}<strong>Do not</strong> send your driving licence to the court.{% endblocktrans %}</li>
+
+    {% if plea_type != "not_guilty" %}
     <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}The DVLA will contact you if they need you to send in your driving licence.{% endblocktrans %}</li>
-    <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans with urn=urn|upper email=court_email  %}Quote your URN <strong>{{ urn }}</strong> if you contact the court about your case.{% endblocktrans %}</li>
+    {% endif %}
+</ol>
+
+
+<h2 style="font-weight: 400; font-size: 25px; margin-top: 50px;">{% blocktrans %}What you need to do{% endblocktrans %}</h2>
+<ol style="margin-left: 0px;padding-left:25px;">
+    <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans with urn=urn|upper %}Quote your URN <strong>{{ urn }}</strong> if you contact the court about your case.{% endblocktrans %}</li>
     <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}Print a copy of this plea confirmation for your records.{% endblocktrans %}</li>
 </ol>
-{% endif %}
 
-{% if plea_type == "not_guilty" %}
-    {% add_test_tag "<<NOTGUILTY>>" %}
+
+<h2 style="font-weight: 400; font-size: 25px; margin-top: 50px;">{% blocktrans %}What you do not need to do{% endblocktrans %}</h2>
 <ol style="margin-left: 0px;padding-left:25px;">
     <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}There’s <strong>no need</strong> to come to court on the hearing date shown in the requisition pack.{% endblocktrans %}</li>
-    <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}The court will tell you if a company representative needs to attend a trial, and what evidence might be needed by the court.{% endblocktrans %}</li>
-    <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans count charges=number_of_charges %}We’ll send you a letter with the court’s decision <strong>within 3 working days after your hearing date</strong>.{% plural %}We’ll send you a letter with the court’s decisions <strong>within 3  working days after your hearing date</strong>.{% endblocktrans %}</li>
-    <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans with urn=urn|upper email=court_email %}Quote your URN <strong>{{ urn }}</strong> if you contact the court about your case.{% endblocktrans %}</li>
-    <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}Print a copy of this plea confirmation for your records.{% endblocktrans %}</li>
-</ol>
-{% endif %}
-
-{% if plea_type == "mixed" %}
-    {% add_test_tag "<<MIXED>>" %}
-<ol style="margin-left: 0px;padding-left:25px;">
-    <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}There’s <strong>no need</strong> to come to court on the hearing date shown in the requisition pack.{% endblocktrans %}</li>
-    <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}The court will tell you if a company representative needs to attend a trial, and what evidence might be needed by the court.{% endblocktrans %}</li>
-    <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}We’ll send you a letter with the court’s decisions <strong>within 3 working days after your hearing date</strong>.{% endblocktrans %}</li>
+    
+    {% if plea_type != "not_guilty" %}
     <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}<strong>Do not</strong> send your driving licence to the court.{% endblocktrans %}</li>
-    <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}The DVLA will contact you if they need you to send in your driving licence.{% endblocktrans %}</li>
-    <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans with urn=urn|upper email=court_email %}Quote your URN <strong>{{ urn }}</strong> if you contact the court about your case.{% endblocktrans %}</li>
-    <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}Print a copy of this plea confirmation for your records.{% endblocktrans %}</li>
+    {% endif %}
 </ol>
-{% endif %}
