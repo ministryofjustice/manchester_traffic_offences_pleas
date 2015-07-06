@@ -51,7 +51,6 @@ class PleaOnlineForms(MultiStageForm):
 
         return super(PleaOnlineForms, self).save(*args, **kwargs)
 
-    @never_cache
     def render(self):
         if self._urn_invalid:
             return redirect('urn_already_used')
@@ -61,7 +60,10 @@ class PleaOnlineForms(MultiStageForm):
 
 class PleaOnlineViews(TemplateView):
 
-    @never_cache
+    @method_decorator(never_cache)
+    def dispatch(self, *args, **kwargs):
+        return super(PleaOnlineViews, self).dispatch(*args, **kwargs)
+
     def get(self, request, stage=None):
         if not stage:
             stage = PleaOnlineForms.stage_classes[0].name
@@ -80,7 +82,6 @@ class PleaOnlineViews(TemplateView):
         return form.render()
 
     @method_decorator(ratelimit(block=True, rate=settings.RATE_LIMIT))
-    @never_cache
     def post(self, request, stage):
 
         nxt = request.GET.get("next", None)
