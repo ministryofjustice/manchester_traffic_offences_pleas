@@ -1,10 +1,11 @@
 {% load i18n %}
 {% load testing %}
+{% load form_widgets %}
 
 <div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty_{{ forloop.counter }}">
     <fieldset>
 
-        {% if form.case_data or form.guilty.errors or form_count > 1 %}
+    {% if form.case_data or form.guilty.errors or form_count > 1 %}
         <legend>
             {% if form.case_data or form_count > 1 %}
             <div class="label-line">
@@ -29,24 +30,18 @@
                     {{ form.case_data.offence_wording|linebreaks }}
                 </div>
             </div>
+            
                 {% if plea.split_form != "split_form_last_step" %}
-                <h3 class="heading-small">Your plea for this charge</h3>
+            <h3 class="heading-small">Your plea for this charge</h3>
                 {% endif %}
             {% endif %}
 
             {{ form.guilty.errors }}
         </legend>
-        {% endif %}
-        
-        {% if plea.split_form == "split_form_last_step" %}
-        {% add_test_tag "<<NOJSTRIGGERSUMMARY>>" %}
-        <div class="form-header-pleas js-hidden">
-            <p class="form-selected">{% trans "Your plea" %} - <strong>{% if plea_form.guilty.value == "guilty" %}{% trans "Guilty" %}{% else %}{% trans "Not guilty" %}{% endif %}</strong></p>
-            <a href="{{ request.path }}?reset">{% trans "Change this plea" %}</a>
-        </div>
-        {% endif %}
-        
-        <div class="form-field{% if plea.split_form == "split_form_last_step" %} nojs-hidden{% endif %}">
+    {% endif %}
+
+    {% if plea.split_form != "split_form_last_step" %}
+        <div class="form-field">
             <div class="inline">
 
                 {% for choice in form.guilty %}
@@ -58,6 +53,20 @@
               
             </div>
         </div>
+    {% endif %}
 
+    {% if plea.split_form == "split_form_last_step" %}
+        {% add_test_tag "<<NOJSTRIGGERSUMMARY>>" %}
+        <div class="form-header-pleas">
+            {% for choice in form.guilty %}
+                {% if choice.is_checked %}
+                    <input type="hidden" name="{{ choice.name }}" value="{{ choice.choice_value }}">
+                {% endif %}
+            {% endfor %}
+            <p class="form-selected">{% trans "Your plea" %} - <strong>{% if form.guilty.value == "guilty" %}{% trans "Guilty" %}{% else %}{% trans "Not guilty" %}{% endif %}</strong></p>
+            <a href="{{ request.path }}?reset">{% trans "Change this plea" %}</a>
+        </div>
+    {% endif %}
+        
     </fieldset>
 </div>
