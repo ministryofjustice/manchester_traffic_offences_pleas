@@ -165,9 +165,8 @@ class RadioFieldRenderer(RadioFieldRenderer):
 class DSRadioFieldRenderer(RadioFieldRenderer):
     def render(self):
         """
-        Outputs a <ul> for this set of choice fields.
-        If an id was given to the field, it is applied to the <ul> (each
-        item in the list will get an id of `$id_$i`).
+        Outputs a GOV.UK-styled <fieldset> for this set of choice fields.
+        Radio buttons line up alongside each other.
         """
         id_ = self.attrs.get('id', None)
 
@@ -179,9 +178,8 @@ class DSRadioFieldRenderer(RadioFieldRenderer):
 class DSStackedRadioFieldRenderer(RadioFieldRenderer):
     def render(self):
         """
-        Outputs a <ul> for this set of choice fields.
-        If an id was given to the field, it is applied to the <ul> (each
-        item in the list will get an id of `$id_$i`).
+        Outputs a GOV.UK-styled <fieldset> for this set of choice fields.
+        Radio buttons stack on top of each other.
         """
         id_ = self.attrs.get('id', None)
 

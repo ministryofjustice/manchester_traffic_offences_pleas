@@ -97,8 +97,12 @@ Main styles
 		}
 	}
 
-	.js-Conditional .form-group {
+	.js-Conditional .form-group-wide {
 		margin-bottom: 0;
+	}
+
+	h3.heading-small {
+		@include core-19;
 	}
 }
 
@@ -265,7 +269,17 @@ Main styles
 	}
 }
 
-.what-next {
+.next-steps {
+	.heading-medium,
+	.heading-small {
+		margin-bottom: .5em;
+		font-weight: 400;
+	}
+
+	.panel-indent {
+		margin-top: .5em;
+	}
+
 	ol {
 		padding: 0;
 
