@@ -3,7 +3,7 @@
 
 <h2 class="heading-medium">{% blocktrans %}What happens next{% endblocktrans %}</h2>
 <div class="panel-indent">
-    <ol>
+    <ol class="list-number-bold">
         <li>{% blocktrans count charges=case.number_of_charges %}We’ll send you a letter with the court’s decision <strong>within 3  working days after your hearing date</strong>.{% plural %}We’ll send you a letter with the court’s decisions <strong>within 3 working days after your hearing date</strong>.{% endblocktrans %}</li>
         
         {% if plea_type != "guilty" %}
@@ -19,7 +19,7 @@
 
 <h2 class="heading-medium">{% blocktrans %}What you need to do{% endblocktrans %}</h2>
 <div class="panel-indent">
-    <ol>
+    <ol class="list-number-bold">
         <li>{% blocktrans with urn=case.urn|upper email=court.court_email  %}Quote your URN <strong>{{ urn }}</strong> if you <a href="mailto:{{ email }}">contact</a> the court about your case.{% endblocktrans %}</li>
         <li>{% blocktrans %}<a href="javascript:window.print();">Print a copy</a> of this plea confirmation for your records.{% endblocktrans %}</li>
     </ol>
@@ -28,7 +28,7 @@
 
 <h2 class="heading-medium">{% blocktrans %}What you do not need to do{% endblocktrans %}</h2>
 <div class="panel-indent">
-    <ol>
+    <ol class="list-number-bold">
         <li>{% blocktrans %}There’s <strong>no need</strong> to come to court on the hearing date shown in the requisition pack.{% endblocktrans %}</li>
         
         {% if plea_type != "not_guilty" %}
