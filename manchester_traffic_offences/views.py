@@ -63,7 +63,7 @@ def test_template(request):
 
     Requires a Waffle switch named 'test_template' and enabled.
     """
-    template = "plea/plea_email_confirmation.txt"
+    template = "plea/complete.html"
 
     complete_context = {"plea_type": "mixed",
                         "case": {"plea_made_by": "Company representative",
@@ -79,5 +79,5 @@ def test_template(request):
                      "court_address": "Some address\nSomeplace\nT357ER",
                      "court_email": "court@test.com"}
 
-    response = render(request, template, email_context, content_type="text/plain")
+    response = render(request, template, complete_context)
     return response
