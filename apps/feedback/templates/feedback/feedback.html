@@ -12,7 +12,7 @@
     <p>{% trans "Use this form to report a problem or ask us a question about the Make a Plea service." %}</p>
 </header>
         
-<p><strong>{% trans "Please don't include any sensitive information" %}</strong><br>
+<p>{% trans "Please don't include any sensitive information" %}<br>
     {% trans "For example, your financial details." %}</p>
 
 <form method="POST">
@@ -22,7 +22,7 @@
 
     {% std_field form.feedback_email %}
 
-    <h3>{% trans "We’re constantly working to improve the online plea service." %}</h3>
+    <h3 class="font-normal">{% trans "We’re constantly working to improve the online plea service." %}</h3>
 
     {% radio_field form.feedback_satisfaction %}
 

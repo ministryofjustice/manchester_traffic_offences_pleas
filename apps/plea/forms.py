@@ -100,7 +100,7 @@ class CaseForm(BasePleaStepForm):
     urn = URNField(label=_("Unique reference number (URN)"),
                    required=True,
                    validators=[is_urn_valid, is_urn_not_used],
-                   help_text=_("On page 1 of the pack, in the top right corner.<br>For example, 12/AB/34567/00"),
+                   help_text=_("On page 1 of the requisition pack, in the top right corner.<br>For example, 12/AB/34567/00"),
                    error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"],
                                    "is_urn_valid": ERROR_MESSAGES["URN_INVALID"],
                                    "is_urn_not_used": ERROR_MESSAGES['URN_ALREADY_USED']})
@@ -377,7 +377,9 @@ class YourMoneyForm(SplitPleaStepForm):
                                                     error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
     # On benefits
-    benefits_details = forms.CharField(max_length=500, label=_("Which benefits do you receive?"),
+    benefits_details = forms.CharField(label=_("Which benefits do you receive?"),
+                                       help_text=_("For example, Income Support or Disability Living Allowance."),
+                                       max_length=500,
                                        widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
                                        error_messages={"required": ERROR_MESSAGES["BENEFITS_DETAILS_REQUIRED"]})
 
@@ -418,7 +420,7 @@ class YourMoneyForm(SplitPleaStepForm):
 
     # Other
     other_details = forms.CharField(max_length=500, label=_("Provide details"),
-                                    help_text=_("For example, retired, student etc."),
+                                    help_text=_("For example, student or retired."),
                                     widget=forms.TextInput(attrs={"class": "form-control"}),
                                     error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
 
