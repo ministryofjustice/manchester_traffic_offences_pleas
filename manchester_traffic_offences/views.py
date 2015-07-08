@@ -62,22 +62,47 @@ def test_template(request):
     sets of context data.
 
     Requires a Waffle switch named 'test_template' and enabled.
+
+    Some parameters can be toggled in the query string:
+    - template: complete|email_html|email_txt
+    - plea_made_by: defendant|company
+    - plea_type: guilty|not_guilty|mixed
+    - number_of_charges: (int)
     """
-    template = "plea/plea_email_confirmation.txt"
 
-    complete_context = {"plea_type": "mixed",
-                        "case": {"plea_made_by": "Company representative",
-                                 "urn": "51/aa/00000/00",
-                                 "number_of_charges": 1},
-                        "court": {"court_address": "Court address\nSome Place\nT357TER",
-                                  "court_email": "email@court.com"}}
+    options = {"template": {"complete": "plea/complete.html",
+                            "email_html": "plea/plea_email_confirmation.html",
+                            "email_txt": "plea/plea_email_confirmation.txt"},
+               "plea_made_by": {"defendant": "Defendant",
+                                "company": "Company representative"}}
 
-    email_context = {"plea_type": "mixed",
-                     "plea_made_by": "Company representative",
-                     "number_of_charges": 3,
-                     "urn": "51/aa/00000/00",
-                     "court_address": "Some address\nSomeplace\nT357ER",
-                     "court_email": "court@test.com"}
+    # get query string params with some defaults
+    template_name = request.GET.get("template", "complete")
+    plea_made_by = request.GET.get("plea_made_by", "defendant")
+    plea_type = request.GET.get("plea_type", "guilty")
+    number_of_charges = request.GET.get("number_of_charges", 1)
 
-    response = render(request, template, email_context, content_type="text/plain")
+    template = options["template"][template_name]
+
+    context = {"plea_type": plea_type}
+
+    case_data = {"plea_made_by": options["plea_made_by"][plea_made_by],
+                 "urn": "51/aa/00000/00",
+                 "number_of_charges": int(number_of_charges)}
+
+    court_data = {"court_address": "Court address\nSome Place\nT357TER",
+                  "court_email": "email@court.com"}
+
+    content_type = "text/html"
+
+    if template_name == "complete":
+        context.update({"case": case_data, "court": court_data})
+    else:
+        context.update(case_data)
+        context.update(court_data)
+
+        if template_name == "email_txt":
+            content_type = "text/plain"
+
+    response = render(request, template, context, content_type=content_type)
     return response
