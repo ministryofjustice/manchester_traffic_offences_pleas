@@ -58,8 +58,9 @@ def email_send_court(self, case_id, count_id, email_data):
     except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
         logger.warning("Error sending email to court: {0}".format(exc))
         case.add_action("Court email network error", unicode(exc))
-        email_count.get_status_from_case(case)
-        email_count.save()
+        if email_count is not None:
+            email_count.get_status_from_case(case)
+            email_count.save()
         case.sent = False
         case.save()
 
