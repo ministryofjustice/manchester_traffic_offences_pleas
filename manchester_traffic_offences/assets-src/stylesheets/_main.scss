@@ -100,10 +100,6 @@ Main styles
 	.js-Conditional .form-group-wide {
 		margin-bottom: 0;
 	}
-
-	h3.heading-small {
-		@include core-19;
-	}
 }
 
 
@@ -171,7 +167,7 @@ Main styles
 			h2 {
 				display: inline-block;
 				margin: 0 0 .5em;
-				@include bold-24();
+				@include core-24();
 
 				@include ie-lte(7) {
 					float: left;
@@ -278,36 +274,6 @@ Main styles
 
 	.panel-indent {
 		margin-top: .5em;
-	}
-
-	ol {
-		padding: 0;
-
-		li {
-			list-style: none;
-			counter-increment: item;
-			margin-bottom: 5px;
-
-			&:before {
-				content: counter(item) ".";
-				display: inline-block;
-				@include bold-19();
-				margin-right: .25em;
-				width: 1.125em;
-			}
-		}
-
-		@include ie-lte(7) {
-			padding-left: 2em;
-
-			li {
-				list-style-type: decimal;
-
-				&:before {
-					display: none;
-				}
-			}
-		}
 	}
 }
 
