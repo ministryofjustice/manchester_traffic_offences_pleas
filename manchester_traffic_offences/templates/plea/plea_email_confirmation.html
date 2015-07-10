@@ -275,26 +275,23 @@
                                         {% endif %}
                                     </ul>
 
-                                    <h2 style="font-weight: 400; font-size: 25px; margin-top: 50px;">{% blocktrans %}What you need to do:{% endblocktrans %}</h2>
-                                    <ul style="margin-left: 0px;padding-left:25px;">
-                                        <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans with urn=urn|upper %}quote your URN <strong>{{ urn }}</strong> if you contact the court about your case{% endblocktrans %}</li>
-                                        <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}print a copy of this plea confirmation for your records{% endblocktrans %}</li>
-                                    </ul>
+                                    <h2 style="font-weight: 400; font-size: 25px; margin-top: 50px;">{% blocktrans %}Need to change a plea?{% endblocktrans %}</h2>
 
-                                    <h2 style="font-weight: 400; font-size: 25px; margin-top: 50px;">{% trans "Need to change a plea?" %}</h2>
+                                    <p style="font-size: 18px;">{% blocktrans with urn=urn|upper %}Contact the court by post or email quoting your URN <strong>{{ urn }}</strong> before the date of your hearing.{% endblocktrans %}</p>
 
-                                    <p style="font-size: 18px;">{% trans "Contact the court by post or email quoting your URN before the date of your hearing." %}</p>
+                                    <p style="font-size: 18px;">{% blocktrans %}The contact details for the court are:{% endblocktrans %}</p>
 
-                                    <p style="font-size: 18px;">{% trans "The contact details for the court are:" %}</p>
-
-                                    <p style="font-size: 18px;">{% trans "By Post:" %}<br>
+                                    <p style="font-size: 18px;">{% blocktrans %}By Post:{% endblocktrans %}<br>
                                         {{ court_address|linebreaksbr }}</p>
 
-                                    <p style="font-size: 18px;">{% trans "By email:" %}<br>
+                                    <p style="font-size: 18px;">{% blocktrans %}By email:{% endblocktrans %}<br>
                                         <a href="mailto:{{ court_email }}" style="color: #1068AA;">{{ court_email }}</a></p>
 
+                                    <hr style="height: 0; border: 0; border-bottom: 1px solid #bbbbbb;"/>
 
-                                    <h2 style="font-weight: 400; font-size: 25px; margin-top: 50px;">{% trans "We’re constantly working to improve this service." %}</h2>
+                                    <p style="font-size: 18px;">{% blocktrans %}Print a copy of this plea confirmation for your records.{% endblocktrans %}</p>
+
+                                    <h2 style="font-weight: 400; font-size: 25px; margin-top: 50px;">{% blocktrans %}We’re constantly working to improve this service.{% endblocktrans %}</h2>
 
                                     <p style="font-size: 18px;">{% blocktrans %}Please give us <a class="external" href="https://www.makeaplea.justice.gov.uk/feedback/" style="color: #1068AA;">feedback</a> so we can make it better.{% endblocktrans %}</p>
 
@@ -308,14 +305,14 @@
                             <tr>
                                 <td width="20">&nbsp;</td>
                                 <td style="color: #777777; font-size: 13px; font-family: Arial;">
-                                    <p>{% trans "If you're unsure an email is from the Ministry of Justice:" %}</p>
+                                    <p>{% blocktrans %}If you're unsure an email is from the Ministry of Justice:{% endblocktrans %}</p>
 
                                     <ul style="margin: 1.2em; padding:0;">
-                                        <li>{% trans "do not reply to it or click any links" %}</li>
-                                        <li>{% trans "forward it to" %} <a href="mailto:feedback@makeaplea.gov.uk" style="color: #9a9a9a;">feedback@makeaplea.gov.uk</a></li>
+                                        <li>{% blocktrans %}do not reply to it or click any links{% endblocktrans %}</li>
+                                        <li>{% blocktrans %}forward it to{% endblocktrans %} <a href="mailto:feedback@makeaplea.gov.uk" style="color: #9a9a9a;">feedback@makeaplea.gov.uk</a></li>
                                     </ul>
 
-                                    <p><a href="https://www.makeaplea.justice.gov.uk/terms-and-conditions-and-privacy-policy" style="color: #777777;">{% trans "Terms and Conditions and privacy policy" %}</a></p>
+                                    <p><a href="https://www.makeaplea.justice.gov.uk/terms-and-conditions-and-privacy-policy" style="color: #777777;">{% blocktrans %}Terms and Conditions and privacy policy{% endblocktrans %}</a></p>
                                 </td>
                             </tr>
                         </table>
