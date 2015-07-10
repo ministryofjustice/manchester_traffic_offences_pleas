@@ -20,14 +20,10 @@
 - {% blocktrans %}come to court on the hearing date shown in the requisition pack{% endblocktrans %}{% if plea_made_by == "Defendant" and plea_type != "not_guilty" %}
 - {% blocktrans %}send your driving licence to the court, the DVLA will contact you if they need you to send in your driving licence{% endblocktrans %}{% endif %}
 
-{% blocktrans %}What you need to do:{% endblocktrans %}
-- {% blocktrans with urn=urn|upper %}quote your URN {{ urn }} if you contact the court about your case{% endblocktrans %}
-- {% blocktrans %}print a copy of this plea confirmation for your records{% endblocktrans %}
-
 ------
 
 {% blocktrans %}Need to change a plea?{% endblocktrans %}
-{% blocktrans %}Contact the court by post or email quoting your URN before the date of your hearing.{% endblocktrans %}
+{% blocktrans with urn=urn|upper %}Contact the court by post or email quoting your URN {{ urn }} before the date of your hearing.{% endblocktrans %}
 
 {% blocktrans %}The contact details for the court are:{% endblocktrans %}
 
@@ -38,6 +34,8 @@
 {{ court_email }}
 
 -------
+
+{% blocktrans %}Print a copy of this plea confirmation for your records.{% endblocktrans %}
 
 {% blocktrans %}We're constantly working to improve this service.{% endblocktrans %}
 
