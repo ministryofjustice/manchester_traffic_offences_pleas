@@ -53,33 +53,29 @@
                 <li>{% blocktrans %}come to court on the hearing date shown in the requisition pack{% endblocktrans %}</li>
                 
                 {% if case.plea_made_by == "Defendant" and plea_type != "not_guilty" %}
-                <li>{% blocktrans %}send your driving licence to the court, the DVLA will contact you if they need you to send in your driving licence{% endblocktrans %}</li>
+                <li>{% blocktrans %}send your driving licence to the court, the DVLA will contact you if they need you to send it to them{% endblocktrans %}</li>
                 {% endif %}
             </ul>
         </div>
 
-        <h2 class="heading-medium">{% blocktrans %}What you need to do:{% endblocktrans %}</h2>
-        <div class="panel-indent">
-            <ul>
-                <li>{% blocktrans with urn=case.urn|upper email=court.court_email  %}quote your URN <strong>{{ urn }}</strong> if you <a href="mailto:{{ email }}">contact</a> the court about your case{% endblocktrans %}</li>
-                <li>{% blocktrans %}<a href="javascript:window.print();">print a copy</a> of this plea confirmation for your records{% endblocktrans %}</li>
-            </ul>
-        </div>
+        <h2 class="heading-medium">{% blocktrans %}Need to change a plea?{% endblocktrans %}</h2>
 
-        <h2 class="heading-medium">{% trans "Need to change a plea?" %}</h2>
+        <p>{% blocktrans with urn=case.urn|upper %}Contact the court by post or email quoting your URN <strong>{{ urn }}</strong> before the date of your hearing.{% endblocktrans %}</p>
 
-        <p>{% trans "Contact the court by post or email quoting your URN before the date of your hearing." %}</p>
+        <p>{% blocktrans %}The contact details for the court are:{% endblocktrans %}</p>
 
-        <p>{% trans "The contact details for the court are:" %}</p>
-
-        <h3 class="heading-small">{% trans "By post:" %}</h3>
+        <h3 class="heading-small">{% blocktrans %}By post:{% endblocktrans %}</h3>
 
         <address>{{ court.court_address|linebreaksbr }}</address>
 
-        <h3 class="heading-small">{% trans "By email:" %}</h3>
+        <h3 class="heading-small">{% blocktrans %}By email:{% endblocktrans %}</h3>
         <p><a href="mailto:{{ court.court_email }}">{{ court.court_email }}</a></p>
 
-        <h2 class="heading-medium">{% trans "We’re constantly working to improve this service." %}</h2>
+        <hr>
+
+        <p>{% blocktrans %}<a href="javascript:window.print();">Print a copy</a> of this plea confirmation for your records.{% endblocktrans %}</p>
+
+        <h2 class="heading-medium">{% blocktrans %}We’re constantly working to improve this service.{% endblocktrans %}</h2>
         <p>{% blocktrans %}Please give us <a href="/feedback/">feedback</a> so we can make it better.{% endblocktrans %}</p>
     </section>
     
