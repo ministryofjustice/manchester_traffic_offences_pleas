@@ -34,7 +34,7 @@
         <h2 class="heading-medium">{% blocktrans %}What happens next:{% endblocktrans %}</h2>
         <div class="panel-indent">
             <ul>
-                <li>{% blocktrans count charges=case.number_of_charges %}we’ll send you a letter with the court’s decision <strong>within 3  working days after your hearing date</strong>{% plural %}we’ll send you a letter with the court’s decisions <strong>within 3 working days after your hearing date</strong>{% endblocktrans %}</li>
+                <li>{% blocktrans count charges=case.number_of_charges %}we’ll send you a letter with the court’s decision within 3 working days after your hearing date{% plural %}we’ll send you a letter with the court’s decisions within 3 working days after your hearing date{% endblocktrans %}</li>
                 
                 {% if case.plea_made_by == "Defendant" %}
                 <li>{% blocktrans %}the court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case{% endblocktrans %}</li>        
@@ -62,7 +62,7 @@
 
         <h2 class="heading-medium">{% blocktrans %}Need to change a plea?{% endblocktrans %}</h2>
 
-        <p>{% blocktrans with urn=case.urn|upper %}Contact the court by post or email quoting your URN <strong>{{ urn }}</strong> before the date of your hearing.{% endblocktrans %}</p>
+        <p>{% blocktrans with urn=case.urn|upper %}Contact the court by post or email quoting your URN {{ urn }} before the date of your hearing.{% endblocktrans %}</p>
 
         <p>{% blocktrans %}The contact details for the court are:{% endblocktrans %}</p>
 
