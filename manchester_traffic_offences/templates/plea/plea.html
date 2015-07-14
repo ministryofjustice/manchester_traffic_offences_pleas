@@ -68,7 +68,7 @@
         {{ form.management_form }}
 
         {% if plea.split_form != "split_form_last_step" %}
-        <h2 class="heading-medium font-normal">{% blocktrans with form_count=form_count count charges=charges %}Enter a plea for the charge below{% plural %}Enter {{ form_count }} pleas for the charges below{% endblocktrans %}</h2>
+        <h2 class="heading-medium">{% blocktrans with form_count=form_count count charges=charges %}Enter a plea for the charge below{% plural %}Enter {{ form_count }} pleas for the charges below{% endblocktrans %}</h2>
         {% endif %}
 
         {% for plea_form in form %}
@@ -84,15 +84,15 @@
 
                     {% wide_field plea_form.guilty_extra counter=forloop.counter %}
 
-                    <h3 class="heading-small font-normal">{% trans "Pleading guilty to this charge means:" %}</h3>
+                    <h3 class="heading-small">{% trans "Pleading guilty to this charge means:" %}</h3>
                     <ul>
                         {% if case.plea_made_by == "Defendant" %}
-                        <li>{% blocktrans %}you <strong>do not</strong> need to come to court to respond to this charge{% endblocktrans %}</li>
+                        <li>{% blocktrans %}you do not need to come to court to respond to this charge{% endblocktrans %}</li>
                         <li>{% blocktrans %}we'll send you details of the court's decision and what happens next{% endblocktrans %}</li>
                         {% endif %}
 
                         {% if case.plea_made_by == "Company representative" %}
-                        <li>{% blocktrans %}a company representative <strong>does not</strong> need to come to court to respond to this charge{% endblocktrans %}</li>
+                        <li>{% blocktrans %}a company representative does not need to come to court to respond to this charge{% endblocktrans %}</li>
                         <li>{% blocktrans %}we'll send details of the court's decision and what happens next{% endblocktrans %}</li>
                         {% endif %}
                     </ul>
@@ -106,15 +106,15 @@
                         {% wide_field plea_form.not_guilty_extra hide_optional=True counter=forloop.counter help_text=_("Tell us why you believe the defendant is not guilty.") %}
                     {% endif %}
 
-                    <h3 class="heading-small font-normal">{% trans "Pleading not guilty to this charge means:" %}</h3>
+                    <h3 class="heading-small">{% trans "Pleading not guilty to this charge means:" %}</h3>
                     <ul>
                         {% if case.plea_made_by == "Defendant" %}
-                        <li>{% blocktrans %}you <strong>do not</strong> need to come to court on the hearing date in the requisition pack{% endblocktrans %}</li>
+                        <li>{% blocktrans %}you do not need to come to court on the hearing date in the requisition pack{% endblocktrans %}</li>
                         <li>{% blocktrans %}we'll send you details of a new hearing date{% endblocktrans %}</li>
                         {% endif %}
 
                         {% if case.plea_made_by == "Company representative" %}
-                        <li>{% blocktrans %}a company representative <strong>does not</strong> need to come to court on the hearing date in the requisition pack{% endblocktrans %}</li>
+                        <li>{% blocktrans %}a company representative does not need to come to court on the hearing date in the requisition pack{% endblocktrans %}</li>
                         <li>{% blocktrans %}we'll send details of a new hearing date{% endblocktrans %}</li>
                         {% endif %}
                     </ul>
