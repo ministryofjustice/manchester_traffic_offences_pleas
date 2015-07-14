@@ -43,6 +43,8 @@
                 {% if case.plea_made_by == "Company representative" %}
                 <li>{% blocktrans %}the court will tell you if a company representative needs to attend a trial, and what evidence might be needed by the court{% endblocktrans %}</li>
                 {% endif %}
+
+                <li>{% blocktrans %}you can <a href="javascript:window.print();">print a copy</a> of this plea confirmation for your records{% endblocktrans %}</li>
             </ul>
         </div>
 
@@ -70,10 +72,6 @@
 
         <h3 class="heading-small">{% blocktrans %}By email:{% endblocktrans %}</h3>
         <p><a href="mailto:{{ court.court_email }}">{{ court.court_email }}</a></p>
-
-        <hr>
-
-        <p>{% blocktrans %}<a href="javascript:window.print();">Print a copy</a> of this plea confirmation for your records.{% endblocktrans %}</p>
 
         <h2 class="heading-medium">{% blocktrans %}We’re constantly working to improve this service.{% endblocktrans %}</h2>
         <p>{% blocktrans %}Please give us <a href="/feedback/">feedback</a> so we can make it better.{% endblocktrans %}</p>
