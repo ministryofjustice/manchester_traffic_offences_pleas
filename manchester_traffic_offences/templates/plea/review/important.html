@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<h2 class="heading-medium font-normal">{% trans "Important" %}</h2>
+<h2 class="heading-medium">{% trans "Important" %}</h2>
 
 <section id="section_understand">
 
@@ -13,9 +13,9 @@
             <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
             <span class="checkbox-text">
             {% if case.plea_made_by == "Defendant" %}
-                {% blocktrans %}<strong>I confirm</strong> that I have read and understand the charge against me and that I am the person named in the requisition pack. The facts stated here are correct to the best of my knowledge.{% endblocktrans %}
+                {% blocktrans %}I confirm that I have read and understand the charge against me and that I am the person named in the requisition pack. The facts stated here are correct to the best of my knowledge.{% endblocktrans %}
             {% elif case.plea_made_by == "Company representative" %}
-                {% blocktrans %}<strong>I confirm</strong>  that I have read and understand the charges and the terms and conditions. I also confirm that I am legally entitled to plead on behalf of the company named in the requisition pack. The facts stated here are correct to the best of my knowledge.{% endblocktrans %}
+                {% blocktrans %}I confirm that I have read and understand the charges and the terms and conditions. I also confirm that I am legally entitled to plead on behalf of the company named in the requisition pack. The facts stated here are correct to the best of my knowledge.{% endblocktrans %}
             {% endif %}
             </span>
         </label>
