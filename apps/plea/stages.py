@@ -345,21 +345,28 @@ class CompleteStage(FormStage):
 
     def render(self, request_context):
 
-        self.context['plea_type'] = get_plea_type(self.all_data)
+        self.context["plea_type"] = get_plea_type(self.all_data)
 
         try:
-            self.context["court"] = Court.objects.get_by_urn(
-                self.all_data["case"]["urn"])
+            self.context["court"] = Court.objects.get_by_urn(self.all_data["case"]["urn"])
         except Court.DoesNotExist:
             pass
 
-        if isinstance(self.all_data["case"]["date_of_hearing"], basestring):
-            court_date = parse(self.all_data["case"]["date_of_hearing"])
-        else:
-            court_date = self.all_data["case"]["date_of_hearing"]
+        # Build an array of events to send to analytics now the journey is complete
+        
+        def is_entered(field):
+            if len(self.all_data.get("your_details", {}).get(field, "")) > 0:
+                return "Yes"
+            else:
+                return "No"
 
-        request_context["days_before_hearing"] = (court_date - datetime.datetime.today()).days
-        request_context["will_hear_by"] = court_date + datetime.timedelta(days=3)
+        self.context["analytics_events"] = [{"action": "Plea made by",
+                                             "label": self.all_data.get("case").get("plea_made_by")}]
+
+        if self.all_data["case"]["plea_made_by"] == "Defendant":
+            self.context["analytics_events"].extend([{"action": "NI number",
+                                               "label": is_entered("ni_number")},
+                                              {"action": "Driving licence number",
+                                               "label": is_entered("driving_licence_number")}])
 
         return super(CompleteStage, self).render(request_context)
-
