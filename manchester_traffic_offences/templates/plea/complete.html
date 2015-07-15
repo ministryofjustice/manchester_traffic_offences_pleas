@@ -78,3 +78,15 @@
     </section>
     
 {% endblock page_content %}
+
+{% block body_end %}
+    {{ block.super }}
+
+    {% if analytics_events %}
+<script>
+{% for event in analytics_events %}
+ga('send', 'event', 'Complete submission', '{{ event.action }}', '{{ event.label }}');
+{% endfor %}
+</script>
+    {% endif %}
+{% endblock body_end %}
