@@ -51,6 +51,31 @@ def server_error(request):
     response.status_code = 500
     return response
 
+
+@waffle_switch("enable_a11y_testing")
+def set_a11y_testing(request):
+    """
+    Enable accessibility debugging using tota11y and/or
+    Google Developers Accessibility Tools.
+
+    The querystring works with 3 possible values for the mode param:
+    ?mode=off - turn off accessibility debug
+    ?mode=google - turn on Google Tools
+    ?mode=tota11y - turn on tota11y
+    """
+
+    response = http.HttpResponseRedirect('/')
+
+    a11y_code = request.GET.get('mode')
+
+    if a11y_code is None or a11y_code is "off":
+        request.session.pop("a11y_testing", None)
+    else:
+        request.session["a11y_testing"] = a11y_code
+
+    return response
+
+
 @never_cache
 @waffle_switch("test_template")
 def test_template(request):
