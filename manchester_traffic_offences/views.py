@@ -68,10 +68,10 @@ def set_a11y_testing(request):
 
     a11y_code = request.GET.get('mode')
 
-    if a11y_code is None or a11y_code is "off":
-        request.session.pop("a11y_testing", None)
-    else:
+    if a11y_code == "google" or a11y_code == "tota11y":
         request.session["a11y_testing"] = a11y_code
+    else:
+        request.session.pop("a11y_testing", None)
 
     return response
 
