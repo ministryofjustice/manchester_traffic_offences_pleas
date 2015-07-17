@@ -112,6 +112,8 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
+PREMAILER_OPTIONS = dict(base_url='http://example.com', remove_classes=False, keep_style_tags=True)
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
@@ -183,6 +185,7 @@ INSTALLED_APPS = [
     'apps.plea',
     'apps.feedback',
     'apps.receipt',
+    'django_premailer',
 ]
 
 INSTALLED_APPS
