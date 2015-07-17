@@ -145,6 +145,8 @@ SESSION_COOKIE_AGE = 3600
 
 RATE_LIMIT = "20/m"
 
+WAFFLE_CACHE_PREFIX = "MaP_waffle"
+
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'manchester_traffic_offences.wsgi.application'
 
