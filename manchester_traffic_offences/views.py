@@ -106,18 +106,3 @@ def test_template(request):
 
     response = render(request, template, context, content_type=content_type)
     return response
-
-
-@never_cache
-@waffle_switch("test_template")
-def test_email(request):
-
-    options = {"template": {"template":"emails/template.html"}}
-    
-    template_name = request.GET.get("email", "template")
-    template = options["template"][template_name]
-
-    context = {}
-
-    response = render(request, template, context)
-    return response
