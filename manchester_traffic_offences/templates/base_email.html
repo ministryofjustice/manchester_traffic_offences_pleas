@@ -1,6 +1,6 @@
 {% load premailer %}
 {% load i18n %}
-{% premailer "http://example.com" %}
+{% premailer %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -176,7 +176,7 @@
             <tr>
               <td id="headerCell" bgcolor="#000000">
                 <a href="https://www.gov.uk" title="Go to the GOV.UK homepage">
-                  <img id="logo" src="https://www.makeaplea.justice.gov.uk/static/images/email/gov-uk-logo.png" alt="GOV.UK" width="211" height="53">
+                  <img id="logo" src="/static/images/email/gov-uk-logo.png" alt="GOV.UK" width="211" height="53">
                 </a>
               </td>
             </tr>
@@ -200,7 +200,7 @@
                     <li>{% blocktrans %}forward it to{% endblocktrans %} <a href="mailto:feedback@makeaplea.gov.uk">feedback@makeaplea.gov.uk</a></li>
                 </ul>
 
-                <p><a href="https://www.makeaplea.justice.gov.uk/terms-and-conditions-and-privacy-policy">{% blocktrans %}Terms and Conditions and privacy policy{% endblocktrans %}</a></p>
+                <p><a href="/terms-and-conditions-and-privacy-policy">{% blocktrans %}Terms and Conditions and privacy policy{% endblocktrans %}</a></p>
               </td>
             </tr>
           </table>
