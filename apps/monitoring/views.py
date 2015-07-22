@@ -30,7 +30,7 @@ class HealthCheckView(View):
                 "ok": check_mandrill()
             },
             "ftp": {
-                "description": "The MaP database",
+                "description": "The DX FTP interface",
                 "ok": check_ftp(settings.FTP_SERVER_IP, 443)
             },
             "dashboard": {
