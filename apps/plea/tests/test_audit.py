@@ -7,7 +7,7 @@ from itertools import cycle, chain
 import json
 from mock import patch, Mock
 import socket
-import unittest
+import redgreenunittest as unittest
 
 from django.conf import settings
 from django.test import TestCase
