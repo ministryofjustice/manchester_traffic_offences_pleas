@@ -1,4 +1,4 @@
-import unittest
+import redgreenunittest as unittest
 
 from django.http.response import HttpResponseRedirect
 
