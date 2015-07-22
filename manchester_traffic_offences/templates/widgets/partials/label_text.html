@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<span class="label-text">{{ field.label }}</span>
+
+{% if not field.field.required and not field.hide_optional %} <span class="form-hint-inline">{% blocktrans %}(optional){% endblocktrans %}</span>{% endif %}
+
+{% if field.help_text %}
+<span class="form-hint">{{ field.help_text|safe }}</span>
+{% endif %}
+
+{{ field.errors }}
