@@ -1,13 +1,13 @@
 import os
 import sh
 
-from django.test.runner import DiscoverRunner
+from redgreenunittest.django.runner import RedGreenDiscoverRunner
 from django.conf import settings
 
 from .encrypt import clear_user_data
 
 
-class MAPTestRunner(DiscoverRunner):
+class MAPTestRunner(RedGreenDiscoverRunner):
     def __init__(self, *args, **kwargs):
         settings.TESTING = True
 
