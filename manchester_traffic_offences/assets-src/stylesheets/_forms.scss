@@ -21,7 +21,11 @@ Forms
 	margin: 0 0 2em;
 
 	@include media(tablet) {
-		max-width: 60%;
+		max-width: 30em;
+	}
+
+	.inline .block-label {
+		margin-right: 0;
 	}
 
 	@include media(tablet) {
@@ -49,7 +53,6 @@ label {
 
 .block-label {
 	@include core-19;
-	margin-right: 0;
 
 	@include ie(6) {
 		display: inline-block;
@@ -82,7 +85,10 @@ label {
 
 .form-control {
 	width: 100%;
-	max-width: 20em;
+
+	@include media(tablet) {
+		max-width: 20em;
+	}
 }
 
 @include ie-lte(7) {
@@ -104,11 +110,7 @@ label {
 .form-control-inline {
 	@extend .form-control;
 	width: auto;
-	margin: 0 3px;
-
-	@include media(tablet) {
-		margin: 0 5px;
-	}
+	margin: 0 2px;
 
 	&:first-child {
 		margin-left: 0;
@@ -264,12 +266,8 @@ legend + * {
 
 .form-field-inline {
 	display: inline-block;
-	margin: 0 3px;
+	margin: 0 2px;
 	vertical-align: baseline;
-
-	@include media(tablet) {
-		margin: 0 5px;
-	}
 
 	&:first-child {
 		margin-left: 0;

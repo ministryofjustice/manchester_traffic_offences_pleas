@@ -1,14 +1,6 @@
-<div class="form-group-wide{% if field.errors %} with-error{% endif %}" id="section_{{ field.name }}{% if field.counter %}_{{field.counter}}{% endif %}">
+<div class="form-group-wide{% if field.errors %} with-error{% endif %}" id="section_{{ field.name }}{% if field.counter %}_{{ field.counter }}{% endif %}">
     <label for="{{ field.id_for_label }}">
-        <span class="label-text">{{ field.label }}</span>
-
-        {% if not field.field.required and not field.hide_optional %} <span class="form-hint-inline">(optional)</span>{% endif %}
-
-        {% if field.help_text %}
-        <span class="form-hint">{{ field.help_text|safe }}</span>
-        {% endif %}
-
-        {{ field.errors }}
+        {% include "widgets/partials/label_text.html" %}
     </label>
 
     <div class="form-field">

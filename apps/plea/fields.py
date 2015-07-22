@@ -148,20 +148,6 @@ def is_urn_not_used(urn):
     return True
 
 
-class RadioFieldRenderer(RadioFieldRenderer):
-    def render(self):
-        """
-        Outputs a <ul> for this set of choice fields.
-        If an id was given to the field, it is applied to the <ul> (each
-        item in the list will get an id of `$id_$i`).
-        """
-        id_ = self.attrs.get('id', None)
-
-        context = {"id": id_, "renderer": self, "inputs": [force_text(widget) for widget in self]}
-
-        return render_to_string("widgets/RadioSelect.html", context)
-
-
 class DSRadioFieldRenderer(RadioFieldRenderer):
     def render(self):
         """
@@ -172,7 +158,7 @@ class DSRadioFieldRenderer(RadioFieldRenderer):
 
         context = {"id": id_, "renderer": self, "inputs": [force_text(widget) for widget in self]}
 
-        return render_to_string("widgets/DSRadioSelect.html", context)
+        return render_to_string("widgets/partials/DSRadioSelect.html", context)
 
 
 class DSStackedRadioFieldRenderer(RadioFieldRenderer):
@@ -185,7 +171,7 @@ class DSStackedRadioFieldRenderer(RadioFieldRenderer):
 
         context = {"id": id_, "renderer": self, "inputs": [force_text(widget) for widget in self]}
 
-        return render_to_string("widgets/DSStackedRadioSelect.html", context)
+        return render_to_string("widgets/partials/DSStackedRadioSelect.html", context)
 
 
 class DSTemplateWidgetBase(forms.TextInput):
@@ -204,11 +190,11 @@ class DSTemplateWidgetBase(forms.TextInput):
 
 
 class DSDateTemplateWidget(DSTemplateWidgetBase):
-    template = "widgets/DSDateInputWidget.html"
+    template = "widgets/partials/DSDateInputWidget.html"
 
 
 class DSURNTemplateWidget(DSTemplateWidgetBase):
-    template = "widgets/DSURNInputWidget.html"
+    template = "widgets/partials/DSURNInputWidget.html"
 
 
 class DateWidget(MultiWidget):
@@ -272,7 +258,7 @@ class DateWidget(MultiWidget):
             return [widget.value_from_datadict(data, files, name + "_%s" % i) for i, widget in enumerate(self.widgets)]
 
     def format_output(self, rendered_widgets):
-        return '/'.join(rendered_widgets)
+        return " / ".join(rendered_widgets)
 
 
 class URNWidget(MultiWidget):
@@ -307,7 +293,7 @@ class URNWidget(MultiWidget):
             return ['', '', '', '']
 
     def format_output(self, rendered_widgets):
-        return '/'.join(rendered_widgets)
+        return " / ".join(rendered_widgets)
 
 
 class URNField(forms.MultiValueField):
