@@ -1,326 +1,88 @@
+{% extends "base_email.html" %}
+
 {% load testing %}
 {% load i18n %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>{% trans "Online plea submission confirmation" %}</title>
-    <style type="text/css">
-        /* Based on The MailChimp Reset INLINE: Yes. */
-        /* Client-specific Styles */
-        #outlook a {
-            padding: 0;
-        }
 
-        /* Force Outlook to provide a "view in browser" menu link. */
-        body {
-            width: 100% !important;
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-            margin: 0;
-            padding: 0;
-            background-color: #f2f2f2;
-        }
+{% block subject %}{% blocktrans %}Online plea submission confirmation{% endblocktrans %}{% endblock subject %}
 
-        /* Prevent Webkit and Windows Mobile platforms from changing default font sizes.*/
-        .ExternalClass {
-            width: 100%;
-        }
+{% block content %}
+    
+    {% if plea_type == "guilty" %}{% add_test_tag "<<GUILTY>>" %}{% endif %}
+    {% if plea_type == "not_guilty" %}{% add_test_tag "<<NOTGUILTY>>" %}{% endif %}
+    {% if plea_type == "mixed" %}{% add_test_tag "<<MIXED>>" %}{% endif %}
+   
 
-        /* Force Hotmail to display emails at full width */
-        .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
-            line-height: 100%;
-        }
+    {% if plea_made_by == "Defendant" %}
+        
+        <h1>{% blocktrans count charges=number_of_charges %}Your online plea has been submitted{% plural %}Your online pleas have been submitted{% endblocktrans %}</h1>
 
-        /* Forces Hotmail to display normal line spacing.  More on that: http://www.emailonacid.com/forum/viewthread/43/ */
-        #backgroundTable {
-            margin: 0;
-            padding: 0;
-            width: 100% !important;
-            line-height: 100% !important;
-        }
+        <p class="lede">
+        {% if plea_type == "guilty" %}
+            {% blocktrans count charges=number_of_charges %}Your guilty plea has been sent to the court.{% plural %}Your guilty pleas have been sent to the court.{% endblocktrans %}
+        {% elif plea_type == "not_guilty" %}
+            {% blocktrans count charges=number_of_charges %}Your not guilty plea has been sent to the court.{% plural %}Your not guilty pleas have been sent to the court.{% endblocktrans %}
+        {% elif plea_type == "mixed" %}
+            {% blocktrans count charges=number_of_charges %}Your plea has been sent to the court.{% plural %}Your pleas have been sent to the court.{% endblocktrans %}
+        {% endif %}
+        </p>
 
-        /* End reset */
+    {% endif %}
 
-        /* Some sensible defaults for images
-        Bring inline: Yes. */
-        img {
-            outline: none;
-            text-decoration: none;
-            -ms-interpolation-mode: bicubic;
-        }
+    {% if plea_made_by == "Company representative" %}
 
-        a img {
-            border: none;
-        }
+        <h1>{% blocktrans count charges=number_of_charges %}Online plea submitted{% plural %}Online pleas submitted{% endblocktrans %}</h1>
 
-        .image_fix {
-            display: block;
-        }
+        <p>
+        {% if plea_type == "guilty" %}
+            {% blocktrans count charges=number_of_charges %}The guilty plea you made on behalf of your company has been sent to the court.{% plural %}The guilty pleas you made on behalf of your company have been sent to the court.{% endblocktrans %}
+        {% elif plea_type == "not_guilty" %}
+            {% blocktrans count charges=number_of_charges %}The not guilty plea you made on behalf of your company has been sent to the court.{% plural %}The not guilty pleas you made on behalf of your company have been sent to the court.{% endblocktrans %}
+        {% elif plea_type == "mixed" %}
+            {% blocktrans count charges=number_of_charges %}The plea you made on behalf of your company has been sent to the court.{% plural %}The pleas you made on behalf of your company have been sent to the court.{% endblocktrans %}
+        {% endif %}
+        </p>
 
-        /* Yahoo paragraph fix
-        Bring inline: Yes. */
-        p {
-            margin: 1em 0;
-        }
+    {% endif %}
 
-        /* Hotmail header color reset
-        Bring inline: Yes. */
-        h1, h2, h3, h4, h5, h6 {
-            color: black !important;
-        }
+    <h2>{% blocktrans %}What happens next:{% endblocktrans %}</h2>
+    
+    <ul>
+        <li>{% blocktrans count charges=number_of_charges %}we’ll send you a letter with the court’s decision within 3  working days after your hearing date{% plural %}we’ll send you a letter with the court’s decisions within 3 working days after your hearing date{% endblocktrans %}</li>
 
-        h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-            color: blue !important;
-        }
+        {% if plea_made_by == "Defendant" %}
+        <li>{% blocktrans %}the court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case{% endblocktrans %}</li>
+        {% endif %}
+        
+        {% if plea_made_by == "Company representative" %}
+        <li>{% blocktrans %}the court will tell you if a company representative needs to attend a trial, and what evidence might be needed by the court{% endblocktrans %}</li>
+        {% endif %}
 
-        h1 a:active, h2 a:active, h3 a:active, h4 a:active, h5 a:active, h6 a:active {
-            color: red !important; /* Preferably not the same color as the normal header link color.  There is limited support for psuedo classes in email clients, this was added just for good measure. */
-        }
+        <li>{% blocktrans %}you can print a copy of this plea confirmation for your records{% endblocktrans %}</li>
+    </ul>
 
-        h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
-            color: purple !important; /* Preferably not the same color as the normal header link color. There is limited support for psuedo classes in email clients, this was added just for good measure. */
-        }
+    <h2>{% blocktrans %}Do not:{% endblocktrans %}</h2>
+    <ul>
+        <li>{% blocktrans %}come to court on the hearing date shown in the requisition pack{% endblocktrans %}</li>
+        
+        {% if plea_made_by == "Defendant" and plea_type != "not_guilty" %}
+        <li>{% blocktrans %}send your driving licence to the court, the DVLA will contact you if they need you to send in your driving licence{% endblocktrans %}</li>
+        {% endif %}
+    </ul>
 
-        /* Outlook 07, 10 Padding issue fix
-        Bring inline: No.*/
-        table td {
-            border-collapse: collapse;
-        }
+    <h2>{% blocktrans %}Need to change a plea?{% endblocktrans %}</h2>
 
-        /* Remove spacing around Outlook 07, 10 tables
-        Bring inline: Yes */
-        table {
-            border-collapse: collapse;
-            mso-table-lspace: 0pt;
-            mso-table-rspace: 0pt;
-        }
+    <p>{% blocktrans with urn=urn|upper %}Contact the court by post or email quoting your URN {{ urn }} before the date of your hearing.{% endblocktrans %}</p>
 
-        /* Styling your links has become much simpler with the new Yahoo.  In fact, it falls in line with the main credo of styling in email and make sure to bring your styles inline.  Your link colors will be uniform across clients when brought inline.
-        Bring inline: Yes. */
-        a {
-            color: orange;
-        }
+    <p>{% blocktrans %}The contact details for the court are:{% endblocktrans %}</p>
 
-        /***************************************************
-        ****************************************************
-        MOBILE TARGETING
-        ****************************************************
-        ***************************************************/
-        @media only screen and (max-device-width: 480px) {
-            /* Part one of controlling phone number linking for mobile. */
-            a[href^="tel"], a[href^="sms"] {
-                text-decoration: none;
-                color: blue; /* or whatever your want */
-                pointer-events: none;
-                cursor: default;
-            }
+    <p><strong>{% blocktrans %}By Post:{% endblocktrans %}</strong><br>
+        {{ court_address|linebreaksbr }}</p>
 
-            .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
-                text-decoration: default;
-                color: orange !important;
-                pointer-events: auto;
-                cursor: default;
-            }
+    <p><strong>{% blocktrans %}By email:{% endblocktrans %}</strong><br>
+        <a href="mailto:{{ court_email }}">{{ court_email }}</a></p>
 
-        }
+    <h2>{% blocktrans %}We’re constantly working to improve this service.{% endblocktrans %}</h2>
 
-        /* More Specific Targeting */
+    <p>{% blocktrans %}Please give us <a href="/feedback/">feedback</a> so we can make it better.{% endblocktrans %}</p>
 
-        @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
-            /* You guessed it, ipad (tablets, smaller screens, etc) */
-            /* repeating for the ipad */
-            a[href^="tel"], a[href^="sms"] {
-                text-decoration: none;
-                color: blue; /* or whatever your want */
-                pointer-events: none;
-                cursor: default;
-            }
-
-            .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
-                text-decoration: default;
-                color: orange !important;
-                pointer-events: auto;
-                cursor: default;
-            }
-        }
-
-        @media only screen and (-webkit-min-device-pixel-ratio: 2) {
-            /* Put your iPhone 4g styles in here */
-        }
-
-        /* Android targeting */
-        @media only screen and (-webkit-device-pixel-ratio: .75) {
-            /* Put CSS for low density (ldpi) Android layouts in here */
-        }
-
-        @media only screen and (-webkit-device-pixel-ratio: 1) {
-            /* Put CSS for medium density (mdpi) Android layouts in here */
-        }
-
-        @media only screen and (-webkit-device-pixel-ratio: 1.5) {
-            /* Put CSS for high density (hdpi) Android layouts in here */
-        }
-
-        /* end Android targeting */
-
-    </style>
-
-    <!-- Targeting Windows Mobile -->
-    <!--[if IEMobile 7]>
-    <style type="text/css">
-
-    </style>
-    <![endif]-->
-
-    <!-- ***********************************************
-    ****************************************************
-    END MOBILE TARGETING
-    ****************************************************
-    ************************************************ -->
-
-    <!--[if gte mso 9]>
-    <style>
-        /* Target Outlook 2007 and 2010 */
-    </style>
-    <![endif]-->
-</head>
-<body>
-<!-- Wrapper/Container Table: Use a wrapper table to control the width and the background color consistently of your email. Use this approach instead of setting attributes on the body tag. -->
-<table cellpadding="0" cellspacing="0" border="0" id="backgroundTable">
-    <tr>
-        <td>&nbsp;</td>
-    </tr>
-    <tr>
-        <td>&nbsp;</td>
-    </tr>
-    <tr>
-        <td valign="top">
-            <!-- Tables are the most common way to format your email consistently. Set your table widths inside cells and in most cases reset cellpadding, cellspacing, and border to zero. Use nested tables as a way to space effectively in your message. -->
-            <table cellpadding="0" cellspacing="0" border="0" align="center" bgcolor="#ffffff" width="634" margin>
-                <tr>
-                    <td width="100%" bgcolor="#000000" style="padding-left: 0px;">
-                        <img src="https://www.makeaplea.justice.gov.uk/static/images/email/gov-uk-logo.png">
-                    </td>
-                </tr>
-                <tr>
-                    <td width="100%" valign="top">
-                        <table width="100%" cellpadding="30">
-                            <tr>
-                                <td style="font-family:Arial, Helvetica; line-height: 21px;">
-
-                                {% if plea_type == "guilty" %}
-                                    {% add_test_tag "<<GUILTY>>" %}
-                                {% endif %}
-
-                                {% if plea_type == "not_guilty" %}
-                                    {% add_test_tag "<<NOTGUILTY>>" %}
-                                {% endif %}
-
-                                {% if plea_type == "mixed" %}
-                                    {% add_test_tag "<<MIXED>>" %}
-                                {% endif %}
-                                
-                                {% if plea_made_by == "Defendant" %}
-                                    
-                                    <h1 style="margin-bottom: 30px; margin-top:0px;">{% blocktrans count charges=number_of_charges %}Your online plea has been submitted{% plural %}Your online pleas have been submitted{% endblocktrans %}</h1>
-
-                                    <p style="font-size: 18px;">
-                                    {% if plea_type == "guilty" %}
-                                        {% blocktrans count charges=number_of_charges %}Your guilty plea has been sent to the court.{% plural %}Your guilty pleas have been sent to the court.{% endblocktrans %}
-                                    {% elif plea_type == "not_guilty" %}
-                                        {% blocktrans count charges=number_of_charges %}Your not guilty plea has been sent to the court.{% plural %}Your not guilty pleas have been sent to the court.{% endblocktrans %}
-                                    {% elif plea_type == "mixed" %}
-                                        {% blocktrans count charges=number_of_charges %}Your plea has been sent to the court.{% plural %}Your pleas have been sent to the court.{% endblocktrans %}
-                                    {% endif %}
-                                    </p>
-
-                                {% elif plea_made_by == "Company representative" %}
-
-                                    <h1 style="margin-bottom: 30px; margin-top:0px;">{% blocktrans count charges=number_of_charges %}Online plea submitted{% plural %}Online pleas submitted{% endblocktrans %}</h1>
-
-                                    <p style="font-size: 18px;">
-                                    {% if plea_type == "guilty" %}
-                                        {% blocktrans count charges=number_of_charges %}The guilty plea you made on behalf of your company has been sent to the court.{% plural %}The guilty pleas you made on behalf of your company have been sent to the court.{% endblocktrans %}
-                                    {% elif plea_type == "not_guilty" %}
-                                        {% blocktrans count charges=number_of_charges %}The not guilty plea you made on behalf of your company has been sent to the court.{% plural %}The not guilty pleas you made on behalf of your company have been sent to the court.{% endblocktrans %}
-                                    {% elif plea_type == "mixed" %}
-                                        {% blocktrans count charges=number_of_charges %}The plea you made on behalf of your company has been sent to the court.{% plural %}The pleas you made on behalf of your company have been sent to the court.{% endblocktrans %}
-                                    {% endif %}
-                                    </p>
-
-                                {% endif %}
-
-                                    <h2 style="font-size: 25px; margin-top: 50px;">{% blocktrans %}What happens next:{% endblocktrans %}</h2>
-                                    <ul style="margin-left: 0px;padding-left:25px;">
-
-                                        <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans count charges=number_of_charges %}we’ll send you a letter with the court’s decision within 3  working days after your hearing date{% plural %}we’ll send you a letter with the court’s decisions within 3 working days after your hearing date{% endblocktrans %}</li>
-
-                                        {% if plea_made_by == "Defendant" %}
-                                        <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}the court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case{% endblocktrans %}</li>
-                                        {% endif %}
-                                            
-                                        {% if plea_made_by == "Company representative" %}
-                                        <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}the court will tell you if a company representative needs to attend a trial, and what evidence might be needed by the court{% endblocktrans %}</li>
-                                        {% endif %}
-
-                                        <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}you can print a copy of this plea confirmation for your records{% endblocktrans %}</li>
-                                    </ul>
-
-                                    <h2 style="font-size: 25px; margin-top: 50px;">{% blocktrans %}Do not:{% endblocktrans %}</h2>
-                                    <ul style="margin-left: 0px;padding-left:25px;">
-                                        <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}come to court on the hearing date shown in the requisition pack{% endblocktrans %}</li>
-                                        
-                                        {% if plea_made_by == "Defendant" and plea_type != "not_guilty" %}
-                                        <li style="margin-bottom: 20px; font-size: 18px;">{% blocktrans %}send your driving licence to the court, the DVLA will contact you if they need you to send in your driving licence{% endblocktrans %}</li>
-                                        {% endif %}
-                                    </ul>
-
-                                    <h2 style="font-size: 25px; margin-top: 50px;">{% blocktrans %}Need to change a plea?{% endblocktrans %}</h2>
-
-                                    <p style="font-size: 18px;">{% blocktrans with urn=urn|upper %}Contact the court by post or email quoting your URN {{ urn }} before the date of your hearing.{% endblocktrans %}</p>
-
-                                    <p style="font-size: 18px;">{% blocktrans %}The contact details for the court are:{% endblocktrans %}</p>
-
-                                    <p style="font-size: 18px;">{% blocktrans %}By Post:{% endblocktrans %}<br>
-                                        {{ court_address|linebreaksbr }}</p>
-
-                                    <p style="font-size: 18px;">{% blocktrans %}By email:{% endblocktrans %}<br>
-                                        <a href="mailto:{{ court_email }}" style="color: #1068AA;">{{ court_email }}</a></p>
-
-                                    <h2 style="font-size: 25px; margin-top: 50px;">{% blocktrans %}We’re constantly working to improve this service.{% endblocktrans %}</h2>
-
-                                    <p style="font-size: 18px;">{% blocktrans %}Please give us <a class="external" href="https://www.makeaplea.justice.gov.uk/feedback/" style="color: #1068AA;">feedback</a> so we can make it better.{% endblocktrans %}</p>
-
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                <tr>
-                    <td width="100%">
-                        <table width="100%" bgcolor="#f2f2f2">
-                            <tr>
-                                <td width="20">&nbsp;</td>
-                                <td style="color: #777777; font-size: 13px; font-family: Arial;">
-                                    <p>{% blocktrans %}If you're unsure an email is from the Ministry of Justice:{% endblocktrans %}</p>
-
-                                    <ul style="margin: 1.2em; padding:0;">
-                                        <li>{% blocktrans %}do not reply to it or click any links{% endblocktrans %}</li>
-                                        <li>{% blocktrans %}forward it to{% endblocktrans %} <a href="mailto:feedback@makeaplea.gov.uk" style="color: #9a9a9a;">feedback@makeaplea.gov.uk</a></li>
-                                    </ul>
-
-                                    <p><a href="https://www.makeaplea.justice.gov.uk/terms-and-conditions-and-privacy-policy" style="color: #777777;">{% blocktrans %}Terms and Conditions and privacy policy{% endblocktrans %}</a></p>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-            <!-- End example table -->
-        </td>
-    </tr>
-</table>
-<!-- End of wrapper table -->
-</body>
-</html>
+{% endblock content %}
