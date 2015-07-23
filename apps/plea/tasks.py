@@ -160,8 +160,8 @@ def email_send_user(self, case_id, email_data):
         case.add_action("No email entered, user email not sent.", "")
         return True
 
-    html_body = render_to_string("plea/plea_email_confirmation.html", data)
-    txt_body = wrap(render_to_string("plea/plea_email_confirmation.txt", data), 72)
+    html_body = render_to_string("emails/user_plea_confirmation.html", data)
+    txt_body = wrap(render_to_string("emails/user_plea_confirmation.txt", data), 72)
 
     subject = settings.PLEA_CONFIRMATION_EMAIL_SUBJECT.format(**data)
 

@@ -94,7 +94,7 @@ class PleaOnlineViews(TemplateView):
 
 
 class UrnAlreadyUsedView(TemplateView):
-    template_name = "plea/urn_used.html"
+    template_name = "urn_used.html"
 
     def post(self, request):
 
@@ -104,7 +104,7 @@ class UrnAlreadyUsedView(TemplateView):
 
 
 class CourtFinderView(FormView):
-    template_name = "plea/court_finder.html"
+    template_name = "court_finder.html"
     form_class = CourtFinderForm
 
     def form_valid(self, form):
