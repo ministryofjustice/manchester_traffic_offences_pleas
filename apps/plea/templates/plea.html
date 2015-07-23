@@ -1,10 +1,10 @@
-{% extends "plea/base_form.html" %}
+{% extends "base_form.html" %}
 
 {% load i18n %}
 {% load form_widgets %}
 
 {% spaceless %}
-{% block page_title %}{% include "plea/partials/page_title_plea.html" with charges=request.session.case.number_of_charges %} - {{ block.super }}{% endblock %}    
+{% block page_title %}{% include "partials/page_title_plea.html" with charges=request.session.case.number_of_charges %} - {{ block.super }}{% endblock %}    
 {% endspaceless %}
 
 
@@ -27,7 +27,7 @@
 
 {% block stage_header %}
     {% spaceless %}
-    <h1>{% include "plea/partials/page_title_plea.html" with charges=request.session.case.number_of_charges %}</h1>
+    <h1>{% include "partials/page_title_plea.html" with charges=request.session.case.number_of_charges %}</h1>
     {% endspaceless %}
 
     {% if plea.split_form == "split_form_last_step" %}
