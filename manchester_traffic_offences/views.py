@@ -95,9 +95,9 @@ def test_template(request):
     - number_of_charges: (int)
     """
 
-    options = {"template": {"complete": "plea/complete.html",
-                            "email_html": "plea/plea_email_confirmation.html",
-                            "email_txt": "plea/plea_email_confirmation.txt"},
+    options = {"template": {"complete": "complete.html",
+                            "email_html": "emails/user_plea_confirmation.html",
+                            "email_txt": "emails/user_plea_confirmation.txt"},
                "plea_made_by": {"defendant": "Defendant",
                                 "company": "Company representative"}}
 

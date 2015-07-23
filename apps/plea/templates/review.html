@@ -1,4 +1,4 @@
-{% extends "plea/base_form.html" %}
+{% extends "base_form.html" %}
 
 {% load i18n %}
 
@@ -34,7 +34,7 @@
             </th>
         </tr>
     </thead>
-    {% include "plea/partials/review_case.html" %}
+    {% include "partials/review_case.html" %}
     </table>
 
     <table class="review-table" id="your-details">
@@ -51,7 +51,7 @@
             </th>
         </tr>
     </thead>
-    {% include "plea/partials/review_details.html" %}
+    {% include "partials/review_details.html" %}
     </table>
 
     <table class="review-table" id="your-plea">
@@ -68,7 +68,7 @@
             </th>
         </tr>
     </thead>
-    {% include "plea/partials/review_plea.html" %}
+    {% include "partials/review_plea.html" %}
     </table>
 
     {% if case.plea_made_by == "Defendant" %}
@@ -83,7 +83,7 @@
                 </th>
             </tr>
             </thead>
-            {% include "plea/partials/review_finances.html" %}
+            {% include "partials/review_finances.html" %}
         </table>
             {% if your_finances.hardship %}
                 <table class="review-table" id="your-expenses">
@@ -95,7 +95,7 @@
                         </th>
                     </tr>
                     </thead>
-                    {% include "plea/partials/review_expenses.html" %}
+                    {% include "partials/review_expenses.html" %}
                 </table>
             {% endif %}
 
@@ -111,7 +111,7 @@
                     </th>
                 </tr>
                 </thead>
-                {% include "plea/partials/review_company_finances.html" %}
+                {% include "partials/review_company_finances.html" %}
                 </table>
         {% endif %}
     {% endif %}
