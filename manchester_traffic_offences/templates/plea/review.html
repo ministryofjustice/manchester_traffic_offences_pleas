@@ -1,4 +1,4 @@
-{% extends "plea/base.html" %}
+{% extends "plea/base_form.html" %}
 
 {% load i18n %}
 
@@ -12,37 +12,19 @@
 {% endblock %}
 {% endspaceless %}
 
-{% block page_content %}
-<form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
-    
-    {% csrf_token %}
-        
-    {% if form.errors %}
-    <section class="error-summary">
-        <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
-        
-        <p>{% trans "See highlighted errors below." %}</p>
-        
-        <ul>
-        {% for field in form %}
-            {% if field.errors %}
-            <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
-            {% endif %}
-        {% endfor %}
-        </ul>
-    </section>
+
+{% block stage_header %}
+    {% if case.plea_made_by == "Company representative" %}
+        <h1>{% blocktrans count charges=case.number_of_charges %}Confirm your company's plea{% plural %}Confirm your company's pleas{% endblocktrans %}</h1>
+    {% else %}
+        <h1>{% blocktrans count charges=case.number_of_charges %}Confirm your plea{% plural %}Confirm your pleas{% endblocktrans %}</h1>
     {% endif %}
 
-    <header class="content-header">
-        {% if case.plea_made_by == "Company representative" %}
-            <h1>{% blocktrans count charges=case.number_of_charges %}Confirm your company's plea{% plural %}Confirm your company's pleas{% endblocktrans %}</h1>
-        {% else %}
-            <h1>{% blocktrans count charges=case.number_of_charges %}Confirm your plea{% plural %}Confirm your pleas{% endblocktrans %}</h1>
-        {% endif %}
+    <p>{% blocktrans count charges=case.number_of_charges %}Review the information you’ve given before making your plea.{% plural %}Review the information you’ve given before making your pleas.{% endblocktrans %}</p>
+{% endblock stage_header %}
 
-        <p>{% blocktrans count charges=case.number_of_charges %}Review the information you’ve given before making your plea.{% plural %}Review the information you’ve given before making your pleas.{% endblocktrans %}</p>
-    </header>
 
+{% block stage_form %}
     <table class="review-table" id="case-details">
     <thead>
         <tr>
@@ -135,10 +117,10 @@
     {% endif %}
 
     {% include "plea/review/important.html" %}
+{% endblock stage_form %}
 
+{% block stage_submit %}
     <div class="form-submit">
         <button type="submit" class="button-large">{% blocktrans count charges=case.number_of_charges %}Make your plea{% plural %}Make your pleas{% endblocktrans %}</button>
     </div>
-
-</form>
-{% endblock page_content %}
+{% endblock stage_submit %}

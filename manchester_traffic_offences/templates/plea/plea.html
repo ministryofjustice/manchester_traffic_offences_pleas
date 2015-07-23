@@ -1,47 +1,40 @@
-{% extends "plea/base.html" %}
+{% extends "plea/base_form.html" %}
 
-{% load debug %}
 {% load i18n %}
 {% load form_widgets %}
-{% load testing %}
 
-{% block page_title %}{% include "plea/plea/page_title.html" with charges=request.session.case.number_of_charges %} - {{ block.super }}{% endblock %}
+{% spaceless %}
+{% block page_title %}{% include "plea/partials/page_title.html" with charges=request.session.case.number_of_charges %} - {{ block.super }}{% endblock %}    
+{% endspaceless %}
 
-{% block page_content %}
 
-    {% with request.session.case.number_of_charges as charges %}
-<form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
+{% block errors_summary %}
+    <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
 
-    {% csrf_token %}
+    <p>{% trans "See highlighted errors below." %}</p>
 
-    <input class="nojs-only" type="hidden" name="split_form" value="{{plea.split_form|default:"guilty"}}">
-
-    {% if formset_has_errors %}
-    <section class="error-summary">
-        <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
-
-        <p>{% trans "See highlighted errors below." %}</p>
-
-        <ul>
-        {% for plea_form in form %}
-            {% for field in plea_form %}
-                {% if field.errors %}
+    <ul>
+    {% for plea_form in form %}
+        {% for field in plea_form %}
+            {% if field.errors %}
         <li><a href="#section_{{ field.name }}_{{ forloop.parentloop.counter }}">{{ field.errors|striptags }}</a></li>
-                {% endif %}
-            {% endfor %}
+            {% endif %}
         {% endfor %}
-        </ul>
-    </section>
-    {% endif %}
+    {% endfor %}
+    </ul>
+{% endblock errors_summary %}
 
-    <header class="content-header">
-        <h1>{% include "plea/plea/page_title.html" %}</h1>
-        {% if plea.split_form == "split_form_last_step" %}
-        <div>
-            <p>This is your opportunity to present your case to the court.</p>
-        </div>
-        {% endif %}
-    </header>
+
+{% block stage_header %}
+    {% spaceless %}
+    <h1>{% include "plea/partials/page_title.html" with charges=request.session.case.number_of_charges %}</h1>
+    {% endspaceless %}
+
+    {% if plea.split_form == "split_form_last_step" %}
+    <div>
+        <p>This is your opportunity to present your case to the court.</p>
+    </div>
+    {% endif %}
 
     {% if plea.split_form != "split_form_last_step" %}
     <div class="panel-grey">
@@ -62,14 +55,20 @@
         {% endif %}
     </div>
     {% endif %}
+{% endblock stage_header %}
+
+
+{% block stage_form %}
+
+    <input class="nojs-only" type="hidden" name="split_form" value="{{plea.split_form|default:"guilty"}}">
+
+    {% if plea.split_form != "split_form_last_step" %}
+    <h2 class="heading-medium">{% blocktrans with form_count=form_count count charges=request.session.case.number_of_charges %}Enter a plea for the charge below{% plural %}Enter {{ form_count }} pleas for the charges below{% endblocktrans %}</h2>
+    {% endif %}
 
     {% with form_count=form|length %}
 
         {{ form.management_form }}
-
-        {% if plea.split_form != "split_form_last_step" %}
-        <h2 class="heading-medium">{% blocktrans with form_count=form_count count charges=charges %}Enter a plea for the charge below{% plural %}Enter {{ form_count }} pleas for the charges below{% endblocktrans %}</h2>
-        {% endif %}
 
         {% for plea_form in form %}
         <section class="section-plea">
@@ -127,9 +126,4 @@
 
     {% endwith %}
 
-    <div class="form-submit">
-        <button class="button" type="submit">{% trans "Continue" %}</button>
-    </div>
-</form>
-    {% endwith %}
-{% endblock page_content %}
+{% endblock stage_form %}
