@@ -34,7 +34,7 @@
             </th>
         </tr>
     </thead>
-    {% include "plea/review/case.html" %}
+    {% include "plea/partials/review_case.html" %}
     </table>
 
     <table class="review-table" id="your-details">
@@ -51,7 +51,7 @@
             </th>
         </tr>
     </thead>
-    {% include "plea/review/details.html" %}
+    {% include "plea/partials/review_details.html" %}
     </table>
 
     <table class="review-table" id="your-plea">
@@ -68,7 +68,7 @@
             </th>
         </tr>
     </thead>
-    {% include "plea/review/plea.html" %}
+    {% include "plea/partials/review_plea.html" %}
     </table>
 
     {% if case.plea_made_by == "Defendant" %}
@@ -83,7 +83,7 @@
                 </th>
             </tr>
             </thead>
-            {% include "plea/review/finances.html" %}
+            {% include "plea/partials/review_finances.html" %}
         </table>
             {% if your_finances.hardship %}
                 <table class="review-table" id="your-expenses">
@@ -95,7 +95,7 @@
                         </th>
                     </tr>
                     </thead>
-                    {% include "plea/review/expenses.html" %}
+                    {% include "plea/partials/review_expenses.html" %}
                 </table>
             {% endif %}
 
@@ -111,12 +111,34 @@
                     </th>
                 </tr>
                 </thead>
-                {% include "plea/review/company_finances.html" %}
+                {% include "plea/partials/review_company_finances.html" %}
                 </table>
         {% endif %}
     {% endif %}
+    
 
-    {% include "plea/review/important.html" %}
+    <h2 class="heading-medium">{% trans "Important" %}</h2>
+
+    <section id="section_understand">
+
+        <div class="form-group-wide{% if form.understand.errors %} with-error{% endif %}">
+            
+            {{ form.understand.errors }}
+            
+            <label for="{{ form.understand.id_for_label }}" class="block-label">
+                <span class="important">{% trans "It is an offence to make a false statement or to deliberately fail to disclose any relevant facts." %}</span>
+                <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
+                <span class="checkbox-text">
+                {% if case.plea_made_by == "Defendant" %}
+                    {% blocktrans %}I confirm that I have read and understand the charge against me and that I am the person named in the requisition pack. The facts stated here are correct to the best of my knowledge.{% endblocktrans %}
+                {% elif case.plea_made_by == "Company representative" %}
+                    {% blocktrans %}I confirm that I have read and understand the charges and the terms and conditions. I also confirm that I am legally entitled to plead on behalf of the company named in the requisition pack. The facts stated here are correct to the best of my knowledge.{% endblocktrans %}
+                {% endif %}
+                </span>
+            </label>
+        </div>
+    </section>
+
 {% endblock stage_form %}
 
 {% block stage_submit %}
