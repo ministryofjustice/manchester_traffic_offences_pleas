@@ -25,7 +25,7 @@ SECRET_KEY = "THIS NEEDS TO CHANGE"
 
 PLEA_EMAIL_FROM = "dev@example.org"
 PLEA_EMAIL_ATTACHMENT_NAME = "plea.html"
-PLEA_EMAIL_TEMPLATE = "plea/plea_email_attachment.html"
+PLEA_EMAIL_TEMPLATE = "emails/attachments/plea_email.html"
 PLEA_EMAIL_TO = ["dev@example.org", ]
 PLEA_EMAIL_BODY = ""
 

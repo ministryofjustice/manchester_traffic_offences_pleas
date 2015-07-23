@@ -1,6 +1,4 @@
 {% load i18n %}
-{% load date %}
-
 <!doctype html>
 <html>
 <head>
@@ -36,7 +34,7 @@
             </th>
         </tr>
     </thead>
-    {% include "plea/review/case.html" %}
+    {% include "partials/review_case.html" %}
     </table>
 
     <table class="review-table" id="your-details">
@@ -51,7 +49,7 @@
             </th>
         </tr>
     </thead>
-    {% include "plea/review/details.html" %}
+    {% include "partials/review_details.html" %}
     </table>
 
     <table class="review-table" id="your-plea">
@@ -66,7 +64,7 @@
             </th>
         </tr>
     </thead>
-    {% include "plea/review/plea.html" %}
+    {% include "partials/review_plea.html" %}
     </table>
 
 </body>
