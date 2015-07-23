@@ -16,6 +16,7 @@
 
 
 {% block stage_header %}
+    {% spaceless %}
     <h1>
     {% if your_finances.split_form != "split_form_last_step" %}
         {% blocktrans %}Your finances{% endblocktrans %}
@@ -23,6 +24,7 @@
         {% blocktrans %}Your finances continued{% endblocktrans %}
     {% endif %}
     </h1>
+    {% endspaceless %}
 
     {% if your_finances.split_form != "split_form_last_step" %}
     <div class="panel-grey">

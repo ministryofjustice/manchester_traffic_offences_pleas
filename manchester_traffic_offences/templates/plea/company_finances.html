@@ -17,13 +17,15 @@
 
 
 {% block stage_header %}
+    {% spaceless %}
     <h1>
     {% if company_finances.split_form != "split_form_last_step" %}
         {% blocktrans %}Company details{% endblocktrans %}
     {% else %}
         {% blocktrans %}Company details continued{% endblocktrans %}
     {% endif %}
-    </h1>
+    </h1>    
+    {% endspaceless %}
 
     <p>{% trans "The court will decide the company's fine based on its size and financial situation." %}</p>
 {% endblock stage_header %}
