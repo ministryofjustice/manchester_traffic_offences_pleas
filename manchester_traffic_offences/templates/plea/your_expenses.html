@@ -1,39 +1,20 @@
-{% extends "plea/base.html" %}
+{% extends "plea/base_form.html" %}
 
 {% load i18n %}
 {% load form_widgets %}
+{% load testing %}
 
 {% block page_title %}{% trans "Your expenses" %} - {{ block.super }}{% endblock %}
 
-{% load staticfiles testing %}
 
-{% block page_content %}
-<form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
-    
-    {% csrf_token %}
+{% block stage_header %}
+    <h1 class="heading-xlarge">{% trans "Your expenses" %}</h1>
 
-    {% if form.errors %}
-    <section class="error-summary">
-        <h2 class="heading-medium">{% trans "You need to fix the errors on this page before continuing." %}</h2>
-        
-        <p>{% trans "See highlighted errors below." %}</p>
-        
-        <ul class="errors-list">
-        {% for field in form %}
-            {% if field.errors %}
-            <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
-            {% endif %}
-        {% endfor %}
-        </ul>
-    </section>
-    {% endif %}
+    <p class="lede">{% trans "To help the court decide your fine, you must provide information about your expenses." %}</p>
+{% endblock stage_header %}
 
-    <header class="content-header">
-        <h1 class="heading-xlarge">{% trans "Your expenses" %}</h1>
 
-        <p class="lede">{% trans "To help the court decide your fine, you must provide information about your expenses." %}</p>
-    </header>
-
+{% block stage_form %}
     <hr>
 
     {% wide_field form.hardship_details %}
@@ -125,10 +106,4 @@
         </div>
         
     </div>
-
-    <div class="form-submit">
-        <button class="button" type="submit">{% trans "Continue" %}</button>
-    </div>
-
-</form>
-{% endblock page_content %}
+{% endblock stage_form %}

@@ -1,9 +1,9 @@
-{% extends "plea/base.html" %}
+{% extends "plea/base_form.html" %}
 
 {% load i18n %}
-{% load staticfiles %}
 {% load form_widgets %}
 
+{% spaceless %}
 {% block page_title %}
     {% if your_finances.split_form != "split_form_last_step" %}
         {% blocktrans %}Your finances{% endblocktrans %}
@@ -12,39 +12,17 @@
     {% endif %}
      - {{ block.super }}
 {% endblock %}
+{% endspaceless %}
 
-{% block page_content %}
-<form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
 
-    {% csrf_token %}
-
-    {% split_form form %}
-
-    {% if form.errors %}
-    <section class="error-summary">
-        <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
-
-        <p>{% trans "See highlighted errors below." %}</p>
-
-        <ul>
-        {% for field in form %}
-            {% if field.errors %}
-            <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
-            {% endif %}
-        {% endfor %}
-        </ul>
-    </section>
+{% block stage_header %}
+    <h1>
+    {% if your_finances.split_form != "split_form_last_step" %}
+        {% blocktrans %}Your finances{% endblocktrans %}
+    {% else %}
+        {% blocktrans %}Your finances continued{% endblocktrans %}
     {% endif %}
-
-    <header class="content-header">
-        <h1>
-        {% if your_finances.split_form != "split_form_last_step" %}
-            {% blocktrans %}Your finances{% endblocktrans %}
-        {% else %}
-            {% blocktrans %}Your finances continued{% endblocktrans %}
-        {% endif %}
-        </h1>
-    </header>
+    </h1>
 
     {% if your_finances.split_form != "split_form_last_step" %}
     <div class="panel-grey">
@@ -56,6 +34,11 @@
         </ul>
     </div>
     {% endif %}
+{% endblock stage_header %}
+
+
+{% block stage_form %}
+    {% split_form form %}
 
     {% if your_finances.split_form != "split_form_last_step" %}
     {% radio_field form.you_are %}
@@ -144,10 +127,5 @@
         {% endif %}
 
     {% endif %}
-
-    <div class="form-submit">
-        <button class="button" type="submit">{% trans "Continue" %}</button>
-    </div>
-
-</form>
-{% endblock page_content %}
+    
+{% endblock stage_form %}
