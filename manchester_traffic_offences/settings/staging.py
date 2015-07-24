@@ -28,6 +28,11 @@ SMTP_ROUTES["PNN"]["PASSWORD"] = os.environ.get("PNN_EMAIL_PASSWORD", "")
 
 RATE_LIMIT = "120/m"
 
+PREMAILER_OPTIONS = {"base_url": "http://makeaplea.dsd.io",
+                     "remove_classes": False,
+                     "keep_style_tags": True,
+                     "cssutils_logging_level": logging.ERROR}
+
 BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1',
                             'queue_name_prefix': 'staging-',
                             'polling_interval': 1}
