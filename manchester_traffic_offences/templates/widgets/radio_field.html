@@ -1,11 +1,15 @@
-<div class="form-group-wide{% if field.errors %} with-error{% endif %}" id="section_{{ field.name }}{% if field.counter %}_{{ field.counter }}{% endif %}">
+<div class="form-group{% if field.wide %}-wide{% endif %}{% if field.errors %} with-error{% endif %}" id="section_{{ field.name }}{% if field.counter %}_{{ field.counter }}{% endif %}">
     <fieldset>
         <legend>
             {% include "widgets/partials/label_text.html" %}
         </legend>
 
-        <div class="form-field">
+        {% if field.inline %}
+        <div class="inline">
             {{ field }}
         </div>
+        {% else %}
+        {{ field }}
+        {% endif %}
     </fieldset>
 </div>

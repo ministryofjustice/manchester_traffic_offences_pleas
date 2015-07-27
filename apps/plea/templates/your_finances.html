@@ -60,9 +60,9 @@
 
             {% radio_field form.employed_take_home_pay_period hide_optional=True %}
 
-            {% money_field form.employed_take_home_pay_amount hide_optional=True %}
+            {% std_field form.employed_take_home_pay_amount hide_optional=True prefix="£" %}
 
-            {% radio_field form.employed_hardship hide_optional=True %}
+            {% radio_field form.employed_hardship hide_optional=True inline=True %}
 
             <div id="employed_hardship-True" class="js-Conditional" data-conditional-trigger="employed_hardship" data-conditional-value="True">
                 <h2 class="heading-small">{% trans "Note:" %}</h2>
@@ -79,9 +79,9 @@
                 {% std_field form.self_employed_pay_other hide_optional=True %}
             </div>
 
-            {% money_field form.self_employed_pay_amount hide_optional=True %}
+            {% std_field form.self_employed_pay_amount hide_optional=True prefix="£" %}
 
-            {% radio_field form.self_employed_hardship hide_optional=True %}
+            {% radio_field form.self_employed_hardship hide_optional=True inline=True %}
 
             <div id="self_employed_hardship-True" class="js-Conditional" data-conditional-trigger="self_employed_hardship" data-conditional-value="True">
                 <h2 class="heading-small">{% trans "Note:" %}</h2>
@@ -94,7 +94,7 @@
 
             {% std_field form.benefits_details hide_optional=True %}
 
-            {% radio_field form.benefits_dependents hide_optional=True %}
+            {% radio_field form.benefits_dependents hide_optional=True inline=True %}
 
             {% radio_field form.benefits_period hide_optional=True %}
 
@@ -102,9 +102,9 @@
                 {% std_field form.benefits_pay_other hide_optional=True %}
             </div>
 
-            {% money_field form.benefits_amount hide_optional=True %}
+            {% std_field form.benefits_amount hide_optional=True prefix="£" %}
 
-            {% radio_field form.receiving_benefits_hardship hide_optional=True %}
+            {% radio_field form.receiving_benefits_hardship hide_optional=True inline=True %}
 
             <div id="receiving_benefits_hardship-True" class="js-Conditional" data-conditional-trigger="receiving_benefits_hardship" data-conditional-value="True">
                 <h2 class="heading-small">{% trans "Note:" %}</h2>
@@ -117,9 +117,9 @@
 
             {% std_field form.other_details hide_optional=True %}
 
-            {% money_field form.other_pay_amount hide_optional=True %}
+            {% std_field form.other_pay_amount hide_optional=True prefix="£" %}
 
-            {% radio_field form.other_hardship hide_optional=True %}
+            {% radio_field form.other_hardship hide_optional=True inline=True %}
 
             <div id="other_hardship-True" class="js-Conditional" data-conditional-trigger="other_hardship" data-conditional-value="True">
                 <h2 class="heading-small">{% trans "Note:" %}</h2>

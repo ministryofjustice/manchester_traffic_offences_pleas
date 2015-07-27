@@ -8,7 +8,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from .fields import (ERROR_MESSAGES, is_date_in_past, is_date_in_future, is_date_within_range,
                      DSRadioFieldRenderer,
-                     DSStackedRadioFieldRenderer,
                      URNField,
                      DateWidget, is_urn_not_used, is_urn_valid)
 
@@ -123,7 +122,7 @@ class CaseForm(BasePleaStepForm):
                                            min_value=1, max_value=10,
                                            error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]})
 
-    plea_made_by = forms.TypedChoiceField(required=True, widget=RadioSelect(renderer=DSStackedRadioFieldRenderer),
+    plea_made_by = forms.TypedChoiceField(required=True, widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                           choices=PLEA_MADE_BY_CHOICES,
                                           label=_("Are you?"),
                                           help_text=_("Choose one of the following options:"),
@@ -238,7 +237,7 @@ class CompanyDetailsForm(BasePleaStepForm):
 
     position_in_company = forms.ChoiceField(label=_("Your position in the company"),
                                             choices=COMPANY_POSITION_CHOICES,
-                                            widget=RadioSelect(renderer=DSStackedRadioFieldRenderer),
+                                            widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             required=True,
                                             error_messages={"required": ERROR_MESSAGES["POSITION_REQUIRED"]})
 
@@ -320,10 +319,10 @@ class YourMoneyForm(SplitPleaStepForm):
     }
 
     you_are = forms.ChoiceField(label=_("Are you?"), choices=YOU_ARE_CHOICES,
-                                widget=forms.RadioSelect(renderer=DSStackedRadioFieldRenderer),
+                                widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
     # Employed
-    employed_take_home_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSStackedRadioFieldRenderer),
+    employed_take_home_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                       choices=PERIOD_CHOICES,
                                                       label=_("How often do you get paid?"),
                                                       error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
@@ -347,7 +346,7 @@ class YourMoneyForm(SplitPleaStepForm):
                                                error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
     # Self-employed
-    self_employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSStackedRadioFieldRenderer),
+    self_employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                  choices=SE_PERIOD_CHOICES,
                                                  label=_("How often do you get paid?"),
                                                  error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
@@ -389,7 +388,7 @@ class YourMoneyForm(SplitPleaStepForm):
                                             label=_("Does this include payment for dependants?"),
                                             error_messages={"required": ERROR_MESSAGES["BENEFITS_DEPENDANTS_REQUIRED"]})
 
-    benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=DSStackedRadioFieldRenderer),
+    benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                         choices=BEN_PERIOD_CHOICES,
                                         label=_("How often are your benefits paid?"),
                                         error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
