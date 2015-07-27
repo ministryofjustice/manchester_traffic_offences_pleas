@@ -48,7 +48,7 @@
             <a href="{{ request.path }}?reset">Change</a>
         </div>
     {% else %}
-        {% radio_field form.trading_period %}
+        {% radio_field form.trading_period inline=True %}
     {% endif %}
 
     <div class="js-Conditional{% if company_finances.split_form != "split_form_last_step" %} nojs-hidden{% endif %}" data-conditional-trigger="trading_period" data-conditional-value="^(True|False)$">
@@ -65,9 +65,9 @@
             <h2 class="heading-medium js-TemplatedElement" data-template-trigger="trading_period" data-template="{% blocktrans %}From the first 12 months' trading projections, tell us:{% endblocktrans %}" data-template-defaults-for="{% trans "Yes" %}">{% blocktrans %}From the most recent audited company accounts, tell us:{% endblocktrans %}</h2>
         {% endif %}
 
-        {% money_field form.gross_turnover hide_optional=True %}
+        {% std_field form.gross_turnover hide_optional=True prefix="£" %}
 
-        {% money_field form.net_turnover hide_optional=True %}
+        {% std_field form.net_turnover hide_optional=True prefix="£" %}
 
     </div>
 {% endblock stage_form %}
