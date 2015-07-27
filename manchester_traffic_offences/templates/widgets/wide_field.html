@@ -1,9 +1,0 @@
-<div class="form-group-wide{% if field.errors %} with-error{% endif %}" id="section_{{ field.name }}{% if field.counter %}_{{ field.counter }}{% endif %}">
-    <label for="{{ field.id_for_label }}">
-        {% include "widgets/partials/label_text.html" %}
-    </label>
-
-    <div class="form-field">
-	    {{ field }}
-    </div>
-</div>

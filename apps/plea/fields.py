@@ -161,19 +161,6 @@ class DSRadioFieldRenderer(RadioFieldRenderer):
         return render_to_string("widgets/partials/DSRadioSelect.html", context)
 
 
-class DSStackedRadioFieldRenderer(RadioFieldRenderer):
-    def render(self):
-        """
-        Outputs a GOV.UK-styled <fieldset> for this set of choice fields.
-        Radio buttons stack on top of each other.
-        """
-        id_ = self.attrs.get('id', None)
-
-        context = {"id": id_, "renderer": self, "inputs": [force_text(widget) for widget in self]}
-
-        return render_to_string("widgets/partials/DSStackedRadioSelect.html", context)
-
-
 class DSTemplateWidgetBase(forms.TextInput):
     template = ""
 
