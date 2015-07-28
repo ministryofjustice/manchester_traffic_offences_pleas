@@ -124,6 +124,34 @@ class CourtEmailCountManager(models.Manager):
         return results
 
 
+    def get_stats_by_court(self):
+        """
+        Return stats grouped by court
+        """
+        courts = Court.objects.all()
+
+        stats = []
+
+        for court in courts:
+
+            qs = self.filter(court__id=court.id)
+
+            totals = qs.aggregate(Sum('total_pleas'), Sum('total_guilty'), Sum('total_not_guilty'))
+
+            data = {"court_name": court.court_name,
+                    "region_code": court.region_code,
+                    "submissions": totals['total_pleas__sum'],
+                    "postal": 0,
+                    "guilty": totals['total_guilty__sum'],
+                    "not_guilty": totals['total_not_guilty__sum']}
+
+            stats.append(data)
+
+        return stats
+
+
+
+
 class CourtEmailCount(models.Model):
     date_sent = models.DateTimeField(auto_now_add=True)
     court = models.ForeignKey("Court")
