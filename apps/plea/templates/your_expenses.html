@@ -1,42 +1,23 @@
-{% extends "plea/base.html" %}
+{% extends "base_form.html" %}
 
 {% load i18n %}
 {% load form_widgets %}
+{% load testing %}
 
 {% block page_title %}{% trans "Your expenses" %} - {{ block.super }}{% endblock %}
 
-{% load staticfiles testing %}
 
-{% block page_content %}
-<form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
-    
-    {% csrf_token %}
+{% block stage_header %}
+    <h1 class="heading-xlarge">{% trans "Your expenses" %}</h1>
 
-    {% if form.errors %}
-    <section class="error-summary">
-        <h2 class="heading-medium">{% trans "You need to fix the errors on this page before continuing." %}</h2>
-        
-        <p>{% trans "See highlighted errors below." %}</p>
-        
-        <ul class="errors-list">
-        {% for field in form %}
-            {% if field.errors %}
-            <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
-            {% endif %}
-        {% endfor %}
-        </ul>
-    </section>
-    {% endif %}
+    <p class="lede">{% trans "To help the court decide your fine, you must provide information about your expenses." %}</p>
+{% endblock stage_header %}
 
-    <header class="content-header">
-        <h1 class="heading-xlarge">{% trans "Your expenses" %}</h1>
 
-        <p class="lede">{% trans "To help the court decide your fine, you must provide information about your expenses." %}</p>
-    </header>
-
+{% block stage_form %}
     <hr>
 
-    {% wide_field form.hardship_details %}
+    {% std_field form.hardship_details wide=True %}
 
     <div id="household_expenses">
         <h2>{% trans "Household expenses" %}</h2>
@@ -45,23 +26,23 @@
 
         <div class="grid-row">
             <div class="column-half">
-                {% money_field form.household_accommodation hide_optional=True %}
+                {% std_field form.household_accommodation hide_optional=True prefix="£" %}
             </div>
             <div class="column-half">
-                {% money_field form.household_utility_bills hide_optional=True %}
+                {% std_field form.household_utility_bills hide_optional=True prefix="£" %}
             </div>
         </div>
 
         <div class="grid-row">
             <div class="column-half">
-                {% money_field form.household_insurance hide_optional=True %}
+                {% std_field form.household_insurance hide_optional=True prefix="£" %}
             </div>
             <div class="column-half">
-                {% money_field form.household_council_tax hide_optional=True %}
+                {% std_field form.household_council_tax hide_optional=True prefix="£" %}
             </div>
         </div>
 
-        {% radio_field form.other_bill_payers %}
+        {% radio_field form.other_bill_payers inline=True %}
 
     </div>
 
@@ -75,28 +56,28 @@
 
         <div class="grid-row">
             <div class="column-half">
-                {% money_field form.other_tv_subscription hide_optional=True %}
+                {% std_field form.other_tv_subscription hide_optional=True prefix="£" %}
             </div>
             <div class="column-half">
-                {% money_field form.other_travel_expenses hide_optional=True %}
-            </div>
-        </div>
-
-        <div class="grid-row">
-            <div class="column-half">
-                {% money_field form.other_telephone hide_optional=True %}
-            </div>
-            <div class="column-half">
-                {% money_field form.other_loan_repayments hide_optional=True %}
+                {% std_field form.other_travel_expenses hide_optional=True prefix="£" %}
             </div>
         </div>
 
         <div class="grid-row">
             <div class="column-half">
-                {% money_field form.other_court_payments hide_optional=True %}
+                {% std_field form.other_telephone hide_optional=True prefix="£" %}
             </div>
             <div class="column-half">
-                {% money_field form.other_child_maintenance hide_optional=True %}
+                {% std_field form.other_loan_repayments hide_optional=True prefix="£" %}
+            </div>
+        </div>
+
+        <div class="grid-row">
+            <div class="column-half">
+                {% std_field form.other_court_payments hide_optional=True prefix="£" %}
+            </div>
+            <div class="column-half">
+                {% std_field form.other_child_maintenance hide_optional=True prefix="£" %}
             </div>
         </div>
     </div>
@@ -125,10 +106,4 @@
         </div>
         
     </div>
-
-    <div class="form-submit">
-        <button class="button" type="submit">{% trans "Continue" %}</button>
-    </div>
-
-</form>
-{% endblock page_content %}
+{% endblock stage_form %}

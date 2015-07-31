@@ -44,7 +44,7 @@ def get_case(urn):
 
 class CaseStage(FormStage):
     name = "case"
-    template = "plea/case.html"
+    template = "case.html"
     form_class = CaseForm
     dependencies = []
 
@@ -74,7 +74,7 @@ class CaseStage(FormStage):
 
 class CompanyDetailsStage(FormStage):
     name = "company_details"
-    template = "plea/company_details.html"
+    template = "company_details.html"
     form_class = CompanyDetailsForm
     dependencies = ["case"]
 
@@ -91,7 +91,7 @@ class CompanyDetailsStage(FormStage):
 
 class YourDetailsStage(FormStage):
     name = "your_details"
-    template = "plea/your_details.html"
+    template = "your_details.html"
     form_class = YourDetailsForm
     dependencies = ["case"]
 
@@ -108,7 +108,7 @@ class YourDetailsStage(FormStage):
 
 class PleaStage(FormStage):
     name = "plea"
-    template = "plea/plea.html"
+    template = "plea.html"
     form_class = PleaForm
     dependencies = ["case", "your_details", "company_details"]
 
@@ -234,14 +234,14 @@ class PleaStage(FormStage):
 
 class CompanyFinancesStage(FormStage):
     name = "company_finances"
-    template = "plea/company_finances.html"
+    template = "company_finances.html"
     form_class = CompanyFinancesForm
     dependencies = ["case"]
 
 
 class YourMoneyStage(FormStage):
     name = "your_finances"
-    template = "plea/your_finances.html"
+    template = "your_finances.html"
     form_class = YourMoneyForm
     dependencies = ["case", "your_details", "plea"]
 
@@ -267,7 +267,7 @@ class YourMoneyStage(FormStage):
 
 class YourExpensesStage(FormStage):
     name = "your_expenses"
-    template = "plea/your_expenses.html"
+    template = "your_expenses.html"
     form_class = YourExpensesForm
     dependencies = ["case", "your_details", "plea", "your_finances"]
 
@@ -304,7 +304,7 @@ class YourExpensesStage(FormStage):
 
 class ReviewStage(FormStage):
     name = "review"
-    template = "plea/review.html"
+    template = "review.html"
     form_class = ConfirmationForm
     dependencies = ["case", "company_details", "your_details", "plea",
                     "your_finances", "company_finances"]
@@ -338,7 +338,7 @@ class ReviewStage(FormStage):
 
 class CompleteStage(FormStage):
     name = "complete"
-    template = "plea/complete.html"
+    template = "complete.html"
     form_class = None
     dependencies = ["case", "your_details", "company_details", "plea",
                     "your_finances", "company_finances", "review"]

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% load i18n %}
 {% load form_widgets %}
@@ -15,7 +15,7 @@
 <p>{% trans "Please don't include any sensitive information" %}<br>
     {% trans "For example, your financial details." %}</p>
 
-<form method="POST">
+<form action="{{ request.path }}" method="post">
     {% csrf_token %}
 
     {% std_field form.feedback_question %}

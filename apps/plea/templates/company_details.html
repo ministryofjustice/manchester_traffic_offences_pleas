@@ -1,0 +1,39 @@
+{% extends "base_form.html" %}
+
+{% load i18n %}
+{% load form_widgets %}
+
+{% block page_title %}{% trans "Your details" %} - {{ block.super }}{% endblock %}
+
+
+{% block stage_header %}
+    <h1>{% trans "Your details" %}</h1>
+
+    <p>{% trans "We need these in case we have to contact you about your plea." %}</p>
+
+    <div class="panel-grey">
+        <h2 class="heading-small">{% trans "Warning:" %}</h2>
+        <p>{% trans "You can only make a plea on behalf of a company if you are a director, the company secretary or the company's solicitor." %}</p>
+    </div>
+{% endblock stage_header %}
+
+
+{% block stage_form %}
+    {% std_field form.company_name %}
+
+    {% radio_field form.correct_address inline=True %}
+
+    <div class="form-group-wide move-up js-Conditional" data-conditional-trigger="correct_address" data-conditional-value="False">
+        {% std_field form.updated_address hide_optional=True %}
+    </div>
+
+    {% std_field form.first_name %}
+
+    {% std_field form.last_name %}
+
+    {% radio_field form.position_in_company %}
+
+    {% std_field form.contact_number %}
+
+    {% std_field form.email %}
+{% endblock stage_form %}
