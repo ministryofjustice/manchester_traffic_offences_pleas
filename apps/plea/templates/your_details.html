@@ -1,0 +1,36 @@
+{% extends "base_form.html" %}
+
+{% load i18n %}
+{% load form_widgets %}
+
+{% block page_title %}{% trans "Your details" %} - {{ block.super }}{% endblock %}
+
+
+{% block stage_header %}
+    <h1>{% trans "Your details" %}</h1>
+
+    <p>{% trans "We need these in case we have to get in touch with you about your plea." %}</p>
+{% endblock stage_header %}
+
+
+{% block stage_form %}
+    {% std_field form.first_name %}
+
+    {% std_field form.last_name %}
+
+    {% radio_field form.correct_address inline=True %}
+
+    <div class="form-group-wide move-up js-Conditional" data-conditional-trigger="correct_address" data-conditional-value="False">
+        {% std_field form.updated_address hide_optional=True %}
+    </div>
+
+    {% std_field form.contact_number %}
+
+    {% std_field form.email %}
+
+    {% std_field form.date_of_birth %}
+
+    {% std_field form.ni_number %}
+
+    {% std_field form.driving_licence_number %}
+{% endblock stage_form %}
