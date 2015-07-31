@@ -54,3 +54,10 @@ class PublicStatsViewSet(viewsets.ViewSet):
         serializer = UsageStatsSerializer(stats, many=True)
 
         return Response(serializer.data)
+
+    @list_route()
+    def by_court(self, request):
+
+        stats = CourtEmailCount.objects.get_stats_by_court()
+
+        return Response(stats)
