@@ -2,7 +2,7 @@ from django import forms
 from django.forms.widgets import RadioSelect
 from django.utils.translation import ugettext_lazy as _
 
-from apps.plea.fields import DSStackedRadioFieldRenderer
+from apps.plea.fields import DSRadioFieldRenderer
 
 SATISFACTION_CHOICES = (
     (5, _("very satisfied")),
@@ -33,4 +33,4 @@ class FeedbackForm(forms.Form):
         choices=SATISFACTION_CHOICES,
         required=True,
         error_messages={"required": _("Please select one of the options below")},
-        widget=RadioSelect(renderer=DSStackedRadioFieldRenderer))
+        widget=RadioSelect(renderer=DSRadioFieldRenderer))

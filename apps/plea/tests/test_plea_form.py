@@ -853,7 +853,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.load(self.request_context)
 
 
-        with self.assertTemplateUsed("plea/review.html"):
+        with self.assertTemplateUsed("review.html"):
              response = form.render()
              self.assertIn("06/AA/0000000/00", response.content)
 

@@ -1,0 +1,67 @@
+{% extends "base_form.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load form_widgets %}
+
+{% block page_title %}{% trans "Case details" %} - {{ block.super }}{% endblock %}
+
+{% block errors_summary %}
+    {% if urn_already_used %}
+
+        <h2>{% trans "The details you've entered have already been used to make a plea online" %}</h2>
+
+        <p>{% trans "Check and try again." %}</p>
+
+        <ul>
+            <li><a href="#section_urn">{% trans "Enter the correct URN" %}</a></li>
+        </ul>
+
+        <p>{% trans "To make changes to a plea you’ve already made online, email or write to the court before your hearing with:" %}</p>
+
+        <ul class="list-bullet">
+            <li>{% trans "details of the changes you want to make" %}</li>
+            <li>{% trans "your unique reference number" %}</li>
+        </ul>
+
+        <div class="js-Details" data-summary-open="{% trans "Hide court contact details" %}">
+            <a class="details-trigger" href="#court-details"><span class="summary">{% trans "View court contact details" %}</span></a>
+            <div class="details-content" id="court-details">
+                <h3 class="heading-small">{% trans "Send letters to:" %}</h3>
+                <address>{{ court.court_address|linebreaksbr }}</address>
+
+                <h3 class="heading-small">{% trans "Send email to:" %}</h3>
+                <p><a href="mailto:{{ court.court_email }}">{{ court.court_email }}</a></p>
+            </div>
+        </div>
+
+    {% else %}
+
+        {{ block.super }}
+
+    {% endif %}
+{% endblock errors_summary %}
+
+{% block stage_header %}
+    <h1>{% trans "Case details" %}</h1>
+{% endblock stage_header %}
+
+{% block form_attributes %}class="with-help-images"{% endblock form_attributes %}
+
+{% block stage_form %}
+    {% std_field form.urn %}
+
+    <div class="help-image">
+        <img src="{% static "images/img-urn.png" %}" alt="{% trans "The URN and Court Hearing Date are found on page 1 of the pack" %}" width="260" height="340">
+    </div>
+
+    {% std_field form.date_of_hearing %}
+
+    {% std_field form.number_of_charges %}
+
+    <div class="help-image">
+        <img src="{% static "images/img-charge.png" %}" alt="{% trans "The number of charges is found on page 2 of the pack" %}" width="260" height="185">
+    </div>
+
+    {% radio_field form.plea_made_by %}
+{% endblock stage_form %}

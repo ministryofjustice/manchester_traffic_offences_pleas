@@ -1,9 +1,9 @@
-{% extends "plea/base.html" %}
+{% extends "base_form.html" %}
 
 {% load i18n %}
-{% load staticfiles %}
 {% load form_widgets %}
 
+{% spaceless %}
 {% block page_title %}
     {% if your_finances.split_form != "split_form_last_step" %}
         {% blocktrans %}Your finances{% endblocktrans %}
@@ -12,39 +12,19 @@
     {% endif %}
      - {{ block.super }}
 {% endblock %}
+{% endspaceless %}
 
-{% block page_content %}
-<form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
 
-    {% csrf_token %}
-
-    {% split_form form %}
-
-    {% if form.errors %}
-    <section class="error-summary">
-        <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
-
-        <p>{% trans "See highlighted errors below." %}</p>
-
-        <ul>
-        {% for field in form %}
-            {% if field.errors %}
-            <li><a href="#section_{{ field.name }}">{{ field.errors|striptags }}</a></li>
-            {% endif %}
-        {% endfor %}
-        </ul>
-    </section>
+{% block stage_header %}
+    {% spaceless %}
+    <h1>
+    {% if your_finances.split_form != "split_form_last_step" %}
+        {% blocktrans %}Your finances{% endblocktrans %}
+    {% else %}
+        {% blocktrans %}Your finances continued{% endblocktrans %}
     {% endif %}
-
-    <header class="content-header">
-        <h1>
-        {% if your_finances.split_form != "split_form_last_step" %}
-            {% blocktrans %}Your finances{% endblocktrans %}
-        {% else %}
-            {% blocktrans %}Your finances continued{% endblocktrans %}
-        {% endif %}
-        </h1>
-    </header>
+    </h1>
+    {% endspaceless %}
 
     {% if your_finances.split_form != "split_form_last_step" %}
     <div class="panel-grey">
@@ -56,6 +36,11 @@
         </ul>
     </div>
     {% endif %}
+{% endblock stage_header %}
+
+
+{% block stage_form %}
+    {% split_form form %}
 
     {% if your_finances.split_form != "split_form_last_step" %}
     {% radio_field form.you_are %}
@@ -75,9 +60,9 @@
 
             {% radio_field form.employed_take_home_pay_period hide_optional=True %}
 
-            {% money_field form.employed_take_home_pay_amount hide_optional=True %}
+            {% std_field form.employed_take_home_pay_amount hide_optional=True prefix="£" %}
 
-            {% radio_field form.employed_hardship hide_optional=True %}
+            {% radio_field form.employed_hardship hide_optional=True inline=True %}
 
             <div id="employed_hardship-True" class="js-Conditional" data-conditional-trigger="employed_hardship" data-conditional-value="True">
                 <h2 class="heading-small">{% trans "Note:" %}</h2>
@@ -94,9 +79,9 @@
                 {% std_field form.self_employed_pay_other hide_optional=True %}
             </div>
 
-            {% money_field form.self_employed_pay_amount hide_optional=True %}
+            {% std_field form.self_employed_pay_amount hide_optional=True prefix="£" %}
 
-            {% radio_field form.self_employed_hardship hide_optional=True %}
+            {% radio_field form.self_employed_hardship hide_optional=True inline=True %}
 
             <div id="self_employed_hardship-True" class="js-Conditional" data-conditional-trigger="self_employed_hardship" data-conditional-value="True">
                 <h2 class="heading-small">{% trans "Note:" %}</h2>
@@ -109,7 +94,7 @@
 
             {% std_field form.benefits_details hide_optional=True %}
 
-            {% radio_field form.benefits_dependents hide_optional=True %}
+            {% radio_field form.benefits_dependents hide_optional=True inline=True %}
 
             {% radio_field form.benefits_period hide_optional=True %}
 
@@ -117,9 +102,9 @@
                 {% std_field form.benefits_pay_other hide_optional=True %}
             </div>
 
-            {% money_field form.benefits_amount hide_optional=True %}
+            {% std_field form.benefits_amount hide_optional=True prefix="£" %}
 
-            {% radio_field form.receiving_benefits_hardship hide_optional=True %}
+            {% radio_field form.receiving_benefits_hardship hide_optional=True inline=True %}
 
             <div id="receiving_benefits_hardship-True" class="js-Conditional" data-conditional-trigger="receiving_benefits_hardship" data-conditional-value="True">
                 <h2 class="heading-small">{% trans "Note:" %}</h2>
@@ -132,9 +117,9 @@
 
             {% std_field form.other_details hide_optional=True %}
 
-            {% money_field form.other_pay_amount hide_optional=True %}
+            {% std_field form.other_pay_amount hide_optional=True prefix="£" %}
 
-            {% radio_field form.other_hardship hide_optional=True %}
+            {% radio_field form.other_hardship hide_optional=True inline=True %}
 
             <div id="other_hardship-True" class="js-Conditional" data-conditional-trigger="other_hardship" data-conditional-value="True">
                 <h2 class="heading-small">{% trans "Note:" %}</h2>
@@ -144,10 +129,5 @@
         {% endif %}
 
     {% endif %}
-
-    <div class="form-submit">
-        <button class="button" type="submit">{% trans "Continue" %}</button>
-    </div>
-
-</form>
-{% endblock page_content %}
+    
+{% endblock stage_form %}
