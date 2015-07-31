@@ -29,7 +29,7 @@ class EmailGenerationTests(TestCase):
         email_context = {"URN": "062B3C4D5E"}
         email = TemplateAttachmentEmail("test_from@example.org",
                                         "test.html",
-                                        "plea/plea_email_attachment.html",
+                                        "emails/attachments/plea_email.html",
                                         email_context,
                                         "<p>Test Content</p><br><p>{{ URN }}</p>")
 

@@ -36,7 +36,7 @@ def feedback_form(request):
                 feedback_form.cleaned_data["feedback_satisfaction"])
 
             email = EmailMessage("Feedback from makeaplea.justice.gov.uk",
-                                 render_to_string("feedback/email.html",
+                                 render_to_string("emails/feedback_summary.html",
                                                   email_context),
                                  settings.FEEDBACK_EMAIL_FROM,
                                  settings.FEEDBACK_EMAIL_TO)
@@ -46,7 +46,7 @@ def feedback_form(request):
 
             return HttpResponseRedirect(nxt_url)
         else:
-            return render(request, "feedback/feedback.html", {"form": feedback_form})
+            return render(request, "feedback.html", {"form": feedback_form})
     else:
-        return render(request, "feedback/feedback.html", {"form": FeedbackForm()})
+        return render(request, "feedback.html", {"form": FeedbackForm()})
 

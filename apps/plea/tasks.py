@@ -46,7 +46,7 @@ def email_send_court(self, case_id, count_id, email_data):
 
     plea_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
                                          settings.PLEA_EMAIL_ATTACHMENT_NAME,
-                                         settings.PLEA_EMAIL_TEMPLATE,
+                                         "emails/attachments/plea_email.html",
                                          email_data,
                                          "text/html")
 
@@ -92,7 +92,7 @@ def email_send_prosecutor(self, case_id, email_data):
 
     plp_email = TemplateAttachmentEmail(settings.PLP_EMAIL_FROM,
                                         settings.PLEA_EMAIL_ATTACHMENT_NAME,
-                                        settings.PLP_EMAIL_TEMPLATE,
+                                        "emails/attachments/plp_email.html",
                                         email_data,
                                         "text/html")
     if court_obj.plp_email:
@@ -160,8 +160,8 @@ def email_send_user(self, case_id, email_data):
         case.add_action("No email entered, user email not sent.", "")
         return True
 
-    html_body = render_to_string("plea/plea_email_confirmation.html", data)
-    txt_body = wrap(render_to_string("plea/plea_email_confirmation.txt", data), 72)
+    html_body = render_to_string("emails/user_plea_confirmation.html", data)
+    txt_body = wrap(render_to_string("emails/user_plea_confirmation.txt", data), 72)
 
     subject = settings.PLEA_CONFIRMATION_EMAIL_SUBJECT.format(**data)
 
