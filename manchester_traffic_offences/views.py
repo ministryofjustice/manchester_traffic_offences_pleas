@@ -32,7 +32,7 @@ class TranslatedView(TemplateView):
         lang_code = get_language()
 
         if lang_code:
-            templates_list = [lang_code + "/" + self.template_name] + templates_list
+            templates_list.insert(0, lang_code + "/" + self.template_name)
 
         return templates_list
 
