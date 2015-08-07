@@ -31,11 +31,11 @@ class PublicStatsViewSet(viewsets.ViewSet):
     @list_route()
     def by_hearing(self, request):
 
-        now = dt.datetime.now()
+        now = dt.date.today()
 
         start_date = now - dt.timedelta(now.weekday())
 
-        stats = CourtEmailCount.objects.get_stats_by_hearing_date(4, start_date)
+        stats = CourtEmailCount.objects.get_stats_by_hearing_date(5, start_date)
 
         return Response(stats)
 
