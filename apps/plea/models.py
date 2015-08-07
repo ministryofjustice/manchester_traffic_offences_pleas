@@ -40,6 +40,7 @@ class CourtEmailCountManager(models.Manager):
             'not_guilty': totals['total_not_guilty__sum'] or 0
         }
 
+
     def get_stats(self):
         """
         Return some basic stats
@@ -55,47 +56,15 @@ class CourtEmailCountManager(models.Manager):
             }
 
         stats = {
-            'submissions': {
-
-            },
-            'pleas': {
-
-            }
+            'submissions': {},
+            'pleas': {}
         }
 
-        now = dt.datetime.now()
-
-        yesterday_filter = {
-            "date_sent__gte": dt.datetime.combine(now-dt.timedelta(1), dt.time.min),
-            "date_sent__lte": dt.datetime.combine(now-dt.timedelta(1), dt.time.max)
-        }
-
-        last_week_filter = {
-            "date_sent__gte": dt.datetime.combine(now-dt.timedelta(now.weekday()+7), dt.time.min),
-            "date_sent__lte": dt.datetime.combine(now-dt.timedelta(now.weekday()+1), dt.time.max)
-        }
-
-        to_date = self.all()
-        last_week = self.filter(**last_week_filter)
-        yesterday = self.filter(**yesterday_filter)
+        to_date = self.filter(sent=True, court__test_mode=False)
 
         stats['submissions']['to_date'] = to_date.count()
-        stats['submissions']['last_week'] = last_week.count()
-        stats['submissions']['yesterday'] = yesterday.count()
 
         stats['pleas']['to_date'] = _get_totals(to_date)
-        stats['pleas']['last_week'] = _get_totals(last_week)
-        stats['pleas']['yesterday'] = _get_totals(yesterday)
-
-        stats['additional'] = {}
-
-        stats['additional']['sc_field_completed'] = {}
-
-        stats['additional']['sc_field_completed']['guilty'] = \
-            to_date.filter(sc_guilty_char_count__gte=1).count()
-
-        stats['additional']['sc_field_completed']['not_guilty'] = \
-            to_date.filter(sc_not_guilty_char_count__gte=1).count()
 
         return stats
 
@@ -109,7 +78,9 @@ class CourtEmailCountManager(models.Manager):
             start_date = dt.date(2012,01,01)
 
         results = CourtEmailCount.objects\
-            .filter(hearing_date__gte=start_date)\
+            .filter(sent=True,
+                    hearing_date__gte=start_date,
+                    court__test_mode=False)\
             .extra({'hearing_day': "date(hearing_date)"})\
             .values('hearing_day')\
             .order_by('hearing_day')\
@@ -128,20 +99,21 @@ class CourtEmailCountManager(models.Manager):
         """
         Return stats grouped by court
         """
-        courts = Court.objects.all()
+        courts = Court.objects.filter(test_mode=False)
 
         stats = []
 
         for court in courts:
 
-            qs = self.filter(court__id=court.id)
+            qs = self.filter(sent=True,
+                             court__id=court.id)
 
             totals = qs.aggregate(Sum('total_pleas'), Sum('total_guilty'), Sum('total_not_guilty'))
 
             data = {"court_name": court.court_name,
                     "region_code": court.region_code,
-                    "submissions": totals['total_pleas__sum'],
-                    "postal": 0,
+                    "submissions": qs.count(),
+                    "pleas": totals['total_pleas__sum'],
                     "guilty": totals['total_guilty__sum'],
                     "not_guilty": totals['total_not_guilty__sum']}
 
