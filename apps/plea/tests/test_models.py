@@ -40,92 +40,6 @@ class CourtEmailCountModelTestCase(TestCase):
 
         self.assertEqual(emailcount.hearing_date, dt.datetime(2014, 9, 22, 0, 0, 0))
 
-    def test_get_stats_yesterday(self):
-        """
-        A blanket unit test to confirm this method is returning the correct stats
-        """
-        now = dt.datetime.today()
-
-        CourtEmailCount(court=self.court,
-                        total_pleas=2,
-                        total_guilty=1,
-                        total_not_guilty=1,
-                        hearing_date=now).save()
-
-        CourtEmailCount(court=self.court,
-                        total_pleas=2,
-                        total_guilty=1,
-                        total_not_guilty=1,
-                        hearing_date=now).save()
-
-        CourtEmailCount(court=self.court,
-                        total_pleas=2,
-                        total_guilty=1,
-                        total_not_guilty=1,
-                        hearing_date=now).save()
-
-        a, b, c = CourtEmailCount.objects.all()
-
-        a.date_sent = now-dt.timedelta(2)
-        a.save()
-
-        b.date_sent = now-dt.timedelta(1)
-        b.save()
-
-        c.date_sent = now-dt.timedelta(1)
-        c.save()
-
-        stats = CourtEmailCount.objects.get_stats()
-
-        self.assertEqual(stats['submissions']['to_date'], 3)
-        self.assertEqual(stats['submissions']['yesterday'], 2)
-
-        self.assertEqual(stats['pleas']['to_date']['guilty'], 3)
-        self.assertEqual(stats['pleas']['to_date']['not_guilty'], 3)
-        self.assertEqual(stats['pleas']['to_date']['total'], 6)
-
-        self.assertEqual(stats['pleas']['yesterday']['guilty'], 2)
-        self.assertEqual(stats['pleas']['yesterday']['not_guilty'], 2)
-        self.assertEqual(stats['pleas']['yesterday']['total'], 4)
-
-
-    def test_get_stats_last_week(self):
-        now = dt.datetime.today()
-
-        CourtEmailCount(court=self.court,
-                        total_pleas=2,
-                        total_guilty=1,
-                        total_not_guilty=1,
-                        hearing_date=now).save()
-
-        CourtEmailCount(court=self.court,
-                        total_pleas=2,
-                        total_guilty=1,
-                        total_not_guilty=1,
-                        hearing_date=now).save()
-
-        CourtEmailCount(court=self.court,
-                        total_pleas=2,
-                        total_guilty=1,
-                        total_not_guilty=1,
-                        hearing_date=now).save()
-
-        a, b, c = CourtEmailCount.objects.all()
-
-        a.date_sent = now-dt.timedelta(7)
-        a.save()
-
-        b.date_sent = now-dt.timedelta(7)
-        b.save()
-
-        stats = CourtEmailCount.objects.get_stats()
-
-        self.assertEqual(stats['pleas']['last_week']['guilty'], 2)
-        self.assertEqual(stats['pleas']['last_week']['not_guilty'], 2)
-        self.assertEqual(stats['pleas']['last_week']['total'], 4)
-
-        self.assertEqual(stats['submissions']['last_week'], 2)
-
     def test_get_stats_by_hearing_date(self):
         """
         A blanket unit test to confirm that this method returns
@@ -139,6 +53,7 @@ class CourtEmailCountModelTestCase(TestCase):
                         total_pleas=2,
                         total_guilty=1,
                         total_not_guilty=1,
+                        sent=True,
                         hearing_date=tomorrow).save()
 
         CourtEmailCount(court=self.court,
@@ -146,6 +61,7 @@ class CourtEmailCountModelTestCase(TestCase):
                         total_pleas=2,
                         total_guilty=1,
                         total_not_guilty=1,
+                        sent=True,
                         hearing_date=tomorrow).save()
 
         CourtEmailCount(court=self.court,
@@ -153,6 +69,7 @@ class CourtEmailCountModelTestCase(TestCase):
                         total_pleas=2,
                         total_guilty=1,
                         total_not_guilty=1,
+                        sent=True,
                         hearing_date=tomorrow+dt.timedelta(1)).save()
 
         stats = CourtEmailCount.objects.get_stats_by_hearing_date(days=1)
