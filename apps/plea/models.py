@@ -1,8 +1,9 @@
+from collections import Counter
 from dateutil.parser import parse as date_parse
 import datetime as dt
 
 from django.db import models
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, F
 
 
 STATUS_CHOICES = (("created_not_sent", "Created but not sent"),
@@ -13,7 +14,6 @@ STATUS_CHOICES = (("created_not_sent", "Created but not sent"),
 
 
 class CourtEmailCountManager(models.Manager):
-
     def calculate_aggregates(self, start_date, days=7):
         """
         Calculate aggregate stats (subs, guilty pleas, not guilty pleas) over the
@@ -39,7 +39,6 @@ class CourtEmailCountManager(models.Manager):
             'guilty': totals['total_guilty__sum'] or 0,
             'not_guilty': totals['total_not_guilty__sum'] or 0
         }
-
 
     def get_stats(self):
         """
@@ -94,7 +93,6 @@ class CourtEmailCountManager(models.Manager):
 
         return results
 
-
     def get_stats_by_court(self):
         """
         Return stats grouped by court
@@ -121,8 +119,13 @@ class CourtEmailCountManager(models.Manager):
 
         return stats
 
+    def get_stats_days_from_hearing(self, limit=60):
+        courts = Court.objects.filter(test_mode=False)
 
+        counts = CourtEmailCount.objects.filter(court__in=courts).annotate(num_days=F('hearing_date') - F('date_sent')).values('num_days').order_by("-num_days")
+        day_counts = Counter([x["num_days"].days for x in counts if x["num_days"].days < limit])
 
+        return day_counts
 
 class CourtEmailCount(models.Model):
     date_sent = models.DateTimeField(auto_now_add=True)
