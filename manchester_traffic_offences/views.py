@@ -21,6 +21,22 @@ class HomeView(TemplateView):
         return super(HomeView, self).get(request, *args, **kwargs)
 
 
+class TranslatedView(TemplateView):
+    """
+    Return a fully translated template when a language is set,
+    or fallback to the default.
+    """
+
+    def get_template_names(self):
+        templates_list = [self.template_name]
+        lang_code = get_language()
+
+        if lang_code:
+            templates_list.insert(0, lang_code + "/" + self.template_name)
+
+        return templates_list
+
+
 def set_language(request):
     """
     View taken verbatim from django/views/i18n.py as we need the switcher

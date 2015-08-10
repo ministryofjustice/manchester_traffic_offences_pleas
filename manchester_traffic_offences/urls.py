@@ -17,7 +17,7 @@ handler500 = "manchester_traffic_offences.views.server_error"
 
 urlpatterns = patterns("",
     url(r"^$", views.HomeView.as_view(), name="home"),
-    url(r"^terms-and-conditions-and-privacy-policy/$", TemplateView.as_view(template_name="terms.html"), name="terms"),
+    url(r"^terms-and-conditions-and-privacy-policy/$", views.TranslatedView.as_view(template_name="terms.html"), name="terms"),
     url(r"^plea/", include("apps.plea.urls", )),
     url(r"^receipt/", include("apps.receipt.urls")),
     url(r"^feedback/", include("apps.feedback.urls")),
