@@ -123,7 +123,7 @@ class CourtEmailCountManager(models.Manager):
         courts = Court.objects.filter(test_mode=False)
 
         counts = CourtEmailCount.objects.filter(court__in=courts).annotate(num_days=F('hearing_date') - F('date_sent')).values('num_days').order_by("-num_days")
-        day_counts = Counter([x["num_days"].days for x in counts if x["num_days"].days < limit])
+        day_counts = Counter([x["num_days"].days for x in counts if x["num_days"].days < limit and x["num_days"].days > 0])
 
         return day_counts
 
