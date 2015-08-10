@@ -29,6 +29,12 @@ class PublicStatsViewSet(viewsets.ViewSet):
         return Response(stats)
 
     @list_route()
+    def days_from_hearing(self, request):
+        stats = CourtEmailCount.objects.get_stats_days_from_hearing()
+
+        return Response(stats)
+
+    @list_route()
     def by_hearing(self, request):
 
         now = dt.date.today()
