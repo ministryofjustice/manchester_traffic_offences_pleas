@@ -493,9 +493,9 @@ class YourExpensesForm(BasePleaStepForm):
         label=_("Council tax"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                       "class": "form-control-inline"}),
-        error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_REQUIRED'],
-                        'invalid': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_INVALID'],
-                        'min_value': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_MIN']})
+        error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_COUNCIL_TAX_REQUIRED'],
+                        'invalid': ERROR_MESSAGES['HOUSEHOLD_COUNCIL_TAX_INVALID'],
+                        'min_value': ERROR_MESSAGES['HOUSEHOLD_COUNCIL_TAX_MIN']})
 
     other_bill_payers = forms.TypedChoiceField(
         widget=RadioSelect(renderer=DSRadioFieldRenderer),
