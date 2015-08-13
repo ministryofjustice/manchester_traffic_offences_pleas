@@ -32,10 +32,7 @@ class EmailTemplateTests(TestCase):
         self.hearing_date = datetime.today() + timedelta(30)
 
         if not case_data:
-            case_data = {"urn_0": "06",
-                         "urn_1": "AA",
-                         "urn_2": "00000",
-                         "urn_3": "00",
+            case_data = {"urn": "06/AA/00000/00",
                          "date_of_hearing_0": str(self.hearing_date.day),
                          "date_of_hearing_1": str(self.hearing_date.month),
                          "date_of_hearing_2": str(self.hearing_date.year),

@@ -6,10 +6,15 @@ from django.forms.widgets import Textarea, RadioSelect
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from .fields import (ERROR_MESSAGES, is_date_in_past, is_date_in_future, is_date_within_range,
+from .validators import (is_date_in_past,
+                         is_date_in_future,
+                         is_date_within_range,
+                         is_urn_not_used,
+                         is_urn_valid)
+
+from .fields import (ERROR_MESSAGES,
                      DSRadioFieldRenderer,
-                     URNField,
-                     DateWidget, is_urn_not_used, is_urn_valid)
+                     DateWidget)
 
 YESNO_CHOICES = (
     (True, _("Yes")),
@@ -96,13 +101,14 @@ class CaseForm(BasePleaStepForm):
         ("Defendant", _("The person named in the requisition pack")),
         ("Company representative", _("Pleading on behalf of a company")))
 
-    urn = URNField(label=_("Unique reference number (URN)"),
-                   required=True,
-                   validators=[is_urn_valid, is_urn_not_used],
-                   help_text=_("On page 1 of the requisition pack, in the top right corner.<br>For example, 12/AB/34567/00"),
-                   error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"],
-                                   "is_urn_valid": ERROR_MESSAGES["URN_INVALID"],
-                                   "is_urn_not_used": ERROR_MESSAGES['URN_ALREADY_USED']})
+    urn = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                          label=_("Unique reference number (URN)"),
+                          required=True,
+                          validators=[is_urn_valid, is_urn_not_used],
+                          help_text=_("On page 1 of the requisition pack, in the top right corner.<br>For example, 12/AB/34567/00"),
+                          error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"],
+                                          "is_urn_valid": ERROR_MESSAGES["URN_INVALID"],
+                                          "is_urn_not_used": ERROR_MESSAGES['URN_ALREADY_USED']})
 
     date_of_hearing = forms.DateField(widget=DateWidget,
                                       validators=[is_date_in_future, is_date_within_range],
@@ -684,16 +690,10 @@ class PleaForm(SplitPleaStepForm):
 
 
 class CourtFinderForm(forms.Form):
-    urn = URNField(label=_("Unique reference number (URN)"),
-                   required=True,
-                   help_text=_("On page 1 of the pack, in the top right corner.<br>For example, 12/AB/34567/00"),
-                   error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"]})
-
-    def clean_urn(self):
-        urn = self.cleaned_data["urn"]
-
-        try:
-            is_urn_valid(urn)
-        except forms.ValidationError:
-            raise forms.ValidationError("You've entered incorrect details")
-        return urn
+    urn = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                          label=_("Unique reference number (URN)"),
+                          required=True,
+                          validators=[is_urn_valid],
+                          help_text=_("On page 1 of the pack, in the top right corner.<br>For example, 12/AB/34567/00"),
+                          error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"],
+                                          "is_urn_valid": ERROR_MESSAGES["URN_INCORRECT"]})
