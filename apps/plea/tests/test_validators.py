@@ -1,12 +1,14 @@
+from datetime import date, timedelta
+
 from django.test import TestCase
 from django import forms
 from django.forms import ValidationError
 
 from ..models import Court, Case
-from ..fields import is_urn_valid
+from ..validators import *
 
 
-class UtilsTestCase(TestCase):
+class TestValidators(TestCase):
     urls = 'defendant.tests.urls'
 
     def setUp(self):
@@ -40,19 +42,25 @@ class UtilsTestCase(TestCase):
 
     def test_is_valid_urn_format(self):
         good_urns = [
-            "06/AA/0000000/00",
+            "06/AA/12345/99",
+            "06/AA/0012345/99",
             "06/bb/1234567/12",
             "06/JJ/50563/14",
             "06/JJ/50534/14",
+            "06AB/12345/99",
+            "06AB12345/99",
+            "06AB123456711"
         ]
         bad_urns = [
             "123",
-            "00bb/0000000/00",
-            "AA/bb/0000000/00",
-            "00/bb/000000/00",
-            "0/bb/0000000/00",
-            "00/bb/0000000/0",
-            "00/aa/00000/00"
+            "AAA",
+            "0/BB/12345/99",
+            "0/BB/0012345/99",
+            "06/B/12345/99",
+            "06/BB/1234/99",
+            "06/BB/123456/99",
+            "06/BB/12345/9",
+            "06/BB/1234567/9"
         ]
 
         for URN in good_urns:
@@ -61,3 +69,37 @@ class UtilsTestCase(TestCase):
         for URN in bad_urns:
             with self.assertRaises(forms.ValidationError):
                 is_urn_valid(URN)
+
+
+    def test_date_is_in_past(self):
+        yesterday = date.today() - timedelta(1)
+
+        self.assertTrue(is_date_in_past(yesterday))
+
+    def test_date_is_not_in_past(self):
+        tomorrow = date.today() + timedelta(1)
+
+        with self.assertRaises(forms.ValidationError):
+            is_date_in_past(tomorrow)
+
+    def test_date_is_in_future(self):
+        tomorrow = date.today() + timedelta(1)
+
+        self.assertTrue(is_date_in_future(tomorrow))
+
+    def test_date_is_not_in_future(self):
+        yesterday = date.today() - timedelta(1)
+
+        with self.assertRaises(forms.ValidationError):
+            is_date_in_future(yesterday)
+
+    def test_date_is_within_range(self):
+        tomorrow = date.today() + timedelta(1)
+
+        self.assertTrue(is_date_within_range(tomorrow))
+
+    def test_date_is_not_within_range(self):
+        more_than_6_months = date.today() + timedelta(200)
+
+        with self.assertRaises(forms.ValidationError):
+            is_date_within_range(more_than_6_months)
