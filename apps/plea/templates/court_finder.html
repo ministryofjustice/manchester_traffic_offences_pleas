@@ -1,40 +1,35 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% load i18n %}
 {% load form_widgets %}
 
-{% block page_title %}{% trans "Court Finder" %} - {{ block.super }}{% endblock %}
+{% block page_title %}{% blocktrans %}Your court{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 {% block page_content %}
 
 {% if submitted and court %}
 
     <header class="content-header">
-        <h1>{% trans "Court finder results" %}</h1>
-
-        <a href="{% url "court_finder" %}">{% trans "Back" %}</a>
+        <h1>{% blocktrans %}Your court{% endblocktrans %}</h1>
     </header>
 
-    <div class="text">
+    <article class="text">
 
-        <h2 class="heading-medium heading-collapse">{% trans "Court details" %}</h2>
-        <p>{% trans "You can contact the court by post or email quoting your URN before the date of your hearing." %}</p>
+        <p>{% blocktrans %}You can contact the court by post or email quoting your URN before the date of your hearing.{% endblocktrans %}</p>
 
-            {% if court.court_address %}
-        <h3 class="heading-small">{% trans "By post:" %}</h3>
+        {% if court.court_address %}
+        <h3 class="heading-small">{% blocktrans %}By post:{% endblocktrans %}</h3>
         <address>{{ court.court_address|linebreaksbr }}</address>
-            {% endif %}
+        {% endif %}
             
-            {% if court.court_email %}
-        <h3 class="heading-small">{% trans "By email:" %}</h3>
+        {% if court.court_email %}
+        <h3 class="heading-small">{% blocktrans %}By email:{% endblocktrans %}</h3>
         <p><a href="mailto:{{ court.court_email }}">{{ court.court_email }}</a></p>
-            {% endif %}
+        {% endif %}
 
-            {% if court.court_phone %}
-        <h3 class="heading-small">{% trans "By phone:" %}</h3>
-        <p>{{ court.court_phone }}</p>
-            {% endif %}
-    </div>
+        <p><a href="{% url "court_finder" %}">{% blocktrans %}Back{% endblocktrans %}</a></p>
+
+    </article>
 
 {% else %}
 
@@ -42,35 +37,39 @@
         
         {% csrf_token %}
 
-            {% if submitted and not court %}
+        {% if submitted and not court %}
         <div class="error-summary">
-            <h2>{% trans "We can't find your court" %}</h2>
-            <p>{% trans "You'll find contact details for the court considering your case in your requisition pack." %}</p>
+            <h2>{% blocktrans %}We can't find your court{% endblocktrans %}</h2>
+            <p>{% blocktrans %}You'll find contact details for the court considering your case in your pack.{% endblocktrans %}</p>
         </div>
-            {% endif %}
+        {% endif %}
 
-            {% if form.errors %}
+        {% if form.errors %}
         <div class="error-summary">
-                {% if urn_is_invalid %}
-            <h2>{% trans "We don’t recognise the URN you’ve entered" %}</h2>
-            <p>{% blocktrans %}The unique reference number you entered doesn’t match our records.<br>
-            Check your URN (it’s on page 1 of the requisition pack we sent you, in the top right corner) then try again.{% endblocktrans %}</p>
-                {% else %}
-            <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
-            <p>{% trans "See highlighted errors below." %}</p>
-                {% endif %}
-        </div>
+            {% if urn_is_invalid %}
+            
+            <h2>{% blocktrans %}We don’t recognise the URN you’ve entered{% endblocktrans %}</h2>
+            <p>{% blocktrans %}The unique reference number you entered doesn’t match our records.{% endblocktrans %}<br>
+                {% blocktrans %}Check your URN (it’s on page 1 of the pack we sent you, usually at the top) then try again.{% endblocktrans %}</p>
+            
+            {% else %}
+
+            <h2>{% blocktrans %}You need to fix the errors on this page before continuing.{% endblocktrans %}</h2>
+            <p>{% blocktrans %}Enter your URN to find the contact details for your court.{% endblocktrans %}</p>
+            
             {% endif %}
+        </div>
+        {% endif %}
 
         <header class="content-header">
-            <h1>{% trans "Contact your court" %}</h1>
-            <p>{% trans "Enter your unique reference number (URN) to find contact details for the court considering your case." %}</p>
+            <h1>{% blocktrans %}Your court{% endblocktrans %}</h1>
+            <p>{% blocktrans %}To find contact details for the court considering your case, enter your unique reference number (URN).{% endblocktrans %}</p>
         </header>
         
         {% std_field form.urn %}
         
-        <div class="form-group form-submit">
-            <button class="button" type="submit">{% trans "Find my court" %}</button>
+        <div class="form-submit">
+            <button class="button" type="submit">{% blocktrans %}Find my court{% endblocktrans %}</button>
         </div>
     </form>
 
