@@ -30,47 +30,6 @@ Main styles
 }
 
 
-/*== Case screen =============================================*/
-
-.with-help-images {
-	.help-image {
-		display: none;
-	}
-
-	@include media(tablet) {
-		.form-group {
-			float: left;
-
-			@include ie-lte(7) {
-				width: 60%;
-			}
-		}
-		.help-image {
-			display: block;
-			float: right;
-			clear: right;
-			max-width: 30%;
-
-			@include ie-lte(7) {
-				width: 30%;
-			}
-		}
-	}
-}
-
-.form-control-urn-2,
-.form-control-urn-7 {
-	@extend .form-control-inline;
-}
-.form-control-urn-2,
-#id_number_of_charges {
-	width: 2em;
-}
-.form-control-urn-7 {
-	width: 5em;
-}
-
-
 /*== Pleas screen ==========================================*/
 .section-plea {
 	padding-top: 1em;
