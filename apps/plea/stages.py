@@ -15,6 +15,7 @@ from forms import (CaseForm, YourDetailsForm, CompanyDetailsForm,
 
 from .fields import ERROR_MESSAGES
 from .models import Court, Case, Offence
+from .standardisers import standardise_urn, slashify_urn
 
 
 def get_plea_type(context_data):
@@ -53,8 +54,7 @@ class CaseStage(FormStage):
             self.context['urn_already_used'] = True
 
             try:
-                self.context["court"] = Court.objects.get_by_urn(
-                    self.form.data['urn_0'])
+                self.context["court"] = Court.objects.get_by_urn(self.form.data['urn'])
             except Court.DoesNotExist:
                 pass
 
@@ -62,6 +62,9 @@ class CaseStage(FormStage):
 
     def save(self, form_data, next_step=None):
         clean_data = super(CaseStage, self).save(form_data, next_step)
+
+        if "urn" in clean_data:
+            clean_data["urn"] = slashify_urn(standardise_urn(clean_data["urn"]))
 
         if 'complete' in clean_data:
             if clean_data.get("plea_made_by", "Defendant") == "Defendant":

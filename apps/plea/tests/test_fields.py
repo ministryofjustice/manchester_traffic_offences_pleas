@@ -5,7 +5,7 @@ from django.conf import settings
 from django.test import TestCase
 from django.test.utils import override_settings
 
-from ..fields import is_urn_not_used
+from ..validators import is_urn_not_used
 from ..models import Case
 
 

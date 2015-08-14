@@ -82,7 +82,7 @@
 {% block body_end %}
     {{ block.super }}
 
-    {% if analytics_events %}
+    {% if analytics_events and google_analytics_id %}
 <script>
 {% for event in analytics_events %}
 ga('send', 'event', 'Complete submission', '{{ event.action }}', '{{ event.label }}');
