@@ -153,13 +153,13 @@ class YourDetailsForm(BasePleaStepForm):
                                              required=True,
                                              coerce=to_bool,
                                              choices=YESNO_CHOICES,
-                                             label=_("Is your address on the requisition pack correct?"),
+                                             label=_("Is your address correct on page 1 of the notice we sent to you?"),
                                              error_messages={"required": ERROR_MESSAGES["CORRECT_ADDRESS_REQUIRED"]})
 
     updated_address = forms.CharField(widget=forms.Textarea(attrs={"rows": "4", "class": "form-control"}),
                                       required=False,
                                       label="",
-                                      help_text=_("If your address is different from the one shown on page 1 of the requisition pack, tell us here:"),
+                                      help_text=_("If no, tell us your correct address here:"),
                                       error_messages={"required": ERROR_MESSAGES["UPDATED_ADDRESS_REQUIRED"]})
 
     contact_number = forms.CharField(widget=forms.TextInput(attrs={"type": "tel", "class": "form-control"}),
@@ -169,13 +169,13 @@ class YourDetailsForm(BasePleaStepForm):
                                      help_text=_("Landline or mobile number."),
                                      error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
-
-    email = forms.EmailField(widget=forms.TextInput(attrs={"type": "email", "class": "form-control"}),
-                             required=getattr(settings, "EMAIL_REQUIRED", True),
-                             label=_("Email address"),
-                             help_text=_("We'll use this for all future correspondence. We'll also contact you by post."),
-                             error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
-                                             "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
+    
+    # email = forms.EmailField(widget=forms.TextInput(attrs={"type": "email", "class": "form-control"}),
+    #                          required=getattr(settings, "EMAIL_REQUIRED", True),
+    #                          label=_("Email address"),
+    #                          help_text=_("We'll use this for all future correspondence. We'll also contact you by post."),
+    #                          error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
+    #                                          "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
     date_of_birth = forms.DateField(widget=DateWidget,
                                     required=True,
@@ -193,7 +193,7 @@ class YourDetailsForm(BasePleaStepForm):
     driving_licence_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                                              required=False,
                                              label=_("UK driving licence number"),
-                                             help_text=_("Starts with the first five letters from your last name."))
+                                             help_text=_("Starts with letters from your last name."))
 
     def __init__(self, *args, **kwargs):
         super(YourDetailsForm, self).__init__(*args, **kwargs)
@@ -216,20 +216,20 @@ class CompanyDetailsForm(BasePleaStepForm):
                                    widget=forms.TextInput(attrs={"class": "form-control"}),
                                    max_length=100,
                                    required=True,
-                                   help_text=_("As written on page 1 of the requisition pack we sent you."),
+                                   help_text=_("As written on page 1 of the notice we sent you."),
                                    error_messages={"required": ERROR_MESSAGES["COMPANY_NAME_REQUIRED"]})
 
     correct_address = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                              coerce=to_bool,
                                              choices=YESNO_CHOICES,
                                              required=True,
-                                             label=_("Is the company's address on the requisition pack correct?"),
+                                             label=_("Is the company's address on the notice correct?"),
                                              error_messages={"required": ERROR_MESSAGES["COMPANY_CORRECT_ADDRESS_REQUIRED"]})
 
     updated_address = forms.CharField(widget=forms.Textarea(attrs={"rows": "4", "class": "form-control"}),
                                       label="",
                                       required=False,
-                                      help_text=_("If the company address is different from the one shown on page 1 of the requisition pack, tell us here:"),
+                                      help_text=_("If the company address is different from the one shown on page 1 of the notice, tell us here:"),
                                       error_messages={"required": ERROR_MESSAGES["COMPANY_UPDATED_ADDRESS_REQUIRED"]})
 
     first_name = forms.CharField(label=_("Your first name"),
@@ -685,7 +685,7 @@ class PleaForm(SplitPleaStepForm):
 
     not_guilty_extra = forms.CharField(label=_("Not guilty because?"),
                                        widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
-                                       help_text=_("Tell us here:<ul><li>why you believe you are not guilty</li><li>if you disagree with any evidence from a witness statement in the requisition pack &ndash; tell us the name of the witness  and what you disagree with</li><li>the name, address and date of birth of any witnesses you want to call  to support your case</li></ul>"),
+                                       help_text=_("Tell us here:<ul><li>why you believe you are not guilty</li><li>if you disagree with any evidence from a witness statement in the notice &ndash; tell us the name of the witness  and what you disagree with</li><li>the name, address and date of birth of any witnesses you want to call  to support your case</li></ul>"),
                                        max_length=5000,
                                        error_messages={"required": ERROR_MESSAGES["NOT_GUILTY_REQUIRED"]})
 
