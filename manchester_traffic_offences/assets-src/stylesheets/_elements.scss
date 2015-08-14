@@ -42,16 +42,24 @@ hr {
 }
 
 .related {
+	margin-top: .75em;
 	padding-top: 5px;
 	border-top: 10px solid $govuk-blue;
 
 	h3 {
-		margin-top: 1em;
-		margin-bottom: 0; 
+		margin-top: .5em;
+		margin-bottom: .5em; 
 	}
 
-	h3:first-child {
-		margin-top: 10px;
+	nav {
+		ul {
+			padding: 0;
+		}
+
+		li {
+			list-style-type: none;
+			margin: .25em 0 1em;
+		}
 	}
 }
 
