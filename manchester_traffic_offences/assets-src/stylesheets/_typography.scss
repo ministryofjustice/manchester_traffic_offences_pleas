@@ -33,6 +33,10 @@ h5 {
 .headings-collapse {
   h1, h2, h3, h4, h5 {
     @extend .heading-collapse;
+
+    & + .panel-indent {
+      margin-top: .5em;
+    }
   }
 }
 
