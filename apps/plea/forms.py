@@ -98,14 +98,14 @@ class SplitPleaStepForm(BasePleaStepForm):
 
 class CaseForm(BasePleaStepForm):
     PLEA_MADE_BY_CHOICES = (
-        ("Defendant", _("The person named in the requisition pack")),
+        ("Defendant", _("The person named in the notice")),
         ("Company representative", _("Pleading on behalf of a company")))
 
     urn = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                           label=_("Unique reference number (URN)"),
                           required=True,
                           validators=[is_urn_valid, is_urn_not_used],
-                          help_text=_("On page 1 of the requisition pack, in the top right corner.<br>For example, 12/AB/34567/00"),
+                          help_text=_("On page 1 of the notice, usually at the top."),
                           error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"],
                                           "is_urn_valid": ERROR_MESSAGES["URN_INVALID"],
                                           "is_urn_not_used": ERROR_MESSAGES['URN_ALREADY_USED']})
@@ -114,17 +114,18 @@ class CaseForm(BasePleaStepForm):
                                       validators=[is_date_in_future, is_date_within_range],
                                       required=True,
                                       label=_("Court hearing date"),
-                                      help_text=_("On page 1 of the pack, near the top on the left.<br>For example, 30/07/2014"),
+                                      help_text=_("On page 1 of the notice, near the top. <br>For example, 30/07/2014"),
                                       error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"],
                                                       "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"],
                                                       "is_date_in_future": ERROR_MESSAGES["HEARING_DATE_PASSED"],
                                                       "is_date_within_range": ERROR_MESSAGES["HEARING_DATE_INCORRECT"]})
 
-    number_of_charges = forms.IntegerField(label=_("Number of charges against you"),
+    number_of_charges = forms.IntegerField(label=_("Number of charges"),
                                            widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                          "maxlength": "2",
-                                                                         "class": "form-control-inline"}),
-                                           help_text=_("On page 2 of the pack, in numbered boxes.<br>For example, 1"),
+                                                                         "class": "form-control-inline",
+                                                                         "size": "2"}),
+                                           help_text=_("On the charge sheet, in numbered boxes."),
                                            min_value=1, max_value=10,
                                            error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]})
 
