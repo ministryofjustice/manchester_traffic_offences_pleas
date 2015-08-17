@@ -24,10 +24,6 @@
             <td>{{ your_details.contact_number }}</td>
         </tr>
         <tr>
-            <th>{% trans "Email" %}</th>
-            <td>{{ your_details.email }}</td>
-        </tr>
-        <tr>
             <th>{% trans "Date of birth" %}</th>
             <td>{{ your_details.date_of_birth|parse_date|date:"d/m/Y" }}</td>
         </tr>
@@ -65,10 +61,6 @@
         <tr>
             <th>{% trans "Contact number" %}</th>
             <td>{{ company_details.contact_number }}</td>
-        </tr>
-        <tr>
-            <th>{% trans "Email" %}</th>
-            <td>{{ company_details.email }}</td>
         </tr>
     {% endif %}
 
