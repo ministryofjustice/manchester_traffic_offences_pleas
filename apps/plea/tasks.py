@@ -124,13 +124,19 @@ def email_send_user(self, case_id, email_data):
     # No error trapping, let these fail hard if the objects can't be found
 
     from .stages import get_plea_type
+    
+    email = email_data.get("review", {}).get("email", False)
+
+    case = Case.objects.get(pk=case_id)
+
+    if not email:
+        case.add_action("No email entered, user email not sent", "")
+        return True
 
     if email_data['case']['plea_made_by'] == "Defendant":
-        email = email_data['your_details']['email']
         first_name = email_data['your_details']['first_name']
         last_name = email_data['your_details']['last_name']
     else:
-        email = email_data['company_details']['email']
         first_name = email_data['company_details']['first_name']
         last_name = email_data['company_details']['last_name']
 
@@ -153,12 +159,7 @@ def email_send_user(self, case_id, email_data):
         'court_email': court_obj.court_email
     }
 
-    case = Case.objects.get(pk=case_id)
     case.add_action("User email started", "")
-
-    if not email:
-        case.add_action("No email entered, user email not sent.", "")
-        return True
 
     html_body = render_to_string("emails/user_plea_confirmation.html", data)
     txt_body = wrap(render_to_string("emails/user_plea_confirmation.txt", data), 72)

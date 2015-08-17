@@ -125,5 +125,25 @@
                 </table>
         {% endif %}
     {% endif %}
+
+    <table class="review-table" id="confirmation">
+        <thead>
+        <tr>
+            <th colspan="2">
+                <h2>Confirmation</h2>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Email updates</th>
+                <td>{{ review.receive_email_updates|yesno:"Yes,No" }}</td>
+            </tr>
+            <tr>
+                <th>Email address</th>
+                <td>{{ review.email|default:"-" }}</td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>

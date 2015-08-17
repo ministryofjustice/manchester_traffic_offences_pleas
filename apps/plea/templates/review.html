@@ -1,6 +1,8 @@
 {% extends "base_form.html" %}
 
 {% load i18n %}
+{% load debug %}
+{% load form_widgets %}
 
 {% spaceless %}
 {% block page_title %}
@@ -116,12 +118,25 @@
         {% endif %}
     {% endif %}
     
+    
+    <section>
+        
+        {% radio_field form.receive_email_updates inline=True %}
 
-    <h2 class="heading-medium">{% trans "Important" %}</h2>
+        <div class="panel-indent move-up js-Conditional" data-conditional-trigger="receive_email_updates" data-conditional-value="True">
+            {% std_field form.email hide_optional=True %}
+        </div>
+
+        <hr>
+
+    </section>
+    
 
     <section id="section_understand">
 
         <div class="form-group-wide{% if form.understand.errors %} with-error{% endif %}">
+
+            <h2 class="heading-medium">{% trans "Important" %}</h2>
             
             {{ form.understand.errors }}
             
