@@ -220,13 +220,13 @@ class CompanyDetailsForm(BasePleaStepForm):
                                              coerce=to_bool,
                                              choices=YESNO_CHOICES,
                                              required=True,
-                                             label=_("Is the company's address on the notice correct?"),
+                                             label=_("Is the company's address correct on page 1 of the notice we sent to you?"),
                                              error_messages={"required": ERROR_MESSAGES["COMPANY_CORRECT_ADDRESS_REQUIRED"]})
 
     updated_address = forms.CharField(widget=forms.Textarea(attrs={"rows": "4", "class": "form-control"}),
                                       label="",
                                       required=False,
-                                      help_text=_("If the company address is different from the one shown on page 1 of the notice, tell us here:"),
+                                      help_text=_("If no, tell us the correct company address here:"),
                                       error_messages={"required": ERROR_MESSAGES["COMPANY_UPDATED_ADDRESS_REQUIRED"]})
 
     first_name = forms.CharField(label=_("Your first name"),
