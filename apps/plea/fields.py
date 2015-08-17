@@ -92,7 +92,8 @@ ERROR_MESSAGES = {
     "COMPANY_GROSS_TURNOVER": _("Enter the company's gross turnover"),
     "COMPANY_NET_TURNOVER": _("Enter the company's net turnover"),
     "COMPANY_GROSS_TURNOVER_PROJECTED": _("Enter the company's projected gross turnover"),
-    "COMPANY_NET_TURNOVER_PROJECTED": _("Enter the company's projected net turnover")
+    "COMPANY_NET_TURNOVER_PROJECTED": _("Enter the company's projected net turnover"),
+    "RECEIVE_EMAIL_UPDATES_REQUIRED": _("Tell us if you want to receive email updates about this case")
 }
 
 

@@ -327,7 +327,9 @@ class ReviewStage(FormStage):
             return clean_data
 
         if clean_data.get("complete", False):
-            email_result = send_plea_email(self.all_data)
+            email_data = {k: v for k, v in self.all_data.items()}
+            email_data.update({"review": clean_data})
+            email_result = send_plea_email(email_data)
             if email_result:
                 self.set_next_step("complete")
             else:

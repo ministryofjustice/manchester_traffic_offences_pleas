@@ -137,6 +137,13 @@ class CaseForm(BasePleaStepForm):
 
 
 class YourDetailsForm(BasePleaStepForm):
+    dependencies = {
+        "updated_address": {
+            "field": "correct_address",
+            "value": "False"
+        }
+    }
+
     first_name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                                  max_length=100,
                                  required=True,
@@ -169,13 +176,6 @@ class YourDetailsForm(BasePleaStepForm):
                                      help_text=_("Landline or mobile number."),
                                      error_messages={"required": ERROR_MESSAGES["CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
-    
-    # email = forms.EmailField(widget=forms.TextInput(attrs={"type": "email", "class": "form-control"}),
-    #                          required=getattr(settings, "EMAIL_REQUIRED", True),
-    #                          label=_("Email address"),
-    #                          help_text=_("We'll use this for all future correspondence. We'll also contact you by post."),
-    #                          error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
-    #                                          "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
     date_of_birth = forms.DateField(widget=DateWidget,
                                     required=True,
@@ -195,18 +195,15 @@ class YourDetailsForm(BasePleaStepForm):
                                              label=_("UK driving licence number"),
                                              help_text=_("Starts with letters from your last name."))
 
-    def __init__(self, *args, **kwargs):
-        super(YourDetailsForm, self).__init__(*args, **kwargs)
-        try:
-            data = args[0]
-        except IndexError:
-            data = {}
-
-        if "correct_address" in data:
-            if data["correct_address"] == "False":
-                self.fields["updated_address"].required = True
 
 class CompanyDetailsForm(BasePleaStepForm):
+    dependencies = {
+        "updated_address": {
+            "field": "correct_address",
+            "value": "False"
+        }
+    }
+
     COMPANY_POSITION_CHOICES = (
         ("Director", _("director")),
         ("Company secretary", _("company secretary")),
@@ -256,24 +253,6 @@ class CompanyDetailsForm(BasePleaStepForm):
                                      help_text=_("Office or mobile number."),
                                      error_messages={"required": ERROR_MESSAGES["COMPANY_CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
-
-    email = forms.EmailField(widget=forms.TextInput(attrs={"type": "email",
-                                                           "class": "form-control"}),
-                             required=getattr(settings, "EMAIL_REQUIRED", True),
-                             label=_("Email address"),
-                             error_messages={"required": ERROR_MESSAGES["COMPANY_EMAIL_ADDRESS_REQUIRED"],
-                                             "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
-
-    def __init__(self, *args, **kwargs):
-        super(CompanyDetailsForm, self).__init__(*args, **kwargs)
-        try:
-            data = args[0]
-        except IndexError:
-            data = {}
-
-        if "correct_address" in data:
-            if data["correct_address"] == "False":
-                self.fields["updated_address"].required = True
 
 
 class YourMoneyForm(SplitPleaStepForm):
@@ -652,6 +631,28 @@ class CompanyFinancesForm(SplitPleaStepForm):
 
 
 class ConfirmationForm(BasePleaStepForm):
+    dependencies = {
+        "email": {
+            "field": "receive_email_updates",
+            "value": True
+        }
+    }
+
+    receive_email_updates = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                                   required=True,
+                                                   coerce=to_bool,
+                                                   choices=YESNO_CHOICES,
+                                                   label=_("Do you want to receive email updates about your case?"),
+                                                   help_text=_("We'll use this for all future correspondence as well as contacting you by post."),
+                                                   error_messages={"required": ERROR_MESSAGES["RECEIVE_EMAIL_UPDATES_REQUIRED"]})
+
+    email = forms.EmailField(widget=forms.TextInput(attrs={"type": "email", "class": "form-control"}),
+                                          required=False,
+                                          label=_("Email address"),
+                                          help_text=_("We'll use this for all future correspondence. We'll also contact you by post."),
+                                          error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
+                                                          "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
+
     understand = forms.BooleanField(required=True,
                                     error_messages={"required": ERROR_MESSAGES["UNDERSTAND_REQUIRED"]})
 
