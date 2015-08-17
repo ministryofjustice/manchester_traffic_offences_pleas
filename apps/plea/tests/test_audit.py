@@ -45,10 +45,11 @@ class CaseCreationTests(TestCase):
                 u'last_name': u'cobain',
                 u"national_insurance_number": u"test ni number",
                 u"driving_licence_number": u"test driving license number",
-                u"registration_number": u"reg number",
-                u"email": u"test@test.com"},
+                u"registration_number": u"reg number"},
             'complete': {},
-            'review': {u'csrfmiddlewaretoken': [u'z6Pz8e3M1rX2c31M0YpZtGnIv1V74ml7']},
+            'review': {u'csrfmiddlewaretoken': [u'z6Pz8e3M1rX2c31M0YpZtGnIv1V74ml7'],
+                       u'receive_email_updates': u'True',
+                       u'email': u'test@test.com'},
             'send_error': {},
             'plea': {u'PleaForms': [{u'guilty_extra': u'fdsfdsff\r\nds\r\nf',
                                      u'guilty': u'guilty'},
@@ -151,6 +152,33 @@ class CaseCreationTests(TestCase):
                            u'User email network error',
                            u'User email started',
                            u'User email sent']
+
+        for i, action in enumerate(case.actions.all()):
+            if correct_actions[i] != action.status:
+                self.fail("Wrong action got {} expected {}".format(
+                    action.status, correct_actions[i]))
+
+    @override_settings(STORE_USER_DATA=True)
+    @patch("apps.plea.tasks.EmailMultiAlternatives.send")
+    def test_user_email_not_requested(self, send):
+        send.side_effect = iter([socket.error("Email failed to send, socket error"), True])
+
+        case = Case.objects.create(
+            urn="00/AA/00000/00")
+
+        self.context_data.update({u"review": {"receive_email_updates": "False",
+                                              "email": ""}})
+
+        try:
+            email_send_user.delay(case.id, self.context_data)
+        except socket.error:
+            pass
+        except Retry:
+            pass
+
+        case = Case.objects.all().order_by('-id')[0]
+
+        correct_actions = [u'No email entered, user email not sent']
 
         for i, action in enumerate(case.actions.all()):
             if correct_actions[i] != action.status:
