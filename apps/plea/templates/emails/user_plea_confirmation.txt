@@ -1,30 +1,26 @@
-{% load testing i18n %}{% blocktrans %}GOV.UK - Online plea submission confirmation{% endblocktrans %}
+{% load testing date i18n %}{% blocktrans %}GOV.UK - Online plea submission confirmation{% endblocktrans %}
 
-{% blocktrans count charges=number_of_charges %}Your online plea has been submitted{% plural %}Your online pleas have been submitted{% endblocktrans %}
-{% if plea_made_by == "Defendant" %}{% if plea_type == "guilty" %}
-{% blocktrans count charges=number_of_charges %}Your guilty plea has been sent to the court{% plural %}Your guilty pleas have been sent to the court{% endblocktrans %}{% elif plea_type == "not_guilty" %}
-{% blocktrans count charges=number_of_charges %}Your not guilty plea has been sent to the court{% plural %}Your not guilty pleas have been sent to the court{% endblocktrans %}{% elif plea_type == "mixed" %}
-{% blocktrans count charges=number_of_charges %}Your plea has been sent to the court.{% plural %}Your pleas have been sent to the court.{% endblocktrans %}{% endif %}{% elif plea_made_by == "Company representative" %}{% if plea_type == "guilty" %}
-{% blocktrans count charges=number_of_charges %}The guilty plea you made on behalf of your company has been sent to the court.{% plural %}The guilty pleas you made on behalf of your company have been sent to the court.{% endblocktrans %}{% elif plea_type == "not_guilty" %}
-{% blocktrans count charges=number_of_charges %}The not guilty plea you made on behalf of your company has been sent to the court.{% plural %}The not guilty pleas you made on behalf of your company have been sent to the court.{% endblocktrans %}{% elif plea_type == "mixed" %}
-{% blocktrans count charges=number_of_charges %}The plea you made on behalf of your company has been sent to the court.{% plural %}The pleas you made on behalf of your company have been sent to the court.{% endblocktrans %}{% endif %}{% endif %}
+{% if plea_made_by == "Defendant" %}{% blocktrans count charges=number_of_charges %}Your plea has been sent to the court{% plural %}Your pleas have been sent to the court{% endblocktrans %}{% elif plea_made_by == "Company representative" %}{% blocktrans count charges=number_of_charges %}Your company's plea has been sent to the court{% plural %}Your company's pleas have been sent to the court{% endblocktrans %}{% endif %}
 
 ------
 
-{% blocktrans %}What happens next:{% endblocktrans %}
-- {% blocktrans count charges=number_of_charges %}we'll send you a letter with the court's decision within 3 working days after your hearing date{% plural %}we'll send you a letter with the court's decisions within 3 working days after your hearing date{% endblocktrans %}{% if plea_made_by == "Defendant" %}
-- {% blocktrans %}the court will tell you if you need to attend a trial, and what evidence you may need to send to the court in support of your case{% endblocktrans %}{% elif plea_made_by == "Company representative" %}
-- {% blocktrans %}the court will tell you if a company representative needs to attend a trial, and what evidence might be needed by the court{% endblocktrans %}{% endif %}
+{% blocktrans %}What happens next:{% endblocktrans %}{% if plea_type == "guilty" %}{% if plea_made_by == "Defendant" %}
+- {% blocktrans count charges=number_of_charges %}we'll send you a letter with the court's decision within 3 working days after your hearing date{% plural %}we'll send you a letter with the court's decisions within 3 working days after your hearing date{% endblocktrans %}
+- {% blocktrans %}we'll tell you if you need to attend a trial and what evidence you may need to send to the court to support your case{% endblocktrans %}{% endif %}{% if plea_made_by == "Company representative" %}
+- {% blocktrans count charges=number_of_charges %}we'll send a letter with the court's decision within 3 working days after the hearing date{% plural %}we'll send a letter with the court's decisions within 3 working days after the hearing date{% endblocktrans %}
+- {% blocktrans %}we'll tell you if a company representative needs to attend a trial and what evidence you may need to send to the court to support the case{% endblocktrans %}{% endif %}{% endif %}{% if plea_type != "guilty" %}{% if plea_made_by == "Defendant" %}
+- {% blocktrans %}we'll send you a letter with a new hearing date for you to come to court for a trial{% endblocktrans %}{% endif %}{% if plea_made_by == "Company representative" %}
+- {% blocktrans %}we'll send you a letter with a new hearing date for a company representative to come to court{% endblocktrans %}{% endif %}{% endif %}
 - {% blocktrans %}you can print a copy of this plea confirmation for your records{% endblocktrans %}
 
 {% blocktrans %}Do not:{% endblocktrans %}
-- {% blocktrans %}come to court on the hearing date shown in the requisition pack{% endblocktrans %}{% if plea_made_by == "Defendant" and plea_type != "not_guilty" %}
-- {% blocktrans %}send your driving licence to the court, the DVLA will contact you if they need you to send in your driving licence{% endblocktrans %}{% endif %}
+- {% blocktrans %}come to court on the hearing date shown on page 1 of the requisition notice we sent to you{% endblocktrans %}{% if plea_made_by == "Defendant" %}
+- {% blocktrans %}send your driving licence to the court, the DVLA will contact you if they need you to send it to them{% endblocktrans %}{% endif %}
 
 ------
 
 {% blocktrans %}Need to change a plea?{% endblocktrans %}
-{% blocktrans with urn=urn|upper %}Contact the court by post or email quoting your URN {{ urn }} before the date of your hearing.{% endblocktrans %}
+{% blocktrans with urn=urn|upper hearing_date=date_of_hearing|parse_date|date:"d/m/Y" %}Contact the court by post or email quoting your URN {{ urn }} to arrive before {{ hearing_date }}.{% endblocktrans %}
 
 {% blocktrans %}The contact details for the court are:{% endblocktrans %}
 
