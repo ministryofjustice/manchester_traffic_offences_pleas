@@ -3,17 +3,17 @@
 {% load i18n %}
 {% load form_widgets %}
 
-{% block page_title %}{% trans "Your details" %} - {{ block.super }}{% endblock %}
+{% block page_title %}{% blocktrans %}Your details{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 
 {% block stage_header %}
-    <h1>{% trans "Your details" %}</h1>
+    <h1>{% blocktrans %}Your details{% endblocktrans %}</h1>
 
-    <p>{% trans "We need these in case we have to contact you about your plea." %}</p>
+    <p>{% blocktrans %}We need these in case we have to contact you about your plea.{% endblocktrans %}</p>
 
     <div class="panel-grey">
-        <h2 class="heading-small">{% trans "Warning:" %}</h2>
-        <p>{% trans "You can only make a plea on behalf of a company if you are a director, the company secretary or the company's solicitor." %}</p>
+        <h2 class="heading-small">{% blocktrans %}Warning:{% endblocktrans %}</h2>
+        <p>{% blocktrans %}You can only make a plea on behalf of a company if you are a director, the company secretary or the company's solicitor.{% endblocktrans %}</p>
     </div>
 {% endblock stage_header %}
 
