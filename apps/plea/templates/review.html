@@ -27,12 +27,13 @@
 
 
 {% block stage_form %}
+
     <table class="review-table" id="case-details">
     <thead>
         <tr>
             <th colspan="2">
-                <h2>{% trans "Case details" %}</h2>
-                <a class="change-link" href="{% url "plea_form_step" "case" %}" class="review">{% trans "Change case details" %}</a>
+                <h2>{% blocktrans %}Case details{% endblocktrans %}</h2>
+                <a class="change-link" href="{% url "plea_form_step" "case" %}" class="review">{% blocktrans %}Change case details{% endblocktrans %}</a>
             </th>
         </tr>
     </thead>
@@ -44,11 +45,11 @@
         <tr>
             <th colspan="2">
             {% if case.plea_made_by == "Defendant" %}
-                <h2>{% trans "Your details" %}</h2>
-                <a class="change-link" href="{% url "plea_form_step" "your_details" %}" class="review">{% trans "Change your details" %}</a>
+                <h2>{% blocktrans %}Your details{% endblocktrans %}</h2>
+                <a class="change-link" href="{% url "plea_form_step" "your_details" %}" class="review">{% blocktrans %}Change your details{% endblocktrans %}</a>
             {% elif case.plea_made_by == "Company representative" %}
-                <h2>{% trans "Company representative details" %}</h2>
-                <a class="change-link" href="{% url "plea_form_step" "company_details" %}" class="review">{% trans "Change your details" %}</a>
+                <h2>{% blocktrans %}Company representative details{% endblocktrans %}</h2>
+                <a class="change-link" href="{% url "plea_form_step" "company_details" %}" class="review">{% blocktrans %}Change your details{% endblocktrans %}</a>
             {% endif %}
             </th>
         </tr>
@@ -80,8 +81,8 @@
             <thead>
             <tr>
                 <th colspan="2">
-                    <h2>{% trans "Your finances" %}</h2>
-                    <a class="change-link" href="{% url "plea_form_step" "your_finances" %}" class="review">{% trans "Change your finances" %}</a>
+                    <h2>{% blocktrans %}Your finances{% endblocktrans %}</h2>
+                    <a class="change-link" href="{% url "plea_form_step" "your_finances" %}" class="review">{% blocktrans %}Change your finances{% endblocktrans %}</a>
                 </th>
             </tr>
             </thead>
@@ -92,8 +93,8 @@
                     <thead>
                     <tr>
                         <th colspan="2">
-                            <h2>{% trans "Your expenses" %}</h2>
-                            <a class="change-link" href="{% url "plea_form_step" "your_expenses" %}" class="review">{% trans "Change your expenses" %}</a>
+                            <h2>{% blocktrans %}Your expenses{% endblocktrans %}</h2>
+                            <a class="change-link" href="{% url "plea_form_step" "your_expenses" %}" class="review">{% blocktrans %}Change your expenses{% endblocktrans %}</a>
                         </th>
                     </tr>
                     </thead>
@@ -108,8 +109,8 @@
                 <thead>
                 <tr>
                     <th colspan="2">
-                        <h2>{% trans "Company financial details" %}</h2>
-                        <a class="change-link" href="{% url "plea_form_step" "company_finances" %}" class="review">{% trans "Change details" %}</a>
+                        <h2>{% blocktrans %}Company financial details{% endblocktrans %}</h2>
+                        <a class="change-link" href="{% url "plea_form_step" "company_finances" %}" class="review">{% blocktrans %}Change details{% endblocktrans %}</a>
                     </th>
                 </tr>
                 </thead>
@@ -118,6 +119,7 @@
         {% endif %}
     {% endif %}
     
+    <hr>
     
     <section>
         
@@ -127,21 +129,20 @@
             {% std_field form.email hide_optional=True %}
         </div>
 
-        <hr>
-
     </section>
-    
+
+    <hr>
 
     <section id="section_understand">
 
         <div class="form-group-wide{% if form.understand.errors %} with-error{% endif %}">
 
-            <h2 class="heading-medium">{% trans "Important" %}</h2>
+            <h2 class="heading-medium">{% blocktrans %}Important{% endblocktrans %}</h2>
             
             {{ form.understand.errors }}
             
             <label for="{{ form.understand.id_for_label }}" class="block-label">
-                <span class="important">{% trans "It is an offence to make a false statement or to deliberately fail to disclose any relevant facts." %}</span>
+                <span class="important">{% blocktrans %}It is an offence to make a false statement or to deliberately fail to disclose any relevant facts.{% endblocktrans %}</span>
                 <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
                 <span class="checkbox-text">
                 {% if case.plea_made_by == "Defendant" %}

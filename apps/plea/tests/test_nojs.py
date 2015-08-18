@@ -100,14 +100,32 @@ class TestNoJS(TestCase):
                    "form-INITIAL_FORMS": "0",
                    "form-MAX_NUM_FORMS": "1",
                    "form-0-guilty": "not_guilty",
-                   "form-0-guilty_extra": "",
-                   "form-0-not_guilty_extra": "Lorem ipsum"},
+                   "form-0-not_guilty_extra": "Lorem ipsum",
+                   "form-0-interpreter_needed": True,
+                   "form-0-interpreter_language": "French"},
                   self.request_context)
 
         response = form.render()
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, '/plea/review/')
+
+
+    def test_split_form_plea_stage_errors(self):
+        form = PleaOnlineForms("plea", "plea_form_step", self.plea_session)
+
+        form.save({"split_form": "split_form_last_step",
+                   "form-TOTAL_FORMS": "1",
+                   "form-INITIAL_FORMS": "0",
+                   "form-MAX_NUM_FORMS": "1",
+                   "form-0-guilty": "not_guilty",
+                   "form-0-interpreter_needed": True},
+                  self.request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(form.current_stage.form.errors), 1)
 
 
     def test_split_form_company_finances_stage_bad_data_no_trigger_summary(self):
@@ -125,7 +143,7 @@ class TestNoJS(TestCase):
         form = PleaOnlineForms("company_finances", "plea_form_step", self.company_finances_session)
 
         form.save({"split_form": "trading_period",
-                   "trading_period": "True"},
+                   "trading_period": True},
                   self.request_context)
 
         response = form.render()
@@ -137,7 +155,7 @@ class TestNoJS(TestCase):
         form = PleaOnlineForms("company_finances", "plea_form_step", self.company_finances_session)
 
         form.save({"split_form": "split_form_last_step",
-                   "trading_period": "True"},
+                   "trading_period": True},
                   self.request_context)
 
         response = form.render()
@@ -148,7 +166,7 @@ class TestNoJS(TestCase):
 
     def test_split_form_company_finances_stage_change_link_no_summary(self):
         self.company_finances_session.update({"company_finances": {"split_form": "split_form_last_step",
-                                                                   "trading_period": "True"}})
+                                                                   "trading_period": True}})
 
         fake_request = self.get_request_mock("/plea/company_finances/?reset")
         request_context = RequestContext(fake_request)
@@ -165,7 +183,7 @@ class TestNoJS(TestCase):
         form = PleaOnlineForms("company_finances", "plea_form_step", self.company_finances_session)
 
         form.save({"split_form": "split_form_last_step",
-                   "trading_period": "True",
+                   "trading_period": True,
                    "number_of_employees": "10",
                    "gross_turnover": "19000",
                    "net_turnover": "12000"},
