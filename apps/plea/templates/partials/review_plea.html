@@ -1,13 +1,14 @@
 {% load i18n %}
     <tbody>
     {% for pleaform in plea.PleaForms %}
+
         {% if plea.PleaForms|length > 1 or pleaform.title %}
         <tr>
             <td colspan="2">
                 {% if pleaform.title  %}
                 <h3>{{ pleaform.title }}</h3>
                 {% else %}
-                <h3>{% trans "Charge" %} {{ forloop.counter }}</h3>
+                <h3>{% blocktrans %}Charge{% endblocktrans %} {{ forloop.counter }}</h3>
                 {% endif %}
             </td>
         </tr>
@@ -17,36 +18,38 @@
                 {% if case.plea_made_by == "Defendant" %}
                     {% blocktrans count counter=1 %}Your plea{% plural %}Your pleas{% endblocktrans %}
                 {% else %}
-                    {% trans "Company plea" %}
+                    {% blocktrans %}Company plea{% endblocktrans %}
                 {% endif %}
             </th>
             <td>
                 {% if pleaform.guilty == "guilty" %}
-                    {% trans "Guilty" %}
+                    {% blocktrans %}Guilty{% endblocktrans %}
                 {% elif pleaform.guilty == "not_guilty" %}
-                    {% trans "Not guilty" %}
+                    {% blocktrans %}Not guilty{% endblocktrans %}
                 {% endif %}
             </td>
         </tr>
         {% if pleaform.guilty == "guilty" %}
         <tr>
-            <th>
-                {% trans "Mitigation" %}
-            </th>
-            <td>
-                {{ pleaform.guilty_extra|linebreaksbr|default:"-" }}
-            </td>
+            <th>{% blocktrans %}Mitigation{% endblocktrans %}</th>
+            <td>{{ pleaform.guilty_extra|linebreaksbr|default:"-" }}</td>
         </tr>
         {% endif %}
         {% if pleaform.guilty == "not_guilty" %}
         <tr>
-            <th>
-                {% trans "Not guilty because" %}
-            </th>
-            <td>
-                {{ pleaform.not_guilty_extra|linebreaksbr|default:"-" }}
-            </td>
+            <th>{% blocktrans %}Not guilty because{% endblocktrans %}</th>
+            <td>{{ pleaform.not_guilty_extra|linebreaksbr|default:"-" }}</td>
         </tr>
+        <tr>
+            <th>{% blocktrans %}Interpreter required{% endblocktrans %}</th>
+            <td>{{ pleaform.interpreter_needed|yesno:_("Yes,No") }}</td>
+        </tr>
+            {% if pleaform.interpreter_needed %}
+        <tr>
+            <th>{% blocktrans %}Language{% endblocktrans %}</th>
+            <td>{{ pleaform.interpreter_language }}</td>
+        </tr>
+            {% endif %}
         {% endif %}
     {% endfor %}
     </tbody>

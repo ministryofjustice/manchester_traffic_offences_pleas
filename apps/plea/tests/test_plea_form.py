@@ -225,7 +225,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.save({"first_name": "Test",
                    "last_name": "Man",
                    "contact_number": "012345678",
-                   "correct_address": "True",
+                   "correct_address": True,
                    "date_of_birth_0": "12",
                    "date_of_birth_1": "03",
                    "date_of_birth_2": "1980"},
@@ -428,6 +428,41 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(response.status_code, 302)
 
+    def test_plea_stage_not_guilty_missing_data_single_charge(self):
+        self.session.update(self.plea_stage_pre_data_1_charge)
+        form = PleaOnlineForms("plea", "plea_form_step", self.session)
+
+        mgmt_data = {"form-TOTAL_FORMS": "1",
+                     "form-INITIAL_FORMS": "0",
+                     "form-MAX_NUM_FORMS": "1"}
+        mgmt_data.update({"form-0-guilty": "not_guilty",
+                          "form-0-not_guilty_extra": ""})
+
+        # no form data, just the management stuff
+        form.save(mgmt_data, self.request_context)
+        response = form.render()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(form.current_stage.form.errors[0]), 2)
+
+    def test_plea_stage_not_guilty_missing_interpreter_language(self):
+        self.session.update(self.plea_stage_pre_data_1_charge)
+        form = PleaOnlineForms("plea", "plea_form_step", self.session)
+
+        mgmt_data = {"form-TOTAL_FORMS": "1",
+                     "form-INITIAL_FORMS": "0",
+                     "form-MAX_NUM_FORMS": "1"}
+        mgmt_data.update({"form-0-guilty": "not_guilty",
+                          "form-0-not_guilty_extra": "dsa",
+                          "form-0-interpreter_needed": "True"})
+
+        # no form data, just the management stuff
+        form.save(mgmt_data, self.request_context)
+        response = form.render()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(form.current_stage.form.errors[0]), 1)
+
     def test_plea_stage_redirects_to_company_finances(self):
 
         hearing_date = datetime.date.today()+datetime.timedelta(30)
@@ -502,7 +537,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                      "form-MAX_NUM_FORMS": "1000"}
 
         mgmt_data.update({"form-0-guilty": "not_guilty",
-                          "form-0-not_guilty_extra": "lorem ipsum 1"})
+                          "form-0-not_guilty_extra": "lorem ipsum 1",
+                          "form-0-interpreter_needed": False})
 
         form.save(mgmt_data, request_context)
         response = form.render()
@@ -845,7 +881,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
     def test_review_stage_missing_email(self):
         form = PleaOnlineForms("review", "plea_form_step", self.session)
         form.load(self.request_context)
-        form.save({"receive_email_updates": True,
+        form.save({"receive_email_updates": "True",
                    "understand": True}, 
                   self.request_context)
 
@@ -941,7 +977,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.save({"first_name": "Charlie",
                    "last_name": "Brown",
                    "contact_number": "07802639892",
-                   "correct_address": "True",
+                   "correct_address": True,
                    "date_of_birth_0": "12",
                    "date_of_birth_1": "03",
                    "date_of_birth_2": "1980"},
@@ -968,7 +1004,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.load(request_context)
         form.save({"receive_email_updates": True,
                    "email": "test@test.com",
-                   "understand": "True"},
+                   "understand": True},
                   request_context)
         response = form.render()
         self.assertEqual(response.status_code, 302)
@@ -1011,7 +1047,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.save({"first_name": "Charlie",
                    "last_name": "Brown",
                    "contact_number": "07802639892",
-                   "correct_address": "True",
+                   "correct_address": True,
                    "date_of_birth_0": "12",
                    "date_of_birth_1": "03",
                    "date_of_birth_2": "1980"},
@@ -1038,7 +1074,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.load(request_context)
         form.save({"receive_email_updates": True,
                    "email": "test@test.com",
-                   "understand": "True"},
+                   "understand": True},
                   request_context)
         response = form.render()
         self.assertEqual(response.status_code, 302)
