@@ -667,6 +667,14 @@ class PleaForm(SplitPleaStepForm):
         "not_guilty_extra": {
             "field": "guilty",
             "value": "not_guilty"
+        },
+        "interpreter_needed": {
+            "field": "guilty",
+            "value": "not_guilty"
+        },
+        "interpreter_language": {
+            "field": "interpreter_needed",
+            "value": "True"
         }
     }
 
@@ -680,15 +688,29 @@ class PleaForm(SplitPleaStepForm):
 
     guilty_extra = forms.CharField(label=_("Mitigation"),
                                    widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
-                                   help_text=_("What would you like the court to consider?"),
+                                   help_text=_("Is there something you would like the court to consider?"),
                                    required=False,
                                    max_length=5000)
 
     not_guilty_extra = forms.CharField(label=_("Not guilty because?"),
                                        widget=Textarea(attrs={"class": "form-control", "rows": "4"}),
-                                       help_text=_("Tell us here:<ul><li>why you believe you are not guilty</li><li>if you disagree with any evidence from a witness statement in the notice &ndash; tell us the name of the witness  and what you disagree with</li><li>the name, address and date of birth of any witnesses you want to call  to support your case</li></ul>"),
+                                       help_text=_("Why do you believe you are not guilty?"),
                                        max_length=5000,
                                        error_messages={"required": ERROR_MESSAGES["NOT_GUILTY_REQUIRED"]})
+
+    interpreter_needed = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                                required=True,
+                                                choices=YESNO_CHOICES,
+                                                coerce=to_bool,
+                                                label=_("Do you need an interpreter in court?"),
+                                                error_messages={"required": ERROR_MESSAGES["INTERPRETER_NEEDED_REQUIRED"]})
+
+    interpreter_language = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                                           max_length=100,
+                                           required=True,
+                                           label=_(""),
+                                           help_text=_("If yes, tell us which language (include sign language):"),
+                                           error_messages={"required": ERROR_MESSAGES["INTERPRETER_LANGUAGE_REQUIRED"]})
 
 
 class CourtFinderForm(forms.Form):
