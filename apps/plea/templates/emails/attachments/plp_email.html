@@ -30,7 +30,7 @@
     <thead>
         <tr>
             <th colspan="2">
-                <h2>{% trans "Case details" %}</h2>
+                <h2>{% blocktrans %}Case details{% endblocktrans %}</h2>
             </th>
         </tr>
     </thead>
@@ -42,9 +42,9 @@
         <tr>
             <th colspan="2">
             {% if case.plea_made_by == "Defendant" %}
-                <h2>{% trans "Your details" %}</h2>
+                <h2>{% blocktrans %}Your details{% endblocktrans %}</h2>
             {% elif case.plea_made_by == "Company representative" %}
-                <h2>{% trans "Company representative details" %}</h2>
+                <h2>{% blocktrans %}Company representative details{% endblocktrans %}</h2>
             {% endif %}
             </th>
         </tr>
