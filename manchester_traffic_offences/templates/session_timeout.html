@@ -2,18 +2,18 @@
 
 {% load i18n %}
 
-{% block title %}{% trans "Session timeout" %} - {{ block.super }}{% endblock %}
+{% block title %}{% blocktrans %}Session timeout{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 {% block page_content %}
     <section class="error-summary">
-        <h1 class="heading-large">{% trans "Session timeout" %}</h1>
+        <h1 class="heading-large">{% blocktrans %}Session timeout{% endblocktrans %}</h1>
 
-        <p>{% trans "Your session has expired, re-enter your details and try again." %}</p>
+        <p>{% blocktrans %}Your session has expired, re-enter your details and try again.{% endblocktrans %}</p>
     </section>
 
     <section class="intro">
         <div class="get-started">
-            <a class="button button-get-started" role="button" href="{% url "plea_form" %}">{% trans "Start again" %}</a>
+            <a class="button button-get-started" role="button" href="{% url "plea_form" %}">{% blocktrans %}Start again{% endblocktrans %}</a>
         </div>
     </section>
 {% endblock page_content %}

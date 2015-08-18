@@ -24,8 +24,8 @@
             </div>
 
             {% if form.case_data %}
-            <div class="charge-details js-Details{% if charge_number == 1 %} open{% endif %}" data-summary-open="{% trans "Hide charge information" %}">
-                <a class="details-trigger" href="#charge-details-{{ charge_number }}"><span class="summary">{% trans "View charge information" %}</span></a>
+            <div class="charge-details js-Details{% if charge_number == 1 %} open{% endif %}" data-summary-open="{% blocktrans %}Hide charge information{% endblocktrans %}">
+                <a class="details-trigger" href="#charge-details-{{ charge_number }}"><span class="summary">{% blocktrans %}View charge information{% endblocktrans %}</span></a>
                 <div class="details-content" id="charge-details-{{ charge_number }}">
                     {{ form.case_data.offence_wording|linebreaks }}
                 </div>
@@ -68,8 +68,8 @@
                     <input type="hidden" name="{{ choice.name }}" value="{{ choice.choice_value }}">
                 {% endif %}
             {% endfor %}
-            <p class="form-selected">{% trans "Your plea" %} - <strong>{% if form.guilty.value == "guilty" %}{% trans "Guilty" %}{% else %}{% trans "Not guilty" %}{% endif %}</strong></p>
-            <a href="{{ request.path }}?reset">{% trans "Change this plea" %}</a>
+            <p class="form-selected">{% blocktrans %}Your plea{% endblocktrans %} - <strong>{% if form.guilty.value == "guilty" %}{% blocktrans %}Guilty{% endblocktrans %}{% else %}{% blocktrans %}Not guilty{% endblocktrans %}{% endif %}</strong></p>
+            <a href="{{ request.path }}?reset">{% blocktrans %}Change this plea{% endblocktrans %}</a>
         </div>
     {% endif %}
         
