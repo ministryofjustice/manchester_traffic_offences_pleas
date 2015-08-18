@@ -7,26 +7,19 @@ Main styles
 
 
 /*== Start screen ==================================================*/
-.intro {
-	h2:first-child {
-		margin-top: 0;
+.get-started {
+	h2 {
+		margin-bottom: .5em;
 	}
 
-	.get-started {
-		padding-top: .75em;
+	.panel-indent {
+		margin-top: .5em;
 	}
 }
 
-.fine-reduction {
-	p {
-		@include core-16;
-
-		strong {
-			@include bold-80();
-			position: relative;
-			top: .075em;
-		}
-	}
+.related-start {
+	@extend .related;
+	margin-top: 5em;
 }
 
 
