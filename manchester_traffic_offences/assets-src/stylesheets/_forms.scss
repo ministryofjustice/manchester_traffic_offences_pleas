@@ -234,6 +234,35 @@ legend + * {
 	}
 }
 
+.panel-indent {
+	.with-error {
+		position: relative;
+		margin-left: -14px;
+
+		@include media(tablet) {
+			margin-left: -19px;
+		}
+
+		&:before,
+		&:after {
+			content: " ";
+			position: absolute;
+			left: -4px;
+			display: block;
+			width: 0;
+			height: 8px;
+			border-left: 4px solid #fff;
+		}
+
+		&:before {
+			top: -8px;
+		}
+		&:after {
+			bottom: -8px;
+		}
+	}
+}
+
 .errorlist {
 	@include core-19;
 	margin: .25em 0;
