@@ -164,7 +164,7 @@ class EmailTemplateTests(TestCase):
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
         self.assertContains(response, "<tr><th>First name</th><td>Joe</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Last name</th><td>Public</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>Address</th><td>As printed on requisition pack</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Address</th><td>As printed on the notice</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Contact number</th><td>0161 123 2345</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Date of birth</th><td>12/03/1980</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>National Insurance number</th><td>-</td></tr>", count=1, html=True)
@@ -216,12 +216,16 @@ class EmailTemplateTests(TestCase):
     def test_single_not_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
         context_data["plea"]["PleaForms"][0]["guilty"] = "not_guilty"
+        context_data["plea"]["PleaForms"][0]["not_guilty_extra"] = "dsa"
+        context_data["plea"]["PleaForms"][0]["interpreter_needed"] = False
 
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
         self.assertContains(response, "<tr><th>Your plea</th><td>Not guilty</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Not guilty because</th><td>dsa</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Interpreter required</th><td>No</td></tr>", count=1, html=True)
 
     def test_multiple_not_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()

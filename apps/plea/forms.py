@@ -634,7 +634,7 @@ class ConfirmationForm(BasePleaStepForm):
     dependencies = {
         "email": {
             "field": "receive_email_updates",
-            "value": True
+            "value": "True"
         }
     }
 
@@ -670,11 +670,13 @@ class PleaForm(SplitPleaStepForm):
         },
         "interpreter_needed": {
             "field": "guilty",
-            "value": "not_guilty"
-        },
-        "interpreter_language": {
-            "field": "interpreter_needed",
-            "value": "True"
+            "value": "not_guilty",
+            "dependencies": {
+                "interpreter_language": {
+                    "field": "interpreter_needed",
+                    "value": "True"
+                }
+            }
         }
     }
 
