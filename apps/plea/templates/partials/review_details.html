@@ -8,67 +8,59 @@
     {% if case.plea_made_by == "Defendant" %}
         {% add_test_tag "<<SHOWYOURDETAILS>>" %}
         <tr>
-            <th>{% trans "First name" %}</th>
+            <th>{% blocktrans %}First name{% endblocktrans %}</th>
             <td>{{ your_details.first_name }}</td>
         </tr>
         <tr>
-            <th>{% trans "Last name" %}</th>
+            <th>{% blocktrans %}Last name{% endblocktrans %}</th>
             <td>{{ your_details.last_name }}</td>
         </tr>
         <tr>
-            <th>{% trans "Address" %}</th>
-            <td>{% if your_details.correct_address %}{% trans "As printed on requisition pack" %}{% else %}{{ your_details.updated_address|linebreaksbr }}{% endif %}</td>
+            <th>{% blocktrans %}Address{% endblocktrans %}</th>
+            <td>{% if your_details.correct_address %}{% blocktrans %}As printed on the notice{% endblocktrans %}{% else %}{{ your_details.updated_address|linebreaksbr }}{% endif %}</td>
         </tr>
         <tr>
-            <th>{% trans "Contact number" %}</th>
+            <th>{% blocktrans %}Contact number{% endblocktrans %}</th>
             <td>{{ your_details.contact_number }}</td>
         </tr>
         <tr>
-            <th>{% trans "Email" %}</th>
-            <td>{{ your_details.email }}</td>
-        </tr>
-        <tr>
-            <th>{% trans "Date of birth" %}</th>
+            <th>{% blocktrans %}Date of birth{% endblocktrans %}</th>
             <td>{{ your_details.date_of_birth|parse_date|date:"d/m/Y" }}</td>
         </tr>
         <tr>
-            <th>{% trans "National Insurance number" %}</th>
+            <th>{% blocktrans %}National Insurance number{% endblocktrans %}</th>
             <td>{{ your_details.ni_number|default:"-" }}</td>
         </tr>
         <tr>
-            <th>{% trans "UK driving licence number" %}</th>
+            <th>{% blocktrans %}UK driving licence number{% endblocktrans %}</th>
             <td>{{ your_details.driving_licence_number|default:"-" }}</td>
         </tr>
     {% elif case.plea_made_by == "Company representative" %}
         {% add_test_tag "<<SHOWCOMPANYDETAILS>>" %}
         <tr>
-            <th>{% trans "Company name" %}</th>
+            <th>{% blocktrans %}Company name{% endblocktrans %}</th>
             <td>{{ company_details.company_name }}</td>
         </tr>
         <tr>
-            <th>{% trans "Company address" %}</th>
-            <td>{% if company_details.correct_address %}{% trans "As printed on requisition pack" %}{% else %}{{ company_details.updated_address|linebreaksbr }}{% endif %}</td>
+            <th>{% blocktrans %}Company address{% endblocktrans %}</th>
+            <td>{% if company_details.correct_address %}{% blocktrans %}As printed on the notice{% endblocktrans %}{% else %}{{ company_details.updated_address|linebreaksbr }}{% endif %}</td>
         </tr>
         <tr>
-            <th>{% trans "First name" %}</th>
+            <th>{% blocktrans %}First name{% endblocktrans %}</th>
             <td>{{ company_details.first_name }}</td>
         </tr>
 
         <tr>
-            <th>{% trans "Last name" %}</th>
+            <th>{% blocktrans %}Last name{% endblocktrans %}</th>
             <td>{{ company_details.last_name }}</td>
         </tr>
         <tr>
-            <th>{% trans "Position held" %}</th>
+            <th>{% blocktrans %}Position held{% endblocktrans %}</th>
             <td>{% trans company_details.position_in_company %}</td>
         </tr>
         <tr>
-            <th>{% trans "Contact number" %}</th>
+            <th>{% blocktrans %}Contact number{% endblocktrans %}</th>
             <td>{{ company_details.contact_number }}</td>
-        </tr>
-        <tr>
-            <th>{% trans "Email" %}</th>
-            <td>{{ company_details.email }}</td>
         </tr>
     {% endif %}
 

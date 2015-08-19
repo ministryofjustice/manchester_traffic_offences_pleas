@@ -3,13 +3,13 @@
 {% load i18n %}
 {% load form_widgets %}
 
-{% block page_title %}{% trans "Your details" %} - {{ block.super }}{% endblock %}
+{% block page_title %}{% blocktrans %}Your details{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 
 {% block stage_header %}
-    <h1>{% trans "Your details" %}</h1>
+    <h1>{% blocktrans %}Your details{% endblocktrans %}</h1>
 
-    <p>{% trans "We need these in case we have to get in touch with you about your plea." %}</p>
+    <p>{% blocktrans %}We need these in case we have to get in touch with you about your plea.{% endblocktrans %}</p>
 {% endblock stage_header %}
 
 
@@ -25,8 +25,6 @@
     </div>
 
     {% std_field form.contact_number %}
-
-    {% std_field form.email %}
 
     {% std_field form.date_of_birth %}
 
