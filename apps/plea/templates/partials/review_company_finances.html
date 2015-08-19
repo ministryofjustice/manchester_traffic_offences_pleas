@@ -5,18 +5,18 @@
 {% add_test_tag "<<SHOWCOMPANYFINANCES>>" %}
     <tbody>
         <tr>
-            <th>{% trans "Number of employees" %}</th>
+            <th>{% blocktrans %}Number of employees{% endblocktrans %}</th>
             <td>{{ company_finances.number_of_employees|intcomma }}</td>
         </tr>
         <tr>
-            <td colspan="2"><h3>{% if company_finances.trading_period %}{% trans "From the most recent audited company accounts" %}{% else %}{% trans "From the first 12 months' trading projections" %}{% endif %}</h3></td>
+            <td colspan="2"><h3>{% if company_finances.trading_period %}{% blocktrans %}From the most recent audited company accounts{% endblocktrans %}{% else %}{% blocktrans %}From the first 12 months' trading projections{% endblocktrans %}{% endif %}</h3></td>
         </tr>
         <tr>
-            <th>{% trans "Gross turnover" %}</th>
+            <th>{% blocktrans %}Gross turnover{% endblocktrans %}</th>
             <td>£{{ company_finances.gross_turnover|intcomma }}</td>
         </tr>
         <tr>
-            <th>{% trans "Net turnover" %}</th>
+            <th>{% blocktrans %}Net turnover{% endblocktrans %}</th>
             <td>£{{ company_finances.net_turnover|intcomma }}</td>
         </tr>
     </tbody>

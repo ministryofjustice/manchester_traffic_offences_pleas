@@ -7,9 +7,9 @@
     {% if form.errors.items or formset_has_errors %}
     <div class="error-summary">
         {% block errors_summary %}
-        <h2>{% trans "You need to fix the errors on this page before continuing." %}</h2>
+        <h2>{% blocktrans %}You need to fix the errors on this page before continuing.{% endblocktrans %}</h2>
 
-        <p>{% trans "See highlighted errors below." %}</p>
+        <p>{% blocktrans %}See highlighted errors below.{% endblocktrans %}</p>
 
         <ul>
         {% for field in form %}
@@ -37,7 +37,7 @@
 
         {% block stage_submit %}
         <div class="form-submit">
-            <button class="button" type="submit">{% trans "Continue" %}</button>
+            <button class="button" type="submit">{% blocktrans %}Continue{% endblocktrans %}</button>
         </div>
         {% endblock stage_submit %}
     </form>

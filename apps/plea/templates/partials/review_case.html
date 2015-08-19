@@ -4,19 +4,19 @@
 
     <tbody>
         <tr>
-            <th>{% trans "Unique reference number" %}</th>
+            <th>{% blocktrans %}Unique reference number{% endblocktrans %}</th>
             <td>{{ case.urn }}</td>
         </tr>
         <tr>
-            <th>{% trans "Court hearing date" %}</th>
+            <th>{% blocktrans %}Court hearing date{% endblocktrans %}</th>
             <td>{{ case.date_of_hearing|parse_date|date:"d/m/Y" }}</td>
         </tr>
         <tr>
-            <th>{% trans "Number of charges against you" %}</th>
+            <th>{% blocktrans %}Number of charges{% endblocktrans %}</th>
             <td>{{ case.number_of_charges }}</td>
         </tr>
         <tr>
-            <th>{% trans "Plea made by" %}</th>
-            <td>{% if case.plea_made_by == "Defendant" %}{% trans "Defendant" %}{% else %}{% trans "Company representative" %}{% endif %}</td>
+            <th>{% blocktrans %}Plea made by{% endblocktrans %}</th>
+            <td>{% if case.plea_made_by == "Defendant" %}{% blocktrans %}Person named on the notice{% endblocktrans %}{% else %}{% blocktrans %}Company representative{% endblocktrans %}{% endif %}</td>
         </tr>
     </tbody>
