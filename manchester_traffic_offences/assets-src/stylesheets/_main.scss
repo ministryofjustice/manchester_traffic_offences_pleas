@@ -23,47 +23,6 @@ Main styles
 }
 
 
-/*== Case screen =============================================*/
-
-.with-help-images {
-	.help-image {
-		display: none;
-	}
-
-	@include media(tablet) {
-		.form-group {
-			float: left;
-
-			@include ie-lte(7) {
-				width: 60%;
-			}
-		}
-		.help-image {
-			display: block;
-			float: right;
-			clear: right;
-			max-width: 30%;
-
-			@include ie-lte(7) {
-				width: 30%;
-			}
-		}
-	}
-}
-
-.form-control-urn-2,
-.form-control-urn-7 {
-	@extend .form-control-inline;
-}
-.form-control-urn-2,
-#id_number_of_charges {
-	width: 2em;
-}
-.form-control-urn-7 {
-	width: 5em;
-}
-
-
 /*== Pleas screen ==========================================*/
 .section-plea {
 	padding-top: 1em;
@@ -88,10 +47,6 @@ Main styles
 			padding-right: 10px;
 			background: #fff;
 		}
-	}
-
-	.js-Conditional .form-group-wide {
-		margin-bottom: 0;
 	}
 }
 
@@ -151,16 +106,17 @@ Main styles
 /*== Review screen ==========================================*/
 .review-table {
 	margin: 0 0 2em;
-	border-bottom: 1px solid $grey-2;
 
 	thead {
 		th {
 			padding: 1.125em 0 0;
+			border: 1px solid $grey-2;
+			border-width: 1px 0 0;
 
 			h2 {
 				display: inline-block;
-				margin: 0 0 .5em;
-				@include core-24();
+				margin: 0 0 .25em;
+				@include bold-24();
 
 				@include ie-lte(7) {
 					float: left;
@@ -169,7 +125,7 @@ Main styles
 
 			.change-link {
 				float: right;
-				margin: .1em 0 .75em 1em;
+				margin: .1em 0 0 1em;
 				@include core-19;
 
 				@include media(tablet) {
@@ -211,6 +167,7 @@ Main styles
 
 		.important {
 			@extend p.important;
+			font-weight: bold;
 			display: block;
 			margin: 0 0 1.25em;
 		}
