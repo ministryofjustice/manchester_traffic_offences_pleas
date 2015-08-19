@@ -1,32 +1,32 @@
 {% load i18n %}
 {% load testing %}
+{% load filters %}
 {% load form_widgets %}
 
-<div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty_{{ forloop.counter }}">
+{% with forloop.counter as charge_number %}
+
+<div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty_{{ charge_number }}">
     <fieldset>
 
-    {% if form.case_data or form.guilty.errors or form_count > 1 %}
         <legend>
-            {% if form.case_data or form_count > 1 %}
             <div class="label-line">
-                <span class="label-text">
+                <span class="label-text">{% spaceless %}
                 {% if form.case_data %}
                     {{ form.case_data.offence_short_title }}
                 {% else %}
                     {% if case.plea_made_by == "Defendant" %}
-                        {% blocktrans with counter=forloop.counter %}Your plea for charge {{ counter }}{% endblocktrans %}
+                        {% blocktrans with counter=charge_number %}Your plea for charge {{ counter }}{% endblocktrans %}
                     {% else %}
-                        {% blocktrans with counter=forloop.counter %}Plea for charge {{ counter }}{% endblocktrans %}
+                        {% blocktrans with counter=charge_number %}Plea for charge {{ counter }}{% endblocktrans %}
                     {% endif %}
                 {% endif %}
-                </span>
+                {% endspaceless %}</span>
             </div>
-            {% endif %}
 
             {% if form.case_data %}
-            <div class="charge-details js-Details{% if forloop.counter == 1 %} open{% endif %}" data-summary-open="{% trans "Hide charge information" %}">
-                <a class="details-trigger" href="#charge-details-{{ forloop.counter }}"><span class="summary">{% trans "View charge information" %}</span></a>
-                <div class="details-content" id="charge-details-{{ forloop.counter }}">
+            <div class="charge-details js-Details{% if charge_number == 1 %} open{% endif %}" data-summary-open="{% blocktrans %}Hide charge information{% endblocktrans %}">
+                <a class="details-trigger" href="#charge-details-{{ charge_number }}"><span class="summary">{% blocktrans %}View charge information{% endblocktrans %}</span></a>
+                <div class="details-content" id="charge-details-{{ charge_number }}">
                     {{ form.case_data.offence_wording|linebreaks }}
                 </div>
             </div>
@@ -36,9 +36,14 @@
                 {% endif %}
             {% endif %}
 
-            {{ form.guilty.errors }}
+            {% if form.guilty.errors %}
+            <ul class="errorlist">
+                {% for error in form.guilty.errors %}
+                <li>{{ error|format:charge_number }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
         </legend>
-    {% endif %}
 
     {% if plea.split_form != "split_form_last_step" %}
         <div class="form-field">
@@ -63,10 +68,12 @@
                     <input type="hidden" name="{{ choice.name }}" value="{{ choice.choice_value }}">
                 {% endif %}
             {% endfor %}
-            <p class="form-selected">{% trans "Your plea" %} - <strong>{% if form.guilty.value == "guilty" %}{% trans "Guilty" %}{% else %}{% trans "Not guilty" %}{% endif %}</strong></p>
-            <a href="{{ request.path }}?reset">{% trans "Change this plea" %}</a>
+            <p class="form-selected">{% blocktrans %}Your plea{% endblocktrans %} - <strong>{% if form.guilty.value == "guilty" %}{% blocktrans %}Guilty{% endblocktrans %}{% else %}{% blocktrans %}Not guilty{% endblocktrans %}{% endif %}</strong></p>
+            <a href="{{ request.path }}?reset">{% blocktrans %}Change this plea{% endblocktrans %}</a>
         </div>
     {% endif %}
         
     </fieldset>
 </div>
+
+{% endwith %}

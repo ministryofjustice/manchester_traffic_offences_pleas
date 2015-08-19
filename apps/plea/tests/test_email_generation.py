@@ -10,6 +10,7 @@ from ..models import Case, CourtEmailCount, Court
 
 
 class EmailGenerationTests(TestCase):
+
     def setUp(self):
         mail.outbox = []
 
@@ -24,6 +25,39 @@ class EmailGenerationTests(TestCase):
             plp_email="test@test.com",
             enabled=True,
             test_mode=False)
+
+        self.test_data_defendant = {"case": {"urn": "06xcvx89",
+                                             "date_of_hearing": "2014-06-30",
+                                             "number_of_charges": 2,
+                                             "plea_made_by": "Defendant"},
+                                    "your_details": {"updated_address": "Some place",
+                                                     "first_name": "v",
+                                                     "last_name": "cx",
+                                                     "contact_number": "07000000000",
+                                                     "date_of_birth": "1970-01-01"},
+                                    "plea": {"PleaForms": [{"guilty": "guilty", "guilty_extra": "test1"},
+                                                           {"guilty": "guilty", "guilty_extra": "test2"}]},
+                                    "review": {"receive_email_updates": True,
+                                               "email": "test@test.com",
+                                               "understand": True}}
+
+        self.test_data_company = {"case": {"urn": "06xcvx89",
+                                           "date_of_hearing": "2014-06-30",
+                                           "number_of_charges": 2,
+                                           "plea_made_by": "Company representative"},
+                                  "your_details": {"complete": True,
+                                                   "skipped": True},
+                                  "company_details": {"company_name": "some company plc",
+                                                      "updated_address": "some place plc",
+                                                      "first_name": "John",
+                                                      "last_name": "Smith",
+                                                      "position_in_company": "a director",
+                                                      "contact_number": "0800 SOMECOMPANY"},
+                                  "plea": {"PleaForms": [{"guilty": "guilty", "guilty_extra": "test1"},
+                                                         {"guilty": "guilty", "guilty_extra": "test2"}]},
+                                  "review": {"receive_email_updates": True,
+                                             "email": "test@test.com",
+                                             "understand": True}}
 
     def test_template_attachment_sends_email(self):
         email_context = {"URN": "062B3C4D5E"}
@@ -41,37 +75,12 @@ class EmailGenerationTests(TestCase):
         self.assertEqual(mail.outbox[0].body, "Body Text")
 
     def test_plea_email_sends(self):
-        context_data = {"case": {"date_of_hearing": "2014-06-30",
-                                 "time_of_hearing": "12:00:00",
-                                 "urn": "06xcvx89",
-                                 "number_of_charges": 2,
-                                 "plea_made_by": "Defendant"},
-                        "your_details": {"first_name": "v", "last_name": "cx", "national_insurance_number": "xxx",
-                                         "driving_licence_number": "xxx", "registration_number": "xxx",
-                                         "email": "test@test.com"},
-                        "plea": {"PleaForms": [{"guilty_extra": "test1", "guilty": "guilty"},
-                                               {"guilty_extra": "test2", "guilty": "guilty"}],
-                                 "understand": True}}
+        send_plea_email(self.test_data_defendant)
 
-        send_plea_email(context_data)
-
-        # only expecting 1 email for now, PLP email cancelled for the time being
         self.assertEqual(len(mail.outbox), 3)
 
     def test_plea_email_body_contains_plea_and_count_ids(self):
-        context_data = {"case": {"date_of_hearing": "2014-06-30",
-                                 "time_of_hearing": "12:00:00",
-                                 "urn": "06xcvx89",
-                                 "number_of_charges": 2,
-                                 "plea_made_by": "Defendant"},
-                        "your_details": {"first_name": "v", "last_name": "cx", "national_insurance_number": "xxx",
-                                         "driving_licence_number": "xxx", "registration_number": "xxx",
-                                         "email": "test@test.com"},
-                        "plea": {"PleaForms": [{"guilty_extra": "test1", "guilty": "guilty"},
-                                               {"guilty_extra": "test2", "guilty": "guilty"}],
-                                 "understand": True}}
-
-        send_plea_email(context_data)
+        send_plea_email(self.test_data_defendant)
 
         case_obj = Case.objects.all().order_by('-id')[0]
         count_obj = CourtEmailCount.objects.latest('date_sent')
@@ -89,69 +98,30 @@ class EmailGenerationTests(TestCase):
         self.assertEqual(int(count_id), count_obj.id)
 
     def test_user_confirmation_sends_email(self):
-        context_data = {"case": {"date_of_hearing": "2014-06-30",
-                                 "time_of_hearing": "12:00:00",
-                                 "urn": "06xcvx89",
-                                 "number_of_charges": 2,
-                                 "plea_made_by": "Defendant"},
-                        "your_details": {"first_name": "v", "last_name": "cx", "email": "lyndon@antlyn.com", "national_insurance_number": "xxx",
-                                         "driving_licence_number": "xxx", "registration_number": "xxx"},
-                        "plea": {"PleaForms": [{"guilty_extra": "test1", "guilty": "guilty"},
-                                               {"guilty_extra": "test2", "guilty": "guilty"}],
-                                 "understand": True}}
-
-        send_plea_email(context_data)
+        send_plea_email(self.test_data_defendant)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertIn(context_data['case']['urn'].upper(), mail.outbox[-1].body)
-        self.assertIn(context_data['case']['urn'].upper(), mail.outbox[-1].alternatives[0][0])
-        self.assertIn(context_data['your_details']['email'], mail.outbox[-1].to)
+        self.assertIn(self.test_data_defendant['case']['urn'].upper(), mail.outbox[-1].body)
+        self.assertIn(self.test_data_defendant['case']['urn'].upper(), mail.outbox[-1].alternatives[0][0])
+        self.assertIn(self.test_data_defendant['review']['email'], mail.outbox[-1].to)
+
+    def test_user_confirmation_sends_no_email(self):
+        self.test_data_defendant.update({"review": {"receive_email_updates": False,
+                                                    "understand": True}})
+        send_plea_email(self.test_data_defendant)
+
+        self.assertEqual(len(mail.outbox), 2)
 
     def test_user_confirmation_for_company_uses_correct_email_address(self):
-        context_data = {"case": {"date_of_hearing": "2014-06-30",
-                                 "time_of_hearing": "12:00:00",
-                                 "urn": "06xcvx89",
-                                 "number_of_charges": 2,
-                                 "plea_made_by": "Company representative"},
-                        "your_details": {
-                            "complete": True,
-                            "skipped": True
-                        },
-                        "company_details": {
-                            "company_name": "some company plc",
-                            "updated_address": "some place plc",
-                            "first_name": "John",
-                            "last_name": "Smith",
-                            "position_in_company": "a director",
-                            "contact_number": "0800 SOMECOMPANY",
-                            "email": "test@companyemail.com"
-                        },
-                        "plea": {"PleaForms": [{"guilty_extra": "test1", "guilty": "guilty"},
-                                               {"guilty_extra": "test2", "guilty": "guilty"}],
-                                 "understand": True}}
-
-        send_plea_email(context_data)
+        send_plea_email(self.test_data_company)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertIn(context_data['case']['urn'].upper(), mail.outbox[-1].body)
-        self.assertIn(context_data['case']['urn'].upper(), mail.outbox[-1].alternatives[0][0])
-        self.assertIn(context_data['company_details']['email'], mail.outbox[-1].to)
+        self.assertIn(self.test_data_company['case']['urn'].upper(), mail.outbox[-1].body)
+        self.assertIn(self.test_data_company['case']['urn'].upper(), mail.outbox[-1].alternatives[0][0])
+        self.assertIn(self.test_data_company['review']['email'], mail.outbox[-1].to)
 
     def test_email_addresses_from_court_model(self):
-
-        context_data = {"case": {"date_of_hearing": "2014-06-30",
-                                 "time_of_hearing": "12:00:00",
-                                 "urn": "06xcvx89",
-                                 "number_of_charges": 2,
-                                 "plea_made_by": "Defendant"},
-                        "your_details": {"first_name": "v", "last_name": "cx", "national_insurance_number": "xxx",
-                                         "driving_licence_number": "xxx", "registration_number": "xxx",
-                                         "email": "test@test.com"},
-                        "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
-                                               {"mitigations": "test2", "guilty": "guilty"}],
-                                 "understand": True}}
-
-        send_plea_email(context_data)
+        send_plea_email(self.test_data_defendant)
 
         self.assertEqual(len(mail.outbox), 3)
 
@@ -161,45 +131,19 @@ class EmailGenerationTests(TestCase):
         self.assertIn(self.court_obj.plp_email, to_emails)
 
     def test_plp_email_doesnt_send_when_court_field_blank(self):
-
         self.court_obj.plp_email = ""
         self.court_obj.save()
 
-        context_data = {"case": {"date_of_hearing": "2014-06-30",
-                                 "time_of_hearing": "12:00:00",
-                                 "urn": "06xcvx89",
-                                 "number_of_charges": 2,
-                                 "plea_made_by": "Defendant"},
-                        "your_details": {"first_name": "v", "last_name": "cx", "national_insurance_number": "xxx",
-                                         "driving_licence_number": "xxx", "registration_number": "xxx",
-                                         "email": "test@test.com"},
-                        "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
-                                               {"mitigations": "test2", "guilty": "guilty"}],
-                                 "understand": True}}
-
-        send_plea_email(context_data)
+        send_plea_email(self.test_data_defendant)
 
         self.assertEqual(len(mail.outbox), 2)
 
     def test_anon_stats_not_added_when_court_in_test_mode(self):
-
         self.court_obj.test_mode = True
         self.court_obj.save()
 
         anon_total = CourtEmailCount.objects.all().count()
 
-        context_data = {"case": {"date_of_hearing": "2014-06-30",
-                                 "time_of_hearing": "12:00:00",
-                                 "urn": "06xcvx89",
-                                 "number_of_charges": 2,
-                                 "plea_made_by": "Defendant"},
-                        "your_details": {"first_name": "v", "last_name": "cx", "national_insurance_number": "xxx",
-                                         "driving_licence_number": "xxx", "registration_number": "xxx",
-                                         "email": "test@test.com"},
-                        "plea": {"PleaForms": [{"mitigations": "test1", "guilty": "guilty"},
-                                               {"mitigations": "test2", "guilty": "guilty"}],
-                                 "understand": True}}
-
-        send_plea_email(context_data)
+        send_plea_email(self.test_data_defendant)
 
         self.assertEquals(anon_total, CourtEmailCount.objects.all().count())

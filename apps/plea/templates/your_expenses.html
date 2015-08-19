@@ -4,13 +4,13 @@
 {% load form_widgets %}
 {% load testing %}
 
-{% block page_title %}{% trans "Your expenses" %} - {{ block.super }}{% endblock %}
+{% block page_title %}{% blocktrans %}Your expenses{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 
 {% block stage_header %}
-    <h1 class="heading-xlarge">{% trans "Your expenses" %}</h1>
+    <h1 class="heading-xlarge">{% blocktrans %}Your expenses{% endblocktrans %}</h1>
 
-    <p class="lede">{% trans "To help the court decide your fine, you must provide information about your expenses." %}</p>
+    <p class="lede">{% blocktrans %}To help the court decide your fine, you must provide information about your expenses.{% endblocktrans %}</p>
 {% endblock stage_header %}
 
 
@@ -20,9 +20,9 @@
     {% std_field form.hardship_details wide=True %}
 
     <div id="household_expenses">
-        <h2>{% trans "Household expenses" %}</h2>
+        <h2>{% blocktrans %}Household expenses{% endblocktrans %}</h2>
 
-        <p>{% trans "What are your monthly household bills for the following?" %}</p>
+        <p>{% blocktrans %}What are your monthly household bills for the following?{% endblocktrans %}</p>
 
         <div class="grid-row">
             <div class="column-half">
@@ -50,9 +50,9 @@
 
 
     <div id="other_expenses">
-        <h2>{% trans "Other expenses" %}</h2>
+        <h2>{% blocktrans %}Other expenses{% endblocktrans %}</h2>
 
-        <p>{% trans "What are your monthly bills for the following?" %}</p>
+        <p>{% blocktrans %}What are your monthly bills for the following?{% endblocktrans %}</p>
 
         <div class="grid-row">
             <div class="column-half">
@@ -86,20 +86,20 @@
         
         <hr>
 
-        <h2 class="heading-large">{% trans "Totals" %}</h2>
+        <h2 class="heading-large">{% blocktrans %}Totals{% endblocktrans %}</h2>
 
         <div class="form-group">
             <table id="expense-summary">
                 <tr>
-                    <th>{% trans "Total household expenses" %}</th>
+                    <th>{% blocktrans %}Total household expenses{% endblocktrans %}</th>
                     <td>£<span class="js-CalculateTotals intermediate-total" data-total-terms="#household_expenses input[type=text]"></span></td>
                 </tr>
                 <tr>
-                    <th>{% trans "Total other expenses" %}</th>
+                    <th>{% blocktrans %}Total other expenses{% endblocktrans %}</th>
                     <td>£<span class="js-CalculateTotals intermediate-total" data-total-terms="#other_expenses input[type=text]"></span></td>
                 </tr>
                 <tr class="total">
-                    <th>{% trans "Total expenses" %}</th>
+                    <th>{% blocktrans %}Total expenses{% endblocktrans %}</th>
                     <td>£<span class="js-CalculateTotals" data-total-terms=".intermediate-total"></span></td>
                 </tr>
             </table>

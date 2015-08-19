@@ -2,33 +2,33 @@
 
 {% load i18n %}
 
-{% block page_title %}{% trans "URN already used" %} - {{ block.super }}{% endblock %}
+{% block page_title %}{% blocktrans %}URN already used{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 {% load staticfiles %}
 
 {% block page_content %}
 
     <div class="error-summary">
-        <h2>{% trans "This URN has already been used to make a plea online" %}</h2>
-        <p>{% trans "The unique reference number you entered is no longer valid. Please check and try again." %}</p>
-        <p>{% trans "To make changes to a plea you’ve already made online, email or write to the court before your hearing with:" %}</p>
+        <h2>{% blocktrans %}This URN has already been used to make a plea online{% endblocktrans %}</h2>
+        <p>{% blocktrans %}The unique reference number you entered is no longer valid. Please check and try again.{% endblocktrans %}</p>
+        <p>{% blocktrans %}To make changes to a plea you’ve already made online, email or write to the court before your hearing with:{% endblocktrans %}</p>
 
         <ul class="list-bullet">
-            <li>{% trans "details of the changes you want to make" %}</li>
-            <li>{% trans "your unique reference number" %}</li>
+            <li>{% blocktrans %}details of the changes you want to make{% endblocktrans %}</li>
+            <li>{% blocktrans %}your unique reference number{% endblocktrans %}</li>
         </ul>
 
         <p><a href="/court-finder/">Find court contact details</a></p>
     </div>
 
 
-    <h2>{% trans "Create a new plea" %}</h2>
+    <h2>{% blocktrans %}Create a new plea{% endblocktrans %}</h2>
 
-    <p>{% trans "Select the button below to start a new plea" %}</p>
+    <p>{% blocktrans %}Select the button below to start a new plea{% endblocktrans %}</p>
 
     <form action="{{ request.path }}" method="post">
         {% csrf_token %}
-        <button class="button button-get-started" href="/plea/case/" role="button">{% trans "Start now" %}</button>
+        <button class="button button-get-started" href="/plea/case/" role="button">{% blocktrans %}Start now{% endblocktrans %}</button>
     </form>
 
 {% endblock page_content %}
