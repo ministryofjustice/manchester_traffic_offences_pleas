@@ -158,7 +158,7 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>Court hearing date</th><td>{}</td></tr>".format(self.hearing_date.strftime('%d/%m/%Y')), count=1, html=True)
 
     def test_case_details_output_is_english(self):
-        translation.activate("en")
+        translation.activate("cy")
 
         context_data = self.get_context_data()
 
