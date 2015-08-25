@@ -13,7 +13,7 @@
         <h1>{% blocktrans %}Your court{% endblocktrans %}</h1>
     </header>
 
-    <article class="text">
+    <article>
 
         <p>{% blocktrans %}You can contact the court by post or email quoting your URN before the date of your hearing.{% endblocktrans %}</p>
 
@@ -27,7 +27,7 @@
         <p><a href="mailto:{{ court.court_email }}">{{ court.court_email }}</a></p>
         {% endif %}
 
-        <p><a href="{% url "court_finder" %}">{% blocktrans %}Back{% endblocktrans %}</a></p>
+        <p class="back-button"><a href="{% url "court_finder" %}">{% blocktrans %}Back{% endblocktrans %}</a></p>
 
     </article>
 
@@ -40,7 +40,7 @@
         {% if submitted and not court %}
         <div class="error-summary">
             <h2>{% blocktrans %}We can't find your court{% endblocktrans %}</h2>
-            <p>{% blocktrans %}You'll find contact details for the court considering your case in your pack.{% endblocktrans %}</p>
+            <p>{% blocktrans %}You'll find contact details for the court considering your case in the notice we sent you.{% endblocktrans %}</p>
         </div>
         {% endif %}
 
@@ -50,12 +50,14 @@
             
             <h2>{% blocktrans %}We don’t recognise the URN you’ve entered{% endblocktrans %}</h2>
             <p>{% blocktrans %}The unique reference number you entered doesn’t match our records.{% endblocktrans %}<br>
-                {% blocktrans %}Check your URN (it’s on page 1 of the pack we sent you, usually at the top) then try again.{% endblocktrans %}</p>
+                {% blocktrans %}Check your URN (it’s on page 1 of the notice we sent you, usually at the top) then try again.{% endblocktrans %}</p>
             
             {% else %}
 
             <h2>{% blocktrans %}You need to fix the errors on this page before continuing.{% endblocktrans %}</h2>
-            <p>{% blocktrans %}Enter your URN to find the contact details for your court.{% endblocktrans %}</p>
+            <ul>
+                <li><a href="#section_urn">{% blocktrans %}Enter your URN to find the contact details for your court.{% endblocktrans %}</a></li>
+            </ul>
             
             {% endif %}
         </div>

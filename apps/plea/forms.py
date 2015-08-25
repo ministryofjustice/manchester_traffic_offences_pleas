@@ -650,7 +650,7 @@ class ConfirmationForm(BasePleaStepForm):
                                           required=False,
                                           label=_("Email address"),
                                           help_text=_("We'll use this for all future correspondence. We'll also contact you by post."),
-                                          error_messages={"required": ERROR_MESSAGES["EMAIL_ADDRESS_REQUIRED"],
+                                          error_messages={"required": ERROR_MESSAGES["UPDATES_EMAIL_REQUIRED"],
                                                           "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
     understand = forms.BooleanField(required=True,
@@ -720,6 +720,6 @@ class CourtFinderForm(forms.Form):
                           label=_("Unique reference number (URN)"),
                           required=True,
                           validators=[is_urn_valid],
-                          help_text=_("On page 1 of the pack, in the top right corner.<br>For example, 12/AB/34567/00"),
+                          help_text=_("On page 1, usually at the top."),
                           error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"],
                                           "is_urn_valid": ERROR_MESSAGES["URN_INCORRECT"]})

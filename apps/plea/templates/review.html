@@ -126,7 +126,7 @@
         {% radio_field form.receive_email_updates inline=True %}
 
         <div class="panel-indent move-up js-Conditional" data-conditional-trigger="receive_email_updates" data-conditional-value="True">
-            {% std_field form.email hide_optional=True %}
+            {% std_field form.email hide_optional=True wide=True %}
         </div>
 
     </section>
@@ -146,9 +146,9 @@
                 <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
                 <span class="checkbox-text">
                 {% if case.plea_made_by == "Defendant" %}
-                    {% blocktrans %}I confirm that I have read and understand the charge against me and that I am the person named in the requisition pack. The facts stated here are correct to the best of my knowledge.{% endblocktrans %}
+                    {% blocktrans count charges=case.number_of_charges %}I confirm that I have read and understand the charge against me and that I am the person named in the Postal Requisition.{% plural %}I confirm that I have read and understand the charges against me and that I am the person named in the Postal Requisition.{% endblocktrans %} {% blocktrans %}The facts stated here are correct to the best of my knowledge.{% endblocktrans %}
                 {% elif case.plea_made_by == "Company representative" %}
-                    {% blocktrans %}I confirm that I have read and understand the charges and the terms and conditions. I also confirm that I am legally entitled to plead on behalf of the company named in the requisition pack. The facts stated here are correct to the best of my knowledge.{% endblocktrans %}
+                    {% blocktrans count charges=case.number_of_charges %}I confirm that I have read and understand the charge and that I am a representative of the company named in the Postal Requisition and am legally entitled to enter a plea on its behalf.{% plural %}I confirm that I have read and understand the charges and that I am a representative of the company named in the Postal Requisition and am legally entitled to enter a plea on its behalf.{% endblocktrans %} {% blocktrans %}The facts stated here are correct to the best of my knowledge.{% endblocktrans %}
                 {% endif %}
                 </span>
             </label>
