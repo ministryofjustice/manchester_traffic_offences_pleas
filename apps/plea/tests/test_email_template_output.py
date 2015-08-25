@@ -6,6 +6,7 @@ from mock import Mock
 from django.core import mail
 from django.forms.formsets import formset_factory
 from django.test import TestCase
+from django.utils import translation
 
 from ..email import send_plea_email
 from ..models import Court
@@ -152,6 +153,20 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        self.assertContains(response, "<tr><th>Unique reference number</th><td>06/AA/00000/00</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Court hearing date</th><td>{}</td></tr>".format(self.hearing_date.strftime('%d/%m/%Y')), count=1, html=True)
+
+    def test_case_details_output_is_english(self):
+        translation.activate("cy")
+
+        context_data = self.get_context_data()
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        translation.deactivate()
 
         self.assertContains(response, "<tr><th>Unique reference number</th><td>06/AA/00000/00</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Court hearing date</th><td>{}</td></tr>".format(self.hearing_date.strftime('%d/%m/%Y')), count=1, html=True)
@@ -435,15 +450,20 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
-        self.assertContains(response, "<tr><th>URN</th><td>06/AA/00000/00</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>Court hearing</th><td>30 October 2015</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>First name</th><td>Joe</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Last name</th><td>Public</td></tr>", count=1, html=True)
 
-    def test_PLP_case_details_output(self):
+    def test_PLP_case_details_output_is_english(self):
+        translation.activate("cy")
+
         context_data = self.get_context_data()
 
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
+
+        translation.deactivate()
+        
         self.assertContains(response, "<tr><th>First name</th><td>Joe</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Last name</th><td>Public</td></tr>", count=1, html=True)
 
