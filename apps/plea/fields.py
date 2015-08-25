@@ -52,7 +52,7 @@ ERROR_MESSAGES = {
     "BENEFITS_DETAILS_REQUIRED": _("Tell us which benefits you receive"),
     "BENEFITS_DEPENDANTS_REQUIRED": _("Tell us if this includes payment for dependants"),
     "HARDSHIP_REQUIRED": _("Tell us if paying a fine would cause you serious financial problems"),
-    "UNDERSTAND_REQUIRED": _("You must confirm that you have read and understood the charge against you before you can submit your plea"),
+    "UNDERSTAND_REQUIRED": _("You must confirm that you have read and understand the important information"),
     "OTHER_INFO_REQUIRED": _("Tell us how you earn your money"),
     "HARDSHIP_DETAILS_REQUIRED": _("You must tell us why paying a fine will cause you serious financial problems"),
     "OTHER_BILL_PAYERS_REQUIRED": _("You must tell us if anyone else contributes to your household bills"),
@@ -92,7 +92,8 @@ ERROR_MESSAGES = {
     "COMPANY_NET_TURNOVER": _("Enter the company's net turnover"),
     "COMPANY_GROSS_TURNOVER_PROJECTED": _("Enter the company's projected gross turnover"),
     "COMPANY_NET_TURNOVER_PROJECTED": _("Enter the company's projected net turnover"),
-    "RECEIVE_EMAIL_UPDATES_REQUIRED": _("Tell us if you want to receive email updates about this case")
+    "RECEIVE_EMAIL_UPDATES_REQUIRED": _("Tell us if you want to receive email updates about this case"),
+    "UPDATES_EMAIL_REQUIRED": _("You must provide an email address if you want to receive email updates about this case")
 }
 
 

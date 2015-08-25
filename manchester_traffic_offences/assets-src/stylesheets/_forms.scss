@@ -207,6 +207,10 @@ legend + * {
 		padding: 0;
 		list-style: none;
 
+		> :last-child {
+			margin-bottom: 0;
+		}
+
 		a {
 			color: #000;
 

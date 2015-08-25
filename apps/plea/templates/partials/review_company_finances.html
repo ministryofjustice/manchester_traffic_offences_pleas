@@ -5,6 +5,10 @@
 {% add_test_tag "<<SHOWCOMPANYFINANCES>>" %}
     <tbody>
         <tr>
+            <th>{% blocktrans %}Trading for more than 12 months{% endblocktrans %}</th>
+            <td>{{ company_finances.trading_period|yesno:_("Yes,No") }}</td>
+        </tr>
+        <tr>
             <th>{% blocktrans %}Number of employees{% endblocktrans %}</th>
             <td>{{ company_finances.number_of_employees|intcomma }}</td>
         </tr>
