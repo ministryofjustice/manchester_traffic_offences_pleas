@@ -120,7 +120,7 @@ class CourtFinderView(FormView):
     def form_invalid(self, form):
 
         urn_is_invalid = False
-        if "urn" in form.errors and ERROR_MESSAGES["URN_INVALID"] in form.errors["urn"]:
+        if "urn" in form.errors and ERROR_MESSAGES["URN_INCORRECT"] in form.errors["urn"]:
             urn_is_invalid = True
 
         return self.render_to_response(
