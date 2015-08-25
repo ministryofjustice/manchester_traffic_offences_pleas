@@ -10,6 +10,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.core.mail import get_connection
 from django.conf import settings
 from django.template.loader import render_to_string
+from django.utils import translation
 from django.utils.text import wrap
 
 from apps.govuk_utils.email import TemplateAttachmentEmail
@@ -21,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 @app.task(bind=True, max_retries=5)
+@translation.override("en")
 def email_send_court(self, case_id, count_id, email_data):
     smtp_route = "GSI"
 
@@ -76,6 +78,7 @@ def email_send_court(self, case_id, count_id, email_data):
 
 
 @app.task(bind=True, max_retries=5)
+@translation.override("en")
 def email_send_prosecutor(self, case_id, email_data):
     smtp_route = "PNN"
 
