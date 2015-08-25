@@ -1,21 +1,25 @@
 {% load i18n %}
 
-{% if plea.split_form != "split_form_last_step" %}
+{% spaceless %}
+    
+    {% if plea.split_form != "split_form_last_step" %}
 
-    {% if case.plea_made_by == "Defendant" %}
-        {% blocktrans count charges=charges %}Your plea{% plural %}Your pleas{% endblocktrans %}
-    {% endif %}
-    {% if case.plea_made_by == "Company representative" %}
-        {% blocktrans count charges=charges %}Company plea{% plural %}Company pleas{% endblocktrans %}
+        {% if case.plea_made_by == "Defendant" %}
+            {% blocktrans count charges=charges %}Your plea{% plural %}Your pleas{% endblocktrans %}
+        {% endif %}
+        {% if case.plea_made_by == "Company representative" %}
+            {% blocktrans count charges=charges %}Company plea{% plural %}Company pleas{% endblocktrans %}
+        {% endif %}
+
+    {% else %}
+
+        {% if case.plea_made_by == "Defendant" %}
+            {% blocktrans count charges=charges %}Your plea continued{% plural %}Your pleas continued{% endblocktrans %}
+        {% endif %}
+        {% if case.plea_made_by == "Company representative" %}
+            {% blocktrans count charges=charges %}Company plea continued{% plural %}Company pleas continued{% endblocktrans %}
+        {% endif %}
+
     {% endif %}
 
-{% else %}
-
-    {% if case.plea_made_by == "Defendant" %}
-        {% blocktrans count charges=charges %}Your plea continued{% plural %}Your pleas continued{% endblocktrans %}
-    {% endif %}
-    {% if case.plea_made_by == "Company representative" %}
-        {% blocktrans count charges=charges %}Company plea continued{% plural %}Company pleas continued{% endblocktrans %}
-    {% endif %}
-
-{% endif %}
+{% endspaceless %}
