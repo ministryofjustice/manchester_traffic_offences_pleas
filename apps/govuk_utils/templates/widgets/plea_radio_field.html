@@ -68,7 +68,7 @@
                     <input type="hidden" name="{{ choice.name }}" value="{{ choice.choice_value }}">
                 {% endif %}
             {% endfor %}
-            <p class="form-selected">{% blocktrans %}Your plea{% endblocktrans %} - <strong>{% if form.guilty.value == "guilty" %}{% blocktrans %}Guilty{% endblocktrans %}{% else %}{% blocktrans %}Not guilty{% endblocktrans %}{% endif %}</strong></p>
+            <p class="form-selected">{% blocktrans count charges=1 %}Your plea{% plural %}Your pleas{% endblocktrans %} - <strong>{% if form.guilty.value == "guilty" %}{% blocktrans %}Guilty{% endblocktrans %}{% else %}{% blocktrans %}Not guilty{% endblocktrans %}{% endif %}</strong></p>
             <a href="{{ request.path }}?reset">{% blocktrans %}Change this plea{% endblocktrans %}</a>
         </div>
     {% endif %}
