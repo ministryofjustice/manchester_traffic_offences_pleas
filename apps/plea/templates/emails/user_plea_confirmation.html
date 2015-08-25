@@ -24,7 +24,7 @@
     <h2>{% blocktrans %}What happens next:{% endblocktrans %}</h2>
     
     <ul>
-    {% if plea_type == "guilty" %}
+    {% if plea_type == "guilty" or plea_type == "mixed" %}
         {% if plea_made_by == "Defendant" %}
             <li>{% blocktrans count charges=number_of_charges %}we'll send you a letter with the court's decision within 3 working days after your hearing date{% plural %}we'll send you a letter with the court's decisions within 3 working days after your hearing date{% endblocktrans %}</li>
             <li>{% blocktrans %}we'll tell you if you need to attend a trial and what evidence you may need to send to the court to support your case{% endblocktrans %}</li>
@@ -36,7 +36,7 @@
         {% endif %}
     {% endif %}
 
-    {% if plea_type != "guilty" %}
+    {% if plea_type == "not_guilty" %}
         {% if plea_made_by == "Defendant" %}
             <li>{% blocktrans %}we'll send you a letter with a new hearing date for you to come to court for a trial{% endblocktrans %}</li>
         {% endif %}
