@@ -710,7 +710,7 @@ class PleaForm(SplitPleaStepForm):
     interpreter_language = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                                            max_length=100,
                                            required=True,
-                                           label=_(""),
+                                           label="",
                                            help_text=_("If yes, tell us which language (include sign language):"),
                                            error_messages={"required": ERROR_MESSAGES["INTERPRETER_LANGUAGE_REQUIRED"]})
 
