@@ -26,7 +26,8 @@
 
 <body>
 <h1>Online plea</h1>
-   <table class="review-table" id="case-details">
+
+    <table class="review-table" id="case-details">
     <thead>
         <tr>
             <th colspan="2">
@@ -145,5 +146,23 @@
             </tr>
         </tbody>
     </table>
+
+    {% if welsh_language %}
+    <table class="review-table" id="welsh_language">
+    <thead>
+        <tr>
+            <th colspan="2">
+                <h2>Plea language</h2>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Welsh language</th>
+            <td>Yes</td>
+        </tr>
+    </tbody>
+    </table>
+    {% endif %}
 </body>
 </html>

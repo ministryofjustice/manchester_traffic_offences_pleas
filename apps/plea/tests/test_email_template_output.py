@@ -171,6 +171,30 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "<tr><th>Unique reference number</th><td>06/AA/00000/00</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Court hearing date</th><td>{}</td></tr>".format(self.hearing_date.strftime('%d/%m/%Y')), count=1, html=True)
 
+    def test_welsh_journey_adds_welsh_flag(self):
+        translation.activate("cy")
+
+        context_data = self.get_context_data()
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        translation.deactivate()
+
+        self.assertContains(response, "<tr><th>Welsh language</th><td>Yes</td></tr>", count=1, html=True)
+
+    def test_english_journey_adds_no_welsh_flag(self):
+        translation.activate("en")
+
+        context_data = self.get_context_data()
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        self.assertNotContains(response, "<tr><th>Welsh language</th><td>Yes</td></tr>", html=True)
+
     def test_min_case_details_output(self):
         context_data = self.get_context_data()
 
