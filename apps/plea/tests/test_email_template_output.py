@@ -8,9 +8,11 @@ from django.forms.formsets import formset_factory
 from django.test import TestCase
 from django.utils import translation
 
+from apps.govuk_utils.forms import RequiredFormSet
+
 from ..email import send_plea_email
 from ..models import Court
-from ..forms import CaseForm, YourDetailsForm, PleaForm, YourMoneyForm, RequiredFormSet, YourExpensesForm, ConfirmationForm
+from ..forms import CaseForm, YourDetailsForm, PleaForm, YourMoneyForm, YourExpensesForm, ConfirmationForm
 
 
 class EmailTemplateTests(TestCase):
