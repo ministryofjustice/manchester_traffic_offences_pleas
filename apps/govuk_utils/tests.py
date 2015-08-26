@@ -63,7 +63,7 @@ class Stage3(FormStage):
         else:
             form_data.update(self.form.cleaned_data)
 
-        self.add_message(messages.INFO, "This is a test message")
+        self.add_message(messages.SUCCESS, "This is a test message")
 
         return form_data
 

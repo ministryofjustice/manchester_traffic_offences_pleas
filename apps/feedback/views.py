@@ -1,52 +1,83 @@
-from datetime import datetime
-
+from django.utils.decorators import method_decorator
 from django.conf import settings
-from django.contrib import messages
-from django.core.mail import EmailMessage
-from django.core.urlresolvers import reverse, NoReverseMatch
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.template.loader import render_to_string
+from django.shortcuts import RequestContext, redirect
 from django.views.decorators.cache import never_cache
+from django.views.generic import TemplateView
 
-from .forms import FeedbackForm
+from brake.decorators import ratelimit
+
+from apps.govuk_utils.stages import MultiStageForm
+
 from .models import UserRating
+from .stages import ServiceStage, CommentsStage, CompleteStage
 
-def feedback_form(request):
-    kw_args = {k: v for (k, v) in request.GET.items()}
-    nxt = kw_args.pop("next", "/")
-    try:
-        if kw_args:
-            nxt_url = reverse(nxt, kwargs=kw_args)
-        else:
-            nxt_url = reverse(nxt)
-    except NoReverseMatch:
-        nxt_url = reverse("home")
-    if request.method == "POST":
-        feedback_form = FeedbackForm(request.POST)
-        if feedback_form.is_valid():
-            email_context = {"question": feedback_form.cleaned_data["feedback_question"],
-                             "email": feedback_form.cleaned_data["feedback_email"],
-                             "satisfaction": feedback_form.cleaned_data["feedback_satisfaction"],
-                             "date_sent": datetime.now(),
-                             "referrer": nxt_url,
-                             "user_agent": request.META["HTTP_USER_AGENT"]}
 
-            UserRating.objects.record(
-                feedback_form.cleaned_data["feedback_satisfaction"])
+class FeedbackForms(MultiStageForm):
+    stage_classes = [ServiceStage,
+                     CommentsStage,
+                     CompleteStage]
 
-            email = EmailMessage("Feedback from makeaplea.justice.gov.uk",
-                                 render_to_string("emails/feedback_summary.html",
-                                                  email_context),
-                                 settings.FEEDBACK_EMAIL_FROM,
-                                 settings.FEEDBACK_EMAIL_TO)
-            email.content_subtype = "html"
-            email.send(fail_silently=False)
-            messages.add_message(request, messages.INFO, "Thanks for your feedback.")
 
-            return HttpResponseRedirect(nxt_url)
-        else:
-            return render(request, "feedback.html", {"form": feedback_form})
-    else:
-        return render(request, "feedback.html", {"form": FeedbackForm()})
+class FeedbackViews(TemplateView):
 
+    @method_decorator(never_cache)
+    def dispatch(self, *args, **kwargs):
+        return super(FeedbackViews, self).dispatch(*args, **kwargs)
+
+    def _get_storage(self, request):
+        if not request.session.get("feedback"):
+            request.session["feedback"] = {}
+
+        return request.session["feedback"]
+
+    def _clear_storage(self, request):
+        del request.session["feedback"]
+
+    def get(self, request, stage=None):
+        storage = self._get_storage(request)
+
+        kw_args = {k: v for (k, v) in request.GET.items()}
+        if request.GET.get("next"):
+            nxt = kw_args.pop("next")
+            if kw_args:
+                redirect_url = reverse(nxt, kwargs=kw_args)
+            else:
+                redirect_url = reverse(nxt)
+
+            storage["feedback_redirect"] = redirect_url
+
+        if not storage.get("user_agent"):
+            storage["user_agent"] = request.META["HTTP_USER_AGENT"]
+
+        if not stage:
+            stage = FeedbackForms.stage_classes[0].name
+            return HttpResponseRedirect(reverse_lazy("feedback_form_step", args=(stage,)))
+
+        form = FeedbackForms(stage, "feedback_form_step", storage)
+        redirect = form.load(RequestContext(request))
+        if redirect:
+            return redirect
+
+        form.process_messages(request)
+
+        if stage == "complete":
+            redirect_url = storage.get("feedback_redirect", "/")
+            self._clear_storage(request)
+            return HttpResponseRedirect(redirect_url)
+
+        return form.render()
+
+    @method_decorator(ratelimit(block=True, rate=settings.RATE_LIMIT))
+    def post(self, request, stage):
+        storage = self._get_storage(request)
+
+        nxt = request.GET.get("next", None)
+
+        form = FeedbackForms(stage, "feedback_form_step", storage)
+        form.save(request.POST, RequestContext(request), nxt)
+        form.process_messages(request)
+        request.session.modified = True
+
+        return form.render()
