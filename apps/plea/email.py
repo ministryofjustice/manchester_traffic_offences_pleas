@@ -8,8 +8,10 @@ from django.core.mail import EmailMultiAlternatives
 from django.core.mail import get_connection
 from django.conf import settings
 from django.template.loader import render_to_string
+from django.utils import translation
 
 from apps.govuk_utils.email import TemplateAttachmentEmail
+
 from .models import Case, CourtEmailCount, Court
 from .encrypt import encrypt_and_store_user_data
 from tasks import email_send_court, email_send_prosecutor, email_send_user
@@ -47,6 +49,10 @@ def send_plea_email(context_data):
 
     context_data["email_name"] = " ".join([last_name.upper(), first_name])
     context_data["email_date_of_hearing"] = date_of_hearing.strftime("%Y-%m-%d")
+
+    # Add Welsh flag if journey was completed in Welsh
+    if translation.get_language() == "cy":
+        context_data["welsh_language"] = True
 
     # Get or create case
     try:
