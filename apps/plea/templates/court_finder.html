@@ -49,8 +49,10 @@
             {% if urn_is_invalid %}
             
             <h2>{% blocktrans %}We don’t recognise the URN you’ve entered{% endblocktrans %}</h2>
-            <p>{% blocktrans %}The unique reference number you entered doesn’t match our records.{% endblocktrans %}<br>
-                {% blocktrans %}Check your URN (it’s on page 1 of the notice we sent you, usually at the top) then try again.{% endblocktrans %}</p>
+            <p class="no-urn-match">{% blocktrans %}The unique reference number you entered doesn’t match our records.{% endblocktrans %}</p>
+            <ul>
+                <li><a href="#section_urn">{% blocktrans %}Check your URN (it’s on page 1 of the notice we sent you, usually at the top) then try again.{% endblocktrans %}</a></li>
+            </ul>
             
             {% else %}
 
@@ -73,6 +75,8 @@
         <div class="form-submit">
             <button class="button" type="submit">{% blocktrans %}Find my court{% endblocktrans %}</button>
         </div>
+
+        <p class="back-button"><a href="{% url "home" %}">{% blocktrans %}Back{% endblocktrans %}</a></p>
     </form>
 
 {% endif %}

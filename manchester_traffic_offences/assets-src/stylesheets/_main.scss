@@ -192,7 +192,7 @@ Main styles
 
 
 /*== Complete screen ===============================================*/
-#content .success-header {
+.success-header {
 	margin: 2em 0;
 	padding: 40px;
 	background: $turquoise;
@@ -200,13 +200,8 @@ Main styles
 
 	h1,
 	p {
-		margin: 0;
-	}
-	h1 {
 		@include bold-36();
-	}
-	p {
-		@include bold-24();
+		margin: 0;
 	}
 
 	.ticked {
@@ -240,6 +235,8 @@ Main styles
 		margin-bottom: 0;
 	}
 }
+
+
 
 /*== Terms ==========================================================*/
 .cookies-table {
