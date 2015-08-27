@@ -12,7 +12,7 @@
 {% block stage_form %}
     {% std_field form.comments %}
 
-    {% if not satisfaction.used_call_centre %}
+    {% if service.used_call_centre == False %}
         {% std_field form.email %}
     {% endif %}
 {% endblock stage_form %}

@@ -47,4 +47,3 @@ class CompleteStage(FormStage):
     name = "complete"
     form_class = None
     dependencies = ["service", "comments"]
-        
