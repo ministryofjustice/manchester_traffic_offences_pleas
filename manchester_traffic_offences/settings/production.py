@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ["www.makeaplea.justice.gov.uk", ]
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
 SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 STORE_USER_DATA = True
 
