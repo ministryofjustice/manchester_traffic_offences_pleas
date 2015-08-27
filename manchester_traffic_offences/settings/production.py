@@ -35,3 +35,7 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStora
 SESSION_COOKIE_SECURE = True
 
 STORE_USER_DATA = True
+
+ENCRYPTED_COOKIE_KEYS = [
+    os.environ["ENCRYPTED_COOKIE_KEY"]
+]
