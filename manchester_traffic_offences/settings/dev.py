@@ -39,3 +39,7 @@ ALLOWED_HOSTS = ["dev.makeaplea.dsd.io", ]
 
 # Enable CachedStaticFilesStorage for cache-busting assets
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
+
+ENCRYPTED_COOKIE_KEYS = [
+    os.environ["ENCRYPTED_COOKIE_KEY"]
+]
