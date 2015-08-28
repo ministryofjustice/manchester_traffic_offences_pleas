@@ -31,10 +31,6 @@ GPG_RECIPIENT = "test@test.com"
 
 TEST_RUNNER = 'apps.plea.runner.MAPTestRunner'
 
-ENCRYPTED_COOKIE_KEYS = [
-    '9evXbsR_1yZA5EW_blSI4O69MjGKwOu1-UwLK_PWyKw=',
-]
-
 # a test gpg key with no passphrase and email test@test.com
 
 GPG_TEST_KEY = """
