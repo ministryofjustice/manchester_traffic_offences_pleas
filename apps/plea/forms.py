@@ -16,9 +16,24 @@ from .fields import (ERROR_MESSAGES,
                      DSRadioFieldRenderer,
                      DateWidget)
 
-YESNO_CHOICES = (
-    (True, _("Yes")),
-    (False, _("No"))
+YESNO_CHOICES_1 = (
+    (True, _("Yes (v1)")),
+    (False, _("No (v1)"))
+)
+
+YESNO_CHOICES_2 = (
+    (True, _("Yes (v2)")),
+    (False, _("No (v2)"))
+)
+
+YESNO_CHOICES_3 = (
+    (True, _("Yes (v3)")),
+    (False, _("No (v3)"))
+)
+
+YESNO_CHOICES_4 = (
+    (True, _("Yes (v4)")),
+    (False, _("No (v4)"))
 )
 
 to_bool = lambda x: x == "True"
@@ -131,7 +146,7 @@ class CaseForm(BasePleaStepForm):
 
     plea_made_by = forms.TypedChoiceField(required=True, widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                           choices=PLEA_MADE_BY_CHOICES,
-                                          label=_("Are you?"),
+                                          label=_("Are you? (plea made by)"),
                                           help_text=_("Choose one of the following options:"),
                                           error_messages={"required": ERROR_MESSAGES["PLEA_MADE_BY_REQUIRED"]})
 
@@ -159,7 +174,7 @@ class YourDetailsForm(BasePleaStepForm):
     correct_address = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                              required=True,
                                              coerce=to_bool,
-                                             choices=YESNO_CHOICES,
+                                             choices=YESNO_CHOICES_1,
                                              label=_("Is your address correct on page 1 of the notice we sent to you?"),
                                              error_messages={"required": ERROR_MESSAGES["CORRECT_ADDRESS_REQUIRED"]})
 
@@ -218,7 +233,7 @@ class CompanyDetailsForm(BasePleaStepForm):
 
     correct_address = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                              coerce=to_bool,
-                                             choices=YESNO_CHOICES,
+                                             choices=YESNO_CHOICES_1,
                                              required=True,
                                              label=_("Is the company's address correct on page 1 of the notice we sent to you?"),
                                              error_messages={"required": ERROR_MESSAGES["COMPANY_CORRECT_ADDRESS_REQUIRED"]})
@@ -304,7 +319,7 @@ class YourMoneyForm(SplitPleaStepForm):
         "trigger": "you_are"
     }
 
-    you_are = forms.ChoiceField(label=_("Are you?"), choices=YOU_ARE_CHOICES,
+    you_are = forms.ChoiceField(label=_("Are you? (employment status)"), choices=YOU_ARE_CHOICES,
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
     # Employed
@@ -327,7 +342,7 @@ class YourMoneyForm(SplitPleaStepForm):
     employed_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
                                                help_text=_("For example, you would become homeless."),
                                                widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                               choices=YESNO_CHOICES,
+                                               choices=YESNO_CHOICES_4,
                                                coerce=to_bool,
                                                error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
@@ -357,7 +372,7 @@ class YourMoneyForm(SplitPleaStepForm):
     self_employed_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
                                                     help_text=_("For example, you would become homeless."),
                                                     widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                                    choices=YESNO_CHOICES,
+                                                    choices=YESNO_CHOICES_4,
                                                     coerce=to_bool,
                                                     error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
@@ -369,7 +384,7 @@ class YourMoneyForm(SplitPleaStepForm):
                                        error_messages={"required": ERROR_MESSAGES["BENEFITS_DETAILS_REQUIRED"]})
 
     benefits_dependents = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                            choices=YESNO_CHOICES,
+                                            choices=YESNO_CHOICES_1,
                                             coerce=to_bool,
                                             label=_("Does this include payment for dependants?"),
                                             error_messages={"required": ERROR_MESSAGES["BENEFITS_DEPENDANTS_REQUIRED"]})
@@ -399,7 +414,7 @@ class YourMoneyForm(SplitPleaStepForm):
     receiving_benefits_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
                                                          help_text=_("For example, you would become homeless."),
                                                          widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                                         choices=YESNO_CHOICES,
+                                                         choices=YESNO_CHOICES_4,
                                                          coerce=to_bool,
                                                          error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
@@ -419,7 +434,7 @@ class YourMoneyForm(SplitPleaStepForm):
     other_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
                                             help_text=_("For example, you would become homeless."),
                                             widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                            choices=YESNO_CHOICES,
+                                            choices=YESNO_CHOICES_4,
                                             coerce=to_bool,
                                             error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
@@ -486,7 +501,7 @@ class YourExpensesForm(BasePleaStepForm):
     other_bill_payers = forms.TypedChoiceField(
         widget=RadioSelect(renderer=DSRadioFieldRenderer),
         label=_("Does anyone else contribute to these bills?"),
-        choices=YESNO_CHOICES,
+        choices=YESNO_CHOICES_3,
         coerce=to_bool,
         error_messages={'required': ERROR_MESSAGES['OTHER_BILL_PAYERS_REQUIRED']})
 
@@ -586,7 +601,7 @@ class CompanyFinancesForm(SplitPleaStepForm):
     }
 
     trading_period = forms.TypedChoiceField(required=True, widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                            choices=YESNO_CHOICES,
+                                            choices=YESNO_CHOICES_1,
                                             coerce=to_bool,
                                             label=_("Has the company been trading for more than 12 months?"),
                                             error_messages={"required": ERROR_MESSAGES["COMPANY_TRADING_PERIOD"]})
@@ -606,12 +621,14 @@ class CompanyFinancesForm(SplitPleaStepForm):
                                         max_digits=10,
                                         decimal_places=2,
                                         localize=True,
+                                        label=_("Gross turnover"),
                                         help_text=_("For example, 150000"),
                                         error_messages={"required": ERROR_MESSAGES["COMPANY_GROSS_TURNOVER"]})
 
     net_turnover = forms.DecimalField(widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                     "maxlength": "10",
                                                                     "class": "form-control-inline"}),
+                                      label=_("Net turnover"),
                                       help_text=_("For example, 110000"),
                                       max_digits=10,
                                       decimal_places=2,
@@ -641,7 +658,7 @@ class ConfirmationForm(BasePleaStepForm):
     receive_email_updates = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                    required=True,
                                                    coerce=to_bool,
-                                                   choices=YESNO_CHOICES,
+                                                   choices=YESNO_CHOICES_2,
                                                    label=_("Do you want to receive email updates about your case?"),
                                                    help_text=_("We'll use this for all future correspondence as well as contacting you by post."),
                                                    error_messages={"required": ERROR_MESSAGES["RECEIVE_EMAIL_UPDATES_REQUIRED"]})
@@ -702,7 +719,7 @@ class PleaForm(SplitPleaStepForm):
 
     interpreter_needed = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                 required=True,
-                                                choices=YESNO_CHOICES,
+                                                choices=YESNO_CHOICES_3,
                                                 coerce=to_bool,
                                                 label=_("Do you need an interpreter in court?"),
                                                 error_messages={"required": ERROR_MESSAGES["INTERPRETER_NEEDED_REQUIRED"]})
