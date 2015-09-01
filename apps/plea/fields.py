@@ -154,8 +154,8 @@ class DateWidget(MultiWidget):
         if value:
             try:
                 day, month, year = value.day, value.month, value.year
-            except:
-                year, month, day = value.split("-")
+            except AttributeError:
+                year, month, day = map(lambda x: int(x), value.split("-"))
 
             return ["{0:02d}".format(day), "{0:02d}".format(month), year]
         else:
