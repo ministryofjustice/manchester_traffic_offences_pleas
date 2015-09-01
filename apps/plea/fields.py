@@ -152,8 +152,13 @@ class DateWidget(MultiWidget):
 
     def decompress(self, value):
         if value:
-            year, month, day = value.split("-")
-            return [day, month, year]
+            try:
+                output = ["{0:02d}".format(value.day), "{0:02d}".format(value.month), value.year]
+            except:
+                year, month, day = value.split("-")
+                output = [day, month, year]
+
+            return output
         else:
             return ["", "", ""]
 
