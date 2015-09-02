@@ -18,7 +18,7 @@
         {% radio_field form.used_call_centre inline=True %}
     {% endif %}
 
-    <div class="js-Conditional {% if service.split_form != "split_form_last_step" %} nojs-hidden{% endif %}" data-conditional-trigger="used_call_centre" data-conditional-value="^(True)$" data-template-trigger="used_call_centre">
+    <div class="js-Conditional {% if service.split_form != "split_form_last_step" or service.used_call_centre == False %} nojs-hidden{% endif %}" data-conditional-trigger="used_call_centre" data-conditional-value="^(True)$" data-template-trigger="used_call_centre">
         {% radio_field form.call_centre_satisfaction hide_optional=True %}
     </div>
 

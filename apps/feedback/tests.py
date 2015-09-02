@@ -2,7 +2,6 @@ import datetime as dt
 from mock import Mock, patch
 
 from django.core import mail
-from django.template.context import RequestContext
 from django.test import TestCase
 from django.test.client import RequestFactory
 
