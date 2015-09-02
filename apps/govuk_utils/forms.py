@@ -1,7 +1,13 @@
 from django import forms
 from django.forms.formsets import BaseFormSet
+from django.utils.translation import ugettext_lazy as _
 
+YESNO_CHOICES = (
+    (True, _("Yes")),
+    (False, _("No"))
+)
 
+to_bool = lambda x: x == "True"
 
 class RequiredFormSet(BaseFormSet):
     def __init__(self, *args, **kwargs):

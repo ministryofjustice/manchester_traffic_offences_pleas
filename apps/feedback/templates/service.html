@@ -18,13 +18,12 @@
         {% radio_field form.used_call_centre inline=True %}
     {% endif %}
 
-    <div class="js-Conditional js-TemplatedElement{% if service.split_form != "split_form_last_step" %} nojs-hidden{% endif %}" data-conditional-trigger="used_call_centre" data-conditional-value="^(True|False)$" data-template-trigger="used_call_centre" data-template="{% blocktrans %}Overall, how satisfied were you with the call centre?{% endblocktrans %}" data-template-delegate="#section_satisfaction .label-text" data-template-defaults-for="{% blocktrans %}No{% endblocktrans %}">
-        
-        {% if service.split_form == "split_form_last_step" and service.used_call_centre == True %}
-            {% radio_field form.satisfaction hide_optional=True label=_("Overall, how satisfied were you with the call centre?") %}
-        {% else %}
-            {% radio_field form.satisfaction hide_optional=True %}
-        {% endif %}
+    <div class="js-Conditional {% if service.split_form != "split_form_last_step" %} nojs-hidden{% endif %}" data-conditional-trigger="used_call_centre" data-conditional-value="^(True)$" data-template-trigger="used_call_centre">
+        {% radio_field form.call_centre_satisfaction hide_optional=True %}
+    </div>
+
+    <div class="js-Conditional {% if service.split_form != "split_form_last_step" %} nojs-hidden{% endif %}" data-conditional-trigger="used_call_centre" data-conditional-value="^(True|False)$" data-template-trigger="used_call_centre">
+        {% radio_field form.service_satisfaction hide_optional=True %}
     </div>
 {% endblock stage_form %}
 
