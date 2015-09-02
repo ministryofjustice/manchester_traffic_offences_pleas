@@ -39,7 +39,7 @@
         {% hidden_field form.trading_period %}
         <div class="form-header">
             <h2><span>You selected:</span>
-                {% if form.trading_period.value == "True" %}
+                {% if company_finances.trading_period == True %}
                 The company has been trading for more than 12 months
                 {% else %}
                 The company has been trading for less than 12 months
@@ -56,7 +56,7 @@
         {% std_field form.number_of_employees hide_optional=True %}
 
         {% if company_finances.split_form == "split_form_last_step" %}
-            {% if form.trading_period.value == "True" %}
+            {% if company_finances.trading_period == True %}
                 <p>{% blocktrans %}From the most recent audited company accounts, tell us:{% endblocktrans %}</p>
             {% else %}
                 <p>{% blocktrans %}From the first 12 months' trading projections, tell us:{% endblocktrans %}</p>
