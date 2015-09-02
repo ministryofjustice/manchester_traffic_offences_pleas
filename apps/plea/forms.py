@@ -5,7 +5,13 @@ from django.forms.widgets import Textarea, RadioSelect
 from django.utils.translation import ugettext_lazy as _
 
 from apps.govuk_utils.fields import DSRadioFieldRenderer, DateWidget
-from apps.govuk_utils.forms import YESNO_CHOICES, to_bool, BaseStageForm, SplitStageForm
+from apps.govuk_utils.forms import (YESNO_CHOICES_1,
+                                    YESNO_CHOICES_2,
+                                    YESNO_CHOICES_3,
+                                    YESNO_CHOICES_4,
+                                    to_bool,
+                                    BaseStageForm,
+                                    SplitStageForm)
 
 from .fields import ERROR_MESSAGES
 from .validators import (is_date_in_past,
@@ -14,28 +20,8 @@ from .validators import (is_date_in_past,
                          is_urn_not_used,
                          is_urn_valid)
 
-YESNO_CHOICES_1 = (
-    (True, _("Yes (v1)")),
-    (False, _("No (v1)"))
-)
 
-YESNO_CHOICES_2 = (
-    (True, _("Yes (v2)")),
-    (False, _("No (v2)"))
-)
-
-YESNO_CHOICES_3 = (
-    (True, _("Yes (v3)")),
-    (False, _("No (v3)"))
-)
-
-YESNO_CHOICES_4 = (
-    (True, _("Yes (v4)")),
-    (False, _("No (v4)"))
-)
-
-
-class CaseForm(BasePleaStepForm):
+class CaseForm(BaseStageForm):
     PLEA_MADE_BY_CHOICES = (
         ("Defendant", _("The person named in the notice")),
         ("Company representative", _("Pleading on behalf of a company")))
