@@ -6,7 +6,8 @@ from django.template.loader import render_to_string
 
 def send_feedback_email(email_data):
     email_context = {"used_call_centre": email_data["service"]["used_call_centre"],
-                     "satisfaction": email_data["service"]["satisfaction"],
+                     "call_centre_satisfaction": email_data["service"]["call_centre_satisfaction"],
+                     "service_satisfaction": email_data["service"]["service_satisfaction"],
                      "comments": email_data["comments"]["comments"],
                      "email": email_data["comments"]["email"],
                      "date_sent": datetime.now(),

@@ -2,28 +2,17 @@ from __future__ import unicode_literals
 
 from django import forms
 from django.forms.widgets import Textarea, RadioSelect
-from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
+from apps.govuk_utils.fields import DSRadioFieldRenderer, DateWidget
+from apps.govuk_utils.forms import YESNO_CHOICES, to_bool, BaseStageForm, SplitStageForm
+
+from .fields import ERROR_MESSAGES
 from .validators import (is_date_in_past,
                          is_date_in_future,
                          is_date_within_range,
                          is_urn_not_used,
                          is_urn_valid)
-
-from apps.govuk_utils.forms import BaseStageForm, SplitStageForm
-
-from .fields import (ERROR_MESSAGES,
-                     DSRadioFieldRenderer,
-                     DateWidget)
-
-YESNO_CHOICES = (
-    (True, _("Yes")),
-    (False, _("No"))
-)
-
-to_bool = lambda x: x == "True"
-
 
 class CaseForm(BaseStageForm):
     PLEA_MADE_BY_CHOICES = (

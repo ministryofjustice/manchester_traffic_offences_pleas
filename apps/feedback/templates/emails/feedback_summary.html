@@ -3,18 +3,26 @@
         <th valign="top" align="right">Used the call centre</th>
         <td>{{ used_call_centre|yesno:"Yes,No" }}</td>
     </tr>
+    {% if used_call_centre %}
     <tr>
-        <th valign="top" align="right">Satisfaction</th>
-        <td>{{ satisfaction }}</td>
+        <th valign="top" align="right">Call centre satisfaction</th>
+        <td>{{ call_centre_satisfaction }}</td>
+    </tr>
+    {% endif %}
+    <tr>
+        <th valign="top" align="right">Service satisfaction</th>
+        <td>{{ service_satisfaction }}</td>
     </tr>
     <tr>
         <th valign="top" align="right">Comments</th>
         <td>{{ comments|linebreaksbr }}</td>
     </tr>
+    {% if email %}
     <tr>
         <th valign="top" align="right">Email</th>
         <td>{{ email }}</td>
     </tr>
+    {% endif %}
 </table>
 
 <p>

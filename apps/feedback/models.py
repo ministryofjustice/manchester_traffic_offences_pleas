@@ -2,49 +2,66 @@ import datetime as dt
 
 from django.db import models
 
-from .forms import SATISFACTION_CHOICES
+from .forms import SATISFACTION_CHOICES, RATING_QUESTIONS
 
 
 class UserRatingManager(models.Manager):
 
-    def record(self, rating):
+    def record(self, service_rating, call_centre_rating):
         """
-        Record a user satisfaction rating and update
+        Record a user service and call centre satisfaction rating and update
         aggregates accordingly.
         """
 
-        obj = self.create(rating=int(rating))
+        try:
+            cc_rating = int(call_centre_rating)
+        except (ValueError, TypeError):
+            cc_rating = None
+
+        obj = self.create(service_rating=int(service_rating), call_centre_rating=cc_rating)
 
         UserRatingAggregate.objects.update_weekly_aggregate(obj)
+
+        if call_centre_rating:
+            UserRatingAggregate.objects.update_weekly_aggregate(obj, question_tag="call-centre")
 
 
 class UserRating(models.Model):
 
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    rating = models.PositiveIntegerField(choices=SATISFACTION_CHOICES)
+    service_rating = models.PositiveIntegerField(choices=SATISFACTION_CHOICES)
+
+    call_centre_rating = models.PositiveIntegerField(choices=SATISFACTION_CHOICES, null=True)
 
     objects = UserRatingManager()
 
 
 class UserRatingAggregateManager(models.Manager):
 
-    def update_weekly_aggregate(self, rating_obj):
+    def update_weekly_aggregate(self, rating_obj, question_tag="overall"):
         """
         Amend a rating to the aggregate count.
         """
 
         # calculate start of week, e.g. the last Monday 00:00
-
         start_date = dt.datetime.combine(
             rating_obj.timestamp - dt.timedelta(rating_obj.timestamp.weekday()),
             dt.time.min)
 
+        # Get the rating we're processing here, overall or call centre
+        if question_tag == "call-centre":
+            rating = rating_obj.call_centre_rating
+        else:
+            rating = rating_obj.service_rating
+
         try:
-            aggregate_obj = self.get(start_date=start_date)
+            aggregate_obj = self.get(start_date=start_date, question_tag=question_tag)
         except UserRatingAggregate.DoesNotExist:
             aggregate_obj = UserRatingAggregate(
                 start_date=start_date,
+                question_tag=question_tag,
+                question_text=RATING_QUESTIONS[question_tag],
                 rating_1=0,
                 rating_2=0,
                 rating_3=0,
@@ -52,7 +69,7 @@ class UserRatingAggregateManager(models.Manager):
                 rating_5=0,
                 total=0)
 
-        rating_key = "rating_" + str(rating_obj.rating)
+        rating_key = "rating_" + str(rating)
 
         current_rating = getattr(aggregate_obj, rating_key, 0)
         current_rating += 1
@@ -70,6 +87,10 @@ class UserRatingAggregate(models.Model):
     """
 
     start_date = models.DateTimeField()
+
+    question_tag = models.CharField(max_length=24, default="overall")
+
+    question_text = models.CharField(max_length=255)
 
     rating_1 = models.PositiveIntegerField(default=0)
     rating_2 = models.PositiveIntegerField(default=0)
