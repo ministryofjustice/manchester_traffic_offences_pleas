@@ -2,9 +2,24 @@ from django import forms
 from django.forms.formsets import BaseFormSet
 from django.utils.translation import ugettext_lazy as _
 
-YESNO_CHOICES = (
-    (True, _("Yes")),
-    (False, _("No"))
+YESNO_CHOICES_1 = (
+    (True, _("Yes (v1)")),
+    (False, _("No (v1)"))
+)
+
+YESNO_CHOICES_2 = (
+    (True, _("Yes (v2)")),
+    (False, _("No (v2)"))
+)
+
+YESNO_CHOICES_3 = (
+    (True, _("Yes (v3)")),
+    (False, _("No (v3)"))
+)
+
+YESNO_CHOICES_4 = (
+    (True, _("Yes (v4)")),
+    (False, _("No (v4)"))
 )
 
 to_bool = lambda x: x == "True"
