@@ -43,13 +43,25 @@ class BaseStageForm(forms.Form):
 
         if hasattr(self, "dependencies"):
             prefix = kwargs.get("prefix", None)
-            self.check_dependencies(self.dependencies, prefix)
+            self.set_required_fields(self.dependencies, prefix)
 
-    def check_dependencies(self, dependencies_list, prefix=None):
+    def set_required_fields(self, dependencies_list, prefix=None):
         """
         Set the required attribute depending on the dependencies map
         and the already submitted data
         """
+
+        def test_dependency_match(key, test_value):
+            data_value = self.data.get(key, None)
+
+            if test_value and str(data_value) == str(test_value):
+                return True
+            
+            if not test_value and data_value is not None:
+                return True
+
+            return False
+
         for field, dependency in dependencies_list.items():
             dependency_field = dependency.get("field", None)
             dependency_value = dependency.get("value", None)
@@ -71,14 +83,10 @@ class BaseStageForm(forms.Form):
 
                 if self.fields[dependency_field].required:
                     if self.split_form is None or self.split_form != dependency_field:
-                        if dependency_value and self.data.get(dependency_field_data_key, None) == dependency_value:
-                            self.fields[field].required = True
-                        
-                        if not dependency_value and self.data.get(dependency_field_data_key, None) is not None:
-                            self.fields[field].required = True
+                        self.fields[field].required = test_dependency_match(dependency_field_data_key, dependency_value)
 
                     if sub_dependencies:
-                        self.check_dependencies(sub_dependencies, prefix)
+                        self.set_required_fields(sub_dependencies, prefix)
 
 
 class SplitStageForm(BaseStageForm):

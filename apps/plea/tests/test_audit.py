@@ -166,7 +166,7 @@ class CaseCreationTests(TestCase):
         case = Case.objects.create(
             urn="00/AA/00000/00")
 
-        self.context_data.update({u"review": {"receive_email_updates": "False",
+        self.context_data.update({u"review": {"receive_email_updates": False,
                                               "email": ""}})
 
         try:

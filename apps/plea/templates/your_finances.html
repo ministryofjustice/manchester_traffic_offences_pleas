@@ -51,7 +51,7 @@
         <div class="form-header">
             {% hidden_field form.you_are %}
             <h2><span>{% blocktrans %}You are:{% endblocktrans %}</span>
-                {% trans form.you_are.value %}
+                {% trans your_finances.you_are %}
             </h2>
             <a href="{{ request.path }}?reset">{% blocktrans %}Change{% endblocktrans %}</a>
         </div>
