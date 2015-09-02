@@ -2,10 +2,8 @@ from django import forms
 from django.forms.widgets import RadioSelect
 from django.utils.translation import ugettext_lazy as _
 
-from apps.govuk_utils.forms import BaseStageForm, SplitStageForm
-
-from apps.plea.fields import DSRadioFieldRenderer
-from apps.plea.forms import to_bool, YESNO_CHOICES
+from apps.govuk_utils.forms import YESNO_CHOICES, to_bool, BaseStageForm, SplitStageForm
+from apps.govuk_utils.fields import DSRadioFieldRenderer
 
 from .fields import ERROR_MESSAGES
 
@@ -16,10 +14,18 @@ SATISFACTION_CHOICES = (
     (2, _("dissatisfied")),
     (1, _("very dissatisfied")))
 
+RATING_QUESTIONS = {
+    "overall": "Overall, how satisfied were you with this service?",
+    "call-centre": "Overall, how satisfied were you with the call centre?"
+}
 
 class ServiceForm(SplitStageForm):
     dependencies = {
-        "satisfaction": {
+        "call_centre_satisfaction": {
+            "field": "used_call_centre",
+            "value": True
+        },
+        "service_satisfaction": {
             "field": "used_call_centre"
         }
     }
@@ -35,20 +41,19 @@ class ServiceForm(SplitStageForm):
                                               coerce=to_bool,
                                               label=_("Did you use the call centre to help you make your plea?"),
                                               error_messages={"required": ERROR_MESSAGES["USED_CALL_CENTRE_REQUIRED"]})
+    
+    call_centre_satisfaction = forms.ChoiceField(label=_(RATING_QUESTIONS["call-centre"]),
+                                                 choices=SATISFACTION_CHOICES,
+                                                 required=True,
+                                                 error_messages={"required": ERROR_MESSAGES["CALL_CENTRE_SATISFACTION_REQUIRED"]},
+                                                 widget=RadioSelect(renderer=DSRadioFieldRenderer))
 
-    satisfaction = forms.ChoiceField(label=_("Overall, how satisfied were you with this service?"),
-                                     choices=SATISFACTION_CHOICES,
-                                     required=True,
-                                     error_messages={"required": ERROR_MESSAGES["SATISFACTION_REQUIRED"]},
-                                     widget=RadioSelect(renderer=DSRadioFieldRenderer))
+    service_satisfaction = forms.ChoiceField(label=_(RATING_QUESTIONS["overall"]),
+                                             choices=SATISFACTION_CHOICES,
+                                             required=True,
+                                             error_messages={"required": ERROR_MESSAGES["SERVICE_SATISFACTION_REQUIRED"]},
+                                             widget=RadioSelect(renderer=DSRadioFieldRenderer))
 
-    def __init__(self, *args, **kwargs):
-        super(ServiceForm, self).__init__(*args, **kwargs)
-
-        if self.data.get("used_call_centre") == "True":
-            self.fields["satisfaction"].error_messages.update({"required": ERROR_MESSAGES["SATISFACTION_REQUIRED_CALL_CENTRE"]})
-        else:
-            self.fields["satisfaction"].error_messages.update({"required": ERROR_MESSAGES["SATISFACTION_REQUIRED"]})
 
 class CommentsForm(BaseStageForm):
     comments = forms.CharField(label=_("If you have any further comments about this service, tell us here:"),

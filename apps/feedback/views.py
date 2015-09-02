@@ -2,7 +2,7 @@ from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import RequestContext, redirect
+from django.shortcuts import RequestContext
 from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
 
@@ -10,7 +10,6 @@ from brake.decorators import ratelimit
 
 from apps.govuk_utils.stages import MultiStageForm
 
-from .models import UserRating
 from .stages import ServiceStage, CommentsStage, CompleteStage
 
 

@@ -1,11 +1,9 @@
 from django.contrib import messages
-from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 
 from apps.govuk_utils.stages import FormStage
 
 from .forms import ServiceForm, CommentsForm
-from .fields import ERROR_MESSAGES
 from .models import UserRating
 from .email import send_feedback_email
 
@@ -32,7 +30,7 @@ class CommentsStage(FormStage):
             email_result = send_feedback_email(email_data)
             if email_result:
                 self.add_message(messages.SUCCESS, _("Thanks for your feedback."))
-                UserRating.objects.record(self.all_data["service"]["satisfaction"])
+                UserRating.objects.record(self.all_data["service"]["service_satisfaction"], self.all_data["service"]["call_centre_satisfaction"])
                 self.set_next_step("complete")
             else:
                 self.add_message(messages.ERROR, '<h2 class="heading-medium">{}</h2><p>{}</p>'.format(
@@ -45,5 +43,6 @@ class CommentsStage(FormStage):
 
 class CompleteStage(FormStage):
     name = "complete"
+    template = None
     form_class = None
     dependencies = ["service", "comments"]
