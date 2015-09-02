@@ -53,7 +53,7 @@
         </tr>
         <tr>
             <th>{% blocktrans %}Includes payment for dependents?{% endblocktrans %}</th>
-            <td>{{ your_finances.benefits_dependents|yesno:_("Yes,No") }}</td>
+            <td>{{ your_finances.benefits_dependents|yesno:_("Yes,No (v1)") }}</td>
         </tr>
     {% endif %}
     {% if your_finances.you_are == "Other" %}
@@ -68,6 +68,6 @@
     {% endif %}
         <tr>
             <th>{% blocktrans %}Financial hardship{% endblocktrans %}</th>
-            <td>{{ your_finances.hardship|yesno:_("Yes,No") }}</td>
+            <td>{{ your_finances.hardship|yesno:_("Yes,No (v3)") }}</td>
         </tr>
     </tbody>
