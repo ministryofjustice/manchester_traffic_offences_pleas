@@ -18,8 +18,8 @@ SATISFACTION_CHOICES = (
     (1, _("very dissatisfied")))
 
 RATING_QUESTIONS = {
-    "overall": "Overall, how satisfied were you with this service?",
-    "call-centre": "Overall, how satisfied were you with the call centre?"
+    "overall": _("Overall, how satisfied were you with this service?"),
+    "call-centre": _("Overall, how satisfied were you with the call centre?")
 }
 
 class ServiceForm(SplitStageForm):
@@ -44,14 +44,14 @@ class ServiceForm(SplitStageForm):
                                               coerce=to_bool,
                                               label=_("Did you use the call centre to help you make your plea?"),
                                               error_messages={"required": ERROR_MESSAGES["USED_CALL_CENTRE_REQUIRED"]})
-    
-    call_centre_satisfaction = forms.ChoiceField(label=_(RATING_QUESTIONS["call-centre"]),
+
+    call_centre_satisfaction = forms.ChoiceField(label=RATING_QUESTIONS["call-centre"],
                                                  choices=SATISFACTION_CHOICES,
                                                  required=True,
                                                  error_messages={"required": ERROR_MESSAGES["CALL_CENTRE_SATISFACTION_REQUIRED"]},
                                                  widget=RadioSelect(renderer=DSRadioFieldRenderer))
 
-    service_satisfaction = forms.ChoiceField(label=_(RATING_QUESTIONS["overall"]),
+    service_satisfaction = forms.ChoiceField(label=RATING_QUESTIONS["overall"],
                                              choices=SATISFACTION_CHOICES,
                                              required=True,
                                              error_messages={"required": ERROR_MESSAGES["SERVICE_SATISFACTION_REQUIRED"]},
