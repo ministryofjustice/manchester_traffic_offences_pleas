@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-03 09:58+0100\n"
+"POT-Creation-Date: 2015-09-03 16:51+0100\n"
 "PO-Revision-Date: 2015-08-28 08:12+0000\n"
 "Last-Translator: Fred Marecesche\n"
 "Language-Team: Welsh (http://www.transifex.com/make-a-plea-gds/make-a-plea/"
@@ -954,6 +954,11 @@ msgid ""
 msgstr ""
 "Mae’n ymddangos bod problem wrth gyflwyno eich ple. Rhowch gynnig arall arni."
 
+#: apps/plea/tasks.py:171
+#: apps/plea/templates/emails/user_plea_confirmation.html:7
+msgid "Online plea submission confirmation"
+msgstr "Cadarnhad o gofnodi ple ar-lein"
+
 #: apps/plea/templates/case.html:6 apps/plea/templates/case.html.py:45
 #: apps/plea/templates/emails/attachments/plea_email.html:34
 #: apps/plea/templates/emails/attachments/plp_email.html:33
@@ -1350,10 +1355,6 @@ msgstr "Eich treuliau"
 #: apps/plea/templates/review.html:112
 msgid "Company financial details"
 msgstr "Manylion ariannol y cwmni"
-
-#: apps/plea/templates/emails/user_plea_confirmation.html:7
-msgid "Online plea submission confirmation"
-msgstr "Cadarnhad o gofnodi ple ar-lein"
 
 #: apps/plea/templates/emails/user_plea_confirmation.html:67
 #: apps/plea/templates/emails/user_plea_confirmation.txt:27
