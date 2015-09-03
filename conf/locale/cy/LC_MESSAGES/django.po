@@ -9,9 +9,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-03 16:51+0100\n"
-"PO-Revision-Date: 2015-08-28 08:12+0000\n"
-"Last-Translator: Fred Marecesche\n"
+"POT-Creation-Date: 2015-09-03 17:00+0100\n"
+"PO-Revision-Date: 2015-09-03 14:16+0000\n"
+"Last-Translator: Welsh Language Unit <welsh.language.unit.manager@hmcts.gsi."
+"gov.uk>\n"
 "Language-Team: Welsh (http://www.transifex.com/make-a-plea-gds/make-a-plea/"
 "language/cy/)\n"
 "Language: cy\n"
@@ -22,22 +23,19 @@ msgstr ""
 "11) ? 2 : 3;\n"
 
 #: apps/feedback/fields.py:4
-#, fuzzy
-#| msgid "You must tell us if you need an interpreter in court"
 msgid "You must tell us if you used the call centre"
-msgstr ""
-"Rhaid i chi ddweud wrthym os oes arnoch angen cyfieithydd/dehonglydd yn y "
-"llys"
+msgstr "Rhaid i chi ddweud wrthym os gwnaethoch ddefnyddio'r ganolfan alwadau"
 
 #: apps/feedback/fields.py:5
 msgid "Select an option to tell us how satisfied you were with the call centre"
 msgstr ""
+"Dewiswch opsiwn i ddweud wrthym pa mor fodlon oeddech chi gyda'r ganolfan "
+"alwadau"
 
 #: apps/feedback/fields.py:6
-#, fuzzy
-#| msgid "Overall, how satisfied were you with this service?"
 msgid "Select an option to tell us how satisfied you were with the service"
-msgstr "Yn gyffredinol, pa mor fodlon oeddech chi gyda'r gwasanaeth hwn?"
+msgstr ""
+"Dewiswch opsiwn i ddweud wrthym pa mor fodlon oeddech chi gyda'r gwasanaeth"
 
 #: apps/feedback/forms.py:14
 msgid "very satisfied"
@@ -59,45 +57,57 @@ msgstr "anfodlon"
 msgid "very dissatisfied"
 msgstr "anfodlon iawn"
 
+#: apps/feedback/forms.py:21
+#, fuzzy
+#| msgid "Select an option to tell us how satisfied you were with the service"
+msgid "Overall, how satisfied were you with this service?"
+msgstr ""
+"Dewiswch opsiwn i ddweud wrthym pa mor fodlon oeddech chi gyda'r gwasanaeth"
+
+#: apps/feedback/forms.py:22
+#, fuzzy
+#| msgid ""
+#| "Select an option to tell us how satisfied you were with the call centre"
+msgid "Overall, how satisfied were you with the call centre?"
+msgstr ""
+"Dewiswch opsiwn i ddweud wrthym pa mor fodlon oeddech chi gyda'r ganolfan "
+"alwadau"
+
 #: apps/feedback/forms.py:45
 msgid "Did you use the call centre to help you make your plea?"
 msgstr ""
+"A wnaethoch ddefnyddio'r ganolfan alwadau i'ch helpu i gofnodi eich ple? "
+"Do / Naddo"
 
 #: apps/feedback/forms.py:62
 msgid "If you have any further comments about this service, tell us here:"
 msgstr ""
+"Os oes gennych unrhyw sylwadau pellach am y gwasanaeth hwn, dywedwch wrthym "
+"yma: "
 
 #: apps/feedback/forms.py:68 apps/plea/forms.py:578
 msgid "Email address"
 msgstr "Cyfeiriad e-bost"
 
 #: apps/feedback/forms.py:70
-#, fuzzy
-#| msgid ""
-#| "If you'd like us to get back to you, please leave your email address "
-#| "below."
 msgid "If you'd like us to get back to you, tell us your email address below:"
-msgstr "Os hoffech inni ddod yn ôl atoch, rhowch eich cyfeiriad e-bost isod."
+msgstr "Os hoffech inni ddod yn ôl atoch, rhowch eich cyfeiriad e-bost isod:"
 
 #: apps/feedback/stages.py:32
-#, fuzzy
-#| msgid "Your feedback"
 msgid "Thanks for your feedback."
-msgstr "Eich adborth"
+msgstr "Diolch am eich adborth. "
 
 #: apps/feedback/stages.py:37 apps/plea/stages.py:344
 msgid "Submission Error"
 msgstr "Gwall wrth gyflwyno"
 
 #: apps/feedback/stages.py:38
-#, fuzzy
-#| msgid ""
-#| "There seems to have been a problem submitting your plea. Please try again."
 msgid ""
 "There seems to have been a problem submitting your feedback. Please try "
 "again."
 msgstr ""
-"Mae’n ymddangos bod problem wrth gyflwyno eich ple. Rhowch gynnig arall arni."
+"Mae’n ymddangos bod problem wrth gyflwyno eich adborth. Rhowch gynnig arall "
+"arni."
 
 #: apps/feedback/templates/comments.html:6
 #: apps/feedback/templates/comments.html:9
@@ -2095,28 +2105,3 @@ msgstr "Cwestiynau am eich pledion?"
 #: manchester_traffic_offences/templates/start.html:51
 msgid "Need help using this service?"
 msgstr "Angen help i ddefnyddio'r gwasanaeth hwn?"
-
-#~ msgid "Please provide us with some feedback"
-#~ msgstr "Gofynnwn yn garedig ichi roi ychydig o adborth inni"
-
-#~ msgid "Please select one of the options below"
-#~ msgstr "Dewiswch un o'r opsiynau isod"
-
-#~ msgid "Send feedback"
-#~ msgstr "Anfon adborth"
-
-#~ msgid ""
-#~ "Use this form to report a problem or ask us a question about the Make a "
-#~ "Plea service."
-#~ msgstr ""
-#~ "Defnyddiwch y ffurflen hon i roi gwybod am broblem neu i ofyn cwestiwn "
-#~ "inni am y gwasanaeth Cofnodi Ple."
-
-#~ msgid "Please don't include any sensitive information"
-#~ msgstr "Peidiwch â chynnwys unrhyw wybodaeth sensitif, os gwelwch yn dda."
-
-#~ msgid "For example, your financial details."
-#~ msgstr "Er enghraifft, eich manylion ariannol"
-
-#~ msgid "We’re constantly working to improve the online plea service."
-#~ msgstr "Rydym yn gweithio i wella'r gwasanaeth ple ar-lein yn barhaus."
