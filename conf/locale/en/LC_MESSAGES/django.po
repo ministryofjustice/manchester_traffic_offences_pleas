@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-03 09:58+0100\n"
+"POT-Creation-Date: 2015-09-03 16:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -893,6 +893,11 @@ msgid ""
 "There seems to have been a problem submitting your plea. Please try again."
 msgstr ""
 
+#: apps/plea/tasks.py:171
+#: apps/plea/templates/emails/user_plea_confirmation.html:7
+msgid "Online plea submission confirmation"
+msgstr ""
+
 #: apps/plea/templates/case.html:6 apps/plea/templates/case.html.py:45
 #: apps/plea/templates/emails/attachments/plea_email.html:34
 #: apps/plea/templates/emails/attachments/plp_email.html:33
@@ -1221,10 +1226,6 @@ msgstr ""
 #: apps/plea/templates/emails/attachments/plea_email.html:121
 #: apps/plea/templates/review.html:112
 msgid "Company financial details"
-msgstr ""
-
-#: apps/plea/templates/emails/user_plea_confirmation.html:7
-msgid "Online plea submission confirmation"
 msgstr ""
 
 #: apps/plea/templates/emails/user_plea_confirmation.html:67
