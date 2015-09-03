@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-03 16:51+0100\n"
+"POT-Creation-Date: 2015-09-03 17:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,6 +47,14 @@ msgstr ""
 
 #: apps/feedback/forms.py:18
 msgid "very dissatisfied"
+msgstr ""
+
+#: apps/feedback/forms.py:21
+msgid "Overall, how satisfied were you with this service?"
+msgstr ""
+
+#: apps/feedback/forms.py:22
+msgid "Overall, how satisfied were you with the call centre?"
 msgstr ""
 
 #: apps/feedback/forms.py:45
