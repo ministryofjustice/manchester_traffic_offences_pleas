@@ -295,7 +295,6 @@ FEEDBACK_EMAIL_TO = (os.environ.get("FEEDBACK_EMAIL_TO", "plea_feedback_to@examp
 
 # Emails to users
 PLEA_CONFIRMATION_EMAIL_FROM = os.environ.get("PLEA_CONFIRMATION_EMAIL_FROM", "")
-PLEA_CONFIRMATION_EMAIL_SUBJECT = "Online plea submission confirmation"
 PLEA_CONFIRMATION_EMAIL_BCC = []
 SEND_PLEA_CONFIRMATION_EMAIL = True
 
