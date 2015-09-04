@@ -1,0 +1,28 @@
+{% extends "base_form.html" %}
+
+{% load i18n %}
+{% load form_widgets %}
+
+{% block page_title %}{% blocktrans %}Your feedback{% endblocktrans %} - {{ block.super }}{% endblock %}
+
+{% block stage_header %}
+    <h1>{% blocktrans %}Your feedback{% endblocktrans %}</h1>
+{% endblock stage_header %}
+
+{% block stage_form %}
+    {% std_field form.comments %}
+
+    {% if service.used_call_centre == False %}
+        {% std_field form.email %}
+    {% endif %}
+{% endblock stage_form %}
+
+{% block stage_submit %}
+<div class="form-submit">
+    <button class="button" type="submit">{% blocktrans %}Submit{% endblocktrans %}</button>
+</div>
+{% endblock stage_submit %}
+
+{% block stage_after_form %}
+    <p><a href="{% url "feedback_form_step" "service" %}">Back</a></p>
+{% endblock stage_after_form %}

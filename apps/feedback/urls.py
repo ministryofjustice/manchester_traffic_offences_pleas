@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, url
 
-from .views import feedback_form
+from . import views
 
-urlpatterns = patterns('',
-                       url(r'^$', feedback_form, name="feedback_form"))
+urlpatterns = patterns("",
+    url(r"^(?P<stage>.+)/$", views.FeedbackViews.as_view(), name="feedback_form_step"),
+    url(r"^$", views.FeedbackViews.as_view(), name="feedback_form"),
+)
