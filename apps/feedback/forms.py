@@ -2,7 +2,13 @@ from django import forms
 from django.forms.widgets import RadioSelect
 from django.utils.translation import ugettext_lazy as _
 
-from apps.plea.fields import DSRadioFieldRenderer
+from apps.govuk_utils.fields import DSRadioFieldRenderer
+from apps.govuk_utils.forms import (YESNO_CHOICES_1,
+                                    to_bool,
+                                    BaseStageForm,
+                                    SplitStageForm)
+
+from .fields import ERROR_MESSAGES
 
 SATISFACTION_CHOICES = (
     (5, _("very satisfied")),
@@ -11,26 +17,55 @@ SATISFACTION_CHOICES = (
     (2, _("dissatisfied")),
     (1, _("very dissatisfied")))
 
+RATING_QUESTIONS = {
+    "overall": _("Overall, how satisfied were you with this service?"),
+    "call-centre": _("Overall, how satisfied were you with the call centre?")
+}
 
-class FeedbackForm(forms.Form):
+class ServiceForm(SplitStageForm):
+    dependencies = {
+        "call_centre_satisfaction": {
+            "field": "used_call_centre",
+            "value": True
+        },
+        "service_satisfaction": {
+            "field": "used_call_centre"
+        }
+    }
 
-    feedback_email = forms.EmailField(
-        label=_("Email address"),
-        required=False,
-        help_text=_("If you'd like us to get back to you, please leave your email address below."),
-        widget=forms.TextInput(attrs={"class": "form-control-wide"}))
+    split_form_options = {
+        "trigger": "used_call_centre",
+        "nojs_only": True
+    }
 
-    feedback_question = forms.CharField(
-        label=_("Your feedback"),
-        required=True,
-        error_messages={"required": _("Please provide us with some feedback")},
-        widget=forms.Textarea(attrs={"rows": 5,
-                                     "cols": 50,
-                                     "class": "form-control-wide"}))
+    used_call_centre = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                              required=True,
+                                              choices=YESNO_CHOICES_1,
+                                              coerce=to_bool,
+                                              label=_("Did you use the call centre to help you make your plea?"),
+                                              error_messages={"required": ERROR_MESSAGES["USED_CALL_CENTRE_REQUIRED"]})
 
-    feedback_satisfaction = forms.ChoiceField(
-        label=_("Overall, how satisfied were you with this service?"),
-        choices=SATISFACTION_CHOICES,
-        required=True,
-        error_messages={"required": _("Please select one of the options below")},
-        widget=RadioSelect(renderer=DSRadioFieldRenderer))
+    call_centre_satisfaction = forms.ChoiceField(label=RATING_QUESTIONS["call-centre"],
+                                                 choices=SATISFACTION_CHOICES,
+                                                 required=True,
+                                                 error_messages={"required": ERROR_MESSAGES["CALL_CENTRE_SATISFACTION_REQUIRED"]},
+                                                 widget=RadioSelect(renderer=DSRadioFieldRenderer))
+
+    service_satisfaction = forms.ChoiceField(label=RATING_QUESTIONS["overall"],
+                                             choices=SATISFACTION_CHOICES,
+                                             required=True,
+                                             error_messages={"required": ERROR_MESSAGES["SERVICE_SATISFACTION_REQUIRED"]},
+                                             widget=RadioSelect(renderer=DSRadioFieldRenderer))
+
+
+class CommentsForm(BaseStageForm):
+    comments = forms.CharField(label=_("If you have any further comments about this service, tell us here:"),
+                               required=False,
+                               widget=forms.Textarea(attrs={"rows": 4,
+                                                             "cols": 50,
+                                                             "class": "form-control"}))
+
+    email = forms.EmailField(label=_("Email address"),
+                             required=False,
+                             help_text=_("If you'd like us to get back to you, tell us your email address below:"),
+                             widget=forms.TextInput(attrs={"class": "form-control"}))

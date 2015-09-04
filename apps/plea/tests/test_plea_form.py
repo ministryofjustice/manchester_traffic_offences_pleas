@@ -240,7 +240,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form_data = {"first_name": "Test",
                      "last_name": "Man",
                      "contact_number": "012345678",
-                     "correct_address": "False",
+                     "correct_address": False,
                      "date_of_birth_0": "12",
                      "date_of_birth_1": "03",
                      "date_of_birth_2": "1980"}
@@ -265,7 +265,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.load(self.request_context)
 
         form_data = {"company_name": "Test Company",
-                     "correct_address": "False",
+                     "correct_address": False,
                      "first_name": "John",
                      "last_name": "Smith",
                      "position_in_company": "Director",
@@ -454,7 +454,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                      "form-MAX_NUM_FORMS": "1"}
         mgmt_data.update({"form-0-guilty": "not_guilty",
                           "form-0-not_guilty_extra": "dsa",
-                          "form-0-interpreter_needed": "True"})
+                          "form-0-interpreter_needed": True})
 
         # no form data, just the management stuff
         form.save(mgmt_data, self.request_context)
@@ -881,7 +881,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
     def test_review_stage_missing_email(self):
         form = PleaOnlineForms("review", "plea_form_step", self.session)
         form.load(self.request_context)
-        form.save({"receive_email_updates": "True",
+        form.save({"receive_email_updates": True,
                    "understand": True}, 
                   self.request_context)
 

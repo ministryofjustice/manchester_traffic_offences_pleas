@@ -1,0 +1,34 @@
+{% extends "base_form.html" %}
+
+{% load i18n %}
+{% load form_widgets %}
+
+{% block page_title %}{% blocktrans %}Your feedback{% endblocktrans %} - {{ block.super }}{% endblock %}
+
+{% block stage_header %}
+    <h1>{% blocktrans %}Your feedback{% endblocktrans %}</h1>
+{% endblock stage_header %}
+
+{% block stage_form %}
+    {% split_form form %}
+
+    {% if service.split_form == "split_form_last_step" %}
+        {% hidden_field form.used_call_centre %}
+    {% else %}
+        {% radio_field form.used_call_centre inline=True %}
+    {% endif %}
+
+    <div class="js-Conditional {% if service.split_form != "split_form_last_step" or service.used_call_centre == False %} nojs-hidden{% endif %}" data-conditional-trigger="used_call_centre" data-conditional-value="^(True)$" data-template-trigger="used_call_centre">
+        {% radio_field form.call_centre_satisfaction hide_optional=True %}
+    </div>
+
+    <div class="js-Conditional {% if service.split_form != "split_form_last_step" %} nojs-hidden{% endif %}" data-conditional-trigger="used_call_centre" data-conditional-value="^(True|False)$" data-template-trigger="used_call_centre">
+        {% radio_field form.service_satisfaction hide_optional=True %}
+    </div>
+{% endblock stage_form %}
+
+{% block stage_after_form %}
+    {% if service.split_form == "split_form_last_step" %}
+    <p><a href="{{ request.path }}?reset">Back</a></p>
+    {% endif %}
+{% endblock stage_after_form %}

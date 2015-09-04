@@ -27,6 +27,8 @@ def performance_platform_export(modeladmin, request, queryset):
     for data in queryset.all().order_by("start_date"):
 
         start_date = unicode(data.start_date.strftime("%Y-%m-%dT%H:%M:%SZ"))
+        question_tag = unicode(data.question_tag)
+        question_text = unicode(data.question_text)
         rating_1 = unicode(data.rating_1)
         rating_2 = unicode(data.rating_2)
         rating_3 = unicode(data.rating_3)
@@ -36,8 +38,8 @@ def performance_platform_export(modeladmin, request, queryset):
 
         writer.writerow([start_date,
                          "week",
-                         "overall",
-                         "Overall, how satisfied were you with this service?",
+                         question_tag,
+                         question_text,
                          rating_1,
                          rating_2,
                          rating_3,
@@ -46,15 +48,16 @@ def performance_platform_export(modeladmin, request, queryset):
                          total])
 
     return response
+    
 performance_platform_export.short_description = "Export for performance platform"
 
 
 class UserRatingAdmin(admin.ModelAdmin):
-    list_display = ("timestamp", "rating")
+    list_display = ("timestamp", "service_rating", "call_centre_rating")
 
 
 class UserRatingAggregateAdmin(admin.ModelAdmin):
-    list_display = ("start_date", "rating_1", "rating_2", "rating_3", "rating_4", "rating_5", "total")
+    list_display = ("start_date", "question_tag", "question_text", "rating_1", "rating_2", "rating_3", "rating_4", "rating_5", "total")
 
     actions = [performance_platform_export]
 
