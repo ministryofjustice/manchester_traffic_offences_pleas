@@ -1,6 +1,7 @@
 import datetime as dt
 
 from django.db import models
+from django.utils import translation
 
 from .forms import SATISFACTION_CHOICES, RATING_QUESTIONS
 
@@ -39,6 +40,7 @@ class UserRating(models.Model):
 
 class UserRatingAggregateManager(models.Manager):
 
+    @translation.override("en")
     def update_weekly_aggregate(self, rating_obj, question_tag="overall"):
         """
         Amend a rating to the aggregate count.
