@@ -63,7 +63,7 @@ class Stage3(FormStage):
         else:
             form_data.update(self.form.cleaned_data)
 
-        self.add_message(messages.INFO, "This is a test message")
+        self.add_message(messages.SUCCESS, "This is a test message")
 
         return form_data
 
@@ -160,7 +160,7 @@ class TestMultiStageForm(TestCase):
         form_data.update(mgmt_data)
         msf.save(form_data, request_context)
         msf.process_messages({})
-        add_message.assert_called_once_with({}, 20, "This is a test message", extra_tags=None)
+        add_message.assert_called_once_with({}, 25, "This is a test message", extra_tags=None)
 
     @patch("apps.govuk_utils.stages.reverse", reverse)
     def test_form_review_loads(self):
