@@ -3,7 +3,6 @@ from django.test.client import Client
 from django.conf import settings
 from importlib import import_module
 
-from ..views import PleaOnlineForms
 from ..middleware import TimeoutRedirectMiddleware
 
 class TestTimeout(TestCase):

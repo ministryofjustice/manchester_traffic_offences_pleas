@@ -12,6 +12,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils import translation
 from django.utils.text import wrap
+from django.utils.translation import ugettext_lazy as _
 
 from apps.govuk_utils.email import TemplateAttachmentEmail
 
@@ -167,7 +168,7 @@ def email_send_user(self, case_id, email_data):
     html_body = render_to_string("emails/user_plea_confirmation.html", data)
     txt_body = wrap(render_to_string("emails/user_plea_confirmation.txt", data), 72)
 
-    subject = settings.PLEA_CONFIRMATION_EMAIL_SUBJECT.format(**data)
+    subject = _("Online plea submission confirmation")
 
     connection = get_connection(host=settings.EMAIL_HOST,
                                 port=settings.EMAIL_PORT,
