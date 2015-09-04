@@ -10,7 +10,7 @@ psycopg2==2.5.4
 python-dateutil==2.4.2
 python-gnupg==0.3.7
 sh==1.11
-django-encrypted-cookie-session==3.0.0
+git+https://github.com/elbeanio/django-encrypted-cookie-session.git
 
 django_extensions==1.5.3
 django-brake==1.3.1
