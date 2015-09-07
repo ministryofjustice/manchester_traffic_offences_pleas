@@ -3,7 +3,7 @@ from django.forms.widgets import RadioSelect
 from django.utils.translation import ugettext_lazy as _
 
 from apps.govuk_utils.fields import DSRadioFieldRenderer
-from apps.govuk_utils.forms import (YESNO_CHOICES_1,
+from apps.govuk_utils.forms import (YESNO_CHOICES,
                                     to_bool,
                                     BaseStageForm,
                                     SplitStageForm)
@@ -40,7 +40,7 @@ class ServiceForm(SplitStageForm):
 
     used_call_centre = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                               required=True,
-                                              choices=YESNO_CHOICES_1,
+                                              choices=YESNO_CHOICES["Do/Naddo"],
                                               coerce=to_bool,
                                               label=_("Did you use the call centre to help you make your plea?"),
                                               error_messages={"required": ERROR_MESSAGES["USED_CALL_CENTRE_REQUIRED"]})
