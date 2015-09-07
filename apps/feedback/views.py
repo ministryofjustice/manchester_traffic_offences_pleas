@@ -26,13 +26,13 @@ class FeedbackViews(TemplateView):
         return super(FeedbackViews, self).dispatch(*args, **kwargs)
 
     def _get_storage(self, request):
-        if not request.session.get("feedback"):
-            request.session["feedback"] = {}
+        if not request.session.get("feedback_data"):
+            request.session["feedback_data"] = {}
 
-        return request.session["feedback"]
+        return request.session["feedback_data"]
 
     def _clear_storage(self, request):
-        del request.session["feedback"]
+        del request.session["feedback_data"]
 
     def get(self, request, stage=None):
         storage = self._get_storage(request)
