@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-04 12:28+0100\n"
+"POT-Creation-Date: 2015-09-07 14:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,7 +74,7 @@ msgid "If you'd like us to get back to you, tell us your email address below:"
 msgstr ""
 
 #: apps/feedback/stages.py:32
-msgid "Thanks for your feedback."
+msgid "Your feedback has been submitted"
 msgstr ""
 
 #: apps/feedback/stages.py:37 apps/plea/stages.py:344
@@ -96,6 +96,18 @@ msgstr ""
 
 #: apps/feedback/templates/comments.html:22
 msgid "Submit"
+msgstr ""
+
+#: apps/feedback/templates/comments.html:24
+#: apps/feedback/templates/service.html:35
+#: apps/plea/templates/court_finder.html:30
+#: apps/plea/templates/court_finder.html:78
+msgid "Back"
+msgstr ""
+
+#: apps/feedback/templates/service.html:32
+#: manchester_traffic_offences/templates/base_form.html:40
+msgid "Continue"
 msgstr ""
 
 #: apps/govuk_utils/fields.py:48
@@ -1164,11 +1176,6 @@ msgid ""
 "of your hearing."
 msgstr ""
 
-#: apps/plea/templates/court_finder.html:30
-#: apps/plea/templates/court_finder.html:79
-msgid "Back"
-msgstr ""
-
 #: apps/plea/templates/court_finder.html:42
 msgid "We can't find your court"
 msgstr ""
@@ -1618,7 +1625,7 @@ msgid "Select the button below to start a new plea"
 msgstr ""
 
 #: apps/plea/templates/urn_used.html:31
-#: manchester_traffic_offences/templates/start.html:38
+#: manchester_traffic_offences/templates/start.html:41
 msgid "Start now"
 msgstr ""
 
@@ -1810,10 +1817,6 @@ msgstr ""
 msgid "You have entered some information"
 msgstr ""
 
-#: manchester_traffic_offences/templates/base_form.html:40
-msgid "Continue"
-msgstr ""
-
 #: manchester_traffic_offences/templates/base_user_email.html:203
 msgid "Terms and Conditions and privacy policy"
 msgstr ""
@@ -1832,54 +1835,59 @@ msgid ""
 "charged with."
 msgstr ""
 
-#: manchester_traffic_offences/templates/start.html:19
+#: manchester_traffic_offences/templates/start.html:20
 msgid "You'll need to:"
 msgstr ""
 
-#: manchester_traffic_offences/templates/start.html:23
+#: manchester_traffic_offences/templates/start.html:24
 msgid ""
 "carefully read the notice, charge sheet and witness statements in the pack "
 "we sent to you"
 msgstr ""
 
-#: manchester_traffic_offences/templates/start.html:24
+#: manchester_traffic_offences/templates/start.html:25
 msgid ""
-"enter information contained in the pack, so have it to hand when you start"
+"enter information contained in the pack, so have it with you when you start"
 msgstr ""
 
-#: manchester_traffic_offences/templates/start.html:25
+#: manchester_traffic_offences/templates/start.html:26
 msgid ""
 "be the person, or an official representative of the company, named in the "
 "notice"
 msgstr ""
 
-#: manchester_traffic_offences/templates/start.html:29
+#: manchester_traffic_offences/templates/start.html:30
 msgid "You may:"
 msgstr ""
 
-#: manchester_traffic_offences/templates/start.html:33
+#: manchester_traffic_offences/templates/start.html:34
 #, python-format
-msgid "get a 33%% discount on any fine by pleading guilty"
+msgid "get a 33%% discount on your fine if you plead guilty"
 msgstr ""
 
-#: manchester_traffic_offences/templates/start.html:34
+#: manchester_traffic_offences/templates/start.html:35
+msgid ""
+"be asked to enter your National Insurance and UK driving licence numbers"
+msgstr ""
+
+#: manchester_traffic_offences/templates/start.html:36
 msgid ""
 "be asked about your income and outgoings (such as utility bills), or your "
-"company's finances, so the magistrate can work out the correct fine"
+"company's finances, so the magistrate can work out your fine"
 msgstr ""
 
-#: manchester_traffic_offences/templates/start.html:45
+#: manchester_traffic_offences/templates/start.html:48
 msgid "Support"
 msgstr ""
 
-#: manchester_traffic_offences/templates/start.html:49
+#: manchester_traffic_offences/templates/start.html:52
 msgid "Legal help and advice"
 msgstr ""
 
-#: manchester_traffic_offences/templates/start.html:50
+#: manchester_traffic_offences/templates/start.html:53
 msgid "Questions about your pleas?"
 msgstr ""
 
-#: manchester_traffic_offences/templates/start.html:51
+#: manchester_traffic_offences/templates/start.html:54
 msgid "Need help using this service?"
 msgstr ""

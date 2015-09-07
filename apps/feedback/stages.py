@@ -29,13 +29,13 @@ class CommentsStage(FormStage):
             email_data.update({"comments": clean_data})
             email_result = send_feedback_email(email_data)
             if email_result:
-                self.add_message(messages.SUCCESS, _("Thanks for your feedback."))
+                self.add_message(messages.SUCCESS, _("Your feedback has been submitted"))
                 UserRating.objects.record(self.all_data["service"]["service_satisfaction"], self.all_data["service"]["call_centre_satisfaction"])
                 self.set_next_step("complete")
             else:
                 self.add_message(messages.ERROR, '<h2 class="heading-medium">{}</h2><p>{}</p>'.format(
-                    _('Submission Error'),
-                    _('There seems to have been a problem submitting your feedback. Please try again.')))
+                    _("Submission Error"),
+                    _("There seems to have been a problem submitting your feedback. Please try again.")))
                 self.set_next_step("comments")
 
         return clean_data
