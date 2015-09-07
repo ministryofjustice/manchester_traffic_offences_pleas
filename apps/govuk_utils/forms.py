@@ -2,25 +2,18 @@ from django import forms
 from django.forms.formsets import BaseFormSet
 from django.utils.translation import ugettext_lazy as _
 
-YESNO_CHOICES_1 = (
-    (True, _("Yes (v1)")),
-    (False, _("No (v1)"))
-)
-
-YESNO_CHOICES_2 = (
-    (True, _("Yes (v2)")),
-    (False, _("No (v2)"))
-)
-
-YESNO_CHOICES_3 = (
-    (True, _("Yes (v3)")),
-    (False, _("No (v3)"))
-)
-
-YESNO_CHOICES_4 = (
-    (True, _("Yes (v4)")),
-    (False, _("No (v4)"))
-)
+YESNO_CHOICES = {
+    "Ydy/Nac ydy": ((True, _("Yes (v1)")),
+                    (False, _("No (v1)"))),
+    "Ydw/Nac ydw": ((True, _("Yes (v2)")),
+                    (False, _("No (v2)"))),
+    "Oes/Nac oes": ((True, _("Yes (v3)")),
+                    (False, _("No (v3)"))),
+    "Byddai/Na fyddai": ((True, _("Yes (v4)")),
+                         (False, _("No (v4)"))),
+    "Do/Naddo": ((True, _("Yes (v5)")),
+                 (False, _("No (v5)")))
+}
 
 to_bool = lambda x: x == "True"
 
@@ -56,7 +49,7 @@ class BaseStageForm(forms.Form):
 
             if test_value and str(data_value) == str(test_value):
                 return True
-            
+
             if not test_value and data_value is not None:
                 return True
 
