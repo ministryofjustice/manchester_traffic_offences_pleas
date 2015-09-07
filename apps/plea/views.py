@@ -65,13 +65,13 @@ class PleaOnlineViews(TemplateView):
         return super(PleaOnlineViews, self).dispatch(*args, **kwargs)
 
     def _get_storage(self, request):
-        if not request.session.get("plea"):
-            request.session["plea"] = {}
+        if not request.session.get("plea_data"):
+            request.session["plea_data"] = {}
 
-        return request.session["plea"]
+        return request.session["plea_data"]
 
     def _clear_storage(self, request):
-        del request.session["plea"]
+        del request.session["plea_data"]
 
     def get(self, request, stage=None):
         storage = self._get_storage(request)
@@ -112,7 +112,7 @@ class UrnAlreadyUsedView(TemplateView):
 
     def post(self, request):
 
-        del request.session["plea"]
+        del request.session["plea_data"]
 
         return redirect("plea_form_step", stage="case")
 
