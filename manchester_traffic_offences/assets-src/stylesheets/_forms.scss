@@ -1,10 +1,18 @@
-/*  
+/*
 ====================================================
 Forms
 ====================================================
 */
 
 /*== Buttons ========================================*/
+
+.button {
+	width: 100%;
+	box-sizing: border-box;
+	@include media(tablet) {
+		width: auto;
+	}
+}
 
 .button-large {
 	@extend .button;
