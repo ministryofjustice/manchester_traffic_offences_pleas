@@ -32,7 +32,7 @@
     <button class="button" type="submit">{% blocktrans %}Continue{% endblocktrans %}</button>
 
     {% if service.split_form == "split_form_last_step" %}
-    <p class="back-button"><a href="{{ request.path }}?reset">{% blocktrans %}Back{% endblocktrans %}</a></p>
+    <p><a href="{{ request.path }}?reset">{% blocktrans %}Back{% endblocktrans %}</a></p>
     {% endif %}
 </div>
 {% endblock stage_submit %}
