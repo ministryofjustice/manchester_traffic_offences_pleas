@@ -1,9 +1,5 @@
-from celery.exceptions import Retry
 import datetime
-from importlib import import_module
-from itertools import chain, cycle
-from mock import Mock, MagicMock, patch
-import socket
+from mock import Mock, patch
 
 from django.core.urlresolvers import reverse
 from django.test import TestCase
@@ -217,7 +213,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.load(self.request_context)
         form.save({}, self.request_context)
 
-        self.assertEqual(len(form.current_stage.form.errors), 5)
+        self.assertEqual(len(form.current_stage.form.errors), 7)
 
     def test_your_details_stage_good_data(self):
         form = PleaOnlineForms("your_details", "plea_form_step", self.session)
@@ -228,12 +224,15 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "correct_address": True,
                    "date_of_birth_0": "12",
                    "date_of_birth_1": "03",
-                   "date_of_birth_2": "1980"},
+                   "date_of_birth_2": "1980",
+                   "have_ni_number": False,
+                   "have_driving_licence_number": False},
                   self.request_context)
+
         response = form.render()
         self.assertEqual(response.status_code, 302)
 
-    def test_your_details_stage_updated_address_required(self):
+    def test_your_details_stage_optional_data_required(self):
         form = PleaOnlineForms("your_details", "plea_form_step", self.session)
         form.load(self.request_context)
 
@@ -243,7 +242,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                      "correct_address": False,
                      "date_of_birth_0": "12",
                      "date_of_birth_1": "03",
-                     "date_of_birth_2": "1980"}
+                     "date_of_birth_2": "1980",
+                     "have_ni_number": True,
+                     "have_driving_licence_number": True}
 
         form.save(form_data, self.request_context)
 
@@ -251,9 +252,13 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn("updated_address", form.current_stage.form.errors)
-        self.assertEqual(len(form.current_stage.form.errors), 1)
+        self.assertIn("ni_number", form.current_stage.form.errors)
+        self.assertIn("driving_licence_number", form.current_stage.form.errors)
+        self.assertEqual(len(form.current_stage.form.errors), 3)
 
-        form_data.update({"updated_address": "Test address"})
+        form_data.update({"updated_address": "Test address",
+                          "ni_number": "QQ123456C",
+                          "driving_licence_number": "TESTE12345"})
         form.save(form_data, self.request_context)
 
         response = form.render()
@@ -980,7 +985,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "correct_address": True,
                    "date_of_birth_0": "12",
                    "date_of_birth_1": "03",
-                   "date_of_birth_2": "1980"},
+                   "date_of_birth_2": "1980",
+                   "have_ni_number": False,
+                   "have_driving_licence_number": False},
                   request_context)
         response = form.render()
         self.assertEqual(response.status_code, 302)
@@ -1050,7 +1057,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                    "correct_address": True,
                    "date_of_birth_0": "12",
                    "date_of_birth_1": "03",
-                   "date_of_birth_2": "1980"},
+                   "date_of_birth_2": "1980",
+                   "have_ni_number": False,
+                   "have_driving_licence_number": False},
                   request_context)
 
         form = PleaOnlineForms("plea", "plea_form_step", fake_session)
