@@ -14,25 +14,27 @@
             <p>{% blocktrans %}Use this service to plead guilty or not guilty to each offence you're charged with.{% endblocktrans %}</p>
         </header>
 
-        <article class="text headings-collapse">
+        <article>
 
-            <h2 class="heading-medium">{% blocktrans %}You'll need to:{% endblocktrans %}</h2>
+            <div class="text headings-collapse">
+                <h2 class="heading-medium">{% blocktrans %}You'll need to:{% endblocktrans %}</h2>
 
-            <div class="panel-indent">
-                <ul>
-                    <li>{% blocktrans %}carefully read the notice, charge sheet and witness statements in the pack we sent to you{% endblocktrans %}</li>
-                    <li>{% blocktrans %}enter information contained in the pack, so have it to hand when you start{% endblocktrans %}</li>
-                    <li>{% blocktrans %}be the person, or an official representative of the company, named in the notice{% endblocktrans %}</li>
-                </ul>
-            </div>
+                <div class="panel-indent">
+                    <ul>
+                        <li>{% blocktrans %}carefully read the notice, charge sheet and witness statements in the pack we sent to you{% endblocktrans %}</li>
+                        <li>{% blocktrans %}enter information contained in the pack, so have it to hand when you start{% endblocktrans %}</li>
+                        <li>{% blocktrans %}be the person, or an official representative of the company, named in the notice{% endblocktrans %}</li>
+                    </ul>
+                </div>
 
-            <h2 class="heading-medium">{% blocktrans %}You may:{% endblocktrans %}</h2>
+                <h2 class="heading-medium">{% blocktrans %}You may:{% endblocktrans %}</h2>
 
-            <div class="panel-indent">
-                <ul>
-                    <li>{% blocktrans %}get a 33% discount on any fine by pleading guilty{% endblocktrans %}</li>
-                    <li>{% blocktrans %}be asked about your income and outgoings (such as utility bills), or your company's finances, so the magistrate can work out the correct fine{% endblocktrans %}</li>
-                </ul>
+                <div class="panel-indent">
+                    <ul>
+                        <li>{% blocktrans %}get a 33% discount on any fine by pleading guilty{% endblocktrans %}</li>
+                        <li>{% blocktrans %}be asked about your income and outgoings (such as utility bills), or your company's finances, so the magistrate can work out the correct fine{% endblocktrans %}</li>
+                    </ul>
+                </div>
             </div>
 
             <a class="button button-get-started" role="button" href="{% url "plea_form" %}">{% blocktrans %}Start now{% endblocktrans %}</a>
