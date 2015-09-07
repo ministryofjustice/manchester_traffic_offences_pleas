@@ -27,8 +27,12 @@
     </div>
 {% endblock stage_form %}
 
-{% block stage_after_form %}
+{% block stage_submit %}
+<div class="form-submit">
+    <button class="button" type="submit">{% blocktrans %}Continue{% endblocktrans %}</button>
+
     {% if service.split_form == "split_form_last_step" %}
-    <p><a href="{{ request.path }}?reset">Back</a></p>
+    <p class="back-button"><a href="{{ request.path }}?reset">{% blocktrans %}Back{% endblocktrans %}</a></p>
     {% endif %}
-{% endblock stage_after_form %}
+</div>
+{% endblock stage_submit %}

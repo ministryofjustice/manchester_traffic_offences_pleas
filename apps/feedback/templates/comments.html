@@ -20,9 +20,7 @@
 {% block stage_submit %}
 <div class="form-submit">
     <button class="button" type="submit">{% blocktrans %}Submit{% endblocktrans %}</button>
+
+    <p class="back-button"><a href="{% url "feedback_form_step" "service" %}">{% blocktrans %}Back{% endblocktrans %}</a></p>
 </div>
 {% endblock stage_submit %}
-
-{% block stage_after_form %}
-    <p><a href="{% url "feedback_form_step" "service" %}">Back</a></p>
-{% endblock stage_after_form %}
