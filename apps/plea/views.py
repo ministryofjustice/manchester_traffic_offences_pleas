@@ -40,7 +40,7 @@ class PleaOnlineForms(MultiStageForm):
         Check that the URN has not already been used.
         """
         try:
-            saved_urn = self.all_data['case']['urn']
+            saved_urn = self.all_data["case"]["urn"]
         except KeyError:
             saved_urn = None
 
@@ -53,7 +53,7 @@ class PleaOnlineForms(MultiStageForm):
 
     def render(self):
         if self._urn_invalid:
-            return redirect('urn_already_used')
+            return redirect("urn_already_used")
 
         return super(PleaOnlineForms, self).render()
 
@@ -64,12 +64,23 @@ class PleaOnlineViews(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(PleaOnlineViews, self).dispatch(*args, **kwargs)
 
+    def _get_storage(self, request):
+        if not request.session.get("plea_data"):
+            request.session["plea_data"] = {}
+
+        return request.session["plea_data"]
+
+    def _clear_storage(self, request):
+        del request.session["plea_data"]
+
     def get(self, request, stage=None):
+        storage = self._get_storage(request)
+        
         if not stage:
             stage = PleaOnlineForms.stage_classes[0].name
             return HttpResponseRedirect(reverse_lazy("plea_form_step", args=(stage,)))
 
-        form = PleaOnlineForms(stage, "plea_form_step", request.session)
+        form = PleaOnlineForms(stage, "plea_form_step", storage)
         redirect = form.load(RequestContext(request))
         if redirect:
             return redirect
@@ -77,19 +88,22 @@ class PleaOnlineViews(TemplateView):
         form.process_messages(request)
 
         if stage == "complete":
-            request.session.clear()
+            self._clear_storage(request)
 
         return form.render()
 
     @method_decorator(ratelimit(block=True, rate=settings.RATE_LIMIT))
     def post(self, request, stage):
+        storage = self._get_storage(request)
 
         nxt = request.GET.get("next", None)
 
-        form = PleaOnlineForms(stage, "plea_form_step", request.session)
+        form = PleaOnlineForms(stage, "plea_form_step", storage)
         form.save(request.POST, RequestContext(request), nxt)
         if not form._urn_invalid:
             form.process_messages(request)
+
+        request.session.modified = True
         return form.render()
 
 
@@ -98,9 +112,9 @@ class UrnAlreadyUsedView(TemplateView):
 
     def post(self, request):
 
-        request.session.flush()
+        del request.session["plea_data"]
 
-        return redirect('plea_form_step', stage="case")
+        return redirect("plea_form_step", stage="case")
 
 
 class CourtFinderView(FormView):

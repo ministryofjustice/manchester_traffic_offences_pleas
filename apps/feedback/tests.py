@@ -46,7 +46,7 @@ class FeedbackFormTestCase(TestCase):
         request.META["HTTP_USER_AGENT"] = "Test User Agent"
         return request
 
-    
+
     def test_service_stage_incomplete_data(self):
         form = FeedbackForms("service", "feedback_form_step", self.empty_session_data)
         form.load(self.request_context)
@@ -57,7 +57,7 @@ class FeedbackFormTestCase(TestCase):
     def test_service_stage_call_centre_used_incomplete_data(self):
         form = FeedbackForms("service", "feedback_form_step", self.empty_session_data)
         form.load(self.request_context)
-        
+
         save_data = {
             "used_call_centre": True
         }
@@ -93,7 +93,7 @@ class FeedbackFormTestCase(TestCase):
 
         form = FeedbackForms("comments", "feedback_form_step", session_data)
         form.load(self.request_context)
-        
+
         response = form.render()
         self.assertIn("Email address", response.content)
 
@@ -113,8 +113,7 @@ class FeedbackFormTestCase(TestCase):
         with self.assertTemplateUsed("comments.html"):
             response = form.render()
             self.assertNotIn("Email address", response.content)
-    
-    
+
     def test_email_is_sent(self):
         form = FeedbackForms("comments", "feedback_form_step", self.complete_session_data)
         form.save({}, self.request_context)
@@ -132,11 +131,11 @@ class FeedbackFormTestCase(TestCase):
 
         self.assertEquals(messages.add_message.call_count, 1)
 
-    
+
     def test_redirect_is_set(self):
         fake_request = self.get_request_mock("/feedback/?next=terms")
         fake_request.session = {}
-        fake_request.session["feedback"] = self.complete_session_data
+        fake_request.session["feedback_data"] = self.complete_session_data
 
         view = FeedbackViews()
         response = view.get(fake_request, stage="complete")
