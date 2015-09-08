@@ -1,13 +1,10 @@
-from celery.exceptions import Retry, RetryTaskError
+from celery.exceptions import Retry
 import datetime
 from glob import glob
-import io
 import os
-from itertools import cycle, chain
 import json
-from mock import patch, Mock
+from mock import patch
 import socket
-import redgreenunittest as unittest
 
 from django.conf import settings
 from django.test import TestCase
@@ -98,7 +95,7 @@ class CaseCreationTests(TestCase):
         self.assertEquals(self.context_data['case']['urn'], data['case']['urn'])
 
     @override_settings(STORE_USER_DATA=True)
-    @patch("apps.plea.email.TemplateAttachmentEmail.send")
+    @patch("apps.govuk_utils.email.TemplateAttachmentEmail.send")
     def test_email_failure_audit(self, send):
         send.side_effect = socket.error("Email failed to send, socket error")
 
