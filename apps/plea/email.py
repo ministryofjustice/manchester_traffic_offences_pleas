@@ -1,16 +1,8 @@
 from dateutil import parser
 import logging
-import json
-import smtplib
-import socket
 
-from django.core.mail import EmailMultiAlternatives
-from django.core.mail import get_connection
 from django.conf import settings
-from django.template.loader import render_to_string
 from django.utils import translation
-
-from apps.govuk_utils.email import TemplateAttachmentEmail
 
 from .models import Case, CourtEmailCount, Court
 from .encrypt import encrypt_and_store_user_data
