@@ -51,11 +51,11 @@ def email_send_court(self, case_id, count_id, email_data):
                                          "text/html")
 
     try:
-        with translation.override("en"):
-            plea_email.send(plea_email_to,
-                            settings.PLEA_EMAIL_SUBJECT.format(**email_data),
-                            email_body,
-                            route=smtp_route)
+        # with translation.override("en"):
+        plea_email.send(plea_email_to,
+                        settings.PLEA_EMAIL_SUBJECT.format(**email_data),
+                        email_body,
+                        route=smtp_route)
     except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
         logger.warning("Error sending email to court: {0}".format(exc))
         case.add_action("Court email network error", unicode(exc))
@@ -99,11 +99,11 @@ def email_send_prosecutor(self, case_id, email_data):
 
     if court_obj.plp_email:
         try:
-            with translation.override("en"):
-                plp_email.send([court_obj.plp_email],
-                               settings.PLP_EMAIL_SUBJECT.format(**email_data),
-                               settings.PLEA_EMAIL_BODY,
-                               route=smtp_route)
+            # with translation.override("en"):
+            plp_email.send([court_obj.plp_email],
+                           settings.PLP_EMAIL_SUBJECT.format(**email_data),
+                           settings.PLEA_EMAIL_BODY,
+                           route=smtp_route)
         except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
             logger.warning("Error sending email to prosecutor: {0}".format(exc))
             case.add_action("Prosecutor email network error", unicode(exc))
