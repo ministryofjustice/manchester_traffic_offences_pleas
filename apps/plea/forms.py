@@ -572,8 +572,8 @@ class ConfirmationForm(BaseStageForm):
 
     email = forms.EmailField(widget=forms.TextInput(attrs={"type": "email", "class": "form-control"}),
                                           required=False,
-                                          label=_("Email address"),
-                                          help_text=_("We'll use this for all future correspondence. We'll also contact you by post."),
+                                          label="",
+                                          help_text=_("If yes, enter your email address here:"),
                                           error_messages={"required": ERROR_MESSAGES["UPDATES_EMAIL_REQUIRED"],
                                                           "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
