@@ -7,10 +7,7 @@ import socket
 from django.core.mail import EmailMultiAlternatives
 from django.core.mail import get_connection
 from django.conf import settings
-from django.template.loader import render_to_string
 from django.utils import translation
-from django.utils.text import wrap
-from django.utils.translation import ugettext_lazy as _
 
 from apps.govuk_utils.email import TemplateAttachmentEmail
 
@@ -21,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @app.task(bind=True, max_retries=5)
+@translation.override("en")
 def email_send_court(self, case_id, count_id, email_data):
     smtp_route = "GSI"
 
@@ -77,6 +75,7 @@ def email_send_court(self, case_id, count_id, email_data):
 
 
 @app.task(bind=True, max_retries=5)
+@translation.override("en")
 def email_send_prosecutor(self, case_id, email_data):
     smtp_route = "PNN"
 
@@ -118,56 +117,15 @@ def email_send_prosecutor(self, case_id, email_data):
 
 
 @app.task(bind=True, max_retries=5)
-def email_send_user(self, case_id, email_data):
+def email_send_user(self, case_id, email_address, subject, html_body, txt_body):
     """
     Dispatch an email to the user to confirm that their plea submission
     was successful.
     """
 
     # No error trapping, let these fail hard if the objects can't be found
-
-    from .stages import get_plea_type
-
-    email = email_data.get("review", {}).get("email", False)
-
-    case = Case.objects.get(pk=case_id)
-
-    if not email:
-        case.add_action("No email entered, user email not sent", "")
-        return True
-
-    if email_data['case']['plea_made_by'] == "Defendant":
-        first_name = email_data['your_details']['first_name']
-        last_name = email_data['your_details']['last_name']
-    else:
-        first_name = email_data['company_details']['first_name']
-        last_name = email_data['company_details']['last_name']
-
-    try:
-        court_obj = Court.objects.get_by_urn(email_data["case"]["urn"])
-    except Court.DoesNotExist:
-        logger.warning("URN does not have a matching Court entry: {}".format(
-            email_data["case"]["urn"]))
-        raise
-
-    data = {
-        'email': email,
-        'urn': email_data['case']['urn'],
-        'plea_made_by': email_data['case']['plea_made_by'],
-        'number_of_charges': email_data['case']['number_of_charges'],
-        'plea_type': get_plea_type(email_data),
-        'first_name': first_name,
-        'last_name': last_name,
-        'court_address': court_obj.court_address,
-        'court_email': court_obj.court_email
-    }
-
+    case = Case.objects.get(id=case_id)
     case.add_action("User email started", "")
-
-    html_body = render_to_string("emails/user_plea_confirmation.html", data)
-    txt_body = wrap(render_to_string("emails/user_plea_confirmation.txt", data), 72)
-
-    subject = _("Online plea submission confirmation")
 
     connection = get_connection(host=settings.EMAIL_HOST,
                                 port=settings.EMAIL_PORT,
@@ -176,7 +134,7 @@ def email_send_user(self, case_id, email_data):
                                 use_tls=settings.EMAIL_USE_TLS)
 
     email = EmailMultiAlternatives(subject, txt_body, settings.PLEA_CONFIRMATION_EMAIL_FROM,
-                                   [data['email']], connection=connection)
+                                   [email_address], connection=connection)
 
     email.attach_alternative(html_body, "text/html")
 
@@ -185,7 +143,7 @@ def email_send_user(self, case_id, email_data):
     except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
         logger.warning("Error sending user confirmation email: {0}".format(exc))
         case.add_action("User email network error", unicode(exc))
-        raise self.retry(args=[case_id, email_data], exc=exc)
+        raise self.retry(args=[case_id, email_address, subject, html_body, txt_body], exc=exc)
 
     case.add_action("User email sent", "")
 
