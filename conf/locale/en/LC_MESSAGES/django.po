@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-07 14:11+0100\n"
+"POT-Creation-Date: 2015-09-09 19:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,7 +77,7 @@ msgstr ""
 msgid "Your feedback has been submitted"
 msgstr ""
 
-#: apps/feedback/stages.py:37 apps/plea/stages.py:344
+#: apps/feedback/stages.py:37 apps/plea/stages.py:324
 msgid "Submission Error"
 msgstr ""
 
@@ -207,6 +207,11 @@ msgstr ""
 
 #: apps/govuk_utils/templates/widgets/plea_radio_field.html:72
 msgid "Change this plea"
+msgstr ""
+
+#: apps/plea/email.py:131
+#: apps/plea/templates/emails/user_plea_confirmation.html:7
+msgid "Online plea submission confirmation"
 msgstr ""
 
 #: apps/plea/fields.py:4
@@ -916,14 +921,9 @@ msgstr ""
 msgid "On page 1, usually at the top."
 msgstr ""
 
-#: apps/plea/stages.py:345
+#: apps/plea/stages.py:325
 msgid ""
 "There seems to have been a problem submitting your plea. Please try again."
-msgstr ""
-
-#: apps/plea/tasks.py:171
-#: apps/plea/templates/emails/user_plea_confirmation.html:7
-msgid "Online plea submission confirmation"
 msgstr ""
 
 #: apps/plea/templates/case.html:6 apps/plea/templates/case.html.py:45

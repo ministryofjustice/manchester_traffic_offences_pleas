@@ -137,7 +137,10 @@ class CaseCreationTests(TestCase):
             urn="00/AA/00000/00")
 
         try:
-            email_send_user.delay(case.id, self.context_data)
+            email_send_user.delay(case.id, "ian.george@digital.justice.gov.uk",
+                                  "User email test", "<strong>Test email body</strong>",
+                                  "Test email body")
+
         except socket.error:
             pass
         except Retry:
@@ -167,7 +170,7 @@ class CaseCreationTests(TestCase):
                                               "email": ""}})
 
         try:
-            email_send_user.delay(case.id, self.context_data)
+            send_plea_email(self.context_data)
         except socket.error:
             pass
         except Retry:
@@ -175,12 +178,12 @@ class CaseCreationTests(TestCase):
 
         case = Case.objects.all().order_by('-id')[0]
 
-        correct_actions = [u'No email entered, user email not sent']
+        correct_action = u'No email entered, user email not sent'
 
-        for i, action in enumerate(case.actions.all()):
-            if correct_actions[i] != action.status:
+        actions = list(case.actions.all())
+        if correct_action != actions[-1].status:
                 self.fail("Wrong action got {} expected {}".format(
-                    action.status, correct_actions[i]))
+                    actions[-1].status, correct_action))
 
     @override_settings(STORE_USER_DATA=False)
     def test_data_not_stored(self):
