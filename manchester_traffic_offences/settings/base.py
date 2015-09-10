@@ -146,7 +146,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'manchester_traffic_offences.urls'
 
 SESSION_SERIALIZER = 'apps.govuk_utils.serializers.DateAwareSerializer'
-SESSION_ENGINE = 'encrypted_cookies'
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 SESSION_COOKIE_HTTPONLY = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 3600
