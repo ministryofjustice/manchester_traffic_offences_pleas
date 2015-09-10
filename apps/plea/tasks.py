@@ -17,7 +17,7 @@ from apps.plea.models import Case, CourtEmailCount, Court
 logger = logging.getLogger(__name__)
 
 
-@app.task(bind=True, default_retry_delay=10, max_retries=5)
+@app.task(bind=True, max_retries=5)
 def email_send_court(self, case_id, count_id, email_data):
     smtp_route = "GSI"
 
@@ -49,6 +49,7 @@ def email_send_court(self, case_id, count_id, email_data):
 
     try:
         with translation.override("en"):
+            raise smtplib.SMTPServerDisconnected()
             plea_email.send(plea_email_to,
                             settings.PLEA_EMAIL_SUBJECT.format(**email_data),
                             email_body,
@@ -73,7 +74,7 @@ def email_send_court(self, case_id, count_id, email_data):
     return True
 
 
-@app.task(bind=True, default_retry_delay=10, max_retries=5)
+@app.task(bind=True, max_retries=5)
 def email_send_prosecutor(self, case_id, email_data):
     smtp_route = "PNN"
 
@@ -97,6 +98,7 @@ def email_send_prosecutor(self, case_id, email_data):
     if court_obj.plp_email:
         try:
             with translation.override("en"):
+                raise smtplib.SMTPResponseException(451, "greylisted - try again later. KB17296")
                 plp_email.send([court_obj.plp_email],
                                settings.PLP_EMAIL_SUBJECT.format(**email_data),
                                settings.PLEA_EMAIL_BODY,
