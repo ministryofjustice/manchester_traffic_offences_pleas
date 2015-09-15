@@ -12,9 +12,17 @@ from apps.govuk_utils.stages import MultiStageForm
 
 from .models import Case, Court
 from .forms import CourtFinderForm
-from .stages import (CaseStage, YourDetailsStage, CompanyDetailsStage,
-                    PleaStage, YourMoneyStage, YourExpensesStage,
-                    CompanyFinancesStage, ReviewStage, CompleteStage)
+from .stages import (CaseStage,
+                     YourDetailsStage,
+                     CompanyDetailsStage,
+                     PleaStage,
+                     YourMoneyStage,
+                     HardshipStage,
+                     HouseholdExpensesStage,
+                     OtherExpensesStage,
+                     CompanyFinancesStage,
+                     ReviewStage,
+                     CompleteStage)
 from .fields import ERROR_MESSAGES
 
 
@@ -24,7 +32,9 @@ class PleaOnlineForms(MultiStageForm):
                      CompanyDetailsStage,
                      PleaStage,
                      YourMoneyStage,
-                     YourExpensesStage,
+                     HardshipStage,
+                     HouseholdExpensesStage,
+                     OtherExpensesStage,
                      CompanyFinancesStage,
                      ReviewStage,
                      CompleteStage]
@@ -76,7 +86,7 @@ class PleaOnlineViews(TemplateView):
 
     def get(self, request, stage=None):
         storage = self._get_storage(request)
-        
+
         if not stage:
             stage = PleaOnlineForms.stage_classes[0].name
             return HttpResponseRedirect(reverse_lazy("plea_form_step", args=(stage,)))

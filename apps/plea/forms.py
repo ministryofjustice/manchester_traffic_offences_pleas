@@ -346,14 +346,16 @@ class YourMoneyForm(SplitStageForm):
                                             error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
 
-class YourExpensesForm(BaseStageForm):
+class HardshipForm(BaseStageForm):
     hardship_details = forms.CharField(
         label=_("How would paying a fine cause you serious financial problems?"),
-        help_text=_("What should the court consider when deciding on any possible fine?"),
-        widget=forms.Textarea(attrs={'cols': 45, 'rows': 5, "class": "form-control"}),
+        help_text=_("What the court should consider when deciding how much your fine should be:"),
+        widget=forms.Textarea(attrs={"cols": 45, "rows": 5, "class": "form-control"}),
         required=True,
-        error_messages={'required': ERROR_MESSAGES['HARDSHIP_DETAILS_REQUIRED']})
+        error_messages={"required": ERROR_MESSAGES["HARDSHIP_DETAILS_REQUIRED"]})
 
+
+class HouseholdExpensesForm(BaseStageForm):
     household_accommodation = forms.DecimalField(
         min_value=0,
         decimal_places=2,
@@ -363,9 +365,9 @@ class YourExpensesForm(BaseStageForm):
         help_text=_("Rent, mortgage or lodgings"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                       "class": "form-control-inline"}),
-        error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_ACCOMMODATION_REQUIRED'],
-                        'invalid': ERROR_MESSAGES['HOUSEHOLD_ACCOMMODATION_INVALID'],
-                        'min_value': ERROR_MESSAGES['HOUSEHOLD_ACCOMMODATION_MIN']})
+        error_messages={"required": ERROR_MESSAGES["HOUSEHOLD_ACCOMMODATION_REQUIRED"],
+                        "invalid": ERROR_MESSAGES["HOUSEHOLD_ACCOMMODATION_INVALID"],
+                        "min_value": ERROR_MESSAGES["HOUSEHOLD_ACCOMMODATION_MIN"]})
 
     household_utility_bills = forms.DecimalField(
         min_value=0,
@@ -376,9 +378,9 @@ class YourExpensesForm(BaseStageForm):
         help_text=_("Gas, water, electricity etc"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                       "class": "form-control-inline"}),
-        error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_UTILITY_BILLS_REQUIRED'],
-                        'invalid': ERROR_MESSAGES['HOUSEHOLD_UTILITY_BILLS_INVALID'],
-                        'min_value': ERROR_MESSAGES['HOUSEHOLD_UTILITY_BILLS_MIN']})
+        error_messages={"required": ERROR_MESSAGES["HOUSEHOLD_UTILITY_BILLS_REQUIRED"],
+                        "invalid": ERROR_MESSAGES["HOUSEHOLD_UTILITY_BILLS_INVALID"],
+                        "min_value": ERROR_MESSAGES["HOUSEHOLD_UTILITY_BILLS_MIN"]})
 
     household_insurance = forms.DecimalField(
         min_value=0,
@@ -389,9 +391,9 @@ class YourExpensesForm(BaseStageForm):
         help_text=_("Home, life insurance etc"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                       "class": "form-control-inline"}),
-        error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_REQUIRED'],
-                        'invalid': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_INVALID'],
-                        'min_value': ERROR_MESSAGES['HOUSEHOLD_INSURANCE_MIN']})
+        error_messages={"required": ERROR_MESSAGES["HOUSEHOLD_INSURANCE_REQUIRED"],
+                        "invalid": ERROR_MESSAGES["HOUSEHOLD_INSURANCE_INVALID"],
+                        "min_value": ERROR_MESSAGES["HOUSEHOLD_INSURANCE_MIN"]})
 
     household_council_tax = forms.DecimalField(
         min_value=0,
@@ -401,17 +403,19 @@ class YourExpensesForm(BaseStageForm):
         label=_("Council tax"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                       "class": "form-control-inline"}),
-        error_messages={'required': ERROR_MESSAGES['HOUSEHOLD_COUNCIL_TAX_REQUIRED'],
-                        'invalid': ERROR_MESSAGES['HOUSEHOLD_COUNCIL_TAX_INVALID'],
-                        'min_value': ERROR_MESSAGES['HOUSEHOLD_COUNCIL_TAX_MIN']})
+        error_messages={"required": ERROR_MESSAGES["HOUSEHOLD_COUNCIL_TAX_REQUIRED"],
+                        "invalid": ERROR_MESSAGES["HOUSEHOLD_COUNCIL_TAX_INVALID"],
+                        "min_value": ERROR_MESSAGES["HOUSEHOLD_COUNCIL_TAX_MIN"]})
 
     other_bill_payers = forms.TypedChoiceField(
         widget=RadioSelect(renderer=DSRadioFieldRenderer),
         label=_("Does anyone else contribute to these bills?"),
         choices=YESNO_CHOICES["Oes/Nac oes"],
         coerce=to_bool,
-        error_messages={'required': ERROR_MESSAGES['OTHER_BILL_PAYERS_REQUIRED']})
+        error_messages={"required": ERROR_MESSAGES["OTHER_BILL_PAYERS_REQUIRED"]})
 
+
+class OtherExpensesForm(BaseStageForm):
     other_tv_subscription = forms.DecimalField(
         min_value=0,
         decimal_places=2,
@@ -421,9 +425,9 @@ class YourExpensesForm(BaseStageForm):
         help_text=_("TV licence, satellite etc"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                       "class": "form-control-inline"}),
-        error_messages={'required': ERROR_MESSAGES['OTHER_TV_SUBSCRIPTION_REQUIRED'],
-                        'invalid': ERROR_MESSAGES['OTHER_TV_SUBSCRIPTION_INVALID'],
-                        'min_value': ERROR_MESSAGES['OTHER_TV_SUBSCRIPTION_MIN']})
+        error_messages={"required": ERROR_MESSAGES["OTHER_TV_SUBSCRIPTION_REQUIRED"],
+                        "invalid": ERROR_MESSAGES["OTHER_TV_SUBSCRIPTION_INVALID"],
+                        "min_value": ERROR_MESSAGES["OTHER_TV_SUBSCRIPTION_MIN"]})
 
     other_travel_expenses = forms.DecimalField(
         min_value=0,
@@ -434,9 +438,9 @@ class YourExpensesForm(BaseStageForm):
         help_text=_("Fuel, car, public transport etc"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                       "class": "form-control-inline"}),
-        error_messages={'required': ERROR_MESSAGES['OTHER_TRAVEL_EXPENSES_REQUIRED'],
-                        'invalid': ERROR_MESSAGES['OTHER_TRAVEL_EXPENSES_INVALID'],
-                        'min_value': ERROR_MESSAGES['OTHER_TRAVEL_EXPENSES_MIN']})
+        error_messages={"required": ERROR_MESSAGES["OTHER_TRAVEL_EXPENSES_REQUIRED"],
+                        "invalid": ERROR_MESSAGES["OTHER_TRAVEL_EXPENSES_INVALID"],
+                        "min_value": ERROR_MESSAGES["OTHER_TRAVEL_EXPENSES_MIN"]})
 
     other_telephone = forms.DecimalField(
         min_value=0,
@@ -447,9 +451,9 @@ class YourExpensesForm(BaseStageForm):
         help_text=_("Landline and/or mobile"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                       "class": "form-control-inline"}),
-        error_messages={'required': ERROR_MESSAGES['OTHER_TELEPHONE_REQUIRED'],
-                        'invalid': ERROR_MESSAGES['OTHER_TELEPHONE_INVALID'],
-                        'min_value': ERROR_MESSAGES['OTHER_TELEPHONE_MIN']})
+        error_messages={"required": ERROR_MESSAGES["OTHER_TELEPHONE_REQUIRED"],
+                        "invalid": ERROR_MESSAGES["OTHER_TELEPHONE_INVALID"],
+                        "min_value": ERROR_MESSAGES["OTHER_TELEPHONE_MIN"]})
 
     other_loan_repayments = forms.DecimalField(
         min_value=0,
@@ -460,9 +464,9 @@ class YourExpensesForm(BaseStageForm):
         help_text=_("Credit card, bank etc"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                       "class": "form-control-inline"}),
-        error_messages={'required': ERROR_MESSAGES['OTHER_LOAN_REPAYMENTS_REQUIRED'],
-                        'invalid': ERROR_MESSAGES['OTHER_LOAN_REPAYMENTS_INVALID'],
-                        'min_value': ERROR_MESSAGES['OTHER_LOAN_REPAYMENTS_MIN']})
+        error_messages={"required": ERROR_MESSAGES["OTHER_LOAN_REPAYMENTS_REQUIRED"],
+                        "invalid": ERROR_MESSAGES["OTHER_LOAN_REPAYMENTS_INVALID"],
+                        "min_value": ERROR_MESSAGES["OTHER_LOAN_REPAYMENTS_MIN"]})
 
     other_court_payments = forms.DecimalField(
         min_value=0,
@@ -472,9 +476,9 @@ class YourExpensesForm(BaseStageForm):
         label=_("County court orders"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                       "class": "form-control-inline"}),
-        error_messages={'required': ERROR_MESSAGES['OTHER_COURT_PAYMENTS_REQUIRED'],
-                        'invalid': ERROR_MESSAGES['OTHER_COURT_PAYMENTS_INVALID'],
-                        'min_value': ERROR_MESSAGES['OTHER_COURT_PAYMENTS_MIN']})
+        error_messages={"required": ERROR_MESSAGES["OTHER_COURT_PAYMENTS_REQUIRED"],
+                        "invalid": ERROR_MESSAGES["OTHER_COURT_PAYMENTS_INVALID"],
+                        "min_value": ERROR_MESSAGES["OTHER_COURT_PAYMENTS_MIN"]})
 
     other_child_maintenance = forms.DecimalField(
         min_value=0,
@@ -484,9 +488,9 @@ class YourExpensesForm(BaseStageForm):
         label=_("Child maintenance"),
         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                       "class": "form-control-inline"}),
-        error_messages={'required': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_REQUIRED'],
-                        'invalid': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_INVALID'],
-                        'min_value': ERROR_MESSAGES['OTHER_CHILD_MAINTENANCE_MIN']})
+        error_messages={"required": ERROR_MESSAGES["OTHER_CHILD_MAINTENANCE_REQUIRED"],
+                        "invalid": ERROR_MESSAGES["OTHER_CHILD_MAINTENANCE_INVALID"],
+                        "min_value": ERROR_MESSAGES["OTHER_CHILD_MAINTENANCE_MIN"]})
 
 
 class CompanyFinancesForm(SplitStageForm):
@@ -515,7 +519,7 @@ class CompanyFinancesForm(SplitStageForm):
 
     number_of_employees = forms.IntegerField(label=_("Number of employees"),
                                              widget=forms.TextInput(attrs={"pattern": "[0-9]*",
-                                                                          "maxlength": "5",
+                                                                           "maxlength": "5",
                                                                            "class": "form-control-inline"}),
                                              min_value=1,
                                              max_value=10000,
