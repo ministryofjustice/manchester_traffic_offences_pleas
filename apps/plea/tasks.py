@@ -49,7 +49,6 @@ def email_send_court(self, case_id, count_id, email_data):
 
     try:
         with translation.override("en"):
-            raise smtplib.SMTPSenderRefused("ian@iangeorge.net", 451, "greylisted - try again later. KB17296")
             plea_email.send(plea_email_to,
                             settings.PLEA_EMAIL_SUBJECT.format(**email_data),
                             email_body,
@@ -57,7 +56,7 @@ def email_send_court(self, case_id, count_id, email_data):
     except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
         print unicode(exc)
         logger.warning("Error sending email to court: {0}".format(exc))
-        case.add_action("Court email network error", unicode(exc))
+        case.add_action("Court email network error", u"{}: {}".format(type(exc), exc))
         if email_count is not None:
             email_count.get_status_from_case(case)
             email_count.save()
@@ -105,7 +104,7 @@ def email_send_prosecutor(self, case_id, email_data):
                                route=smtp_route)
         except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
             logger.warning("Error sending email to prosecutor: {0}".format(exc))
-            case.add_action("Prosecutor email network error", unicode(exc))
+            case.add_action("Prosecutor email network error", u"{}: {}".format(type(exc), exc))
             raise self.retry(args=[case_id, email_data], exc=exc)
 
         case.add_action("Prosecutor email sent", "Sent mail to {0} via {1}".format(court_obj.plp_email, smtp_route))
@@ -142,7 +141,7 @@ def email_send_user(self, case_id, email_address, subject, html_body, txt_body):
         email.send(fail_silently=False)
     except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
         logger.warning("Error sending user confirmation email: {0}".format(exc))
-        case.add_action("User email network error", unicode(exc))
+        case.add_action("User email network error", u"{}: {}".format(type(exc), exc))
         raise self.retry(args=[case_id, email_address, subject, html_body, txt_body], exc=exc)
 
     case.add_action("User email sent", "")
