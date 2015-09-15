@@ -1,0 +1,50 @@
+{% extends "base_form.html" %}
+
+{% load i18n %}
+{% load form_widgets %}
+{% load testing %}
+
+{% block page_title %}{% blocktrans %}Your expenses{% endblocktrans %} - {{ block.super }}{% endblock %}
+
+
+{% block stage_header %}
+    <h1 class="heading-xlarge">{% blocktrans %}Your expenses{% endblocktrans %}</h1>
+
+    <p class="lede">{% blocktrans %}To help the court decide your fine, you must provide information about your expenses.{% endblocktrans %}</p>
+{% endblock stage_header %}
+
+
+{% block stage_form %}
+
+    <h2>{% blocktrans %}Other expenses{% endblocktrans %}</h2>
+
+    <p>{% blocktrans %}What are your monthly bills for the following?{% endblocktrans %}</p>
+
+    <div class="grid-row">
+        <div class="column-half">
+            {% std_field form.other_tv_subscription hide_optional=True prefix="£" %}
+        </div>
+        <div class="column-half">
+            {% std_field form.other_travel_expenses hide_optional=True prefix="£" %}
+        </div>
+    </div>
+
+    <div class="grid-row">
+        <div class="column-half">
+            {% std_field form.other_telephone hide_optional=True prefix="£" %}
+        </div>
+        <div class="column-half">
+            {% std_field form.other_loan_repayments hide_optional=True prefix="£" %}
+        </div>
+    </div>
+
+    <div class="grid-row">
+        <div class="column-half">
+            {% std_field form.other_court_payments hide_optional=True prefix="£" %}
+        </div>
+        <div class="column-half">
+            {% std_field form.other_child_maintenance hide_optional=True prefix="£" %}
+        </div>
+    </div>
+
+{% endblock stage_form %}

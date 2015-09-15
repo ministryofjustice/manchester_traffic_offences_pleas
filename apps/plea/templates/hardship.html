@@ -1,0 +1,19 @@
+{% extends "base_form.html" %}
+
+{% load i18n %}
+{% load form_widgets %}
+{% load testing %}
+
+{% block page_title %}{% blocktrans %}Information for the magistrate{% endblocktrans %} - {{ block.super }}{% endblock %}
+
+
+{% block stage_header %}
+    <h1 class="heading-xlarge">{% blocktrans %}Information for the magistrate{% endblocktrans %}</h1>
+{% endblock stage_header %}
+
+
+{% block stage_form %}
+
+    {% std_field form.hardship_details wide=True %}
+
+{% endblock stage_form %}

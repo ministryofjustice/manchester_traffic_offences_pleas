@@ -103,8 +103,17 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "take_home_pay_amount": "1000",
                 "employer_hardship": True
             },
-            "your_expenses": {
+            "hardship": {
                 "complete": True
+            },
+            "household_expenses": {
+                "complete": True
+            },
+            "other_expenses": {
+                "complete": True
+            },
+            "your_expenses": {
+                "total_household_expenses": 999
             },
             "review": {
                 "receive_email_updates": True,
@@ -154,7 +163,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertContains(response, court_obj.court_email)
 
-        self.assertEqual(form.current_stage.form.errors.keys()[0], 'urn')
+        self.assertEqual(form.current_stage.form.errors.keys()[0], "urn")
         self.assertEqual(response.status_code, 200)
 
     def test_case_stage_good_data(self):
@@ -191,7 +200,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         response = form.render()
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/plea/company_details/')
+        self.assertEqual(response.url, "/plea/company_details/")
 
     def test_case_stage_redirects_to_your_finances_stage(self):
         form = PleaOnlineForms("case", "plea_form_step", self.session)
@@ -210,7 +219,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         response = form.render()
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/plea/your_details/')
+        self.assertEqual(response.url, "/plea/your_details/")
 
     def test_your_details_stage_bad_data(self):
         form = PleaOnlineForms("your_details", "plea_form_step", self.session)
@@ -473,7 +482,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         test_data = {
             "case": {
                 "complete": True,
-                "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
+                "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
                 "plea_made_by": "Company representative"
@@ -514,7 +523,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         test_data = {
             "case": {
                 "complete": True,
-                "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
+                "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
                 "plea_made_by": "Company representative"
@@ -552,7 +561,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         test_data = {
             "case": {
                 "complete": True,
-                "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
+                "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
                 "plea_made_by": "Defendant"
@@ -723,7 +732,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         test_data = {
             "case": {
                 "complete": True,
-                "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
+                "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
                 "plea_made_by": "Company representative"
@@ -782,7 +791,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         test_data = {
             "case": {
                 "complete": True,
-                "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
+                "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
                 "plea_made_by": "Company representative"
@@ -840,7 +849,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         test_data = {
             "case": {
                 "complete": True,
-                "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
+                "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
                 "plea_made_by": "Defendant"
@@ -905,7 +914,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         test_data = {
             "case": {
                 "complete": True,
-                "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
+                "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
                 "plea_made_by": "Defendant"
@@ -1116,7 +1125,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         stage_data = self.test_session_data
 
-        stage_data['plea']['PleaForms'][0]['guilty'] = "not_guilty"
+        stage_data["plea"]["PleaForms"][0]["guilty"] = "not_guilty"
 
         form = PleaOnlineForms("complete", "plea_form_step", stage_data)
         form.load(request_context)
@@ -1132,18 +1141,18 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         stage_data = self.test_session_data
 
-        stage_data['plea']['PleaForms'] = [
+        stage_data["plea"]["PleaForms"] = [
             {
-                'mitigation': 'asdf',
-                'guilty': 'not_guilty'
+                "mitigation": "asdf",
+                "guilty": "not_guilty"
             },
             {
-                'mitigation': 'asdf',
-                'guilty': 'not_guilty'
+                "mitigation": "asdf",
+                "guilty": "not_guilty"
             },
             {
-                'mitigation': 'asdf',
-                'guilty': 'not_guilty'
+                "mitigation": "asdf",
+                "guilty": "not_guilty"
             }
         ]
 
@@ -1163,7 +1172,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         case.sent = True
         case.save()
 
-        self.session['case'] = dict(urn=urn)
+        self.session["case"] = dict(urn=urn)
 
         form = PleaOnlineForms("case", "plea_form_step", self.session)
         form.load(self.request_context)
@@ -1172,7 +1181,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         response = form.render()
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, reverse('urn_already_used'))
+        self.assertEqual(response.url, reverse("urn_already_used"))
 
     def test_urn_not_success_is_not_blocked(self):
 
@@ -1183,7 +1192,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         case.status = "network_error"
         case.save()
 
-        self.session['case'] = dict(urn=urn)
+        self.session["case"] = dict(urn=urn)
 
         form = PleaOnlineForms("case", "plea_form_step", self.session)
         form.load(self.request_context)
@@ -1193,10 +1202,10 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_your_finances_employed_hardship_redirects_to_your_expenses(self):
+    def test_your_finances_employed_hardship_redirects_to_hardship(self):
 
         session_data = self.test_session_data
-        fake_request = self.get_request_mock("/plea/your_expenses")
+        fake_request = self.get_request_mock("/plea/your_finances")
         request_context = RequestContext(fake_request)
 
         form = PleaOnlineForms("your_finances", "plea_form_step", session_data)
@@ -1214,25 +1223,63 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         response = form.render()
 
-        self.assertEqual(response.url, '/plea/your_expenses/')
+        self.assertEqual(response.url, "/plea/hardship/")
 
-    def test_your_expenses_redirects_to_review_page(self):
+    def test_hardship_redirects_to_household_expenses(self):
 
         session_data = self.test_session_data
-        fake_request = self.get_request_mock("/plea/your_expenses")
+        fake_request = self.get_request_mock("/plea/hardship")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("your_expenses", "plea_form_step", session_data)
+        form = PleaOnlineForms("hardship", "plea_form_step", session_data)
 
         form.load(request_context)
 
         test_data = {
-            "hardship_details": "ra ra ra",
+            "hardship_details": "ra ra ra"
+        }
+
+        form.save(test_data, request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.url, "/plea/household_expenses/")
+
+    def test_household_expenses_redirects_to_other_expenses(self):
+
+        session_data = self.test_session_data
+        fake_request = self.get_request_mock("/plea/household_expenses")
+        request_context = RequestContext(fake_request)
+
+        form = PleaOnlineForms("household_expenses", "plea_form_step", session_data)
+
+        form.load(request_context)
+
+        test_data = {
             "household_accommodation": "0",
             "household_utility_bills": "0",
             "household_insurance": "100",
             "household_council_tax": "50",
-            "other_bill_payers": True,
+            "other_bill_payers": True
+        }
+
+        form.save(test_data, request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.url, "/plea/other_expenses/")
+
+    def test_other_expenses_redirects_to_review_page(self):
+
+        session_data = self.test_session_data
+        fake_request = self.get_request_mock("/plea/other_expenses")
+        request_context = RequestContext(fake_request)
+
+        form = PleaOnlineForms("other_expenses", "plea_form_step", session_data)
+
+        form.load(request_context)
+
+        test_data = {
             "other_tv_subscription": "0",
             "other_travel_expenses": "20",
             "other_telephone": "40",
@@ -1246,7 +1293,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         response = form.render()
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/plea/review/')
+        self.assertEqual(response.url, "/plea/review/")
 
     def test_your_finances_employed_no_hardship_redirects_to_review(self):
 
@@ -1269,12 +1316,12 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         response = form.render()
 
-        self.assertEqual(response.url, '/plea/review/')
+        self.assertEqual(response.url, "/plea/review/")
 
-    def test_your_finances_self_employed_hardship_redirects_to_your_expenses(self):
+    def test_your_finances_self_employed_hardship_redirects_to_hardship(self):
 
         session_data = self.test_session_data
-        fake_request = self.get_request_mock("/plea/your_expenses")
+        fake_request = self.get_request_mock("/plea/your_finances")
         request_context = RequestContext(fake_request)
 
         form = PleaOnlineForms("your_finances", "plea_form_step", session_data)
@@ -1292,7 +1339,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         response = form.render()
 
-        self.assertEqual(response.url, '/plea/your_expenses/')
+        self.assertEqual(response.url, "/plea/hardship/")
 
     def test_your_finances_self_employed_no_hardship_redirects_to_review(self):
 
@@ -1315,12 +1362,12 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         response = form.render()
 
-        self.assertEqual(response.url, '/plea/review/')
+        self.assertEqual(response.url, "/plea/review/")
 
-    def test_your_finances_benefits_hardship_redirects_to_your_expenses(self):
+    def test_your_finances_benefits_hardship_redirects_to_hardship(self):
 
         session_data = self.test_session_data
-        fake_request = self.get_request_mock("/plea/your_expenses")
+        fake_request = self.get_request_mock("/plea/your_finances")
         request_context = RequestContext(fake_request)
 
         form = PleaOnlineForms("your_finances", "plea_form_step", session_data)
@@ -1340,7 +1387,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         response = form.render()
 
-        self.assertEqual(response.url, '/plea/your_expenses/')
+        self.assertEqual(response.url, "/plea/hardship/")
 
     def test_your_finances_benefits_no_hardship_redirects_to_review(self):
 
@@ -1365,12 +1412,12 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         response = form.render()
 
-        self.assertEqual(response.url, '/plea/review/')
+        self.assertEqual(response.url, "/plea/review/")
 
-    def test_your_finances_other_hardship_redirects_to_your_expenses(self):
+    def test_your_finances_other_hardship_redirects_to_hardship(self):
 
         session_data = self.test_session_data
-        fake_request = self.get_request_mock("/plea/your_expenses")
+        fake_request = self.get_request_mock("/plea/your_finances")
         request_context = RequestContext(fake_request)
 
         form = PleaOnlineForms("your_finances", "plea_form_step", session_data)
@@ -1388,7 +1435,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         response = form.render()
 
-        self.assertEqual(response.url, '/plea/your_expenses/')
+        self.assertEqual(response.url, "/plea/hardship/")
 
     def test_your_finances_other_no_hardship_redirects_to_review(self):
 
@@ -1411,7 +1458,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         response = form.render()
 
-        self.assertEqual(response.url, '/plea/review/')
+        self.assertEqual(response.url, "/plea/review/")
 
     def test_hardship_calculations_on_review_page(self):
 
@@ -1419,26 +1466,20 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         session_data["company_details"] = {"complete": True}
         session_data["your_finances"]["hardship"] = True
 
-        fake_request = self.get_request_mock("/plea/your_finances")
+        fake_request = self.get_request_mock("/plea/other_expenses")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("your_expenses", "plea_form_step", session_data)
+        form = PleaOnlineForms("other_expenses", "plea_form_step", session_data)
 
         form.load(request_context)
 
         test_data = {
-            "hardship_details": "ra ra ra",
-            "household_accommodation": "0",
-            "household_utility_bills": "0",
-            "household_insurance": "100",
-            "household_council_tax": "50",
-            "other_bill_payers": True,
-            "other_tv_subscription": "0",
-            "other_travel_expenses": "20",
-            "other_telephone": "40",
-            "other_loan_repayments": "60",
-            "other_court_payments": "30",
-            "other_child_maintenance": "50"
+            "other_tv_subscription": "111",
+            "other_travel_expenses": "111",
+            "other_telephone": "111",
+            "other_loan_repayments": "111",
+            "other_court_payments": "111",
+            "other_child_maintenance": "111"
         }
 
         form.save(test_data, request_context)
@@ -1449,9 +1490,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         response = form.render()
 
-        self.assertContains(response, '150')
-        self.assertContains(response, '200')
-        self.assertContains(response, '350')
+        self.assertContains(response, "999.00")
+        self.assertContains(response, "666.00")
+        self.assertContains(response, "1,665.00")
 
     def test_hardship_on_review(self):
 
@@ -1481,7 +1522,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         response = form.render()
 
-        self.assertContains(response, '<<SHOWINGEXPENSES>>')
+        self.assertContains(response, "<<SHOWINGEXPENSES>>")
 
     def test_no_hardship_review(self):
 
@@ -1511,7 +1552,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         response = form.render()
 
-        self.assertNotContains(response, '<<SHOWINGEXPENSES>>')
+        self.assertNotContains(response, "<<SHOWINGEXPENSES>>")
 
 
 class TestYourExpensesStage(TestMultiPleaFormBase):
@@ -1538,7 +1579,7 @@ class TestYourExpensesStage(TestMultiPleaFormBase):
         self.test_data = {
             "case": {
                 "complete": True,
-                "date_of_hearing": hearing_date.strftime('%Y-%m-%d'),
+                "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
                 "urn": "06/AA/0000000/00",
                 "number_of_charges": 1,
                 "plea_made_by": "Defendant"
@@ -1567,16 +1608,28 @@ class TestYourExpensesStage(TestMultiPleaFormBase):
                 "complete": True
             },
             "your_expenses": {
-
+                "total_household_expenses": 999
             },
             "review": {
                 "complete": True
             }
         }
 
-    def test_your_expenses_form_requires_validation(self):
+    def test_hardship_form_requires_validation(self):
 
-        form = PleaOnlineForms("your_expenses", "plea_form_step", self.test_data)
+        form = PleaOnlineForms("hardship", "plea_form_step", self.test_data)
+
+        form.load(self.request_context)
+
+        form.save({}, self.request_context)
+
+        response = form.render()
+
+        self.assertEquals(response.status_code, 200)
+
+    def test_household_expenses_form_requires_validation(self):
+
+        form = PleaOnlineForms("household_expenses", "plea_form_step", self.test_data)
 
         form.load(self.request_context)
 

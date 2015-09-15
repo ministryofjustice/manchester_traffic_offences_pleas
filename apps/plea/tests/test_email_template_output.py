@@ -12,7 +12,14 @@ from apps.govuk_utils.forms import RequiredFormSet
 
 from ..email import send_plea_email
 from ..models import Court
-from ..forms import CaseForm, YourDetailsForm, PleaForm, YourMoneyForm, YourExpensesForm, ConfirmationForm
+from ..forms import (CaseForm,
+                     YourDetailsForm,
+                     PleaForm,
+                     YourMoneyForm,
+                     HardshipForm,
+                     HouseholdExpensesForm,
+                     OtherExpensesForm,
+                     ConfirmationForm)
 
 
 class EmailTemplateTests(TestCase):
@@ -30,7 +37,7 @@ class EmailTemplateTests(TestCase):
             enabled=True,
             test_mode=True)
 
-    def get_context_data(self, case_data=None, details_data=None, plea_data=None, finances_data=None, expenses_data=None, review_data=None):
+    def get_context_data(self, case_data=None, details_data=None, plea_data=None, finances_data=None, hardship_data=None, household_expenses_data=None, other_expenses_data=None, review_data=None):
 
         self.hearing_date = datetime.today() + timedelta(30)
 
@@ -64,19 +71,23 @@ class EmailTemplateTests(TestCase):
                           "employed_take_home_pay_amount": "100",
                           "employed_hardship": False}
 
-        if not expenses_data:
-            expenses_data = {"hardship_details": "Lorem\nIpsum",
-                             "household_accommodation": 10,
-                             "household_utility_bills": 11,
-                             "household_insurance": 12,
-                             "household_council_tax": 13,
-                             "other_bill_payers": False,
-                             "other_tv_subscription": 14,
-                             "other_travel_expenses": 15,
-                             "other_telephone": 16,
-                             "other_loan_repayments": 17,
-                             "other_court_payments": 18,
-                             "other_child_maintenance": 19}
+        if not hardship_data:
+            hardship_data = {"hardship_details": "Lorem\nIpsum"}
+
+        if not household_expenses_data:
+            household_expenses_data = {"household_accommodation": 10,
+                                       "household_utility_bills": 11,
+                                       "household_insurance": 12,
+                                       "household_council_tax": 13,
+                                       "other_bill_payers": False}
+
+        if not other_expenses_data:
+            other_expenses_data = {"other_tv_subscription": 14,
+                                   "other_travel_expenses": 15,
+                                   "other_telephone": 16,
+                                   "other_loan_repayments": 17,
+                                   "other_court_payments": 18,
+                                   "other_child_maintenance": 19}
 
         if not review_data:
             review_data = {"receive_email_updates": True,
@@ -89,27 +100,31 @@ class EmailTemplateTests(TestCase):
         df = YourDetailsForm(details_data)
         pf = PleaForms(plea_data)
         mf = YourMoneyForm(finances_data)
-        ef = YourExpensesForm(expenses_data)
+        hf = HardshipForm(hardship_data)
+        hef = HouseholdExpensesForm(household_expenses_data)
+        oef = OtherExpensesForm(other_expenses_data)
         rf = ConfirmationForm(review_data)
 
-        household_expense_fields = ['household_accommodation',
-                                    'household_utility_bills',
-                                    'household_insurance',
-                                    'household_council_tax']
+        household_expense_fields = ["household_accommodation",
+                                    "household_utility_bills",
+                                    "household_insurance",
+                                    "household_council_tax"]
 
-        other_expense_fields = ['other_tv_subscription',
-                                'other_travel_expenses',
-                                'other_telephone',
-                                'other_loan_repayments',
-                                'other_court_payments',
-                                'other_child_maintenance']
+        other_expense_fields = ["other_tv_subscription",
+                                "other_travel_expenses",
+                                "other_telephone",
+                                "other_loan_repayments",
+                                "other_court_payments",
+                                "other_child_maintenance"]
 
-        if all([cf.is_valid(), df.is_valid(), pf.is_valid(), mf.is_valid(), ef.is_valid(), rf.is_valid()]):
+        if all([cf.is_valid(), df.is_valid(), pf.is_valid(), mf.is_valid(), hf.is_valid(), hef.is_valid(), oef.is_valid(), rf.is_valid()]):
             data = {"case": cf.cleaned_data,
                     "your_details": df.cleaned_data,
                     "plea": {"PleaForms": pf.cleaned_data},
                     "your_finances": mf.cleaned_data,
-                    "your_expenses": ef.cleaned_data,
+                    "hardship": hf.cleaned_data,
+                    "household_expenses": hef.cleaned_data,
+                    "other_expenses": oef.cleaned_data,
                     "review": rf.cleaned_data}
 
             data["your_finances"]["hardship"] = any([
@@ -118,17 +133,17 @@ class EmailTemplateTests(TestCase):
                 mf.cleaned_data.get("receiving_benefits_hardship", False),
                 mf.cleaned_data.get("other_hardship", False)])
 
-            total_household = sum(int(ef.cleaned_data[field] or 0) for field in household_expense_fields)
-            total_other = sum(int(ef.cleaned_data[field] or 0) for field in other_expense_fields)
+            total_household = sum(int(hef.cleaned_data[field] or 0) for field in household_expense_fields)
+            total_other = sum(int(oef.cleaned_data[field] or 0) for field in other_expense_fields)
             total_expenses = total_household + total_other
 
-            data["your_expenses"]["total_household_expenses"] = total_household
-            data["your_expenses"]["total_other_expenses"] = total_other
-            data["your_expenses"]["total_expenses"] = total_expenses
+            data["your_expenses"] = {"total_household_expenses": total_household,
+                                     "total_other_expenses": total_other,
+                                     "total_expenses": total_expenses}
 
             return data
         else:
-            raise Exception(cf.errors, df.errors, pf.errors, mf.errors, rf.errors)
+            raise Exception(cf.errors, df.errors, pf.errors, mf.errors, hf.errors, hef.errors, oef.errors, rf.errors)
 
     def get_mock_response(self, html):
         response = Mock()
@@ -146,8 +161,8 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertEqual(mail.outbox[0].subject, 'ONLINE PLEA: 06/AA/00000/00 DOH: {} PUBLIC Joe'
-            .format(self.hearing_date.strftime('%Y-%m-%d')))
+        self.assertEqual(mail.outbox[0].subject, "ONLINE PLEA: 06/AA/00000/00 DOH: {} PUBLIC Joe"
+            .format(self.hearing_date.strftime("%Y-%m-%d")))
 
     def test_case_details_output(self):
         context_data = self.get_context_data()
@@ -157,7 +172,7 @@ class EmailTemplateTests(TestCase):
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
         self.assertContains(response, "<tr><th>Unique reference number</th><td>06/AA/00000/00</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>Court hearing date</th><td>{}</td></tr>".format(self.hearing_date.strftime('%d/%m/%Y')), count=1, html=True)
+        self.assertContains(response, "<tr><th>Court hearing date</th><td>{}</td></tr>".format(self.hearing_date.strftime("%d/%m/%Y")), count=1, html=True)
 
     def test_case_details_output_is_english(self):
         translation.activate("cy")
@@ -171,7 +186,7 @@ class EmailTemplateTests(TestCase):
         translation.deactivate()
 
         self.assertContains(response, "<tr><th>Unique reference number</th><td>06/AA/00000/00</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>Court hearing date</th><td>{}</td></tr>".format(self.hearing_date.strftime('%d/%m/%Y')), count=1, html=True)
+        self.assertContains(response, "<tr><th>Court hearing date</th><td>{}</td></tr>".format(self.hearing_date.strftime("%d/%m/%Y")), count=1, html=True)
 
     def test_welsh_journey_adds_welsh_flag(self):
         translation.activate("cy")
@@ -396,6 +411,7 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
         self.assertContains(response, "<tr><th>Financial hardship details</th><td>Lorem<br />Ipsum</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Other contributors to household bills</th><td>No</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Total household expenses</th><td>£46.00</td></tr>", count=1, html=True)
@@ -408,20 +424,19 @@ class EmailTemplateTests(TestCase):
                                  "employed_take_home_pay_amount": "100",
                                  "employed_hardship": True}
 
-        expenses_data = {"hardship_details": "Lorem\nIpsum",
-                         "household_accommodation": 10,
-                         "household_utility_bills": 11,
-                         "household_insurance": 12,
-                         "household_council_tax": 13,
-                         "other_bill_payers": True,
-                         "other_tv_subscription": 14,
-                         "other_travel_expenses": 15,
-                         "other_telephone": 16,
-                         "other_loan_repayments": 17,
-                         "other_court_payments": 18,
-                         "other_child_maintenance": 19}
+        household_expenses_data = {"household_accommodation": 10,
+                                   "household_utility_bills": 11,
+                                   "household_insurance": 12,
+                                   "household_council_tax": 13,
+                                   "other_bill_payers": True}
+        other_expenses_data = {"other_tv_subscription": 14,
+                               "other_travel_expenses": 15,
+                               "other_telephone": 16,
+                               "other_loan_repayments": 17,
+                               "other_court_payments": 18,
+                               "other_child_maintenance": 19}
 
-        context_data = self.get_context_data(finances_data=context_data_finances, expenses_data=expenses_data)
+        context_data = self.get_context_data(finances_data=context_data_finances, household_expenses_data=household_expenses_data, other_expenses_data=other_expenses_data)
 
         send_plea_email(context_data)
 
@@ -437,7 +452,7 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
         self.assertContains(response, "<tr><th>Status</th><td><i>Not completed/provided Financial details must be collected at hearing</i></td></tr>", count=1, html=True)
-    
+
 
     def test_receive_email_updates_output(self):
         context_data = self.get_context_data()
@@ -467,8 +482,8 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertEqual(mail.outbox[1].subject, 'POLICE ONLINE PLEA: 06/AA/00000/00 DOH: {} PUBLIC Joe'
-                         .format(self.hearing_date.strftime('%Y-%m-%d')))
+        self.assertEqual(mail.outbox[1].subject, "POLICE ONLINE PLEA: 06/AA/00000/00 DOH: {} PUBLIC Joe"
+                         .format(self.hearing_date.strftime("%Y-%m-%d")))
 
     def test_PLP_case_details_output(self):
         context_data = self.get_context_data()
@@ -489,7 +504,7 @@ class EmailTemplateTests(TestCase):
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
 
         translation.deactivate()
-        
+
         self.assertContains(response, "<tr><th>First name</th><td>Joe</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Last name</th><td>Public</td></tr>", count=1, html=True)
 
@@ -542,19 +557,19 @@ class EmailTemplateTests(TestCase):
 
     def test_plea_email_guilty_pleas(self):
         context_data = self.get_context_data()
-        context_data["case"]['number_of_pleas'] = 3
+        context_data["case"]["number_of_pleas"] = 3
         context_data["plea"]["PleaForms"] = [
             {
-                'guilty': 'guilty',
-                'guilty_extra': 'asdf'
+                "guilty": "guilty",
+                "guilty_extra": "asdf"
             },
             {
-                'guilty': 'guilty',
-                'guilty_extra': 'asdf'
+                "guilty": "guilty",
+                "guilty_extra": "asdf"
             },
             {
-                'guilty': 'guilty',
-                'guilty_extra': 'asdf'
+                "guilty": "guilty",
+                "guilty_extra": "asdf"
             }
         ]
 
@@ -562,23 +577,23 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[2].body)
 
-        self.assertContains(response, '<<GUILTY>>')
+        self.assertContains(response, "<<GUILTY>>")
 
     def test_plea_email_not_guilty_pleas(self):
         context_data = self.get_context_data()
-        context_data["case"]['number_of_pleas'] = 3
+        context_data["case"]["number_of_pleas"] = 3
         context_data["plea"]["PleaForms"] = [
             {
-                'guilty': 'not_guilty',
-                'not_guilty_extra': 'asdf'
+                "guilty": "not_guilty",
+                "not_guilty_extra": "asdf"
             },
             {
-                'guilty': 'not_guilty',
-                'not_guilty_extra': 'asdf'
+                "guilty": "not_guilty",
+                "not_guilty_extra": "asdf"
             },
             {
-                'guilty': 'not_guilty',
-                'not_guilty_extra': 'asdf'
+                "guilty": "not_guilty",
+                "not_guilty_extra": "asdf"
             }
         ]
 
@@ -586,23 +601,23 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[2].body)
 
-        self.assertContains(response, '<<NOTGUILTY>>')
+        self.assertContains(response, "<<NOTGUILTY>>")
 
     def test_plea_email_mixed_pleas(self):
         context_data = self.get_context_data()
-        context_data["case"]['number_of_pleas'] = 3
+        context_data["case"]["number_of_pleas"] = 3
         context_data["plea"]["PleaForms"] = [
             {
-                'guilty': 'not_guilty',
-                'not_guilty_extra': 'asdf'
+                "guilty": "not_guilty",
+                "not_guilty_extra": "asdf"
             },
             {
-                'guilty': 'guilty',
-                'guilty_extra': 'asdf'
+                "guilty": "guilty",
+                "guilty_extra": "asdf"
             },
             {
-                'guilty': 'guilty',
-                'guilty_extra': 'asdf'
+                "guilty": "guilty",
+                "guilty_extra": "asdf"
             }
         ]
 
@@ -610,7 +625,7 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[2].body)
 
-        self.assertContains(response, '<<MIXED>>')
+        self.assertContains(response, "<<MIXED>>")
 
     def test_plea_email_no_hardship(self):
         context_data = self.get_context_data()
@@ -619,26 +634,26 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
-        self.assertNotContains(response, '<<SHOWEXPENSES>>')
+        self.assertNotContains(response, "<<SHOWEXPENSES>>")
 
     def test_plea_email_with_hardship(self):
         context_data = self.get_context_data()
 
-        context_data['your_finances']['hardship'] = True
-        context_data['your_expenses'] = {}
-        context_data['your_expenses']['other_bill_pays'] = True
-        context_data['your_expenses']['complete'] = True
-        context_data['your_expenses']['total_household_expenses'] = "101"
-        context_data['your_expenses']['total_other_expenses'] = "202"
-        context_data['your_expenses']['total_expenses'] = "303"
+        context_data["your_finances"]["hardship"] = True
+        context_data["your_expenses"] = {}
+        context_data["your_expenses"]["other_bill_pays"] = True
+        context_data["your_expenses"]["complete"] = True
+        context_data["your_expenses"]["total_household_expenses"] = "101"
+        context_data["your_expenses"]["total_other_expenses"] = "202"
+        context_data["your_expenses"]["total_expenses"] = "303"
 
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
-        self.assertContains(response, '101')
-        self.assertContains(response, '202')
-        self.assertContains(response, '303')
+        self.assertContains(response, "101")
+        self.assertContains(response, "202")
+        self.assertContains(response, "303")
 
 
 class TestCompanyFinancesEmailLogic(TestCase):
@@ -665,7 +680,7 @@ class TestCompanyFinancesEmailLogic(TestCase):
                 "number_of_charges": 1,
                 "plea_made_by": "Company representative"
             },
-            'your_details': {
+            "your_details": {
                 "complete": True,
                 "skipped": True
             },
@@ -686,7 +701,7 @@ class TestCompanyFinancesEmailLogic(TestCase):
                     }
                 ]
             },
-            'your_finances': {
+            "your_finances": {
                 "complete": True,
                 "skipped": True
             },
@@ -694,11 +709,11 @@ class TestCompanyFinancesEmailLogic(TestCase):
                 "complete": True,
                 "skipped": True
             },
-            'your_expenses': {
+            "your_expenses": {
                 "complete": True,
                 "skipped": True
             },
-            'review': {
+            "review": {
                 "complete": True
             }
         }
