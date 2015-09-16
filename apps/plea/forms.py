@@ -133,12 +133,13 @@ class YourDetailsForm(BaseStageForm):
                                                          coerce=to_bool,
                                                          choices=YESNO_CHOICES["Ydy/Nac ydy"],
                                                          label=_("Do you have a UK driving licence?"),
+                                                         help_text=_("Entering your UK driving licence number means you don't have to send your licence to the court."),
                                                          error_messages={"required": ERROR_MESSAGES["HAVE_DRIVING_LICENCE_NUMBER_REQUIRED"]})
 
     driving_licence_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                                              required=True,
                                              label="",
-                                             help_text=_("If yes, enter the number here - it starts with letters from your last name. Entering your number here means you won't have to send your licence to the court."),
+                                             help_text=_("If yes, enter the number here - it starts with letters from your last name."),
                                              error_messages={"required": ERROR_MESSAGES["DRIVING_LICENCE_NUMBER_REQUIRED"]})
 
 
