@@ -63,6 +63,14 @@ class YourDetailsForm(BaseStageForm):
         "updated_address": {
             "field": "correct_address",
             "value": "False"
+        },
+        "ni_number": {
+            "field": "have_ni_number",
+            "value": "True"
+        },
+        "driving_licence_number": {
+            "field": "have_driving_licence_number",
+            "value": "True"
         }
     }
 
@@ -107,15 +115,31 @@ class YourDetailsForm(BaseStageForm):
                                                     "invalid": ERROR_MESSAGES["DATE_OF_BIRTH_INVALID"],
                                                     "is_date_in_past": ERROR_MESSAGES["DATE_OF_BIRTH_IN_FUTURE"]})
 
+    have_ni_number = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                            required=True,
+                                            coerce=to_bool,
+                                            choices=YESNO_CHOICES["Ydy/Nac ydy"],
+                                            label=_("Do you have a National Insurance number?"),
+                                            error_messages={"required": ERROR_MESSAGES["HAVE_NI_NUMBER_REQUIRED"]})
+
     ni_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                                required=False,
-                                label=_("National Insurance number"),
-                                help_text=_("On your National Insurance card, benefit letter, payslip or P60. <br>For example, 'QQ 12 34 56 C'"))
+                                required=True,
+                                label="",
+                                help_text=_("If yes, it can be found on your National Insurance card, benefit letter, payslip or P60.<br>For example, 'QQ 12 34 56 C'"),
+                                error_messages={"required": ERROR_MESSAGES["NI_NUMBER_REQUIRED"]})
+
+    have_driving_licence_number = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                                         required=True,
+                                                         coerce=to_bool,
+                                                         choices=YESNO_CHOICES["Ydy/Nac ydy"],
+                                                         label=_("Do you have a UK driving licence?"),
+                                                         error_messages={"required": ERROR_MESSAGES["HAVE_DRIVING_LICENCE_NUMBER_REQUIRED"]})
 
     driving_licence_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                                             required=False,
-                                             label=_("UK driving licence number"),
-                                             help_text=_("Starts with letters from your last name."))
+                                             required=True,
+                                             label="",
+                                             help_text=_("If yes, enter the number here - it starts with letters from your last name. Entering your number here means you won't have to send your licence to the court."),
+                                             error_messages={"required": ERROR_MESSAGES["DRIVING_LICENCE_NUMBER_REQUIRED"]})
 
 
 class CompanyDetailsForm(BaseStageForm):

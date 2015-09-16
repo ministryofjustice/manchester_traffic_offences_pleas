@@ -1,16 +1,11 @@
 from dateutil import parser
 import logging
-import json
-import smtplib
-import socket
 
-from django.core.mail import EmailMultiAlternatives
-from django.core.mail import get_connection
 from django.conf import settings
 from django.template.loader import render_to_string
+from django.utils.text import wrap
 from django.utils import translation
-
-from apps.govuk_utils.email import TemplateAttachmentEmail
+from django.utils.translation import ugettext_lazy as _
 
 from .models import Case, CourtEmailCount, Court
 from .encrypt import encrypt_and_store_user_data
@@ -18,6 +13,25 @@ from tasks import email_send_court, email_send_prosecutor, email_send_user
 
 
 logger = logging.getLogger(__name__)
+
+
+def get_plea_type(context_data):
+    """
+    Determine if pleas for a submission are
+        all guilty  - returns "guilty"
+        all not guilty - returns "not_guilty"
+        or mixed - returns "mixed"
+    """
+
+    guilty_count = len([plea for plea in context_data['plea']['PleaForms']
+                        if plea['guilty'] == "guilty"])
+
+    if guilty_count == 0:
+        return "not_guilty"
+    elif guilty_count == len(context_data['plea']['PleaForms']):
+        return "guilty"
+    else:
+        return "mixed"
 
 
 def send_plea_email(context_data):
@@ -83,17 +97,46 @@ def send_plea_email(context_data):
 
     email_send_court.delay(case.id, email_count_id, context_data)
 
-    case.add_action("Sent", "Email tasks created")
+    if court_obj.plp_email:
+        email_send_prosecutor.delay(case.id, context_data)
+
+    email_address = context_data.get("review", {}).get("email", False)
+
+    if not email_address:
+        case.add_action("No email entered, user email not sent", "")
+        return True
+
+    if context_data['case']['plea_made_by'] == "Defendant":
+        first_name = context_data['your_details']['first_name']
+        last_name = context_data['your_details']['last_name']
+    else:
+        first_name = context_data['company_details']['first_name']
+        last_name = context_data['company_details']['last_name']
+
+    data = {
+        'email': email_address,
+        'urn': context_data['case']['urn'],
+        'plea_made_by': context_data['case']['plea_made_by'],
+        'number_of_charges': context_data['case']['number_of_charges'],
+        'plea_type': get_plea_type(context_data),
+        'first_name': first_name,
+        'last_name': last_name,
+        'court_address': court_obj.court_address,
+        'court_email': court_obj.court_email
+    }
+
+    html_body = render_to_string("emails/user_plea_confirmation.html", data)
+    txt_body = wrap(render_to_string("emails/user_plea_confirmation.txt", data), 72)
+
+    subject = _("Online plea submission confirmation")
+
+    email_send_user.delay(case.id, email_address, subject, html_body, txt_body)
+
     case.sent = True
     case.save()
 
     if not court_obj.test_mode:
         email_count.sent = True
         email_count.save()
-
-    if court_obj.plp_email:
-        email_send_prosecutor.delay(case.id, context_data)
-
-    email_send_user.delay(case.id, context_data)
 
     return True

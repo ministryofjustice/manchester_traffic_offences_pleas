@@ -31,7 +31,8 @@ SMTP_ROUTES["PNN"]["PASSWORD"] = os.environ.get("PNN_EMAIL_PASSWORD", "")
 
 BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1',
                             'queue_name_prefix': 'dev-',
-                            'polling_interval': 1}
+                            'polling_interval': 1,
+                            'visibility_timeout': 3600}
 
 INSTALLED_APPS += ('raven.contrib.django.raven_compat', )
 
