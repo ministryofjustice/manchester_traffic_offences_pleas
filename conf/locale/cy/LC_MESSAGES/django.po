@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-08 12:39+0100\n"
+"POT-Creation-Date: 2015-09-16 11:34+0100\n"
 "PO-Revision-Date: 2015-09-07 14:17+0000\n"
 "Last-Translator: Welsh Language Unit <welsh.language.unit.manager@hmcts.gsi."
 "gov.uk>\n"
@@ -76,7 +76,7 @@ msgstr ""
 "Os oes gennych unrhyw sylwadau pellach am y gwasanaeth hwn, dywedwch wrthym "
 "yma: "
 
-#: apps/feedback/forms.py:68 apps/plea/forms.py:599
+#: apps/feedback/forms.py:68
 msgid "Email address"
 msgstr "Cyfeiriad e-bost"
 
@@ -88,7 +88,7 @@ msgstr "Os hoffech inni ddod yn ôl atoch, rhowch eich cyfeiriad e-bost isod:"
 msgid "Your feedback has been submitted"
 msgstr "Mae eich adborth wedi cael ei gyflwyno"
 
-#: apps/feedback/stages.py:37 apps/plea/stages.py:344
+#: apps/feedback/stages.py:37 apps/plea/stages.py:324
 msgid "Submission Error"
 msgstr "Gwall wrth gyflwyno"
 
@@ -223,6 +223,11 @@ msgstr "Dieuog"
 #: apps/govuk_utils/templates/widgets/plea_radio_field.html:72
 msgid "Change this plea"
 msgstr "Newid y ple hwn"
+
+#: apps/plea/email.py:131
+#: apps/plea/templates/emails/user_plea_confirmation.html:7
+msgid "Online plea submission confirmation"
+msgstr "Cadarnhad o gofnodi ple ar-lein"
 
 #: apps/plea/fields.py:4
 msgid "Enter your unique reference number (URN)"
@@ -968,11 +973,10 @@ msgstr ""
 "chi drwy'r post."
 
 #: apps/plea/forms.py:600
-msgid ""
-"We'll use this for all future correspondence. We'll also contact you by post."
-msgstr ""
-"Byddwn yn defnyddio hwn ar gyfer pob gohebiaeth yn y dyfodol. Byddwn hefyd "
-"yn cysylltu â chi drwy'r post."
+#, fuzzy
+#| msgid "If no, tell us your correct address here:"
+msgid "If yes, enter your email address here:"
+msgstr "Os nad yw, dywedwch wrthym yma beth yw eich cyfeiriad cywir: "
 
 #: apps/plea/forms.py:639 apps/plea/templates/partials/review_plea.html:34
 msgid "Mitigation"
@@ -1002,16 +1006,11 @@ msgstr "Os oes, dywedwch wrthym pa iaith (gan gynnwys iaith arwyddion):"
 msgid "On page 1, usually at the top."
 msgstr "Ar dudalen 1, fel arfer ar y brig."
 
-#: apps/plea/stages.py:345
+#: apps/plea/stages.py:325
 msgid ""
 "There seems to have been a problem submitting your plea. Please try again."
 msgstr ""
 "Mae’n ymddangos bod problem wrth gyflwyno eich ple. Rhowch gynnig arall arni."
-
-#: apps/plea/tasks.py:171
-#: apps/plea/templates/emails/user_plea_confirmation.html:7
-msgid "Online plea submission confirmation"
-msgstr "Cadarnhad o gofnodi ple ar-lein"
 
 #: apps/plea/templates/case.html:6 apps/plea/templates/case.html.py:45
 #: apps/plea/templates/emails/attachments/plea_email.html:34
@@ -2167,3 +2166,10 @@ msgstr "Cwestiynau am eich pledion?"
 #: manchester_traffic_offences/templates/start.html:54
 msgid "Need help using this service?"
 msgstr "Angen help i ddefnyddio'r gwasanaeth hwn?"
+
+#~ msgid ""
+#~ "We'll use this for all future correspondence. We'll also contact you by "
+#~ "post."
+#~ msgstr ""
+#~ "Byddwn yn defnyddio hwn ar gyfer pob gohebiaeth yn y dyfodol. Byddwn "
+#~ "hefyd yn cysylltu â chi drwy'r post."
