@@ -9,7 +9,7 @@
     <fieldset>
 
         <legend>
-            <div class="label-line">
+            <div class="header-line">
                 <span class="label-text">{% spaceless %}
                 {% if form.case_data %}
                     {{ form.case_data.offence_short_title }}
@@ -30,7 +30,7 @@
                     {{ form.case_data.offence_wording|linebreaks }}
                 </div>
             </div>
-            
+
                 {% if plea.split_form != "split_form_last_step" %}
             <h3 class="heading-small">Your plea for this charge</h3>
                 {% endif %}
@@ -55,7 +55,7 @@
                     {{ choice.choice_label }}
                 </label>
                 {% endfor %}
-              
+
             </div>
         </div>
     {% endif %}
@@ -72,7 +72,7 @@
             <a href="{{ request.path }}?reset">{% blocktrans %}Change this plea{% endblocktrans %}</a>
         </div>
     {% endif %}
-        
+
     </fieldset>
 </div>
 
