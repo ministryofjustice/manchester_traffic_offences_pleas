@@ -111,7 +111,7 @@ class CaseCreationTests(TestCase):
         case = Case.objects.all().order_by('-id')[0]
         action = case.get_actions("Court email network error")
         self.assertTrue(len(action) > 0)
-        self.assertEqual(action[0].status_info, u"Email failed to send, socket error")
+        self.assertEqual(action[0].status_info, u"<class 'socket.error'>: Email failed to send, socket error")
 
         count_obj = CourtEmailCount.objects.all().order_by('-id')[0]
         self.assertEqual(case.sent, count_obj.sent)
