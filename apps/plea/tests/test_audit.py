@@ -1,13 +1,10 @@
-from celery.exceptions import Retry, RetryTaskError
+from celery.exceptions import Retry
 import datetime
 from glob import glob
-import io
 import os
-from itertools import cycle, chain
 import json
-from mock import patch, Mock
+from mock import patch
 import socket
-import redgreenunittest as unittest
 
 from django.conf import settings
 from django.test import TestCase
@@ -98,7 +95,7 @@ class CaseCreationTests(TestCase):
         self.assertEquals(self.context_data['case']['urn'], data['case']['urn'])
 
     @override_settings(STORE_USER_DATA=True)
-    @patch("apps.plea.email.TemplateAttachmentEmail.send")
+    @patch("apps.govuk_utils.email.TemplateAttachmentEmail.send")
     def test_email_failure_audit(self, send):
         send.side_effect = socket.error("Email failed to send, socket error")
 
@@ -114,7 +111,7 @@ class CaseCreationTests(TestCase):
         case = Case.objects.all().order_by('-id')[0]
         action = case.get_actions("Court email network error")
         self.assertTrue(len(action) > 0)
-        self.assertEqual(action[0].status_info, u"Email failed to send, socket error")
+        self.assertEqual(action[0].status_info, u"<class 'socket.error'>: Email failed to send, socket error")
 
         count_obj = CourtEmailCount.objects.all().order_by('-id')[0]
         self.assertEqual(case.sent, count_obj.sent)
@@ -140,7 +137,10 @@ class CaseCreationTests(TestCase):
             urn="00/AA/00000/00")
 
         try:
-            email_send_user.delay(case.id, self.context_data)
+            email_send_user.delay(case.id, "ian.george@digital.justice.gov.uk",
+                                  "User email test", "<strong>Test email body</strong>",
+                                  "Test email body")
+
         except socket.error:
             pass
         except Retry:
@@ -170,7 +170,7 @@ class CaseCreationTests(TestCase):
                                               "email": ""}})
 
         try:
-            email_send_user.delay(case.id, self.context_data)
+            send_plea_email(self.context_data)
         except socket.error:
             pass
         except Retry:
@@ -178,12 +178,12 @@ class CaseCreationTests(TestCase):
 
         case = Case.objects.all().order_by('-id')[0]
 
-        correct_actions = [u'No email entered, user email not sent']
+        correct_action = u'No email entered, user email not sent'
 
-        for i, action in enumerate(case.actions.all()):
-            if correct_actions[i] != action.status:
+        actions = list(case.actions.all())
+        if correct_action != actions[-1].status:
                 self.fail("Wrong action got {} expected {}".format(
-                    action.status, correct_actions[i]))
+                    actions[-1].status, correct_action))
 
     @override_settings(STORE_USER_DATA=False)
     def test_data_not_stored(self):
