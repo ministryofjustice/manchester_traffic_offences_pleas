@@ -120,6 +120,24 @@ p.important {
 	}
 }
 
+.header-line {
+	position: relative;
+
+	&:before {
+		content: "";
+		position: absolute;
+		width: 100%;
+		border-bottom: 2px solid $grey-2;
+		bottom: .5em;
+	}
+
+	> span {
+		position: relative;
+		padding-right: 10px;
+		background: #fff;
+	}
+}
+
 /*== Details pseudo-element ===============================*/
 .js-Details {
 	.details-trigger {
