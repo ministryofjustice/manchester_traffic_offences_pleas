@@ -5,7 +5,7 @@ from django.utils.translation import ugettext as _
 from apps.govuk_utils.stages import FormStage
 from apps.govuk_utils.forms import RequiredFormSet
 
-from .email import send_plea_email
+from .email import send_plea_email, get_plea_type
 from .forms import (CaseForm,
                     YourDetailsForm,
                     CompanyDetailsForm,
@@ -21,24 +21,6 @@ from .fields import ERROR_MESSAGES
 from .models import Court, Case, Offence
 from .standardisers import standardise_urn, slashify_urn
 
-
-def get_plea_type(context_data):
-    """
-    Determine if pleas for a submission are
-        all guilty  - returns "guilty"
-        all not guilty - returns "not_guilty"
-        or mixed - returns "mixed"
-    """
-
-    guilty_count = len([plea for plea in context_data["plea"]["PleaForms"]
-                        if plea["guilty"] == "guilty"])
-
-    if guilty_count == 0:
-        return "not_guilty"
-    elif guilty_count == len(context_data["plea"]["PleaForms"]):
-        return "guilty"
-    else:
-        return "mixed"
 
 def get_case(urn):
     try:
