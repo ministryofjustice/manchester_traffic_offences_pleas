@@ -5,7 +5,9 @@ import re
 from django.test import TestCase
 from django.core import mail
 
-from ..email import TemplateAttachmentEmail, send_plea_email
+from apps.govuk_utils.email import TemplateAttachmentEmail
+
+from ..email import send_plea_email
 from ..models import Case, CourtEmailCount, Court
 
 

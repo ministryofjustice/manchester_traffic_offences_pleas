@@ -56,7 +56,9 @@ class EmailTemplateTests(TestCase):
                             "contact_number": "0161 123 2345",
                             "date_of_birth_0": "12",
                             "date_of_birth_1": "03",
-                            "date_of_birth_2": "1980"}
+                            "date_of_birth_2": "1980",
+                            "have_ni_number": False,
+                            "have_driving_licence_number": False}
 
         if not plea_data:
             plea_data = {"form-TOTAL_FORMS": "1",
@@ -185,6 +187,7 @@ class EmailTemplateTests(TestCase):
 
         translation.deactivate()
 
+        
         self.assertContains(response, "<tr><th>Unique reference number</th><td>06/AA/00000/00</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Court hearing date</th><td>{}</td></tr>".format(self.hearing_date.strftime("%d/%m/%Y")), count=1, html=True)
 
@@ -235,7 +238,9 @@ class EmailTemplateTests(TestCase):
                                 "date_of_birth_0": "12",
                                 "date_of_birth_1": "03",
                                 "date_of_birth_2": "1980",
+                                "have_ni_number": True,
                                 "ni_number": "QQ 12 34 56 Q",
+                                "have_driving_licence_number": True,
                                 "driving_licence_number": "TESTE12345"}
 
         context_data = self.get_context_data(details_data=context_data_details)
