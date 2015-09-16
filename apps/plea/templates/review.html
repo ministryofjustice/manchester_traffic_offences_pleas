@@ -94,7 +94,7 @@
                     <tr>
                         <th colspan="2">
                             <h2>{% blocktrans %}Your expenses{% endblocktrans %}</h2>
-                            <a class="change-link" href="{% url "plea_form_step" "hardship_details" %}" class="review">{% blocktrans %}Change your expenses{% endblocktrans %}</a>
+                            <a class="change-link" href="{% url "plea_form_step" "hardship" %}" class="review">{% blocktrans %}Change your expenses{% endblocktrans %}</a>
                         </th>
                     </tr>
                     </thead>
@@ -118,11 +118,11 @@
                 </table>
         {% endif %}
     {% endif %}
-    
+
     <hr>
-    
+
     <section>
-        
+
         {% radio_field form.receive_email_updates inline=True %}
 
         <div class="panel-indent move-up js-Conditional" data-conditional-trigger="receive_email_updates" data-conditional-value="True">
@@ -138,9 +138,9 @@
         <div class="form-group-wide{% if form.understand.errors %} with-error{% endif %}">
 
             <h2 class="heading-medium">{% blocktrans %}Important{% endblocktrans %}</h2>
-            
+
             {{ form.understand.errors }}
-            
+
             <label for="{{ form.understand.id_for_label }}" class="block-label">
                 <span class="important">{% blocktrans %}It is an offence to make a false statement or to deliberately fail to disclose any relevant facts.{% endblocktrans %}</span>
                 <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
