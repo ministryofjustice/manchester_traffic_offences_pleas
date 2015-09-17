@@ -1,4 +1,4 @@
-/*  
+/*
 ====================================================
 Main styles
 ====================================================
@@ -151,9 +151,14 @@ Main styles
 		}
 	}
 
-	h3 {
-		@include core-24;
-		margin: 0;
+	.charge-heading {
+		padding-top: 1.25em;
+		padding-bottom: 0;
+
+		h3 {
+			@include bold-19();
+			margin: 0;
+		}
 	}
 }
 
