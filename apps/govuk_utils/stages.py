@@ -95,7 +95,7 @@ class FormStage(object):
 
         if self.form and self.form.is_valid():
             clean_data.update(self.save_forms())
-            
+
             if self.split_form is None or self.split_form == "split_form_last_step":
                 clean_data["complete"] = True
                 self.next_step = self.get_next(next_step)
@@ -103,7 +103,7 @@ class FormStage(object):
                 self.all_data[self.name].pop("complete", None)
                 self.form.data["split_form"] = "split_form_last_step"
                 clean_data["split_form"] = "split_form_last_step"
-        
+
         return clean_data
 
     def render(self, request_context):
@@ -132,10 +132,10 @@ class MultiStageForm(object):
             if stage_class.name == current_stage:
                 self.current_stage_class = stage_class
 
-        self.load_from_storage(storage_dict)
-
         if self.current_stage_class is None:
-            raise Http404
+            raise Http404("Stage not set")
+
+        self.load_from_storage(storage_dict)
 
     def _get_stage_class(self, name):
         for stage_class in self.stage_classes:
@@ -154,7 +154,12 @@ class MultiStageForm(object):
         self.current_stage = self.current_stage_class(self.urls, self.all_data)
 
         if not self.current_stage.check_dependencies():
-            return HttpResponseRedirect(self.urls[self.stage_classes[0].name])
+            if self.current_stage.name == "complete":
+                redirect = "/"
+            else:
+                redirect = self.urls[self.stage_classes[0].name]
+
+            return HttpResponseRedirect(redirect)
 
         self.current_stage.load(request_context)
 
