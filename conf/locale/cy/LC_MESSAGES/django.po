@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-16 16:25+0100\n"
+"POT-Creation-Date: 2015-09-17 14:57+0100\n"
 "PO-Revision-Date: 2015-09-07 14:17+0000\n"
 "Last-Translator: Welsh Language Unit <welsh.language.unit.manager@hmcts.gsi."
 "gov.uk>\n"
@@ -201,7 +201,7 @@ msgstr "Gweld gwybodaeth am y cyhuddiad"
 #: apps/plea/templates/emails/attachments/plea_email.html:61
 #: apps/plea/templates/emails/attachments/plp_email.html:60
 #: apps/plea/templates/partials/page_title_plea.html:8
-#: apps/plea/templates/partials/review_plea.html:19
+#: apps/plea/templates/partials/review_plea.html:21
 #: apps/plea/templates/review.html:65
 msgid "Your plea"
 msgid_plural "Your pleas"
@@ -211,12 +211,12 @@ msgstr[2] "Eich pledion"
 msgstr[3] "Eich pledion"
 
 #: apps/govuk_utils/templates/widgets/plea_radio_field.html:71
-#: apps/plea/forms.py:611 apps/plea/templates/partials/review_plea.html:26
+#: apps/plea/forms.py:611 apps/plea/templates/partials/review_plea.html:28
 msgid "Guilty"
 msgstr "Euog"
 
 #: apps/govuk_utils/templates/widgets/plea_radio_field.html:71
-#: apps/plea/forms.py:612 apps/plea/templates/partials/review_plea.html:28
+#: apps/plea/forms.py:612 apps/plea/templates/partials/review_plea.html:30
 msgid "Not guilty"
 msgstr "Dieuog"
 
@@ -686,8 +686,8 @@ msgstr "Rhif yswiriant gwladol"
 #| "On your National Insurance card, benefit letter, payslip or P60. <br>For "
 #| "example, 'QQ 12 34 56 C'"
 msgid ""
-"If yes, it can be found on your National Insurance card, benefit letter, "
-"payslip or P60.<br>For example, 'QQ 12 34 56 C'"
+"If yes, enter it here. It can be found on your National Insurance card, "
+"benefit letter, payslip or P60 - for example, 'QQ 12 34 56 C'"
 msgstr ""
 "Ar eich cerdyn Yswiriant Gwladol, llythyr budd-daliad, slip cyflog neu P60. "
 "<br>Er enghraifft, 'QQ 12 34 56 C'"
@@ -706,7 +706,8 @@ msgstr ""
 
 #: apps/plea/forms.py:142
 msgid ""
-"If yes, enter the number here - it starts with letters from your last name."
+"If yes, enter it here. It's on your driving licence photocard and starts "
+"with letters from your last name."
 msgstr ""
 
 #: apps/plea/forms.py:155
@@ -982,7 +983,7 @@ msgstr ""
 msgid "If yes, enter your email address here:"
 msgstr "Os nad yw, dywedwch wrthym yma beth yw eich cyfeiriad cywir: "
 
-#: apps/plea/forms.py:640 apps/plea/templates/partials/review_plea.html:34
+#: apps/plea/forms.py:640 apps/plea/templates/partials/review_plea.html:36
 msgid "Mitigation"
 msgstr "Lliniariad"
 
@@ -1458,7 +1459,7 @@ msgid "Terms and Conditions and Privacy Policy:"
 msgstr "Telerau ac Amodau a Pholisi Preifatrwydd:"
 
 #: apps/plea/templates/partials/page_title_plea.html:11
-#: apps/plea/templates/partials/review_plea.html:21
+#: apps/plea/templates/partials/review_plea.html:23
 msgid "Company plea"
 msgid_plural "Company pleas"
 msgstr[0] "Ple'r cwmni"
@@ -1546,7 +1547,7 @@ msgstr "Eraill sy’n cyfrannu at filiau’r cartref"
 
 #: apps/plea/templates/partials/review_expenses.html:15
 #: apps/plea/templates/partials/review_finances.html:71
-#: apps/plea/templates/partials/review_plea.html:45
+#: apps/plea/templates/partials/review_plea.html:47
 msgid "Yes,No (v3)"
 msgstr "Oes,Nac oes"
 
@@ -1600,19 +1601,19 @@ msgstr "Yn cynnwys taliadau ar gyfer dibynyddion?"
 msgid "Financial hardship"
 msgstr "Caledi ariannol"
 
-#: apps/plea/templates/partials/review_plea.html:11
+#: apps/plea/templates/partials/review_plea.html:12
 msgid "Charge"
 msgstr "Cyhuddiad"
 
-#: apps/plea/templates/partials/review_plea.html:40
+#: apps/plea/templates/partials/review_plea.html:42
 msgid "Not guilty because"
 msgstr "Dieuog oherwydd"
 
-#: apps/plea/templates/partials/review_plea.html:44
+#: apps/plea/templates/partials/review_plea.html:46
 msgid "Interpreter required"
 msgstr "Mae angen cyfieithydd"
 
-#: apps/plea/templates/partials/review_plea.html:49
+#: apps/plea/templates/partials/review_plea.html:51
 msgid "Language"
 msgstr "Iaith"
 
