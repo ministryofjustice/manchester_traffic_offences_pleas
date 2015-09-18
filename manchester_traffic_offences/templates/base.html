@@ -40,7 +40,7 @@
 {% block content %}
     {%  if messages %}
         {% for message in messages %}
-            
+
             {% if "success" in message.tags %}
             <section class="success-header">
                 <p class="ticked">{{ message }}</p>
@@ -57,7 +57,7 @@
                 {% endif %}
             </section>
             {% endif %}
-            
+
         {% endfor %}
     {% endif %}
 
@@ -81,7 +81,7 @@
     {% endifequal %}
 
     {% switch enable_a11y_testing %}
-        
+
         {% if request.session.a11y_testing == "tota11y" %}
         <script src="{% static "javascripts/vendor/tota11y.min.js" %}" type="text/javascript"></script>
         {% endif %}
