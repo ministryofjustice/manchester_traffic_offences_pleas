@@ -7,12 +7,12 @@
 {% block subject %}{% blocktrans %}Online plea submission confirmation{% endblocktrans %}{% endblock subject %}
 
 {% block content %}
-    
+
     {% if plea_type == "guilty" %}{% add_test_tag "<<GUILTY>>" %}{% endif %}
     {% if plea_type == "not_guilty" %}{% add_test_tag "<<NOTGUILTY>>" %}{% endif %}
     {% if plea_type == "mixed" %}{% add_test_tag "<<MIXED>>" %}{% endif %}
-   
-        
+
+
     <h1>{% spaceless %}
         {% if plea_made_by == "Defendant" %}
             {% blocktrans count charges=number_of_charges %}Your plea has been sent to the court{% plural %}Your pleas have been sent to the court{% endblocktrans %}
@@ -22,7 +22,7 @@
     {% endspaceless %}</h1>
 
     <h2>{% blocktrans %}What happens next:{% endblocktrans %}</h2>
-    
+
     <ul>
     {% if plea_type == "guilty" or plea_type == "mixed" %}
         {% if plea_made_by == "Defendant" %}
@@ -45,8 +45,8 @@
             <li>{% blocktrans %}we'll send you a letter with a new hearing date for a company representative to come to court{% endblocktrans %}</li>
         {% endif %}
     {% endif %}
-        
-        <li>{% blocktrans %}you can <a href="javascript:window.print();">print a copy</a> of this plea confirmation for your records{% endblocktrans %}</li>
+
+        <li>{% blocktrans %}you can print a copy of this plea confirmation for your records{% endblocktrans %}</li>
     </ul>
 
     <h2>{% blocktrans %}Do not:{% endblocktrans %}</h2>
