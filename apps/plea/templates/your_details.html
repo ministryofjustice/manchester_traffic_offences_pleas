@@ -26,7 +26,7 @@
 
     {% std_field form.contact_number %}
 
-    {% std_field form.date_of_birth %}
+    {% multi_field form.date_of_birth %}
 
     {% radio_field form.have_ni_number inline=True %}
 
@@ -42,6 +42,6 @@
 
     <div class="panel-indent move-up js-Conditional" data-conditional-trigger="have_driving_licence_number" data-conditional-value="False">
         <h2 class="heading-small">{% blocktrans %}Important:{% endblocktrans %}</h2>
-        <p>{% blocktrans %}If you have a UK driving licence and fail to tell us your licence may be suspended.{% endblocktrans %}</p>
+        <p>{% blocktrans %}If you have a UK driving licence and fail to tell us, your licence may be suspended.{% endblocktrans %}</p>
     </div>
 {% endblock stage_form %}
