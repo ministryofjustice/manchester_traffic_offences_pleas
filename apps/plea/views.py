@@ -76,7 +76,7 @@ class PleaOnlineViews(TemplateView):
 
     def get(self, request, stage=None):
         storage = self._get_storage(request)
-        
+
         if not stage:
             stage = PleaOnlineForms.stage_classes[0].name
             return HttpResponseRedirect(reverse_lazy("plea_form_step", args=(stage,)))
