@@ -30,24 +30,6 @@ Main styles
 	fieldset {
 		position: relative;
 	}
-
-	.label-line {
-		position: relative;
-
-		&:before {
-			content: "";
-			position: absolute;
-			width: 100%;
-			border-top: 2px solid $grey-2;
-			bottom: .575em;
-		}
-
-		.label-text {
-			position: relative;
-			padding-right: 10px;
-			background: #fff;
-		}
-	}
 }
 
 

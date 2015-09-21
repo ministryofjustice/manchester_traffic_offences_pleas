@@ -1,0 +1,43 @@
+{% extends "base_form.html" %}
+
+{% load i18n %}
+{% load form_widgets %}
+{% load testing %}
+
+{% block page_title %}{% blocktrans %}Your expenses{% endblocktrans %} - {{ block.super }}{% endblock %}
+
+
+{% block stage_header %}
+    <h1 class="heading-xlarge">{% blocktrans %}Your expenses{% endblocktrans %}</h1>
+
+    <p class="lede">{% blocktrans %}To help the court decide your fine, you must provide information about your expenses.{% endblocktrans %}</p>
+{% endblock stage_header %}
+
+
+{% block stage_form %}
+
+    <h2 class="font-large header-line"><span>{% blocktrans %}Household expenses{% endblocktrans %}</span></h2>
+
+    <p>{% blocktrans %}What are your monthly household bills for the following?{% endblocktrans %}</p>
+
+    <div class="grid-row">
+        <div class="column-half">
+            {% std_field form.household_accommodation hide_optional=True prefix="£" %}
+        </div>
+        <div class="column-half">
+            {% std_field form.household_utility_bills hide_optional=True prefix="£" %}
+        </div>
+    </div>
+
+    <div class="grid-row">
+        <div class="column-half">
+            {% std_field form.household_insurance hide_optional=True prefix="£" %}
+        </div>
+        <div class="column-half">
+            {% std_field form.household_council_tax hide_optional=True prefix="£" %}
+        </div>
+    </div>
+
+    {% radio_field form.other_bill_payers inline=True %}
+
+{% endblock stage_form %}
