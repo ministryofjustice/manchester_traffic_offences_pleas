@@ -4,30 +4,32 @@
 
         {% if plea.PleaForms|length > 1 or pleaform.title %}
         <tr>
-            <td colspan="2">
-                {% if pleaform.title  %}
-                <h3>{{ pleaform.title }}</h3>
-                {% else %}
-                <h3>{% blocktrans %}Charge{% endblocktrans %} {{ forloop.counter }}</h3>
-                {% endif %}
-            </td>
+            <th class="charge-heading" colspan="2">
+                <h3>{% spaceless %}
+                    {% if pleaform.title  %}
+                        {{ pleaform.title }}
+                    {% else %}
+                        {% blocktrans %}Charge{% endblocktrans %} {{ forloop.counter }}
+                    {% endif %}
+                {% endspaceless %}</h3>
+            </th>
         </tr>
         {% endif %}
         <tr>
-            <th>
+            <th>{% spaceless %}
                 {% if case.plea_made_by == "Defendant" %}
                     {% blocktrans count counter=1 %}Your plea{% plural %}Your pleas{% endblocktrans %}
                 {% else %}
                     {% blocktrans %}Company plea{% endblocktrans %}
                 {% endif %}
-            </th>
-            <td>
+            {% endspaceless %}</th>
+            <td>{% spaceless %}
                 {% if pleaform.guilty == "guilty" %}
                     {% blocktrans %}Guilty{% endblocktrans %}
                 {% elif pleaform.guilty == "not_guilty" %}
                     {% blocktrans %}Not guilty{% endblocktrans %}
                 {% endif %}
-            </td>
+            {% endspaceless %}</td>
         </tr>
         {% if pleaform.guilty == "guilty" %}
         <tr>

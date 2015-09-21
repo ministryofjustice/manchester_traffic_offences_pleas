@@ -105,7 +105,7 @@
 
                     {% std_field plea_form.not_guilty_extra wide=True hide_optional=True counter=charge_number %}
 
-                    {% radio_field plea_form.interpreter_needed hide_optional=True inline=True %}
+                    {% radio_field plea_form.interpreter_needed hide_optional=True inline=True counter=charge_number %}
                 {% endif %}
 
                 {% if case.plea_made_by == "Company representative" %}
@@ -114,11 +114,11 @@
 
                     {% std_field plea_form.not_guilty_extra wide=True hide_optional=True counter=charge_number help_text=_("Tell us why you believe the company is not guilty:") %}
 
-                    {% radio_field plea_form.interpreter_needed hide_optional=True inline=True label=_("Does your company representative need an interpreter in court?") %}
+                    {% radio_field plea_form.interpreter_needed hide_optional=True counter=charge_number inline=True label=_("Does your company representative need an interpreter in court?") %}
                 {% endif %}
 
                     <div class="js-Conditional move-up" data-conditional-trigger="{{ plea_form.prefix }}-interpreter_needed" data-conditional-value="True">
-                        {% std_field plea_form.interpreter_language hide_optional=True %}
+                        {% std_field plea_form.interpreter_language hide_optional=True counter=charge_number %}
                     </div>
 
                 </section>

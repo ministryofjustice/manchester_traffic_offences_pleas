@@ -48,7 +48,7 @@
                     <li>{% blocktrans %}we'll send you a letter with a new hearing date for a company representative to come to court{% endblocktrans %}</li>
                 {% endif %}
             {% endif %}
-                
+
                 <li>{% blocktrans %}you can <a href="javascript:window.print();">print a copy</a> of this plea confirmation for your records{% endblocktrans %}</li>
             </ul>
         </div>
@@ -83,7 +83,7 @@
         </div>
 
     </section>
-    
+
 {% endblock page_content %}
 
 {% block body_end %}
@@ -94,6 +94,8 @@
 {% for event in analytics_events %}
 ga('send', 'event', 'Complete submission', '{{ event.action }}', '{{ event.label }}');
 {% endfor %}
+
+ga('set', 'dimension1', '{{ LANGUAGE_CODE }}');
 </script>
     {% endif %}
 {% endblock body_end %}
