@@ -125,7 +125,7 @@ class YourDetailsForm(BaseStageForm):
     ni_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                                 required=True,
                                 label="",
-                                help_text=_("If yes, it can be found on your National Insurance card, benefit letter, payslip or P60.<br>For example, 'QQ 12 34 56 C'"),
+                                help_text=_("If yes, enter it here. It can be found on your National Insurance card, benefit letter, payslip or P60 - for example, 'QQ 12 34 56 C'"),
                                 error_messages={"required": ERROR_MESSAGES["NI_NUMBER_REQUIRED"]})
 
     have_driving_licence_number = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
@@ -133,12 +133,13 @@ class YourDetailsForm(BaseStageForm):
                                                          coerce=to_bool,
                                                          choices=YESNO_CHOICES["Ydy/Nac ydy"],
                                                          label=_("Do you have a UK driving licence?"),
+                                                         help_text=_("Entering your UK driving licence number means you don't have to send your licence to the court."),
                                                          error_messages={"required": ERROR_MESSAGES["HAVE_DRIVING_LICENCE_NUMBER_REQUIRED"]})
 
     driving_licence_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                                              required=True,
                                              label="",
-                                             help_text=_("If yes, enter the number here - it starts with letters from your last name. Entering your number here means you won't have to send your licence to the court."),
+                                             help_text=_("If yes, enter it here. It's on your driving licence photocard and starts with letters from your last name."),
                                              error_messages={"required": ERROR_MESSAGES["DRIVING_LICENCE_NUMBER_REQUIRED"]})
 
 
