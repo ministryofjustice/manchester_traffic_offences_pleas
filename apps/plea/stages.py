@@ -1,6 +1,3 @@
-from dateutil.parser import parse
-import datetime
-
 from django.contrib import messages
 from django.forms.formsets import formset_factory
 from django.utils.translation import ugettext as _
@@ -14,7 +11,9 @@ from .forms import (CaseForm,
                     CompanyDetailsForm,
                     PleaForm,
                     YourMoneyForm,
-                    YourExpensesForm,
+                    HardshipForm,
+                    HouseholdExpensesForm,
+                    OtherExpensesForm,
                     CompanyFinancesForm,
                     ConfirmationForm)
 
@@ -37,11 +36,11 @@ class CaseStage(FormStage):
     dependencies = []
 
     def render(self, request_context):
-        if 'urn' in self.form.errors and ERROR_MESSAGES['URN_ALREADY_USED'] in self.form.errors['urn']:
-            self.context['urn_already_used'] = True
+        if "urn" in self.form.errors and ERROR_MESSAGES["URN_ALREADY_USED"] in self.form.errors["urn"]:
+            self.context["urn_already_used"] = True
 
             try:
-                self.context["court"] = Court.objects.get_by_urn(self.form.data['urn'])
+                self.context["court"] = Court.objects.get_by_urn(self.form.data["urn"])
             except Court.DoesNotExist:
                 pass
 
@@ -53,7 +52,7 @@ class CaseStage(FormStage):
         if "urn" in clean_data:
             clean_data["urn"] = slashify_urn(standardise_urn(clean_data["urn"]))
 
-        if 'complete' in clean_data:
+        if "complete" in clean_data:
             if clean_data.get("plea_made_by", "Defendant") == "Defendant":
                 self.set_next_step("your_details")
             else:
@@ -72,9 +71,8 @@ class CompanyDetailsStage(FormStage):
         clean_data = super(CompanyDetailsStage,
                            self).save(form_data, next_step)
 
-        if 'complete' in clean_data:
-            self.set_next_step("plea", skip=["your_details", "your_finances",
-                                             "your_expenses"])
+        if "complete" in clean_data:
+            self.set_next_step("plea", skip=["your_details", "your_finances", "household_expenses"])
 
         return clean_data
 
@@ -89,7 +87,7 @@ class YourDetailsStage(FormStage):
         clean_data = super(YourDetailsStage,
                            self).save(form_data, next_step)
 
-        if 'complete' in clean_data:
+        if "complete" in clean_data:
             self.set_next_step("plea", skip=["company_details",
                                              "company_finances"])
 
@@ -113,8 +111,8 @@ class PleaStage(FormStage):
             # in the right order
             if court.display_case_data:
                 offences = Offence.objects.filter(case=case).extra(
-                    select={'seq_number': "cast(coalesce(nullif(offence_seq_number,''),'0') as float)"}
-                ).order_by('seq_number', "id")
+                    select={"seq_number": "cast(coalesce(nullif(offence_seq_number,''),'0') as float)"}
+                ).order_by("seq_number", "id")
 
         return offences
 
@@ -239,55 +237,78 @@ class YourMoneyStage(FormStage):
 
         clean_data = super(YourMoneyStage, self).save(form_data, next_step)
 
-        you_are = clean_data.get('you_are', None)
+        you_are = clean_data.get("you_are", None)
 
         if self.split_form is None or self.split_form == "split_form_last_step":
             if you_are:
-                hardship_field = you_are.replace(' ', '_').replace('-', '_').lower() + "_hardship"
+                hardship_field = you_are.replace(" ", "_").replace("-", "_").lower() + "_hardship"
 
                 hardship = clean_data.get(hardship_field, False)
 
                 self.all_data["your_finances"]["hardship"] = hardship
 
                 if not hardship:
-                    self.set_next_step("review", skip=["your_expenses"])
+                    self.set_next_step("review", skip=["hardship", "household_expenses", "other_expenses"])
 
         return clean_data
 
 
-class YourExpensesStage(FormStage):
-    name = "your_expenses"
-    template = "your_expenses.html"
-    form_class = YourExpensesForm
+class HardshipStage(FormStage):
+    name = "hardship"
+    template = "hardship.html"
+    form_class = HardshipForm
     dependencies = ["case", "your_details", "plea", "your_finances"]
+
+
+class HouseholdExpensesStage(FormStage):
+    name = "household_expenses"
+    template = "household_expenses.html"
+    form_class = HouseholdExpensesForm
+    dependencies = ["case", "your_details", "plea", "your_finances", "hardship"]
 
     def save(self, form_data, next_step=None):
 
-        household_expense_fields = ['household_accommodation',
-                                    'household_utility_bills',
-                                    'household_insurance',
-                                    'household_council_tax']
+        household_expense_fields = ["household_accommodation",
+                                    "household_utility_bills",
+                                    "household_insurance",
+                                    "household_council_tax"]
 
-        other_expense_fields = ['other_tv_subscription',
-                                'other_travel_expenses',
-                                'other_telephone',
-                                'other_loan_repayments',
-                                'other_court_payments',
-                                'other_child_maintenance']
+        clean_data = super(HouseholdExpensesStage, self).save(form_data, next_step)
 
-        clean_data = super(YourExpensesStage, self).save(form_data, next_step)
+        if "complete" in clean_data:
+            total_household = sum(float(clean_data[field] or 0) for field in household_expense_fields)
+            self.all_data["your_expenses"] = {"total_household_expenses": total_household}
 
-        if 'complete' in clean_data:
+        return clean_data
 
+
+class OtherExpensesStage(FormStage):
+    name = "other_expenses"
+    template = "other_expenses.html"
+    form_class = OtherExpensesForm
+    dependencies = ["case", "your_details", "plea", "your_finances", "hardship", "household_expenses"]
+
+    def save(self, form_data, next_step=None):
+
+        other_expense_fields = ["other_tv_subscription",
+                                "other_travel_expenses",
+                                "other_telephone",
+                                "other_loan_repayments",
+                                "other_court_payments",
+                                "other_child_maintenance"]
+
+        clean_data = super(OtherExpensesStage, self).save(form_data, next_step)
+
+        if "complete" in clean_data:
             self.set_next_step("review", skip=["company_finances"])
 
-            total_household = sum(float(clean_data[field] or 0) for field in household_expense_fields)
+            total_household = self.all_data["your_expenses"]["total_household_expenses"]
+
             total_other = sum(float(clean_data[field] or 0) for field in other_expense_fields)
             total_expenses = total_household + total_other
 
-            clean_data['total_household_expenses'] = total_household
-            clean_data['total_other_expenses'] = total_other
-            clean_data['total_expenses'] = total_expenses
+            self.all_data["your_expenses"].update({"total_other_expenses": total_other,
+                                                   "total_expenses": total_expenses })
 
         return clean_data
 
@@ -321,8 +342,8 @@ class ReviewStage(FormStage):
                 self.set_next_step("complete")
             else:
                 self.add_message(messages.ERROR, '<h2 class="heading-medium">{}</h2><p>{}</p>'.format(
-                    _('Submission Error'),
-                    _('There seems to have been a problem submitting your plea. Please try again.')))
+                    _("Submission Error"),
+                    _("There seems to have been a problem submitting your plea. Please try again.")))
                 self.set_next_step("review")
 
         return clean_data
@@ -345,7 +366,6 @@ class CompleteStage(FormStage):
             pass
 
         # Build an array of events to send to analytics now the journey is complete
-        
         def is_entered(field):
             if len(self.all_data.get("your_details", {}).get(field, "")) > 0:
                 return "Yes"
@@ -357,8 +377,8 @@ class CompleteStage(FormStage):
 
         if self.all_data["case"]["plea_made_by"] == "Defendant":
             self.context["analytics_events"].extend([{"action": "NI number",
-                                               "label": is_entered("ni_number")},
-                                              {"action": "Driving licence number",
-                                               "label": is_entered("driving_licence_number")}])
+                                                      "label": is_entered("ni_number")},
+                                                     {"action": "Driving licence number",
+                                                      "label": is_entered("driving_licence_number")}])
 
         return super(CompleteStage, self).render(request_context)

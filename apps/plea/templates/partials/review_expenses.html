@@ -8,11 +8,11 @@
     <tbody>
         <tr>
             <th>{% blocktrans %}Financial hardship details{% endblocktrans %}</th>
-            <td>{{ your_expenses.hardship_details|linebreaksbr }}</td>
+            <td>{{ hardship.hardship_details|linebreaksbr }}</td>
         </tr>
         <tr>
             <th>{% blocktrans %}Other contributors to household bills{% endblocktrans %}</th>
-            <td>{{ your_expenses.other_bill_payers|yesno:_("Yes,No (v3)") }}</td>
+            <td>{{ household_expenses.other_bill_payers|yesno:_("Yes,No (v3)") }}</td>
         </tr>
         <tr>
             <th>{% blocktrans %}Total household expenses{% endblocktrans %}</th>
