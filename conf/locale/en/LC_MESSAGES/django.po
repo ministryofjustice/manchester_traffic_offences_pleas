@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-17 14:57+0100\n"
+"POT-Creation-Date: 2015-09-21 15:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,7 +77,7 @@ msgstr ""
 msgid "Your feedback has been submitted"
 msgstr ""
 
-#: apps/feedback/stages.py:37 apps/plea/stages.py:324
+#: apps/feedback/stages.py:37 apps/plea/stages.py:345
 msgid "Submission Error"
 msgstr ""
 
@@ -196,12 +196,12 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: apps/govuk_utils/templates/widgets/plea_radio_field.html:71
-#: apps/plea/forms.py:611 apps/plea/templates/partials/review_plea.html:28
+#: apps/plea/forms.py:615 apps/plea/templates/partials/review_plea.html:28
 msgid "Guilty"
 msgstr ""
 
 #: apps/govuk_utils/templates/widgets/plea_radio_field.html:71
-#: apps/plea/forms.py:612 apps/plea/templates/partials/review_plea.html:30
+#: apps/plea/forms.py:616 apps/plea/templates/partials/review_plea.html:30
 msgid "Not guilty"
 msgstr ""
 
@@ -376,8 +376,9 @@ msgstr ""
 msgid "Tell us if this includes payment for dependants"
 msgstr ""
 
-#: apps/plea/fields.py:43
-msgid "Tell us if paying a fine would cause you serious financial problems"
+#: apps/plea/fields.py:43 apps/plea/fields.py:46
+msgid ""
+"You must tell us why paying a fine will cause you serious financial problems"
 msgstr ""
 
 #: apps/plea/fields.py:44
@@ -387,11 +388,6 @@ msgstr ""
 
 #: apps/plea/fields.py:45
 msgid "Tell us how you earn your money"
-msgstr ""
-
-#: apps/plea/fields.py:46
-msgid ""
-"You must tell us why paying a fine will cause you serious financial problems"
 msgstr ""
 
 #: apps/plea/fields.py:47
@@ -561,7 +557,7 @@ msgstr ""
 msgid "Pleading on behalf of a company"
 msgstr ""
 
-#: apps/plea/forms.py:27 apps/plea/forms.py:669
+#: apps/plea/forms.py:27 apps/plea/forms.py:673
 msgid "Unique reference number (URN)"
 msgstr ""
 
@@ -800,151 +796,152 @@ msgid "How would paying a fine cause you serious financial problems?"
 msgstr ""
 
 #: apps/plea/forms.py:377
-msgid "What should the court consider when deciding on any possible fine?"
+msgid ""
+"What the court should consider when deciding how much your fine should be:"
 msgstr ""
 
-#: apps/plea/forms.py:387
+#: apps/plea/forms.py:389
 msgid "Accommodation"
 msgstr ""
 
-#: apps/plea/forms.py:388
+#: apps/plea/forms.py:390
 msgid "Rent, mortgage or lodgings"
 msgstr ""
 
-#: apps/plea/forms.py:400
+#: apps/plea/forms.py:402
 msgid "Utility bills"
 msgstr ""
 
-#: apps/plea/forms.py:401
+#: apps/plea/forms.py:403
 msgid "Gas, water, electricity etc"
 msgstr ""
 
-#: apps/plea/forms.py:413
+#: apps/plea/forms.py:415
 msgid "Insurance"
 msgstr ""
 
-#: apps/plea/forms.py:414
+#: apps/plea/forms.py:416
 msgid "Home, life insurance etc"
 msgstr ""
 
-#: apps/plea/forms.py:426
+#: apps/plea/forms.py:428
 msgid "Council tax"
 msgstr ""
 
-#: apps/plea/forms.py:435
+#: apps/plea/forms.py:437
 msgid "Does anyone else contribute to these bills?"
 msgstr ""
 
-#: apps/plea/forms.py:445
+#: apps/plea/forms.py:449
 msgid "Television subscription"
 msgstr ""
 
-#: apps/plea/forms.py:446
+#: apps/plea/forms.py:450
 msgid "TV licence, satellite etc"
 msgstr ""
 
-#: apps/plea/forms.py:458
+#: apps/plea/forms.py:462
 msgid "Travel expenses"
 msgstr ""
 
-#: apps/plea/forms.py:459
+#: apps/plea/forms.py:463
 msgid "Fuel, car, public transport etc"
 msgstr ""
 
-#: apps/plea/forms.py:471
+#: apps/plea/forms.py:475
 msgid "Telephone"
 msgstr ""
 
-#: apps/plea/forms.py:472
+#: apps/plea/forms.py:476
 msgid "Landline and/or mobile"
 msgstr ""
 
-#: apps/plea/forms.py:484
+#: apps/plea/forms.py:488
 msgid "Loan repayments"
 msgstr ""
 
-#: apps/plea/forms.py:485
+#: apps/plea/forms.py:489
 msgid "Credit card, bank etc"
 msgstr ""
 
-#: apps/plea/forms.py:497
+#: apps/plea/forms.py:501
 msgid "County court orders"
 msgstr ""
 
-#: apps/plea/forms.py:509
+#: apps/plea/forms.py:513
 msgid "Child maintenance"
 msgstr ""
 
-#: apps/plea/forms.py:538
+#: apps/plea/forms.py:542
 msgid "Has the company been trading for more than 12 months?"
 msgstr ""
 
-#: apps/plea/forms.py:541
+#: apps/plea/forms.py:545
 #: apps/plea/templates/partials/review_company_finances.html:12
 msgid "Number of employees"
 msgstr ""
 
-#: apps/plea/forms.py:556
+#: apps/plea/forms.py:560
 #: apps/plea/templates/partials/review_company_finances.html:19
 msgid "Gross turnover"
 msgstr ""
 
-#: apps/plea/forms.py:557
+#: apps/plea/forms.py:561
 msgid "For example, 150000"
 msgstr ""
 
-#: apps/plea/forms.py:563
+#: apps/plea/forms.py:567
 #: apps/plea/templates/partials/review_company_finances.html:23
 msgid "Net turnover"
 msgstr ""
 
-#: apps/plea/forms.py:564
+#: apps/plea/forms.py:568
 msgid "For example, 110000"
 msgstr ""
 
-#: apps/plea/forms.py:594
+#: apps/plea/forms.py:598
 msgid "Do you want to receive email updates about your case?"
 msgstr ""
 
-#: apps/plea/forms.py:595
+#: apps/plea/forms.py:599
 msgid ""
 "We'll use this for all future correspondence as well as contacting you by "
 "post."
 msgstr ""
 
-#: apps/plea/forms.py:601
+#: apps/plea/forms.py:605
 msgid "If yes, enter your email address here:"
 msgstr ""
 
-#: apps/plea/forms.py:640 apps/plea/templates/partials/review_plea.html:36
+#: apps/plea/forms.py:644 apps/plea/templates/partials/review_plea.html:36
 msgid "Mitigation"
 msgstr ""
 
-#: apps/plea/forms.py:642
+#: apps/plea/forms.py:646
 msgid "Is there something you would like the court to consider?"
 msgstr ""
 
-#: apps/plea/forms.py:646
+#: apps/plea/forms.py:650
 msgid "Not guilty because?"
 msgstr ""
 
-#: apps/plea/forms.py:648
+#: apps/plea/forms.py:652
 msgid "Why do you believe you are not guilty?"
 msgstr ""
 
-#: apps/plea/forms.py:656
+#: apps/plea/forms.py:660
 msgid "Do you need an interpreter in court?"
 msgstr ""
 
-#: apps/plea/forms.py:663
+#: apps/plea/forms.py:667
 msgid "If yes, tell us which language (include sign language):"
 msgstr ""
 
-#: apps/plea/forms.py:672
+#: apps/plea/forms.py:676
 msgid "On page 1, usually at the top."
 msgstr ""
 
-#: apps/plea/stages.py:325
+#: apps/plea/stages.py:346
 msgid ""
 "There seems to have been a problem submitting your plea. Please try again."
 msgstr ""
@@ -1122,7 +1119,6 @@ msgid ""
 msgstr ""
 
 #: apps/plea/templates/complete.html:52
-#: apps/plea/templates/emails/user_plea_confirmation.html:49
 msgid ""
 "you can <a href=\"javascript:window.print();\">print a copy</a> of this plea "
 "confirmation for your records"
@@ -1264,14 +1260,22 @@ msgid "Your finances"
 msgstr ""
 
 #: apps/plea/templates/emails/attachments/plea_email.html:106
-#: apps/plea/templates/review.html:96 apps/plea/templates/your_expenses.html:7
-#: apps/plea/templates/your_expenses.html:11
+#: apps/plea/templates/household_expenses.html:7
+#: apps/plea/templates/household_expenses.html:11
+#: apps/plea/templates/other_expenses.html:7
+#: apps/plea/templates/other_expenses.html:11
+#: apps/plea/templates/review.html:96
 msgid "Your expenses"
 msgstr ""
 
 #: apps/plea/templates/emails/attachments/plea_email.html:121
 #: apps/plea/templates/review.html:112
 msgid "Company financial details"
+msgstr ""
+
+#: apps/plea/templates/emails/user_plea_confirmation.html:49
+#: apps/plea/templates/emails/user_plea_confirmation.txt:14
+msgid "you can print a copy of this plea confirmation for your records"
 msgstr ""
 
 #: apps/plea/templates/emails/user_plea_confirmation.html:67
@@ -1291,10 +1295,6 @@ msgstr ""
 
 #: apps/plea/templates/emails/user_plea_confirmation.txt:1
 msgid "GOV.UK - Online plea submission confirmation"
-msgstr ""
-
-#: apps/plea/templates/emails/user_plea_confirmation.txt:14
-msgid "you can print a copy of this plea confirmation for your records"
 msgstr ""
 
 #: apps/plea/templates/emails/user_plea_confirmation.txt:37
@@ -1318,6 +1318,33 @@ msgstr ""
 
 #: apps/plea/templates/emails/user_plea_confirmation.txt:47
 msgid "Terms and Conditions and Privacy Policy:"
+msgstr ""
+
+#: apps/plea/templates/hardship.html:7 apps/plea/templates/hardship.html:11
+msgid "Information for the magistrate"
+msgstr ""
+
+#: apps/plea/templates/household_expenses.html:13
+#: apps/plea/templates/other_expenses.html:13
+msgid ""
+"To help the court decide your fine, you must provide information about your "
+"expenses."
+msgstr ""
+
+#: apps/plea/templates/household_expenses.html:19
+msgid "Household expenses"
+msgstr ""
+
+#: apps/plea/templates/household_expenses.html:21
+msgid "What are your monthly household bills for the following?"
+msgstr ""
+
+#: apps/plea/templates/other_expenses.html:19
+msgid "Other expenses"
+msgstr ""
+
+#: apps/plea/templates/other_expenses.html:21
+msgid "What are your monthly bills for the following?"
 msgstr ""
 
 #: apps/plea/templates/partials/page_title_plea.html:11
@@ -1408,17 +1435,14 @@ msgid "Yes,No (v3)"
 msgstr "Yes,No"
 
 #: apps/plea/templates/partials/review_expenses.html:18
-#: apps/plea/templates/your_expenses.html:94
 msgid "Total household expenses"
 msgstr ""
 
 #: apps/plea/templates/partials/review_expenses.html:22
-#: apps/plea/templates/your_expenses.html:98
 msgid "Total other expenses"
 msgstr ""
 
 #: apps/plea/templates/partials/review_expenses.html:26
-#: apps/plea/templates/your_expenses.html:102
 msgid "Total expenses"
 msgstr ""
 
@@ -1672,32 +1696,6 @@ msgstr ""
 msgid ""
 "If you have a UK driving licence and fail to tell us, your licence may be "
 "suspended."
-msgstr ""
-
-#: apps/plea/templates/your_expenses.html:13
-msgid ""
-"To help the court decide your fine, you must provide information about your "
-"expenses."
-msgstr ""
-
-#: apps/plea/templates/your_expenses.html:23
-msgid "Household expenses"
-msgstr ""
-
-#: apps/plea/templates/your_expenses.html:25
-msgid "What are your monthly household bills for the following?"
-msgstr ""
-
-#: apps/plea/templates/your_expenses.html:53
-msgid "Other expenses"
-msgstr ""
-
-#: apps/plea/templates/your_expenses.html:55
-msgid "What are your monthly bills for the following?"
-msgstr ""
-
-#: apps/plea/templates/your_expenses.html:89
-msgid "Totals"
 msgstr ""
 
 #: apps/plea/templates/your_finances.html:11
