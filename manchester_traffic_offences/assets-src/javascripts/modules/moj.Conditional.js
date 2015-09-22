@@ -5,7 +5,7 @@
  *
  * -----------------------------------------------------------------------
  * Usage:
- * 
+ *
  * <input type="radio" name="trigger_name" value="regex">
  * <input type="radio" name="trigger_name" value="another value">
  * <div class="js-Conditional" id="target_id" data-conditional-trigger="trigger_name" data-conditional-value="^regex$">...</div>

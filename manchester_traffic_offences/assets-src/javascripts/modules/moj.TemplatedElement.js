@@ -6,9 +6,9 @@
  * -----------------------------------------------------------------------
  * Usage:
  *
- * <span class="js-TemplatedElement" 
+ * <span class="js-TemplatedElement"
  *     data-template-trigger="field_name"
- *     data-template="Content with {value}" 
+ *     data-template="Content with {value}"
  *     data-template-defaults-for="Excluded value"
  *     data-template-delegate="#other-element">Original content</span>
  *
@@ -38,8 +38,7 @@
       this.trigger = $el.data('templateTrigger') || this.settings.trigger;
       this.template = $el.data('template') || this.settings.template;
       this.defaultsFor = $el.data('templateDefaultsFor') || this.settings.defaultsFor;
-      
-      
+
       if ($el.data('templateDelegate')) {
         $el = $($el.data('templateDelegate'));
       }

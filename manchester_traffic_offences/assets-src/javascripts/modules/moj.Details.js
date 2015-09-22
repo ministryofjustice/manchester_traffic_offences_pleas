@@ -30,7 +30,7 @@
   Details.prototype = {
 
     init: function($el, options) {
-      
+
       $("<i>").addClass("arrow arrow-closed").text("\u25ba").prependTo($('.details-trigger', $el));
 
       this.cacheElements($el);
