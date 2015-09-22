@@ -64,10 +64,10 @@
       this.isEnabled = false;
     },
 
-    isMetaRefresh: function() {      
+    isMetaRefresh: function() {
       if (typeof this.metaRefreshAt !== 'undefined') {
         var now = new Date().getTime();
-        
+
         if (now >= this.metaRefreshAt) {
           return true;
         }
@@ -78,18 +78,18 @@
 
     initMetaRefresh: function() {
       var refreshTag = $('head').find('meta[http-equiv=refresh]');
-      
+
       if (refreshTag.length) {
         var refreshTimeoutLength = parseInt(refreshTag.attr('content').match(/^\d*/)[0]);
         var now = new Date().getTime();
-        
+
         this.metaRefreshAt = now + ((refreshTimeoutLength-1)*1000);
       }
     }
   };
 
   moj.Modules._PromptOnChange = PromptOnChange;
-  
+
   moj.Modules.PromptOnChange = {
     init: function() {
       var options = {
