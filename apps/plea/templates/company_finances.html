@@ -24,7 +24,7 @@
     {% else %}
         {% blocktrans %}Company details continued{% endblocktrans %}
     {% endif %}
-    </h1>    
+    </h1>
     {% endspaceless %}
 
     <p>{% blocktrans %}The court will decide the company's fine based on its size and financial situation.{% endblocktrans %}</p>
@@ -33,7 +33,7 @@
 
 {% block stage_form %}
     {% split_form form %}
-    
+
     {% if company_finances.split_form == "split_form_last_step" %}
         {% add_test_tag "<<NOJSTRIGGERSUMMARY>>" %}
         {% hidden_field form.trading_period %}
@@ -51,7 +51,7 @@
         {% radio_field form.trading_period inline=True %}
     {% endif %}
 
-    <div class="js-Conditional{% if company_finances.split_form != "split_form_last_step" %} nojs-hidden{% endif %}" data-conditional-trigger="trading_period" data-conditional-value="^(True|False)$">
+    <div {% if company_finances.split_form != "split_form_last_step" %}class="nojs-hidden"{% endif %} data-conditional="trading_period" data-conditional-value="^(True|False)$">
 
         {% std_field form.number_of_employees hide_optional=True %}
 
