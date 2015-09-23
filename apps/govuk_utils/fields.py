@@ -23,8 +23,15 @@ class DSTemplateWidgetBase(forms.TextInput):
     template = ""
 
     def __init__(self, attrs=None, context=None):
+        label = attrs.get("title", None)
+        attrs.pop("title", None)
+
         super(DSTemplateWidgetBase, self).__init__(attrs)
-        self.context = context or {}
+
+        try:
+            self.context = context.update({"label": label})
+        except AttributeError:
+            self.context = {"label": label}
 
     def render(self, name, value, attrs=None):
         final_attrs = self.build_attrs(attrs, type=self.input_type, name=name)
