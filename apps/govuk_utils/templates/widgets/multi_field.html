@@ -1,6 +1,6 @@
 <div class="form-group{% if field.wide %}-wide{% endif %}{% if field.errors %} with-error{% endif %}" id="section_{{ field.name }}{% if field.counter %}_{{ field.counter }}{% endif %}">
-    <fieldset>
-        <legend>
+    <fieldset role="{% if field.radiogroup %}radiogroup{% else %}group{% endif %}" aria-labelledby="label_{{ field.name }}">
+        <legend id="label_{{ field.name }}">
             {% include "widgets/partials/label_text.html" %}
         </legend>
 

@@ -6,10 +6,10 @@
 {% with forloop.counter as charge_number %}
 
 <div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty_{{ charge_number }}">
-    <fieldset>
+    <fieldset role="radiogroup" aria-labelledby="label_charge_{{ charge_number }}">
 
         <legend>
-            <div class="header-line">
+            <div class="header-line" id="label_charge_{{ charge_number }}">
                 <span class="label-text">{% spaceless %}
                 {% if form.case_data %}
                     {{ form.case_data.offence_short_title }}
