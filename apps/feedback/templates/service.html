@@ -18,11 +18,11 @@
         {% radio_field form.used_call_centre inline=True %}
     {% endif %}
 
-    <div class="js-Conditional {% if service.split_form != "split_form_last_step" or service.used_call_centre == False %} nojs-hidden{% endif %}" data-conditional-trigger="used_call_centre" data-conditional-value="^(True)$" data-template-trigger="used_call_centre">
+    <div {% if service.split_form != "split_form_last_step" or service.used_call_centre == False %}class="nojs-hidden"{% endif %} data-conditional="used_call_centre" data-conditional-value="^(True)$" data-template-trigger="used_call_centre">
         {% radio_field form.call_centre_satisfaction hide_optional=True %}
     </div>
 
-    <div class="js-Conditional {% if service.split_form != "split_form_last_step" %} nojs-hidden{% endif %}" data-conditional-trigger="used_call_centre" data-conditional-value="^(True|False)$" data-template-trigger="used_call_centre">
+    <div {% if service.split_form != "split_form_last_step" %}class="nojs-hidden"{% endif %} data-conditional="used_call_centre" data-conditional-value="^(True|False)$" data-template-trigger="used_call_centre">
         {% radio_field form.service_satisfaction hide_optional=True %}
     </div>
 {% endblock stage_form %}
