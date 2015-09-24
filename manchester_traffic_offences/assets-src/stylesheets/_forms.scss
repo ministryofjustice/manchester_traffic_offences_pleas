@@ -127,7 +127,7 @@ label {
 
 .form-control-wide {
 	@extend .form-control;
-	
+
 	@include media(tablet) {
 		width: 75%;
 	}
@@ -202,15 +202,9 @@ legend + * {
 	border: 4px solid $error-colour;
 
 	h1 {
-		@extend .heading-large;
 		margin-top: 0;
 	}
 
-	h2 {
-		@extend .heading-medium;
-		margin-top: 0;
-	}
-	
 	ul {
 		padding: 0;
 		list-style: none;
