@@ -34,19 +34,22 @@ describe("moj.Details", function() {
       expect($('.details-trigger').attr('aria-controls')).toBe('details-content');
       expect($('.details-trigger').attr('aria-expanded')).toBe('false');
 
+
       expect($('.details-content').attr('id')).toBeDefined('details-content');
-      expect($('.details-content').attr('aria-hidden')).toBe('true');
+      expect($('.details-content').attr('aria-live')).toBe('polite');
     });
 
     it("should hide the content to start with", function() {
       expect($('.details-content')).toBeHidden();
+      expect($('.details-content').attr('aria-hidden')).toBe('true');
+      expect($('.details-content').prop('hidden')).toBe(true);
     });
 
     it("should show the content when summary is clicked", function() {
       $('.details-trigger').click();
       expect($('.details-content')).toBeVisible();
       expect($('.details-trigger').attr('aria-expanded')).toBe('true');
-      expect($('.details-content').attr('aria-hidden')).toBe('false');
+      expect($('.details-content').attr('aria-hidden')).toBeUndefined();
       expect($('.js-Details').hasClass('open')).toBe(true);
     });
 
@@ -55,6 +58,7 @@ describe("moj.Details", function() {
       expect($('.details-content')).toBeHidden();
       expect($('.details-trigger').attr('aria-expanded')).toBe('false');
       expect($('.details-content').attr('aria-hidden')).toBe('true');
+      expect($('.details-content').prop('hidden')).toBe(true);
       expect($('.js-Details').hasClass('open')).toBe(false);
     });
   });
@@ -72,7 +76,7 @@ describe("moj.Details", function() {
 
     it("should add ARIA attributes to the elements", function() {
       expect($('.details-trigger').attr('aria-expanded')).toBe('true');
-      expect($('.details-content').attr('aria-hidden')).toBe('false');
+      expect($('.details-content').attr('aria-hidden')).toBeUndefined();
     });
 
     it("should show the content to start with", function() {
@@ -84,6 +88,7 @@ describe("moj.Details", function() {
       expect($('.details-content')).toBeHidden();
       expect($('.details-trigger').attr('aria-expanded')).toBe('false');
       expect($('.details-content').attr('aria-hidden')).toBe('true');
+      expect($('.details-content').prop('hidden')).toBe(true);
       expect($('.js-Details').hasClass('open')).toBe(false);
     });
 
@@ -91,7 +96,7 @@ describe("moj.Details", function() {
       $('.details-trigger').click();
       expect($('.details-content')).toBeVisible();
       expect($('.details-trigger').attr('aria-expanded')).toBe('true');
-      expect($('.details-content').attr('aria-hidden')).toBe('false');
+      expect($('.details-content').attr('aria-hidden')).toBeUndefined();
       expect($('.js-Details').hasClass('open')).toBe(true);
     });
   });
