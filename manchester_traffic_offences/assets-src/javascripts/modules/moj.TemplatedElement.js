@@ -101,7 +101,7 @@
 
   moj.Modules.TemplatedElement = {
     init: function() {
-      return $('.js-TemplatedElement').each(function() {
+      return $('[data-template]').each(function() {
         $(this).data('TemplatedElement', new TemplatedElement($(this), $(this).data()));
       });
     }
