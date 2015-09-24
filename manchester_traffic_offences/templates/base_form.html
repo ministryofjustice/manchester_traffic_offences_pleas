@@ -5,7 +5,7 @@
 {% block page_content %}
 
     {% if form.errors.items or formset_has_errors %}
-    <div class="error-summary">
+    <section class="error-summary" role="alert">
         {% block errors_summary %}
         <h2>{% blocktrans %}You need to fix the errors on this page before continuing.{% endblocktrans %}</h2>
 
@@ -19,20 +19,20 @@
         {% endfor %}
         </ul>
         {% endblock errors_summary %}
-    </div>
+    </section>
     {% endif %}
 
     <header class="content-header">
         {% block stage_header %}
-            
+
         {% endblock stage_header %}
     </header>
-    
+
     <form {% block form_attributes %}{% endblock form_attributes %} action="{{ request.path }}" method="post" autocomplete="off" novalidate>
         {% csrf_token %}
 
         {% block stage_form %}
-            
+
         {% endblock stage_form %}
 
         {% block stage_submit %}
