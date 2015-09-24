@@ -62,7 +62,7 @@
                 <p>{% blocktrans %}From the first 12 months' trading projections, tell us:{% endblocktrans %}</p>
             {% endif %}
         {% else %}
-            <h2 class="heading-medium js-TemplatedElement" data-template-trigger="trading_period" data-template="{% blocktrans %}From the first 12 months' trading projections, tell us:{% endblocktrans %}" data-template-defaults-for="{% blocktrans %}Yes (v1){% endblocktrans %}">{% blocktrans %}From the most recent audited company accounts, tell us:{% endblocktrans %}</h2>
+            <h2 class="heading-medium" data-template="{% blocktrans %}From the first 12 months' trading projections, tell us:{% endblocktrans %}" data-template-trigger="trading_period" data-template-defaults-for="{% blocktrans %}Yes (v1){% endblocktrans %}">{% blocktrans %}From the most recent audited company accounts, tell us:{% endblocktrans %}</h2>
         {% endif %}
 
         {% std_field form.gross_turnover hide_optional=True prefix="£" %}
