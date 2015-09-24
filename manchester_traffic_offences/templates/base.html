@@ -42,7 +42,7 @@
         {% for message in messages %}
 
             {% if "success" in message.tags %}
-            <section class="success-header">
+            <section class="success-header" role="alert">
                 <p class="ticked">{{ message }}</p>
             </section>
             {% endif %}
