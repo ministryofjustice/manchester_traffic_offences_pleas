@@ -1,20 +1,23 @@
 describe("moj.TemplatedElement", function() {
-  var $fixture, subject;
-
-	beforeEach(function() {
-    $fixture = $(
+  var $fixture = $(
       '<div class="test_control">' +
       ' <label><input id="radio_1" name="testField" type="radio" value="one"/> One</label>' +
       ' <label><input id="radio_2" name="testField" type="radio" value="two"/> Two</label>' +
       ' <label><input id="radio_3" name="testField" type="radio" value="three"/> Three (ignored)</label>' +
-      ' <div class="js-TemplatedElement" data-template-trigger="testField" data-template="Templated content, value = {value}" data-template-defaults-for="Three (ignored)">Default content</div>' +
+      ' <div data-template="Templated content, value = {value}" data-template-trigger="testField" data-template-defaults-for="Three (ignored)">Default content</div>' +
       '</div>'
-    );
+  ),
+  subject;
+
+	beforeAll(function() {
     $fixture.appendTo('body');
-    subject = new moj.Modules._TemplatedElement($('.js-TemplatedElement'));
+    subject = new moj.Modules._TemplatedElement($('[data-template]'));
+    // Remove moj JS console output for testing
+    moj.Modules.devs = {};
+    moj.Events.trigger('render');
   });
 
-  afterEach(function() {
+  afterAll(function() {
     $('body').find('.test_control').remove();
   });
 
@@ -87,7 +90,8 @@ describe("moj.TemplatedElement", function() {
       ' <div class="js-TemplatedElement">Default content</div>' +
       '</div>'
     );
-    subject = new moj.Modules._TemplatedElement($fixture.find('.js-TemplatedElement'), options);
+    $fixture.appendTo('body');
+    subject = new moj.Modules._TemplatedElement($('.js-TemplatedElement'), options);
 
     expect(subject.originalText).toBe('Default content');
     expect(subject.trigger).toBe('testField');
@@ -95,18 +99,19 @@ describe("moj.TemplatedElement", function() {
     expect(subject.defaultsFor).toBe('Three (ignored)');
   });
 
-  it('should delegate functionality to another element if the delegate attribute is set', function() {
+  it('should delegate functionality to the contents of another element if the delegate attribute is set', function() {
+    $('body').find('.test_control').remove();
     $fixture = $(
       '<div class="test_control">' +
       ' <label><input id="radio_1" name="testField" type="radio" value="one"/> One</label>' +
       ' <label><input id="radio_2" name="testField" type="radio" value="two"/> Two</label>' +
       ' <label><input id="radio_3" name="testField" type="radio" value="three"/> Three (ignored)</label>' +
-      ' <div class="js-TemplatedElement" data-template-trigger="testField" data-template="Templated content, value = {value}" data-template-defaults-for="Three (ignored)" data-template-delegate="#delegate">Default content</div>' +
+      ' <div data-template="Templated content, value = {value}" data-template-trigger="testField" data-template-defaults-for="Three (ignored)" data-template-delegate="#delegate">Default content</div>' +
       ' <div id="delegate">Another element</div>' +
       '</div>'
     );
     $fixture.appendTo('body');
-    subject = new moj.Modules._TemplatedElement($fixture.find('.js-TemplatedElement'));
+    subject = new moj.Modules._TemplatedElement($('[data-template]'));
 
     expect(subject.$element.attr('id')).toBe('delegate');
     expect(subject.originalText).toBe('Another element');
@@ -116,17 +121,18 @@ describe("moj.TemplatedElement", function() {
   });
 
   it('should use the default text from the first element only', function() {
+    $('body').find('.test_control').remove();
     $fixture = $(
       '<div class="test_control">' +
       ' <label><input id="radio_1" name="testField" type="radio" value="one"/> One</label>' +
       ' <label><input id="radio_2" name="testField" type="radio" value="two"/> Two</label>' +
-      ' <div class="js-TemplatedElement" data-template-trigger="testField" data-template="Templated content, value = {value}" data-template-defaults-for="Two" data-template-delegate=".delegate">Default content</div>' +
+      ' <div data-template="Templated content, value = {value}" data-template-trigger="testField" data-template-defaults-for="Two" data-template-delegate=".delegate">Default content</div>' +
       ' <div class="delegate">Another element</div>' +
-      ' <div class="delegate">Another element</div>' +
+      ' <div class="delegate">Yet another element</div>' +
       '</div>'
     );
     $fixture.appendTo('body');
-    subject = new moj.Modules._TemplatedElement($fixture.find('.js-TemplatedElement'));
+    subject = new moj.Modules._TemplatedElement($('[data-template]'));
 
     expect(subject.originalText).toBe('Another element');
   });
