@@ -12,13 +12,10 @@ describe("moj.Conditional", function() {
   beforeAll(function() {
     $fixture.appendTo('body');
     subject = new moj.Modules._Conditional($('[data-conditional]'));
-    // Remove moj JS console output for testing
-    moj.Modules.devs = {};
-    moj.Events.trigger('render');
   });
 
   afterAll(function() {
-    $('body').find('.test_control').remove();
+    $fixture.remove();
   });
 
   it("should be an object", function() {
@@ -30,9 +27,9 @@ describe("moj.Conditional", function() {
     expect(subject.$inputs.length).toBe(3);
   });
 
-  it("should call toggle() when moj.Events' render even is fired", function() {
+  it("should call toggle() when moj.init() is fired", function() {
     spyOn(subject, 'toggle');
-    moj.Events.trigger('render');
+    moj.init();
     expect(subject.toggle).toHaveBeenCalled();
   });
 

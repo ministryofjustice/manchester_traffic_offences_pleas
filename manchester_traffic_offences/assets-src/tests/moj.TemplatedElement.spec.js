@@ -4,21 +4,18 @@ describe("moj.TemplatedElement", function() {
       ' <label><input id="radio_1" name="testField" type="radio" value="one"/> One</label>' +
       ' <label><input id="radio_2" name="testField" type="radio" value="two"/> Two</label>' +
       ' <label><input id="radio_3" name="testField" type="radio" value="three"/> Three (ignored)</label>' +
-      ' <div data-template="Templated content, value = {value}" data-template-trigger="testField" data-template-defaults-for="Three (ignored)">Default content</div>' +
+      ' <div id="templated" data-template="Templated content, value = {value}" data-template-trigger="testField" data-template-defaults-for="Three (ignored)">Default content</div>' +
       '</div>'
   ),
   subject;
 
 	beforeAll(function() {
-    $fixture.appendTo('body');
+    $fixture.clone().appendTo('body');
     subject = new moj.Modules._TemplatedElement($('[data-template]'));
-    // Remove moj JS console output for testing
-    moj.Modules.devs = {};
-    moj.Events.trigger('render');
   });
 
   afterAll(function() {
-    $('body').find('.test_control').remove();
+    $('.test_control').remove();
   });
 
   it("should be an instantiated object", function() {
@@ -51,27 +48,27 @@ describe("moj.TemplatedElement", function() {
     expect(subject.updateText).toHaveBeenCalled();
   });
 
-  it("should call updateText() when moj.Events' render event is fired", function() {
+  it("should call updateText() when moj.init() is fired", function() {
     spyOn(subject, 'updateText');
-    moj.Events.trigger('render');
+    moj.init();
     expect(subject.updateText).toHaveBeenCalled();
   });
 
   it("should populate the element with the templated text if the value isn't excluded", function() {
     $('#radio_1').trigger('click');
-    expect(subject.$element.text()).toBe('Templated content, value = one');
+    expect($('#templated').text()).toBe('Templated content, value = one');
     $('#radio_2').trigger('click');
-    expect(subject.$element.text()).toBe('Templated content, value = two');
+    expect($('#templated').text()).toBe('Templated content, value = two');
   });
 
   it("should render the template with the value of the data-value attribute instead of the value one if one is specified", function() {
     $('#radio_1').attr('data-template-value', 'One (from data attribute)').trigger('click');
-    expect(subject.$element.text()).toBe('Templated content, value = one (from data attribute)');
+    expect($('#templated').text()).toBe('Templated content, value = one (from data attribute)');
   });
 
   it("should populate the element with the original text if the value is excluded", function() {
     $('#radio_3').trigger('click');
-    expect(subject.$element.text()).toBe('Default content');
+    expect($('#templated').text()).toBe('Default content');
   });
 
   it("should use options provided if the data attributes are missing", function() {
@@ -81,7 +78,7 @@ describe("moj.TemplatedElement", function() {
       defaultsFor: 'Three (ignored)'
     };
 
-    $('body').find('.test_control').remove();
+    $('.test_control').remove();
     $fixture = $(
       '<div class="test_control">' +
       ' <label><input id="radio_1" name="testField" type="radio" value="one"/> One</label>' +
@@ -100,7 +97,7 @@ describe("moj.TemplatedElement", function() {
   });
 
   it('should delegate functionality to the contents of another element if the delegate attribute is set', function() {
-    $('body').find('.test_control').remove();
+    $('.test_control').remove();
     $fixture = $(
       '<div class="test_control">' +
       ' <label><input id="radio_1" name="testField" type="radio" value="one"/> One</label>' +
@@ -121,7 +118,7 @@ describe("moj.TemplatedElement", function() {
   });
 
   it('should use the default text from the first element only', function() {
-    $('body').find('.test_control').remove();
+    $('.test_control').remove();
     $fixture = $(
       '<div class="test_control">' +
       ' <label><input id="radio_1" name="testField" type="radio" value="one"/> One</label>' +

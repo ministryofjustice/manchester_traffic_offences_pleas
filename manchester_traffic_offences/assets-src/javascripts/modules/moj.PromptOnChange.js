@@ -35,7 +35,9 @@
         self.disable();
       });
 
-      $(window).on('beforeunload', function() {
+      // The second event here is used for testing, as there is no
+      // other way of mocking a beforeunload event!
+      $(window).on('beforeunload mock.beforeunload', function() {
         return self.runCheck();
       });
     },
