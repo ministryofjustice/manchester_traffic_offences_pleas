@@ -22,10 +22,14 @@
 
     init: function(options) {
       this.settings = $.extend({}, this.defaults, options);
-      this.enable();
-      this.initMetaRefresh();
+
+      this.getRefreshHeaders();
+      this.sessionRefreshAt = this.getRefreshTime();
+
       this.hashedFields = this.hashFields();
+
       this.bindEvents();
+      this.enable();
     },
 
     bindEvents: function() {
@@ -53,7 +57,11 @@
     runCheck: function() {
       var self = this;
 
-      if (this.isEnabled && this.fieldsHaveChanged() && this.isMetaRefresh() === false) {
+      if (this.isMetaRefresh()) {
+        this.disable();
+      }
+
+      if (this.isEnabled && this.fieldsHaveChanged()) {
         return self.settings.message;
       }
     },
@@ -67,10 +75,10 @@
     },
 
     isMetaRefresh: function() {
-      if (typeof this.metaRefreshAt !== 'undefined') {
-        var now = new Date().getTime();
+      if (this.sessionRefreshAt) {
+        var now = new Date().getTime() / 1000;
 
-        if (now >= this.metaRefreshAt) {
+        if (now >= this.sessionRefreshAt) {
           return true;
         }
       }
@@ -78,15 +86,30 @@
       return false;
     },
 
-    initMetaRefresh: function() {
-      var refreshTag = $('head').find('meta[http-equiv=refresh]');
+    getRefreshHeaders: function() {
+      var request = new XMLHttpRequest();
+      request.open('GET', document.location, false);
+      request.send(null);
 
-      if (refreshTag.length) {
-        var refreshTimeoutLength = parseInt(refreshTag.attr('content').match(/^\d*/)[0]);
-        var now = new Date().getTime();
+      this.refreshHeader = request.getResponseHeader('Refresh');
+      this.dateHeader = request.getResponseHeader('Date');
+    },
 
-        this.metaRefreshAt = now + ((refreshTimeoutLength-1)*1000);
+    getRefreshTime: function() {
+      var pageTime;
+
+      if (this.refreshHeader === null) {
+        return false;
       }
+
+      if (this.dateHeader !== null) {
+        pageTime = new Date(this.dateHeader);
+      }
+      else {
+        pageTime = new Date();
+      }
+
+      return Math.floor(pageTime.getTime() / 1000) + parseInt(this.refreshHeader);
     }
   };
 

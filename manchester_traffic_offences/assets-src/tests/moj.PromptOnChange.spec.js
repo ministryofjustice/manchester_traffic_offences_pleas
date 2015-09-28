@@ -66,22 +66,35 @@ describe("moj.PromptOnChange", function() {
 		expect(subject.runCheck()).toBe('New message');
 	});
 
-  it("should be disabled when the page is refreshed using a meta refresh tag", function() {
-    $('.test_control').remove();
+  it('should be able to get Refresh and Date HTTP headers', function() {
+    expect(subject.refreshHeader).toBe(null);
+    expect(subject.dateHeader).toBeDefined();
+  });
 
+  it("should set the page refresh time to false if the refresh header is not present", function() {
+    expect(subject.getRefreshTime()).toBe(false);
+  });
+
+  it("should set the page refresh time if the refresh header is present", function() {
+    // Fake headers
+    var refresh = '60';
+    var date = new Date();
+
+    subject.refreshHeader = refresh;
+    subject.dateHeader = date;
+
+    subject.sessionRefreshAt = subject.getRefreshTime();
+
+    expect(subject.sessionRefreshAt).toEqual((Math.floor(date.getTime() / 1000)) + 60);
+  });
+
+  it('should be disabled when the page is refreshed using a meta refresh tag', function() {
     jasmine.clock().install();
     jasmine.clock().mockDate();
 
-    $('meta').attr('http-equiv', 'refresh').attr('content', '60;url=/session-timeout/').appendTo('head');
-    $fixture.clone().appendTo('body');
-
-    subject = new moj.Modules._PromptOnChange();
-    moj.init();
-
-    $('[name=testField]').val('yet another value').trigger('change');
-
-    expect(subject.runCheck()).not.toBeUndefined();
-    jasmine.clock().tick(60*1000);
+    $('[name=testField]').val('some other value');
+    expect(subject.runCheck()).toBe("New message");
+    jasmine.clock().tick(61*1000);
     expect(subject.runCheck()).toBeUndefined();
 
     jasmine.clock().uninstall();
