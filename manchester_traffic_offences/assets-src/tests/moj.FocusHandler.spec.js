@@ -1,8 +1,6 @@
 describe("moj.FocusHandler", function(){
   // Remove moj.js log message for cleaner console output
-  moj.Modules.devs = {};
-
-  jasmine.clock().install();
+  // moj.Modules.devs = {};
 
   describe("with success headers", function() {
     var $fixture = $(
@@ -117,11 +115,13 @@ describe("moj.FocusHandler", function(){
     );
 
     beforeAll(function() {
+      jasmine.clock().install();
       $fixture.appendTo('body');
       moj.init();
     });
 
     afterAll(function() {
+      jasmine.clock().uninstall();
       $('.test_control').remove();
     });
 

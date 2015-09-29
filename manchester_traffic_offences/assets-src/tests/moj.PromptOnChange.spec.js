@@ -1,3 +1,6 @@
+var sinon = require("sinon");
+var fakeServer = require("sinon/lib/sinon/util/fake_server").fakeServer;
+
 describe("moj.PromptOnChange", function() {
 	var $fixture = $(
       '<div class="test_control">' +
@@ -6,14 +9,22 @@ describe("moj.PromptOnChange", function() {
         '</form>' +
       '</div>'
     ),
-    subject;
+    subject,
+    server;
 
 	beforeAll(function() {
+    server = sinon.fakeServer.create();
+    server.respondImmediately = true;
+
+    jasmine.clock().install();
+
 		$fixture.clone().appendTo('body');
 		subject = new moj.Modules._PromptOnChange();
 	});
 
 	afterAll(function() {
+    server.restore();
+    jasmine.clock().uninstall();
 		$('.test_control').remove();
 	});
 
@@ -66,13 +77,26 @@ describe("moj.PromptOnChange", function() {
 		expect(subject.runCheck()).toBe('New message');
 	});
 
-  it('should be able to get Refresh and Date HTTP headers', function() {
-    expect(subject.refreshHeader).toBe(null);
-    expect(subject.dateHeader).toBeDefined();
-  });
-
   it("should set the page refresh time to false if the refresh header is not present", function() {
     expect(subject.getRefreshTime()).toBe(false);
+  });
+
+  it("should be able to get Refresh and Date HTTP headers", function() {
+    var date = new Date();
+
+    server.respondWith([
+      200,
+      {
+        "Refresh": "3600",
+        "Date": date
+      },
+      ''
+    ]);
+
+    subject.getRefreshHeaders();
+
+    expect(subject.refreshHeader).toEqual('3600');
+    expect(subject.dateHeader).toEqual(date);
   });
 
   it("should set the page refresh time if the refresh header is present", function() {
@@ -89,15 +113,12 @@ describe("moj.PromptOnChange", function() {
   });
 
   it('should be disabled when the page is refreshed using a meta refresh tag', function() {
-    jasmine.clock().install();
     jasmine.clock().mockDate();
 
     $('[name=testField]').val('some other value');
-    expect(subject.runCheck()).toBe("New message");
+    expect(subject.runCheck()).not.toBeUndefined();
     jasmine.clock().tick(61*1000);
     expect(subject.runCheck()).toBeUndefined();
-
-    jasmine.clock().uninstall();
   });
 
 });

@@ -87,12 +87,18 @@
     },
 
     getRefreshHeaders: function() {
-      var request = new XMLHttpRequest();
-      request.open('GET', document.location, false);
-      request.send(null);
+      var self = this,
+          request = new XMLHttpRequest();
 
-      this.refreshHeader = request.getResponseHeader('Refresh');
-      this.dateHeader = request.getResponseHeader('Date');
+      this.refreshHeader = null;
+      this.dateHeader = null;
+
+      request.onload = function() {
+        self.refreshHeader = this.getResponseHeader('Refresh');
+        self.dateHeader = this.getResponseHeader('Date');
+      };
+      request.open('GET', document.location, true);
+      request.send(null);
     },
 
     getRefreshTime: function() {
