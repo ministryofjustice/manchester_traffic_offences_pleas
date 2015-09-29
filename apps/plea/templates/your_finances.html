@@ -55,7 +55,7 @@
             </h2>
             <a href="{{ request.path }}?reset">{% blocktrans %}Change{% endblocktrans %}</a>
         </div>
-        
+
         {% if your_finances.you_are == "Employed" %}
 
             {% radio_field form.employed_take_home_pay_period hide_optional=True %}
@@ -64,7 +64,7 @@
 
             {% radio_field form.employed_hardship hide_optional=True inline=True %}
 
-            <div id="employed_hardship-True" class="panel-indent move-up js-Conditional" data-conditional-trigger="employed_hardship" data-conditional-value="True">
+            <div id="employed_hardship-True" class="panel-indent move-up" data-conditional="employed_hardship" data-conditional-value="True">
                 <h2 class="heading-small">{% blocktrans %}Note:{% endblocktrans %}</h2>
                 <p>{% blocktrans %}For the court to consider reducing your fine, you must provide information about your expenses on the next screen.{% endblocktrans %}</p>
             </div>
@@ -75,7 +75,7 @@
 
             {% radio_field form.self_employed_pay_period hide_optional=True %}
 
-            <div id="section-self-employed-other" class="panel-indent move-up js-Conditional" data-conditional-trigger="self_employed_pay_period" data-conditional-value="Self-employed other">
+            <div id="section-self-employed-other" class="panel-indent move-up" data-conditional="self_employed_pay_period" data-conditional-value="Self-employed other">
                 {% std_field form.self_employed_pay_other hide_optional=True %}
             </div>
 
@@ -83,7 +83,7 @@
 
             {% radio_field form.self_employed_hardship hide_optional=True inline=True %}
 
-            <div id="self_employed_hardship-True" class="panel-indent move-up js-Conditional" data-conditional-trigger="self_employed_hardship" data-conditional-value="True">
+            <div id="self_employed_hardship-True" class="panel-indent move-up" data-conditional="self_employed_hardship" data-conditional-value="True">
                 <h2 class="heading-small">{% blocktrans %}Note:{% endblocktrans %}</h2>
                 <p>{% blocktrans %}For the court to consider reducing your fine, you must provide information about your expenses on the next screen.{% endblocktrans %}</p>
             </div>
@@ -98,7 +98,7 @@
 
             {% radio_field form.benefits_period hide_optional=True %}
 
-            <div id="section-benefits-other" class="panel-indent move-up js-Conditional" data-conditional-trigger="benefits_period" data-conditional-value="Benefits other">
+            <div id="section-benefits-other" class="panel-indent move-up" data-conditional="benefits_period" data-conditional-value="Benefits other">
                 {% std_field form.benefits_pay_other hide_optional=True %}
             </div>
 
@@ -106,7 +106,7 @@
 
             {% radio_field form.receiving_benefits_hardship hide_optional=True inline=True %}
 
-            <div id="receiving_benefits_hardship-True" class="panel-indent move-up js-Conditional" data-conditional-trigger="receiving_benefits_hardship" data-conditional-value="True">
+            <div id="receiving_benefits_hardship-True" class="panel-indent move-up" data-conditional="receiving_benefits_hardship" data-conditional-value="True">
                 <h2 class="heading-small">{% blocktrans %}Note:{% endblocktrans %}</h2>
                 <p>{% blocktrans %}For the court to consider reducing your fine, you must provide information about your expenses on the next screen.{% endblocktrans %}</p>
             </div>
@@ -121,7 +121,7 @@
 
             {% radio_field form.other_hardship hide_optional=True inline=True %}
 
-            <div id="other_hardship-True" class="panel-indent move-up js-Conditional" data-conditional-trigger="other_hardship" data-conditional-value="True">
+            <div id="other_hardship-True" class="panel-indent move-up" data-conditional="other_hardship" data-conditional-value="True">
                 <h2 class="heading-small">{% blocktrans %}Note:{% endblocktrans %}</h2>
                 <p>{% blocktrans %}For the court to consider reducing your fine, you must provide information about your expenses on the next screen.{% endblocktrans %}</p>
             </div>
@@ -129,5 +129,5 @@
         {% endif %}
 
     {% endif %}
-    
+
 {% endblock stage_form %}

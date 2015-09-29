@@ -2,7 +2,7 @@ describe("moj.ExternalLinksTracker", function() {
   var $fixture, subject;
 
   $fixture = $(
-    '<div class="test_links">' +
+    '<div class="test_controls">' +
       '<a id="internal" href="/">Internal link</a>' +
       '<a id="external" rel="external" href="http://www.example.com">External same window</a>' +
       '<a id="external_new_window" rel="external" href="http://www.example.com" target="_blank">External new window</a>' +
@@ -10,14 +10,13 @@ describe("moj.ExternalLinksTracker", function() {
   );
 
   describe("without Google Analytics available", function() {
-    beforeEach(function() {
+    beforeAll(function() {
       $fixture.appendTo('body');
-
       subject = new moj.Modules._ExternalLinksTracker($('a[rel=external]'));
     });
 
-    afterEach(function() {
-      $('.test_links').remove();
+    afterAll(function() {
+      $('.test_controls').remove();
     });
 
     it("should bail on init", function() {
@@ -38,14 +37,13 @@ describe("moj.ExternalLinksTracker", function() {
           f.hitCallback();
         }
       };
-      
-      $fixture.appendTo('body');
 
+      $fixture.appendTo('body');
       subject = new moj.Modules._ExternalLinksTracker($('a[rel=external]'));
     });
 
     afterEach(function() {
-      $('.test_links').remove();
+      $('.test_controls').remove();
     });
 
     it("should be an object", function() {
@@ -66,23 +64,23 @@ describe("moj.ExternalLinksTracker", function() {
         "eventAction": "testAlso"
       };
       subject = new moj.Modules._ExternalLinksTracker($('a[rel=external]'), options);
-      
+
       expect(subject.settings).toEqual(options);
     });
 
     it("should send GA event when an external link is clicked", function() {
       spyOn(subject, "sendGAEvent");
       $("#external").click();
-      
+
       expect(subject.sendGAEvent).toHaveBeenCalled();
     });
 
     it("should open the link once event is sent", function() {
       spyOn(subject, "openLink");
-      
+
       $("#external").click();
       expect(subject.openLink).toHaveBeenCalledWith("http://www.example.com", undefined);
-      
+
       $("#external_new_window").click();
       expect(subject.openLink).toHaveBeenCalledWith("http://www.example.com", "_blank");
     });
