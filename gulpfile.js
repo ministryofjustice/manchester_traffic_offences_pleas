@@ -21,10 +21,10 @@ var paths = {
     'node_modules/govuk_frontend_toolkit/stylesheets/**/*.scss'
   ],
   scripts: [
-    'manchester_traffic_offences/assets-src/javascripts/shims/**/*.js',
     'manchester_traffic_offences/assets-src/javascripts/modules/**/*.js',
     'manchester_traffic_offences/assets-src/javascripts/application.js'
   ],
+  shims: 'manchester_traffic_offences/assets-src/javascripts/shims/**/*.js',
   vendor_scripts: 'manchester_traffic_offences/assets-src/javascripts/vendor/**/*.js',
   test_scripts: 'manchester_traffic_offences/assets-src/tests/**/*.js',
   images: 'manchester_traffic_offences/assets-src/images/**/*'
@@ -62,10 +62,14 @@ gulp.task('sass', function() {
 
 // default js task
 gulp.task('js', function() {
-  paths.main_scripts = paths.scripts.slice(0);
+  // Main scripts are shims, modules and main application.js
+  paths.main_scripts = [paths.shims].concat(paths.scripts);
 
   // ignore debug files
   paths.main_scripts.push('!' + paths.src_dir + '**/*debug*');
+
+  // ignore unused scripts
+  paths.main_scripts.push('!' + paths.src_dir + '**/*ignore*');
 
   // create concatenated main js file
   gulp
@@ -91,12 +95,6 @@ gulp.task('js', function() {
 // jshint
 gulp.task('lint', function() {
   var files = paths.scripts.slice(0);
-
-  // files to ignore from linting
-  files.push('!manchester_traffic_offences/assets-src/vendor/**');
-  files.push('!manchester_traffic_offences/assets-src/shims/**');
-  files.push('!manchester_traffic_offences/assets-src/javascripts/vendor/**');
-  files.push('!node_modules/**');
 
   gulp
     .src(files)
