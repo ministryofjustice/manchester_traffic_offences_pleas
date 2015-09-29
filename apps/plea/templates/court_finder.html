@@ -21,7 +21,7 @@
         <h3 class="heading-small">{% blocktrans %}By post:{% endblocktrans %}</h3>
         <address>{{ court.court_address|linebreaksbr }}</address>
         {% endif %}
-            
+
         {% if court.court_email %}
         <h3 class="heading-small">{% blocktrans %}By email:{% endblocktrans %}</h3>
         <p><a href="mailto:{{ court.court_email }}">{{ court.court_email }}</a></p>
@@ -34,50 +34,50 @@
 {% else %}
 
     <form action="{{ request.path }}" method="post" autocomplete="off" novalidate>
-        
+
         {% csrf_token %}
 
         {% if submitted and not court %}
-        <div class="error-summary">
+        <section class="error-summary" role="alert">
             <h2>{% blocktrans %}We can't find your court{% endblocktrans %}</h2>
             <p>{% blocktrans %}You'll find contact details for the court considering your case in the notice we sent you.{% endblocktrans %}</p>
-        </div>
+        </section>
         {% endif %}
 
         {% if form.errors %}
-        <div class="error-summary">
+        <section class="error-summary" role="alert">
             {% if urn_is_invalid %}
-            
+
             <h2>{% blocktrans %}We don’t recognise the URN you’ve entered{% endblocktrans %}</h2>
             <p class="no-urn-match">{% blocktrans %}The unique reference number you entered doesn’t match our records.{% endblocktrans %}</p>
             <ul>
                 <li><a href="#section_urn">{% blocktrans %}Check your URN (it’s on page 1 of the notice we sent you, usually at the top) then try again.{% endblocktrans %}</a></li>
             </ul>
-            
+
             {% else %}
 
             <h2>{% blocktrans %}You need to fix the errors on this page before continuing.{% endblocktrans %}</h2>
             <ul>
                 <li><a href="#section_urn">{% blocktrans %}Enter your URN to find the contact details for your court.{% endblocktrans %}</a></li>
             </ul>
-            
+
             {% endif %}
-        </div>
+        </section>
         {% endif %}
 
         <header class="content-header">
             <h1>{% blocktrans %}Your court{% endblocktrans %}</h1>
             <p>{% blocktrans %}To find contact details for the court considering your case, enter your unique reference number (URN).{% endblocktrans %}</p>
         </header>
-        
+
         {% std_field form.urn %}
-        
+
         <div class="form-submit">
             <button class="button" type="submit">{% blocktrans %}Find my court{% endblocktrans %}</button>
 
             <p><a href="{% url "home" %}">{% blocktrans %}Back{% endblocktrans %}</a></p>
         </div>
-        
+
     </form>
 
 {% endif %}
