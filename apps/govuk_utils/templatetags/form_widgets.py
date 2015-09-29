@@ -9,6 +9,7 @@ def std_field(context, field, **kwargs):
 
 @register.inclusion_tag('widgets/multi_field.html', takes_context=True)
 def radio_field(context, field, **kwargs):
+    kwargs.update({"radiogroup": True})
     field.__dict__.update(kwargs)
     return {"field": field}
 

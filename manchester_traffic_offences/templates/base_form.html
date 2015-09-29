@@ -5,7 +5,7 @@
 {% block page_content %}
 
     {% if form.errors.items or formset_has_errors %}
-    <section class="error-summary">
+    <section class="error-summary" role="alert">
         {% block errors_summary %}
         <h1 class="heading-medium">{% blocktrans %}You need to fix the errors on this page before continuing.{% endblocktrans %}</h1>
 

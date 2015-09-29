@@ -82,9 +82,9 @@
                 {% include "widgets/plea_radio_field.html" %}
             {% endwith %}
 
-            <div{% if plea.split_form != "split_form_last_step" %} class="panel-indent"{% endif %} data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^(guilty|not_guilty)$">
+            <div{% if plea.split_form != "split_form_last_step" %} class="panel-indent"{% endif %} data-conditional="{{ plea_form.prefix }}-guilty" data-conditional-value="^(guilty|not_guilty)$">
 
-                <section class="js-Conditional js-hidden{% if plea.split_form != "split_form_last_step" or plea_form.guilty.0.value != "guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^guilty$">
+                <section class="js-hidden{% if plea.split_form != "split_form_last_step" or plea_form.guilty.0.value != "guilty" %} nojs-hidden{% endif %}" data-conditional="{{ plea_form.prefix }}-guilty" data-conditional-value="^guilty$">
 
                     {% if case.plea_made_by == "Defendant" %}
                     <p>{% blocktrans %}Pleading guilty to this charge means you do not need to come to court to respond to this charge - we'll send you details of the court's decision and what to do next.{% endblocktrans %}</p>
@@ -97,7 +97,7 @@
                     {% std_field plea_form.guilty_extra wide=True counter=charge_number %}
                 </section>
 
-                <section class="js-Conditional js-hidden{% if plea.split_form != "split_form_last_step" or plea_form.guilty.0.value != "not_guilty" %} nojs-hidden{% endif %}" data-conditional-trigger="{{ plea_form.prefix }}-guilty" data-conditional-value="^not_guilty$">
+                <section class="js-hidden{% if plea.split_form != "split_form_last_step" or plea_form.guilty.0.value != "not_guilty" %} nojs-hidden{% endif %}" data-conditional="{{ plea_form.prefix }}-guilty" data-conditional-value="^not_guilty$">
 
                 {% if case.plea_made_by == "Defendant" %}
                     <p>{% blocktrans %}Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date.{% endblocktrans %}</p>
@@ -117,7 +117,7 @@
                     {% radio_field plea_form.interpreter_needed hide_optional=True counter=charge_number inline=True label=_("Does your company representative need an interpreter in court?") %}
                 {% endif %}
 
-                    <div class="js-Conditional move-up" data-conditional-trigger="{{ plea_form.prefix }}-interpreter_needed" data-conditional-value="True">
+                    <div class="move-up" data-conditional="{{ plea_form.prefix }}-interpreter_needed" data-conditional-value="True">
                         {% std_field plea_form.interpreter_language hide_optional=True counter=charge_number %}
                     </div>
 
