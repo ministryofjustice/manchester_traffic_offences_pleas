@@ -7,7 +7,7 @@
  * Usage:
  *
  * <span class="js-CalculateTotals" data-total-terms=".term" data-total-precision="2"></span>
- */ 
+ */
 (function() {
   'use strict';
 
@@ -54,7 +54,7 @@
 
     getNumericValue: function($element) {
       var value = $element.text();
-      
+
       if ($element.is(':input')) {
         value = $element.val();
       }

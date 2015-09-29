@@ -30,7 +30,7 @@
   Details.prototype = {
 
     init: function($el, options) {
-      
+
       $("<i>").addClass("arrow arrow-closed").text("\u25ba").prependTo($('.details-trigger', $el));
 
       this.cacheElements($el);
@@ -68,7 +68,8 @@
       });
 
       this.$content.attr({
-        "aria-hidden": "true"
+        "aria-hidden": "true",
+        "aria-live": "polite"
       });
     },
 
@@ -92,7 +93,7 @@
     updateState: function() {
       if (this.$details.hasClass("open")) {
         this.$summary.attr("aria-expanded", "true");
-        this.$content.show().attr("aria-hidden", "false");
+        this.$content.show().removeAttr("aria-hidden").removeProp('hidden');
         this.$icon.removeClass("arrow-closed").addClass("arrow-open").text("\u25bc");
 
         if (this.openText) {
@@ -101,7 +102,7 @@
       }
       else {
         this.$summary.attr("aria-expanded", "false");
-        this.$content.hide().attr("aria-hidden", "true");
+        this.$content.hide().attr("aria-hidden", "true").prop("hidden", true);
         this.$icon.removeClass("arrow-open").addClass("arrow-closed").text("\u25ba");
 
         if (this.openText) {

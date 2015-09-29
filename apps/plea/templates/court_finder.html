@@ -38,14 +38,14 @@
         {% csrf_token %}
 
         {% if submitted and not court %}
-        <section class="error-summary">
-            <h1 class="heading-medium">{% blocktrans %}We can't find your court{% endblocktrans %}</h1>
+        <section class="error-summary" role="alert">
+            <h2>{% blocktrans %}We can't find your court{% endblocktrans %}</h2>
             <p>{% blocktrans %}You'll find contact details for the court considering your case in the notice we sent you.{% endblocktrans %}</p>
         </section>
         {% endif %}
 
         {% if form.errors %}
-        <section class="error-summary">
+        <section class="error-summary" role="alert">
             {% if urn_is_invalid %}
 
             <h1 class="heading-medium">{% blocktrans %}We don’t recognise the URN you’ve entered{% endblocktrans %}</h1>
