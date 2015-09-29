@@ -54,7 +54,6 @@ def email_send_court(self, case_id, count_id, email_data):
                             email_body,
                             route=smtp_route)
     except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
-        print unicode(exc)
         logger.warning("Error sending email to court: {0}".format(exc))
         case.add_action("Court email network error", u"{}: {}".format(type(exc), exc))
         if email_count is not None:
@@ -66,6 +65,8 @@ def email_send_court(self, case_id, count_id, email_data):
         raise self.retry(args=[case_id, count_id, email_data], exc=exc)
 
     case.add_action("Court email sent", "Sent mail to {0} via {1}".format(plea_email_to, smtp_route))
+    case.sent = True
+    case.save()
 
     if not court_obj.test_mode:
         email_count.get_status_from_case(case)

@@ -40,7 +40,7 @@ ERROR_MESSAGES = {
     "PAY_AMOUNT_REQUIRED": _("Enter your take home pay"),
     "BENEFITS_DETAILS_REQUIRED": _("Tell us which benefits you receive"),
     "BENEFITS_DEPENDANTS_REQUIRED": _("Tell us if this includes payment for dependants"),
-    "HARDSHIP_REQUIRED": _("You must tell us why paying a fine will cause you serious financial problems"),
+    "HARDSHIP_REQUIRED": _("Tell us if paying a fine would cause you serious financial problems"),
     "UNDERSTAND_REQUIRED": _("You must confirm that you have read and understand the important information"),
     "OTHER_INFO_REQUIRED": _("Tell us how you earn your money"),
     "HARDSHIP_DETAILS_REQUIRED": _("You must tell us why paying a fine will cause you serious financial problems"),
