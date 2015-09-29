@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.exceptions import MultipleObjectsReturned
 from django.forms.formsets import formset_factory
 from django.utils.translation import ugettext as _
 
@@ -25,7 +26,7 @@ from .standardisers import standardise_urn, slashify_urn
 def get_case(urn):
     try:
         return Case.objects.get(urn__iexact=urn, sent=False)
-    except Case.DoesNotExist:
+    except (Case.DoesNotExist, MultipleObjectsReturned):
         return None
 
 
