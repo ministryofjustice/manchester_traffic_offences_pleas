@@ -23,7 +23,7 @@
 
     {% radio_field form.correct_address inline=True wide=True %}
 
-    <div class="panel-indent move-up js-Conditional" data-conditional-trigger="correct_address" data-conditional-value="False">
+    <div class="panel-indent move-up" data-conditional="correct_address" data-conditional-value="False">
         {% std_field form.updated_address hide_optional=True %}
     </div>
 

@@ -267,7 +267,7 @@ class YourMoneyForm(SplitStageForm):
                                                                                      "data-template-trigger": "employed_take_home_pay_period",
                                                                                      "data-template": _("What's your {value} take home pay (after tax)?"),
                                                                                      "data-template-delegate": "[for=id_employed_take_home_pay_amount] .label-text",
-                                                                                     "class": "form-control-inline js-TemplatedElement"}),
+                                                                                     "class": "form-control-inline"}),
                                                        error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                                        "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
@@ -292,7 +292,7 @@ class YourMoneyForm(SplitStageForm):
                                                                                 "data-template": _("What's your average {value} take home pay?"),
                                                                                 "data-template-defaults-for": _("Other"),
                                                                                 "data-template-delegate": "[for=id_self_employed_pay_amount] .label-text",
-                                                                                "class": "form-control-inline js-TemplatedElement"}),
+                                                                                "class": "form-control-inline"}),
                                                   error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                                   "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
@@ -339,7 +339,7 @@ class YourMoneyForm(SplitStageForm):
                                                                        "data-template": _("What's your average {value} take home pay?"),
                                                                        "data-template-defaults-for": _("Other"),
                                                                        "data-template-delegate": "[for=id_benefits_amount] .label-text",
-                                                                       "class": "form-control-inline js-TemplatedElement"}),
+                                                                       "class": "form-control-inline"}),
                                          error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                          "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
