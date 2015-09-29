@@ -12,7 +12,7 @@
     {% if plea_type == "not_guilty" %}{% add_test_tag "<<NOTGUILTY>>" %}{% endif %}
     {% if plea_type == "mixed" %}{% add_test_tag "<<MIXED>>" %}{% endif %}
 
-    <header class="success-header">
+    <header class="success-header" role="alert">
         <h1 class="ticked">{% spaceless %}
             {% if case.plea_made_by == "Defendant" %}
                 {% blocktrans count charges=case.number_of_charges %}Your plea has been sent to the court{% plural %}Your pleas have been sent to the court{% endblocktrans %}
