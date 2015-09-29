@@ -50,7 +50,7 @@
             {% if "error" in message.tags %}
             <section class="error-summary">
                 {% if "session_timeout" in message.tags %}
-                <h2>{% blocktrans %}Session timeout{% endblocktrans %}</h2>
+                <h1>{% blocktrans %}Session timeout{% endblocktrans %}</h1>
                 <p>{% blocktrans %}Your session has expired, re-enter your details and try again.{% endblocktrans %}</p>
                 {% else %}
                 {{ message|safe }}
