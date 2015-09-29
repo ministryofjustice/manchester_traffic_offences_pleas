@@ -1,4 +1,4 @@
 <span class="form-field-inline">
-    <label for="{{ attrs.id }}">{{ attrs.title }}</label>
+    {% if label %}<label for="{{ attrs.id }}">{{ label }}</label>{% endif %}
     {{ field }}
 </span>
