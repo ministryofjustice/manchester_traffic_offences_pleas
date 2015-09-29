@@ -8,7 +8,7 @@
 
 {% block page_content %}
 
-    <div class="error-summary">
+    <section class="error-summary" role="alert">
         <h2>{% blocktrans %}This URN has already been used to make a plea online{% endblocktrans %}</h2>
         <p>{% blocktrans %}The unique reference number you entered is no longer valid. Please check and try again.{% endblocktrans %}</p>
         <p>{% blocktrans %}To make changes to a plea you’ve already made online, email or write to the court before your hearing with:{% endblocktrans %}</p>
@@ -19,7 +19,7 @@
         </ul>
 
         <p><a href="/court-finder/">Find court contact details</a></p>
-    </div>
+    </section>
 
 
     <h2>{% blocktrans %}Create a new plea{% endblocktrans %}</h2>
