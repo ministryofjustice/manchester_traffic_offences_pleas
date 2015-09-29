@@ -20,7 +20,7 @@
 
     {% radio_field form.correct_address inline=True wide=True %}
 
-    <div class="panel-indent move-up js-Conditional" data-conditional-trigger="correct_address" data-conditional-value="False">
+    <div class="panel-indent move-up" data-conditional="correct_address" data-conditional-value="False">
         {% std_field form.updated_address hide_optional=True %}
     </div>
 
@@ -30,17 +30,17 @@
 
     {% radio_field form.have_ni_number inline=True %}
 
-    <div class="panel-indent move-up js-Conditional" data-conditional-trigger="have_ni_number" data-conditional-value="True">
+    <div class="panel-indent move-up" data-conditional="have_ni_number" data-conditional-value="True">
         {% std_field form.ni_number hide_optional=True %}
     </div>
 
     {% radio_field form.have_driving_licence_number inline=True %}
 
-    <div class="panel-indent move-up js-Conditional" data-conditional-trigger="have_driving_licence_number" data-conditional-value="True">
+    <div class="panel-indent move-up" data-conditional="have_driving_licence_number" data-conditional-value="True">
         {% std_field form.driving_licence_number hide_optional=True %}
     </div>
 
-    <div class="panel-indent move-up js-Conditional" data-conditional-trigger="have_driving_licence_number" data-conditional-value="False">
+    <div class="panel-indent move-up" data-conditional="have_driving_licence_number" data-conditional-value="False">
         <h2 class="heading-small">{% blocktrans %}Important:{% endblocktrans %}</h2>
         <p>{% blocktrans %}If you have a UK driving licence and fail to tell us, your licence may be suspended.{% endblocktrans %}</p>
     </div>
