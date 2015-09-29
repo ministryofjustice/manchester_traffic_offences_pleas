@@ -32,8 +32,8 @@ class TestTimeout(TestCase):
 
     def test_when_urn_has_refresh_headers(self):
         session = self.session
-        session["plea"] = {}
-        session["plea"]["case"] = {"urn": "51/AA/00000/00"}
+        session["plea_data"] = {}
+        session["plea_data"]["case"] = {"urn": "51/AA/00000/00"}
         session.save()
 
         response = self.client.get("/plea/case/")
