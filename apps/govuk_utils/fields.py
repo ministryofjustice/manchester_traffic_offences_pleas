@@ -23,8 +23,7 @@ class DSTemplateWidgetBase(forms.TextInput):
     template = ""
 
     def __init__(self, attrs=None, context=None):
-        label = attrs.get("title", None)
-        attrs.pop("title", None)
+        label = attrs.pop("title", None)
 
         super(DSTemplateWidgetBase, self).__init__(attrs)
 
