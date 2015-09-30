@@ -3,6 +3,15 @@
  *
  * Prompts the user upon leaving the page if they have changed
  * any data in any form.
+ *
+ * To set an alternative message or a session timeout timestamp
+ * (after which the prompt will be disabled), declare the following
+ * variables somewhere in the markup:
+ *
+ * <script>
+ *   var promptOnChangeMessage = "Alternative message";
+ *   var sessionTimeout = 123456789;
+ * </script>
  */
 
 (function(){
@@ -10,22 +19,27 @@
 
   window.moj = window.moj || { Modules: {}, Events: $({}) };
 
-  var PromptOnChange = function(options) {
-    this.init(options);
+  var PromptOnChange = function() {
+    this.init();
     return this;
   };
 
   PromptOnChange.prototype = {
-    defaults: {
-      message: "You have entered some information"
-    },
+    init: function() {
+      this.message = "You have entered some information";
+      this.sessionTimeout = false;
 
-    init: function(options) {
-      this.settings = $.extend({}, this.defaults, options);
-      this.enable();
-      this.initMetaRefresh();
-      this.hashedFields = this.hashFields();
+      if (typeof promptOnChangeMessage === 'string') {
+        this.message = promptOnChangeMessage;
+      }
+      if (typeof sessionTimeout === 'number') {
+        this.sessionTimeout = sessionTimeout;
+      }
+
+      this.currentHash = this.hashFields();
       this.bindEvents();
+
+      this.enable();
     },
 
     bindEvents: function() {
@@ -47,14 +61,16 @@
     },
 
     fieldsHaveChanged: function() {
-      return this.hashFields() !== this.hashedFields;
+      return this.hashFields() !== this.currentHash;
     },
 
     runCheck: function() {
-      var self = this;
+      if (this.isSessionTimeoutRedirect()) {
+        this.disable();
+      }
 
-      if (this.isEnabled && this.fieldsHaveChanged() && this.isMetaRefresh() === false) {
-        return self.settings.message;
+      if (this.isEnabled && this.fieldsHaveChanged()) {
+        return this.message;
       }
     },
 
@@ -66,27 +82,16 @@
       this.isEnabled = false;
     },
 
-    isMetaRefresh: function() {
-      if (typeof this.metaRefreshAt !== 'undefined') {
-        var now = new Date().getTime();
+    isSessionTimeoutRedirect: function() {
+      if (this.sessionTimeout) {
+        var now = Math.floor(new Date().getTime() / 1000);
 
-        if (now >= this.metaRefreshAt) {
+        if (now >= this.sessionTimeout) {
           return true;
         }
       }
 
       return false;
-    },
-
-    initMetaRefresh: function() {
-      var refreshTag = $('head').find('meta[http-equiv=refresh]');
-
-      if (refreshTag.length) {
-        var refreshTimeoutLength = parseInt(refreshTag.attr('content').match(/^\d*/)[0]);
-        var now = new Date().getTime();
-
-        this.metaRefreshAt = now + ((refreshTimeoutLength-1)*1000);
-      }
     }
   };
 
@@ -94,10 +99,7 @@
 
   moj.Modules.PromptOnChange = {
     init: function() {
-      var options = {
-        message: $('[name=promptOnChangeMessage]').val() || "You have entered some information"
-      };
-      return new PromptOnChange(options);
+      return new PromptOnChange();
     }
   };
 
