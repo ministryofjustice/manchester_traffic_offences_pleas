@@ -1,4 +1,4 @@
-/*  
+/*
 ====================================================
 GOV.UK Toolkit/Template overrides
 ====================================================
@@ -56,7 +56,15 @@ GOV.UK Toolkit/Template overrides
 	}
 }
 
-#footer .footer-meta .footer-meta-inner ul li.li-block {
-	display: block;
-	margin: 0 0 1em;
+#footer .footer-meta .footer-meta-inner ul {
+	margin: 0;
+
+	li {
+		float: left;
+		margin: 0 15px 1em 0;
+
+		&.clear {
+			clear: left;
+		}
+	}
 }
