@@ -5,7 +5,7 @@
 {% load waffle_tags %}
 
 {% block cookie_message %}
-    <p>{% blocktrans %}GOV.UK uses cookies to make the site simpler.{% endblocktrans %} <a href="{% url "terms" %}">{% blocktrans %}Find out more about cookies{% endblocktrans %}</a></p>
+    <p>{% blocktrans %}GOV.UK uses cookies to make the site simpler.{% endblocktrans %} <a href="{% url "terms" %}#cookies">{% blocktrans %}Find out more about cookies{% endblocktrans %}</a></p>
 {% endblock %}
 
 {% block licence_message %}
@@ -66,9 +66,9 @@
 {% endblock %}
 
 {% block footer_support_links %}
-    <li class="li-block"><a href="{% url "terms" %}">{% blocktrans %}Terms and Conditions and Privacy Policy{% endblocktrans %}</a></li>
-    <li><a href="http://www.gov.uk/help">{% blocktrans %}Help{% endblocktrans %}</a></li>
-    <li><a href="http://www.gov.uk/help/cookies">{% blocktrans %}Cookies{% endblocktrans %}</a></li>
+    <li><a href="{% url "terms" %}">{% blocktrans %}Terms and Conditions and Privacy Policy{% endblocktrans %}</a></li>
+    <li><a href="{% url "terms" %}#cookies">{% blocktrans %}Cookies{% endblocktrans %}</a></li>
+    <li class="clear"><a href="http://www.gov.uk/help">{% blocktrans %}Help{% endblocktrans %}</a></li>
     <li><a href="http://www.gov.uk/contact">{% blocktrans %}Contact{% endblocktrans %}</a></li>
     <li><a href="http://www.gov.uk/cymraeg" lang="cy">{% blocktrans %}Cymraeg{% endblocktrans %}</a></li>
 {% endblock %}
