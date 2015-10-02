@@ -118,7 +118,7 @@ class YourDetailsForm(BaseStageForm):
     have_ni_number = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             required=True,
                                             coerce=to_bool,
-                                            choices=YESNO_CHOICES["Ydy/Nac ydy"],
+                                            choices=YESNO_CHOICES["Oes/Nac oes"],
                                             label=_("Do you have a National Insurance number?"),
                                             error_messages={"required": ERROR_MESSAGES["HAVE_NI_NUMBER_REQUIRED"]})
 
@@ -131,7 +131,7 @@ class YourDetailsForm(BaseStageForm):
     have_driving_licence_number = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                          required=True,
                                                          coerce=to_bool,
-                                                         choices=YESNO_CHOICES["Ydy/Nac ydy"],
+                                                         choices=YESNO_CHOICES["Oes/Nac oes"],
                                                          label=_("Do you have a UK driving licence?"),
                                                          help_text=_("Entering your UK driving licence number means you don't have to send your licence to the court."),
                                                          error_messages={"required": ERROR_MESSAGES["HAVE_DRIVING_LICENCE_NUMBER_REQUIRED"]})
