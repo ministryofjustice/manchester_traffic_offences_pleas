@@ -62,7 +62,7 @@ SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = True 
+USE_I18N = True
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
@@ -140,7 +140,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'apps.govuk_utils.middleware.AdminLocaleURLMiddleware',
-    'apps.plea.middleware.TimeoutRedirectMiddleware',
+    'apps.govuk_utils.middleware.TimeoutRedirectMiddleware',
 )
 
 ROOT_URLCONF = 'manchester_traffic_offences.urls'
