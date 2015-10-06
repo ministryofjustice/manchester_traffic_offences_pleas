@@ -53,7 +53,6 @@ class CaseCreationTests(TestCase):
                                     {u'not_guilty_extra': u'fdsfd\r\nsf\r\n\r\n',
                                      u'guilty': u'not_guilty'}], u'understand': True}}
 
-
     @override_settings(STORE_USER_DATA=True)
     def test_user_data_is_persisted(self):
         """
@@ -95,7 +94,7 @@ class CaseCreationTests(TestCase):
         self.assertEquals(self.context_data['case']['urn'], data['case']['urn'])
 
     @override_settings(STORE_USER_DATA=True)
-    @patch("apps.govuk_utils.email.TemplateAttachmentEmail.send")
+    @patch("apps.plea.attachment.TemplateAttachmentEmail.send")
     def test_email_failure_audit(self, send):
         send.side_effect = socket.error("Email failed to send, socket error")
 

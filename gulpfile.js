@@ -14,20 +14,20 @@ var gulp = require('gulp'),
     file = require('gulp-file');
 
 var paths = {
-  dest_dir: 'manchester_traffic_offences/assets/',
-  src_dir: 'manchester_traffic_offences/assets-src/',
+  dest_dir: 'make_a_plea/assets/',
+  src_dir: 'make_a_plea/assets-src/',
   styles: [
-    'manchester_traffic_offences/assets-src/stylesheets/**/*.scss',
+    'make_a_plea/assets-src/stylesheets/**/*.scss',
     'node_modules/govuk_frontend_toolkit/stylesheets/**/*.scss'
   ],
   scripts: [
-    'manchester_traffic_offences/assets-src/javascripts/modules/**/*.js',
-    'manchester_traffic_offences/assets-src/javascripts/application.js'
+    'make_a_plea/assets-src/javascripts/modules/**/*.js',
+    'make_a_plea/assets-src/javascripts/application.js'
   ],
-  shims: 'manchester_traffic_offences/assets-src/javascripts/shims/**/*.js',
-  vendor_scripts: 'manchester_traffic_offences/assets-src/javascripts/vendor/**/*.js',
-  test_scripts: 'manchester_traffic_offences/assets-src/tests/**/*.js',
-  images: 'manchester_traffic_offences/assets-src/images/**/*'
+  shims: 'make_a_plea/assets-src/javascripts/shims/**/*.js',
+  vendor_scripts: 'make_a_plea/assets-src/javascripts/vendor/**/*.js',
+  test_scripts: 'make_a_plea/assets-src/tests/**/*.js',
+  images: 'make_a_plea/assets-src/images/**/*'
 };
 
 // clean out assets folder
@@ -53,7 +53,7 @@ gulp.task('sass', function() {
       includePaths: [
         'node_modules/govuk_frontend_toolkit/',
         'node_modules/govuk_frontend_toolkit/stylesheets/',
-        'manchester_traffic_offences/assets-src/stylesheets/'
+        'make_a_plea/assets-src/stylesheets/'
       ]
     }))
     .pipe(sourcemaps.write('../maps'))
