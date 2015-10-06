@@ -57,13 +57,13 @@ venv
 *.iws
 .idea/
 
-manchester_traffic_offences/settings/local.py
+make_a_plea/settings/local.py
 api/settings/local.py
-manchester_traffic_offences/settings/production.py
+make_a_plea/settings/production.py
 
 # collect static output directory
-#manchester_traffic_offences/assets/
-manchester_traffic_offences/static/
+#make_a_plea/assets/
+make_a_plea/static/
 
 .DS_Store
 
@@ -71,7 +71,7 @@ manchester_traffic_offences/static/
 node_modules/
 
 # bower packages
-manchester_traffic_offences/assets-src/vendor/
+make_a_plea/assets-src/vendor/
 .sass-cache/
 
 # vim swp files
