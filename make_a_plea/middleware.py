@@ -33,8 +33,7 @@ class TimeoutRedirectMiddleware:
         return response
 
 
-class AdminLocaleURLMiddleware:
-
+class AdminLocaleURLMiddleware(object):
     def process_request(self, request):
         if request.path.startswith('/admin'):
             request.LANG = getattr(settings, 'ADMIN_LANGUAGE_CODE', settings.LANGUAGE_CODE)

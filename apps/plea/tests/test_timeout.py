@@ -3,7 +3,8 @@ from django.test.client import Client
 from django.conf import settings
 from importlib import import_module
 
-from apps.govuk_utils.middleware import TimeoutRedirectMiddleware
+from make_a_plea.middleware import TimeoutRedirectMiddleware
+
 
 class TestTimeout(TestCase):
 
