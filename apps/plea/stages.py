@@ -3,8 +3,8 @@ from django.core.exceptions import MultipleObjectsReturned
 from django.forms.formsets import formset_factory
 from django.utils.translation import ugettext as _
 
-from apps.govuk_utils.stages import FormStage
-from apps.govuk_utils.forms import RequiredFormSet
+from apps.forms.stages import FormStage
+from apps.forms.forms import RequiredFormSet
 
 from .email import send_plea_email, get_plea_type
 from .forms import (CaseForm,

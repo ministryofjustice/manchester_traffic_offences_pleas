@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 
-from apps.govuk_utils.stages import FormStage
+from apps.forms.stages import FormStage
 
 from .forms import ServiceForm, CommentsForm
 from .models import UserRating
