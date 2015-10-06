@@ -35,7 +35,7 @@
 
     {% if plea.split_form == "split_form_last_step" %}
     <div>
-        <p>This is your opportunity to present your case to the court.</p>
+        <p>{% blocktrans %}This is your opportunity to present your case to the court.{% endblocktrans %}</p>
     </div>
     {% endif %}
 
@@ -44,14 +44,16 @@
         {% if case.plea_made_by == "Defendant" %}
         <p>{% blocktrans %}This is your opportunity to present your case to the court:{% endblocktrans %}</p>
         <ul>
+            <li>{% blocktrans %}the charge details and witness statements are in the requisition pack we sent to you{% endblocktrans %}</li>
             <li>{% blocktrans %}each offence may carry penalty points and a fine{% endblocktrans %}</li>
-            <li>{% blocktrans %}if you plead guilty you may get a 33% discount on the fine{% endblocktrans %}</li>
+            <li>{% blocktrans %}if you plead guilty you may get a 33% discount on any fine{% endblocktrans %}</li>
         </ul>
         {% endif %}
 
         {% if case.plea_made_by == "Company representative" %}
         <p>{% blocktrans %}This is your opportunity to present the company's case to the court:{% endblocktrans %}</p>
         <ul>
+            <li>{% blocktrans %}the charge details and witness statements are in the requisition pack we sent to you{% endblocktrans %}</li>
             <li>{% blocktrans %}each offence may result in a fine{% endblocktrans %}</li>
             <li>{% blocktrans %}if you plead guilty on its behalf, the company may get a 33% discount on any fine{% endblocktrans %}</li>
         </ul>
@@ -101,24 +103,42 @@
 
                 {% if case.plea_made_by == "Defendant" %}
                     <p>{% blocktrans %}Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date.{% endblocktrans %}</p>
-                    <p>{% blocktrans %}If you disagree with any evidence from a witness statement in the requisition pack - tell us the name of the witness and what you disagree with. And tell us the name, address and date of birth of any witnesses you want to call to support your case.{% endblocktrans %}</p>
 
                     {% std_field plea_form.not_guilty_extra wide=True hide_optional=True counter=charge_number %}
 
-                    {% radio_field plea_form.interpreter_needed hide_optional=True inline=True counter=charge_number %}
+                    {% radio_field plea_form.interpreter_needed wide=True hide_optional=True inline=True counter=charge_number %}
                 {% endif %}
 
                 {% if case.plea_made_by == "Company representative" %}
                     <p>{% blocktrans %}Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date.{% endblocktrans %}</p>
-                    <p>{% blocktrans %}If you disagree with any evidence from a witness statement in the requisition pack - tell us the name of the witness and what you disagree with. And tell us the name, address and date of birth of any witnesses you want to call to support your case.{% endblocktrans %}</p>
 
                     {% std_field plea_form.not_guilty_extra wide=True hide_optional=True counter=charge_number help_text=_("Tell us why you believe the company is not guilty:") %}
 
-                    {% radio_field plea_form.interpreter_needed hide_optional=True counter=charge_number inline=True label=_("Does your company representative need an interpreter in court?") %}
+                    {% radio_field plea_form.interpreter_needed wide=True hide_optional=True counter=charge_number inline=True label=_("Does your company representative need an interpreter in court?") %}
                 {% endif %}
 
                     <div class="move-up" data-conditional="{{ plea_form.prefix }}-interpreter_needed" data-conditional-value="True">
-                        {% std_field plea_form.interpreter_language hide_optional=True counter=charge_number %}
+                        {% std_field plea_form.interpreter_language wide=True hide_optional=True counter=charge_number %}
+                    </div>
+
+                    <h3>{% blocktrans %}Evidence and witness information{% endblocktrans %}</h3>
+
+                    {% radio_field plea_form.disagree_with_evidence wide=True hide_optional=True inline=True counter=charge_number %}
+
+                    <div class="move-up" data-conditional="{{ plea_form.prefix }}-disagree_with_evidence" data-conditional-value="True">
+                        {% std_field plea_form.disagree_with_evidence_details wide=True hide_optional=True counter=charge_number %}
+                    </div>
+
+                    {% radio_field plea_form.witness_needed wide=True hide_optional=True inline=True counter=charge_number %}
+
+                    <div class="move-up" data-conditional="{{ plea_form.prefix }}-witness_needed" data-conditional-value="True">
+                        {% std_field plea_form.witness_details wide=True hide_optional=True counter=charge_number %}
+
+                        {% radio_field plea_form.witness_interpreter_needed wide=True hide_optional=True inline=True counter=charge_number %}
+
+                        <div class="move-up" data-conditional="{{ plea_form.prefix }}-witness_interpreter_needed" data-conditional-value="True">
+                            {% std_field plea_form.witness_interpreter_language wide=True hide_optional=True counter=charge_number %}
+                        </div>
                     </div>
 
                 </section>

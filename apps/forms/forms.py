@@ -58,7 +58,6 @@ class BaseStageForm(forms.Form):
         for field, dependency in dependencies_list.items():
             dependency_field = dependency.get("field", None)
             dependency_value = dependency.get("value", None)
-            sub_dependencies = dependency.get("dependencies", None)
 
             """
             When a form has a prefix, the key in the field is the original,
@@ -77,9 +76,6 @@ class BaseStageForm(forms.Form):
                 if self.fields[dependency_field].required:
                     if self.split_form is None or self.split_form != dependency_field:
                         self.fields[field].required = test_dependency_match(dependency_field_data_key, dependency_value)
-
-                    if sub_dependencies:
-                        self.set_required_fields(sub_dependencies, prefix)
 
 
 class SplitStageForm(BaseStageForm):
