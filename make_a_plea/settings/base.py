@@ -191,6 +191,7 @@ INSTALLED_APPS = [
     'djcelery',
     'waffle',
     'moj_template',
+    'make_a_plea',
     'apps.forms',
     'apps.plea',
     'apps.feedback',
