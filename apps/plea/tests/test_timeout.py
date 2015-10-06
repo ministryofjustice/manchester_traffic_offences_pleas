@@ -3,7 +3,8 @@ from django.test.client import Client
 from django.conf import settings
 from importlib import import_module
 
-from ..middleware import TimeoutRedirectMiddleware
+from make_a_plea.middleware import TimeoutRedirectMiddleware
+
 
 class TestTimeout(TestCase):
 
@@ -32,8 +33,7 @@ class TestTimeout(TestCase):
 
     def test_when_urn_has_refresh_headers(self):
         session = self.session
-        session["plea_data"] = {}
-        session["plea_data"]["case"] = {"urn": "51/AA/00000/00"}
+        session["plea_data"] = {"case": {"urn": "51/AA/00000/00"}}
         session.save()
 
         response = self.client.get("/plea/case/")

@@ -21,6 +21,9 @@ class FormStage(object):
         if not hasattr(self, "dependencies"):
             self.dependencies = []
 
+    def set_session_timeout(self, timeout):
+        self.context.update({"sessionTimeout": timeout})
+
     def get_next(self, next_step):
         if next_step:
             return next_step
