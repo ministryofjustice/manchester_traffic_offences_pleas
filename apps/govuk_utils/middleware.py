@@ -5,14 +5,18 @@ from django.utils import translation
 
 def get_session_timeout(request):
     try:
-        if (request.session.get("plea_data", {}).get("case", False)
-            or request.session.get("feedback_data", {}).get("service", False)):
-            timeout = int(time.time() + getattr(settings, "SESSION_COOKIE_AGE", 3600))
-            return timeout
-    except AttributeError:
-        pass
+        has_plea_data = request.session["plea_data"]["case"]
+    except KeyError:
+        has_plea_data = False
 
-    return False
+    try:
+        has_feedback_data = request.session["feedback_data"]["service"]
+    except KeyError:
+        has_feedback_data = False
+
+    if has_plea_data or has_feedback_data:
+        timeout = int(time.time() + getattr(settings, "SESSION_COOKIE_AGE", 3600))
+        return timeout
 
 class TimeoutRedirectMiddleware:
 
