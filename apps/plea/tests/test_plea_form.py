@@ -711,7 +711,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertTrue(form.current_stage.form.is_valid())
 
-    @patch("apps.govuk_utils.stages.messages.add_message")
+    @patch("apps.forms.stages.messages.add_message")
     def test_review_stage_session_timeout_redirects_to_case(self, add_message):
         # no test data to simulate a timed out session
         test_data = {

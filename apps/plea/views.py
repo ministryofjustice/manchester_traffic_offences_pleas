@@ -8,7 +8,7 @@ from django.views.generic import TemplateView, FormView
 
 from brake.decorators import ratelimit
 
-from apps.govuk_utils.stages import MultiStageForm
+from apps.forms.stages import MultiStageForm
 
 from .models import Case, Court
 from .forms import CourtFinderForm

@@ -8,7 +8,7 @@ from django.views.generic import TemplateView
 
 from brake.decorators import ratelimit
 
-from apps.govuk_utils.stages import MultiStageForm
+from apps.forms.stages import MultiStageForm
 
 from .stages import ServiceStage, CommentsStage, CompleteStage
 
