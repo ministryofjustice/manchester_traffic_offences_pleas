@@ -15,10 +15,10 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'manchester_traffic_offences/assets-src/javascripts/vendor/jquery-1.11.0.min.js',
-      'manchester_traffic_offences/assets-src/javascripts/moj.js',
-      'manchester_traffic_offences/assets-src/javascripts/modules/*.js',
-      'manchester_traffic_offences/assets-src/tests/*.spec.js'
+      'make_a_plea/assets-src/javascripts/vendor/jquery-1.11.0.min.js',
+      'make_a_plea/assets-src/javascripts/moj.js',
+      'make_a_plea/assets-src/javascripts/modules/*.js',
+      'make_a_plea/assets-src/tests/*.spec.js'
     ],
 
 

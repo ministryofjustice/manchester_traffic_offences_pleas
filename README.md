@@ -20,7 +20,7 @@ Clone the repository:
 
 Create your own local.py:
 
-    cp manchester_traffic_offences/settings/local.py.example manchester_traffic_offences/settings/local.py
+    cp manchester_traffic_offences/settings/local.py.example make_a_plea/settings/local.py
 
 
 Run vagrant:
