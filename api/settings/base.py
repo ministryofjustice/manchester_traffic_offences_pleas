@@ -16,7 +16,7 @@ INSTALLED_APPS = (
 
 PROJECT_APPS = (
     'moj_template',
-    'apps.govuk_utils',
+    'apps.forms',
     'apps.plea',
     'api',
     'api.v0',
