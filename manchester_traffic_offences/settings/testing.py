@@ -29,7 +29,7 @@ USER_DATA_DIRECTORY = os.path.join(PROJECT_ROOT, 'test_user_data')
 GPG_HOME_DIRECTORY = os.path.join(PROJECT_ROOT, 'test_gpg_home')
 GPG_RECIPIENT = "test@test.com"
 
-TEST_RUNNER = 'apps.plea.runner.MAPTestRunner'
+TEST_RUNNER = 'make_a_plea.runner.MAPTestRunner'
 
 ENCRYPTED_COOKIE_KEYS = [
     '9evXbsR_1yZA5EW_blSI4O69MjGKwOu1-UwLK_PWyKw=',
