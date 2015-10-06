@@ -1,13 +1,11 @@
-import os
+import gnupg
 import json
+import os
+import sh
 import time
-from glob import glob
 
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
-
-import gnupg
-import sh
 
 
 gpg = gnupg.GPG(gnupghome=settings.GPG_HOME_DIRECTORY)
