@@ -1,15 +1,14 @@
+from brake.decorators import ratelimit
+
 from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import RequestContext
 from django.views.decorators.cache import never_cache
-from django.views.generic import TemplateView
-
-from brake.decorators import ratelimit
 
 from apps.forms.stages import MultiStageForm
-
+from apps.forms.views import StorageView
 from .stages import ServiceStage, CommentsStage, CompleteStage
 
 
@@ -19,23 +18,14 @@ class FeedbackForms(MultiStageForm):
                      CompleteStage]
 
 
-class FeedbackViews(TemplateView):
+class FeedbackViews(StorageView):
 
     @method_decorator(never_cache)
     def dispatch(self, *args, **kwargs):
         return super(FeedbackViews, self).dispatch(*args, **kwargs)
 
-    def _get_storage(self, request):
-        if not request.session.get("feedback_data"):
-            request.session["feedback_data"] = {}
-
-        return request.session["feedback_data"]
-
-    def _clear_storage(self, request):
-        del request.session["feedback_data"]
-
     def get(self, request, stage=None):
-        storage = self._get_storage(request)
+        storage = self._get_storage(request, "feedback_data")
 
         kw_args = {k: v for (k, v) in request.GET.items()}
         if request.GET.get("next"):
@@ -63,14 +53,14 @@ class FeedbackViews(TemplateView):
 
         if stage == "complete":
             redirect_url = storage.get("feedback_redirect", "/")
-            self._clear_storage(request)
+            self._clear_storage(request, "feedback_data")
             return HttpResponseRedirect(redirect_url)
 
         return form.render()
 
     @method_decorator(ratelimit(block=True, rate=settings.RATE_LIMIT))
     def post(self, request, stage):
-        storage = self._get_storage(request)
+        storage = self._get_storage(request, "feedback_data")
 
         nxt = request.GET.get("next", None)
 

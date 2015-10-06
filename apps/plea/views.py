@@ -9,6 +9,7 @@ from django.views.generic import TemplateView, FormView
 from brake.decorators import ratelimit
 
 from apps.forms.stages import MultiStageForm
+from apps.forms.views import StorageView
 
 from .models import Case, Court
 from .forms import CourtFinderForm
@@ -68,24 +69,14 @@ class PleaOnlineForms(MultiStageForm):
         return super(PleaOnlineForms, self).render()
 
 
-class PleaOnlineViews(TemplateView):
+class PleaOnlineViews(StorageView):
 
     @method_decorator(never_cache)
     def dispatch(self, *args, **kwargs):
         return super(PleaOnlineViews, self).dispatch(*args, **kwargs)
 
-    def _get_storage(self, request):
-        if not request.session.get("plea_data"):
-            request.session["plea_data"] = {}
-
-        return request.session["plea_data"]
-
-    def _clear_storage(self, request):
-        if "plea_data" in request.session:
-            del request.session["plea_data"]
-
     def get(self, request, stage=None):
-        storage = self._get_storage(request)
+        storage = self._get_storage(request, "plea_data")
 
         if not stage:
             stage = PleaOnlineForms.stage_classes[0].name
@@ -99,13 +90,13 @@ class PleaOnlineViews(TemplateView):
         form.process_messages(request)
 
         if stage == "complete":
-            self._clear_storage(request)
+            self._clear_storage(request, "plea_data")
 
         return form.render()
 
     @method_decorator(ratelimit(block=True, rate=settings.RATE_LIMIT))
     def post(self, request, stage):
-        storage = self._get_storage(request)
+        storage = self._get_storage(request, "plea_data")
 
         nxt = request.GET.get("next", None)
 
@@ -118,7 +109,7 @@ class PleaOnlineViews(TemplateView):
         return form.render()
 
 
-class UrnAlreadyUsedView(TemplateView):
+class UrnAlreadyUsedView(StorageView):
     template_name = "urn_used.html"
 
     def post(self, request):
