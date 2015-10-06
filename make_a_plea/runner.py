@@ -1,10 +1,9 @@
 import os
-import sh
 
 from redgreenunittest.django.runner import RedGreenDiscoverRunner
 from django.conf import settings
 
-from .encrypt import clear_user_data
+from apps.plea.encrypt import clear_user_data, gpg
 
 
 class MAPTestRunner(RedGreenDiscoverRunner):
@@ -21,7 +20,6 @@ class MAPTestRunner(RedGreenDiscoverRunner):
         if not os.path.exists(settings.GPG_HOME_DIRECTORY):
             os.makedirs(settings.GPG_HOME_DIRECTORY)
 
-        from .encrypt import gpg
         gpg.import_keys(settings.GPG_TEST_KEY)
 
         super(MAPTestRunner, self).setup_test_environment(**kwargs)
