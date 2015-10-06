@@ -9,9 +9,9 @@ from django.core.mail import get_connection
 from django.conf import settings
 from django.utils import translation
 
-from apps.govuk_utils.email import TemplateAttachmentEmail
+from apps.plea.attachment import TemplateAttachmentEmail
 
-from manchester_traffic_offences.celery import app
+from make_a_plea.celery import app
 from apps.plea.models import Case, CourtEmailCount, Court
 
 logger = logging.getLogger(__name__)

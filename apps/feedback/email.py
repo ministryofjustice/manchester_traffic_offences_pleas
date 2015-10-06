@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
+
 def send_feedback_email(email_data):
     email_context = {"used_call_centre": email_data["service"]["used_call_centre"],
                      "call_centre_satisfaction": email_data["service"]["call_centre_satisfaction"],

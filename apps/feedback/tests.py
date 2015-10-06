@@ -122,7 +122,7 @@ class FeedbackFormTestCase(TestCase):
 
         self.assertEquals(len(mail.outbox), 1)
 
-    @patch("apps.govuk_utils.stages.messages")
+    @patch("apps.forms.stages.messages")
     def test_success_message_is_added(self, messages):
         form = FeedbackForms("comments", "feedback_form_step", self.complete_session_data)
         form.save({}, self.request_context)
