@@ -1,7 +1,7 @@
-from django.core.mail.message import EmailMessage
-from django.template.loader import render_to_string
 from django.conf import settings
 from django.core.mail import get_connection
+from django.core.mail.message import EmailMessage
+from django.template.loader import render_to_string
 
 
 class TemplateAttachmentEmail(object):
