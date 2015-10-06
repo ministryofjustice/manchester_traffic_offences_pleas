@@ -139,13 +139,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'apps.govuk_utils.middleware.AdminLocaleURLMiddleware',
+    'apps.forms.middleware.AdminLocaleURLMiddleware',
     'apps.plea.middleware.TimeoutRedirectMiddleware',
 )
 
 ROOT_URLCONF = 'manchester_traffic_offences.urls'
 
-SESSION_SERIALIZER = 'apps.govuk_utils.serializers.DateAwareSerializer'
+SESSION_SERIALIZER = 'apps.forms.serializers.DateAwareSerializer'
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 SESSION_COOKIE_HTTPONLY = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -190,8 +190,8 @@ INSTALLED_APPS = [
     'django_extensions',
     'djcelery',
     'waffle',
-    'apps.govuk_utils',
     'moj_template',
+    'apps.forms',
     'apps.plea',
     'apps.feedback',
     'apps.receipt',
