@@ -4,6 +4,7 @@ from django.test import TestCase
 
 from make_a_plea.serializers import DateAwareSerializer
 
+
 class DateAwareSerializerTests(TestCase):
     def test_serializer_dumps_plain(self):
         test_str = """{"key2": 2, "key1": "value1"}"""
