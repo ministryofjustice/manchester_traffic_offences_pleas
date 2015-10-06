@@ -15,6 +15,7 @@
             </th>
         </tr>
         {% endif %}
+
         <tr>
             <th>{% spaceless %}
                 {% if case.plea_made_by == "Defendant" %}
@@ -31,12 +32,14 @@
                 {% endif %}
             {% endspaceless %}</td>
         </tr>
+
         {% if pleaform.guilty == "guilty" %}
         <tr>
             <th>{% blocktrans %}Mitigation{% endblocktrans %}</th>
             <td>{{ pleaform.guilty_extra|linebreaksbr|default:"-" }}</td>
         </tr>
         {% endif %}
+
         {% if pleaform.guilty == "not_guilty" %}
         <tr>
             <th>{% blocktrans %}Not guilty because{% endblocktrans %}</th>
@@ -46,12 +49,51 @@
             <th>{% blocktrans %}Interpreter required{% endblocktrans %}</th>
             <td>{{ pleaform.interpreter_needed|yesno:_("Yes,No (v3)") }}</td>
         </tr>
+
             {% if pleaform.interpreter_needed %}
         <tr>
             <th>{% blocktrans %}Language{% endblocktrans %}</th>
             <td>{{ pleaform.interpreter_language }}</td>
         </tr>
             {% endif %}
+
+        <tr>
+            <th>{% blocktrans %}Disagree with any evidence from a witness statement?{% endblocktrans %}</th>
+            <td>{{ pleaform.disagree_with_evidence|yesno:_("Yes,No (v1)") }}</td>
+        </tr>
+
+            {% if pleaform.disagree_with_evidence %}
+        <tr>
+            <th>{% blocktrans %}Name of the witness and what you disagree with{% endblocktrans %}</th>
+            <td>{{ pleaform.disagree_with_evidence_details|linebreaksbr|default:"-" }}</td>
+        </tr>
+            {% endif %}
+
+        <tr>
+            <th>{% blocktrans %}Wants to call a witness?{% endblocktrans %}</th>
+            <td>{{ pleaform.witness_needed|yesno:_("Yes,No (v1)") }}</td>
+        </tr>
+
+            {% if pleaform.witness_needed %}
+        <tr>
+            <th>{% blocktrans %}Name, date of birth and address of the witness{% endblocktrans %}</th>
+            <td>{{ pleaform.witness_details|linebreaksbr|default:"-" }}</td>
+        </tr>
+        <tr>
+            <th>{% blocktrans %}Interpreter required{% endblocktrans %}</th>
+            <td>{{ pleaform.witness_interpreter_needed|yesno:_("Yes,No (v1)") }}</td>
+        </tr>
+
+                {% if pleaform.witness_interpreter_needed %}
+        <tr>
+            <th>{% blocktrans %}Language{% endblocktrans %}</th>
+            <td>{{ pleaform.witness_interpreter_language }}</td>
+        </tr>
+                {% endif %}
+
+            {% endif %}
+
         {% endif %}
+
     {% endfor %}
     </tbody>

@@ -301,181 +301,125 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertEqual(response.status_code, 302)
 
 
-    def test_plea_form_shows_errors_when_invalid(self):
-        self.session.update({"case": {"complete": True,
-                                      "date_of_hearing": "2015-01-01",
-                                      "urn": "06/AA/0000000/00",
-                                      "number_of_charges": 2},
-                             "your_details": {"first_name": "Charlie",
-                                              "last_name": "Brown",
-                                              "contact_number": "07802639892"}})
+    def test_plea_single_charge_missing_data(self):
+        self.session.update(self.plea_stage_pre_data_1_charge)
 
         form = PleaOnlineForms("plea", "plea_form_step", self.session)
 
-        hearing_date = datetime.date.today()+datetime.timedelta(30)
-
         form.load(self.request_context)
-        form.save({"first_name": "Test",
-                   "last_name": "Man",
-                   "contact_number": "012345678",
-                   "date_of_hearing_0": str(hearing_date.day),
-                   "date_of_hearing_1": str(hearing_date.month),
-                   "date_of_hearing_2": str(hearing_date.year),
-                   "urn": "06/AA/0000000/00",
-                   "number_of_charges": 2,
-                   "form-TOTAL_FORMS": 2,
+        form.save({"form-TOTAL_FORMS": 1,
                    "form-INITIAL_FORMS": "0",
-                   "form-MAX_NUM_FORMS": 2},
+                   "form-MAX_NUM_FORMS": 1},
                   self.request_context)
         response = form.render()
 
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(len(form.current_stage.form.forms[0].errors), 1)
-        self.assertEqual(len(form.current_stage.form.forms[1].errors), 1)
+
+
+    def test_plea_multiple_charges_missing_data(self):
+        self.session.update(self.plea_stage_pre_data_3_charges)
+
+        form = PleaOnlineForms("plea", "plea_form_step", self.session)
+
+        form.load(self.request_context)
+        form.save({"form-TOTAL_FORMS": 3,
+                   "form-INITIAL_FORMS": "0",
+                   "form-MAX_NUM_FORMS": 3,
+                   "form-0-guilty": "guilty"},
+                  self.request_context)
+        response = form.render()
 
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(form.current_stage.form.forms[0].errors), 0)
+        self.assertEqual(len(form.current_stage.form.forms[1].errors), 1)
+        self.assertEqual(len(form.current_stage.form.forms[2].errors), 1)
+
+
+    def test_plea_single_charge_not_guilty_missing_data(self):
+        self.session.update(self.plea_stage_pre_data_1_charge)
+
+        form = PleaOnlineForms("plea", "plea_form_step", self.session)
+
+        form.load(self.request_context)
+        form.save({"form-TOTAL_FORMS": 1,
+                   "form-INITIAL_FORMS": "0",
+                   "form-MAX_NUM_FORMS": 1,
+                   "form-0-guilty": "not_guilty"},
+                  self.request_context)
+        response = form.render()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(form.current_stage.form.forms[0].errors), 4)
+
+
+    def test_plea_single_charge_not_guilty_missing_extra_data(self):
+        self.session.update(self.plea_stage_pre_data_1_charge)
+
+        form = PleaOnlineForms("plea", "plea_form_step", self.session)
+
+        form.load(self.request_context)
+        form.save({"form-TOTAL_FORMS": 1,
+                   "form-INITIAL_FORMS": "0",
+                   "form-MAX_NUM_FORMS": 1,
+                   "form-0-guilty": "not_guilty",
+                   "form-0-not_guilty_extra": "lorem",
+                   "form-0-interpreter_needed": True,
+                   "form-0-disagree_with_evidence": True,
+                   "form-0-witness_needed": True},
+                  self.request_context)
+        response = form.render()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(form.current_stage.form.forms[0].errors), 4)
+
+
+    def test_plea_single_charge_not_guilty_missing_witness_language(self):
+        self.session.update(self.plea_stage_pre_data_1_charge)
+
+        form = PleaOnlineForms("plea", "plea_form_step", self.session)
+
+        form.load(self.request_context)
+        form.save({"form-TOTAL_FORMS": 1,
+                   "form-INITIAL_FORMS": "0",
+                   "form-MAX_NUM_FORMS": 1,
+                   "form-0-guilty": "not_guilty",
+                   "form-0-not_guilty_extra": "lorem",
+                   "form-0-interpreter_needed": True,
+                   "form-0-interpreter_language": "French",
+                   "form-0-disagree_with_evidence": True,
+                   "form-0-disagree_with_evidence_details": "lorem",
+                   "form-0-witness_needed": True,
+                   "form-0-witness_details": "lorem"},
+                  self.request_context)
+        response = form.render()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(form.current_stage.form.forms[0].errors), 1)
+
 
     def test_plea_stage_redirects_when_valid(self):
-        self.session.update({"case": {"complete": True,
-                                      "date_of_hearing": "2015-01-01",
-                                      "urn": "06/AA/0000000/00",
-                                      "number_of_charges": 2,
-                                      "plea_made_by": "Defendant"},
-                             "your_details": {"first_name": "Charlie",
-                                              "last_name": "Brown",
-                                              "contact_number": "07802639892"}})
+        self.session.update(self.plea_stage_pre_data_1_charge)
 
         form = PleaOnlineForms("plea", "plea_form_step", self.session)
 
         form.load(self.request_context)
-        form.save({"form-TOTAL_FORMS": "2",
+        form.save({"form-TOTAL_FORMS": 1,
                    "form-INITIAL_FORMS": "0",
-                   "form-MAX_NUM_FORMS": "2",
+                   "form-MAX_NUM_FORMS": 1,
                    "form-0-guilty": "guilty",
                    "form-0-guilty_extra": "lorem ipsum 1",
-                   "form-1-guilty": "guilty",
-                   "form-1-guilty_extra": "lorem ipsum 1"},
+                   "form-1-guilty": "not_guilty",
+                   "form-1-not_guilty_extra": "lorem ipsum 1",
+                   "form-0-interpreter_needed": False,
+                   "form-0-disagree_with_evidence": False,
+                   "form-0-witness_needed": False},
                   self.request_context)
         response = form.render()
 
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(len(form.current_stage.form[0].errors), 0)
-        self.assertEqual(len(form.current_stage.form[1].errors), 0)
-        self.assertEqual(response.status_code, 302)
 
-    def test_plea_stage_bad_data_single_charge(self):
-        self.session.update(self.plea_stage_pre_data_1_charge)
-        form = PleaOnlineForms("plea", "plea_form_step", self.session)
-
-        mgmt_data = {"form-TOTAL_FORMS": "1",
-                     "form-INITIAL_FORMS": "0",
-                     "form-MAX_NUM_FORMS": "1000"}
-        mgmt_data.update({"form-0-guilty": "",
-                          "form-0-guilty_extra": ""})
-
-        # no form data, just the management stuff
-        form.save(mgmt_data, self.request_context)
-
-        self.assertEqual(len(form.current_stage.form.errors[0]), 1)
-
-    def test_plea_stage_good_data_single_charge(self):
-        self.session.update(self.plea_stage_pre_data_1_charge)
-        form = PleaOnlineForms("plea", "plea_form_step", self.session)
-
-        mgmt_data = {"form-TOTAL_FORMS": "1",
-                     "form-INITIAL_FORMS": "0",
-                     "form-MAX_NUM_FORMS": "1"}
-
-        mgmt_data.update({"form-0-guilty": "guilty",
-                          "form-0-guilty_extra": "lorem ipsum 1"})
-
-        form.save(mgmt_data, self.request_context)
-        response = form.render()
-
-        self.assertEqual(response.status_code, 302)
-
-    def test_plea_stage_missing_data_multiple_charges(self):
-        self.session.update(self.plea_stage_pre_data_3_charges)
-        form = PleaOnlineForms("plea", "plea_form_step", self.session)
-
-        mgmt_data = {"form-TOTAL_FORMS": "3",
-                     "form-INITIAL_FORMS": "0",
-                     "form-MAX_NUM_FORMS": "1000"}
-
-        mgmt_data.update({"form-0-guilty": "guilty",
-                          "form-0-guilty_extra": "lorem ipsum 1"})
-
-        form.save(mgmt_data, self.request_context)
-
-        self.assertEqual(len(form.current_stage.form.errors[0]), 0)
-        self.assertEqual(len(form.current_stage.form.errors[1]), 1)
-        self.assertEqual(len(form.current_stage.form.errors[2]), 1)
-
-    def test_plea_stage_bad_data_multiple_charges(self):
-        self.session.update(self.plea_stage_pre_data_1_charge)
-        form = PleaOnlineForms("plea", "plea_form_step", self.session)
-
-        mgmt_data = {"form-TOTAL_FORMS": "2",
-                     "form-INITIAL_FORMS": "2",
-                     "form-MAX_NUM_FORMS": "1000"}
-
-        mgmt_data.update({"form-0-guilty": "guilty",
-                          "form-0-guilty_extra": "lorem ipsum 1"})
-
-        form.save(mgmt_data, self.request_context)
-
-        self.assertEqual(len(form.current_stage.form.forms), 1)
-
-    def test_plea_stage_good_data_multiple_charges(self):
-        self.session.update(self.plea_stage_pre_data_1_charge)
-        form = PleaOnlineForms("plea", "plea_form_step", self.session)
-
-        mgmt_data = {"form-TOTAL_FORMS": "2",
-                     "form-INITIAL_FORMS": "0",
-                     "form-MAX_NUM_FORMS": "1000"}
-
-        mgmt_data.update({"form-0-guilty": "guilty",
-                          "form-0-guilty_extra": "lorem ipsum 1",
-                          "form-1-guilty": "guilty",
-                          "form-1-guilty_extra": "lorem ipsum 1"})
-
-        form.save(mgmt_data, self.request_context)
-        response = form.render()
-
-        self.assertEqual(response.status_code, 302)
-
-    def test_plea_stage_not_guilty_missing_data_single_charge(self):
-        self.session.update(self.plea_stage_pre_data_1_charge)
-        form = PleaOnlineForms("plea", "plea_form_step", self.session)
-
-        mgmt_data = {"form-TOTAL_FORMS": "1",
-                     "form-INITIAL_FORMS": "0",
-                     "form-MAX_NUM_FORMS": "1"}
-        mgmt_data.update({"form-0-guilty": "not_guilty",
-                          "form-0-not_guilty_extra": ""})
-
-        # no form data, just the management stuff
-        form.save(mgmt_data, self.request_context)
-        response = form.render()
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(form.current_stage.form.errors[0]), 2)
-
-    def test_plea_stage_not_guilty_missing_interpreter_language(self):
-        self.session.update(self.plea_stage_pre_data_1_charge)
-        form = PleaOnlineForms("plea", "plea_form_step", self.session)
-
-        mgmt_data = {"form-TOTAL_FORMS": "1",
-                     "form-INITIAL_FORMS": "0",
-                     "form-MAX_NUM_FORMS": "1"}
-        mgmt_data.update({"form-0-guilty": "not_guilty",
-                          "form-0-not_guilty_extra": "dsa",
-                          "form-0-interpreter_needed": True})
-
-        # no form data, just the management stuff
-        form.save(mgmt_data, self.request_context)
-        response = form.render()
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(form.current_stage.form.errors[0]), 1)
 
     def test_plea_stage_redirects_to_company_finances(self):
 
@@ -552,7 +496,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         mgmt_data.update({"form-0-guilty": "not_guilty",
                           "form-0-not_guilty_extra": "lorem ipsum 1",
-                          "form-0-interpreter_needed": False})
+                          "form-0-interpreter_needed": False,
+                          "form-0-disagree_with_evidence": False,
+                          "form-0-witness_needed": False})
 
         form.save(mgmt_data, request_context)
         response = form.render()
@@ -896,7 +842,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form = PleaOnlineForms("review", "plea_form_step", self.session)
         form.load(self.request_context)
         form.save({"receive_email_updates": True,
-                   "understand": True}, 
+                   "understand": True},
                   self.request_context)
 
         self.assertEqual(len(form.current_stage.form.errors), 1)
