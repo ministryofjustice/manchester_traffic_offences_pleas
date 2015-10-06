@@ -139,8 +139,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'apps.forms.middleware.AdminLocaleURLMiddleware',
     'apps.plea.middleware.TimeoutRedirectMiddleware',
+    'make_a_plea.middleware.AdminLocaleURLMiddleware',
 )
 
 ROOT_URLCONF = 'make_a_plea.urls'
