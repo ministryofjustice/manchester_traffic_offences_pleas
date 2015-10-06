@@ -139,13 +139,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'apps.govuk_utils.middleware.AdminLocaleURLMiddleware',
-    'apps.govuk_utils.middleware.TimeoutRedirectMiddleware',
+    'make_a_plea.middleware.AdminLocaleURLMiddleware',
+    'make_a_plea.middleware.TimeoutRedirectMiddleware',
 )
 
-ROOT_URLCONF = 'manchester_traffic_offences.urls'
+ROOT_URLCONF = 'make_a_plea.urls'
 
-SESSION_SERIALIZER = 'apps.govuk_utils.serializers.DateAwareSerializer'
+SESSION_SERIALIZER = 'make_a_plea.serializers.DateAwareSerializer'
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 SESSION_COOKIE_HTTPONLY = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -158,7 +158,7 @@ RATE_LIMIT = "20/m"
 WAFFLE_CACHE_PREFIX = "MaP_waffle"
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'manchester_traffic_offences.wsgi.application'
+WSGI_APPLICATION = 'make_a_plea.wsgi.application'
 
 TEMPLATE_DIRS = (
     "templates",
@@ -174,8 +174,8 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
     "django.contrib.auth.context_processors.auth",
-    'manchester_traffic_offences.context_processors.globals',
-    'apps.feedback.context_processors.feedback',
+    "make_a_plea.context_processors.globals",
+    "apps.feedback.context_processors.feedback",
 ]
 
 INSTALLED_APPS = [
@@ -190,8 +190,9 @@ INSTALLED_APPS = [
     'django_extensions',
     'djcelery',
     'waffle',
-    'apps.govuk_utils',
     'moj_template',
+    'make_a_plea',
+    'apps.forms',
     'apps.plea',
     'apps.feedback',
     'apps.receipt',
