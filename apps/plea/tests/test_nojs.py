@@ -8,7 +8,7 @@ from ..views import PleaOnlineForms
 class TestNoJS(TestCase):
 
     def setUp(self):
-        self.plea_session = {"case": {"complete": True, 
+        self.plea_session = {"case": {"complete": True,
                                       "number_of_charges": 1,
                                       "plea_made_by": "Defendant"},
                              "your_details": {"complete": True}}
@@ -102,7 +102,9 @@ class TestNoJS(TestCase):
                    "form-0-guilty": "not_guilty",
                    "form-0-not_guilty_extra": "Lorem ipsum",
                    "form-0-interpreter_needed": True,
-                   "form-0-interpreter_language": "French"},
+                   "form-0-interpreter_language": "French",
+                   "form-0-disagree_with_evidence": False,
+                   "form-0-witness_needed": False},
                   self.request_context)
 
         response = form.render()
