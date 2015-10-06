@@ -77,8 +77,12 @@
     <script src="{% static "javascripts/application.js" %}" type="text/javascript"></script>
 
     {% ifequal LANGUAGE_CODE "cy" %}
-    <input type="hidden" name="promptOnChangeMessage" value="{% blocktrans %}You have entered some information{% endblocktrans %}">
+    <script type="text/javascript">var promptOnChangeMessage = "{% blocktrans %}You have entered some information{% endblocktrans %}";</script>
     {% endifequal %}
+
+    {% if request.session_timeout %}
+    <script type="text/javascript">var sessionTimeout = {{ request.session_timeout|stringformat:"i" }};</script>
+    {% endif %}
 
     {% switch enable_a11y_testing %}
 
