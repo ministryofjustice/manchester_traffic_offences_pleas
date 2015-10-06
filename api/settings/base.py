@@ -1,4 +1,4 @@
-from manchester_traffic_offences.settings.base import *
+from make_a_plea.settings.base import *
 
 ROOT_URLCONF = 'api.urls'
 

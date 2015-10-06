@@ -1,21 +1,22 @@
 from __future__ import unicode_literals
 
-from django.contrib import admin
+import views
+
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
-from django.views.generic import TemplateView
-
 from django.contrib import admin
-admin.autodiscover()
-
+from django.views.generic import TemplateView
 from apps.plea.views import CourtFinderView
 
-import views
 
-handler500 = "manchester_traffic_offences.views.server_error"
+admin.autodiscover()
 
-urlpatterns = patterns("",
+
+handler500 = "make_a_plea.views.server_error"
+
+urlpatterns = patterns(
+    "",
     url(r"^$", views.HomeView.as_view(), name="home"),
     url(r"^helping-you-plead-online/$", views.TranslatedView.as_view(template_name="ad_support.html"), name="ad_support"),
     url(r"^terms-and-conditions-and-privacy-policy/$", views.TranslatedView.as_view(template_name="terms.html"), name="terms"),
