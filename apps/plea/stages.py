@@ -7,7 +7,8 @@ from apps.forms.stages import FormStage
 from apps.forms.forms import RequiredFormSet
 
 from .email import send_plea_email, get_plea_type
-from .forms import (CaseForm,
+from .forms import (NoticeTypeForm,
+                    CaseForm,
                     YourDetailsForm,
                     CompanyDetailsForm,
                     PleaForm,
@@ -30,11 +31,18 @@ def get_case(urn):
         return None
 
 
+class NoticeTypeStage(FormStage):
+    name = "notice_type"
+    template = "notice_type.html"
+    form_class = NoticeTypeForm
+    dependencies = []
+
+
 class CaseStage(FormStage):
     name = "case"
     template = "case.html"
     form_class = CaseForm
-    dependencies = []
+    dependencies = ["notice_type"]
 
     def render(self, request_context):
         if "urn" in self.form.errors and ERROR_MESSAGES["URN_ALREADY_USED"] in self.form.errors["urn"]:
@@ -66,7 +74,7 @@ class CompanyDetailsStage(FormStage):
     name = "company_details"
     template = "company_details.html"
     form_class = CompanyDetailsForm
-    dependencies = ["case"]
+    dependencies = ["notice_type", "case"]
 
     def save(self, form_data, next_step=None):
         clean_data = super(CompanyDetailsStage,
@@ -82,7 +90,7 @@ class YourDetailsStage(FormStage):
     name = "your_details"
     template = "your_details.html"
     form_class = YourDetailsForm
-    dependencies = ["case"]
+    dependencies = ["notice_type", "case"]
 
     def save(self, form_data, next_step=None):
         clean_data = super(YourDetailsStage,
@@ -99,7 +107,7 @@ class PleaStage(FormStage):
     name = "plea"
     template = "plea.html"
     form_class = PleaForm
-    dependencies = ["case", "your_details", "company_details"]
+    dependencies = ["notice_type", "case", "your_details", "company_details"]
 
     def get_offences(self, urn):
         offences = []
@@ -225,14 +233,14 @@ class CompanyFinancesStage(FormStage):
     name = "company_finances"
     template = "company_finances.html"
     form_class = CompanyFinancesForm
-    dependencies = ["case"]
+    dependencies = ["notice_type", "case"]
 
 
 class YourMoneyStage(FormStage):
     name = "your_finances"
     template = "your_finances.html"
     form_class = YourMoneyForm
-    dependencies = ["case", "your_details", "plea"]
+    dependencies = ["notice_type", "case", "your_details", "plea"]
 
     def save(self, form_data, next_step=None):
 
@@ -258,14 +266,14 @@ class HardshipStage(FormStage):
     name = "hardship"
     template = "hardship.html"
     form_class = HardshipForm
-    dependencies = ["case", "your_details", "plea", "your_finances"]
+    dependencies = ["notice_type", "case", "your_details", "plea", "your_finances"]
 
 
 class HouseholdExpensesStage(FormStage):
     name = "household_expenses"
     template = "household_expenses.html"
     form_class = HouseholdExpensesForm
-    dependencies = ["case", "your_details", "plea", "your_finances", "hardship"]
+    dependencies = ["notice_type", "case", "your_details", "plea", "your_finances", "hardship"]
 
     def save(self, form_data, next_step=None):
 
@@ -287,7 +295,7 @@ class OtherExpensesStage(FormStage):
     name = "other_expenses"
     template = "other_expenses.html"
     form_class = OtherExpensesForm
-    dependencies = ["case", "your_details", "plea", "your_finances", "hardship", "household_expenses"]
+    dependencies = ["notice_type", "case", "your_details", "plea", "your_finances", "hardship", "household_expenses"]
 
     def save(self, form_data, next_step=None):
 
@@ -318,7 +326,7 @@ class ReviewStage(FormStage):
     name = "review"
     template = "review.html"
     form_class = ConfirmationForm
-    dependencies = ["case", "company_details", "your_details", "plea",
+    dependencies = ["notice_type", "case", "company_details", "your_details", "plea",
                     "your_finances", "company_finances"]
 
     def save(self, form_data, next_step=None):
@@ -354,7 +362,7 @@ class CompleteStage(FormStage):
     name = "complete"
     template = "complete.html"
     form_class = None
-    dependencies = ["case", "your_details", "company_details", "plea",
+    dependencies = ["notice_type", "case", "your_details", "company_details", "plea",
                     "your_finances", "company_finances", "review"]
 
     def render(self, request_context):

@@ -42,7 +42,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.session = {}
         self.request_context = {}
 
-        self.plea_stage_pre_data_1_charge = {"case": {"date_of_hearing": "2015-01-01",
+        self.plea_stage_pre_data_1_charge = {"notice_type": {"sjp": False},
+                                             "case": {"date_of_hearing": "2015-01-01",
                                                       "urn": "06/AA/0000000/00",
                                                       "number_of_charges": 1,
                                                       "plea_made_by": "Defendant"},
@@ -50,7 +51,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                                                               "last_name": "Brown",
                                                               "contact_number": "012345678"}}
 
-        self.plea_stage_pre_data_3_charges = {"case": {"date_of_hearing": "2015-01-01",
+        self.plea_stage_pre_data_3_charges = {"notice_type": {"sjp": False},
+                                              "case": {"date_of_hearing": "2015-01-01",
                                                        "urn": "06/AA/0000000/00",
                                                        "number_of_charges": 3,
                                                        "plea_made_by": "Defendant"},
@@ -59,6 +61,10 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                                                                "contact_number": "012345678"}}
 
         self.test_session_data = {
+            "notice_type": {
+                "complete": True,
+                "sjp": False
+            },
             "case": {
                 "complete": True,
                 "date_of_hearing": "2015-01-01",
@@ -118,6 +124,27 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "complete": True
             }
         }
+
+
+    def test_notice_type_stage_missing_data(self):
+        form = PleaOnlineForms("notice_type", "plea_form_step", self.session)
+        form.load(self.request_context)
+        form.save({}, self.request_context)
+
+        self.assertEqual(len(form.current_stage.form.errors), 1)
+
+
+    def test_notice_type_stage_good_data(self):
+        form = PleaOnlineForms("notice_type", "plea_form_step", self.session)
+
+        form.load(self.request_context)
+        form.save({"sjp": True},
+                  self.request_context)
+        response = form.render()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/plea/case/")
+
 
     def test_case_stage_bad_data(self):
         form = PleaOnlineForms("case", "plea_form_step", self.session)
@@ -564,6 +591,10 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
         test_data = {
+            "notice_type": {
+                "complete": True,
+                "sjp": False
+            },
             "case": {
                 "complete": True,
                 "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
@@ -735,6 +766,10 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
         test_data = {
+            "notice_type": {
+                "complete": True,
+                "sjp": False
+            },
             "case": {
                 "complete": True,
                 "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
@@ -794,6 +829,10 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
         test_data = {
+            "notice_type": {
+                "complete": True,
+                "sjp": False
+            },
             "case": {
                 "complete": True,
                 "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
@@ -852,6 +891,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
         test_data = {
+            "notice_type": {
+                "complete": True
+            },
             "case": {
                 "complete": True,
                 "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
@@ -896,7 +938,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form = PleaOnlineForms("review", "plea_form_step", self.session)
         form.load(self.request_context)
         form.save({"receive_email_updates": True,
-                   "understand": True}, 
+                   "understand": True},
                   self.request_context)
 
         self.assertEqual(len(form.current_stage.form.errors), 1)
@@ -969,8 +1011,15 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
     def test_successful_completion_single_charge(self):
         fake_session = {}
-        fake_request = self.get_request_mock("/plea/case")
+        fake_request = self.get_request_mock("/plea/notice_type/")
         request_context = RequestContext(fake_request)
+
+        form = PleaOnlineForms("notice_type", "plea_form_step", fake_session)
+        form.load(request_context)
+        form.save({"sjp": False},
+                  request_context)
+        response = form.render()
+        self.assertEqual(response.status_code, 302)
 
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
@@ -1040,9 +1089,17 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
     def test_successful_completion_multiple_charges(self):
         fake_session = {}
-        fake_request = self.get_request_mock("/plea/case/")
+        fake_request = self.get_request_mock("/plea/notice_type/")
 
         request_context = RequestContext(fake_request)
+
+        form = PleaOnlineForms("notice_type", "plea_form_step", fake_session)
+        form.load(request_context)
+        form.save({"sjp": False},
+                  request_context)
+        response = form.render()
+        self.assertEqual(response.status_code, 302)
+
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
         form = PleaOnlineForms("case", "plea_form_step", fake_session)
