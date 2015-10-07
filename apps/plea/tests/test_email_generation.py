@@ -28,7 +28,8 @@ class EmailGenerationTests(TestCase):
             enabled=True,
             test_mode=False)
 
-        self.test_data_defendant = {"case": {"urn": "06xcvx89",
+        self.test_data_defendant = {"notice_type": {"sjp": False},
+                                    "case": {"urn": "06xcvx89",
                                              "date_of_hearing": "2014-06-30",
                                              "number_of_charges": 2,
                                              "plea_made_by": "Defendant"},
@@ -43,7 +44,8 @@ class EmailGenerationTests(TestCase):
                                                "email": "test@test.com",
                                                "understand": True}}
 
-        self.test_data_company = {"case": {"urn": "06xcvx89",
+        self.test_data_company = {"notice_type": {"sjp": False},
+                                  "case": {"urn": "06xcvx89",
                                            "date_of_hearing": "2014-06-30",
                                            "number_of_charges": 2,
                                            "plea_made_by": "Company representative"},

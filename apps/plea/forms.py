@@ -18,6 +18,15 @@ from .validators import (is_date_in_past,
                          is_urn_valid)
 
 
+class NoticeTypeForm(BaseStageForm):
+    sjp = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                 required=True,
+                                 coerce=to_bool,
+                                 choices=YESNO_CHOICES["Ydy/Nac ydy"],
+                                 label=_("Is the title at the very top, next to the police logo, 'Single Justice Procedure Notice'?"),
+                                 help_text=_("If your paperwork does not have Single Justice Procedure Notice written in the place shown, select no to continue."),
+                                 error_messages={"required": ERROR_MESSAGES["NOTICE_TYPE_REQUIRED"]})
+
 class CaseForm(BaseStageForm):
     PLEA_MADE_BY_CHOICES = (
         ("Defendant", _("The person named in the notice")),

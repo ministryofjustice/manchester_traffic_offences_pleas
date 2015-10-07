@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import RequestContext, redirect
 from django.views.decorators.cache import never_cache
-from django.views.generic import TemplateView, FormView
+from django.views.generic import FormView
 
 from brake.decorators import ratelimit
 
@@ -13,7 +13,8 @@ from apps.forms.views import StorageView
 
 from .models import Case, Court
 from .forms import CourtFinderForm
-from .stages import (CaseStage,
+from .stages import (NoticeTypeStage,
+                     CaseStage,
                      YourDetailsStage,
                      CompanyDetailsStage,
                      PleaStage,
@@ -28,7 +29,8 @@ from .fields import ERROR_MESSAGES
 
 
 class PleaOnlineForms(MultiStageForm):
-    stage_classes = [CaseStage,
+    stage_classes = [NoticeTypeStage,
+                     CaseStage,
                      YourDetailsStage,
                      CompanyDetailsStage,
                      PleaStage,

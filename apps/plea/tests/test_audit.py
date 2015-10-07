@@ -32,6 +32,7 @@ class CaseCreationTests(TestCase):
             test_mode=False)
 
         self.context_data = {
+            'notice_type': {u'sjp': False},
             'case': {u'urn': u'06/aa/0000000/00',
                       u'date_of_hearing': datetime.date(2015, 1, 1),
                       u'time_of_hearing': datetime.time(9, 15),
