@@ -2,7 +2,6 @@
     <tbody>
     {% for pleaform in plea.PleaForms %}
 
-        {% if plea.PleaForms|length > 1 or pleaform.title %}
         <tr>
             <th class="charge-heading" colspan="2">
                 <h3>{% spaceless %}
@@ -12,10 +11,12 @@
                         {% blocktrans %}Charge{% endblocktrans %} {{ forloop.counter }}
                     {% endif %}
                 {% endspaceless %}</h3>
+
+                {% if show_edit_link %}
+                    <a class="change-link" href="{% url "plea_form_step" "plea" %}" class="review">{% blocktrans with charge_number=forloop.counter %}Change your plea for charge {{ charge_number }}{% endblocktrans %}</a>
+                {% endif %}
             </th>
         </tr>
-        {% endif %}
-
         <tr>
             <th>{% spaceless %}
                 {% if case.plea_made_by == "Defendant" %}
