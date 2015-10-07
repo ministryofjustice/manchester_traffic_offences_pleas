@@ -66,12 +66,10 @@
                 {% elif case.plea_made_by == "Company representative" %}
                 <h2>{% blocktrans count charges=case.number_of_charges %}Company's plea{% plural %}Company's pleas{% endblocktrans %}</h2>
                 {% endif %}
-
-                <a class="change-link" href="{% url "plea_form_step" "plea" %}" class="review">{% blocktrans count charges=case.number_of_charges %}Change your plea{% plural %}Change your pleas{% endblocktrans %}</a>
             </th>
         </tr>
     </thead>
-    {% include "partials/review_plea.html" %}
+    {% include "partials/review_plea.html" with show_edit_link=True %}
     </table>
 
     {% if case.plea_made_by == "Defendant" %}
