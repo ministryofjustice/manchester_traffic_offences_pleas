@@ -187,7 +187,7 @@ class EmailTemplateTests(TestCase):
 
         translation.deactivate()
 
-        
+
         self.assertContains(response, "<tr><th>Unique reference number</th><td>06/AA/00000/00</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Court hearing date</th><td>{}</td></tr>".format(self.hearing_date.strftime("%d/%m/%Y")), count=1, html=True)
 
@@ -278,7 +278,14 @@ class EmailTemplateTests(TestCase):
         context_data = self.get_context_data()
         context_data["plea"]["PleaForms"][0]["guilty"] = "not_guilty"
         context_data["plea"]["PleaForms"][0]["not_guilty_extra"] = "dsa"
-        context_data["plea"]["PleaForms"][0]["interpreter_needed"] = False
+        context_data["plea"]["PleaForms"][0]["interpreter_needed"] = True
+        context_data["plea"]["PleaForms"][0]["interpreter_language"] = "French"
+        context_data["plea"]["PleaForms"][0]["disagree_with_evidence"] = True
+        context_data["plea"]["PleaForms"][0]["disagree_with_evidence_details"] = "Disagreement"
+        context_data["plea"]["PleaForms"][0]["witness_needed"] = True
+        context_data["plea"]["PleaForms"][0]["witness_details"] = "Witness details"
+        context_data["plea"]["PleaForms"][0]["witness_interpreter_needed"] = True
+        context_data["plea"]["PleaForms"][0]["witness_interpreter_language"] = "German"
 
         send_plea_email(context_data)
 
@@ -286,7 +293,13 @@ class EmailTemplateTests(TestCase):
 
         self.assertContains(response, "<tr><th>Your plea</th><td>Not guilty</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Not guilty because</th><td>dsa</td></tr>", count=1, html=True)
-        self.assertContains(response, "<tr><th>Interpreter required</th><td>No</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Interpreter required</th><td>Yes</td></tr>", count=2, html=True)
+        self.assertContains(response, "<tr><th>Language</th><td>French</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Disagree with any evidence from a witness statement?</th><td>Yes</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Name of the witness and what you disagree with</th><td>Disagreement</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Wants to call a witness?</th><td>Yes</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Name, date of birth and address of the witness</th><td>Witness details</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Language</th><td>German</td></tr>", count=1, html=True)
 
     def test_multiple_not_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
