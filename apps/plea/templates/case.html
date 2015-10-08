@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load form_widgets %}
+{% load static %}
 
 {% block page_title %}{% blocktrans %}Case details{% endblocktrans %} - {{ block.super }}{% endblock %}
 
@@ -46,11 +47,30 @@
 {% endblock stage_header %}
 
 {% block stage_form %}
-    {% std_field form.urn %}
 
-    {% multi_field form.date_of_hearing %}
+    {% if notice_type.sjp %}
+        <div class="with-image">
+            <img class="help-image" src="{% static "images/illustration-urn-and-date.png" %}" width="180" height="193" alt="{% blocktrans %}The location of the URN and Posting date on the notice we sent to you{% endblocktrans %}">
+
+            {% std_field form.urn %}
+
+            {% multi_field form.posting_date %}
+        </div>
+    {% else %}
+        {% std_field form.urn %}
+
+        {% multi_field form.date_of_hearing %}
+    {% endif %}
 
     {% std_field form.number_of_charges %}
 
     {% radio_field form.plea_made_by %}
 {% endblock stage_form %}
+
+{% block stage_submit %}
+    <div class="form-submit">
+        <button class="button" type="submit">{% blocktrans %}Continue{% endblocktrans %}</button>
+
+        <p><a href="{% url "plea_form_step" "notice_type" %}">{% blocktrans %}Back{% endblocktrans %}</a></p>
+    </div>
+{% endblock stage_submit %}

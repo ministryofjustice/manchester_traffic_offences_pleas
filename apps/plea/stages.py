@@ -9,6 +9,7 @@ from apps.forms.forms import RequiredFormSet
 from .email import send_plea_email, get_plea_type
 from .forms import (NoticeTypeForm,
                     CaseForm,
+                    SJPCaseForm,
                     YourDetailsForm,
                     CompanyDetailsForm,
                     PleaForm,
@@ -43,6 +44,15 @@ class CaseStage(FormStage):
     template = "case.html"
     form_class = CaseForm
     dependencies = ["notice_type"]
+
+    def __init__(self, *args, **kwargs):
+        super(CaseStage, self).__init__(*args, **kwargs)
+        try:
+            if self.all_data["notice_type"]["sjp"] is True:
+                self.form_class = SJPCaseForm
+        except KeyError:
+            pass
+
 
     def render(self, request_context):
         if "urn" in self.form.errors and ERROR_MESSAGES["URN_ALREADY_USED"] in self.form.errors["urn"]:
