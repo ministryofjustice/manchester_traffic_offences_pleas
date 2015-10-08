@@ -4,6 +4,10 @@ GOV.UK Toolkit/Template overrides
 ====================================================
 */
 
+html {
+	background-color: white;
+}
+
 #global-cookie-message {
 	> div {
 		@extend %site-width-container;
