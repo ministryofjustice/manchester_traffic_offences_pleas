@@ -23,6 +23,39 @@ Main styles
 }
 
 
+/*== Notice type screen ===================================*/
+.notice-type {
+	h2 {
+		margin-bottom: .25em;
+	}
+}
+
+.with-image {
+
+	.form-group {
+		&:after {
+			content: none;
+		}
+	}
+
+	.help-image {
+		display: none;
+	}
+
+	@include media($min-width: 768px) {
+		.help-image {
+			display: block;
+			float: right;
+			width: 180px;
+		}
+
+		.form-group {
+			margin-right: 200px;
+		}
+	}
+}
+
+
 /*== Pleas screen ==========================================*/
 .section-plea {
 	padding-top: 1em;

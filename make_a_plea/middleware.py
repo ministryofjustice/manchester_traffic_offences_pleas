@@ -5,7 +5,7 @@ from django.utils import translation
 
 def get_session_timeout(request):
     try:
-        has_plea_data = request.session["plea_data"]["case"]
+        has_plea_data = request.session["plea_data"]["notice_type"]
     except KeyError:
         has_plea_data = False
 
