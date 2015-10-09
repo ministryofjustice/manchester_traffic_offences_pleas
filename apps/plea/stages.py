@@ -1,3 +1,4 @@
+from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.core.exceptions import MultipleObjectsReturned
 from django.forms.formsets import formset_factory
@@ -70,6 +71,13 @@ class CaseStage(FormStage):
 
         if "urn" in clean_data:
             clean_data["urn"] = slashify_urn(standardise_urn(clean_data["urn"]))
+
+        # Set the court contact deadline
+        if "date_of_hearing" in clean_data:
+            clean_data["contact_deadline"] = clean_data["date_of_hearing"]
+
+        if "posting_date" in clean_data:
+            clean_data["contact_deadline"] = clean_data["posting_date"] + relativedelta(days=+28)
 
         if "complete" in clean_data:
             if clean_data.get("plea_made_by", "Defendant") == "Defendant":
