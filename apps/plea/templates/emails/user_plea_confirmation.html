@@ -60,7 +60,7 @@
 
     <h2>{% blocktrans %}Need to change a plea?{% endblocktrans %}</h2>
 
-    <p>{% blocktrans with urn=urn|upper hearing_date=date_of_hearing|parse_date|date:"d/m/Y" %}Contact the court by post or email quoting your URN {{ urn }} to arrive before {{ hearing_date }}.{% endblocktrans %}</p>
+    <p>{% blocktrans with urn=urn|upper contact_deadline=contact_deadline|parse_date|date:"d/m/Y" %}Contact the court by post or email quoting your URN {{ urn }} to arrive before {{ contact_deadline }}.{% endblocktrans %}</p>
 
     <p>{% blocktrans %}The contact details for the court are:{% endblocktrans %}</p>
 
