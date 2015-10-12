@@ -39,7 +39,7 @@ https://www.makeaplea.justice.gov.uk/feedback/
 {% blocktrans %}If you're unsure an email is from the Ministry of Justice:{% endblocktrans %}
 
 - {% blocktrans %}do not reply to it or click any links{% endblocktrans %}
-- {% blocktrans %}forward it to{% endblocktrans %} feedback@makeaplea.gov.uk
+- {% blocktrans %}forward it to{% endblocktrans %} makeaplea@justice.gov.uk
 
 {% blocktrans %}Terms and Conditions and Privacy Policy:{% endblocktrans %}
 https://www.makeaplea.justice.gov.uk/terms-and-conditions-and-privacy-policy
