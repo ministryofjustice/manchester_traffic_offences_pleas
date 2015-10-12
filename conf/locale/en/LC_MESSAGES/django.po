@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-08 15:43+0100\n"
+"POT-Creation-Date: 2015-10-12 12:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,7 +77,7 @@ msgstr ""
 msgid "Your feedback has been submitted"
 msgstr ""
 
-#: apps/feedback/stages.py:37 apps/plea/stages.py:364
+#: apps/feedback/stages.py:37 apps/plea/stages.py:372
 msgid "Submission Error"
 msgstr ""
 
@@ -209,7 +209,7 @@ msgstr ""
 msgid "Change this plea"
 msgstr ""
 
-#: apps/plea/email.py:129
+#: apps/plea/email.py:121
 #: apps/plea/templates/emails/user_plea_confirmation.html:7
 msgid "Online plea submission confirmation"
 msgstr ""
@@ -981,7 +981,7 @@ msgstr ""
 msgid "On page 1, usually at the top."
 msgstr ""
 
-#: apps/plea/stages.py:365
+#: apps/plea/stages.py:373
 msgid ""
 "There seems to have been a problem submitting your plea. Please try again."
 msgstr ""
@@ -1085,145 +1085,120 @@ msgid "From the first 12 months' trading projections, tell us:"
 msgstr ""
 
 #: apps/plea/templates/complete.html:7 apps/plea/templates/complete.html:18
-#: apps/plea/templates/emails/user_plea_confirmation.html:18
-#: apps/plea/templates/emails/user_plea_confirmation.txt:3
-msgid "Your plea has been sent to the court"
-msgid_plural "Your pleas have been sent to the court"
+msgid "Your plea has been sent to the magistrate"
+msgid_plural "Your pleas have been sent to the magistrate"
 msgstr[0] ""
 msgstr[1] ""
 
 #: apps/plea/templates/complete.html:20
-#: apps/plea/templates/emails/user_plea_confirmation.html:20
-#: apps/plea/templates/emails/user_plea_confirmation.txt:3
-msgid "Your company's plea has been sent to the court"
-msgid_plural "Your company's pleas have been sent to the court"
+msgid "Your company's plea has been sent to the magistrate"
+msgid_plural "Your company's pleas have been sent to the magistrate"
 msgstr[0] ""
 msgstr[1] ""
 
 #: apps/plea/templates/complete.html:27
-#: apps/plea/templates/emails/user_plea_confirmation.html:24
-#: apps/plea/templates/emails/user_plea_confirmation.txt:7
+#: apps/plea/templates/emails/user_plea_confirmation.html:18
 msgid "What happens next:"
 msgstr ""
 
-#: apps/plea/templates/complete.html:32
-#: apps/plea/templates/emails/user_plea_confirmation.html:29
-#: apps/plea/templates/emails/user_plea_confirmation.txt:8
-msgid ""
-"we'll send you a letter with the court's decision within 3 working days "
-"after your hearing date"
-msgid_plural ""
-"we'll send you a letter with the court's decisions within 3 working days "
-"after your hearing date"
+#: apps/plea/templates/complete.html:33
+#: apps/plea/templates/emails/user_plea_confirmation.html:24
+#: apps/plea/templates/emails/user_plea_confirmation.txt:7
+msgid "we'll send you a letter with the magistrate's decision"
+msgid_plural "we'll send you a letter with the magistrate's decisions"
 msgstr[0] ""
 msgstr[1] ""
 
-#: apps/plea/templates/complete.html:33
-#: apps/plea/templates/emails/user_plea_confirmation.html:30
-#: apps/plea/templates/emails/user_plea_confirmation.txt:9
+#: apps/plea/templates/complete.html:34
+#: apps/plea/templates/emails/user_plea_confirmation.html:25
+#: apps/plea/templates/emails/user_plea_confirmation.txt:8
 msgid ""
 "we'll tell you if you need to attend a trial and what evidence you may need "
 "to send to the court to support your case"
 msgstr ""
 
-#: apps/plea/templates/complete.html:37
-#: apps/plea/templates/emails/user_plea_confirmation.html:34
-#: apps/plea/templates/emails/user_plea_confirmation.txt:10
+#: apps/plea/templates/complete.html:38
+#: apps/plea/templates/emails/user_plea_confirmation.html:29
+#: apps/plea/templates/emails/user_plea_confirmation.txt:9
 msgid ""
-"we'll send a letter with the court's decision within 3 working days after "
-"the hearing date"
-msgid_plural ""
-"we'll send a letter with the court's decisions within 3 working days after "
-"the hearing date"
+"we'll send you a letter with a hearing date for you to come to court for a "
+"trial"
+msgstr ""
+
+#: apps/plea/templates/complete.html:46
+#: apps/plea/templates/emails/user_plea_confirmation.html:37
+#: apps/plea/templates/emails/user_plea_confirmation.txt:10
+msgid "we'll send a letter with the magistrate's decision"
+msgid_plural "we'll send a letter with the magistrate's decisions"
 msgstr[0] ""
 msgstr[1] ""
 
-#: apps/plea/templates/complete.html:38
-#: apps/plea/templates/emails/user_plea_confirmation.html:35
+#: apps/plea/templates/complete.html:47
+#: apps/plea/templates/emails/user_plea_confirmation.html:38
 #: apps/plea/templates/emails/user_plea_confirmation.txt:11
 msgid ""
 "we'll tell you if a company representative needs to attend a trial and what "
 "evidence you may need to send to the court to support the case"
 msgstr ""
 
-#: apps/plea/templates/complete.html:44
-#: apps/plea/templates/emails/user_plea_confirmation.html:41
+#: apps/plea/templates/complete.html:51
+#: apps/plea/templates/emails/user_plea_confirmation.html:42
 #: apps/plea/templates/emails/user_plea_confirmation.txt:12
 msgid ""
-"we'll send you a letter with a new hearing date for you to come to court for "
-"a trial"
+"we'll send you a letter with a hearing date for a company representative to "
+"attend a trial"
 msgstr ""
 
-#: apps/plea/templates/complete.html:48
-#: apps/plea/templates/emails/user_plea_confirmation.html:45
-#: apps/plea/templates/emails/user_plea_confirmation.txt:13
-msgid ""
-"we'll send you a letter with a new hearing date for a company representative "
-"to come to court"
-msgstr ""
-
-#: apps/plea/templates/complete.html:52
+#: apps/plea/templates/complete.html:56
 msgid ""
 "you can <a href=\"javascript:window.print();\">print a copy</a> of this plea "
 "confirmation for your records"
 msgstr ""
 
-#: apps/plea/templates/complete.html:57
-#: apps/plea/templates/emails/user_plea_confirmation.html:52
-#: apps/plea/templates/emails/user_plea_confirmation.txt:16
-msgid "Do not:"
+#: apps/plea/templates/complete.html:61
+#: apps/plea/templates/emails/user_plea_confirmation.html:51
+#: apps/plea/templates/emails/user_plea_confirmation.txt:15
+msgid ""
+"Do not send your driving licence to the court. The DVLA will contact you if "
+"they need you to send it to them."
 msgstr ""
 
-#: apps/plea/templates/complete.html:60
+#: apps/plea/templates/complete.html:64
 #: apps/plea/templates/emails/user_plea_confirmation.html:54
-#: apps/plea/templates/emails/user_plea_confirmation.txt:17
-msgid ""
-"come to court on the hearing date shown on page 1 of the requisition notice "
-"we sent to you"
-msgstr ""
-
-#: apps/plea/templates/complete.html:63
-#: apps/plea/templates/emails/user_plea_confirmation.html:57
-#: apps/plea/templates/emails/user_plea_confirmation.txt:18
-msgid ""
-"send your driving licence to the court, the DVLA will contact you if they "
-"need you to send it to them"
-msgstr ""
-
-#: apps/plea/templates/complete.html:68
-#: apps/plea/templates/emails/user_plea_confirmation.html:61
-#: apps/plea/templates/emails/user_plea_confirmation.txt:22
+#: apps/plea/templates/emails/user_plea_confirmation.txt:19
 msgid "Need to change a plea?"
 msgstr ""
 
-#: apps/plea/templates/complete.html:70
-#: apps/plea/templates/emails/user_plea_confirmation.html:63
-#: apps/plea/templates/emails/user_plea_confirmation.txt:23
+#: apps/plea/templates/complete.html:66
+#: apps/plea/templates/emails/user_plea_confirmation.html:56
+#: apps/plea/templates/emails/user_plea_confirmation.txt:20
 #, python-format
 msgid ""
 "Contact the court by post or email quoting your URN %(urn)s to arrive before "
-"%(hearing_date)s."
+"%(contact_deadline)s."
 msgstr ""
 
-#: apps/plea/templates/complete.html:72
-#: apps/plea/templates/emails/user_plea_confirmation.html:65
-#: apps/plea/templates/emails/user_plea_confirmation.txt:25
+#: apps/plea/templates/complete.html:68
+#: apps/plea/templates/emails/user_plea_confirmation.html:58
+#: apps/plea/templates/emails/user_plea_confirmation.txt:22
 msgid "The contact details for the court are:"
 msgstr ""
 
-#: apps/plea/templates/complete.html:74
+#: apps/plea/templates/complete.html:70
 #: apps/plea/templates/court_finder.html:21
+#: apps/plea/templates/emails/user_plea_confirmation.html:60
+#: apps/plea/templates/emails/user_plea_confirmation.txt:24
 msgid "By post:"
 msgstr ""
 
-#: apps/plea/templates/complete.html:78
+#: apps/plea/templates/complete.html:74
 #: apps/plea/templates/court_finder.html:26
-#: apps/plea/templates/emails/user_plea_confirmation.html:70
-#: apps/plea/templates/emails/user_plea_confirmation.txt:30
+#: apps/plea/templates/emails/user_plea_confirmation.html:63
+#: apps/plea/templates/emails/user_plea_confirmation.txt:27
 msgid "By email:"
 msgstr ""
 
-#: apps/plea/templates/complete.html:82
+#: apps/plea/templates/complete.html:78
 msgid "Finish"
 msgstr ""
 
@@ -1317,22 +1292,24 @@ msgstr ""
 msgid "Company financial details"
 msgstr ""
 
-#: apps/plea/templates/emails/user_plea_confirmation.html:49
-#: apps/plea/templates/emails/user_plea_confirmation.txt:14
+#: apps/plea/templates/emails/user_plea_confirmation.html:16
+#: apps/plea/templates/emails/user_plea_confirmation.txt:3
+msgid "Your online plea has been submitted"
+msgid_plural "Your online pleas have been submitted"
+msgstr[0] ""
+msgstr[1] ""
+
+#: apps/plea/templates/emails/user_plea_confirmation.html:47
+#: apps/plea/templates/emails/user_plea_confirmation.txt:13
 msgid "you can print a copy of this plea confirmation for your records"
 msgstr ""
 
-#: apps/plea/templates/emails/user_plea_confirmation.html:67
-#: apps/plea/templates/emails/user_plea_confirmation.txt:27
-msgid "By Post:"
-msgstr ""
-
-#: apps/plea/templates/emails/user_plea_confirmation.html:73
-#: apps/plea/templates/emails/user_plea_confirmation.txt:35
+#: apps/plea/templates/emails/user_plea_confirmation.html:66
+#: apps/plea/templates/emails/user_plea_confirmation.txt:32
 msgid "We're constantly working to improve this service."
 msgstr ""
 
-#: apps/plea/templates/emails/user_plea_confirmation.html:75
+#: apps/plea/templates/emails/user_plea_confirmation.html:68
 msgid ""
 "Please give us <a href=\"/feedback/\">feedback</a> so we can make it better."
 msgstr ""
@@ -1341,26 +1318,26 @@ msgstr ""
 msgid "GOV.UK - Online plea submission confirmation"
 msgstr ""
 
-#: apps/plea/templates/emails/user_plea_confirmation.txt:37
+#: apps/plea/templates/emails/user_plea_confirmation.txt:34
 msgid "Please give us feedback so we can make it better:"
+msgstr ""
+
+#: apps/plea/templates/emails/user_plea_confirmation.txt:39
+#: make_a_plea/templates/base_user_email.html:192
+msgid "If you're unsure an email is from the Ministry of Justice:"
+msgstr ""
+
+#: apps/plea/templates/emails/user_plea_confirmation.txt:41
+#: make_a_plea/templates/base_user_email.html:195
+msgid "do not reply to it or click any links"
 msgstr ""
 
 #: apps/plea/templates/emails/user_plea_confirmation.txt:42
 #: make_a_plea/templates/base_user_email.html:196
-msgid "If you're unsure an email is from the Ministry of Justice:"
-msgstr ""
-
-#: apps/plea/templates/emails/user_plea_confirmation.txt:44
-#: make_a_plea/templates/base_user_email.html:199
-msgid "do not reply to it or click any links"
-msgstr ""
-
-#: apps/plea/templates/emails/user_plea_confirmation.txt:45
-#: make_a_plea/templates/base_user_email.html:200
 msgid "forward it to"
 msgstr ""
 
-#: apps/plea/templates/emails/user_plea_confirmation.txt:47
+#: apps/plea/templates/emails/user_plea_confirmation.txt:44
 msgid "Terms and Conditions and Privacy Policy:"
 msgstr ""
 
@@ -1911,7 +1888,7 @@ msgstr ""
 msgid "You have entered some information"
 msgstr ""
 
-#: make_a_plea/templates/base_user_email.html:203
+#: make_a_plea/templates/base_user_email.html:199
 msgid "Terms and Conditions and privacy policy"
 msgstr ""
 
