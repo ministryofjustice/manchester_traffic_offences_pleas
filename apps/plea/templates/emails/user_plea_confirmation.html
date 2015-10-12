@@ -6,6 +6,12 @@
 
 {% block subject %}{% blocktrans %}Online plea submission confirmation{% endblocktrans %}{% endblock subject %}
 
+{% block extra_css %}
+    p.donot {
+        margin-top: 36px;
+    }
+{% endblock extra_css %}
+
 {% block content %}
 
     {% if plea_type == "guilty" %}{% add_test_tag "<<GUILTY>>" %}{% endif %}
@@ -13,50 +19,43 @@
     {% if plea_type == "mixed" %}{% add_test_tag "<<MIXED>>" %}{% endif %}
 
 
-    <h1>{% spaceless %}
-        {% if plea_made_by == "Defendant" %}
-            {% blocktrans count charges=number_of_charges %}Your plea has been sent to the court{% plural %}Your pleas have been sent to the court{% endblocktrans %}
-        {% elif plea_made_by == "Company representative" %}
-            {% blocktrans count charges=number_of_charges %}Your company's plea has been sent to the court{% plural %}Your company's pleas have been sent to the court{% endblocktrans %}
-        {% endif %}
-    {% endspaceless %}</h1>
+    <h1>{% blocktrans count charges=number_of_charges %}Your online plea has been submitted{% plural %}Your online pleas have been submitted{% endblocktrans %}</h1>
 
     <h2>{% blocktrans %}What happens next:{% endblocktrans %}</h2>
 
     <ul>
-    {% if plea_type == "guilty" or plea_type == "mixed" %}
-        {% if plea_made_by == "Defendant" %}
-            <li>{% blocktrans count charges=number_of_charges %}we'll send you a letter with the court's decision within 3 working days after your hearing date{% plural %}we'll send you a letter with the court's decisions within 3 working days after your hearing date{% endblocktrans %}</li>
+    {% if plea_made_by == "Defendant" %}
+
+        {% if plea_type == "guilty" or plea_type == "mixed" %}
+            <li>{% blocktrans count charges=number_of_charges %}we'll send you a letter with the magistrate's decision{% plural %}we'll send you a letter with the magistrate's decisions{% endblocktrans %}</li>
             <li>{% blocktrans %}we'll tell you if you need to attend a trial and what evidence you may need to send to the court to support your case{% endblocktrans %}</li>
         {% endif %}
 
-        {% if plea_made_by == "Company representative" %}
-            <li>{% blocktrans count charges=number_of_charges %}we'll send a letter with the court's decision within 3 working days after the hearing date{% plural %}we'll send a letter with the court's decisions within 3 working days after the hearing date{% endblocktrans %}</li>
-            <li>{% blocktrans %}we'll tell you if a company representative needs to attend a trial and what evidence you may need to send to the court to support the case{% endblocktrans %}</li>
+        {% if plea_type == "not_guilty" %}
+            <li>{% blocktrans %}we'll send you a letter with a hearing date for you to come to court for a trial{% endblocktrans %}</li>
         {% endif %}
+
     {% endif %}
 
-    {% if plea_type == "not_guilty" %}
-        {% if plea_made_by == "Defendant" %}
-            <li>{% blocktrans %}we'll send you a letter with a new hearing date for you to come to court for a trial{% endblocktrans %}</li>
+    {% if plea_made_by == "Company representative" %}
+
+        {% if plea_type == "guilty" or plea_type == "mixed" %}
+            <li>{% blocktrans count charges=number_of_charges %}we'll send a letter with the magistrate's decision{% plural %}we'll send a letter with the magistrate's decisions{% endblocktrans %}</li>
+            <li>{% blocktrans %}we'll tell you if a company representative needs to attend a trial and what evidence you may need to send to the court to support the case{% endblocktrans %}</li>
         {% endif %}
 
-        {% if plea_made_by == "Company representative" %}
-            <li>{% blocktrans %}we'll send you a letter with a new hearing date for a company representative to come to court{% endblocktrans %}</li>
+        {% if plea_type == "not_guilty" %}
+            <li>{% blocktrans %}we'll send you a letter with a hearing date for a company representative to attend a trial{% endblocktrans %}</li>
         {% endif %}
+
     {% endif %}
 
         <li>{% blocktrans %}you can print a copy of this plea confirmation for your records{% endblocktrans %}</li>
     </ul>
 
-    <h2>{% blocktrans %}Do not:{% endblocktrans %}</h2>
-    <ul>
-        <li>{% blocktrans %}come to court on the hearing date shown on page 1 of the requisition notice we sent to you{% endblocktrans %}</li>
-
-        {% if plea_made_by == "Defendant" %}
-        <li>{% blocktrans %}send your driving licence to the court, the DVLA will contact you if they need you to send it to them{% endblocktrans %}</li>
-        {% endif %}
-    </ul>
+    {% if plea_made_by == "Defendant" %}
+    <p class="donot">{% blocktrans %}Do not send your driving licence to the court. The DVLA will contact you if they need you to send it to them.{% endblocktrans %}</p>
+    {% endif %}
 
     <h2>{% blocktrans %}Need to change a plea?{% endblocktrans %}</h2>
 
@@ -64,11 +63,11 @@
 
     <p>{% blocktrans %}The contact details for the court are:{% endblocktrans %}</p>
 
-    <p><strong>{% blocktrans %}By Post:{% endblocktrans %}</strong><br>
-        {{ court_address|linebreaksbr }}</p>
+    <h3>{% blocktrans %}By post:{% endblocktrans %}</h3>
+    <p>{{ court_address|linebreaksbr }}</p>
 
-    <p><strong>{% blocktrans %}By email:{% endblocktrans %}</strong><br>
-        <a href="mailto:{{ court_email }}">{{ court_email }}</a></p>
+    <h3>{% blocktrans %}By email:{% endblocktrans %}</h3>
+    <p><a href="mailto:{{ court_email }}">{{ court_email }}</a></p>
 
     <h2>{% blocktrans %}We're constantly working to improve this service.{% endblocktrans %}</h2>
 
