@@ -3,8 +3,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import RequestContext, redirect
-from django.views.decorators.cache import never_cache
-from django.views.generic import TemplateView, FormView
+from django.views.generic import FormView
 
 from brake.decorators import ratelimit
 
@@ -70,10 +69,6 @@ class PleaOnlineForms(MultiStageForm):
 
 
 class PleaOnlineViews(StorageView):
-
-    @method_decorator(never_cache)
-    def dispatch(self, *args, **kwargs):
-        return super(PleaOnlineViews, self).dispatch(*args, **kwargs)
 
     def get(self, request, stage=None):
         storage = self._get_storage(request, "plea_data")
