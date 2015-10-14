@@ -96,7 +96,7 @@ class YourDetailsStage(FormStage):
 
 class PleaStage(IndexedStage):
     name = "plea"
-    template = "plea_single.html"
+    template = "plea.html"
     form_class = PleaForm
     dependencies = ["case"]
 
