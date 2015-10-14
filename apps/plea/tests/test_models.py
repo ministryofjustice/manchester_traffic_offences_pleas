@@ -24,7 +24,7 @@ class CourtEmailCountModelTestCase(TestCase):
     def test_get_from_context_hearing_date_is_combined_date_and_time(self):
         context = {
             "plea": {
-                "PleaForms": {},
+                "data": {},
             },
             "your_details": {
                 "national_insurance_number": "xxx",
@@ -85,7 +85,7 @@ class CourtEmailCountModelTestCase(TestCase):
 
         context = {
             "plea": {
-                "PleaForms": [
+                "data": [
                     {
                         "guilty_extra": "13 chars long",
                         "guilty": "guilty"
