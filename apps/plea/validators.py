@@ -1,8 +1,8 @@
 import datetime
 import re
 
+from dateutil.relativedelta import relativedelta
 from django.core import exceptions
-from django.utils.translation import ugettext_lazy as _
 
 from .models import Case, Court
 from .standardisers import standardise_urn, slashify_urn
@@ -22,9 +22,16 @@ def is_date_in_future(date):
     return True
 
 
-def is_date_within_range(date):
-    if date > datetime.datetime.today().date()+datetime.timedelta(178):
-        raise exceptions.ValidationError("The date must be within the next 6 months", code="is_date_within_range")
+def is_date_in_last_28_days(date):
+    if date < datetime.datetime.today().date() + relativedelta(days=-28):
+        raise exceptions.ValidationError("The date must be within the last 28 days", code="is_date_in_last_28_days")
+
+    return True
+
+
+def is_date_in_next_6_months(date):
+    if date > datetime.datetime.today().date() + relativedelta(months=+6):
+        raise exceptions.ValidationError("The date must be within the next 6 months", code="is_date_in_next_6_months")
 
     return True
 
