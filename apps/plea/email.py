@@ -23,12 +23,12 @@ def get_plea_type(context_data):
         or mixed - returns "mixed"
     """
 
-    guilty_count = len([plea for plea in context_data['plea']['PleaForms']
-                        if plea['guilty'] == "guilty"])
+    guilty_count = len([plea for plea in context_data["plea"]["PleaForms"]
+                        if plea["guilty"] == "guilty"])
 
     if guilty_count == 0:
         return "not_guilty"
-    elif guilty_count == len(context_data['plea']['PleaForms']):
+    elif guilty_count == len(context_data["plea"]["PleaForms"]):
         return "guilty"
     else:
         return "mixed"
@@ -49,10 +49,13 @@ def send_plea_email(context_data):
         raise
 
     # add DOH / name to the email subject for compliance with the current format
-    if isinstance(context_data["case"]["date_of_hearing"], basestring):
-        date_of_hearing = parser.parse(context_data["case"]["date_of_hearing"])
-    else:
-        date_of_hearing = context_data["case"]["date_of_hearing"]
+    if context_data["notice_type"]["sjp"] is False:
+        if isinstance(context_data["case"]["date_of_hearing"], basestring):
+            date_of_hearing = parser.parse(context_data["case"]["date_of_hearing"])
+        else:
+            date_of_hearing = context_data["case"]["date_of_hearing"]
+
+        context_data["email_date_of_hearing"] = date_of_hearing.strftime("%Y-%m-%d")
 
     if context_data["case"]["plea_made_by"] == "Defendant":
         first_name = context_data["your_details"]["first_name"]
@@ -62,7 +65,6 @@ def send_plea_email(context_data):
         last_name = context_data["company_details"]["last_name"]
 
     context_data["email_name"] = " ".join([last_name.upper(), first_name])
-    context_data["email_date_of_hearing"] = date_of_hearing.strftime("%Y-%m-%d")
 
     # Add Welsh flag if journey was completed in Welsh
     if translation.get_language() == "cy":
@@ -78,7 +80,7 @@ def send_plea_email(context_data):
     if "court" in context_data:
         del context_data["court"]
 
-    if getattr(settings, 'STORE_USER_DATA', False):
+    if getattr(settings, "STORE_USER_DATA", False):
         encrypt_and_store_user_data(case.urn, case.id, context_data)
 
     if not court_obj.test_mode:
@@ -104,23 +106,13 @@ def send_plea_email(context_data):
         case.add_action("No email entered, user email not sent", "")
         return True
 
-    if context_data['case']['plea_made_by'] == "Defendant":
-        first_name = context_data['your_details']['first_name']
-        last_name = context_data['your_details']['last_name']
-    else:
-        first_name = context_data['company_details']['first_name']
-        last_name = context_data['company_details']['last_name']
-
     data = {
-        'email': email_address,
-        'urn': context_data['case']['urn'],
-        'plea_made_by': context_data['case']['plea_made_by'],
-        'number_of_charges': context_data['case']['number_of_charges'],
-        'plea_type': get_plea_type(context_data),
-        'first_name': first_name,
-        'last_name': last_name,
-        'court_address': court_obj.court_address,
-        'court_email': court_obj.court_email
+        "urn": context_data["case"]["urn"],
+        "plea_made_by": context_data["case"]["plea_made_by"],
+        "number_of_charges": context_data["case"]["number_of_charges"],
+        "plea_type": get_plea_type(context_data),
+        "court_address": court_obj.court_address,
+        "court_email": court_obj.court_email
     }
 
     html_body = render_to_string("emails/user_plea_confirmation.html", data)

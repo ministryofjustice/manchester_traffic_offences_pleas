@@ -1,6 +1,7 @@
 import datetime
 from mock import Mock, patch
 
+from dateutil.relativedelta import relativedelta
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import RequestFactory
@@ -1228,6 +1229,52 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         response = form.render()
 
         self.assertContains(response, "<<NOTGUILTY>>")
+
+
+    def test_non_sjp_contact_deadline_is_date_of_hearing(self):
+        fake_session = {
+            "notice_type": {
+                "sjp": False
+            }
+        }
+
+        hearing_date = datetime.date.today() + datetime.timedelta(30)
+
+        fake_request = self.get_request_mock("/plea/case")
+        request_context = RequestContext(fake_request)
+        form = PleaOnlineForms("case", "plea_form_step", fake_session)
+        form.save({"date_of_hearing_0": str(hearing_date.day),
+                   "date_of_hearing_1": str(hearing_date.month),
+                   "date_of_hearing_2": str(hearing_date.year),
+                   "urn": "06/AA/0000000/00",
+                   "number_of_charges": 2,
+                   "plea_made_by": "Defendant"},
+                  request_context)
+
+        self.assertEquals(fake_session["case"]["contact_deadline"], hearing_date)
+
+    def test_sjp_contact_deadline_is_28_days_after_posting_date(self):
+        fake_session = {
+            "notice_type": {
+                "sjp": True
+            }
+        }
+
+        posting_date = datetime.date.today() - datetime.timedelta(10)
+        contact_deadline = posting_date + datetime.timedelta(28)
+
+        fake_request = self.get_request_mock("/plea/case")
+        request_context = RequestContext(fake_request)
+        form = PleaOnlineForms("case", "plea_form_step", fake_session)
+        form.save({"posting_date_0": str(posting_date.day),
+                   "posting_date_1": str(posting_date.month),
+                   "posting_date_2": str(posting_date.year),
+                   "urn": "06/AA/0000000/00",
+                   "number_of_charges": 2,
+                   "plea_made_by": "Defendant"},
+                  request_context)
+
+        self.assertEquals(fake_session["case"]["contact_deadline"], contact_deadline)
 
     def test_case_stage_urn_in_session(self):
 
