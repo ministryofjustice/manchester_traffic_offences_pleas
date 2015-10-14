@@ -1,3 +1,4 @@
+from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.core.exceptions import MultipleObjectsReturned
 from django.forms.formsets import formset_factory
@@ -9,6 +10,7 @@ from apps.forms.forms import RequiredFormSet
 from .email import send_plea_email, get_plea_type
 from .forms import (NoticeTypeForm,
                     CaseForm,
+                    SJPCaseForm,
                     YourDetailsForm,
                     CompanyDetailsForm,
                     PleaForm,
@@ -44,6 +46,15 @@ class CaseStage(FormStage):
     form_class = CaseForm
     dependencies = ["notice_type"]
 
+    def __init__(self, *args, **kwargs):
+        super(CaseStage, self).__init__(*args, **kwargs)
+        try:
+            if self.all_data["notice_type"]["sjp"] is True:
+                self.form_class = SJPCaseForm
+        except KeyError:
+            pass
+
+
     def render(self, request_context):
         if "urn" in self.form.errors and ERROR_MESSAGES["URN_ALREADY_USED"] in self.form.errors["urn"]:
             self.context["urn_already_used"] = True
@@ -60,6 +71,13 @@ class CaseStage(FormStage):
 
         if "urn" in clean_data:
             clean_data["urn"] = slashify_urn(standardise_urn(clean_data["urn"]))
+
+        # Set the court contact deadline
+        if "date_of_hearing" in clean_data:
+            clean_data["contact_deadline"] = clean_data["date_of_hearing"]
+
+        if "posting_date" in clean_data:
+            clean_data["contact_deadline"] = clean_data["posting_date"] + relativedelta(days=+28)
 
         if "complete" in clean_data:
             if clean_data.get("plea_made_by", "Defendant") == "Defendant":
