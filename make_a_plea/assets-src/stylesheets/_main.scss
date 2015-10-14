@@ -25,9 +25,17 @@ Main styles
 
 /*== Notice type screen ===================================*/
 .notice-type {
-
 	h2 {
 		margin-bottom: .25em;
+	}
+}
+
+.with-image {
+
+	.form-group {
+		&:after {
+			content: none;
+		}
 	}
 
 	.help-image {
@@ -38,6 +46,7 @@ Main styles
 		.help-image {
 			display: block;
 			float: right;
+			width: 180px;
 		}
 
 		.form-group {

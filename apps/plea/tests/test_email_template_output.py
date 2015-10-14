@@ -178,8 +178,7 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertEqual(mail.outbox[0].subject, "ONLINE PLEA: 06/AA/00000/00 <SJP> PUBLIC Joe"
-            .format(self.hearing_date.strftime("%Y-%m-%d")))
+        self.assertEqual(mail.outbox[0].subject, "ONLINE PLEA: 06/AA/00000/00 <SJP> PUBLIC Joe")
 
     def test_notice_type_not_sjp_output(self):
         context_data = self.get_context_data()
@@ -189,6 +188,7 @@ class EmailTemplateTests(TestCase):
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
         self.assertContains(response, "<h1>Online plea</h1>", count=1, html=True)
+        self.assertContains(response, "<th>Court hearing date</th>", count=1, html=True)
 
     def test_notice_type_sjp_output(self):
         context_data = self.get_context_data(notice_type_data={"sjp": True})
@@ -198,6 +198,7 @@ class EmailTemplateTests(TestCase):
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
         self.assertContains(response, "<h1>Online plea - SJP</h1>", count=1, html=True)
+        self.assertContains(response, "<th>Posting date</th>", count=1, html=True)
 
     def test_case_details_output(self):
         context_data = self.get_context_data()
