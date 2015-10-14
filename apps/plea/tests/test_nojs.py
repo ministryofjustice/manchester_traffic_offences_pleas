@@ -8,12 +8,16 @@ from ..views import PleaOnlineForms
 
 class TestNoJS(TestCase):
     def setUp(self):
-        self.plea_session = {"case": {"complete": True,
+        self.plea_session = {"notice_type": {"complete": True,
+                                             "sjp": False},
+                             "case": {"complete": True,
                                       "number_of_charges": 1,
                                       "plea_made_by": "Defendant"},
                              "your_details": {"complete": True},
                              "company_details": {"skipped": True}}
-        self.company_finances_session = {"case": {"complete": True,
+        self.company_finances_session = {"notice_type": {"complete": True,
+                                                         "sjp": False},
+                                         "case": {"complete": True,
                                                   "plea_made_by": "Company representative"},
                                          "company_details": {"complete": True},
                                          "plea": {"complete": True,

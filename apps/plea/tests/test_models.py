@@ -1,5 +1,5 @@
 from __future__ import absolute_import, unicode_literals
-import datetime as dt 
+import datetime as dt
 
 from django.test import TestCase
 
@@ -32,7 +32,8 @@ class CourtEmailCountModelTestCase(TestCase):
                 "registration_number": "xxx"
             },
             "case": {
-                "date_of_hearing": "2014-09-22"
+                "date_of_hearing": "2014-09-22",
+                "contact_deadline": "2014-09-22"
             }
         }
         emailcount = CourtEmailCount()
@@ -103,7 +104,7 @@ class CourtEmailCountModelTestCase(TestCase):
             },
             "case": {
                 "date_of_hearing": "2014-09-22",
-                "time_of_hearing": "09:15:00"
+                "contact_deadline": "2014-09-22",
             },
         }
 
