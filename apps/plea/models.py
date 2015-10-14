@@ -156,7 +156,7 @@ class CourtEmailCount(models.Model):
     def get_from_context(self, context, court):
         if "plea" not in context:
             return
-        if "PleaForms" not in context["plea"]:
+        if "data" not in context["plea"]:
             return
         if "your_details" not in context:
             return
@@ -184,7 +184,7 @@ class CourtEmailCount(models.Model):
         except KeyError:
             return False
 
-        for plea_data in context["plea"]["PleaForms"]:
+        for plea_data in context["plea"]["data"]:
             self.total_pleas += 1
 
             if plea_data["guilty"] == "guilty":
@@ -196,7 +196,7 @@ class CourtEmailCount(models.Model):
         # extra anon information
         self.sc_guilty_char_count, self.sc_not_guilty_char_count = 0, 0
 
-        for plea in context["plea"]["PleaForms"]:
+        for plea in context["plea"]["data"]:
             if plea["guilty"] == "guilty":
                 self.sc_guilty_char_count += len(plea.get("guilty_extra", ""))
             else:

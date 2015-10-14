@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import RequestContext, redirect
 from django.views.decorators.cache import never_cache
-from django.views.generic import TemplateView, FormView
+from django.views.generic import FormView
 
 from brake.decorators import ratelimit
 
@@ -28,6 +28,7 @@ from .fields import ERROR_MESSAGES
 
 
 class PleaOnlineForms(MultiStageForm):
+    url_name = "plea_form_step"
     stage_classes = [CaseStage,
                      YourDetailsStage,
                      CompanyDetailsStage,
@@ -40,9 +41,8 @@ class PleaOnlineForms(MultiStageForm):
                      ReviewStage,
                      CompleteStage]
 
-    def __init__(self, *args):
-
-        super(PleaOnlineForms, self).__init__(*args)
+    def __init__(self, *args, **kwargs):
+        super(PleaOnlineForms, self).__init__(*args, **kwargs)
 
         self._urn_invalid = False
 
@@ -75,17 +75,20 @@ class PleaOnlineViews(StorageView):
     def dispatch(self, *args, **kwargs):
         return super(PleaOnlineViews, self).dispatch(*args, **kwargs)
 
-    def get(self, request, stage=None):
+    def get(self, request, stage=None, index=None):
+        if index is not None:
+            index = int(index)
+
         storage = self._get_storage(request, "plea_data")
 
         if not stage:
             stage = PleaOnlineForms.stage_classes[0].name
             return HttpResponseRedirect(reverse_lazy("plea_form_step", args=(stage,)))
 
-        form = PleaOnlineForms(stage, "plea_form_step", storage)
-        redirect = form.load(RequestContext(request))
-        if redirect:
-            return redirect
+        form = PleaOnlineForms(storage, stage, index)
+        case_redirect = form.load(RequestContext(request))
+        if case_redirect:
+            return case_redirect
 
         form.process_messages(request)
 
@@ -95,12 +98,14 @@ class PleaOnlineViews(StorageView):
         return form.render()
 
     @method_decorator(ratelimit(block=True, rate=settings.RATE_LIMIT))
-    def post(self, request, stage):
+    def post(self, request, stage, index=None):
+        if index is not None:
+            index = int(index)
         storage = self._get_storage(request, "plea_data")
 
         nxt = request.GET.get("next", None)
 
-        form = PleaOnlineForms(stage, "plea_form_step", storage)
+        form = PleaOnlineForms(storage, stage, index)
         form.save(request.POST, RequestContext(request), nxt)
         if not form._urn_invalid:
             form.process_messages(request)

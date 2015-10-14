@@ -569,7 +569,6 @@ class CompanyFinancesForm(SplitStageForm):
                                       localize=True,
                                       error_messages={"required": ERROR_MESSAGES["COMPANY_NET_TURNOVER"]})
 
-
     def __init__(self, *args, **kwargs):
         super(CompanyFinancesForm, self).__init__(*args, **kwargs)
 
