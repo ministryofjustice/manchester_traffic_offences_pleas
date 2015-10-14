@@ -5,7 +5,6 @@ from django.conf import settings
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import RequestContext
-from django.views.decorators.cache import never_cache
 
 from apps.forms.stages import MultiStageForm
 from apps.forms.views import StorageView
@@ -20,10 +19,6 @@ class FeedbackForms(MultiStageForm):
 
 
 class FeedbackViews(StorageView):
-
-    @method_decorator(never_cache)
-    def dispatch(self, *args, **kwargs):
-        return super(FeedbackViews, self).dispatch(*args, **kwargs)
 
     def get(self, request, stage=None):
         storage = self._get_storage(request, "feedback_data")

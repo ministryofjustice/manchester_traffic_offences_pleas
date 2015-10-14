@@ -3,7 +3,6 @@ from django.conf import settings
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import RequestContext, redirect
-from django.views.decorators.cache import never_cache
 from django.views.generic import FormView
 
 from brake.decorators import ratelimit
@@ -13,7 +12,8 @@ from apps.forms.views import StorageView
 
 from .models import Case, Court
 from .forms import CourtFinderForm
-from .stages import (CaseStage,
+from .stages import (NoticeTypeStage,
+                     CaseStage,
                      YourDetailsStage,
                      CompanyDetailsStage,
                      PleaStage,
@@ -28,8 +28,9 @@ from .fields import ERROR_MESSAGES
 
 
 class PleaOnlineForms(MultiStageForm):
-    url_name = "plea_form_step"
-    stage_classes = [CaseStage,
+	url_name = "plea_form_step"
+    stage_classes = [NoticeTypeStage,
+                     CaseStage,
                      YourDetailsStage,
                      CompanyDetailsStage,
                      PleaStage,
@@ -70,10 +71,6 @@ class PleaOnlineForms(MultiStageForm):
 
 
 class PleaOnlineViews(StorageView):
-
-    @method_decorator(never_cache)
-    def dispatch(self, *args, **kwargs):
-        return super(PleaOnlineViews, self).dispatch(*args, **kwargs)
 
     def get(self, request, stage=None, index=None):
         if index is not None:
