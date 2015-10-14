@@ -178,8 +178,7 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertEqual(mail.outbox[0].subject, "ONLINE PLEA: 06/AA/00000/00 <SJP> PUBLIC Joe"
-            .format(self.hearing_date.strftime("%Y-%m-%d")))
+        self.assertEqual(mail.outbox[0].subject, "ONLINE PLEA: 06/AA/00000/00 <SJP> PUBLIC Joe")
 
     def test_notice_type_not_sjp_output(self):
         context_data = self.get_context_data()
