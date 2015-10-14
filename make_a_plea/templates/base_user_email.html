@@ -7,9 +7,9 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
+
   <title>{% block subject %}Make a Plea - GOV.UK{% endblock subject %}</title>
-  
+
   <style type="text/css">
       /* Clients overrides */
       @-ms-viewport {width: device-width;} /* Windows Phone 8 responsiveness */
@@ -52,25 +52,26 @@
       }
 
       h1 {
-        font-size: 32px;
+        font-size: 36px;
         margin: 10px 0 18px;
       }
 
-      h2 {
-        font-size: 28px;
+      h2,
+      p.lede {
+        font-size: 24px;
         margin: 36px 0 18px;
       }
 
       h3 {
-        font-size: 22px;
-        margin: 36px 0 18px;
+        font-size: 18px;
+        margin: 18px 0 0;
       }
 
       p {
         font-family: Arial, sans-serif;
         font-size: 18px;
         line-height: 1.25;
-        margin: 18px 0;
+        margin: 0 0 18px;
         color: #000000;
       }
 
@@ -95,11 +96,6 @@
         color: #005ea5;
       }
 
-      /* Modifiers */
-      p.lede {
-        font-size: 22px;
-      }
-   
 
       /* Main areas */
       #headerCell {
@@ -149,12 +145,13 @@
         color: #777777;
       }
 
+      {% block extra_css %}{% endblock extra_css %}
 
       /* Responsiveness */
       /* Fix for Apple Mail, which does not respect max-width but does media queries */
       @media screen and (min-width: 601px) {
           .templateContainer {
-              width: 560px !important;
+              width: 580px !important;
           }
       }
 
@@ -162,7 +159,7 @@
 </head>
 <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
   <center>
-    <table align="center" border="0" cellpadding="20" cellspacing="0" height="100%" width="100%">
+    <table align="center" border="0" cellpadding="10" cellspacing="0" height="100%" width="100%">
       <tr>
         <td align="center" valign="top" id="bodyCell">
 
@@ -197,7 +194,7 @@
 
                 <ul>
                     <li>{% blocktrans %}do not reply to it or click any links{% endblocktrans %}</li>
-                    <li>{% blocktrans %}forward it to{% endblocktrans %} <a href="mailto:feedback@makeaplea.gov.uk">feedback@makeaplea.gov.uk</a></li>
+                    <li>{% blocktrans %}forward it to{% endblocktrans %} <a href="mailto:makeaplea@justice.gov.uk">makeaplea@justice.gov.uk</a></li>
                 </ul>
 
                 <p><a href="/terms-and-conditions-and-privacy-policy">{% blocktrans %}Terms and Conditions and privacy policy{% endblocktrans %}</a></p>
