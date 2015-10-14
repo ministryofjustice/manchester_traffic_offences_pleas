@@ -14,7 +14,8 @@ class TestNoJS(TestCase):
                                       "number_of_charges": 1,
                                       "plea_made_by": "Defendant"},
                              "your_details": {"complete": True},
-                             "company_details": {"skipped": True}}
+                             "company_details": {"skipped": True,
+                                                 "complete": True}}
         self.company_finances_session = {"notice_type": {"complete": True,
                                                          "sjp": False},
                                          "case": {"complete": True,
