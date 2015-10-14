@@ -130,7 +130,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
 
     def test_notice_type_stage_missing_data(self):
-        form = PleaOnlineForms("notice_type", "plea_form_step", self.session)
+        form = PleaOnlineForms(self.session, "notice_type")
         form.load(self.request_context)
         form.save({}, self.request_context)
 
@@ -138,7 +138,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
 
     def test_notice_type_stage_good_data(self):
-        form = PleaOnlineForms("notice_type", "plea_form_step", self.session)
+        form = PleaOnlineForms(self.session, "notice_type")
 
         form.load(self.request_context)
         form.save({"sjp": True},
@@ -929,7 +929,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         fake_request = self.get_request_mock("/plea/notice_type/")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("notice_type", "plea_form_step", fake_session)
+        form = PleaOnlineForms(fake_session, "notice_type")
         form.load(request_context)
         form.save({"sjp": False},
                   request_context)
@@ -1004,7 +1004,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("notice_type", "plea_form_step", fake_session)
+        form = PleaOnlineForms(fake_session, "notice_type")
         form.load(request_context)
         form.save({"sjp": False},
                   request_context)
@@ -1159,7 +1159,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         fake_request = self.get_request_mock("/plea/case")
         request_context = RequestContext(fake_request)
-        form = PleaOnlineForms("case", "plea_form_step", fake_session)
+        form = PleaOnlineForms(fake_session, "case")
         form.save({"date_of_hearing_0": str(hearing_date.day),
                    "date_of_hearing_1": str(hearing_date.month),
                    "date_of_hearing_2": str(hearing_date.year),
@@ -1182,7 +1182,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         fake_request = self.get_request_mock("/plea/case")
         request_context = RequestContext(fake_request)
-        form = PleaOnlineForms("case", "plea_form_step", fake_session)
+        form = PleaOnlineForms(fake_session, "case")
         form.save({"posting_date_0": str(posting_date.day),
                    "posting_date_1": str(posting_date.month),
                    "posting_date_2": str(posting_date.year),
