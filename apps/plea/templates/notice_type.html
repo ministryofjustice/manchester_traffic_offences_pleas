@@ -1,0 +1,22 @@
+{% extends "base_form.html" %}
+
+{% load i18n %}
+{% load form_widgets %}
+{% load static %}
+
+{% block page_title %}{% blocktrans %}Your notice{% endblocktrans %} - {{ block.super }}{% endblock %}
+
+{% block stage_header %}
+    <h1>{% blocktrans %}Your notice{% endblocktrans %}</h1>
+{% endblock stage_header %}
+
+{% block stage_form %}
+    <div class="notice-type with-image">
+
+        <img class="help-image" src="{% static "images/illustration-notice-title.png" %}" width="180" height="193" alt="{% blocktrans %}The location of the words 'Single Justice Procedure Notice', if present, at the top of the notice we sent to you{% endblocktrans %}">
+
+        <h2 class="heading-medium">{% blocktrans %}From the first page of the notice we sent to you:{% endblocktrans %}</h2>
+
+        {% radio_field form.sjp inline=True %}
+    </div>
+{% endblock stage_form %}

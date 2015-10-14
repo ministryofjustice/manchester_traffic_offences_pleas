@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Online plea</title>
+    <title>Online plea{% if notice_type.sjp %} - SJP{% endif %}</title>
     <style>
         body, td {
             font-family: nta, Arial, sans-serif;
@@ -25,7 +25,8 @@
 </head>
 
 <body>
-<h1>Online plea</h1>
+
+    <h1>Online plea{% if notice_type.sjp %} - SJP{% endif %}</h1>
 
     <table class="review-table" id="case-details">
     <thead>
