@@ -13,6 +13,7 @@ from .stages import ServiceStage, CommentsStage, CompleteStage
 
 
 class FeedbackForms(MultiStageForm):
+    url_name = "feedback_form_step"
     stage_classes = [ServiceStage,
                      CommentsStage,
                      CompleteStage]
@@ -44,7 +45,7 @@ class FeedbackViews(StorageView):
             stage = FeedbackForms.stage_classes[0].name
             return HttpResponseRedirect(reverse_lazy("feedback_form_step", args=(stage,)))
 
-        form = FeedbackForms(stage, "feedback_form_step", storage)
+        form = FeedbackForms(storage, stage)
         redirect = form.load(RequestContext(request))
         if redirect:
             return redirect
@@ -64,7 +65,7 @@ class FeedbackViews(StorageView):
 
         nxt = request.GET.get("next", None)
 
-        form = FeedbackForms(stage, "feedback_form_step", storage)
+        form = FeedbackForms(storage, stage)
         form.save(request.POST, RequestContext(request), nxt)
         form.process_messages(request)
         request.session.modified = True

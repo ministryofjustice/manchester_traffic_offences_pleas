@@ -2,36 +2,37 @@
 {% load testing %}
 {% load filters %}
 {% load form_widgets %}
+{% load debug %}
 
-{% with forloop.counter as charge_number %}
+{% with plea_data=plea.data|index:index %}
 
-<div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty_{{ charge_number }}">
-    <fieldset role="radiogroup" aria-labelledby="label_charge_{{ charge_number }}">
+<div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty">
+    <fieldset role="radiogroup" aria-labelledby="label_charge">
 
         <legend>
-            <div class="header-line" id="label_charge_{{ charge_number }}">
+            <div class="header-line" id="label_charge">
                 <span class="label-text">{% spaceless %}
                 {% if form.case_data %}
                     {{ form.case_data.offence_short_title }}
                 {% else %}
                     {% if case.plea_made_by == "Defendant" %}
-                        {% blocktrans with counter=charge_number %}Your plea for charge {{ counter }}{% endblocktrans %}
+                        {% blocktrans with counter=index %}Your plea for charge {{ counter }}{% endblocktrans %}
                     {% else %}
-                        {% blocktrans with counter=charge_number %}Plea for charge {{ counter }}{% endblocktrans %}
+                        {% blocktrans with counter=index %}Plea for charge {{ counter }}{% endblocktrans %}
                     {% endif %}
                 {% endif %}
                 {% endspaceless %}</span>
             </div>
 
             {% if form.case_data %}
-            <div class="charge-details js-Details{% if charge_number == 1 %} open{% endif %}" data-summary-open="{% blocktrans %}Hide charge information{% endblocktrans %}">
-                <a class="details-trigger" href="#charge-details-{{ charge_number }}"><span class="summary">{% blocktrans %}View charge information{% endblocktrans %}</span></a>
-                <div class="details-content" id="charge-details-{{ charge_number }}">
+            <div class="charge-details js-Details open" data-summary-open="{% blocktrans %}Hide charge information{% endblocktrans %}">
+                <a class="details-trigger" href="#charge-details"><span class="summary">{% blocktrans %}View charge information{% endblocktrans %}</span></a>
+                <div class="details-content" id="charge-details">
                     {{ form.case_data.offence_wording|linebreaks }}
                 </div>
             </div>
 
-                {% if plea.split_form != "split_form_last_step" %}
+                {% if plea_data.split_form != "split_form_last_step" %}
             <h3 class="heading-small">Your plea for this charge</h3>
                 {% endif %}
             {% endif %}
@@ -39,13 +40,14 @@
             {% if form.guilty.errors %}
             <ul class="errorlist">
                 {% for error in form.guilty.errors %}
-                <li>{{ error|format:charge_number }}</li>
+                <li>{{ error }}</li>
                 {% endfor %}
             </ul>
             {% endif %}
         </legend>
 
-    {% if plea.split_form != "split_form_last_step" %}
+
+        {% if plea_data.split_form != "split_form_last_step" %}
         <div class="form-field">
             <div class="inline">
 
@@ -58,9 +60,8 @@
 
             </div>
         </div>
-    {% endif %}
-
-    {% if plea.split_form == "split_form_last_step" %}
+        {% endif %}
+        {% if plea_data.split_form == "split_form_last_step" %}
         {% add_test_tag "<<NOJSTRIGGERSUMMARY>>" %}
         <div class="form-header-pleas">
             {% for choice in form.guilty %}
@@ -71,7 +72,7 @@
             <p class="form-selected">{% blocktrans count charges=1 %}Your plea{% plural %}Your pleas{% endblocktrans %} - <strong>{% if form.guilty.value == "guilty" %}{% blocktrans %}Guilty{% endblocktrans %}{% else %}{% blocktrans %}Not guilty{% endblocktrans %}{% endif %}</strong></p>
             <a href="{{ request.path }}?reset">{% blocktrans %}Change this plea{% endblocktrans %}</a>
         </div>
-    {% endif %}
+        {% endif %}
 
     </fieldset>
 </div>

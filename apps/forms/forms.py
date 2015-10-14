@@ -17,6 +17,7 @@ YESNO_CHOICES = {
 
 to_bool = lambda x: x == "True"
 
+
 class RequiredFormSet(BaseFormSet):
     def __init__(self, *args, **kwargs):
         super(RequiredFormSet, self).__init__(*args, **kwargs)
@@ -35,10 +36,9 @@ class BaseStageForm(forms.Form):
         self.split_form = self.data.get("split_form", None)
 
         if hasattr(self, "dependencies"):
-            prefix = kwargs.get("prefix", None)
-            self.set_required_fields(self.dependencies, prefix)
+            self.set_required_fields(self.dependencies)
 
-    def set_required_fields(self, dependencies_list, prefix=None):
+    def set_required_fields(self, dependencies_list):
         """
         Set the required attribute depending on the dependencies map
         and the already submitted data
@@ -59,23 +59,13 @@ class BaseStageForm(forms.Form):
             dependency_field = dependency.get("field", None)
             dependency_value = dependency.get("value", None)
 
-            """
-            When a form has a prefix, the key in the field is the original,
-            but the key in data is updated. Would there be a nicer way of
-            handling this?
-            """
-            if prefix:
-                dependency_field_data_key = prefix + "-" + dependency_field
-            else:
-                dependency_field_data_key = dependency_field
-
             if self.fields.get(field, None):
 
                 self.fields[field].required = False
 
                 if self.fields[dependency_field].required:
                     if self.split_form is None or self.split_form != dependency_field:
-                        self.fields[field].required = test_dependency_match(dependency_field_data_key, dependency_value)
+                        self.fields[field].required = test_dependency_match(dependency_field, dependency_value)
 
 
 class SplitStageForm(BaseStageForm):
