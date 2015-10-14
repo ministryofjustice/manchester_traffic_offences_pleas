@@ -7,10 +7,19 @@
             <th>{% blocktrans %}Unique reference number{% endblocktrans %}</th>
             <td>{{ case.urn }}</td>
         </tr>
+
+        {% if notice_type.sjp %}
+        <tr>
+            <th>{% blocktrans %}Posting date{% endblocktrans %}</th>
+            <td>{{ case.posting_date|parse_date|date:"d/m/Y" }}</td>
+        </tr>
+        {% else %}
         <tr>
             <th>{% blocktrans %}Court hearing date{% endblocktrans %}</th>
             <td>{{ case.date_of_hearing|parse_date|date:"d/m/Y" }}</td>
         </tr>
+        {% endif %}
+
         <tr>
             <th>{% blocktrans %}Number of charges{% endblocktrans %}</th>
             <td>{{ case.number_of_charges }}</td>

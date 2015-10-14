@@ -175,10 +175,10 @@ class CourtEmailCount(models.Model):
         self.court = court
 
         try:
-            if isinstance(context["case"]["date_of_hearing"], dt.date):
-                date_part = context["case"]["date_of_hearing"]
+            if isinstance(context["case"]["contact_deadline"], dt.date):
+                date_part = context["case"]["contact_deadline"]
             else:
-                date_part = date_parse(context["case"]["date_of_hearing"])
+                date_part = date_parse(context["case"]["contact_deadline"])
 
             self.hearing_date = date_part
         except KeyError:

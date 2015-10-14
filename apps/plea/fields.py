@@ -1,6 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 
 ERROR_MESSAGES = {
+    "NOTICE_TYPE_REQUIRED": _("Tell us if the notice has the words 'Single Justice Procedure Notice' written at the top"),
     "URN_REQUIRED": _("Enter your unique reference number (URN)"),
     "URN_INVALID": _("The unique reference number (URN) isn't valid. Enter the number exactly as it appears on page 1 of the notice"),
     "URN_ALREADY_USED": _("Enter the correct URN"),
@@ -9,6 +10,9 @@ ERROR_MESSAGES = {
     "HEARING_DATE_INVALID": _("The court hearing date isn't a valid format"),
     "HEARING_DATE_PASSED": _("The court hearing date must be after today"),
     "HEARING_DATE_INCORRECT": _("Enter the correct hearing date"),
+    "POSTING_DATE_REQUIRED": _("Provide a posting date"),
+    "POSTING_DATE_INVALID": _("The posting date isn't a valid format"),
+    "POSTING_DATE_IN_FUTURE": _("The posting date must be before today"),
     "NUMBER_OF_CHARGES_REQUIRED": _("Select the number of charges against you"),
     "PLEA_MADE_BY_REQUIRED": _("You must tell us if you are the person named in the notice or pleading on behalf of a company"),
     "FIRST_NAME_REQUIRED": _("Enter your first name"),

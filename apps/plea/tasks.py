@@ -17,6 +17,15 @@ from apps.plea.models import Case, CourtEmailCount, Court
 logger = logging.getLogger(__name__)
 
 
+def get_email_subject(email_data):
+    if email_data["notice_type"]["sjp"] is True:
+        subject = "ONLINE PLEA: {case[urn]} <SJP> {email_name}"
+    else:
+        subject = "ONLINE PLEA: {case[urn]} DOH: {email_date_of_hearing} {email_name}"
+
+    return subject.format(**email_data)
+
+
 @app.task(bind=True, max_retries=5)
 def email_send_court(self, case_id, count_id, email_data):
     smtp_route = "GSI"
@@ -39,6 +48,7 @@ def email_send_court(self, case_id, count_id, email_data):
 
     case.add_action("Court email started", "")
 
+    email_subject = get_email_subject(email_data)
     email_body = "<<<makeaplea-ref: {}/{}>>>".format(case.id, count_id)
 
     plea_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
@@ -50,7 +60,7 @@ def email_send_court(self, case_id, count_id, email_data):
     try:
         with translation.override("en"):
             plea_email.send(plea_email_to,
-                            settings.PLEA_EMAIL_SUBJECT.format(**email_data),
+                            email_subject,
                             email_body,
                             route=smtp_route)
     except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
@@ -90,6 +100,9 @@ def email_send_prosecutor(self, case_id, email_data):
     case = Case.objects.get(pk=case_id)
     case.add_action("Prosecutor email started", "")
 
+    email_subject = "POLICE " + get_email_subject(email_data)
+    email_body = ""
+
     plp_email = TemplateAttachmentEmail(settings.PLP_EMAIL_FROM,
                                         settings.PLEA_EMAIL_ATTACHMENT_NAME,
                                         "emails/attachments/plp_email.html",
@@ -100,8 +113,8 @@ def email_send_prosecutor(self, case_id, email_data):
         try:
             with translation.override("en"):
                 plp_email.send([court_obj.plp_email],
-                               settings.PLP_EMAIL_SUBJECT.format(**email_data),
-                               settings.PLEA_EMAIL_BODY,
+                               email_subject,
+                               email_body,
                                route=smtp_route)
         except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
             logger.warning("Error sending email to prosecutor: {0}".format(exc))

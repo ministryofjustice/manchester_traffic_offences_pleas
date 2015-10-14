@@ -131,7 +131,6 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.cache.UpdateCacheMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -141,7 +140,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'make_a_plea.middleware.AdminLocaleURLMiddleware',
     'make_a_plea.middleware.TimeoutRedirectMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 )
+
+CACHE_MIDDLEWARE_SECONDS = 0
 
 ROOT_URLCONF = 'make_a_plea.urls'
 
@@ -283,13 +285,10 @@ EMAIL_TIMEOUT = 60
 
 # Full plea email sent to court mailbox
 PLEA_EMAIL_FROM = os.environ.get("PLEA_EMAIL_FROM", "plea_from@example.org")
-PLEA_EMAIL_SUBJECT = u"ONLINE PLEA: {case[urn]} DOH: {email_date_of_hearing} {email_name}"
-PLEA_EMAIL_BODY = ""
 PLEA_EMAIL_ATTACHMENT_NAME = "plea.html"
 
 # Cut down email sent to the police prosecutor
 PLP_EMAIL_FROM = os.environ.get("PLP_EMAIL_FROM", "plea_from@example.org")
-PLP_EMAIL_SUBJECT = u"POLICE {0}".format(PLEA_EMAIL_SUBJECT)
 
 # Feedback email
 FEEDBACK_EMAIL_FROM = os.environ.get("FEEDBACK_EMAIL_FROM", "plea_feedback@example.org")

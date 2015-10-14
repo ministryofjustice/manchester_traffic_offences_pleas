@@ -12,7 +12,8 @@ from apps.forms.forms import RequiredFormSet
 
 from ..email import send_plea_email
 from ..models import Court
-from ..forms import (CaseForm,
+from ..forms import (NoticeTypeForm,
+                     CaseForm,
                      YourDetailsForm,
                      PleaForm,
                      YourMoneyForm,
@@ -37,9 +38,12 @@ class EmailTemplateTests(TestCase):
             enabled=True,
             test_mode=True)
 
-    def get_context_data(self, case_data=None, details_data=None, plea_data=None, finances_data=None, hardship_data=None, household_expenses_data=None, other_expenses_data=None, review_data=None):
+    def get_context_data(self, notice_type_data=None, case_data=None, details_data=None, plea_data=None, finances_data=None, hardship_data=None, household_expenses_data=None, other_expenses_data=None, review_data=None):
 
         self.hearing_date = datetime.today() + timedelta(30)
+
+        if not notice_type_data:
+            notice_type_data = {"sjp": False}
 
         if not case_data:
             case_data = {"urn": "06/AA/00000/00",
@@ -93,6 +97,7 @@ class EmailTemplateTests(TestCase):
                            "email": "test@test.com",
                            "understand": True}
 
+        ntf = NoticeTypeForm(notice_type_data)
         cf = CaseForm(case_data)
         df = YourDetailsForm(details_data)
         pf = PleaForm(plea_data)
@@ -114,8 +119,9 @@ class EmailTemplateTests(TestCase):
                                 "other_court_payments",
                                 "other_child_maintenance"]
 
-        if all([cf.is_valid(), df.is_valid(), pf.is_valid(), mf.is_valid(), hf.is_valid(), hef.is_valid(), oef.is_valid(), rf.is_valid()]):
-            data = {"case": cf.cleaned_data,
+        if all([ntf.is_valid(), cf.is_valid(), df.is_valid(), pf.is_valid(), mf.is_valid(), hf.is_valid(), hef.is_valid(), oef.is_valid(), rf.is_valid()]):
+            data = {"notice_type": ntf.cleaned_data,
+                    "case": cf.cleaned_data,
                     "your_details": df.cleaned_data,
                     "plea": {"data": [pf.cleaned_data]},
                     "your_finances": mf.cleaned_data,
@@ -140,7 +146,7 @@ class EmailTemplateTests(TestCase):
 
             return data
         else:
-            raise Exception(cf.errors, df.errors, pf.errors, mf.errors, hf.errors, hef.errors, oef.errors, rf.errors)
+            raise Exception(ntf.errors, cf.errors, df.errors, pf.errors, mf.errors, hf.errors, hef.errors, oef.errors, rf.errors)
 
     def get_mock_response(self, html):
         response = Mock()
@@ -160,6 +166,34 @@ class EmailTemplateTests(TestCase):
         self.assertEqual(len(mail.outbox), 3)
         self.assertEqual(mail.outbox[0].subject, "ONLINE PLEA: 06/AA/00000/00 DOH: {} PUBLIC Joe"
             .format(self.hearing_date.strftime("%Y-%m-%d")))
+
+    def test_sjp_subject_output(self):
+        context_data = self.get_context_data(notice_type_data={"sjp": True})
+
+        send_plea_email(context_data)
+
+        self.assertEqual(len(mail.outbox), 3)
+        self.assertEqual(mail.outbox[0].subject, "ONLINE PLEA: 06/AA/00000/00 <SJP> PUBLIC Joe")
+
+    def test_notice_type_not_sjp_output(self):
+        context_data = self.get_context_data()
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        self.assertContains(response, "<h1>Online plea</h1>", count=1, html=True)
+        self.assertContains(response, "<th>Court hearing date</th>", count=1, html=True)
+
+    def test_notice_type_sjp_output(self):
+        context_data = self.get_context_data(notice_type_data={"sjp": True})
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        self.assertContains(response, "<h1>Online plea - SJP</h1>", count=1, html=True)
+        self.assertContains(response, "<th>Posting date</th>", count=1, html=True)
 
     def test_case_details_output(self):
         context_data = self.get_context_data()
@@ -181,7 +215,6 @@ class EmailTemplateTests(TestCase):
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
         translation.deactivate()
-
 
         self.assertContains(response, "<tr><th>Unique reference number</th><td>06/AA/00000/00</td></tr>", count=1, html=True)
         self.assertContains(response, "<tr><th>Court hearing date</th><td>{}</td></tr>".format(self.hearing_date.strftime("%d/%m/%Y")), count=1, html=True)
@@ -686,6 +719,10 @@ class TestCompanyFinancesEmailLogic(TestCase):
             test_mode="test@test.com")
 
         self.test_session_data = {
+            "notice_type": {
+                "complete": True,
+                "sjp": False
+            },
             "case": {
                 "complete": True,
                 "date_of_hearing": "2015-01-01",
