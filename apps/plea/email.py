@@ -23,12 +23,12 @@ def get_plea_type(context_data):
         or mixed - returns "mixed"
     """
 
-    guilty_count = len([plea for plea in context_data["plea"]["PleaForms"]
+    guilty_count = len([plea for plea in context_data["plea"]["data"]
                         if plea["guilty"] == "guilty"])
 
     if guilty_count == 0:
         return "not_guilty"
-    elif guilty_count == len(context_data["plea"]["PleaForms"]):
+    elif guilty_count == len(context_data["plea"]["data"]):
         return "guilty"
     else:
         return "mixed"

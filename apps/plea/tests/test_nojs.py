@@ -5,23 +5,24 @@ from django.template.context import RequestContext
 
 from ..views import PleaOnlineForms
 
-class TestNoJS(TestCase):
 
+class TestNoJS(TestCase):
     def setUp(self):
         self.plea_session = {"notice_type": {"complete": True,
                                              "sjp": False},
                              "case": {"complete": True,
                                       "number_of_charges": 1,
                                       "plea_made_by": "Defendant"},
-                             "your_details": {"complete": True}}
-
+                             "your_details": {"complete": True},
+                             "company_details": {"skipped": True,
+                                                 "complete": True}}
         self.company_finances_session = {"notice_type": {"complete": True,
                                                          "sjp": False},
                                          "case": {"complete": True,
                                                   "plea_made_by": "Company representative"},
                                          "company_details": {"complete": True},
                                          "plea": {"complete": True,
-                                                  "PleaForms": [{"guilty": "guilty"}]}}
+                                                  "data": [{"guilty": "guilty"}]}}
 
         self.request_context = {}
 
@@ -37,12 +38,9 @@ class TestNoJS(TestCase):
         return request
 
     def test_split_form_plea_stage_bad_data_no_trigger_summary(self):
-        form = PleaOnlineForms("plea", "plea_form_step", self.plea_session)
+        form = PleaOnlineForms(self.plea_session, "plea", 1)
 
-        form.save({"split_form": "guilty",
-                   "form-TOTAL_FORMS": "1",
-                   "form-INITIAL_FORMS": "0",
-                   "form-MAX_NUM_FORMS": "1"},
+        form.save({"split_form": "guilty"},
                   self.request_context)
 
         response = form.render()
@@ -51,45 +49,38 @@ class TestNoJS(TestCase):
         self.assertNotContains(response, "<<NOJSTRIGGERSUMMARY>>")
 
     def test_split_form_plea_stage_good_data_trigger_summary(self):
-        form = PleaOnlineForms("plea", "plea_form_step", self.plea_session)
+        form = PleaOnlineForms(self.plea_session, "plea", 1)
 
         form.save({"split_form": "guilty",
-                   "form-TOTAL_FORMS": "1",
-                   "form-INITIAL_FORMS": "0",
-                   "form-MAX_NUM_FORMS": "1",
-                   "form-0-guilty": "guilty"},
+                   "guilty": "guilty"},
                   self.request_context)
 
         response = form.render()
-
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "<<NOJSTRIGGERSUMMARY>>")
 
     def test_split_form_plea_stage_last_step_summary_and_errors(self):
-        form = PleaOnlineForms("plea", "plea_form_step", self.plea_session)
+        form = PleaOnlineForms(self.plea_session, "plea", 1)
 
         form.save({"split_form": "split_form_last_step",
-                   "form-TOTAL_FORMS": "1",
-                   "form-INITIAL_FORMS": "0",
-                   "form-MAX_NUM_FORMS": "1",
-                   "form-0-guilty": "not_guilty"},
+                   "guilty": "not_guilty"},
                   self.request_context)
 
         response = form.render()
 
         self.assertEqual(response.status_code, 200)
+
         self.assertContains(response, "<<NOJSTRIGGERSUMMARY>>")
-        self.assertEqual(len(form.current_stage.form.errors), 1)
+        self.assertEqual(len(form.current_stage.form.errors), 4)
 
     def test_split_form_plea_stage_change_link_no_summary(self):
         self.plea_session.update({"plea": {"split_form": "split_form_last_step",
-                                      "form-0-guilty": "guilty"}})
+                                           "data": [{"guilty": "guilty"}]}})
 
         fake_request = self.get_request_mock("/plea/plea/?reset")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("plea", "plea_form_step", self.plea_session)
-
+        form = PleaOnlineForms(self.plea_session, "plea", 1)
         form.load(request_context)
         response = form.render()
 
@@ -97,16 +88,15 @@ class TestNoJS(TestCase):
         self.assertNotContains(response, "<<NOJSTRIGGERSUMMARY>>")
 
     def test_split_form_plea_stage_submits(self):
-        form = PleaOnlineForms("plea", "plea_form_step", self.plea_session)
+        form = PleaOnlineForms(self.plea_session, "plea", 1)
 
         form.save({"split_form": "split_form_last_step",
-                   "form-TOTAL_FORMS": "1",
-                   "form-INITIAL_FORMS": "0",
-                   "form-MAX_NUM_FORMS": "1",
-                   "form-0-guilty": "not_guilty",
-                   "form-0-not_guilty_extra": "Lorem ipsum",
-                   "form-0-interpreter_needed": True,
-                   "form-0-interpreter_language": "French"},
+                   "guilty": "not_guilty",
+                   "not_guilty_extra": "Lorem ipsum",
+                   "interpreter_needed": True,
+                   "interpreter_language": "French",
+                   "disagree_with_evidence": False,
+                   "witness_needed": False},
                   self.request_context)
 
         response = form.render()
@@ -114,9 +104,8 @@ class TestNoJS(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, '/plea/review/')
 
-
     def test_split_form_plea_stage_errors(self):
-        form = PleaOnlineForms("plea", "plea_form_step", self.plea_session)
+        form = PleaOnlineForms(self.plea_session, "plea", 1)
 
         form.save({"split_form": "split_form_last_step",
                    "form-TOTAL_FORMS": "1",
@@ -131,9 +120,8 @@ class TestNoJS(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(form.current_stage.form.errors), 1)
 
-
     def test_split_form_company_finances_stage_bad_data_no_trigger_summary(self):
-        form = PleaOnlineForms("company_finances", "plea_form_step", self.company_finances_session)
+        form = PleaOnlineForms(self.company_finances_session, "company_finances")
 
         form.save({"split_form": "trading_period"},
                   self.request_context)
@@ -144,7 +132,7 @@ class TestNoJS(TestCase):
         self.assertNotContains(response, "<<NOJSTRIGGERSUMMARY>>")
 
     def test_split_form_company_finances_stage_good_data_trigger_summary(self):
-        form = PleaOnlineForms("company_finances", "plea_form_step", self.company_finances_session)
+        form = PleaOnlineForms(self.company_finances_session, "company_finances")
 
         form.save({"split_form": "trading_period",
                    "trading_period": True},
@@ -156,7 +144,7 @@ class TestNoJS(TestCase):
         self.assertContains(response, "<<NOJSTRIGGERSUMMARY>>")
 
     def test_split_form_company_finances_stage_last_step_summary_and_errors(self):
-        form = PleaOnlineForms("company_finances", "plea_form_step", self.company_finances_session)
+        form = PleaOnlineForms(self.company_finances_session, "company_finances")
 
         form.save({"split_form": "split_form_last_step",
                    "trading_period": True},
@@ -175,7 +163,7 @@ class TestNoJS(TestCase):
         fake_request = self.get_request_mock("/plea/company_finances/?reset")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms("company_finances", "plea_form_step", self.company_finances_session)
+        form = PleaOnlineForms(self.company_finances_session, "company_finances")
 
         form.load(request_context)
         response = form.render()
@@ -184,7 +172,7 @@ class TestNoJS(TestCase):
         self.assertNotContains(response, "<<NOJSTRIGGERSUMMARY>>")
 
     def test_split_form_company_finances_stage_submits(self):
-        form = PleaOnlineForms("company_finances", "plea_form_step", self.company_finances_session)
+        form = PleaOnlineForms(self.company_finances_session, "company_finances")
 
         form.save({"split_form": "split_form_last_step",
                    "trading_period": True,

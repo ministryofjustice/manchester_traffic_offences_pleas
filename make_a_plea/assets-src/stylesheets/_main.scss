@@ -70,12 +70,11 @@ Main styles
 	@extend .form-header;
 
 	border-bottom: none;
-	margin-bottom: 0;
-	margin-top: 1em;
+	margin: 0;
 
 	.form-selected {
 		@include core-24;
-		margin-bottom: 0;
+		margin: .5em 0;
 		color: $grey-1;
 
 		strong {
@@ -137,16 +136,6 @@ Main styles
 					float: left;
 				}
 			}
-
-			.change-link {
-				float: right;
-				margin: .1em 0 0 1em;
-				@include core-19;
-
-				@include media(tablet) {
-					margin-top: .2em;
-				}
-			}
 		}
 	}
 
@@ -166,13 +155,31 @@ Main styles
 		}
 	}
 
+	.change-link {
+		float: right;
+		margin: .1em 0 0 1em;
+		@include core-19;
+
+		@include media(tablet) {
+			margin-top: .2em;
+		}
+	}
+
 	.charge-heading {
-		padding-top: 1.25em;
-		padding-bottom: 0;
+		padding: 1.25em 0 0;
 
 		h3 {
+			display: inline-block;
+			margin: 0 0 .25em;
 			@include bold-19();
-			margin: 0;
+
+			@include ie-lte(7) {
+				float: left;
+			}
+		}
+
+		.change-link {
+			margin-top: 0;
 		}
 	}
 }

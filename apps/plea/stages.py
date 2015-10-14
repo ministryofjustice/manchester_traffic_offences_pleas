@@ -1,11 +1,10 @@
 from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.core.exceptions import MultipleObjectsReturned
-from django.forms.formsets import formset_factory
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 
-from apps.forms.stages import FormStage
-from apps.forms.forms import RequiredFormSet
+from apps.forms.stages import FormStage, IndexedStage
 
 from .email import send_plea_email, get_plea_type
 from .forms import (NoticeTypeForm,
@@ -121,7 +120,7 @@ class YourDetailsStage(FormStage):
         return clean_data
 
 
-class PleaStage(FormStage):
+class PleaStage(IndexedStage):
     name = "plea"
     template = "plea.html"
     form_class = PleaForm
@@ -144,107 +143,68 @@ class PleaStage(FormStage):
         return offences
 
     def load_forms(self, data=None, initial=False):
-        urn = self.all_data["case"].get("urn")
-        # TODO: change this to grabbing by case OU or a FK at some point
-        offences = self.get_offences(urn)
-
-        forms_wanted = self.all_data["case"].get("number_of_charges", 1)
-        if offences:
-            forms_wanted = len(offences)
-            self.all_data["case"]["number_of_charges"] = forms_wanted
-
-        if data:
-            data["form-TOTAL_FORMS"] = forms_wanted
-            data["form-MAX_NUM_FORMS"] = forms_wanted
-
-        extra_forms = 0
-        # truncate forms data if the count has changed
-        if "PleaForms" in self.all_data["plea"]:
-            forms_count = len(self.all_data["plea"]["PleaForms"])
-            # truncate data if the count is changed
-            if forms_count > forms_wanted:
-                self.all_data["plea"]["PleaForms"] = self.all_data["plea"]["PleaForms"][:forms_wanted]
-                forms_count = forms_wanted
-
-            if forms_count < forms_wanted:
-                self.all_data["plea"].pop("split_form", None)
-                extra_forms = forms_wanted - forms_count
-
-        else:
-            extra_forms = forms_wanted
-
-        PleaForms = formset_factory(PleaForm, formset=RequiredFormSet, extra=extra_forms, max_num=forms_wanted)
+        initial_data = None
 
         if initial:
-            initial_plea_data = self.all_data[self.name].get("PleaForms", [])
-            self.form = PleaForms(initial=initial_plea_data)
-        else:
-            self.form = PleaForms(data)
+            data = self.all_data.get(self.name, {}).get("data", [])
+            try:
+                initial_data = data[self.index-1]
+            except IndexError:
+                pass
 
-        if offences:
-            for idx, plea_form in enumerate(self.form.forms):
-                try:
-                    plea_form.case_data = offences[idx]
-                except IndexError:
-                    pass
+            if self.form_class:
+                self.form = self.form_class(initial=initial_data, label_suffix="")
+            return
 
-        formset_has_errors = False
-        if self.form.errors:
-            for error in self.form.errors:
-                if error:
-                    formset_has_errors = True
-
-        self.context["formset_has_errors"] = formset_has_errors
-
-    def save_forms(self):
-        form_data = {}
-        urn = self.all_data["case"].get("urn")
-
-        if hasattr(self.form, "management_form"):
-            form_data["PleaForms"] = self.form.cleaned_data
-        else:
-            form_data.update(self.form.cleaned_data)
-
-        # TODO: change this to grabbing by case OU or a FK at some point
-        offences = self.get_offences(urn)
-
-        if offences:
-            for idx, plea_data in enumerate(form_data["PleaForms"]):
-                try:
-                    plea_data["title"] = offences[idx].offence_short_title
-                except IndexError:
-                    pass
-
-        return form_data
+        if self.form_class:
+            self.form = self.form_class(data, label_suffix="")
 
     def save(self, form_data, next_step=None):
         clean_data = super(PleaStage, self).save(form_data, next_step)
+        plea_count = self.all_data["case"]["number_of_charges"]
+        stage_data = self.all_data[self.name]
+        stage_data["none_guilty"] = True
 
-        none_guilty = True
-        if "PleaForms" in clean_data:
-            for form in clean_data["PleaForms"]:
-                if form["guilty"] == "guilty":
-                    none_guilty = False
-        else:
+        if "data" not in stage_data:
+            stage_data["data"] = []
+
+        if len(stage_data["data"]) < self.index:
+            stage_data["data"].append({})
+
+        stage_data["data"][self.index-1] = clean_data
+
+        for plea in stage_data["data"]:
+            if plea.get("guilty") == "guilty":
+                stage_data["none_guilty"] = False
+                break
+
+        if "guilty" not in stage_data["data"][self.index-1]:
             return clean_data
 
         if self.split_form is None or self.split_form == "split_form_last_step":
-            if self.all_data["case"].get("plea_made_by", "Defendant") == "Company representative":
-                if none_guilty:
-                    self.set_next_step("review", skip=["company_finances",
-                                                       "your_finances"])
-                else:
-                    self.set_next_step("company_finances", skip=["your_finances"])
+            if self.index < plea_count:
+                self.next_step = reverse("plea_form_step", kwargs={"stage": self.name, "index": self.index+1})
             else:
-                # determine if your_finances needs to be loaded
-                if none_guilty:
-                    self.all_data["your_finances"]["complete"] = True
-                    self.all_data["your_finances"]["skipped"] = True
-                    self.set_next_step("review")
-                elif "skipped" in self.all_data["your_finances"]:
-                    del self.all_data["your_finances"]["skipped"]
+                if self.all_data["case"].get("plea_made_by", "Defendant") == "Company representative":
+                    if stage_data["none_guilty"]:
+                        self.set_next_step("review", skip=["company_finances",
+                                                           "your_finances"])
+                    else:
+                        self.set_next_step("company_finances", skip=["your_finances"])
+                else:
+                    # determine if your_finances needs to be loaded
+                    if stage_data["none_guilty"]:
+                        self.all_data["your_finances"]["complete"] = True
+                        self.all_data["your_finances"]["skipped"] = True
+                        self.set_next_step("review")
+                    elif "skipped" in self.all_data["your_finances"]:
+                        del self.all_data["your_finances"]["skipped"]
 
-        return clean_data
+        return stage_data
+
+    def render(self, request_context):
+        self.context["index"] = self.index
+        return super(PleaStage, self).render(request_context)
 
 
 class CompanyFinancesStage(FormStage):
@@ -259,6 +219,9 @@ class YourMoneyStage(FormStage):
     template = "your_finances.html"
     form_class = YourMoneyForm
     dependencies = ["notice_type", "case", "your_details", "plea"]
+
+    def load(self, request_context=None):
+        return super(YourMoneyStage, self).load(request_context)
 
     def save(self, form_data, next_step=None):
 
