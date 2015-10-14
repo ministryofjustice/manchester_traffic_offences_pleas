@@ -54,7 +54,11 @@ class FormStage(object):
 
     def check_dependencies(self):
         for dependency in self.dependencies:
-            if not (self.all_data[dependency].get("complete", False) is True):
+            if "data" in self.all_data[dependency]:
+                for data in self.all_data[dependency]["data"]:
+                    if data.get("complete", False) is not True:
+                        return False
+            elif self.all_data[dependency].get("complete", False) is not True:
                 return False
         return True
 
@@ -80,7 +84,11 @@ class FormStage(object):
     def load(self, request_context=None):
         # Reset split_form state if returning to trigger question
         if hasattr(request_context, "request") and ("reset" in request_context.request.GET):
-            self.all_data[self.name].pop("split_form", None)
+
+            try:
+                self.all_data[self.name].get("data")[self.index-1].pop("split_form", None)
+            except AttributeError:
+                self.all_data[self.name].pop("split_form", None)
 
         self.load_forms(initial=True)
 
@@ -119,18 +127,37 @@ class FormStage(object):
             return render_to_response(self.template, context, request_context)
 
 
+class IndexedStage(FormStage):
+    def __init__(self, all_urls=None, all_data=None, index=None):
+        self.index = index or 1
+        super(IndexedStage, self).__init__(all_urls, all_data)
+
+    def load(self, request_context):
+        if self.index is None:
+            return HttpResponseRedirect(self.all_urls[self.name])
+        else:
+            return super(IndexedStage, self).load(request_context)
+
+
 class MultiStageForm(object):
-    def __init__(self, current_stage, url_name, storage_dict):
+    url_name = ""
+
+    def __init__(self, storage_dict, current_stage, index=None):
         self.urls = OrderedDict()
         self.current_stage_class = None
         self.current_stage = None
         self.storage_dict = storage_dict
         self.request_context = {}
         self.all_data = {}
-        self.url_name = url_name
+        self.index = index
 
         for stage_class in self.stage_classes:
-            self.urls[stage_class.name] = reverse(url_name, args=(stage_class.name,))
+            if issubclass(stage_class, IndexedStage):
+                self.urls[stage_class.name] = reverse(self.url_name, kwargs={"stage": stage_class.name,
+                                                                             "index": self.index or 1})
+            else:
+                self.urls[stage_class.name] = reverse(self.url_name, args=(stage_class.name,))
+
             self.all_data[stage_class.name] = {}
             if stage_class.name == current_stage:
                 self.current_stage_class = stage_class
@@ -154,7 +181,10 @@ class MultiStageForm(object):
 
     def load(self, request_context):
         self.request_context = request_context
-        self.current_stage = self.current_stage_class(self.urls, self.all_data)
+        if issubclass(self.current_stage_class, IndexedStage):
+            self.current_stage = self.current_stage_class(self.urls, self.all_data, self.index)
+        else:
+            self.current_stage = self.current_stage_class(self.urls, self.all_data)
 
         if not self.current_stage.check_dependencies():
             if self.current_stage.name == "complete":
@@ -164,7 +194,7 @@ class MultiStageForm(object):
 
             return HttpResponseRedirect(redirect)
 
-        self.current_stage.load(request_context)
+        return self.current_stage.load(request_context)
 
     def save(self, form_data, request_context, next_step=None):
         self.request_context = request_context
@@ -172,7 +202,11 @@ class MultiStageForm(object):
         if next_step:
             next_url = reverse(self.url_name, args=(next_step, ))
 
-        self.current_stage = self.current_stage_class(self.urls, self.all_data)
+        if issubclass(self.current_stage_class, IndexedStage):
+            self.current_stage = self.current_stage_class(self.urls, self.all_data, self.index)
+        else:
+            self.current_stage = self.current_stage_class(self.urls, self.all_data)
+
         if self.current_stage.name not in self.all_data:
             self.all_data[self.current_stage.name] = {}
 

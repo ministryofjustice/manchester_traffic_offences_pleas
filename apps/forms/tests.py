@@ -37,6 +37,7 @@ class Stage2(FormStage):
     template = "test/stage2.html"
     form_class = TestForm1
 
+
 class Stage3(FormStage):
     name = "stage_3"
     form_class= TestForm2
@@ -73,6 +74,7 @@ class Review(FormStage):
 
 
 class MultiStageFormTest(MultiStageForm):
+    url_name = "msf-url"
     stage_classes = [Intro, Stage2, Stage3, Review]
 
 
@@ -80,12 +82,12 @@ class TestMultiStageForm(TestCase):
     @patch("apps.forms.stages.reverse", reverse)
     def test_404_raised_if_no_stage(self):
         with self.assertRaises(Http404):
-            MultiStageFormTest("Rabbits", "msf-url", {})
+            MultiStageFormTest({}, "Rabbits")
 
     @patch("apps.forms.stages.reverse", reverse)
     def test_form_intro_loads(self):
         request_context = {}
-        msf = MultiStageFormTest("intro", "msf-url", {})
+        msf = MultiStageFormTest({}, "intro")
         msf.load(request_context)
         response = msf.render()
         self.assertContains(response, "<h1>Test intro page</h1>")
@@ -93,7 +95,7 @@ class TestMultiStageForm(TestCase):
     @patch("apps.forms.stages.reverse", reverse)
     def test_form_stage2_loads(self):
         request_context = {}
-        msf = MultiStageFormTest("stage_2", "msf-url", {})
+        msf = MultiStageFormTest({}, "stage_2")
         msf.load(request_context)
         response = msf.render()
         self.assertContains(response, "id_field1")
@@ -102,7 +104,7 @@ class TestMultiStageForm(TestCase):
     @patch("apps.forms.stages.reverse", reverse)
     def test_form_stage2_saves(self):
         request_context = {}
-        msf = MultiStageFormTest("stage_2", "msf-url", {})
+        msf = MultiStageFormTest({}, "stage_2")
         msf.load(request_context)
         msf.save({"field1": "Joe",
                              "field2": 10},
@@ -118,7 +120,7 @@ class TestMultiStageForm(TestCase):
     @patch("apps.forms.stages.reverse", reverse)
     def test_form_stage3_loads(self):
         request_context = {}
-        msf = MultiStageFormTest("stage_3", "msf-url", {})
+        msf = MultiStageFormTest({}, "stage_3")
         msf.all_data["stage_2"]["field2"] = 2
         msf.load(request_context)
         response = msf.render()
@@ -130,7 +132,7 @@ class TestMultiStageForm(TestCase):
     @patch("apps.forms.stages.reverse", reverse)
     def test_form_stage3_saves(self):
         request_context = {}
-        msf = MultiStageFormTest("stage_3", "msf_url", {})
+        msf = MultiStageFormTest({}, "stage_3")
         msf.all_data["field2"] = 2
         mgmt_data = {"form-TOTAL_FORMS": "2",
                      "form-INITIAL_FORMS": "0",
@@ -146,7 +148,7 @@ class TestMultiStageForm(TestCase):
     @patch("apps.forms.stages.messages.add_message")
     def test_form_stage3_messages(self, add_message):
         request_context = {}
-        msf = MultiStageFormTest("stage_3", "msf_url", {})
+        msf = MultiStageFormTest({}, "stage_3")
         msf.all_data["field2"] = 2
         mgmt_data = {"form-TOTAL_FORMS": "2",
                      "form-INITIAL_FORMS": "0",
@@ -163,7 +165,7 @@ class TestMultiStageForm(TestCase):
     @patch("apps.forms.stages.reverse", reverse)
     def test_form_review_loads(self):
         request_context = {}
-        msf = MultiStageFormTest("review", "msf-url", {})
+        msf = MultiStageFormTest({}, "review")
         msf.load(request_context)
         response = msf.render()
         self.assertContains(response, "<h1>Review</h1>")
@@ -172,7 +174,7 @@ class TestMultiStageForm(TestCase):
     def test_save_doesnt_blank_storage_dict_and_nothing_is_added(self):
         request_context = {}
         fake_storage = {"extra": {"field0": "Not on the form"}}
-        msf = MultiStageFormTest("intro",  "msf_url", fake_storage)
+        msf = MultiStageFormTest(fake_storage, "intro")
         msf.load(request_context)
         msf.save({}, request_context)
         self.assertTrue(fake_storage["extra"]["field0"], "Not on the form")
@@ -182,14 +184,14 @@ class TestMultiStageForm(TestCase):
     def test_save_data_persists_between_stages(self):
         request_context = {}
         fake_storage = {}
-        msf = MultiStageFormTest("stage_2", "msf_url", fake_storage)
+        msf = MultiStageFormTest(fake_storage, "stage_2")
         msf.load(request_context)
 
         response = msf.save({"field1": "Joe",
                              "field2": 2},
                             request_context)
 
-        msf = MultiStageFormTest("stage_3", "msf_url", fake_storage)
+        msf = MultiStageFormTest(fake_storage, "stage_3")
         mgmt_data = {"form-TOTAL_FORMS": "2",
                      "form-INITIAL_FORMS": "0",
                      "form-MAX_NUM_FORMS": "1000"}
@@ -210,7 +212,7 @@ class TestMultiStageForm(TestCase):
     @patch("apps.forms.stages.reverse", reverse)
     def test_stage_standard_single_form_validation(self):
         request_context = {}
-        msf = MultiStageFormTest("stage_2", "msf-url", {})
+        msf = MultiStageFormTest({}, "stage_2")
         msf.load(request_context)
         msf.save({"field1": "",
                   "field2": "This is not an integer"},

@@ -37,8 +37,8 @@ class EmailGenerationTests(TestCase):
                                                      "last_name": "cx",
                                                      "contact_number": "07000000000",
                                                      "date_of_birth": "1970-01-01"},
-                                    "plea": {"PleaForms": [{"guilty": "guilty", "guilty_extra": "test1"},
-                                                           {"guilty": "guilty", "guilty_extra": "test2"}]},
+                                    "plea": {"data": [{"guilty": "guilty", "guilty_extra": "test1"},
+                                                       {"guilty": "guilty", "guilty_extra": "test2"}]},
                                     "review": {"receive_email_updates": True,
                                                "email": "test@test.com",
                                                "understand": True}}
@@ -55,8 +55,8 @@ class EmailGenerationTests(TestCase):
                                                       "last_name": "Smith",
                                                       "position_in_company": "a director",
                                                       "contact_number": "0800 SOMECOMPANY"},
-                                  "plea": {"PleaForms": [{"guilty": "guilty", "guilty_extra": "test1"},
-                                                         {"guilty": "guilty", "guilty_extra": "test2"}]},
+                                  "plea": {"data": [{"guilty": "guilty", "guilty_extra": "test1"},
+                                                     {"guilty": "guilty", "guilty_extra": "test2"}]},
                                   "review": {"receive_email_updates": True,
                                              "email": "test@test.com",
                                              "understand": True}}
