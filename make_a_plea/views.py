@@ -2,23 +2,10 @@ from django.conf import settings
 from django import http
 from django.shortcuts import render
 from django.utils.http import is_safe_url
-from django.utils.translation import check_for_language, to_locale, get_language
+from django.utils.translation import check_for_language, get_language
 from django.views.generic import TemplateView
-from django.views.decorators.cache import never_cache
 
 from waffle.decorators import waffle_switch
-
-
-
-class HomeView(TemplateView):
-    """
-    Home page view.
-    """
-    template_name = "start.html"
-
-    def get(self, request, *args, **kwargs):
-
-        return super(HomeView, self).get(request, *args, **kwargs)
 
 
 class TranslatedView(TemplateView):
@@ -92,7 +79,6 @@ def set_a11y_testing(request):
     return response
 
 
-@never_cache
 @waffle_switch("test_template")
 def test_template(request):
     """
@@ -130,7 +116,7 @@ def test_template(request):
     case_data = {"plea_made_by": options["plea_made_by"][plea_made_by],
                  "urn": "51/aa/00000/00",
                  "number_of_charges": int(number_of_charges),
-                 "date_of_hearing": "2015-11-17"}
+                 "contact_deadline": "2015-11-17"}
 
     court_data = {"court_address": "Court address\nSome Place\nT357TER",
                   "court_email": "email@court.com"}
