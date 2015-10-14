@@ -4,54 +4,28 @@
 {% load form_widgets %}
 {% load filters %}
 
-{% spaceless %}
 {% block page_title %}{% include "partials/page_title_plea.html" with charges=case.number_of_charges %} - {{ block.super }}{% endblock %}
-{% endspaceless %}
-
-
-{% block errors_summary %}
-    <h1 class="heading-medium">{% blocktrans %}You need to fix the errors on this page before continuing.{% endblocktrans %}</h1>
-
-    <p>{% blocktrans %}See highlighted errors below.{% endblocktrans %}</p>
-
-    <ul>
-    {% for plea_form in form %}
-        {% with forloop.counter as count %}
-            {% for field in plea_form %}
-                {% if field.errors %}
-        <li><a href="#section_{{ field.name }}_{{ count }}">{{ field.errors|striptags|format:count }}</a></li>
-                {% endif %}
-            {% endfor %}
-        {% endwith %}
-    {% endfor %}
-    </ul>
-{% endblock errors_summary %}
-
 
 {% block stage_header %}
     {% spaceless %}
     <h1>{% include "partials/page_title_plea.html" with charges=case.number_of_charges %}</h1>
     {% endspaceless %}
 
-    {% if plea.split_form == "split_form_last_step" %}
-    <div>
-        <p>This is your opportunity to present your case to the court.</p>
-    </div>
-    {% endif %}
-
-    {% if plea.split_form != "split_form_last_step" %}
+    {% if form.split_form.value != "split_form_last_step" %}
     <div class="panel-grey">
         {% if case.plea_made_by == "Defendant" %}
         <p>{% blocktrans %}This is your opportunity to present your case to the court:{% endblocktrans %}</p>
         <ul>
+            <li>{% blocktrans %}the charge details and witness statements are in the requisition pack we sent to you{% endblocktrans %}</li>
             <li>{% blocktrans %}each offence may carry penalty points and a fine{% endblocktrans %}</li>
-            <li>{% blocktrans %}if you plead guilty you may get a 33% discount on the fine{% endblocktrans %}</li>
+            <li>{% blocktrans %}if you plead guilty you may get a 33% discount on any fine{% endblocktrans %}</li>
         </ul>
         {% endif %}
 
         {% if case.plea_made_by == "Company representative" %}
         <p>{% blocktrans %}This is your opportunity to present the company's case to the court:{% endblocktrans %}</p>
         <ul>
+            <li>{% blocktrans %}the charge details and witness statements are in the requisition pack we sent to you{% endblocktrans %}</li>
             <li>{% blocktrans %}each offence may result in a fine{% endblocktrans %}</li>
             <li>{% blocktrans %}if you plead guilty on its behalf, the company may get a 33% discount on any fine{% endblocktrans %}</li>
         </ul>
@@ -62,29 +36,23 @@
 
 
 {% block stage_form %}
+    {% split_form form %}
 
-    <input class="nojs-only" type="hidden" name="split_form" value="{{plea.split_form|default:"guilty"}}">
+    <h2 class="heading-medium">
+        {% spaceless %}
+            {% if form.split_form.value != "split_form_last_step" %}
+                {% blocktrans with charge_number=index total=case.number_of_charges %}Charge {{ charge_number }} of {{ total }}{% endblocktrans %}
+            {% else %}
+                {% blocktrans with charge_number=index total=case.number_of_charges %}Charge {{ charge_number }} of {{ total }} continued{% endblocktrans %}
+            {% endif %}
+        {% endspaceless %}
+    </h2>
 
-    {% if plea.split_form != "split_form_last_step" %}
-    <h2 class="heading-medium">{% blocktrans %}Enter a plea for each charge below{% endblocktrans %}</h2>
-    {% endif %}
+    <section class="section-plea">
+        {% include "widgets/plea_radio_field.html" %}
 
-    {% with form_count=form|length %}
-
-        {{ form.management_form }}
-
-        {% for plea_form in form %}
-
-            {% with forloop.counter as charge_number %}
-        <section class="section-plea">
-
-            {% with plea_form as form %}
-                {% include "widgets/plea_radio_field.html" %}
-            {% endwith %}
-
-            <div{% if plea.split_form != "split_form_last_step" %} class="panel-indent"{% endif %} data-conditional="{{ plea_form.prefix }}-guilty" data-conditional-value="^(guilty|not_guilty)$">
-
-                <section class="js-hidden{% if plea.split_form != "split_form_last_step" or plea_form.guilty.0.value != "guilty" %} nojs-hidden{% endif %}" data-conditional="{{ plea_form.prefix }}-guilty" data-conditional-value="^guilty$">
+            <div{% if form.split_form.value != "split_form_last_step" %} class="panel-indent"{% endif %} data-conditional="guilty" data-conditional-value="^(guilty|not_guilty)$">
+                <section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.value != "guilty" %} nojs-hidden{% endif %}" data-conditional="guilty" data-conditional-value="^guilty$">
 
                     {% if case.plea_made_by == "Defendant" %}
                     <p>{% blocktrans %}Pleading guilty to this charge means you do not need to come to court to respond to this charge - we'll send you details of the court's decision and what to do next.{% endblocktrans %}</p>
@@ -94,41 +62,54 @@
                     <p>{% blocktrans %}Pleading guilty to this charge means a company representative does not need to come to court to respond to this charge - we'll send details of the court's decision and what happens next.{% endblocktrans %}</p>
                     {% endif %}
 
-                    {% std_field plea_form.guilty_extra wide=True counter=charge_number %}
+                    {% std_field form.guilty_extra wide=True counter=charge_number %}
                 </section>
 
-                <section class="js-hidden{% if plea.split_form != "split_form_last_step" or plea_form.guilty.0.value != "not_guilty" %} nojs-hidden{% endif %}" data-conditional="{{ plea_form.prefix }}-guilty" data-conditional-value="^not_guilty$">
+                <section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.value != "not_guilty" %} nojs-hidden{% endif %}" data-conditional="guilty" data-conditional-value="^not_guilty$">
 
                 {% if case.plea_made_by == "Defendant" %}
                     <p>{% blocktrans %}Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date.{% endblocktrans %}</p>
-                    <p>{% blocktrans %}If you disagree with any evidence from a witness statement in the requisition pack - tell us the name of the witness and what you disagree with. And tell us the name, address and date of birth of any witnesses you want to call to support your case.{% endblocktrans %}</p>
 
-                    {% std_field plea_form.not_guilty_extra wide=True hide_optional=True counter=charge_number %}
+                    {% std_field form.not_guilty_extra wide=True hide_optional=True counter=charge_number %}
 
-                    {% radio_field plea_form.interpreter_needed hide_optional=True inline=True counter=charge_number %}
+                    {% radio_field form.interpreter_needed wide=True hide_optional=True inline=True counter=charge_number %}
                 {% endif %}
 
                 {% if case.plea_made_by == "Company representative" %}
                     <p>{% blocktrans %}Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date.{% endblocktrans %}</p>
-                    <p>{% blocktrans %}If you disagree with any evidence from a witness statement in the requisition pack - tell us the name of the witness and what you disagree with. And tell us the name, address and date of birth of any witnesses you want to call to support your case.{% endblocktrans %}</p>
 
-                    {% std_field plea_form.not_guilty_extra wide=True hide_optional=True counter=charge_number help_text=_("Tell us why you believe the company is not guilty:") %}
+                    {% std_field form.not_guilty_extra wide=True hide_optional=True counter=charge_number help_text=_("Tell us why you believe the company is not guilty:") %}
 
-                    {% radio_field plea_form.interpreter_needed hide_optional=True counter=charge_number inline=True label=_("Does your company representative need an interpreter in court?") %}
+                    {% radio_field form.interpreter_needed wide=True hide_optional=True counter=charge_number inline=True label=_("Does your company representative need an interpreter in court?") %}
                 {% endif %}
 
-                    <div class="move-up" data-conditional="{{ plea_form.prefix }}-interpreter_needed" data-conditional-value="True">
-                        {% std_field plea_form.interpreter_language hide_optional=True counter=charge_number %}
+                    <div class="move-up" data-conditional="interpreter_needed" data-conditional-value="True">
+                        {% std_field form.interpreter_language wide=True hide_optional=True counter=charge_number %}
+                    </div>
+
+                    <h3>{% blocktrans %}Evidence and witness information{% endblocktrans %}</h3>
+
+                    {% radio_field form.disagree_with_evidence wide=True hide_optional=True inline=True counter=charge_number %}
+
+                    <div class="move-up" data-conditional="disagree_with_evidence" data-conditional-value="True">
+                        {% std_field form.disagree_with_evidence_details wide=True hide_optional=True counter=charge_number %}
+                    </div>
+
+                    {% radio_field form.witness_needed wide=True hide_optional=True inline=True counter=charge_number %}
+
+                    <div class="move-up" data-conditional="witness_needed" data-conditional-value="True">
+                        {% std_field form.witness_details wide=True hide_optional=True counter=charge_number %}
+
+                        {% radio_field form.witness_interpreter_needed wide=True hide_optional=True inline=True counter=charge_number %}
+
+                        <div class="move-up" data-conditional="witness_interpreter_needed" data-conditional-value="True">
+                            {% std_field form.witness_interpreter_language wide=True hide_optional=True counter=charge_number %}
+                        </div>
                     </div>
 
                 </section>
             </div>
 
         </section>
-            {% endwith %}
-
-        {% endfor %}
-
-    {% endwith %}
 
 {% endblock stage_form %}

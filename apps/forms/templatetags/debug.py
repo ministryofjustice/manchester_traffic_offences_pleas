@@ -28,3 +28,12 @@ def pdb(obj):
     """
     import ipdb; ipdb.set_trace()
     return obj
+
+
+@register.filter
+def echo(obj):
+    """
+    Prints the value to the console.
+    """
+    print obj
+    return obj

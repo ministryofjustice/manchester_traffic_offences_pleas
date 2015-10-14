@@ -29,7 +29,7 @@ class TestPleaFormIssues(TestMultiPleaFormBase):
                      "number_of_charges": 1,
                      "plea_made_by": "Defendant"}
 
-        form = PleaOnlineForms("case", "plea_form_step", self.session)
+        form = PleaOnlineForms(self.session, "case")
         form.save(save_data, self.request_context)
 
         result = form.render()
