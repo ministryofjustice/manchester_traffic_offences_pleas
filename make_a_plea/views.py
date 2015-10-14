@@ -116,7 +116,7 @@ def test_template(request):
     case_data = {"plea_made_by": options["plea_made_by"][plea_made_by],
                  "urn": "51/aa/00000/00",
                  "number_of_charges": int(number_of_charges),
-                 "date_of_hearing": "2015-11-17"}
+                 "contact_deadline": "2015-11-17"}
 
     court_data = {"court_address": "Court address\nSome Place\nT357TER",
                   "court_email": "email@court.com"}

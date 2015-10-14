@@ -19,7 +19,7 @@ class TestTimeout(TestCase):
         self.client.cookies[settings.SESSION_COOKIE_NAME] = store.session_key
 
     def test_no_urn_no_refresh_headers(self):
-        response = self.client.get("/plea/case/")
+        response = self.client.get("/plea/notice_type/")
 
         self.assertEqual(response.has_header("Refresh"), False)
 
@@ -33,10 +33,10 @@ class TestTimeout(TestCase):
 
     def test_when_urn_has_refresh_headers(self):
         session = self.session
-        session["plea_data"] = {"case": {"urn": "51/AA/00000/00"}}
+        session["plea_data"] = {"notice_type": {"sjp": True}}
         session.save()
 
-        response = self.client.get("/plea/case/")
+        response = self.client.get("/plea/notice_type/")
 
         wait = str(getattr(settings, "SESSION_COOKIE_AGE", 3600));
 

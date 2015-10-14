@@ -28,8 +28,10 @@ class EmailGenerationTests(TestCase):
             enabled=True,
             test_mode=False)
 
-        self.test_data_defendant = {"case": {"urn": "06xcvx89",
+        self.test_data_defendant = {"notice_type": {"sjp": False},
+                                    "case": {"urn": "06xcvx89",
                                              "date_of_hearing": "2014-06-30",
+                                             "contact_deadline": "2014-06-30",
                                              "number_of_charges": 2,
                                              "plea_made_by": "Defendant"},
                                     "your_details": {"updated_address": "Some place",
@@ -43,8 +45,10 @@ class EmailGenerationTests(TestCase):
                                                "email": "test@test.com",
                                                "understand": True}}
 
-        self.test_data_company = {"case": {"urn": "06xcvx89",
+        self.test_data_company = {"notice_type": {"sjp": False},
+                                  "case": {"urn": "06xcvx89",
                                            "date_of_hearing": "2014-06-30",
+                                           "contact_deadline": "2014-06-30",
                                            "number_of_charges": 2,
                                            "plea_made_by": "Company representative"},
                                   "your_details": {"complete": True,
@@ -80,6 +84,24 @@ class EmailGenerationTests(TestCase):
         send_plea_email(self.test_data_defendant)
 
         self.assertEqual(len(mail.outbox), 3)
+
+    def test_plea_email_adds_to_court_stats(self):
+        send_plea_email(self.test_data_defendant)
+
+        court_stats_count = CourtEmailCount.objects.count()
+
+        self.assertEqual(court_stats_count, 1)
+
+    def test_sjp_plea_email_adds_to_court_stats(self):
+        self.test_data_defendant["notice_type"]["sjp"] = True
+        self.test_data_defendant["case"]["posting_date"] = "2014-06-30"
+        del self.test_data_defendant["case"]["date_of_hearing"]
+
+        send_plea_email(self.test_data_defendant)
+
+        court_stats_count = CourtEmailCount.objects.count()
+
+        self.assertEqual(court_stats_count, 1)
 
     def test_plea_email_body_contains_plea_and_count_ids(self):
         send_plea_email(self.test_data_defendant)

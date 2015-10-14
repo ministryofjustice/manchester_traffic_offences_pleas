@@ -93,13 +93,24 @@ class TestValidators(TestCase):
         with self.assertRaises(forms.ValidationError):
             is_date_in_future(yesterday)
 
-    def test_date_is_within_range(self):
-        tomorrow = date.today() + timedelta(1)
+    def test_date_is_in_last_28_days(self):
+        yesterday = date.today() - timedelta(1)
 
-        self.assertTrue(is_date_within_range(tomorrow))
+        self.assertTrue(is_date_in_last_28_days(yesterday))
 
-    def test_date_is_not_within_range(self):
-        more_than_6_months = date.today() + timedelta(200)
+    def test_date_is_not_in_last_28_days(self):
+        more_than_28_days_ago = date.today() - timedelta(30)
 
         with self.assertRaises(forms.ValidationError):
-            is_date_within_range(more_than_6_months)
+            is_date_in_last_28_days(more_than_28_days_ago)
+
+    def test_date_is_in_next_6_months(self):
+        tomorrow = date.today() + timedelta(1)
+
+        self.assertTrue(is_date_in_next_6_months(tomorrow))
+
+    def test_date_is_not_in_next_6_months(self):
+        more_than_6_months_from_now = date.today() + timedelta(200)
+
+        with self.assertRaises(forms.ValidationError):
+            is_date_in_next_6_months(more_than_6_months_from_now)

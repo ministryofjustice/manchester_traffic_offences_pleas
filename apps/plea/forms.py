@@ -13,10 +13,20 @@ from apps.forms.forms import (YESNO_CHOICES,
 from .fields import ERROR_MESSAGES
 from .validators import (is_date_in_past,
                          is_date_in_future,
-                         is_date_within_range,
+                         is_date_in_last_28_days,
+                         is_date_in_next_6_months,
                          is_urn_not_used,
                          is_urn_valid)
 
+
+class NoticeTypeForm(BaseStageForm):
+    sjp = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                 required=True,
+                                 coerce=to_bool,
+                                 choices=YESNO_CHOICES["Ydy/Nac ydy"],
+                                 label=_("Is the title at the very top, next to the police logo, 'Single Justice Procedure Notice'?"),
+                                 help_text=_("If your paperwork does not have Single Justice Procedure Notice written in the place shown, select no to continue."),
+                                 error_messages={"required": ERROR_MESSAGES["NOTICE_TYPE_REQUIRED"]})
 
 class CaseForm(BaseStageForm):
     PLEA_MADE_BY_CHOICES = (
@@ -33,7 +43,7 @@ class CaseForm(BaseStageForm):
                                           "is_urn_not_used": ERROR_MESSAGES['URN_ALREADY_USED']})
 
     date_of_hearing = forms.DateField(widget=DateWidget,
-                                      validators=[is_date_in_future, is_date_within_range],
+                                      validators=[is_date_in_future, is_date_in_next_6_months],
                                       required=True,
                                       label=_("Court hearing date"),
                                       help_text=_("On page 1 of the notice, near the top. <br>For example, 30/07/2014"),
@@ -57,6 +67,43 @@ class CaseForm(BaseStageForm):
                                           help_text=_("Choose one of the following options:"),
                                           error_messages={"required": ERROR_MESSAGES["PLEA_MADE_BY_REQUIRED"]})
 
+class SJPCaseForm(BaseStageForm):
+    PLEA_MADE_BY_CHOICES = (
+        ("Defendant", _("The person named in the notice")),
+        ("Company representative", _("Pleading on behalf of a company")))
+
+    urn = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                          label=_("Unique reference number (URN)"),
+                          required=True,
+                          validators=[is_urn_valid, is_urn_not_used],
+                          help_text=_("On page 1 of the notice, usually at the top."),
+                          error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"],
+                                          "is_urn_valid": ERROR_MESSAGES["URN_INVALID"],
+                                          "is_urn_not_used": ERROR_MESSAGES['URN_ALREADY_USED']})
+
+    posting_date = forms.DateField(widget=DateWidget,
+                                   validators=[is_date_in_past, is_date_in_last_28_days],
+                                   required=True,
+                                   label=_("Posting date"),
+                                   help_text=_("On page 1 of the notice, near the top. <br>For example, 30/07/2014"),
+                                   error_messages={"required": ERROR_MESSAGES["POSTING_DATE_REQUIRED"],
+                                                   "invalid": ERROR_MESSAGES["POSTING_DATE_INVALID"],
+                                                   "is_date_in_past": ERROR_MESSAGES["POSTING_DATE_IN_FUTURE"]})
+
+    number_of_charges = forms.IntegerField(label=_("Number of charges"),
+                                               widget=forms.TextInput(attrs={"pattern": "[0-9]*",
+                                                                             "maxlength": "2",
+                                                                             "class": "form-control-inline",
+                                                                             "size": "2"}),
+                                               help_text=_("On the charge sheet, in numbered boxes."),
+                                               min_value=1, max_value=10,
+                                               error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]})
+
+    plea_made_by = forms.TypedChoiceField(required=True, widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                          choices=PLEA_MADE_BY_CHOICES,
+                                          label=_("Are you? (plea made by)"),
+                                          help_text=_("Choose one of the following options:"),
+                                          error_messages={"required": ERROR_MESSAGES["PLEA_MADE_BY_REQUIRED"]})
 
 class YourDetailsForm(BaseStageForm):
     dependencies = {
