@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+from collections import OrderedDict
+
 from django import forms
 from django.forms.widgets import Textarea, RadioSelect
 from django.utils.translation import ugettext_lazy as _
@@ -272,20 +274,16 @@ class YourMoneyForm(SplitStageForm):
         "employed_take_home_pay_amount": {"field": "you_are", "value": "Employed"},
         "employed_hardship": {"field": "you_are", "value": "Employed"},
 
-        "self_employed_pay_period": {"field": "you_are",
-                                     "value": "Self-employed",
-                                     "dependencies": {"self_employed_pay_other": {"field": "self_employed_pay_period",
-                                                                                  "value": "Self-employed other" }}},
+        "self_employed_pay_period": {"field": "you_are", "value": "Self-employed"},
+        "self_employed_pay_other": {"field": "self_employed_pay_period", "value": "Self-employed other"},
 
         "self_employed_pay_amount": {"field": "you_are", "value": "Self-employed"},
         "self_employed_hardship": {"field": "you_are", "value": "Self-employed"},
 
         "benefits_details": {"field": "you_are", "value": "Receiving benefits"},
         "benefits_dependents": {"field": "you_are", "value": "Receiving benefits"},
-        "benefits_period": {"field": "you_are",
-                            "value": "Receiving benefits",
-                            "dependencies": {"benefits_pay_other": {"field": "benefits_period",
-                                                                    "value": "Benefits other"}}},
+        "benefits_period": {"field": "you_are", "value": "Receiving benefits"},
+        "benefits_pay_other": {"field": "benefits_period", "value": "Benefits other"},
         "benefits_amount": {"field": "you_are", "value": "Receiving benefits"},
         "receiving_benefits_hardship": {"field": "you_are", "value": "Receiving benefits"},
 
@@ -618,7 +616,6 @@ class CompanyFinancesForm(SplitStageForm):
                                       localize=True,
                                       error_messages={"required": ERROR_MESSAGES["COMPANY_NET_TURNOVER"]})
 
-
     def __init__(self, *args, **kwargs):
         super(CompanyFinancesForm, self).__init__(*args, **kwargs)
 
@@ -663,22 +660,17 @@ class PleaForm(SplitStageForm):
         ('not_guilty', _('Not guilty')),
     )
 
-    dependencies = {
-        "not_guilty_extra": {
-            "field": "guilty",
-            "value": "not_guilty"
-        },
-        "interpreter_needed": {
-            "field": "guilty",
-            "value": "not_guilty",
-            "dependencies": {
-                "interpreter_language": {
-                    "field": "interpreter_needed",
-                    "value": "True"
-                }
-            }
-        }
-    }
+    dependencies = OrderedDict([
+        ("not_guilty_extra", {"field": "guilty", "value": "not_guilty"}),
+        ("interpreter_needed", {"field": "guilty", "value": "not_guilty"}),
+        ("interpreter_language", {"field": "interpreter_needed", "value": "True"}),
+        ("disagree_with_evidence", {"field": "guilty", "value": "not_guilty"}),
+        ("disagree_with_evidence_details", {"field": "disagree_with_evidence", "value": "True"}),
+        ("witness_needed", {"field": "guilty", "value": "not_guilty"}),
+        ("witness_details", {"field": "witness_needed", "value": "True"}),
+        ("witness_interpreter_needed", {"field": "witness_needed", "value": "True"}),
+        ("witness_interpreter_language", {"field": "witness_interpreter_needed", "value": "True"})
+    ])
 
     split_form_options = {
         "trigger": "guilty",
@@ -713,6 +705,47 @@ class PleaForm(SplitStageForm):
                                            label="",
                                            help_text=_("If yes, tell us which language (include sign language):"),
                                            error_messages={"required": ERROR_MESSAGES["INTERPRETER_LANGUAGE_REQUIRED"]})
+
+    disagree_with_evidence = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                                    required=True,
+                                                    choices=YESNO_CHOICES["Oes/Nac oes"],
+                                                    coerce=to_bool,
+                                                    label=_("Do you disagree with any evidence from a witness statement in the notice we sent to you?"),
+                                                    error_messages={"required": ERROR_MESSAGES["DISAGREE_WITH_EVIDENCE_REQUIRED"]})
+
+    disagree_with_evidence_details = forms.CharField(label="",
+                                                     widget=Textarea(attrs={"class": "form-control", "rows": "3"}),
+                                                     help_text=_("If yes, tell us the name of the witness (on the top left of the statement) and what you disagree with:"),
+                                                     max_length=5000,
+                                                     error_messages={"required": ERROR_MESSAGES["DISAGREE_WITH_EVIDENCE_DETAILS_REQUIRED"]})
+
+    witness_needed = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                            required=True,
+                                            choices=YESNO_CHOICES["Oes/Nac oes"],
+                                            coerce=to_bool,
+                                            label=_("Do you want to call a defence witness?"),
+                                            help_text=_("Someone who can give evidence in court supporting your case."),
+                                            error_messages={"required": ERROR_MESSAGES["WITNESS_NEEDED_REQUIRED"]})
+
+    witness_details = forms.CharField(label="",
+                                      widget=Textarea(attrs={"class": "form-control", "rows": "3"}),
+                                      help_text=_("If yes, tell us the name, address and date of birth of any witnesses you want to call  to support your case:"),
+                                      max_length=5000,
+                                      error_messages={"required": ERROR_MESSAGES["WITNESS_DETAILS_REQUIRED"]})
+
+    witness_interpreter_needed = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                                        required=True,
+                                                        choices=YESNO_CHOICES["Oes/Nac oes"],
+                                                        coerce=to_bool,
+                                                        label=_("Does your witness need an interpreter in court?"),
+                                                        error_messages={"required": ERROR_MESSAGES["WITNESS_INTERPRETER_NEEDED_REQUIRED"]})
+
+    witness_interpreter_language = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                                                   max_length=100,
+                                                   required=True,
+                                                   label="",
+                                                   help_text=_("If yes, tell us the name of the witness (on the top left of the statement) and what you disagree with"),
+                                                   error_messages={"required": ERROR_MESSAGES["WITNESS_INTERPRETER_LANGUAGE_REQUIRED"]})
 
 
 class CourtFinderForm(forms.Form):
