@@ -3,22 +3,13 @@
 {% load i18n %}
 {% load form_widgets %}
 {% load filters %}
-{% load debug %}
-{% spaceless %}
-{% block page_title %}{% include "partials/page_title_plea.html" with charges=case.number_of_charges %} - {{ block.super }}{% endblock %}
-{% endspaceless %}
 
+{% block page_title %}{% include "partials/page_title_plea.html" with charges=case.number_of_charges %} - {{ block.super }}{% endblock %}
 
 {% block stage_header %}
     {% spaceless %}
     <h1>{% include "partials/page_title_plea.html" with charges=case.number_of_charges %}</h1>
     {% endspaceless %}
-
-    {% if form.split_form.value == "split_form_last_step" %}
-    <div>
-        <p>{% blocktrans %}This is your opportunity to present your case to the court.{% endblocktrans %}</p>
-    </div>
-    {% endif %}
 
     {% if form.split_form.value != "split_form_last_step" %}
     <div class="panel-grey">
@@ -47,15 +38,21 @@
 {% block stage_form %}
     {% split_form form %}
 
-    {% if form.split_form.value != "split_form_last_step" %}
-    <h2 class="heading-medium">{% blocktrans %}Enter a plea for each charge below{% endblocktrans %}</h2>
-    {% endif %}
+    <h2 class="heading-medium">
+        {% spaceless %}
+            {% if form.split_form.value != "split_form_last_step" %}
+                {% blocktrans with charge_number=index total=case.number_of_charges %}Charge {{ charge_number }} of {{ total }}{% endblocktrans %}
+            {% else %}
+                {% blocktrans with charge_number=index total=case.number_of_charges %}Charge {{ charge_number }} of {{ total }} continued{% endblocktrans %}
+            {% endif %}
+        {% endspaceless %}
+    </h2>
 
     <section class="section-plea">
         {% include "widgets/plea_radio_field.html" %}
 
             <div{% if form.split_form.value != "split_form_last_step" %} class="panel-indent"{% endif %} data-conditional="guilty" data-conditional-value="^(guilty|not_guilty)$">
-                <section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.0.value != "guilty" %} nojs-hidden{% endif %}" data-conditional="guilty" data-conditional-value="^guilty$">
+                <section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.value != "guilty" %} nojs-hidden{% endif %}" data-conditional="guilty" data-conditional-value="^guilty$">
 
                     {% if case.plea_made_by == "Defendant" %}
                     <p>{% blocktrans %}Pleading guilty to this charge means you do not need to come to court to respond to this charge - we'll send you details of the court's decision and what to do next.{% endblocktrans %}</p>
@@ -68,7 +65,7 @@
                     {% std_field form.guilty_extra wide=True counter=charge_number %}
                 </section>
 
-                <section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.0.value != "not_guilty" %} nojs-hidden{% endif %}" data-conditional="guilty" data-conditional-value="^not_guilty$">
+                <section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.value != "not_guilty" %} nojs-hidden{% endif %}" data-conditional="guilty" data-conditional-value="^not_guilty$">
 
                 {% if case.plea_made_by == "Defendant" %}
                     <p>{% blocktrans %}Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date.{% endblocktrans %}</p>

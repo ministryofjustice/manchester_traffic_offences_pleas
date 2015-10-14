@@ -15,10 +15,14 @@
                 {% if form.case_data %}
                     {{ form.case_data.offence_short_title }}
                 {% else %}
-                    {% if case.plea_made_by == "Defendant" %}
-                        {% blocktrans with counter=index %}Your plea for charge {{ counter }}{% endblocktrans %}
+                    {% if plea_data.split_form == "split_form_last_step" %}
+                        {% blocktrans with counter=index %}Charge {{ counter }}{% endblocktrans %}
                     {% else %}
-                        {% blocktrans with counter=index %}Plea for charge {{ counter }}{% endblocktrans %}
+                        {% if case.plea_made_by == "Defendant" %}
+                            {% blocktrans with counter=index %}Your plea for charge {{ counter }}{% endblocktrans %}
+                        {% else %}
+                            {% blocktrans with counter=index %}Plea for charge {{ counter }}{% endblocktrans %}
+                        {% endif %}
                     {% endif %}
                 {% endif %}
                 {% endspaceless %}</span>
@@ -46,7 +50,6 @@
             {% endif %}
         </legend>
 
-
         {% if plea_data.split_form != "split_form_last_step" %}
         <div class="form-field">
             <div class="inline">
@@ -61,6 +64,7 @@
             </div>
         </div>
         {% endif %}
+
         {% if plea_data.split_form == "split_form_last_step" %}
         {% add_test_tag "<<NOJSTRIGGERSUMMARY>>" %}
         <div class="form-header-pleas">
@@ -70,7 +74,7 @@
                 {% endif %}
             {% endfor %}
             <p class="form-selected">{% blocktrans count charges=1 %}Your plea{% plural %}Your pleas{% endblocktrans %} - <strong>{% if form.guilty.value == "guilty" %}{% blocktrans %}Guilty{% endblocktrans %}{% else %}{% blocktrans %}Not guilty{% endblocktrans %}{% endif %}</strong></p>
-            <a href="{{ request.path }}?reset">{% blocktrans %}Change this plea{% endblocktrans %}</a>
+            <a href="{{ request.path }}?reset">{% blocktrans %}Change your plea for this charge{% endblocktrans %}</a>
         </div>
         {% endif %}
 
