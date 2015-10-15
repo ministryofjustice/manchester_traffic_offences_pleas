@@ -13,6 +13,7 @@ from .forms import (NoticeTypeForm,
                     YourDetailsForm,
                     CompanyDetailsForm,
                     PleaForm,
+                    SJPPleaForm,
                     YourMoneyForm,
                     HardshipForm,
                     HouseholdExpensesForm,
@@ -125,6 +126,14 @@ class PleaStage(IndexedStage):
     template = "plea.html"
     form_class = PleaForm
     dependencies = ["notice_type", "case", "your_details", "company_details"]
+
+    def __init__(self, *args, **kwargs):
+        super(PleaStage, self).__init__(*args, **kwargs)
+        try:
+            if self.all_data["notice_type"]["sjp"] is True:
+                self.form_class = SJPPleaForm
+        except KeyError:
+            pass
 
     def get_offences(self, urn):
         offences = []
