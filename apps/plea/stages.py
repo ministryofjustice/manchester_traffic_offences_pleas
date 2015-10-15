@@ -149,7 +149,7 @@ class PleaStage(IndexedStage):
     form_class = PleaForm
     dependencies = ["notice_type", "case", "your_details", "company_details"]
 
-	def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(PleaStage, self).__init__(*args, **kwargs)
         try:
             if self.all_data["notice_type"]["sjp"] is True:
