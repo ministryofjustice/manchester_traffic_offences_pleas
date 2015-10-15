@@ -13,6 +13,7 @@ from .forms import (NoticeTypeForm,
                     YourDetailsForm,
                     CompanyDetailsForm,
                     PleaForm,
+                    SJPPleaForm,
                     YourMoneyForm,
                     HardshipForm,
                     HouseholdExpensesForm,
@@ -68,7 +69,7 @@ class CaseStage(FormStage):
     def __init__(self, *args, **kwargs):
         super(CaseStage, self).__init__(*args, **kwargs)
         try:
-            if self.all_data["notice_type"]["sjp"] is True:
+            if self.all_data["notice_type"]["sjp"]:
                 self.form_class = SJPCaseForm
         except KeyError:
             pass
@@ -147,6 +148,14 @@ class PleaStage(IndexedStage):
     template = "plea.html"
     form_class = PleaForm
     dependencies = ["notice_type", "case", "your_details", "company_details"]
+
+    def __init__(self, *args, **kwargs):
+        super(PleaStage, self).__init__(*args, **kwargs)
+        try:
+            if self.all_data["notice_type"]["sjp"] is True:
+                self.form_class = SJPPleaForm
+        except KeyError:
+            pass
 
     def load_forms(self, data=None, initial=False):
         initial_data = None
