@@ -36,6 +36,7 @@ ERROR_MESSAGES = {
     "POSITION_REQUIRED": _("You must tell us your position in the company"),
     "COMPANY_CONTACT_NUMBER_REQUIRED": _("Enter a contact number"),
     "PLEA_REQUIRED": _("You must select a plea for this charge"),
+    "COME_TO_COURT_REQUIRED": _("You must tell us if you want to come to court to plead guilty"),
     "NOT_GUILTY_REQUIRED": _("Tell us why you believe you are not guilty"),
     "INTERPRETER_NEEDED_REQUIRED": _("You must tell us if you need an interpreter in court"),
     "INTERPRETER_LANGUAGE_REQUIRED": _("You must tell us which language"),
