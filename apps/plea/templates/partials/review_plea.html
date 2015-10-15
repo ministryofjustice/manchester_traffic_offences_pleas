@@ -39,6 +39,28 @@
             <th>{% blocktrans %}Mitigation{% endblocktrans %}</th>
             <td>{{ pleaform.guilty_extra|linebreaksbr|default:"-" }}</td>
         </tr>
+
+            {% if notice_type.sjp %}
+        <tr>
+            <th>{% blocktrans %}Plead guilty in court{% endblocktrans %}</th>
+            <td>{{ pleaform.come_to_court|yesno:_("Yes,No (v1)") }}</td>
+        </tr>
+
+                {% if pleaform.come_to_court %}
+        <tr>
+            <th>{% blocktrans %}Interpreter required{% endblocktrans %}</th>
+            <td>{{ pleaform.sjp_interpreter_needed|yesno:_("Yes,No (v3)") }}</td>
+        </tr>
+
+                    {% if pleaform.sjp_interpreter_needed %}
+        <tr>
+            <th>{% blocktrans %}Language{% endblocktrans %}</th>
+            <td>{{ pleaform.sjp_interpreter_language }}</td>
+        </tr>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+
         {% endif %}
 
         {% if pleaform.guilty == "not_guilty" %}
