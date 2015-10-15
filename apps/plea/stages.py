@@ -32,6 +32,26 @@ def get_case(urn):
         return None
 
 
+def get_offences(case_data):
+        urn = case_data.get("urn")
+        # TODO: change this to grabbing by case OU or a FK at some point
+
+        offences = []
+        if urn:
+            case = get_case(urn)
+            court = Court.objects.get_by_urn(urn)
+
+            # offence_seq_number is a char field so best to cast and order by
+            # rather than just grabbing case.offences.all() and hoping it's
+            # in the right order
+            if court.display_case_data:
+                offences = Offence.objects.filter(case=case).extra(
+                    select={"seq_number": "cast(coalesce(nullif(offence_seq_number,''),'0') as float)"}
+                ).order_by("seq_number", "id")
+
+        return offences
+
+
 class NoticeTypeStage(FormStage):
     name = "notice_type"
     template = "notice_type.html"
@@ -53,7 +73,6 @@ class CaseStage(FormStage):
         except KeyError:
             pass
 
-
     def render(self, request_context):
         if "urn" in self.form.errors and ERROR_MESSAGES["URN_ALREADY_USED"] in self.form.errors["urn"]:
             self.context["urn_already_used"] = True
@@ -70,6 +89,9 @@ class CaseStage(FormStage):
 
         if "urn" in clean_data:
             clean_data["urn"] = slashify_urn(standardise_urn(clean_data["urn"]))
+            offences = get_offences(clean_data)
+            if offences:
+                clean_data["number_of_charges"] = len(offences)
 
         # Set the court contact deadline
         if "date_of_hearing" in clean_data:
@@ -126,24 +148,10 @@ class PleaStage(IndexedStage):
     form_class = PleaForm
     dependencies = ["notice_type", "case", "your_details", "company_details"]
 
-    def get_offences(self, urn):
-        offences = []
-        if urn:
-            case = get_case(urn)
-            court = Court.objects.get_by_urn(urn)
-
-            # offence_seq_number is a char field so best to cast and order by
-            # rather than just grabbing case.offences.all() and hoping it's
-            # in the right order
-            if court.display_case_data:
-                offences = Offence.objects.filter(case=case).extra(
-                    select={"seq_number": "cast(coalesce(nullif(offence_seq_number,''),'0') as float)"}
-                ).order_by("seq_number", "id")
-
-        return offences
-
     def load_forms(self, data=None, initial=False):
         initial_data = None
+        # TODO: change this to grabbing by case OU or a FK at some point
+        offences = get_offences(self.all_data["case"])
 
         if initial:
             data = self.all_data.get(self.name, {}).get("data", [])
@@ -154,16 +162,22 @@ class PleaStage(IndexedStage):
 
             if self.form_class:
                 self.form = self.form_class(initial=initial_data, label_suffix="")
-            return
+        else:
+            if self.form_class:
+                self.form = self.form_class(data, label_suffix="")
 
-        if self.form_class:
-            self.form = self.form_class(data, label_suffix="")
+        if offences:
+            try:
+                self.form.case_data = offences[self.index-1]
+            except IndexError:
+                pass
 
     def save(self, form_data, next_step=None):
         clean_data = super(PleaStage, self).save(form_data, next_step)
         plea_count = self.all_data["case"]["number_of_charges"]
         stage_data = self.all_data[self.name]
         stage_data["none_guilty"] = True
+        offences = get_offences(self.all_data["case"])
 
         if "data" not in stage_data:
             stage_data["data"] = []
@@ -177,6 +191,11 @@ class PleaStage(IndexedStage):
             if plea.get("guilty") == "guilty":
                 stage_data["none_guilty"] = False
                 break
+
+        try:
+            stage_data["data"][self.index-1]["title"] = offences[self.index-1].offence_short_title
+        except IndexError:
+            pass
 
         if "guilty" not in stage_data["data"][self.index-1]:
             return clean_data
