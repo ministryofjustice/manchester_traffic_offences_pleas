@@ -343,6 +343,35 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(form.current_stage.form.errors), 1)
 
+    def test_plea_SJP_single_charge_guilty_missing_data(self):
+        self.session.update(self.plea_stage_pre_data_1_charge)
+        self.session["notice_type"]["sjp"] = True
+
+        form = PleaOnlineForms(self.session, "plea", 1)
+
+        form.load(self.request_context)
+        form.save({"guilty": "guilty"},
+                  self.request_context)
+        response = form.render()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(form.current_stage.form.errors), 1)
+
+    def test_plea_SJP_single_charge_guilty_missing_extra_data(self):
+        self.session.update(self.plea_stage_pre_data_1_charge)
+        self.session["notice_type"]["sjp"] = True
+
+        form = PleaOnlineForms(self.session, "plea", 1)
+
+        form.load(self.request_context)
+        form.save({"guilty": "guilty",
+                   "come_to_court": True},
+                  self.request_context)
+        response = form.render()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(form.current_stage.form.errors), 1)
+
     def test_plea_single_charge_not_guilty_missing_data(self):
         self.session.update(self.plea_stage_pre_data_1_charge)
 

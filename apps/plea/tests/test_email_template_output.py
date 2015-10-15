@@ -4,11 +4,8 @@ from datetime import datetime, timedelta
 from mock import Mock
 
 from django.core import mail
-from django.forms.formsets import formset_factory
 from django.test import TestCase
 from django.utils import translation
-
-from apps.forms.forms import RequiredFormSet
 
 from ..email import send_plea_email
 from ..models import Court
@@ -291,6 +288,22 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
         self.assertContains(response, "<tr><th>Your plea</th><td>Guilty</td></tr>", count=1, html=True)
+
+    def test_SJP_single_guilty_plea_email_plea_output(self):
+        context_data = self.get_context_data()
+        context_data["notice_type"]["sjp"] = True
+        context_data["plea"]["data"][0]["guilty"] = "guilty"
+        context_data["plea"]["data"][0]["come_to_court"] = True
+        context_data["plea"]["data"][0]["sjp_interpreter_needed"] = True
+        context_data["plea"]["data"][0]["sjp_interpreter_language"] = "French"
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        self.assertContains(response, "<tr><th>Your plea</th><td>Guilty</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Plead guilty in court</th><td>Yes</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Interpreter required</th><td>Yes</td></tr>", count=1, html=True)
+        self.assertContains(response, "<tr><th>Language</th><td>French</td></tr>", count=1, html=True)
 
     def test_multiple_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
