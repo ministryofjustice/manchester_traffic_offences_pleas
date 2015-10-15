@@ -69,7 +69,7 @@ class CaseStage(FormStage):
     def __init__(self, *args, **kwargs):
         super(CaseStage, self).__init__(*args, **kwargs)
         try:
-            if self.all_data["notice_type"]["sjp"] == True:
+            if self.all_data["notice_type"]["sjp"]:
                 self.form_class = SJPCaseForm
         except KeyError:
             pass
