@@ -150,17 +150,21 @@
     {% if notice_type.sjp %}
     <script type="text/javascript">
     $(function() {
-        $('#guilty_extra_conditional').data('conditional', 'come_to_court');
-        var $cond = new moj.Modules._Conditional($('#guilty_extra_conditional'));
+        var $mitigations = $('#guilty_extra_conditional'),
+            conditional;
+
+        $mitigations.data('conditional', 'come_to_court');
+
+        conditional = new moj.Modules._Conditional($mitigations);
 
         $('[name=come_to_court]').on('change', function(){
             if($(this).val() === "True") {
-                $('#guilty_extra_conditional').data('conditional', 'sjp_interpreter_needed');
+                $mitigations.data('conditional', 'sjp_interpreter_needed');
             }
             else {
-                $('#guilty_extra_conditional').data('conditional', 'come_to_court');
+                $mitigations.data('conditional', 'come_to_court');
             }
-            $cond.refresh();
+            conditional.refresh();
         });
     });
     </script>
