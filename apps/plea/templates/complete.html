@@ -82,16 +82,14 @@
 
 {% endblock page_content %}
 
-{% block body_end %}
-    {{ block.super }}
+{% block extra_analytics %}
+    {% spaceless %}
 
     {% if analytics_events and google_analytics_id %}
-<script>
-{% for event in analytics_events %}
+        {% for event in analytics_events %}
 ga('send', 'event', 'Complete submission', '{{ event.action }}', '{{ event.label }}');
-{% endfor %}
-
-ga('set', 'dimension1', '{{ LANGUAGE_CODE }}');
-</script>
+        {% endfor %}
     {% endif %}
-{% endblock body_end %}
+
+    {% endspaceless %}
+{% endblock extra_analytics %}
