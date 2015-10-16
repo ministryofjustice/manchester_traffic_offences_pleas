@@ -78,7 +78,7 @@
                             </div>
                         </div>
 
-                        <div data-conditional="come_to_court">
+                        <div id="guilty_extra_conditional" data-conditional="come_to_court">
                             {% std_field form.guilty_extra wide=True %}
                         </div>
 
@@ -90,7 +90,11 @@
                 <section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.value != "not_guilty" %} nojs-hidden{% endif %}" data-conditional="guilty" data-conditional-value="^not_guilty$">
 
                 {% if case.plea_made_by == "Defendant" %}
-                    <p>{% blocktrans %}Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date.{% endblocktrans %}</p>
+                    {% if notice_type.sjp %}
+                        <p>{% blocktrans %}Pleading not guilty to this charge means we'll send details of a date for you to come to court for a trial.{% endblocktrans %}</p>
+                    {% else %}
+                        <p>{% blocktrans %}Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date.{% endblocktrans %}</p>
+                    {% endif %}
 
                     {% std_field form.not_guilty_extra wide=True hide_optional=True %}
 
@@ -98,7 +102,11 @@
                 {% endif %}
 
                 {% if case.plea_made_by == "Company representative" %}
-                    <p>{% blocktrans %}Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date.{% endblocktrans %}</p>
+                    {% if notice_type.sjp %}
+                        <p>{% blocktrans %}Pleading not guilty to this charge means we'll send details of a date for a company representative to come to court for a trial.{% endblocktrans %}</p>
+                    {% else %}
+                        <p>{% blocktrans %}Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date.{% endblocktrans %}</p>
+                    {% endif %}
 
                     {% std_field form.not_guilty_extra wide=True hide_optional=True help_text=_("Tell us why you believe the company is not guilty:") %}
 
@@ -135,3 +143,15 @@
         </section>
 
 {% endblock stage_form %}
+
+{% block javascripts %}
+    {{ block.super }}
+
+{#     {% if notice_type.sjp %}
+    <script type="text/javascript">
+    var $cond = $('#guilty_extra_conditional');
+    $cond.attr('conditional', 'sjp_interpreter_needed');
+    $cond.data('Conditional', new moj.Modules._Conditional($cond, $cond.data()));
+    </script>
+    {% endif %} #}
+{% endblock javascripts %}

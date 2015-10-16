@@ -115,8 +115,16 @@ def send_plea_email(context_data):
         "court_email": court_obj.court_email
     }
 
-    html_body = render_to_string("emails/user_plea_confirmation.html", data)
-    txt_body = wrap(render_to_string("emails/user_plea_confirmation.txt", data), 72)
+    email_template = "emails/user_plea_confirmation"
+
+    try:
+        if context_data["notice_type"]["sjp"]:
+            email_template = "emails/user_plea_confirmation_sjp"
+    except KeyError:
+        pass
+
+    html_body = render_to_string(email_template + ".html", data)
+    txt_body = wrap(render_to_string(email_template + ".txt", data), 72)
 
     subject = _("Online plea submission confirmation")
 

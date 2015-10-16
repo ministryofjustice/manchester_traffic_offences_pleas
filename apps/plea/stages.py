@@ -374,6 +374,15 @@ class CompleteStage(FormStage):
     dependencies = ["notice_type", "case", "your_details", "company_details", "plea",
                     "your_finances", "company_finances", "review"]
 
+    def __init__(self, *args, **kwargs):
+        super(CompleteStage, self).__init__(*args, **kwargs)
+        try:
+            if self.all_data["notice_type"]["sjp"]:
+                self.template = "complete_sjp.html"
+        except KeyError:
+            pass
+
+
     def render(self, request_context):
 
         self.context["plea_type"] = get_plea_type(self.all_data)

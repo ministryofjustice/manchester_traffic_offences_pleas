@@ -5,7 +5,7 @@ import logging
 
 from django.utils.translation import ugettext_lazy as _
 
-VERSION = (0, 9, 5)
+VERSION = (1, 0, 0)
 
 # PATH vars
 here = lambda *x: join(abspath(dirname(__file__)), *x)

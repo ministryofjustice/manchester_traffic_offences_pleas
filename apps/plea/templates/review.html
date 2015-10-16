@@ -144,10 +144,20 @@
                 <input id="{{ form.understand.id_for_label }}" name="{{ form.understand.name }}" type="checkbox" value="True" {% if form.understand.is_checked %}checked="checked"{% endif %}>
                 <span class="checkbox-text">
                 {% if case.plea_made_by == "Defendant" %}
-                    {% blocktrans count charges=case.number_of_charges %}I confirm that I have read and understand the charge against me and that I am the person named in the Postal Requisition.{% plural %}I confirm that I have read and understand the charges against me and that I am the person named in the Postal Requisition.{% endblocktrans %} {% blocktrans %}The facts stated here are correct to the best of my knowledge.{% endblocktrans %}
+                    {% if notice_type.sjp %}
+                        {% blocktrans count charges=case.number_of_charges %}I confirm that I have read and understand the charge against me and that I am the person named in the Single Justice Procedure Notice.{% plural %}I confirm that I have read and understand the charges against me and that I am the person named in the Single Justice Procedure Notice.{% endblocktrans %}
+                    {% else %}
+                        {% blocktrans count charges=case.number_of_charges %}I confirm that I have read and understand the charge against me and that I am the person named in the Postal Requisition.{% plural %}I confirm that I have read and understand the charges against me and that I am the person named in the Postal Requisition.{% endblocktrans %}
+                    {% endif %}
                 {% elif case.plea_made_by == "Company representative" %}
-                    {% blocktrans count charges=case.number_of_charges %}I confirm that I have read and understand the charge and that I am a representative of the company named in the Postal Requisition and am legally entitled to enter a plea on its behalf.{% plural %}I confirm that I have read and understand the charges and that I am a representative of the company named in the Postal Requisition and am legally entitled to enter a plea on its behalf.{% endblocktrans %} {% blocktrans %}The facts stated here are correct to the best of my knowledge.{% endblocktrans %}
+                    {% if notice_type.sjp %}
+                        {% blocktrans count charges=case.number_of_charges %}I confirm that I have read and understand the charge and that I am a representative of the company named in the Single Justice Procedure Notice and am legally entitled to enter a plea on its behalf.{% plural %}I confirm that I have read and understand the charges and that I am a representative of the company named in the Single Justice Procedure Notice and am legally entitled to enter a plea on its behalf.{% endblocktrans %}
+                    {% else %}
+                        {% blocktrans count charges=case.number_of_charges %}I confirm that I have read and understand the charge and that I am a representative of the company named in the Postal Requisition and am legally entitled to enter a plea on its behalf.{% plural %}I confirm that I have read and understand the charges and that I am a representative of the company named in the Postal Requisition and am legally entitled to enter a plea on its behalf.{% endblocktrans %}
+                    {% endif %}
+
                 {% endif %}
+                {% blocktrans %}The facts stated here are correct to the best of my knowledge.{% endblocktrans %}
                 </span>
             </label>
         </div>
