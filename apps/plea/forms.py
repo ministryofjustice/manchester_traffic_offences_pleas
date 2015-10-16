@@ -726,7 +726,7 @@ class BasePleaForm(SplitStageForm):
                                                    max_length=100,
                                                    required=True,
                                                    label="",
-                                                   help_text=_("If yes, tell us the name of the witness (on the top left of the statement) and what you disagree with"),
+                                                   help_text=_("If yes, tell us which language (include sign language):"),
                                                    error_messages={"required": ERROR_MESSAGES["WITNESS_INTERPRETER_LANGUAGE_REQUIRED"]})
 
 class PleaForm(BasePleaForm):

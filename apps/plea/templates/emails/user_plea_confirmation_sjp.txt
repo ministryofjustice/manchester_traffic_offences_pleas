@@ -1,0 +1,50 @@
+{% load testing date i18n %}{% blocktrans %}GOV.UK - Online plea submission confirmation{% endblocktrans %}
+
+{% blocktrans count charges=number_of_charges %}Your online plea has been submitted{% plural %}Your online pleas have been submitted{% endblocktrans %}
+
+------
+{% if plea_made_by == "Defendant" %}{% if plea_type == "guilty" or plea_type == "mixed" %}
+- {% blocktrans count charges=number_of_charges %}we'll send you a letter with the magistrate's decision{% plural %}we'll send you a letter with the magistrate's decisions{% endblocktrans %}
+- {% blocktrans %}we'll tell you if you need to attend a trial and what evidence you may need to send to the court to support your case{% endblocktrans %}{% endif %}{% if plea_type == "not_guilty" %}
+- {% blocktrans %}we'll send you a letter with a hearing date for you to come to court for a trial{% endblocktrans %}{% endif %}{% endif %}{% if plea_made_by == "Company representative" %}{% if plea_type == "guilty" or plea_type == "mixed" %}
+- {% blocktrans count charges=number_of_charges %}we'll send a letter with the magistrate's decision{% plural %}we'll send a letter with the magistrate's decisions{% endblocktrans %}
+- {% blocktrans %}we'll tell you if a company representative needs to attend a trial and what evidence you may need to send to the court to support the case{% endblocktrans %}{% endif %}{% if plea_type == "not_guilty" %}
+- {% blocktrans %}we'll send you a letter with a hearing date for a company representative to attend a trial{% endblocktrans %}{% endif %}{% endif %}
+- {% blocktrans %}you can print a copy of this plea confirmation for your records{% endblocktrans %}
+
+{% if plea_made_by == "Defendant" %}{% blocktrans %}Do not send your driving licence to the court. The DVLA will contact you if they need you to send it to them.{% endblocktrans %}{% endif %}
+
+------
+
+{% blocktrans %}Need to change a plea?{% endblocktrans %}
+{% blocktrans with urn=urn|upper contact_deadline=contact_deadline|parse_date|date:"d/m/Y" %}Contact the court by post or email quoting your URN {{ urn }} to arrive before {{ contact_deadline }}.{% endblocktrans %}
+
+{% blocktrans %}The contact details for the court are:{% endblocktrans %}
+
+{% blocktrans %}By post:{% endblocktrans %}
+{{ court_address }}
+
+{% blocktrans %}By email:{% endblocktrans %}
+{{ court_email }}
+
+-------
+
+{% blocktrans %}We're constantly working to improve this service.{% endblocktrans %}
+
+{% blocktrans %}Please give us feedback so we can make it better:{% endblocktrans %}
+https://www.makeaplea.justice.gov.uk/feedback/
+
+-------
+
+{% blocktrans %}If you're unsure an email is from the Ministry of Justice:{% endblocktrans %}
+
+- {% blocktrans %}do not reply to it or click any links{% endblocktrans %}
+- {% blocktrans %}forward it to{% endblocktrans %} makeaplea@justice.gov.uk
+
+{% blocktrans %}Terms and Conditions and Privacy Policy:{% endblocktrans %}
+https://www.makeaplea.justice.gov.uk/terms-and-conditions-and-privacy-policy
+
+{% add_test_tag "<<SJP>>" %}
+{% if plea_type == "guilty" %}{% add_test_tag "<<GUILTY>>" %}{% endif %}
+{% if plea_type == "not_guilty" %}{% add_test_tag "<<NOTGUILTY>>" %}{% endif %}
+{% if plea_type == "mixed" %}{% add_test_tag "<<MIXED>>" %}{% endif %}
