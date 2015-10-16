@@ -78,7 +78,7 @@
                             </div>
                         </div>
 
-                        <div id="guilty_extra_conditional" data-conditional="come_to_court">
+                        <div id="guilty_extra_conditional">
                             {% std_field form.guilty_extra wide=True %}
                         </div>
 
@@ -147,11 +147,22 @@
 {% block javascripts %}
     {{ block.super }}
 
-{#     {% if notice_type.sjp %}
+    {% if notice_type.sjp %}
     <script type="text/javascript">
-    var $cond = $('#guilty_extra_conditional');
-    $cond.attr('conditional', 'sjp_interpreter_needed');
-    $cond.data('Conditional', new moj.Modules._Conditional($cond, $cond.data()));
+    $(function() {
+        $('#guilty_extra_conditional').data('conditional', 'come_to_court');
+        var $cond = new moj.Modules._Conditional($('#guilty_extra_conditional'));
+
+        $('[name=come_to_court]').on('change', function(){
+            if($(this).val() === "True") {
+                $('#guilty_extra_conditional').data('conditional', 'sjp_interpreter_needed');
+            }
+            else {
+                $('#guilty_extra_conditional').data('conditional', 'come_to_court');
+            }
+            $cond.refresh();
+        });
+    });
     </script>
-    {% endif %} #}
+    {% endif %}
 {% endblock javascripts %}
