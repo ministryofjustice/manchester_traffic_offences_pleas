@@ -49,9 +49,9 @@
 {% block stage_form %}
 
     {% if notice_type.sjp %}
-        <div class="with-image">
-            <img class="help-image" src="{% static "images/illustration-urn-and-date.png" %}" width="180" height="193" alt="{% blocktrans %}The location of the URN and Posting date on the notice we sent to you{% endblocktrans %}">
+        <img class="help-image" src="{% static "images/illustration-urn-and-date.png" %}" width="260" height="176" alt="{% blocktrans %}The location of the URN and Posting date on the notice we sent to you{% endblocktrans %}">
 
+        <div class="with-image">
             {% std_field form.urn %}
 
             {% multi_field form.posting_date %}
