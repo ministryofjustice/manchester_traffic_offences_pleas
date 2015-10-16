@@ -92,24 +92,29 @@ def test_template(request):
 
     Some parameters can be toggled in the query string:
     - template: complete|email_html|email_txt
+    - notice: map|sjp
     - plea_made_by: defendant|company
     - plea_type: guilty|not_guilty|mixed
     - number_of_charges: (int)
     """
 
-    options = {"template": {"complete": "complete.html",
-                            "email_html": "emails/user_plea_confirmation.html",
-                            "email_txt": "emails/user_plea_confirmation.txt"},
+    options = {"template": {"map": {"complete": "complete.html",
+                                    "email_html": "emails/user_plea_confirmation.html",
+                                    "email_txt": "emails/user_plea_confirmation.txt"},
+                            "sjp": {"complete": "complete_sjp.html",
+                                    "email_html": "emails/user_plea_confirmation_sjp.html",
+                                    "email_txt": "emails/user_plea_confirmation_sjp.txt"}},
                "plea_made_by": {"defendant": "Defendant",
                                 "company": "Company representative"}}
 
     # get query string params with some defaults
     template_name = request.GET.get("template", "complete")
+    notice = request.GET.get("notice", "map")
     plea_made_by = request.GET.get("plea_made_by", "defendant")
     plea_type = request.GET.get("plea_type", "guilty")
     number_of_charges = request.GET.get("number_of_charges", 1)
 
-    template = options["template"][template_name]
+    template = options["template"][notice][template_name]
 
     context = {"plea_type": plea_type}
 
