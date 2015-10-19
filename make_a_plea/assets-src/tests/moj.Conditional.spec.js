@@ -73,4 +73,10 @@ describe("moj.Conditional", function() {
     expect($('#target_1').prop('hidden')).toBe(true);
   });
 
+  it("should be able to refresh the trigger setting", function() {
+    $('#target_1').data('conditional', 'another_trigger_name');
+    subject.refresh();
+    expect(subject.$inputs.length).toBe(0);
+  });
+
 });
