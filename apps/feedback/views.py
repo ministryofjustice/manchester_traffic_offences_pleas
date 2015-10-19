@@ -21,7 +21,7 @@ class FeedbackForms(MultiStageForm):
 class FeedbackViews(StorageView):
 
     def get(self, request, stage=None):
-        storage = self._get_storage(request, "feedback_data")
+        storage = self.get_storage(request, "feedback_data")
 
         kw_args = {k: v for (k, v) in request.GET.items()}
         if request.GET.get("next"):
@@ -49,14 +49,14 @@ class FeedbackViews(StorageView):
 
         if stage == "complete":
             redirect_url = storage.get("feedback_redirect", "/")
-            self._clear_storage(request, "feedback_data")
+            self.clear_storage(request, "feedback_data")
             return HttpResponseRedirect(redirect_url)
 
         return form.render()
 
     @method_decorator(ratelimit(block=True, rate=settings.RATE_LIMIT))
     def post(self, request, stage):
-        storage = self._get_storage(request, "feedback_data")
+        storage = self.get_storage(request, "feedback_data")
 
         nxt = request.GET.get("next", None)
 

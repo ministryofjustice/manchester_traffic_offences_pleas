@@ -71,18 +71,32 @@ class PleaOnlineForms(MultiStageForm):
 
 
 class PleaOnlineViews(StorageView):
+    def __init__(self, *args, **kwargs):
+        super(PleaOnlineViews, self).__init__(*args, **kwargs)
+        self.index = None
+        self.storage = None
 
-    def get(self, request, stage=None, index=None):
-        if index is not None:
-            index = int(index)
+    def dispatch(self, request, *args, **kwargs):
+        # If the session has timed out, redirect to case
+        if not request.session.get("plea_data") and kwargs.get("stage") != "notice_type":
+            return HttpResponseRedirect(reverse_lazy("plea_form_step", args=("notice_type",)))
 
-        storage = self._get_storage(request, "plea_data")
+        # Store the index if we've got one
+        idx = kwargs.pop("index", None)
+        if idx is not None:
+            self.index = int(idx)
 
+        # Load storage
+        self.storage = self.get_storage(request, "plea_data")
+
+        return super(PleaOnlineViews, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, stage=None):
         if not stage:
             stage = PleaOnlineForms.stage_classes[0].name
             return HttpResponseRedirect(reverse_lazy("plea_form_step", args=(stage,)))
 
-        form = PleaOnlineForms(storage, stage, index)
+        form = PleaOnlineForms(self.storage, stage, self.index)
         case_redirect = form.load(RequestContext(request))
         if case_redirect:
             return case_redirect
@@ -90,20 +104,17 @@ class PleaOnlineViews(StorageView):
         form.process_messages(request)
 
         if stage == "complete":
-            self._clear_storage(request, "plea_data")
+            self.clear_storage(request, "plea_data")
 
         return form.render()
 
     @method_decorator(ratelimit(block=True, rate=settings.RATE_LIMIT))
-    def post(self, request, stage, index=None):
-        if index is not None:
-            index = int(index)
-        storage = self._get_storage(request, "plea_data")
-
+    def post(self, request, stage):
         nxt = request.GET.get("next", None)
 
-        form = PleaOnlineForms(storage, stage, index)
+        form = PleaOnlineForms(self.storage, stage, self.index)
         form.save(request.POST, RequestContext(request), nxt)
+
         if not form._urn_invalid:
             form.process_messages(request)
 
