@@ -2,66 +2,56 @@
 {% load date %}
 {% load testing %}
 
+<dl>
+{% if case.plea_made_by == "Defendant" %}
 
-    <tbody>
+    {% add_test_tag "<<SHOWYOURDETAILS>>" %}
 
-    {% if case.plea_made_by == "Defendant" %}
-        {% add_test_tag "<<SHOWYOURDETAILS>>" %}
-        <tr>
-            <th>{% blocktrans %}First name{% endblocktrans %}</th>
-            <td>{{ your_details.first_name }}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}Last name{% endblocktrans %}</th>
-            <td>{{ your_details.last_name }}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}Address{% endblocktrans %}</th>
-            <td>{% if your_details.correct_address %}{% blocktrans %}As printed on the notice{% endblocktrans %}{% else %}{{ your_details.updated_address|linebreaksbr }}{% endif %}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}Contact number{% endblocktrans %}</th>
-            <td>{{ your_details.contact_number }}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}Date of birth{% endblocktrans %}</th>
-            <td>{{ your_details.date_of_birth|parse_date|date:"d/m/Y" }}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}National Insurance number{% endblocktrans %}</th>
-            <td>{{ your_details.ni_number|default:"-" }}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}UK driving licence number{% endblocktrans %}</th>
-            <td>{{ your_details.driving_licence_number|default:"-" }}</td>
-        </tr>
-    {% elif case.plea_made_by == "Company representative" %}
-        {% add_test_tag "<<SHOWCOMPANYDETAILS>>" %}
-        <tr>
-            <th>{% blocktrans %}Company name{% endblocktrans %}</th>
-            <td>{{ company_details.company_name }}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}Company address{% endblocktrans %}</th>
-            <td>{% if company_details.correct_address %}{% blocktrans %}As printed on the notice{% endblocktrans %}{% else %}{{ company_details.updated_address|linebreaksbr }}{% endif %}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}First name{% endblocktrans %}</th>
-            <td>{{ company_details.first_name }}</td>
-        </tr>
+    <dt>{% blocktrans %}First name{% endblocktrans %}</dt>
+    <dd>{{ your_details.first_name }}</dd>
 
-        <tr>
-            <th>{% blocktrans %}Last name{% endblocktrans %}</th>
-            <td>{{ company_details.last_name }}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}Position held{% endblocktrans %}</th>
-            <td>{% trans company_details.position_in_company %}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}Contact number{% endblocktrans %}</th>
-            <td>{{ company_details.contact_number }}</td>
-        </tr>
-    {% endif %}
+    <dt>{% blocktrans %}Last name{% endblocktrans %}</dt>
+    <dd>{{ your_details.last_name }}</dd>
 
-    </tbody>
+    <dt>{% blocktrans %}Address{% endblocktrans %}</dt>
+    <dd>{% if your_details.correct_address %}{% blocktrans %}As printed on the notice{% endblocktrans %}{% else %}{{ your_details.updated_address|linebreaksbr }}{% endif %}</dd>
+
+    <dt>{% blocktrans %}Contact number{% endblocktrans %}</dt>
+    <dd>{{ your_details.contact_number }}</dd>
+
+    <dt>{% blocktrans %}Date of birth{% endblocktrans %}</dt>
+    <dd>{{ your_details.date_of_birth|parse_date|date:"d/m/Y" }}</dd>
+
+    <dt>{% blocktrans %}National Insurance number{% endblocktrans %}</dt>
+    <dd>{{ your_details.ni_number|default:"-" }}</dd>
+
+    <dt>{% blocktrans %}UK driving licence number{% endblocktrans %}</dt>
+    <dd>{{ your_details.driving_licence_number|default:"-" }}</dd>
+
+{% endif %}
+
+{% if case.plea_made_by == "Company representative" %}
+
+    {% add_test_tag "<<SHOWCOMPANYDETAILS>>" %}
+
+    <dt>{% blocktrans %}Company name{% endblocktrans %}</dt>
+    <dd>{{ company_details.company_name }}</dd>
+
+    <dt>{% blocktrans %}Company address{% endblocktrans %}</dt>
+    <dd>{% if company_details.correct_address %}{% blocktrans %}As printed on the notice{% endblocktrans %}{% else %}{{ company_details.updated_address|linebreaksbr }}{% endif %}</dd>
+
+    <dt>{% blocktrans %}First name{% endblocktrans %}</dt>
+    <dd>{{ company_details.first_name }}</dd>
+
+
+    <dt>{% blocktrans %}Last name{% endblocktrans %}</dt>
+    <dd>{{ company_details.last_name }}</dd>
+
+    <dt>{% blocktrans %}Position held{% endblocktrans %}</dt>
+    <dd>{% trans company_details.position_in_company %}</dd>
+
+    <dt>{% blocktrans %}Contact number{% endblocktrans %}</dt>
+    <dd>{{ company_details.contact_number }}</dd>
+
+{% endif %}
+</dl>

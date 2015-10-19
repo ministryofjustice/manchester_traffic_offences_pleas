@@ -114,70 +114,76 @@ Main styles
 }
 
 /*== Review screen ==========================================*/
-.review-table {
+.review-section {
+	@extend %contain-floats;
+
 	margin: 0 0 2em;
+	padding: 1em 0 0;
+	border: 1px solid $grey-2;
+	border-width: 1px 0 0;
 
-	thead {
-		th {
-			padding: 1.125em 0 0;
-			border: 1px solid $grey-2;
-			border-width: 1px 0 0;
+	> header {
 
-			h2 {
-				display: inline-block;
-				margin: 0 0 .25em;
-				@include bold-24();
-
-				@include ie-lte(7) {
-					float: left;
-				}
-			}
-		}
-	}
-
-	tbody {
-		th, td {
-			@include core-19;
-			vertical-align: top;
-			border-bottom: none;
-		}
-
-		th {
-			width: 45%;
-
-			@include media(tablet) {
-				width: 30%;
-			}
-		}
-	}
-
-	.change-link {
-		float: right;
-		margin: .1em 0 0 1em;
-		@include core-19;
-
-		@include media(tablet) {
-			margin-top: .2em;
-		}
-	}
-
-	.charge-heading {
-		padding: 1.25em 0 0;
-
+		h2,
 		h3 {
 			display: inline-block;
 			margin: 0 0 .25em;
-			@include bold-19();
+			@include bold-24();
 
 			@include ie-lte(7) {
 				float: left;
 			}
 		}
 
+		h3 {
+			@include bold-19();
+		}
+
 		.change-link {
-			margin-top: 0;
+			float: right;
+			margin: .1em 0 0 1em;
+			@include core-19;
+
+			@include media(tablet) {
+				margin-top: .2em;
+			}
 		}
 	}
+
+	dl {
+		margin: 0;
+	}
+
+	dt {
+		float: left;
+		clear: left;
+		width: 40%;
+		padding: .625em 5% .625em 0;
+	}
+
+	dd {
+		float: left;
+		width: 55%;
+		margin: 0;
+		padding: .625em 0 .625em;
+	}
+
+	@include media(tablet) {
+		dt {
+			width: 25%;
+		}
+
+		dd {
+			width: 70%;
+		}
+	}
+}
+
+.review-plea {
+	@extend .review-section;
+
+	margin-bottom: 1em;
+	border-width: 0;
 }
 
 #section_understand {

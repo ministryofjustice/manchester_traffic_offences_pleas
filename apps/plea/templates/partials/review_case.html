@@ -1,31 +1,23 @@
 {% load i18n %}
 {% load date testing %}
 
+<dl>
 
-    <tbody>
-        <tr>
-            <th>{% blocktrans %}Unique reference number{% endblocktrans %}</th>
-            <td>{{ case.urn }}</td>
-        </tr>
+    <dt>{% blocktrans %}Unique reference number{% endblocktrans %}</dt>
+    <dd>{{ case.urn }}</dd>
 
-        {% if notice_type.sjp %}
-        <tr>
-            <th>{% blocktrans %}Posting date{% endblocktrans %}</th>
-            <td>{{ case.posting_date|parse_date|date:"d/m/Y" }}</td>
-        </tr>
-        {% else %}
-        <tr>
-            <th>{% blocktrans %}Court hearing date{% endblocktrans %}</th>
-            <td>{{ case.date_of_hearing|parse_date|date:"d/m/Y" }}</td>
-        </tr>
-        {% endif %}
+{% if notice_type.sjp %}
+    <dt>{% blocktrans %}Posting date{% endblocktrans %}</dt>
+    <dd>{{ case.posting_date|parse_date|date:"d/m/Y" }}</dd>
+{% else %}
+    <dt>{% blocktrans %}Court hearing date{% endblocktrans %}</dt>
+    <dd>{{ case.date_of_hearing|parse_date|date:"d/m/Y" }}</dd>
+{% endif %}
 
-        <tr>
-            <th>{% blocktrans %}Number of charges{% endblocktrans %}</th>
-            <td>{{ case.number_of_charges }}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}Plea made by{% endblocktrans %}</th>
-            <td>{% if case.plea_made_by == "Defendant" %}{% blocktrans %}Person named on the notice{% endblocktrans %}{% else %}{% blocktrans %}Pleading on behalf of a company{% endblocktrans %}{% endif %}</td>
-        </tr>
-    </tbody>
+    <dt>{% blocktrans %}Number of charges{% endblocktrans %}</dt>
+    <dd>{{ case.number_of_charges }}</dd>
+
+    <dt>{% blocktrans %}Plea made by{% endblocktrans %}</dt>
+    <dd>{% if case.plea_made_by == "Defendant" %}{% blocktrans %}Person named on the notice{% endblocktrans %}{% else %}{% blocktrans %}Pleading on behalf of a company{% endblocktrans %}{% endif %}</dd>
+
+</dl>
