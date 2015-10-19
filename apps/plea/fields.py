@@ -13,6 +13,7 @@ ERROR_MESSAGES = {
     "POSTING_DATE_REQUIRED": _("Provide a posting date"),
     "POSTING_DATE_INVALID": _("The posting date isn't a valid format"),
     "POSTING_DATE_IN_FUTURE": _("The posting date must be before today"),
+    "POSTING_DATE_INCORRECT": _("Enter the correct posting date"),
     "NUMBER_OF_CHARGES_REQUIRED": _("Select the number of charges against you"),
     "PLEA_MADE_BY_REQUIRED": _("You must tell us if you are the person named in the notice or pleading on behalf of a company"),
     "FIRST_NAME_REQUIRED": _("Enter your first name"),
