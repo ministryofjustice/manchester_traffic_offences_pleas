@@ -31,6 +31,11 @@
       this.bindEvents();
     },
 
+    refresh: function() {
+      this.cacheElements(this.$conditional);
+      this.bindEvents();
+    },
+
     cacheElements: function($el) {
       this.$conditional = $el;
       this.$inputs = $('[name="' + $el.data('conditional') + '"]');

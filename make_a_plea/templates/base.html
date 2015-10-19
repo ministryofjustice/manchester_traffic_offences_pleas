@@ -120,11 +120,14 @@
 
     ga('create', '{{ google_analytics_id }}', {'cookieDomain': 'none'});
     ga('require', 'linkid', 'linkid.js');
-    //ga('set', 'appVersion', '{{ version|join:"." }}');
 
     {% if case.urn %}
     ga('set', '&uid', '{{case.urn}}');
     {% endif %}
+
+    ga('set', 'dimension1', '{{ LANGUAGE_CODE }}');
+
+    {% block extra_analytics %}{% endblock extra_analytics %}
 
     ga('send', 'pageview');
     </script>

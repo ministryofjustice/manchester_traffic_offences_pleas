@@ -77,7 +77,7 @@ class CaseForm(BaseCaseForm):
                                       error_messages={"required": ERROR_MESSAGES["HEARING_DATE_REQUIRED"],
                                                       "invalid": ERROR_MESSAGES["HEARING_DATE_INVALID"],
                                                       "is_date_in_future": ERROR_MESSAGES["HEARING_DATE_PASSED"],
-                                                      "is_date_within_range": ERROR_MESSAGES["HEARING_DATE_INCORRECT"]})
+                                                      "is_date_in_next_6_months": ERROR_MESSAGES["HEARING_DATE_INCORRECT"]})
 
     def __init__(self, *args, **kwargs):
         super(CaseForm, self).__init__(*args, **kwargs)
@@ -93,7 +93,8 @@ class SJPCaseForm(BaseCaseForm):
                                    help_text=_("On page 1 of the notice, near the top. <br>For example, 30/07/2014"),
                                    error_messages={"required": ERROR_MESSAGES["POSTING_DATE_REQUIRED"],
                                                    "invalid": ERROR_MESSAGES["POSTING_DATE_INVALID"],
-                                                   "is_date_in_past": ERROR_MESSAGES["POSTING_DATE_IN_FUTURE"]})
+                                                   "is_date_in_past": ERROR_MESSAGES["POSTING_DATE_IN_FUTURE"],
+                                                   "is_date_in_last_28_days": ERROR_MESSAGES["POSTING_DATE_INCORRECT"]})
 
     def __init__(self, *args, **kwargs):
         super(SJPCaseForm, self).__init__(*args, **kwargs)
@@ -726,7 +727,7 @@ class BasePleaForm(SplitStageForm):
                                                    max_length=100,
                                                    required=True,
                                                    label="",
-                                                   help_text=_("If yes, tell us the name of the witness (on the top left of the statement) and what you disagree with"),
+                                                   help_text=_("If yes, tell us which language (include sign language):"),
                                                    error_messages={"required": ERROR_MESSAGES["WITNESS_INTERPRETER_LANGUAGE_REQUIRED"]})
 
 class PleaForm(BasePleaForm):
