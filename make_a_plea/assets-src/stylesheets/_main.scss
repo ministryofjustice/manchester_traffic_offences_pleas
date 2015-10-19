@@ -30,28 +30,24 @@ Main styles
 	}
 }
 
-.with-image {
+.help-image {
+	display: none;
 
+	@include media(tablet) {
+		display: block;
+		float: right;
+	}
+}
+
+.with-image {
 	.form-group {
 		&:after {
 			content: none;
 		}
 	}
 
-	.help-image {
-		display: none;
-	}
-
-	@include media($min-width: 768px) {
-		.help-image {
-			display: block;
-			float: right;
-			width: 180px;
-		}
-
-		.form-group {
-			margin-right: 200px;
-		}
+	@include media(tablet) {
+		margin-right: 300px;
 	}
 }
 
