@@ -1,169 +1,115 @@
+{% extends "base_email_attachment.html" %}
+
 {% load i18n %}
-<!doctype html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Online plea{% if notice_type.sjp %} - SJP{% endif %}</title>
-    <style>
-        body, td {
-            font-family: nta, Arial, sans-serif;
-        }
-        td {vertical-align: top;}
-        th {
-            width: 20%;
-            text-align: left;
-            font-weight:bold;
-            padding-right:20px;
-            vertical-align: top;
-        }
-        td.heading h2 {
-            padding-top: 20px;
-            border-bottom: solid 1px black;
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
 
-<body>
+{% block email_title %}Online plea{% if notice_type.sjp %} - SJP{% endif %}{% endblock email_title %}
 
+{% block email_content %}
     <h1>Online plea{% if notice_type.sjp %} - SJP{% endif %}</h1>
 
-    <table class="review-table" id="case-details">
-    <thead>
-        <tr>
-            <th colspan="2">
-                <h2>{% blocktrans %}Case details{% endblocktrans %}</h2>
-            </th>
-        </tr>
-    </thead>
-    {% include "partials/review_case.html" %}
-    </table>
+    <section id="case-details">
+        <header>
+            <h2>{% blocktrans %}Case details{% endblocktrans %}</h2>
+        </header>
 
-    <table class="review-table" id="your-details">
-    <thead>
-        <tr>
-            <th colspan="2">
+        {% include "partials/review_case.html" %}
+    </section>
+
+    <section id="your-details">
+        <header>
             {% if case.plea_made_by == "Defendant" %}
-                <h2>{% blocktrans %}Your details{% endblocktrans %}</h2>
+            <h2>{% blocktrans %}Your details{% endblocktrans %}</h2>
             {% elif case.plea_made_by == "Company representative" %}
-                <h2>{% blocktrans %}Company representative details{% endblocktrans %}</h2>
+            <h2>{% blocktrans %}Company representative details{% endblocktrans %}</h2>
             {% endif %}
-            </th>
-        </tr>
-    </thead>
-    {% include "partials/review_details.html" %}
-    </table>
+        </header>
 
-    <table class="review-table" id="your-plea">
-    <thead>
-        <tr>
-            <th colspan="2">
-                {% if case.plea_made_by == "Defendant" %}
-                <h2>{% blocktrans count charges=case.number_of_charges %}Your plea{% plural %}Your pleas{% endblocktrans %}</h2>
-                {% elif case.plea_made_by == "Company representative" %}
-                <h2>{% blocktrans count charges=case.number_of_charges %}Company's plea{% plural %}Company's pleas{% endblocktrans %}</h2>
-                {% endif %}
-            </th>
-        </tr>
-    </thead>
-    {% include "partials/review_plea.html" %}
-    </table>
+        {% include "partials/review_details.html" %}
+    </section>
+
+    <section id="your-plea">
+        <header>
+            {% if case.plea_made_by == "Defendant" %}
+            <h2>{% blocktrans count charges=case.number_of_charges %}Your plea{% plural %}Your pleas{% endblocktrans %}</h2>
+            {% elif case.plea_made_by == "Company representative" %}
+            <h2>{% blocktrans count charges=case.number_of_charges %}Company's plea{% plural %}Company's pleas{% endblocktrans %}</h2>
+            {% endif %}
+        </header>
+
+        {% include "partials/review_plea.html" %}
+    </section>
 
     {% if case.plea_made_by == "Defendant" %}
         {% if your_finances.skipped %}
-        <table class="review-table" id="your-finances">
-            <thead>
-            <tr>
-                <th colspan="2">
-                    <h2>{% blocktrans %}Your finances{% endblocktrans %}</h2>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th>Status</th>
-                <td><i>Not completed/provided Financial details must be collected at hearing</i></td>
-            </tr>
-            </tbody>
-        </table>
+    <section id="your-finances">
+        <header>
+            <h2>{% blocktrans %}Your finances{% endblocktrans %}</h2>
+        </header>
+
+        <dl>
+            <dt>Status</dt>
+            <dd><i>Not completed/provided Financial details must be collected at hearing</i></dd>
+        </dl>
+    </section>
+
         {% else %}
 
-        <table class="review-table" id="your-finances">
-            <thead>
-            <tr>
-                <th colspan="2">
-                    <h2>{% blocktrans %}Your finances{% endblocktrans %}</h2>
-                </th>
-            </tr>
-            </thead>
-            {% include "partials/review_finances.html" %}
-        </table>
+    <section id="your-finances">
+        <header>
+            <h2>{% blocktrans %}Your finances{% endblocktrans %}</h2>
+        </header>
+
+        {% include "partials/review_finances.html" %}
+    </section>
 
             {% if your_finances.hardship %}
-                <table class="review-table" id="your-expenses">
-                    <thead>
-                    <tr>
-                        <th colspan="2">
-                            <h2>{% blocktrans %}Your expenses{% endblocktrans %}</h2>
-                        </th>
-                    </tr>
-                    </thead>
-                    {% include "partials/review_expenses.html" %}
-                    </table>
+    <section id="your-expenses">
+        <header>
+            <h2>{% blocktrans %}Your expenses{% endblocktrans %}</h2>
+        </header>
+
+        {% include "partials/review_expenses.html" %}
+    </section>
             {% endif %}
 
         {% endif %}
-    {% elif case.plea_made_by == "Company representative" %}
-        {% if not company_finances.skipped %}
-            <table class="review-table" id="company-details">
-                <thead>
-                <tr>
-                    <th colspan="2">
-                        <h2>{% blocktrans %}Company financial details{% endblocktrans %}</h2>
-                    </th>
-                </tr>
-                </thead>
-                {% include "partials/review_company_finances.html" %}
-                </table>
-        {% endif %}
     {% endif %}
 
-    <table class="review-table" id="confirmation">
-        <thead>
-        <tr>
-            <th colspan="2">
-                <h2>Confirmation</h2>
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th>Email updates</th>
-                <td>{{ review.receive_email_updates|yesno:"Yes,No" }}</td>
-            </tr>
-            <tr>
-                <th>Email address</th>
-                <td>{{ review.email|default:"-" }}</td>
-            </tr>
-        </tbody>
-    </table>
+    {% if case.plea_made_by == "Company representative" and not company_finances.skipped %}
+    <section id="company-details">
+        <header>
+            <h2>{% blocktrans %}Company financial details{% endblocktrans %}</h2>
+        </header>
+
+        {% include "partials/review_company_finances.html" %}
+    </section>
+    {% endif %}
+
+    <section id="confirmation">
+        <header>
+            <h2>Confirmation</h2>
+        </header>
+
+        <dl>
+            <dt>Email updates</dt>
+            <dd>{{ review.receive_email_updates|yesno:"Yes,No" }}</dd>
+
+            <dt>Email address</dt>
+            <dd>{{ review.email|default:"-" }}</dd>
+        </dl>
+    </section>
 
     {% if welsh_language %}
-    <table class="review-table" id="welsh_language">
-    <thead>
-        <tr>
-            <th colspan="2">
-                <h2>Plea language</h2>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th>Welsh language</th>
-            <td>Yes</td>
-        </tr>
-    </tbody>
-    </table>
+    <section id="welsh_language">
+        <header>
+            <h2>Plea language</h2>
+        </header>
+
+        <dl>
+            <dt>Welsh language</dt>
+            <dd>Yes</dd>
+        </dl>
+    </section>
     {% endif %}
-</body>
-</html>
+
+{% endblock email_content %}

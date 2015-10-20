@@ -11,7 +11,13 @@
     <dt>{% blocktrans %}Number of employees{% endblocktrans %}</dt>
     <dd>{{ company_finances.number_of_employees|intcomma }}</dd>
 
+</dl>
+
+<header>
     <h3>{% if company_finances.trading_period %}{% blocktrans %}From the most recent audited company accounts{% endblocktrans %}{% else %}{% blocktrans %}From the first 12 months' trading projections{% endblocktrans %}{% endif %}</h3>
+</header>
+
+<dl>
 
     <dt>{% blocktrans %}Gross turnover{% endblocktrans %}</dt>
     <dd>£{{ company_finances.gross_turnover|intcomma }}</dd>
