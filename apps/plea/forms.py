@@ -691,7 +691,7 @@ class BasePleaForm(SplitStageForm):
 
     disagree_with_evidence = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                     required=True,
-                                                    choices=YESNO_CHOICES["Oes/Nac oes"],
+                                                    choices=YESNO_CHOICES["Ydw/Nac ydw"],
                                                     coerce=to_bool,
                                                     label=_("Do you disagree with any evidence from a witness statement in the notice we sent to you?"),
                                                     error_messages={"required": ERROR_MESSAGES["DISAGREE_WITH_EVIDENCE_REQUIRED"]})
@@ -704,7 +704,7 @@ class BasePleaForm(SplitStageForm):
 
     witness_needed = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             required=True,
-                                            choices=YESNO_CHOICES["Oes/Nac oes"],
+                                            choices=YESNO_CHOICES["Hoffwn/Na hoffwn"],
                                             coerce=to_bool,
                                             label=_("Do you want to call a defence witness?"),
                                             help_text=_("Someone who can give evidence in court supporting your case."),
@@ -762,7 +762,7 @@ class SJPPleaForm(BasePleaForm):
 
     come_to_court = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                            required=True,
-                                           choices=YESNO_CHOICES["Oes/Nac oes"],
+                                           choices=YESNO_CHOICES["Hoffwn/Na hoffwn"],
                                            coerce=to_bool,
                                            label=_("Do you want to come to court to plead guilty?"),
                                            error_messages={"required": ERROR_MESSAGES["COME_TO_COURT_REQUIRED"]})
