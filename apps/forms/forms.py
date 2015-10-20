@@ -12,7 +12,9 @@ YESNO_CHOICES = {
     "Byddai/Na fyddai": ((True, _("Yes (v4)")),
                          (False, _("No (v4)"))),
     "Do/Naddo": ((True, _("Yes (v5)")),
-                 (False, _("No (v5)")))
+                 (False, _("No (v5)"))),
+    "Hoffwn/Na hoffwn": ((True, _("Yes (v6)")),
+                         (False, _("No (v6)")))
 }
 
 to_bool = lambda x: x == "True"
