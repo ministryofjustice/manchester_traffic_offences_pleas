@@ -28,7 +28,7 @@ BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1',
 
 INSTALLED_APPS += ('raven.contrib.django.raven_compat', )
 
-ALLOWED_HOSTS = ["www.makeaplea.justice.gov.uk", ]
+ALLOWED_HOSTS = ["www.makeaplea.justice.gov.uk", "www.service.justice.gov.uk" ]
 
 # Enable CachedStaticFilesStorage for cache-busting assets
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
