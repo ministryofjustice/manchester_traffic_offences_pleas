@@ -3,24 +3,26 @@
 {% load testing %}
 
 {% add_test_tag "<<SHOWCOMPANYFINANCES>>" %}
-    <tbody>
-        <tr>
-            <th>{% blocktrans %}Trading for more than 12 months{% endblocktrans %}</th>
-            <td>{{ company_finances.trading_period|yesno:_("Yes,No (v1)") }}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}Number of employees{% endblocktrans %}</th>
-            <td>{{ company_finances.number_of_employees|intcomma }}</td>
-        </tr>
-        <tr>
-            <td colspan="2"><h3>{% if company_finances.trading_period %}{% blocktrans %}From the most recent audited company accounts{% endblocktrans %}{% else %}{% blocktrans %}From the first 12 months' trading projections{% endblocktrans %}{% endif %}</h3></td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}Gross turnover{% endblocktrans %}</th>
-            <td>£{{ company_finances.gross_turnover|intcomma }}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}Net turnover{% endblocktrans %}</th>
-            <td>£{{ company_finances.net_turnover|intcomma }}</td>
-        </tr>
-    </tbody>
+<dl>
+
+    <dt>{% blocktrans %}Trading for more than 12 months{% endblocktrans %}</dt>
+    <dd>{{ company_finances.trading_period|yesno:_("Yes,No (v1)") }}</dd>
+
+    <dt>{% blocktrans %}Number of employees{% endblocktrans %}</dt>
+    <dd>{{ company_finances.number_of_employees|intcomma }}</dd>
+
+</dl>
+
+<header>
+    <h3>{% if company_finances.trading_period %}{% blocktrans %}From the most recent audited company accounts{% endblocktrans %}{% else %}{% blocktrans %}From the first 12 months' trading projections{% endblocktrans %}{% endif %}</h3>
+</header>
+
+<dl>
+
+    <dt>{% blocktrans %}Gross turnover{% endblocktrans %}</dt>
+    <dd>£{{ company_finances.gross_turnover|intcomma }}</dd>
+
+    <dt>{% blocktrans %}Net turnover{% endblocktrans %}</dt>
+    <dd>£{{ company_finances.net_turnover|intcomma }}</dd>
+
+</dl>

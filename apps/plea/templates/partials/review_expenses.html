@@ -3,27 +3,21 @@
 {% load humanize %}
 
 {% add_test_tag "<<SHOWINGEXPENSES>>" %}
+<dl>
 
+    <dt>{% blocktrans %}Financial hardship details{% endblocktrans %}</dt>
+    <dd>{{ hardship.hardship_details|linebreaksbr }}</dd>
 
-    <tbody>
-        <tr>
-            <th>{% blocktrans %}Financial hardship details{% endblocktrans %}</th>
-            <td>{{ hardship.hardship_details|linebreaksbr }}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}Other contributors to household bills{% endblocktrans %}</th>
-            <td>{{ household_expenses.other_bill_payers|yesno:_("Yes,No (v3)") }}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}Total household expenses{% endblocktrans %}</th>
-            <td>£{{ your_expenses.total_household_expenses|floatformat:2|intcomma }}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}Total other expenses{% endblocktrans %}</th>
-            <td>£{{ your_expenses.total_other_expenses|floatformat:2|intcomma }}</td>
-        </tr>
-        <tr>
-            <th>{% blocktrans %}Total expenses{% endblocktrans %}</th>
-            <td>£{{ your_expenses.total_expenses|floatformat:2|intcomma }}</td>
-        </tr>
-    </tbody>
+    <dt>{% blocktrans %}Other contributors to household bills{% endblocktrans %}</dt>
+    <dd>{{ household_expenses.other_bill_payers|yesno:_("Yes,No (v3)") }}</dd>
+
+    <dt>{% blocktrans %}Total household expenses{% endblocktrans %}</dt>
+    <dd>£{{ your_expenses.total_household_expenses|floatformat:2|intcomma }}</dd>
+
+    <dt>{% blocktrans %}Total other expenses{% endblocktrans %}</dt>
+    <dd>£{{ your_expenses.total_other_expenses|floatformat:2|intcomma }}</dd>
+
+    <dt>{% blocktrans %}Total expenses{% endblocktrans %}</dt>
+    <dd>£{{ your_expenses.total_expenses|floatformat:2|intcomma }}</dd>
+
+</dl>
