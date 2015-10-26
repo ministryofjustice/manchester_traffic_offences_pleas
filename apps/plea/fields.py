@@ -55,7 +55,7 @@ ERROR_MESSAGES = {
     "HARDSHIP_REQUIRED": _("Tell us if paying a fine would cause you serious financial problems"),
     "UNDERSTAND_REQUIRED": _("You must confirm that you have read and understand the important information"),
     "OTHER_INFO_REQUIRED": _("Tell us how you earn your money"),
-    "HARDSHIP_DETAILS_REQUIRED": _("You must tell us why paying a fine will cause you serious financial problems"),
+    "HARDSHIP_DETAILS_REQUIRED": _("You must tell us why you think you should be allowed to pay your fine in instalments"),
     "OTHER_BILL_PAYERS_REQUIRED": _("You must tell us if anyone else contributes to your household bills"),
     "HOUSEHOLD_ACCOMMODATION_REQUIRED": _("Accommodation is a required field"),
     "HOUSEHOLD_ACCOMMODATION_INVALID": _("Accommodation must be a number"),
