@@ -1,0 +1,93 @@
+{% load i18n %}
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{% block email_title %}{% endblock email_title %}</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: nta, Arial, sans-serif;
+            font-size: 19px;
+        }
+
+        hr.end {
+            clear: both;
+            height: 0;
+            margin: 0 0 4em;
+            border: 0px solid #fff;
+            border-width: 0;
+        }
+
+        h1,
+        h2,
+        h3 {
+            clear: both;
+            margin: 0;
+            padding: .5em 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 36px;
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+
+        h3 {
+            font-size: 20px;
+        }
+
+        section {
+            clear: both;
+        }
+
+        header {
+            clear: both;
+            padding: 1em 0 0;
+        }
+
+        dl {
+            margin: 0;
+        }
+
+        dt {
+            float: left;
+            clear: both;
+            width: 25%;
+            padding: .5em 5% .5em 0;
+            border-top: 1px solid #ccc;
+        }
+
+        dd {
+            float: left;
+            width: 70%;
+            padding: .5em 0;
+            margin: 0;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+
+    <!--[if lt IE 8]>
+    <style type="text/css">
+        dd {
+            float: none;
+            width: 69%;
+            padding: .5em 0;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+    <![endif]-->
+</head>
+
+<body>
+
+{% block email_content %}{% endblock email_content %}
+
+<hr class="end">
+
+</body>
+</html>

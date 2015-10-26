@@ -139,3 +139,41 @@ def test_template(request):
 
     response = render(request, template, context, content_type=content_type)
     return response
+
+@waffle_switch("test_template")
+def test_email_attachment(request):
+    template = "emails/attachments/plea_email.html"
+    context = {"notice_type": {"sjp": False},
+               "case": {"urn": "51/AA/0000000/15",
+                        "date_of_hearing": "2015-10-20",
+                        "contact_deadline": "2015-10-20",
+                        "number_of_charges": 2,
+                        "plea_made_by": "Company representative"},
+               "your_details": {"updated_address": "Some place",
+                                "first_name": "John",
+                                "last_name": "Smith",
+                                "contact_number": "07000000000",
+                                "date_of_birth": "1970-01-01"},
+               "company_details": {"company_name": "Some company Plc",
+                                   "updated_address": "Some place plc\nNew Street\nNew Town\nTE57ER",
+                                   "first_name": "John",
+                                   "last_name": "Smith",
+                                   "position_in_company": "a director",
+                                   "contact_number": "0800 SOMECOMPANY"},
+               "plea": {"data": [{"guilty": "guilty", "guilty_extra": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum, totam."},
+                                 {"guilty": "not_guilty",
+                                  "not_guilty_extra": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis pariatur ab, fugit.",
+                                  "interpreter_needed": True,
+                                  "interpreter_language": "French"}]},
+               "your_finances": {},
+               "company_finances": {"trading_period": True,
+                                    "number_of_employees": "9000",
+                                    "gross_turnover": "120000",
+                                    "net_turnover": "9999"},
+               "review": {"receive_email_updates": True,
+                          "email": "test@test.com",
+                          "understand": True},
+               "welsh_language": True}
+
+    response = render(request, template, context)
+    return response
