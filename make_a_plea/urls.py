@@ -30,5 +30,6 @@ urlpatterns = patterns(
     url(r"^session-timeout/$", TemplateView.as_view(template_name="session_timeout.html"), name="session_timeout"),
     url(r"^", include("apps.monitoring.urls")),
     url(r"^test-template/$", views.test_template, name="test_template"),
+    url(r"^test-email-attachment/$", views.test_email_attachment, name="test_email_attachment"),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
