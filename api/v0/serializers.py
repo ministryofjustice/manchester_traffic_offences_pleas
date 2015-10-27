@@ -4,7 +4,6 @@ from apps.plea.models import Case, UsageStats, Offence
 
 
 class OffenceSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Offence
         exclude = ("case",)
@@ -18,7 +17,7 @@ class CaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Case
         fields = ("offences", "urn", "title", "name", "forenames", "surname",
-                  "case_number")
+                  "case_number", "initiation_type", "language5")
 
     def create(self, validated_data):
 
