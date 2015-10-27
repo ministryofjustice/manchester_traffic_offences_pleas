@@ -1,16 +1,11 @@
-from importlib import import_module
-
-from django.conf import settings
 from django.test import TestCase
-from django.test.client import Client, RequestFactory
+from django.test.client import RequestFactory
 from django.template.context import RequestContext
-from django.utils.translation import activate
 
 from mock import Mock
-from waffle.models import Switch
 
 from ..views import PleaOnlineForms
-from ..models import CourtEmailCount, Court
+from ..models import CourtEmailCount, Court, Case
 
 
 class TestMultiPleaFormBase(TestCase):
@@ -40,64 +35,13 @@ class TestMultiPleaFormBase(TestCase):
         return request
 
 
-class TestLanguageSwitcher(TestCase):
-    def setUp(self):
-        self.client = Client()
-        # http://code.djangoproject.com/ticket/10899
-        settings.SESSION_ENGINE = 'django.contrib.sessions.backends.file'
-        engine = import_module(settings.SESSION_ENGINE)
-        store = engine.SessionStore()
-        store.save()
-        self.session = store
-        self.client.cookies[settings.SESSION_COOKIE_NAME] = store.session_key
-
-    def test_language_switcher_waffle_switch_off(self):
-        response = self.client.get("/")
-
-        self.assertNotContains(response, '<nav class="language-switcher">')
-
-    def test_language_switcher_waffle_switch_on(self):
-        Switch.objects.create(name="show_language_switcher", active=True)
-
-        response = self.client.get("/")
-
-        self.assertContains(response, '<nav class="language-switcher">')
-
-    def test_language_switcher_lang_cy(self):
-        Switch.objects.create(name="show_language_switcher", active=True)
-
-        response = self.client.get("/change-language/?lang=cy")
-        response = self.client.get("/")
-
-        self.assertContains(response, 'hreflang="en" lang="en"')
-        self.assertNotContains(response, 'hreflang="cy" lang="cy"')
-
-    def test_language_switcher_lang_en(self):
-        Switch.objects.create(name="show_language_switcher", active=True)
-        
-        response = self.client.get("/change-language/?lang=en")
-        response = self.client.get("/")
-
-        self.assertContains(response, 'hreflang="cy" lang="cy"')
-        self.assertNotContains(response, 'hreflang="en" lang="en"')
-
-
-class TestLanguage(TestMultiPleaFormBase):
+class TestSJP(TestMultiPleaFormBase):
     def setUp(self):
         self.create_court()
-        self.client = Client()
-        # http://code.djangoproject.com/ticket/10899
-        settings.SESSION_ENGINE = 'django.contrib.sessions.backends.file'
-        engine = import_module(settings.SESSION_ENGINE)
-        store = engine.SessionStore()
-        store.save()
-        self.session = store
-        self.client.cookies[settings.SESSION_COOKIE_NAME] = store.session_key
-
-        self.session["plea_data"] = {
+        self.session = {
             "notice_type": {
                 "complete": True,
-                "sjp": False
+                "sjp": True
             },
             "case": {
                 "complete": True,
@@ -156,13 +100,11 @@ class TestLanguage(TestMultiPleaFormBase):
             },
         }
 
-    def test_cy_stored_in_stats(self):
-        activate("cy-GB")
-
+    def test_sjp_field_true(self):
         fake_request = self.get_request_mock("/plea/review")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms(self.session["plea_data"], "review")
+        form = PleaOnlineForms(self.session, "review")
         form.save({"receive_email_updates": True,
                    "email": "test@test.com",
                    "understand": True},
@@ -170,16 +112,21 @@ class TestLanguage(TestMultiPleaFormBase):
         response = form.render()
         self.assertEqual(response.status_code, 302)
 
+        # Check SJP is in the count table
         c = list(CourtEmailCount.objects.all())
-        self.assertEqual(c[0].language, "cy")
+        self.assertEqual(c[0].initiation_type, "J")
 
-    def test_en_stored_in_stats(self):
-        activate("en-GB")
+        # Check SJP is in the case table
+        c = list(Case.objects.all())
+        self.assertEqual(c[0].initiation_type, "J")
 
+    def test_sjp_field_false(self):
         fake_request = self.get_request_mock("/plea/review")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms(self.session["plea_data"], "review")
+        self.session.update({"notice_type": {"sjp": False}})
+
+        form = PleaOnlineForms(self.session, "review")
         form.save({"receive_email_updates": True,
                    "email": "test@test.com",
                    "understand": True},
@@ -187,5 +134,10 @@ class TestLanguage(TestMultiPleaFormBase):
         response = form.render()
         self.assertEqual(response.status_code, 302)
 
+        # Check SJP is in the count table
         c = list(CourtEmailCount.objects.all())
-        self.assertEqual(c[0].language, "en")
+        self.assertEqual(c[0].initiation_type, "C")
+
+        # Check SJP is in the count table
+        c = list(Case.objects.all())
+        self.assertEqual(c[0].initiation_type, "C")
