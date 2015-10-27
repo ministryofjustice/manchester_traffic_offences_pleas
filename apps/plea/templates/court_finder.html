@@ -11,11 +11,10 @@
 
     <header class="content-header">
         <h1>{% blocktrans %}Your court{% endblocktrans %}</h1>
+        <p>{% blocktrans %}You can contact the court by post or email quoting your URN before the date of your hearing.{% endblocktrans %}</p>
     </header>
 
     <article>
-
-        <p>{% blocktrans %}You can contact the court by post or email quoting your URN before the date of your hearing.{% endblocktrans %}</p>
 
         {% if court.court_address %}
         <h3 class="heading-small">{% blocktrans %}By post:{% endblocktrans %}</h3>
@@ -39,7 +38,7 @@
 
         {% if submitted and not court %}
         <section class="error-summary" role="alert">
-            <h2>{% blocktrans %}We can't find your court{% endblocktrans %}</h2>
+            <h1 class="heading-medium">{% blocktrans %}We can't find your court{% endblocktrans %}</h1>
             <p>{% blocktrans %}You'll find contact details for the court considering your case in the notice we sent you.{% endblocktrans %}</p>
         </section>
         {% endif %}
@@ -66,8 +65,8 @@
         {% endif %}
 
         <header class="content-header">
-            <h1>{% blocktrans %}Your court{% endblocktrans %}</h1>
-            <p>{% blocktrans %}To find contact details for the court considering your case, enter your unique reference number (URN).{% endblocktrans %}</p>
+            <h1>{% blocktrans %}Questions about your case{% endblocktrans %}</h1>
+            <p>{% blocktrans %}If you have questions about your case and want to contact the court considering your case, enter your unique reference number (URN).{% endblocktrans %}</p>
         </header>
 
         {% std_field form.urn %}
