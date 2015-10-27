@@ -48,6 +48,13 @@ def is_urn_valid(urn):
     urn = slashify_urn(standardise_urn(urn))
     pattern = r"[0-9]{2}/[a-zA-Z]{2}/(?:[0-9]{5}|[0-9]{7})/[0-9]{2}"
 
+    """
+    The validation of URN format and whether URN belongs to a court should really
+    be separate. However, supplying separate messages for these 2 validation errors
+    could be seen as opening a backdoor for users to try and 'guess' valid URNs.
+
+    This should be reviewed when DX data comes into play.
+    """
     if not re.match(pattern, urn) or not Court.objects.has_court(urn):
         raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
 

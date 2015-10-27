@@ -3,10 +3,17 @@
 {% load i18n %}
 {% load form_widgets %}
 
+
+
 {% block page_title %}{% blocktrans %}Your feedback{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 {% block stage_header %}
+    {% url "court_finder" as court_finder_url %}
+
     <h1>{% blocktrans %}Your feedback{% endblocktrans %}</h1>
+
+    <p>{% blocktrans %}This is your opportunity to tell us your views about using this online plea service.{% endblocktrans %}<br/>
+        {% blocktrans %}If you have questions about your case, you'll need to contact your court using our <a href="{{ court_finder_url }}">court finder service</a>.{% endblocktrans %}</p>
 {% endblock stage_header %}
 
 {% block stage_form %}
