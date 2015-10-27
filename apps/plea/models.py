@@ -4,6 +4,7 @@ import datetime as dt
 
 from django.db import models
 from django.db.models import Sum, Count, F
+from django.utils.translation import get_language
 
 
 STATUS_CHOICES = (("created_not_sent", "Created but not sent"),
@@ -11,6 +12,18 @@ STATUS_CHOICES = (("created_not_sent", "Created but not sent"),
                   ("network_error", "Network error"),
                   ("receipt_success", "Processed successfully"),
                   ("receipt_failure", "Processing failed"))
+
+
+COURT_LANGUAGE_CHOICES = (("en", "English"),
+                          ("cy", "Welsh"))
+
+
+INITIATION_TYPE_CHOICES = (("C", "Charge"),
+                           ("J", "SJP"),
+                           ("Q", "Requisition"),
+                           ("O", "Other"),
+                           ("R", "Remitted"),
+                           ("S", "Summons"))
 
 
 class CourtEmailCountManager(models.Manager):
@@ -131,9 +144,14 @@ class CourtEmailCountManager(models.Manager):
 
         return day_counts
 
+
 class CourtEmailCount(models.Model):
     date_sent = models.DateTimeField(auto_now_add=True)
-    court = models.ForeignKey("Court")
+    court = models.ForeignKey("Court", related_name="court_email_counts")
+    initiation_type = models.CharField(max_length=2, null=False, blank=False, default="C",
+                                       choices=INITIATION_TYPE_CHOICES)
+    language = models.CharField(max_length=2, null=False, blank=False, default="en",
+                                choices=COURT_LANGUAGE_CHOICES)
 
     total_pleas = models.IntegerField()
     total_guilty = models.IntegerField()
@@ -183,6 +201,9 @@ class CourtEmailCount(models.Model):
             self.hearing_date = date_part
         except KeyError:
             return False
+
+        self.initiation_type = "J" if context["notice_type"]["sjp"] else "C"
+        self.language = get_language().split("-")[0]
 
         for plea_data in context["plea"]["data"]:
             self.total_pleas += 1
@@ -237,6 +258,10 @@ class Case(models.Model):
                                    help_text="as supplied by DX")
 
     ou_code = models.CharField(max_length=10, null=True, blank=True)
+    initiation_type = models.CharField(max_length=2, null=False, blank=False, default="C",
+                                       choices=INITIATION_TYPE_CHOICES)
+    language = models.CharField(max_length=2, null=False, blank=False, default="en",
+                                choices=COURT_LANGUAGE_CHOICES)
 
     sent = models.BooleanField(null=False, default=False)
     processed = models.BooleanField(null=False, default=False)
@@ -268,7 +293,9 @@ class Offence(models.Model):
 
     offence_code = models.CharField(max_length=10, null=True, blank=True)
     offence_short_title = models.CharField(max_length=120)
+    offence_short_title_welsh = models.CharField(max_length=120, null=True, blank=True)
     offence_wording = models.TextField(max_length=4000)
+    offence_wording_welsh = models.TextField(max_length=4000, null=True, blank=True)
     offence_seq_number = models.CharField(max_length=10, null=True, blank=True)
 
 
@@ -393,6 +420,9 @@ class Court(models.Model):
         max_length=255,
         help_text="A user facing email address")
 
+    court_language = models.CharField(max_length=4, null=False, blank=False, default="en",
+                                      choices=COURT_LANGUAGE_CHOICES)
+
     submission_email = models.CharField(
         max_length=255,
         help_text="The outbound court email used to send submission data")
@@ -434,9 +464,3 @@ class Court(models.Model):
                                      self.court_name)
 
     objects = CourtManager()
-
-
-
-
-
-
