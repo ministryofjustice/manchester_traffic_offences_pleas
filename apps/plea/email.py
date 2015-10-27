@@ -75,7 +75,12 @@ def send_plea_email(context_data):
         case = Case.objects.get(urn__iexact=context_data["case"]["urn"].upper(), sent=False)
     except Case.DoesNotExist:
         case = Case(urn=context_data["case"]["urn"].upper(), sent=False)
-        case.save()
+
+    if context_data["notice_type"]["sjp"]:
+        case.initiation_type = "J"
+
+    case.language = translation.get_language().split("-")[0]
+    case.save()
 
     if "court" in context_data:
         del context_data["court"]
