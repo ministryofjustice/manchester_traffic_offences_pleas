@@ -18,4 +18,4 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = ["api.makeaplea.justice.gov.uk", ]
+ALLOWED_HOSTS = ["api.makeaplea.justice.gov.uk", "api.makeaplea.service.gov.uk"]
