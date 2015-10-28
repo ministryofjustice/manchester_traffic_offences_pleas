@@ -5,7 +5,19 @@ from dateutil.relativedelta import relativedelta
 from django.core import exceptions
 
 from .models import Case, Court
-from .standardisers import standardise_urn, slashify_urn
+from .standardisers import get_standardiser
+
+
+URN_PATTERNS = {
+    "02": r"02TJDS[0-9]{4}/[0-9]{2}/[0-9]{4}[A-Z]{2}",
+    "05": r"[0-9]{2}/[A-Z]{1}[0-9]{1}/(?:[0-9]{5}|[0-9]{7})/[0-9]{2}",
+    "17": r"[0-9]{2}/[A-Z]{1}[0-9]{1}/(?:[0-9]{5}|[0-9]{7})/[0-9]{2}",
+    "*": r"[0-9]{2}/[A-Z]{2}/(?:[0-9]{5}|[0-9]{7})/[0-9]{2}"
+}
+
+
+def get_pattern(urn):
+    return URN_PATTERNS.get(urn[:2], URN_PATTERNS["*"])
 
 
 def is_date_in_past(date):
@@ -44,9 +56,9 @@ def is_urn_valid(urn):
     or
     00/AA/00000/00
     """
-
-    urn = slashify_urn(standardise_urn(urn))
-    pattern = r"[0-9]{2}/[a-zA-Z]{2}/(?:[0-9]{5}|[0-9]{7})/[0-9]{2}"
+    standardise = get_standardiser(urn)
+    urn = standardise(urn)
+    pattern = get_pattern(urn)
 
     if not re.match(pattern, urn) or not Court.objects.has_court(urn):
         raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
@@ -63,7 +75,8 @@ def is_urn_not_used(urn):
     Check that the urn hasn't already been used in a previous submission
     """
 
-    urn = slashify_urn(standardise_urn(urn))
+    standardise = get_standardiser(urn)
+    urn = standardise(urn)
 
     if not Case.objects.can_use_urn(urn):
         raise exceptions.ValidationError("The URN has already been used", code="is_urn_not_used")
