@@ -1,5 +1,5 @@
 from .production import *
 
-ALLOWED_HOSTS = ["assisted.makeaplea.dsd.io", "assisted.makeaplea.justice.gov.uk"]
+ALLOWED_HOSTS = ["assisted.makeaplea.justice.gov.uk", "assisted.makeaplea.service.gov.uk"]
 
 EMAIL_REQUIRED = False
