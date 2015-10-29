@@ -244,7 +244,7 @@ class Case(models.Model):
     transferred to an encrypted S3 account.
     """
 
-    urn = models.CharField(max_length=16, db_index=True)
+    urn = models.CharField(max_length=30, db_index=True)
 
     title = models.CharField(max_length=35, null=True, blank=True)
     name = models.CharField(max_length=255, null=True, blank=True)
