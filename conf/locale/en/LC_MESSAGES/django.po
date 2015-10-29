@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-20 14:00+0100\n"
+"POT-Creation-Date: 2015-10-29 10:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,8 +87,8 @@ msgstr ""
 
 #: apps/feedback/templates/comments.html:6
 #: apps/feedback/templates/comments.html:9
-#: apps/feedback/templates/service.html:6
-#: apps/feedback/templates/service.html:9
+#: apps/feedback/templates/service.html:8
+#: apps/feedback/templates/service.html:13
 msgid "Your feedback"
 msgstr ""
 
@@ -97,13 +97,22 @@ msgid "Submit"
 msgstr ""
 
 #: apps/feedback/templates/comments.html:24
-#: apps/feedback/templates/service.html:35 apps/plea/templates/case.html:74
-#: apps/plea/templates/court_finder.html:30
-#: apps/plea/templates/court_finder.html:78
+#: apps/feedback/templates/service.html:42 apps/plea/templates/case.html:74
+#: apps/plea/templates/court_finder.html:29
+#: apps/plea/templates/court_finder.html:77
 msgid "Back"
 msgstr ""
 
-#: apps/feedback/templates/service.html:32 apps/plea/templates/case.html:72
+#: apps/feedback/templates/service.html:15
+msgid "This is your opportunity to tell us your views about using this online plea service."
+msgstr ""
+
+#: apps/feedback/templates/service.html:16
+#, python-format
+msgid "If you have questions about your case, you'll need to contact your court using our <a href=\"%(court_finder_url)s\">court finder service</a>."
+msgstr ""
+
+#: apps/feedback/templates/service.html:39 apps/plea/templates/case.html:72
 #: make_a_plea/templates/base_form.html:40
 msgid "Continue"
 msgstr ""
@@ -196,23 +205,23 @@ msgid "View charge information"
 msgstr ""
 
 #: apps/forms/templates/widgets/plea_radio_field.html:76
-#: apps/plea/templates/emails/attachments/plea_email.html:62
-#: apps/plea/templates/emails/attachments/plp_email.html:62
+#: apps/plea/templates/emails/attachments/plea_email.html:33
+#: apps/plea/templates/emails/attachments/plp_email.html:33
 #: apps/plea/templates/partials/page_title_plea.html:8
-#: apps/plea/templates/partials/review_plea.html:22
-#: apps/plea/templates/review.html:65
+#: apps/plea/templates/partials/review_plea.html:23
+#: apps/plea/templates/review.html:59
 msgid "Your plea"
 msgid_plural "Your pleas"
 msgstr[0] ""
 msgstr[1] ""
 
 #: apps/forms/templates/widgets/plea_radio_field.html:76
-#: apps/plea/forms.py:654 apps/plea/templates/partials/review_plea.html:29
+#: apps/plea/forms.py:654 apps/plea/templates/partials/review_plea.html:32
 msgid "Guilty"
 msgstr ""
 
 #: apps/forms/templates/widgets/plea_radio_field.html:76
-#: apps/plea/forms.py:655 apps/plea/templates/partials/review_plea.html:31
+#: apps/plea/forms.py:655 apps/plea/templates/partials/review_plea.html:34
 msgid "Not guilty"
 msgstr ""
 
@@ -443,7 +452,7 @@ msgid "Tell us how you earn your money"
 msgstr ""
 
 #: apps/plea/fields.py:58
-msgid "You must tell us why paying a fine will cause you serious financial problems"
+msgid "You must tell us why you think you should be allowed to pay your fine in instalments"
 msgstr ""
 
 #: apps/plea/fields.py:59
@@ -614,7 +623,7 @@ msgstr ""
 msgid "The person named in the notice"
 msgstr ""
 
-#: apps/plea/forms.py:45 apps/plea/templates/partials/review_case.html:29
+#: apps/plea/forms.py:45 apps/plea/templates/partials/review_case.html:21
 msgid "Pleading on behalf of a company"
 msgstr ""
 
@@ -626,7 +635,7 @@ msgstr ""
 msgid "On page 1 of the notice, usually at the top."
 msgstr ""
 
-#: apps/plea/forms.py:56 apps/plea/templates/partials/review_case.html:24
+#: apps/plea/forms.py:56 apps/plea/templates/partials/review_case.html:17
 msgid "Number of charges"
 msgstr ""
 
@@ -642,7 +651,7 @@ msgstr "Are you?"
 msgid "Choose one of the following options:"
 msgstr ""
 
-#: apps/plea/forms.py:75 apps/plea/templates/partials/review_case.html:18
+#: apps/plea/forms.py:75 apps/plea/templates/partials/review_case.html:13
 msgid "Court hearing date"
 msgstr ""
 
@@ -650,17 +659,17 @@ msgstr ""
 msgid "On page 1 of the notice, near the top. <br>For example, 30/07/2014"
 msgstr ""
 
-#: apps/plea/forms.py:92 apps/plea/templates/partials/review_case.html:13
+#: apps/plea/forms.py:92 apps/plea/templates/partials/review_case.html:10
 msgid "Posting date"
 msgstr ""
 
-#: apps/plea/forms.py:124 apps/plea/templates/partials/review_details.html:11
-#: apps/plea/templates/partials/review_details.html:49
+#: apps/plea/forms.py:124 apps/plea/templates/partials/review_details.html:10
+#: apps/plea/templates/partials/review_details.html:43
 msgid "First name"
 msgstr ""
 
-#: apps/plea/forms.py:130 apps/plea/templates/partials/review_details.html:15
-#: apps/plea/templates/partials/review_details.html:54
+#: apps/plea/forms.py:130 apps/plea/templates/partials/review_details.html:13
+#: apps/plea/templates/partials/review_details.html:47
 msgid "Last name"
 msgstr ""
 
@@ -673,8 +682,8 @@ msgid "If no, tell us your correct address here:"
 msgstr ""
 
 #: apps/plea/forms.py:149 apps/plea/forms.py:239
-#: apps/plea/templates/partials/review_details.html:23
-#: apps/plea/templates/partials/review_details.html:62
+#: apps/plea/templates/partials/review_details.html:19
+#: apps/plea/templates/partials/review_details.html:53
 msgid "Contact number"
 msgstr ""
 
@@ -682,7 +691,7 @@ msgstr ""
 msgid "Landline or mobile number."
 msgstr ""
 
-#: apps/plea/forms.py:157 apps/plea/templates/partials/review_details.html:27
+#: apps/plea/forms.py:157 apps/plea/templates/partials/review_details.html:22
 msgid "Date of birth"
 msgstr ""
 
@@ -718,7 +727,7 @@ msgstr ""
 msgid "company solicitor"
 msgstr ""
 
-#: apps/plea/forms.py:203 apps/plea/templates/partials/review_details.html:41
+#: apps/plea/forms.py:203 apps/plea/templates/partials/review_details.html:37
 msgid "Company name"
 msgstr ""
 
@@ -764,8 +773,8 @@ msgstr ""
 
 #: apps/plea/forms.py:254 apps/plea/forms.py:261 apps/plea/forms.py:265
 #: apps/plea/forms.py:333 apps/plea/forms.py:380
-#: apps/plea/templates/partials/review_finances.html:22
-#: apps/plea/templates/partials/review_finances.html:42
+#: apps/plea/templates/partials/review_finances.html:19
+#: apps/plea/templates/partials/review_finances.html:35
 msgid "Other"
 msgstr ""
 
@@ -854,7 +863,7 @@ msgid "How would paying a fine cause you serious financial problems?"
 msgstr ""
 
 #: apps/plea/forms.py:417
-msgid "What the court should consider when deciding how much your fine should be:"
+msgid "Why you think the court should allow you to pay your fine in instalments:"
 msgstr ""
 
 #: apps/plea/forms.py:429
@@ -934,12 +943,12 @@ msgid "Has the company been trading for more than 12 months?"
 msgstr ""
 
 #: apps/plea/forms.py:585
-#: apps/plea/templates/partials/review_company_finances.html:12
+#: apps/plea/templates/partials/review_company_finances.html:11
 msgid "Number of employees"
 msgstr ""
 
 #: apps/plea/forms.py:600
-#: apps/plea/templates/partials/review_company_finances.html:19
+#: apps/plea/templates/partials/review_company_finances.html:22
 msgid "Gross turnover"
 msgstr ""
 
@@ -948,7 +957,7 @@ msgid "For example, 150000"
 msgstr ""
 
 #: apps/plea/forms.py:607
-#: apps/plea/templates/partials/review_company_finances.html:23
+#: apps/plea/templates/partials/review_company_finances.html:25
 msgid "Net turnover"
 msgstr ""
 
@@ -968,7 +977,7 @@ msgstr ""
 msgid "If yes, enter your email address here:"
 msgstr ""
 
-#: apps/plea/forms.py:666 apps/plea/templates/partials/review_plea.html:38
+#: apps/plea/forms.py:666 apps/plea/templates/partials/review_plea.html:39
 msgid "Mitigation"
 msgstr ""
 
@@ -1029,9 +1038,9 @@ msgid "There seems to have been a problem submitting your plea. Please try again
 msgstr ""
 
 #: apps/plea/templates/case.html:7 apps/plea/templates/case.html.py:46
-#: apps/plea/templates/emails/attachments/plea_email.html:35
-#: apps/plea/templates/emails/attachments/plp_email.html:35
-#: apps/plea/templates/review.html:35
+#: apps/plea/templates/emails/attachments/plea_email.html:12
+#: apps/plea/templates/emails/attachments/plp_email.html:12
+#: apps/plea/templates/review.html:33
 msgid "Case details"
 msgstr ""
 
@@ -1077,9 +1086,9 @@ msgstr ""
 
 #: apps/plea/templates/company_details.html:6
 #: apps/plea/templates/company_details.html:10
-#: apps/plea/templates/emails/attachments/plea_email.html:47
-#: apps/plea/templates/emails/attachments/plp_email.html:47
-#: apps/plea/templates/review.html:48 apps/plea/templates/your_details.html:6
+#: apps/plea/templates/emails/attachments/plea_email.html:21
+#: apps/plea/templates/emails/attachments/plp_email.html:21
+#: apps/plea/templates/review.html:43 apps/plea/templates/your_details.html:6
 #: apps/plea/templates/your_details.html:10
 msgid "Your details"
 msgstr ""
@@ -1240,7 +1249,7 @@ msgstr ""
 
 #: apps/plea/templates/complete.html:79
 #: apps/plea/templates/complete_sjp.html:71
-#: apps/plea/templates/court_finder.html:21
+#: apps/plea/templates/court_finder.html:20
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.html:67
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:24
 msgid "By post:"
@@ -1248,7 +1257,7 @@ msgstr ""
 
 #: apps/plea/templates/complete.html:83
 #: apps/plea/templates/complete_sjp.html:75
-#: apps/plea/templates/court_finder.html:26
+#: apps/plea/templates/court_finder.html:25
 #: apps/plea/templates/emails/user_plea_confirmation.html:71
 #: apps/plea/templates/emails/user_plea_confirmation.txt:30
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.html:70
@@ -1317,83 +1326,86 @@ msgstr ""
 
 #: apps/plea/templates/court_finder.html:6
 #: apps/plea/templates/court_finder.html:13
-#: apps/plea/templates/court_finder.html:69
 msgid "Your court"
 msgstr ""
 
-#: apps/plea/templates/court_finder.html:18
+#: apps/plea/templates/court_finder.html:14
 msgid "You can contact the court by post or email quoting your URN before the date of your hearing."
 msgstr ""
 
-#: apps/plea/templates/court_finder.html:42
+#: apps/plea/templates/court_finder.html:41
 msgid "We can't find your court"
 msgstr ""
 
-#: apps/plea/templates/court_finder.html:43
+#: apps/plea/templates/court_finder.html:42
 msgid "You'll find contact details for the court considering your case in the notice we sent you."
 msgstr ""
 
-#: apps/plea/templates/court_finder.html:51
+#: apps/plea/templates/court_finder.html:50
 msgid "We don’t recognise the URN you’ve entered"
 msgstr ""
 
-#: apps/plea/templates/court_finder.html:52
+#: apps/plea/templates/court_finder.html:51
 msgid "The unique reference number you entered doesn’t match our records."
 msgstr ""
 
-#: apps/plea/templates/court_finder.html:54
+#: apps/plea/templates/court_finder.html:53
 msgid "Check your URN (it’s on page 1 of the notice we sent you, usually at the top) then try again."
 msgstr ""
 
-#: apps/plea/templates/court_finder.html:59
+#: apps/plea/templates/court_finder.html:58
 #: make_a_plea/templates/base_form.html:10
 msgid "You need to fix the errors on this page before continuing."
 msgstr ""
 
-#: apps/plea/templates/court_finder.html:61
+#: apps/plea/templates/court_finder.html:60
 msgid "Enter your URN to find the contact details for your court."
 msgstr ""
 
-#: apps/plea/templates/court_finder.html:70
-msgid "To find contact details for the court considering your case, enter your unique reference number (URN)."
+#: apps/plea/templates/court_finder.html:68
+msgid "Questions about your case"
 msgstr ""
 
-#: apps/plea/templates/court_finder.html:76
+#: apps/plea/templates/court_finder.html:69
+msgid "If you have questions about your case and want to contact the court considering your case, enter your unique reference number (URN)."
+msgstr ""
+
+#: apps/plea/templates/court_finder.html:75
 msgid "Find my court"
 msgstr ""
 
-#: apps/plea/templates/emails/attachments/plea_email.html:49
-#: apps/plea/templates/emails/attachments/plp_email.html:49
-#: apps/plea/templates/review.html:51
+#: apps/plea/templates/emails/attachments/plea_email.html:23
+#: apps/plea/templates/emails/attachments/plp_email.html:23
+#: apps/plea/templates/review.html:48
 msgid "Company representative details"
 msgstr ""
 
-#: apps/plea/templates/emails/attachments/plea_email.html:64
-#: apps/plea/templates/emails/attachments/plp_email.html:64
-#: apps/plea/templates/review.html:67
+#: apps/plea/templates/emails/attachments/plea_email.html:35
+#: apps/plea/templates/emails/attachments/plp_email.html:35
+#: apps/plea/templates/review.html:63
 msgid "Company's plea"
 msgid_plural "Company's pleas"
 msgstr[0] ""
 msgstr[1] ""
 
-#: apps/plea/templates/emails/attachments/plea_email.html:78
-#: apps/plea/templates/emails/attachments/plea_email.html:95
-#: apps/plea/templates/review.html:82 apps/plea/templates/your_finances.html:9
+#: apps/plea/templates/emails/attachments/plea_email.html:46
+#: apps/plea/templates/emails/attachments/plea_email.html:59
+#: apps/plea/templates/review.html:73 apps/plea/templates/your_finances.html:9
 #: apps/plea/templates/your_finances.html:22
 msgid "Your finances"
 msgstr ""
 
-#: apps/plea/templates/emails/attachments/plea_email.html:107
+#: apps/plea/templates/emails/attachments/plea_email.html:68
 #: apps/plea/templates/household_expenses.html:7
 #: apps/plea/templates/household_expenses.html:11
 #: apps/plea/templates/other_expenses.html:7
 #: apps/plea/templates/other_expenses.html:11
-#: apps/plea/templates/review.html:94
+#: apps/plea/templates/review.html:84
 msgid "Your expenses"
 msgstr ""
 
-#: apps/plea/templates/emails/attachments/plea_email.html:122
-#: apps/plea/templates/review.html:110
+#: apps/plea/templates/emails/attachments/plea_email.html:81
+#: apps/plea/templates/review.html:97
 msgid "Company financial details"
 msgstr ""
 
@@ -1467,7 +1479,7 @@ msgstr ""
 
 #: apps/plea/templates/household_expenses.html:13
 #: apps/plea/templates/other_expenses.html:13
-msgid "To help the court decide your fine, you must provide information about your expenses."
+msgid "To help the court make a decision about your payment terms, you must provide information about your expenses."
 msgstr ""
 
 #: apps/plea/templates/household_expenses.html:19
@@ -1500,7 +1512,7 @@ msgid "What are your monthly bills for the following?"
 msgstr ""
 
 #: apps/plea/templates/partials/page_title_plea.html:11
-#: apps/plea/templates/partials/review_plea.html:24
+#: apps/plea/templates/partials/review_plea.html:27
 msgid "Company plea"
 msgid_plural "Company pleas"
 msgstr[0] ""
@@ -1518,15 +1530,15 @@ msgid_plural "Company pleas continued"
 msgstr[0] ""
 msgstr[1] ""
 
-#: apps/plea/templates/partials/review_case.html:7
+#: apps/plea/templates/partials/review_case.html:6
 msgid "Unique reference number"
 msgstr ""
 
-#: apps/plea/templates/partials/review_case.html:28
+#: apps/plea/templates/partials/review_case.html:20
 msgid "Plea made by"
 msgstr ""
 
-#: apps/plea/templates/partials/review_case.html:29
+#: apps/plea/templates/partials/review_case.html:21
 msgid "Person named on the notice"
 msgstr ""
 
@@ -1535,71 +1547,71 @@ msgid "Trading for more than 12 months"
 msgstr ""
 
 #: apps/plea/templates/partials/review_company_finances.html:9
-#: apps/plea/templates/partials/review_finances.html:56
-#: apps/plea/templates/partials/review_plea.html:45
-#: apps/plea/templates/partials/review_plea.html:84
-#: apps/plea/templates/partials/review_plea.html:96
-#: apps/plea/templates/partials/review_plea.html:106
+#: apps/plea/templates/partials/review_finances.html:46
+#: apps/plea/templates/partials/review_plea.html:44
+#: apps/plea/templates/partials/review_plea.html:72
+#: apps/plea/templates/partials/review_plea.html:80
+#: apps/plea/templates/partials/review_plea.html:87
 msgid "Yes,No (v1)"
 msgstr "Yes,No"
 
-#: apps/plea/templates/partials/review_company_finances.html:16
+#: apps/plea/templates/partials/review_company_finances.html:17
 msgid "From the most recent audited company accounts"
 msgstr ""
 
-#: apps/plea/templates/partials/review_company_finances.html:16
+#: apps/plea/templates/partials/review_company_finances.html:17
 msgid "From the first 12 months' trading projections"
 msgstr ""
 
-#: apps/plea/templates/partials/review_details.html:19
+#: apps/plea/templates/partials/review_details.html:16
 msgid "Address"
 msgstr ""
 
-#: apps/plea/templates/partials/review_details.html:20
-#: apps/plea/templates/partials/review_details.html:46
+#: apps/plea/templates/partials/review_details.html:17
+#: apps/plea/templates/partials/review_details.html:41
 msgid "As printed on the notice"
 msgstr ""
 
-#: apps/plea/templates/partials/review_details.html:31
+#: apps/plea/templates/partials/review_details.html:25
 msgid "National Insurance number"
 msgstr ""
 
-#: apps/plea/templates/partials/review_details.html:35
+#: apps/plea/templates/partials/review_details.html:28
 msgid "UK driving licence number"
 msgstr ""
 
-#: apps/plea/templates/partials/review_details.html:45
+#: apps/plea/templates/partials/review_details.html:40
 msgid "Company address"
 msgstr ""
 
-#: apps/plea/templates/partials/review_details.html:58
+#: apps/plea/templates/partials/review_details.html:50
 msgid "Position held"
 msgstr ""
 
-#: apps/plea/templates/partials/review_expenses.html:10
+#: apps/plea/templates/partials/review_expenses.html:8
 msgid "Financial hardship details"
 msgstr ""
 
-#: apps/plea/templates/partials/review_expenses.html:14
+#: apps/plea/templates/partials/review_expenses.html:11
 msgid "Other contributors to household bills"
 msgstr ""
 
-#: apps/plea/templates/partials/review_expenses.html:15
-#: apps/plea/templates/partials/review_finances.html:71
-#: apps/plea/templates/partials/review_plea.html:51
-#: apps/plea/templates/partials/review_plea.html:72
+#: apps/plea/templates/partials/review_expenses.html:12
+#: apps/plea/templates/partials/review_finances.html:58
+#: apps/plea/templates/partials/review_plea.html:48
+#: apps/plea/templates/partials/review_plea.html:64
 msgid "Yes,No (v3)"
 msgstr "Yes,No"
 
-#: apps/plea/templates/partials/review_expenses.html:18
+#: apps/plea/templates/partials/review_expenses.html:14
 msgid "Total household expenses"
 msgstr ""
 
-#: apps/plea/templates/partials/review_expenses.html:22
+#: apps/plea/templates/partials/review_expenses.html:17
 msgid "Total other expenses"
 msgstr ""
 
-#: apps/plea/templates/partials/review_expenses.html:26
+#: apps/plea/templates/partials/review_expenses.html:20
 msgid "Total expenses"
 msgstr ""
 
@@ -1607,34 +1619,34 @@ msgstr ""
 msgid "You are"
 msgstr ""
 
-#: apps/plea/templates/partials/review_finances.html:11
-#: apps/plea/templates/partials/review_finances.html:21
-#: apps/plea/templates/partials/review_finances.html:41
+#: apps/plea/templates/partials/review_finances.html:10
+#: apps/plea/templates/partials/review_finances.html:18
+#: apps/plea/templates/partials/review_finances.html:34
 msgid "You get paid"
 msgstr ""
 
-#: apps/plea/templates/partials/review_finances.html:15
-#: apps/plea/templates/partials/review_finances.html:31
-#: apps/plea/templates/partials/review_finances.html:51
-#: apps/plea/templates/partials/review_finances.html:65
+#: apps/plea/templates/partials/review_finances.html:13
+#: apps/plea/templates/partials/review_finances.html:26
+#: apps/plea/templates/partials/review_finances.html:42
+#: apps/plea/templates/partials/review_finances.html:53
 msgid "Amount"
 msgstr ""
 
-#: apps/plea/templates/partials/review_finances.html:26
-#: apps/plea/templates/partials/review_finances.html:46
-#: apps/plea/templates/partials/review_finances.html:61
+#: apps/plea/templates/partials/review_finances.html:22
+#: apps/plea/templates/partials/review_finances.html:38
+#: apps/plea/templates/partials/review_finances.html:50
 msgid "Details"
 msgstr ""
 
-#: apps/plea/templates/partials/review_finances.html:37
+#: apps/plea/templates/partials/review_finances.html:31
 msgid "Your benefits"
 msgstr ""
 
-#: apps/plea/templates/partials/review_finances.html:55
+#: apps/plea/templates/partials/review_finances.html:45
 msgid "Includes payment for dependents?"
 msgstr ""
 
-#: apps/plea/templates/partials/review_finances.html:70
+#: apps/plea/templates/partials/review_finances.html:57
 msgid "Financial hardship"
 msgstr ""
 
@@ -1647,39 +1659,39 @@ msgstr ""
 msgid "Change your plea for charge %(charge_number)s"
 msgstr ""
 
-#: apps/plea/templates/partials/review_plea.html:44
+#: apps/plea/templates/partials/review_plea.html:43
 msgid "Plead guilty in court"
 msgstr ""
 
-#: apps/plea/templates/partials/review_plea.html:50
-#: apps/plea/templates/partials/review_plea.html:71
-#: apps/plea/templates/partials/review_plea.html:105
+#: apps/plea/templates/partials/review_plea.html:47
+#: apps/plea/templates/partials/review_plea.html:63
+#: apps/plea/templates/partials/review_plea.html:86
 msgid "Interpreter required"
 msgstr ""
 
-#: apps/plea/templates/partials/review_plea.html:56
-#: apps/plea/templates/partials/review_plea.html:77
-#: apps/plea/templates/partials/review_plea.html:111
+#: apps/plea/templates/partials/review_plea.html:51
+#: apps/plea/templates/partials/review_plea.html:67
+#: apps/plea/templates/partials/review_plea.html:90
 msgid "Language"
 msgstr ""
 
-#: apps/plea/templates/partials/review_plea.html:67
+#: apps/plea/templates/partials/review_plea.html:60
 msgid "Not guilty because"
 msgstr ""
 
-#: apps/plea/templates/partials/review_plea.html:83
+#: apps/plea/templates/partials/review_plea.html:71
 msgid "Disagree with any evidence from a witness statement?"
 msgstr ""
 
-#: apps/plea/templates/partials/review_plea.html:89
+#: apps/plea/templates/partials/review_plea.html:75
 msgid "Name of the witness and what you disagree with"
 msgstr ""
 
-#: apps/plea/templates/partials/review_plea.html:95
+#: apps/plea/templates/partials/review_plea.html:79
 msgid "Wants to call a witness?"
 msgstr ""
 
-#: apps/plea/templates/partials/review_plea.html:101
+#: apps/plea/templates/partials/review_plea.html:83
 msgid "Name, date of birth and address of the witness"
 msgstr ""
 
@@ -1777,63 +1789,63 @@ msgid_plural "Review the information you’ve given before making your pleas."
 msgstr[0] ""
 msgstr[1] ""
 
-#: apps/plea/templates/review.html:36
+#: apps/plea/templates/review.html:34
 msgid "Change case details"
 msgstr ""
 
-#: apps/plea/templates/review.html:49 apps/plea/templates/review.html.py:52
+#: apps/plea/templates/review.html:44 apps/plea/templates/review.html.py:49
 msgid "Change your details"
 msgstr ""
 
-#: apps/plea/templates/review.html:83
+#: apps/plea/templates/review.html:74
 msgid "Change your finances"
 msgstr ""
 
-#: apps/plea/templates/review.html:95
+#: apps/plea/templates/review.html:85
 msgid "Change your expenses"
 msgstr ""
 
-#: apps/plea/templates/review.html:111
+#: apps/plea/templates/review.html:98
 msgid "Change details"
 msgstr ""
 
-#: apps/plea/templates/review.html:138
+#: apps/plea/templates/review.html:123
 msgid "Important"
 msgstr ""
 
-#: apps/plea/templates/review.html:143
+#: apps/plea/templates/review.html:128
 msgid "It is an offence to make a false statement or to deliberately fail to disclose any relevant facts."
 msgstr ""
 
-#: apps/plea/templates/review.html:148
+#: apps/plea/templates/review.html:133
 msgid "I confirm that I have read and understand the charge against me and that I am the person named in the Single Justice Procedure Notice."
 msgid_plural "I confirm that I have read and understand the charges against me and that I am the person named in the Single Justice Procedure Notice."
 msgstr[0] ""
 msgstr[1] ""
 
-#: apps/plea/templates/review.html:150
+#: apps/plea/templates/review.html:135
 msgid "I confirm that I have read and understand the charge against me and that I am the person named in the Postal Requisition."
 msgid_plural "I confirm that I have read and understand the charges against me and that I am the person named in the Postal Requisition."
 msgstr[0] ""
 msgstr[1] ""
 
-#: apps/plea/templates/review.html:154
+#: apps/plea/templates/review.html:139
 msgid "I confirm that I have read and understand the charge and that I am a representative of the company named in the Single Justice Procedure Notice and am legally entitled to enter a plea on its behalf."
 msgid_plural "I confirm that I have read and understand the charges and that I am a representative of the company named in the Single Justice Procedure Notice and am legally entitled to enter a plea on its behalf."
 msgstr[0] ""
 msgstr[1] ""
 
-#: apps/plea/templates/review.html:156
+#: apps/plea/templates/review.html:141
 msgid "I confirm that I have read and understand the charge and that I am a representative of the company named in the Postal Requisition and am legally entitled to enter a plea on its behalf."
 msgid_plural "I confirm that I have read and understand the charges and that I am a representative of the company named in the Postal Requisition and am legally entitled to enter a plea on its behalf."
 msgstr[0] ""
 msgstr[1] ""
 
-#: apps/plea/templates/review.html:160
+#: apps/plea/templates/review.html:145
 msgid "The facts stated here are correct to the best of my knowledge."
 msgstr ""
 
-#: apps/plea/templates/review.html:170
+#: apps/plea/templates/review.html:155
 msgid "Make your plea"
 msgid_plural "Make your pleas"
 msgstr[0] ""
@@ -1915,7 +1927,7 @@ msgstr ""
 #: apps/plea/templates/your_finances.html:88
 #: apps/plea/templates/your_finances.html:111
 #: apps/plea/templates/your_finances.html:126
-msgid "For the court to consider reducing your fine, you must provide information about your expenses on the next screen."
+msgid "For the courts to consider allowing you to pay your fine in instalments, you must provide information about your expenses."
 msgstr ""
 
 #: make_a_plea/context_processors.py:8 make_a_plea/context_processors.py:11
