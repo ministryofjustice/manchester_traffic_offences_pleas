@@ -340,7 +340,6 @@ class ReviewStage(FormStage):
                     "your_finances", "company_finances"]
 
     def save(self, form_data, next_step=None):
-
         clean_data = super(ReviewStage, self).save(form_data, next_step)
 
         try:

@@ -14,7 +14,7 @@ class CourtAdmin(admin.ModelAdmin):
                     'enabled', 'test_mode')
 
 
-class InlineCaseAction(admin.StackedInline):
+class InlineCaseAction(admin.TabularInline):
     model = CaseAction
     extra = 0
     readonly_fields = ('date',)
@@ -26,16 +26,16 @@ class InlineOffence(admin.StackedInline):
 
 
 class CaseAdmin(admin.ModelAdmin):
-    list_display = ("urn", "name", "sent", "processed", "charge_count")
+    list_display = ("urn", "sent", "processed", "charge_count", "initiation_type")
     inlines = [InlineCaseAction, InlineOffence]
-    search_fields = ["urn"]
+    search_fields = ["urn", "name"]
 
     def charge_count(self, obj):
         return obj.offences.count()
 
 
 class CourtEmailCountAdmin(admin.ModelAdmin):
-    list_display = ("court", "total_pleas", "total_guilty", "total_not_guilty", "hearing_date", "sent", "processed")
+    list_display = ("court", "initiation_type", "total_pleas", "total_guilty", "total_not_guilty", "hearing_date", "sent", "processed")
     model = CourtEmailCount
 
 

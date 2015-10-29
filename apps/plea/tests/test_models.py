@@ -23,6 +23,7 @@ class CourtEmailCountModelTestCase(TestCase):
 
     def test_get_from_context_hearing_date_is_combined_date_and_time(self):
         context = {
+            "notice_type": {"sjp": False},
             "plea": {
                 "data": {},
             },
@@ -85,6 +86,7 @@ class CourtEmailCountModelTestCase(TestCase):
     def test_court_email_plea__get_from_context__sc_char_count(self):
 
         context = {
+            "notice_type": {"sjp": False},
             "plea": {
                 "data": [
                     {
