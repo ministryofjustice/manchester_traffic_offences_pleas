@@ -68,6 +68,7 @@ class BaseCaseForm(BaseStageForm):
                                           help_text=_("Choose one of the following options:"),
                                           error_messages={"required": ERROR_MESSAGES["PLEA_MADE_BY_REQUIRED"]})
 
+
 class CaseForm(BaseCaseForm):
     date_of_hearing = forms.DateField(widget=DateWidget,
                                       validators=[is_date_in_future, is_date_in_next_6_months],
