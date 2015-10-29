@@ -23,7 +23,7 @@ from .forms import (NoticeTypeForm,
 
 from .fields import ERROR_MESSAGES
 from .models import Court, Case, Offence
-from .standardisers import standardise_urn, slashify_urn
+from .standardisers import get_standardiser
 
 
 def get_case(urn):
@@ -89,7 +89,8 @@ class CaseStage(FormStage):
         clean_data = super(CaseStage, self).save(form_data, next_step)
 
         if "urn" in clean_data:
-            clean_data["urn"] = slashify_urn(standardise_urn(clean_data["urn"]))
+            standardise = get_standardiser(clean_data["urn"])
+            clean_data["urn"] = standardise(clean_data["urn"])
             offences = get_offences(clean_data)
             if offences:
                 clean_data["number_of_charges"] = len(offences)
