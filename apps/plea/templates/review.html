@@ -70,7 +70,7 @@
     {% if case.plea_made_by == "Defendant" and not your_finances.skipped %}
     <section class="review-section" id="your-finances">
         <header>
-            <h2>{% blocktrans %}Your status and finances{% endblocktrans %}</h2>
+            <h2>{% blocktrans %}Your employment status and finances{% endblocktrans %}</h2>
         </header>
 
         {% include "partials/review_finances.html" with show_edit_link=True %}

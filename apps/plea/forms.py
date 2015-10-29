@@ -21,6 +21,11 @@ from .validators import (is_date_in_past,
                          is_urn_valid)
 
 
+PERIOD_CHOICES = (("Weekly", _("Weekly")),
+                  ("Fortnightly", _("Fortnightly")),
+                  ("Monthly", _("Monthly")))
+
+
 def reorder_fields(fields, order):
     for key, v in fields.items():
         if key not in order:
@@ -246,56 +251,17 @@ class CompanyDetailsForm(BaseStageForm):
                                      error_messages={"required": ERROR_MESSAGES["COMPANY_CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
 
-
-class YourMoneyForm(SplitStageForm):
-
+class YourStatusForm(BaseStageForm):
     YOU_ARE_CHOICES = (("Employed", _("Employed")),
                        ("Self-employed", _("Self-employed")),
                        ("Receiving benefits", _("Receiving benefits")),
                        ("Other", _("Other")))
-    PERIOD_CHOICES = (("Weekly", _("Weekly")),
-                      ("Fortnightly", _("Fortnightly")),
-                      ("Monthly", _("Monthly")))
-    SE_PERIOD_CHOICES = (("Weekly", _("Weekly")),
-                         ("Fortnightly", _("Fortnightly")),
-                         ("Monthly", _("Monthly")),
-                         ("Self-employed other", _("Other")),)
-    BEN_PERIOD_CHOICES = (("Weekly", _("Weekly")),
-                         ("Fortnightly", _("Fortnightly")),
-                         ("Monthly", _("Monthly")),
-                         ("Benefits other", _("Other")),)
-
-    dependencies = {
-        "employed_take_home_pay_period": {"field": "you_are", "value": "Employed"},
-        "employed_take_home_pay_amount": {"field": "you_are", "value": "Employed"},
-        "employed_hardship": {"field": "you_are", "value": "Employed"},
-
-        "self_employed_pay_period": {"field": "you_are", "value": "Self-employed"},
-        "self_employed_pay_other": {"field": "self_employed_pay_period", "value": "Self-employed other"},
-
-        "self_employed_pay_amount": {"field": "you_are", "value": "Self-employed"},
-        "self_employed_hardship": {"field": "you_are", "value": "Self-employed"},
-
-        "benefits_details": {"field": "you_are", "value": "Receiving benefits"},
-        "benefits_dependents": {"field": "you_are", "value": "Receiving benefits"},
-        "benefits_period": {"field": "you_are", "value": "Receiving benefits"},
-        "benefits_pay_other": {"field": "benefits_period", "value": "Benefits other"},
-        "benefits_amount": {"field": "you_are", "value": "Receiving benefits"},
-        "receiving_benefits_hardship": {"field": "you_are", "value": "Receiving benefits"},
-
-        "other_details": {"field": "you_are", "value": "Other"},
-        "other_pay_amount": {"field": "you_are", "value": "Other"},
-        "other_hardship": {"field": "you_are", "value": "Other"}
-    }
-
-    split_form_options = {
-        "trigger": "you_are"
-    }
 
     you_are = forms.ChoiceField(label=_("Are you? (employment status)"), choices=YOU_ARE_CHOICES,
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
-    # Employed
+
+class YourFinancesEmployedForm(BaseStageForm):
     employed_take_home_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                       choices=PERIOD_CHOICES,
                                                       label=_("How often do you get paid?"),
@@ -319,7 +285,16 @@ class YourMoneyForm(SplitStageForm):
                                                coerce=to_bool,
                                                error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
-    # Self-employed
+class YourFinancesSelfEmployedForm(BaseStageForm):
+    SE_PERIOD_CHOICES = (("Weekly", _("Weekly")),
+                         ("Fortnightly", _("Fortnightly")),
+                         ("Monthly", _("Monthly")),
+                         ("Self-employed other", _("Other")),)
+
+    dependencies = {
+        "self_employed_pay_other": {"field": "self_employed_pay_period", "value": "Self-employed other"}
+    }
+
     self_employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                  choices=SE_PERIOD_CHOICES,
                                                  label=_("How often do you get paid?"),
@@ -349,7 +324,16 @@ class YourMoneyForm(SplitStageForm):
                                                     coerce=to_bool,
                                                     error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
-    # On benefits
+class YourFinancesBenefitsForm(BaseStageForm):
+    BEN_PERIOD_CHOICES = (("Weekly", _("Weekly")),
+                         ("Fortnightly", _("Fortnightly")),
+                         ("Monthly", _("Monthly")),
+                         ("Benefits other", _("Other")),)
+
+    dependencies = {
+        "benefits_pay_other": {"field": "benefits_period", "value": "Benefits other"}
+    }
+
     benefits_details = forms.CharField(label=_("Which benefits do you receive?"),
                                        help_text=_("For example, Income Support or Disability Living Allowance."),
                                        max_length=500,
@@ -391,7 +375,7 @@ class YourMoneyForm(SplitStageForm):
                                                          coerce=to_bool,
                                                          error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
-    # Other
+class YourFinancesOtherForm(BaseStageForm):
     other_details = forms.CharField(max_length=500, label=_("Provide details"),
                                     help_text=_("For example, student or retired."),
                                     widget=forms.TextInput(attrs={"class": "form-control"}),
