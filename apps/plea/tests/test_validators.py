@@ -4,6 +4,7 @@ from django.test import TestCase
 from django import forms
 from django.forms import ValidationError
 
+from ..standardisers import standardise_urn
 from ..validators import *
 
 
@@ -107,6 +108,25 @@ class TestValidators(TestCase):
         for URN in bad_urns:
             with self.assertRaises(forms.ValidationError):
                 is_urn_valid(URN)
+
+    def test_is_valid_met_urn_format(self):
+        good_urns = [
+            "02TJDS0479/15/0014AP",
+            "02TjDs0479/15/0014aP",
+            "02TJ/AA0000/00/0015aa",
+            "02TJ/AA0000/00/00151aa",
+            "02TJ/AA0000/00/00151aaa",
+            "02TJC00000000aa",
+            "02TJC00000000aaa",
+            "02TJ0000000000000000aa",
+            "02TJ0000000000000000aaa",
+            "02TJ0000000/00aa",
+            "02TJ0000000/00aaa"
+        ]
+
+        for URN in good_urns:
+            test_urn = standardise_urn(URN)
+            self.assertTrue(is_urn_valid(test_urn))
 
     def test_date_is_in_past(self):
         yesterday = date.today() - timedelta(1)
