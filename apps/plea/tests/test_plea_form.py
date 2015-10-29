@@ -128,14 +128,12 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             }
         }
 
-
     def test_notice_type_stage_missing_data(self):
         form = PleaOnlineForms(self.session, "notice_type")
         form.load(self.request_context)
         form.save({}, self.request_context)
 
         self.assertEqual(len(form.current_stage.form.errors), 1)
-
 
     def test_notice_type_stage_good_data(self):
         form = PleaOnlineForms(self.session, "notice_type")
@@ -147,7 +145,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/plea/case/")
-
 
     def test_case_stage_bad_data(self):
         form = PleaOnlineForms(self.session, "case")
