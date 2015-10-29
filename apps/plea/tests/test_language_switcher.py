@@ -74,7 +74,7 @@ class TestLanguageSwitcher(TestCase):
 
     def test_language_switcher_lang_en(self):
         Switch.objects.create(name="show_language_switcher", active=True)
-        
+
         response = self.client.get("/change-language/?lang=en")
         response = self.client.get("/")
 
