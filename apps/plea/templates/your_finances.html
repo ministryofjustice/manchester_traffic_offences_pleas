@@ -3,130 +3,92 @@
 {% load i18n %}
 {% load form_widgets %}
 
-{% spaceless %}
-{% block page_title %}
-    {% if your_finances.split_form != "split_form_last_step" %}
-        {% blocktrans %}Your finances{% endblocktrans %}
-    {% else %}
-        {% blocktrans %}Your finances continued{% endblocktrans %}
-    {% endif %}
-     - {{ block.super }}
-{% endblock %}
-{% endspaceless %}
+{% block page_title %}{% blocktrans %}Your finances{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 
 {% block stage_header %}
-    {% spaceless %}
-    <h1>
-    {% if your_finances.split_form != "split_form_last_step" %}
-        {% blocktrans %}Your finances{% endblocktrans %}
-    {% else %}
-        {% blocktrans %}Your finances continued{% endblocktrans %}
-    {% endif %}
-    </h1>
-    {% endspaceless %}
-
-    {% if your_finances.split_form != "split_form_last_step" %}
-    <div class="panel-grey">
-        <p>{% blocktrans %}For this type of offence you'll usually have to pay a fine:{% endblocktrans %}</p>
-        <ul>
-            <li>{% blocktrans %}you must provide your income details{% endblocktrans %}</li>
-            <li>{% blocktrans %}the court will decide your fine based on your finances and the seriousness of the offence{% endblocktrans %}</li>
-            <li>{% blocktrans %}your details will be stored securely by the court{% endblocktrans %}</li>
-        </ul>
-    </div>
-    {% endif %}
+    <h1>{% blocktrans %}Your finances{% endblocktrans %}</h1>
 {% endblock stage_header %}
 
 
 {% block stage_form %}
-    {% split_form form %}
 
-    {% if your_finances.split_form != "split_form_last_step" %}
-    {% radio_field form.you_are %}
-    {% endif %}
+    <div class="form-header">
+        <h2><span>{% blocktrans %}You selected:{% endblocktrans %}</span>
+            {% trans your_status.you_are %}
+        </h2>
+        <a href="{% url "plea_form_step" "your_status" %}">{% blocktrans %}Change{% endblocktrans %}</a>
+    </div>
 
-    {% if your_finances.split_form == "split_form_last_step" %}
+    {% if your_status.you_are == "Employed" %}
 
-        <div class="form-header">
-            {% hidden_field form.you_are %}
-            <h2><span>{% blocktrans %}You are:{% endblocktrans %}</span>
-                {% trans your_finances.you_are %}
-            </h2>
-            <a href="{{ request.path }}?reset">{% blocktrans %}Change{% endblocktrans %}</a>
+        {% radio_field form.employed_take_home_pay_period hide_optional=True %}
+
+        {% std_field form.employed_take_home_pay_amount hide_optional=True prefix="£" %}
+
+        {% radio_field form.employed_hardship hide_optional=True inline=True %}
+
+        <div id="employed_hardship-True" class="panel-indent move-up" data-conditional="employed_hardship" data-conditional-value="True">
+            <h2 class="heading-small">{% blocktrans %}Note:{% endblocktrans %}</h2>
+            <p>{% blocktrans %}For the courts to consider allowing you to pay your fine in instalments, you must provide information about your expenses.{% endblocktrans %}</p>
         </div>
 
-        {% if your_finances.you_are == "Employed" %}
+    {% endif %}
 
-            {% radio_field form.employed_take_home_pay_period hide_optional=True %}
+    {% if your_status.you_are == "Self-employed" %}
 
-            {% std_field form.employed_take_home_pay_amount hide_optional=True prefix="£" %}
+        {% radio_field form.self_employed_pay_period hide_optional=True %}
 
-            {% radio_field form.employed_hardship hide_optional=True inline=True %}
+        <div id="section-self-employed-other" class="panel-indent move-up" data-conditional="self_employed_pay_period" data-conditional-value="Self-employed other">
+            {% std_field form.self_employed_pay_other hide_optional=True %}
+        </div>
 
-            <div id="employed_hardship-True" class="panel-indent move-up" data-conditional="employed_hardship" data-conditional-value="True">
-                <h2 class="heading-small">{% blocktrans %}Note:{% endblocktrans %}</h2>
-                <p>{% blocktrans %}For the courts to consider allowing you to pay your fine in instalments, you must provide information about your expenses.{% endblocktrans %}</p>
-            </div>
+        {% std_field form.self_employed_pay_amount hide_optional=True prefix="£" %}
 
-        {% endif %}
+        {% radio_field form.self_employed_hardship hide_optional=True inline=True %}
 
-        {% if your_finances.you_are == "Self-employed" %}
+        <div id="self_employed_hardship-True" class="panel-indent move-up" data-conditional="self_employed_hardship" data-conditional-value="True">
+            <h2 class="heading-small">{% blocktrans %}Note:{% endblocktrans %}</h2>
+            <p>{% blocktrans %}For the courts to consider allowing you to pay your fine in instalments, you must provide information about your expenses.{% endblocktrans %}</p>
+        </div>
 
-            {% radio_field form.self_employed_pay_period hide_optional=True %}
+    {% endif %}
 
-            <div id="section-self-employed-other" class="panel-indent move-up" data-conditional="self_employed_pay_period" data-conditional-value="Self-employed other">
-                {% std_field form.self_employed_pay_other hide_optional=True %}
-            </div>
+    {% if your_status.you_are == "Receiving benefits" %}
 
-            {% std_field form.self_employed_pay_amount hide_optional=True prefix="£" %}
+        {% std_field form.benefits_details hide_optional=True %}
 
-            {% radio_field form.self_employed_hardship hide_optional=True inline=True %}
+        {% radio_field form.benefits_dependents hide_optional=True inline=True %}
 
-            <div id="self_employed_hardship-True" class="panel-indent move-up" data-conditional="self_employed_hardship" data-conditional-value="True">
-                <h2 class="heading-small">{% blocktrans %}Note:{% endblocktrans %}</h2>
-                <p>{% blocktrans %}For the courts to consider allowing you to pay your fine in instalments, you must provide information about your expenses.{% endblocktrans %}</p>
-            </div>
+        {% radio_field form.benefits_period hide_optional=True %}
 
-        {% endif %}
+        <div id="section-benefits-other" class="panel-indent move-up" data-conditional="benefits_period" data-conditional-value="Benefits other">
+            {% std_field form.benefits_pay_other hide_optional=True %}
+        </div>
 
-        {% if your_finances.you_are == "Receiving benefits" %}
+        {% std_field form.benefits_amount hide_optional=True prefix="£" %}
 
-            {% std_field form.benefits_details hide_optional=True %}
+        {% radio_field form.receiving_benefits_hardship hide_optional=True inline=True %}
 
-            {% radio_field form.benefits_dependents hide_optional=True inline=True %}
+        <div id="receiving_benefits_hardship-True" class="panel-indent move-up" data-conditional="receiving_benefits_hardship" data-conditional-value="True">
+            <h2 class="heading-small">{% blocktrans %}Note:{% endblocktrans %}</h2>
+            <p>{% blocktrans %}For the courts to consider allowing you to pay your fine in instalments, you must provide information about your expenses.{% endblocktrans %}</p>
+        </div>
 
-            {% radio_field form.benefits_period hide_optional=True %}
+    {% endif %}
 
-            <div id="section-benefits-other" class="panel-indent move-up" data-conditional="benefits_period" data-conditional-value="Benefits other">
-                {% std_field form.benefits_pay_other hide_optional=True %}
-            </div>
+    {% if your_status.you_are == "Other" %}
 
-            {% std_field form.benefits_amount hide_optional=True prefix="£" %}
+        {% std_field form.other_details hide_optional=True %}
 
-            {% radio_field form.receiving_benefits_hardship hide_optional=True inline=True %}
+        {% std_field form.other_pay_amount hide_optional=True prefix="£" %}
 
-            <div id="receiving_benefits_hardship-True" class="panel-indent move-up" data-conditional="receiving_benefits_hardship" data-conditional-value="True">
-                <h2 class="heading-small">{% blocktrans %}Note:{% endblocktrans %}</h2>
-                <p>{% blocktrans %}For the courts to consider allowing you to pay your fine in instalments, you must provide information about your expenses.{% endblocktrans %}</p>
-            </div>
+        {% radio_field form.other_hardship hide_optional=True inline=True %}
 
-        {% endif %}
-
-        {% if your_finances.you_are == "Other" %}
-
-            {% std_field form.other_details hide_optional=True %}
-
-            {% std_field form.other_pay_amount hide_optional=True prefix="£" %}
-
-            {% radio_field form.other_hardship hide_optional=True inline=True %}
-
-            <div id="other_hardship-True" class="panel-indent move-up" data-conditional="other_hardship" data-conditional-value="True">
-                <h2 class="heading-small">{% blocktrans %}Note:{% endblocktrans %}</h2>
-                <p>{% blocktrans %}For the courts to consider allowing you to pay your fine in instalments, you must provide information about your expenses.{% endblocktrans %}</p>
-            </div>
-
-        {% endif %}
+        <div id="other_hardship-True" class="panel-indent move-up" data-conditional="other_hardship" data-conditional-value="True">
+            <h2 class="heading-small">{% blocktrans %}Note:{% endblocktrans %}</h2>
+            <p>{% blocktrans %}For the courts to consider allowing you to pay your fine in instalments, you must provide information about your expenses.{% endblocktrans %}</p>
+        </div>
 
     {% endif %}
 
