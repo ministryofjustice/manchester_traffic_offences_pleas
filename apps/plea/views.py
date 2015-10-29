@@ -1,8 +1,10 @@
 from django.utils.decorators import method_decorator
 from django.conf import settings
+from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import RequestContext, redirect
+from django.utils.translation import ugettext as _
 from django.views.generic import FormView
 
 from brake.decorators import ratelimit
@@ -79,9 +81,10 @@ class PleaOnlineViews(StorageView):
         self.storage = None
 
     def dispatch(self, request, *args, **kwargs):
-        # If the session has timed out, redirect to case
-        if not request.session.get("plea_data") and kwargs.get("stage") != "notice_type":
-            return HttpResponseRedirect(reverse_lazy("plea_form_step", args=("notice_type",)))
+        # If the session has timed out, redirect to start page
+        if not request.session.get("plea_data") and kwargs.get("stage", "notice_type") != "notice_type":
+            messages.add_message(request, messages.ERROR, _("Your session has timed out"), extra_tags="session_timeout")
+            return HttpResponseRedirect("/")
 
         # Store the index if we've got one
         idx = kwargs.pop("index", None)
