@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-27 14:37+0000\n"
+"POT-Creation-Date: 2015-10-29 10:07+0000\n"
 "PO-Revision-Date: 2015-10-29 09:30+0000\n"
 "Last-Translator: Welsh Language Unit <welsh.language.unit.manager@hmcts.gsi.gov.uk>\n"
 "Language-Team: Welsh (http://www.transifex.com/make-a-plea-gds/make-a-plea/language/cy/)\n"
@@ -106,16 +106,12 @@ msgid "Back"
 msgstr "Yn ôl"
 
 #: apps/feedback/templates/service.html:15
-msgid ""
-"This is your opportunity to tell us your views about using this online plea "
-"service."
+msgid "This is your opportunity to tell us your views about using this online plea service."
 msgstr "Dyma eich cyfle chi i ddweud eich dweud ynglŷn â defnyddio'r gwasanaeth pledio ar-lein."
 
 #: apps/feedback/templates/service.html:16
 #, python-format
-msgid ""
-"If you have questions about your case, you'll need to contact your court "
-"using our <a href=\"%(court_finder_url)s\">court finder service</a>."
+msgid "If you have questions about your case, you'll need to contact your court using our <a href=\"%(court_finder_url)s\">court finder service</a>."
 msgstr "Os oes gennych unrhyw gwestiynau mewn perthynas â'ch achos, bydd arnoch angen cysylltu â'ch llys drwy ddefnyddio ein <a href=\"%(court_finder_url)s\">gwasanaeth dod o hyd i lys</a>."
 
 #: apps/feedback/templates/service.html:39 apps/plea/templates/case.html:72
@@ -1353,7 +1349,7 @@ msgstr "Cysylltwch â'r llys drwy'r post neu e-bost gan ddyfynnu eich cyfeirnod 
 msgid "Your court"
 msgstr "Eich llys"
 
-#: apps/plea/templates/court_finder.html:18
+#: apps/plea/templates/court_finder.html:14
 msgid "You can contact the court by post or email quoting your URN before the date of your hearing."
 msgstr "Gallwch gysylltu â’r llys drwy anfon llythyr neu e-bost gan ddyfynnu eich cyfeirnod unigryw cyn dyddiad eich gwrandawiad."
 
@@ -1361,7 +1357,7 @@ msgstr "Gallwch gysylltu â’r llys drwy anfon llythyr neu e-bost gan ddyfynnu 
 msgid "We can't find your court"
 msgstr "Ni allwn ddod o hyd i'ch llys"
 
-#: apps/plea/templates/court_finder.html:43
+#: apps/plea/templates/court_finder.html:42
 msgid "You'll find contact details for the court considering your case in the notice we sent you."
 msgstr "Fe ddewch o hyd i fanylion cysylltu ar gyfer y llys sy'n ystyried eich achos yn yr hysbysiad a anfonwyd atoch."
 
@@ -1374,9 +1370,7 @@ msgid "The unique reference number you entered doesn’t match our records."
 msgstr "Nid yw'r cyfeirnod unigryw rydych wedi'i roi yn cyfateb i'n cofnodion."
 
 #: apps/plea/templates/court_finder.html:53
-msgid ""
-"Check your URN (it’s on page 1 of the notice we sent you, usually at the "
-"top) then try again."
+msgid "Check your URN (it’s on page 1 of the notice we sent you, usually at the top) then try again."
 msgstr "Gwiriwch eich cyfeirnod unigryw (mae ar dudalen 1 yr hysbysiad a anfonwyd atoch, fel arfer ar y brig) a rhowch gynnig arall arni."
 
 #: apps/plea/templates/court_finder.html:58
@@ -1393,9 +1387,7 @@ msgid "Questions about your case"
 msgstr "Cwestiynau ynglŷn â'ch achos"
 
 #: apps/plea/templates/court_finder.html:69
-msgid ""
-"If you have questions about your case and want to contact the court "
-"considering your case, enter your unique reference number (URN)."
+msgid "If you have questions about your case and want to contact the court considering your case, enter your unique reference number (URN)."
 msgstr "Os oes gennych gwestiynau ynglŷn â'ch achos, ac eisiau cysylltu â'r llys sy'n ystyried eich achos, rhowch eich cyfeirnod unigryw (URN)."
 
 #: apps/plea/templates/court_finder.html:75
@@ -1857,11 +1849,11 @@ msgstr "Newid manylion"
 msgid "Important"
 msgstr "Pwysig"
 
-#: apps/plea/templates/review.html:143
+#: apps/plea/templates/review.html:128
 msgid "It is an offence to make a false statement or to deliberately fail to disclose any relevant facts."
 msgstr "Mae gwneud datganiad anwir neu fethu datgelu unrhyw ffeithiau perthnasol yn fwriadol yn drosedd."
 
-#: apps/plea/templates/review.html:148
+#: apps/plea/templates/review.html:133
 msgid "I confirm that I have read and understand the charge against me and that I am the person named in the Single Justice Procedure Notice."
 msgid_plural "I confirm that I have read and understand the charges against me and that I am the person named in the Single Justice Procedure Notice."
 msgstr[0] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad yn fy erbyn ac mai fi yw'r unigolyn a enwir yn yr Hysbysiad Gweithdrefn Un Ynad."
@@ -1869,7 +1861,7 @@ msgstr[1] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau yn fy erb
 msgstr[2] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau yn fy erbyn ac mai fi yw'r unigolyn a enwir yn yr Hysbysiad Gweithdrefn Un Ynad."
 msgstr[3] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau yn fy erbyn ac mai fi yw'r unigolyn a enwir yn yr Hysbysiad Gweithdrefn Un Ynad."
 
-#: apps/plea/templates/review.html:150
+#: apps/plea/templates/review.html:135
 msgid "I confirm that I have read and understand the charge against me and that I am the person named in the Postal Requisition."
 msgid_plural "I confirm that I have read and understand the charges against me and that I am the person named in the Postal Requisition."
 msgstr[0] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad yn fy erbyn ac mai fi yw'r unigolyn a enwir yn y Wŷs drwy'r Post."
@@ -1877,7 +1869,7 @@ msgstr[1] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad yn fy erbyn
 msgstr[2] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad yn fy erbyn ac mai fi yw'r unigolyn a enwir yn y Wŷs drwy'r Post."
 msgstr[3] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau yn fy erbyn ac mai fi yw'r unigolyn a enwir yn y Wŷs drwy'r Post."
 
-#: apps/plea/templates/review.html:154
+#: apps/plea/templates/review.html:139
 msgid "I confirm that I have read and understand the charge and that I am a representative of the company named in the Single Justice Procedure Notice and am legally entitled to enter a plea on its behalf."
 msgid_plural "I confirm that I have read and understand the charges and that I am a representative of the company named in the Single Justice Procedure Notice and am legally entitled to enter a plea on its behalf."
 msgstr[0] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad ac mai fi yw cynrychiolydd y cwmni a enwir yn yr Hysbysiad Gweithdrefn Un Ynad. Mae gennyf hawl gyfreithiol i gofnodi ple ar ei ran."
@@ -1885,7 +1877,7 @@ msgstr[1] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau ac mai fi
 msgstr[2] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau ac mai fi yw cynrychiolydd y cwmni a enwir yn yr Hysbysiad Gweithdrefn Un Ynad. Mae gennyf hawl gyfreithiol i gofnodi ple ar ei ran."
 msgstr[3] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau ac mai fi yw cynrychiolydd y cwmni a enwir yn yr Hysbysiad Gweithdrefn Un Ynad. Mae gennyf hawl gyfreithiol i gofnodi ple ar ei ran."
 
-#: apps/plea/templates/review.html:156
+#: apps/plea/templates/review.html:141
 msgid "I confirm that I have read and understand the charge and that I am a representative of the company named in the Postal Requisition and am legally entitled to enter a plea on its behalf."
 msgid_plural "I confirm that I have read and understand the charges and that I am a representative of the company named in the Postal Requisition and am legally entitled to enter a plea on its behalf."
 msgstr[0] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad ac mai fi yw'r unigolyn sy'n cynrychioli'r cwmni a enwir yn y Wŷs drwy'r Post.  Mae gennyf hawl gyfreithiol i gofnodi ple ar ei ran."
