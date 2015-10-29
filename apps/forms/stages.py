@@ -18,6 +18,9 @@ class FormStage(object):
         self.context = {}
         self.messages = []
 
+        if not hasattr(self, "storage_key"):
+            self.storage_key = self.name
+
         if not hasattr(self, "dependencies"):
             self.dependencies = []
 
@@ -158,7 +161,11 @@ class MultiStageForm(object):
             else:
                 self.urls[stage_class.name] = reverse(self.url_name, args=(stage_class.name,))
 
-            self.all_data[stage_class.name] = {}
+            try:
+                self.all_data[stage_class.storage_key] = {}
+            except AttributeError:
+                self.all_data[stage_class.name] = {}
+
             if stage_class.name == current_stage:
                 self.current_stage_class = stage_class
 
@@ -207,10 +214,10 @@ class MultiStageForm(object):
         else:
             self.current_stage = self.current_stage_class(self.urls, self.all_data)
 
-        if self.current_stage.name not in self.all_data:
-            self.all_data[self.current_stage.name] = {}
+        if self.current_stage.storage_key not in self.all_data:
+            self.all_data[self.current_stage.storage_key] = {}
 
-        self.all_data[self.current_stage.name].update(self.current_stage.save(form_data, next_step=next_url))
+        self.all_data[self.current_stage.storage_key].update(self.current_stage.save(form_data, next_step=next_url))
         self.save_to_storage()
 
         return True
