@@ -48,19 +48,8 @@
 
 {% block stage_form %}
 
-    {% if notice_type.sjp %}
-        <img class="help-image" src="{% static "images/illustration-urn-and-date.png" %}" width="260" height="176" alt="{% blocktrans %}The location of the URN and Posting date on the notice we sent to you{% endblocktrans %}">
+    {% std_field form.urn %}
 
-        <div class="with-image">
-            {% multi_field form.posting_date %}
-        </div>
-    {% else %}
-        {% multi_field form.date_of_hearing %}
-    {% endif %}
-
-    {% std_field form.number_of_charges %}
-
-    {% radio_field form.plea_made_by %}
 {% endblock stage_form %}
 
 {% block stage_submit %}
