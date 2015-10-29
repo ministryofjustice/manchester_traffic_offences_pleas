@@ -20,9 +20,11 @@ class TestForm1(forms.Form):
     field1 = forms.CharField()
     field2 = forms.IntegerField()
 
+
 class TestForm2(forms.Form):
     field3 = forms.CharField()
     field4 = forms.EmailField()
+
 
 class TestForm3(forms.Form):
     skip_stage_5 = forms.BooleanField()
@@ -33,14 +35,16 @@ class Intro(FormStage):
     template = "test/intro.html"
     form_class = None
 
+
 class Stage2(FormStage):
     name = "stage_2"
     template = "test/stage.html"
     form_class = TestForm1
 
+
 class Stage3(FormStage):
     name = "stage_3"
-    form_class= TestForm2
+    form_class = TestForm2
     template = "test/stage.html"
     dependencies = ["stage_2"]
 
@@ -66,8 +70,10 @@ class Stage3(FormStage):
 
         return form_data
 
+
 class Stage4(FormStage):
     name = "stage_4"
+    storage_key = "stage_4"
     form_class = TestForm3
     template = "test/stage.html"
     dependencies = ["stage_2", "stage_3"]
@@ -82,11 +88,21 @@ class Stage4(FormStage):
 
         return clean_data
 
+
+class Stage45(FormStage):
+    name = "stage_45"
+    storage_key = "stage_4"
+    form_class = TestForm1
+    template = "test/stage.html"
+    dependencies = ["stage_4", ]
+
+
 class Stage5(FormStage):
     name = "stage_5"
     form_class = TestForm1
     template = "test/stage.html"
     dependencies = ["stage_2", "stage_3", "stage_4"]
+
 
 class Review(FormStage):
     name = "review"
@@ -97,7 +113,7 @@ class Review(FormStage):
 
 class MultiStageFormTest(MultiStageForm):
     url_name = "msf-url"
-    stage_classes = [Intro, Stage2, Stage3, Stage4, Stage5, Review]
+    stage_classes = [Intro, Stage2, Stage3, Stage4, Stage45, Stage5, Review]
 
 
 class TestMultiStageForm(TestCase):
@@ -191,7 +207,7 @@ class TestMultiStageForm(TestCase):
 
     @patch("apps.forms.stages.reverse", reverse)
     @patch("apps.forms.stages.messages.add_message")
-    def test_form_stage3_messages(self, add_message):
+    def test_form_stage3_messages(self, add_msg):
         request_context = {}
         msf = MultiStageFormTest({}, "stage_3")
         msf.all_data["field2"] = 2
@@ -206,7 +222,20 @@ class TestMultiStageForm(TestCase):
         msf.save(form_data, request_context)
         msf.process_messages({})
 
-        add_message.assert_called_once_with({}, 25, "This is a test message", extra_tags=None)
+        add_msg.assert_called_once_with({}, 25, "This is a test message", extra_tags=None)
+
+    @patch("apps.forms.stages.reverse", reverse)
+    def test_form_stage45_saves_to_specified_key(self):
+        request_context = {}
+        msf = MultiStageFormTest({}, "stage_45")
+        msf.load(request_context)
+        msf.save({"field1": "Stage 4",
+                  "field2": 4},
+                 request_context)
+        # msf.render()
+
+        self.assertEqual(msf.all_data["stage_4"]["field1"], "Stage 4")
+        self.assertEqual(msf.all_data["stage_4"]["field2"], 4)
 
     @patch("apps.forms.stages.reverse", reverse)
     def test_form_stage4_unmet_dependencies(self):
@@ -255,7 +284,6 @@ class TestMultiStageForm(TestCase):
         msf.save({"skip_stage_5": False}, request_context)
 
         self.assertNotIn("skipped", msf.all_data["stage_5"])
-
 
     @patch("apps.forms.stages.reverse", reverse)
     def test_form_review_unmet_dependencies(self):
@@ -354,7 +382,7 @@ class TestMultiStageForm(TestCase):
         msf.load(request_context)
         msf.save({"field1": "",
                   "field2": "This is not an integer"},
-                  request_context)
+                 request_context)
         response = msf.render()
 
         # check it doesn't redirect
