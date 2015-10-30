@@ -1,37 +1,18 @@
-FROM ubuntu:14.04
+FROM python:2.7
 
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libxml2-dev \
-    libxslt1-dev \
-    python-pip \
-    libpq-dev \
-    postgresql-client-9.3\
-    default-jre \
-    git \
-    python-dev \
-    unoconv \
-    gettext \
-    libffi-dev \
-    uwsgi
-
-ENV APP_HOME /srv/pleaonline
-
+ENV APP_HOME=/makeaplea
 WORKDIR $APP_HOME
-ADD . $APP_HOME
 
-RUN pip install -r requirements.txt
+RUN apt-get -y update && apt-get -y install python-psycopg2
 
 COPY /docker/rds-combined-ca-bundle.pem /usr/local/share/ca-certificates/rds-combined-ca-bundle.pem
 
 RUN chown root:root /usr/local/share/ca-certificates/rds-combined-ca-bundle.pem && \
     chmod 600 /usr/local/share/ca-certificates/rds-combined-ca-bundle.pem
 
-ENV release_stage=dev
+COPY . $APP_HOME
+RUN pip install -r requirements.txt
 
-EXPOSE 8080
+EXPOSE 8111
 
-CD $APP_HOME
-
-CMD ["python", "manage.py", "runserver"]
-
+CMD ["gunicorn",  "make_a_plea.wsgi", "--bind=0.0.0.0:8111"]
