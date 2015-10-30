@@ -48,6 +48,18 @@ class TestValidators(TestCase):
             enabled=True,
             test_mode=False)
 
+        self.court10 = Court.objects.create(
+            court_code="0000",
+            region_code="10",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_email="test@test.com",
+            submission_email="test@test.com",
+            plp_email="test@test.com",
+            enabled=True,
+            test_mode=False)
+
         self.court17 = Court.objects.create(
             court_code="0000",
             region_code="17",
@@ -80,6 +92,7 @@ class TestValidators(TestCase):
         good_urns = [
             "02TJDS0479/15/0014AP",
             "05/A1/12345/01",
+            "10/A1/12345/01",
             "17/A1/12345/01",
             "06/AA/12345/99",
             "06/AA/0012345/99",
