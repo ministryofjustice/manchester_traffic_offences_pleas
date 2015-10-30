@@ -1,0 +1,5 @@
+settings/local*.py
+*.pyc
+vagrant/
+Vagrantfile
+.idea
