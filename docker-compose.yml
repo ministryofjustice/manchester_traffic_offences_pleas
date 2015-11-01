@@ -6,7 +6,10 @@ django:
     - "8000:8000"
   links:
     - postgres:db
-  env_file: docker/django-env
+  # local dev env variables which are kept out of version control
+  env_file: docker/local-env
+  environment:
+    - DJANGO_SETTINGS_MODULES=make_a_plea.settings.dev
 postgres:
   image: postgres:9.4
   environment:

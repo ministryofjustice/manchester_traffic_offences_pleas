@@ -92,3 +92,5 @@ coverage.xml
 
 # local version of moj_template
 moj_template/
+
+/docker/local-env
