@@ -1,5 +1,11 @@
 settings/local*.py
 *.pyc
+.idea
+
 vagrant/
 Vagrantfile
-.idea
+.vagrant
+
+.git/
+
+node_modules/*
