@@ -59,7 +59,7 @@
             <h2>{% blocktrans %}Your finances{% endblocktrans %}</h2>
         </header>
 
-        {% include "partials/review_finances.html" %}
+        {% include "partials/review_finances.html" with show_weekly_financials=True %}
     </section>
 
             {% if your_finances.hardship %}

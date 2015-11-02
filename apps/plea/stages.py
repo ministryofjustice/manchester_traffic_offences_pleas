@@ -57,6 +57,15 @@ def get_offences(case_data):
         return offences
 
 
+def calculate_weekly_amount(amount, period="Weekly"):
+    if period == "Monthly":
+        return (amount*12)/52
+    elif period == "Fortnightly":
+        return amount/2
+    else:
+        return amount
+
+
 class NoticeTypeStage(FormStage):
     name = "notice_type"
     template = "notice_type.html"
@@ -271,7 +280,6 @@ class YourFinancesStage(FormStage):
         except KeyError:
             pass
 
-
     def load(self, request_context=None):
         return super(YourFinancesStage, self).load(request_context)
 
@@ -281,11 +289,20 @@ class YourFinancesStage(FormStage):
 
         you_are = self.all_data["your_status"]["you_are"]
 
-        if you_are:
-            hardship_field = you_are.replace(" ", "_").replace("-", "_").lower() + "_hardship"
+        prefixes = {
+            "Employed": "employed",
+            "Self-employed": "self_employed",
+            "Receiving benefits": "benefits",
+            "Other": "other"
+        }
+        prefix = prefixes.get(you_are, False)
 
-            hardship = clean_data.get(hardship_field, False)
+        if you_are and prefix:
+            pay_period = clean_data.get(prefix + "_pay_period", "Weekly")
+            pay_amount = clean_data.get(prefix + "_pay_amount", 0)
+            self.all_data["your_finances"]["weekly_amount"] = calculate_weekly_amount(amount=pay_amount, period=pay_period)
 
+            hardship = clean_data.get(prefix + "_hardship", False)
             self.all_data["your_finances"]["hardship"] = hardship
 
             if not hardship:
