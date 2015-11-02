@@ -262,18 +262,18 @@ class YourStatusForm(BaseStageForm):
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
 
 class YourFinancesEmployedForm(BaseStageForm):
-    employed_take_home_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+    employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                       choices=PERIOD_CHOICES,
                                                       label=_("How often do you get paid?"),
                                                       error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                                       "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
 
-    employed_take_home_pay_amount = forms.DecimalField(label=_("What's your take home pay (after tax)?"),
+    employed_pay_amount = forms.DecimalField(label=_("What's your take home pay (after tax)?"),
                                                        localize=True,
                                                        widget=forms.TextInput(attrs={"pattern": "[0-9]*",
-                                                                                     "data-template-trigger": "employed_take_home_pay_period",
+                                                                                     "data-template-trigger": "employed_pay_period",
                                                                                      "data-template": _("What's your {value} take home pay (after tax)?"),
-                                                                                     "data-template-delegate": "[for=id_employed_take_home_pay_amount] .label-text",
+                                                                                     "data-template-delegate": "[for=id_employed_pay_amount] .label-text",
                                                                                      "class": "form-control-inline"}),
                                                        error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                                        "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
@@ -331,7 +331,7 @@ class YourFinancesBenefitsForm(BaseStageForm):
                          ("Benefits other", _("Other")),)
 
     dependencies = {
-        "benefits_pay_other": {"field": "benefits_period", "value": "Benefits other"}
+        "benefits_pay_other": {"field": "benefits_pay_period", "value": "Benefits other"}
     }
 
     benefits_details = forms.CharField(label=_("Which benefits do you receive?"),
@@ -346,7 +346,7 @@ class YourFinancesBenefitsForm(BaseStageForm):
                                             label=_("Does this include payment for dependants?"),
                                             error_messages={"required": ERROR_MESSAGES["BENEFITS_DEPENDANTS_REQUIRED"]})
 
-    benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+    benefits_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                         choices=BEN_PERIOD_CHOICES,
                                         label=_("How often are your benefits paid?"),
                                         error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
@@ -357,18 +357,18 @@ class YourFinancesBenefitsForm(BaseStageForm):
                                          widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
                                          help_text=_("If you selected 'other', tell us how often you get paid."))
 
-    benefits_amount = forms.DecimalField(label=_("What's your average take home pay?"),
+    benefits_pay_amount = forms.DecimalField(label=_("What's your average take home pay?"),
                                          localize=True,
                                          widget=forms.TextInput(attrs={"pattern": "[0-9]*",
-                                                                       "data-template-trigger": "benefits_period",
+                                                                       "data-template-trigger": "benefits_pay_period",
                                                                        "data-template": _("What's your average {value} take home pay?"),
                                                                        "data-template-defaults-for": _("Other"),
-                                                                       "data-template-delegate": "[for=id_benefits_amount] .label-text",
+                                                                       "data-template-delegate": "[for=id_benefits_pay_amount] .label-text",
                                                                        "class": "form-control-inline"}),
                                          error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                          "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
-    receiving_benefits_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
+    benefits_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
                                                          help_text=_("For example, you would become homeless."),
                                                          widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                          choices=YESNO_CHOICES["Byddai/Na fyddai"],
