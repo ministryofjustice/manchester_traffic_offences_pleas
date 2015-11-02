@@ -29,10 +29,10 @@
 
     {% if your_status.you_are == "Employed" %}
         <dt>{% blocktrans %}You get paid{% endblocktrans %}</dt>
-        <dd>{% trans your_finances.employed_take_home_pay_period %}</dd>
+        <dd>{% trans your_finances.employed_pay_period %}</dd>
 
         <dt>{% blocktrans %}Amount{% endblocktrans %}</dt>
-        <dd>£{{ your_finances.employed_take_home_pay_amount|floatformat:2|intcomma }}</dd>
+        <dd>£{{ your_finances.employed_pay_amount|floatformat:2|intcomma }}</dd>
     {% endif %}
 
     {% if your_status.you_are == "Self-employed" %}
@@ -53,15 +53,15 @@
         <dd>{{ your_finances.benefits_details|linebreaksbr }}</dd>
 
         <dt>{% blocktrans %}You get paid{% endblocktrans %}</dt>
-        <dd>{% if your_finances.benefits_period == "Benefits other" %}{% blocktrans %}Other{% endblocktrans %}{% else %}{% trans your_finances.benefits_period %}{% endif %}</dd>
+        <dd>{% if your_finances.benefits_pay_period == "Benefits other" %}{% blocktrans %}Other{% endblocktrans %}{% else %}{% trans your_finances.benefits_pay_period %}{% endif %}</dd>
 
-        {%  if your_finances.benefits_period == "Benefits other" %}
+        {%  if your_finances.benefits_pay_period == "Benefits other" %}
         <dt>{% blocktrans %}Details{% endblocktrans %}</dt>
         <dd>{{ your_finances.benefits_pay_other|linebreaksbr|default:"-" }}</dd>
         {% endif %}
 
         <dt>{% blocktrans %}Amount{% endblocktrans %}</dt>
-        <dd>£{{ your_finances.benefits_amount|floatformat:2|intcomma }}</dd>
+        <dd>£{{ your_finances.benefits_pay_amount|floatformat:2|intcomma }}</dd>
 
         <dt>{% blocktrans %}Includes payment for dependents?{% endblocktrans %}</dt>
         <dd>{{ your_finances.benefits_dependents|yesno:_("Yes,No (v1)") }}</dd>
@@ -73,6 +73,11 @@
 
         <dt>{% blocktrans %}Amount{% endblocktrans %}</dt>
         <dd>£{{ your_finances.other_pay_amount|floatformat:2|intcomma }}</dd>
+    {% endif %}
+
+    {% if show_weekly_financials %}
+        <dt>Weekly take home pay</dt>
+        <dd>£{{ your_finances.weekly_amount|floatformat:2|intcomma }}</dd>
     {% endif %}
 
         <dt>{% blocktrans %}Financial hardship{% endblocktrans %}</dt>
