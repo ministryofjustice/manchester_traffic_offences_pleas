@@ -470,9 +470,8 @@ class EmailTemplateTests(TestCase):
 
     def test_self_employed_other_email_finances_output(self):
         context_data_status = {"you_are": "Self-employed"}
-        context_data_finances = {"self_employed_pay_period": "Self-employed other",
+        context_data_finances = {"self_employed_pay_period": "Other",
                                  "self_employed_pay_amount": "200",
-                                 "self_employed_pay_other": "by the window",
                                  "self_employed_hardship": False}
         context_data = self.get_context_data(status_data=context_data_status, finances_data=context_data_finances)
 
@@ -481,7 +480,6 @@ class EmailTemplateTests(TestCase):
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
         self.assertContainsDefinition(response.content, "You get paid", "Other", count=1)
-        self.assertContainsDefinition(response.content, "Details", "by the window", count=1)
         self.assertContainsDefinition(response.content, "Amount", "£200.00", count=1)
         self.assertContainsDefinition(response.content, "Weekly take home pay", "£200.00", count=1)
 
@@ -535,8 +533,7 @@ class EmailTemplateTests(TestCase):
         context_data_status = {"you_are": "Receiving benefits"}
         context_data_finances = {"benefits_details": "Housing benefit\nUniversal Credit",
                                  "benefits_dependents": True,
-                                 "benefits_pay_period": "Benefits other",
-                                 "benefits_pay_other": "Other details!",
+                                 "benefits_pay_period": "Other",
                                  "benefits_pay_amount": "200",
                                  "benefits_hardship": False}
         context_data = self.get_context_data(status_data=context_data_status, finances_data=context_data_finances)
@@ -547,7 +544,6 @@ class EmailTemplateTests(TestCase):
 
         self.assertContainsDefinition(response.content, "Your benefits", "Housing benefit<br />Universal Credit", count=1)
         self.assertContainsDefinition(response.content, "You get paid", "Other", count=1)
-        self.assertContainsDefinition(response.content, "Details", "Other details!", count=1)
         self.assertContainsDefinition(response.content, "Amount", "£200.00", count=1)
         self.assertContainsDefinition(response.content, "Includes payment for dependents?", "Yes", count=1)
         self.assertContainsDefinition(response.content, "Weekly take home pay", "£200.00", count=1)
