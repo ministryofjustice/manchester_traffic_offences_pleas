@@ -37,12 +37,7 @@
 
     {% if your_status.you_are == "Self-employed" %}
         <dt>{% blocktrans %}You get paid{% endblocktrans %}</dt>
-        <dd>{% if your_finances.self_employed_pay_period == "Self-employed other" %}{% blocktrans %}Other{% endblocktrans %}{% else %}{% trans your_finances.self_employed_pay_period %}{% endif %}</dd>
-
-        {% if your_finances.self_employed_pay_period == "Self-employed other" %}
-        <dt>{% blocktrans %}Details{% endblocktrans %}</dt>
-        <dd>{{ your_finances.self_employed_pay_other|linebreaksbr|default:"-" }}</dd>
-        {% endif %}
+        <dd>{% trans your_finances.self_employed_pay_period %}</dd>
 
         <dt>{% blocktrans %}Amount{% endblocktrans %}</dt>
         <dd>£{{ your_finances.self_employed_pay_amount|floatformat:2|intcomma }}</dd>
@@ -53,12 +48,7 @@
         <dd>{{ your_finances.benefits_details|linebreaksbr }}</dd>
 
         <dt>{% blocktrans %}You get paid{% endblocktrans %}</dt>
-        <dd>{% if your_finances.benefits_pay_period == "Benefits other" %}{% blocktrans %}Other{% endblocktrans %}{% else %}{% trans your_finances.benefits_pay_period %}{% endif %}</dd>
-
-        {%  if your_finances.benefits_pay_period == "Benefits other" %}
-        <dt>{% blocktrans %}Details{% endblocktrans %}</dt>
-        <dd>{{ your_finances.benefits_pay_other|linebreaksbr|default:"-" }}</dd>
-        {% endif %}
+        <dd>{% trans your_finances.benefits_pay_period %}</dd>
 
         <dt>{% blocktrans %}Amount{% endblocktrans %}</dt>
         <dd>£{{ your_finances.benefits_pay_amount|floatformat:2|intcomma }}</dd>

@@ -39,10 +39,6 @@
 
         {% radio_field form.self_employed_pay_period hide_optional=True %}
 
-        <div id="section-self-employed-other" class="panel-indent move-up" data-conditional="self_employed_pay_period" data-conditional-value="Self-employed other">
-            {% std_field form.self_employed_pay_other hide_optional=True %}
-        </div>
-
         {% std_field form.self_employed_pay_amount hide_optional=True prefix="£" %}
 
         {% radio_field form.self_employed_hardship hide_optional=True inline=True %}
@@ -61,10 +57,6 @@
         {% radio_field form.benefits_dependents hide_optional=True inline=True %}
 
         {% radio_field form.benefits_pay_period hide_optional=True %}
-
-        <div id="section-benefits-other" class="panel-indent move-up" data-conditional="benefits_pay_period" data-conditional-value="Benefits other">
-            {% std_field form.benefits_pay_other hide_optional=True %}
-        </div>
 
         {% std_field form.benefits_pay_amount hide_optional=True prefix="£" %}
 
@@ -93,3 +85,34 @@
     {% endif %}
 
 {% endblock stage_form %}
+
+{% block javascripts %}
+    {{ block.super }}
+
+    <script type="text/javascript">
+    $(function(){
+        var options = {
+            "trigger": "[name$=_pay_period]",
+            "templates": {
+                {% if your_status.you_are == "Receiving benefits" %}
+
+                "Weekly": "{% blocktrans %}What is your weekly take home pay?{% endblocktrans %}",
+                "Fortnightly": "{% blocktrans %}What is your fortnightly take home pay?{% endblocktrans %}",
+                "Monthly": "{% blocktrans %}What is your monthly take home pay?{% endblocktrans %}",
+                "Other": "{% blocktrans %}What is your average weekly take home pay?{% endblocktrans %}"
+
+                {% else %}
+
+                "Weekly": "{% blocktrans %}What is your weekly take home pay (after tax)?{% endblocktrans %}",
+                "Fortnightly": "{% blocktrans %}What is your fortnightly take home pay (after tax)?{% endblocktrans %}",
+                "Monthly": "{% blocktrans %}What is your monthly take home pay (after tax)?{% endblocktrans %}",
+                "Other": "{% blocktrans %}What is your average weekly take home pay (after tax)?{% endblocktrans %}"
+
+                {% endif %}
+            }
+        }
+
+        new moj.Modules._TemplatedElement($('[for$=_pay_amount] .label-text'), options);
+    });
+    </script>
+{% endblock javascripts %}
