@@ -1,5 +1,4 @@
-settings/local*.py
-*.pyc
+
 .idea
 
 vagrant/
@@ -8,6 +7,12 @@ Vagrantfile
 
 .git/
 
-/lib/
+lib/
 
 node_modules/*
+
+make_a_plea/settings/local.py
+
+local.py
+
+*.pyc
