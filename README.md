@@ -20,7 +20,7 @@ Clone the repository:
     git clone git@github.com:ministryofjustice/manchester_traffic_offences_pleas.git
 
 
-#### To run a dev environment with vagrant:
+##### To run a dev environment with vagrant:
 
 Create your own local.py:
 
@@ -38,7 +38,7 @@ Once you're ssh'd in run:
 to run the development web server, and browse to http://localhost:8000 to see the server.
 
 
-#### To run a dev environment using docker:
+##### To run a dev environment using docker:
 
 copy `docker/sample-local-env` to `docker/local-env`
 
@@ -46,7 +46,7 @@ run:
 
     docker-compose up
 
-This will install dependencies from requirements.txt initial migrations will need to be run manually -  see below.
+This will install dependencies from requirements.txt but initial migrations will need to be run manually - see below.
 
 Navigate to: 
 
@@ -56,6 +56,12 @@ To get an interactive prompt (needed to run migrations, etc.), run:
 
     docker-compose run django /bin/bash
 
+You can also run commands directly, e.g:
+
+    docker-compose run django ./manage. migrate
+
+
+##### Front-end build
 
 The front end build uses gulp, to watch changes and rebuild on change run:
 
