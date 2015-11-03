@@ -8,7 +8,9 @@ Dependencies
 
 - VirtualBox
 - Vagrant
+- Docker & Docker-compose 
 
+NOTE: Vagrant or docker can be used to set up a local dev environment
 
 Installation
 ------------
@@ -23,7 +25,7 @@ Create your own local.py:
     cp manchester_traffic_offences/settings/local.py.example make_a_plea/settings/local.py
 
 
-Run vagrant:
+To run a dev environment with vagrant:
 
     vagrant up
     vagrant ssh
@@ -35,6 +37,23 @@ Once you're ssh'd in run:
     ./manage.py runserver 0.0.0.0:8000
     
 to run the development web server, and browse to http://localhost:8000 to see the server.
+
+
+To run a dev environment using docker:
+
+copy `docker/sample-local-env` to `docker/local-env`
+
+run: 
+
+    docker-compose up
+
+Navigate to: 
+
+    {ip of docker machine}:8000
+
+To get an interactive prompt (needed to run migrations), run:
+
+    docker-compose run django /bin/bash
 
 The front end build uses gulp, to watch changes and rebuild on change run:
 
