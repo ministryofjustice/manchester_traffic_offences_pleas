@@ -8,4 +8,6 @@ Vagrantfile
 
 .git/
 
+/lib/
+
 node_modules/*
