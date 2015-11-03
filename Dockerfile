@@ -1,6 +1,6 @@
 FROM python:2.7
 
-ENV APP_HOME=/makeaplea
+ENV APP_HOME=/makeaplea/
 WORKDIR $APP_HOME
 
 RUN apt-get -y update && apt-get -y install python-psycopg2
@@ -11,6 +11,7 @@ RUN chown root:root /usr/local/share/ca-certificates/rds-combined-ca-bundle.pem 
     chmod 600 /usr/local/share/ca-certificates/rds-combined-ca-bundle.pem
 
 COPY . $APP_HOME
+
 RUN pip install -r requirements.txt
 
 EXPOSE 8111
