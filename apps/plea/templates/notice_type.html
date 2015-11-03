@@ -15,8 +15,8 @@
     <img class="help-image" src="{% static "images/illustration-notice-title.png" %}" width="260" height="278" alt="{% blocktrans %}The location of the words 'Single Justice Procedure Notice', if present, at the top of the notice we sent to you{% endblocktrans %}">
 
     <div class="notice-type with-image">
-        <h2 class="heading-medium">{% blocktrans %}From the first page of the notice we sent to you:{% endblocktrans %}</h2>
+        <h2 class="heading-medium">{% blocktrans %}From page 1 of the notice we sent to you:{% endblocktrans %}</h2>
 
-        {% radio_field form.sjp inline=True %}
+        {% radio_field form.sjp %}
     </div>
 {% endblock stage_form %}
