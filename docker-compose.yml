@@ -9,7 +9,7 @@ django:
     - postgres:db
   # local dev env variables which are kept out of version control
   env_file: docker/local-env
-  #command: ./manage.py runserver 0.0.0.0:8000 
+  command: ./manage.py runserver 0.0.0.0:8000 
   volumes:
     - .:/makeaplea
 postgres:

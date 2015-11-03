@@ -10,10 +10,13 @@ COPY /docker/rds-combined-ca-bundle.pem /usr/local/share/ca-certificates/rds-com
 RUN chown root:root /usr/local/share/ca-certificates/rds-combined-ca-bundle.pem && \
     chmod 600 /usr/local/share/ca-certificates/rds-combined-ca-bundle.pem
 
-COPY . $APP_HOME
+COPY requirements.txt $APP_HOME
+ADD requirements/ $APP_HOME/requirements/
 
 RUN pip install -r requirements.txt
 
-EXPOSE 8111
+COPY . $APP_HOME
 
 CMD ["gunicorn",  "make_a_plea.wsgi", "--bind=0.0.0.0:8111"]
+
+EXPOSE 8111
