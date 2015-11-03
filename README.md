@@ -58,7 +58,7 @@ To get an interactive prompt (needed to run migrations, etc.), run:
 
 You can also run commands directly, e.g:
 
-    docker-compose run django ./manage. migrate
+    docker-compose run django ./manage.py migrate
 
 
 ##### Front-end build
