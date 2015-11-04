@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 
 ERROR_MESSAGES = {
-    "NOTICE_TYPE_REQUIRED": _("Tell us if the notice has the words 'Single Justice Procedure Notice' written at the top"),
+    "NOTICE_TYPE_REQUIRED": _("Tell us what is written at the top of the notice we sent to you"),
     "URN_REQUIRED": _("Enter your unique reference number (URN)"),
     "URN_INVALID": _("The unique reference number (URN) isn't valid. Enter the number exactly as it appears on page 1 of the notice"),
     "URN_ALREADY_USED": _("Enter the correct URN"),
