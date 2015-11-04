@@ -1,0 +1,19 @@
+# local dev env
+
+django:
+  build: .
+  ports:
+    - "8111:8111"
+    - "8000:8000"
+  links:
+    - postgres:db
+  # local dev env variables which are kept out of version control
+  env_file: docker/local-env
+  command: ./manage.py runserver 0.0.0.0:8000 
+  volumes:
+    - .:/makeaplea
+postgres:
+  image: postgres:9.4
+  environment:
+    - POSTGRES_USER=makeaplea
+    - POSTGRES_PASSWORD=password
