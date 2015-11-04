@@ -2,7 +2,7 @@ from .base import *
 import os
 
 
-DEBUG = False
+DEBUG = True 
 TEMPLATE_DEBUG = DEBUG
 
 DATABASES = {
@@ -13,9 +13,6 @@ DATABASES = {
         'PASSWORD': os.environ.get('POSTGRES_PASS', ''),
         'HOST': os.environ.get('POSTGRES_HOST', ''),
         'PORT': os.environ.get('POSTGRES_PORT', ''),
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
     }
 }
 
@@ -34,7 +31,7 @@ BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1',
                             'polling_interval': 1,
                             'visibility_timeout': 3600}
 
-ALLOWED_HOSTS = ["dev.makeaplea.dsd.io", ]
+ALLOWED_HOSTS = ["localhost:8000", ]
 
 # Enable CachedStaticFilesStorage for cache-busting assets
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
