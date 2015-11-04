@@ -115,6 +115,12 @@ class CaseStage(FormStage):
         if "posting_date" in clean_data:
             clean_data["contact_deadline"] = clean_data["posting_date"] + relativedelta(days=+28)
 
+        try:
+            if len(self.all_data["plea"]["data"]) > clean_data["number_of_charges"]:
+                del self.all_data["plea"]["data"][clean_data["number_of_charges"]:]
+        except KeyError:
+            pass
+
         if "complete" in clean_data:
             if clean_data.get("plea_made_by", "Defendant") == "Defendant":
                 self.set_next_step("your_details")
@@ -236,8 +242,8 @@ class PleaStage(IndexedStage):
                 else:
                     if stage_data["none_guilty"]:
                         self.set_next_step("review", skip=["your_status", "your_finances"])
-                    elif "skipped" in self.all_data["your_status"]:
-                        del self.all_data["your_status"]["skipped"]
+                    elif "skipped" in self.all_data["your_finances"]:
+                        del self.all_data["your_finances"]["skipped"]
 
         return stage_data
 
