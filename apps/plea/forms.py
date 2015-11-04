@@ -35,12 +35,14 @@ def reorder_fields(fields, order):
 
 
 class NoticeTypeForm(BaseStageForm):
+    SJP_CHOICES = ((True, _("Single Justice Procedure Notice")),
+                   (False, _("Something else")))
+
     sjp = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                  required=True,
                                  coerce=to_bool,
-                                 choices=YESNO_CHOICES["Ydy/Nac ydy"],
-                                 label=_("Is the title at the very top, next to the police logo, 'Single Justice Procedure Notice'?"),
-                                 help_text=_("If your paperwork does not have Single Justice Procedure Notice written in the place shown, select no to continue."),
+                                 choices=SJP_CHOICES,
+                                 label=_("What is the title at the very top of the page?"),
                                  error_messages={"required": ERROR_MESSAGES["NOTICE_TYPE_REQUIRED"]})
 
 
