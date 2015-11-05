@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from rest_framework.reverse import reverse
 from rest_framework.test import (APITestCase, APIRequestFactory, force_authenticate)
 
-from apps.plea.models import Case
+from apps.plea.models import Case, Court
 from .views import CaseViewSet
 
 
@@ -24,6 +24,20 @@ def create_api_user():
     auth_header = {'HTTP_AUTHORIZATION': 'Basic {}'.format(credentials)}
 
     return user, auth_header
+
+
+def create_court(region):
+    return Court.objects.create(
+        court_code="0000",
+        region_code=region,
+        court_name="test court",
+        court_address="test address",
+        court_telephone="0800 MAKEAPLEA",
+        court_email="test@test.com",
+        submission_email=True,
+        plp_email="test@test.com",
+        enabled=True,
+        test_mode=False)
 
 
 class GeneralAPiTestCase(APITestCase):
@@ -55,12 +69,14 @@ class GeneralAPiTestCase(APITestCase):
 class CaseAPICallTestCase(APITestCase):
 
     def setUp(self):
+        create_court("00")
         self.user, self.auth_header = create_api_user()
 
         self.endpoint = reverse('api-v0:case-list', format="json")
 
         self.test_data = {
             u'urn': u'00/aa/00000/00',
+            u'case_number': '16273482',
             u'offences': [
                 {
                     u"ou_code": u"test ou",
@@ -79,22 +95,14 @@ class CaseAPICallTestCase(APITestCase):
             ]
         }
 
-    def test_urn_validation(self):
-
-        self.test_data['urn'] = 'xxx'
-
-        response = self.client.post(self.endpoint, self.test_data,
-                                    **self.auth_header)
-
-        self.assertEqual(response.status_code, 400)
-
+    def test_urn_dupe_validation(self):
         self.test_data['urn'] = '00/aa/0000000/00'
         response = self.client.post(self.endpoint, self.test_data,
                                     **self.auth_header)
 
         self.assertEqual(response.status_code, 201)
 
-        self.test_data['urn'] = 'xxx'
+        self.test_data['urn'] = '00/aa/0000000/00'
         response = self.client.post(self.endpoint, self.test_data,
                                     **self.auth_header)
         self.assertEqual(response.status_code, 400)
@@ -114,7 +122,7 @@ class CaseAPICallTestCase(APITestCase):
 
         self.assertEqual(Case.objects.all().count(), 1)
         self.assertEqual(case.offences.all().count(), 2)
-        self.assertEqual(case.urn, self.test_data['urn'])
+        self.assertEqual(case.urn, self.test_data["urn"])
 
         self.assertEquals(case.urn, self.test_data["urn"])
 
