@@ -41,7 +41,7 @@ class CaseSerializer(serializers.ModelSerializer):
 
         try:
             Case.objects.get(case_number=value)
-        except (Case.DoesNotExist, Case.MultipleObjectsReturned ):
+        except (Case.DoesNotExist, Case.MultipleObjectsReturned):
             return value
         else:
             raise serializers.ValidationError("Case with this case number already exists")
