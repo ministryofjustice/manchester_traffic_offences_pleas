@@ -304,6 +304,7 @@ class YourFinancesStage(FormStage):
         prefix = prefixes.get(you_are, False)
 
         if you_are and prefix:
+
             pay_period = clean_data.get(prefix + "_pay_period", "Weekly")
             pay_amount = clean_data.get(prefix + "_pay_amount", 0)
             self.all_data["your_finances"]["weekly_amount"] = calculate_weekly_amount(amount=pay_amount, period=pay_period)
@@ -311,8 +312,9 @@ class YourFinancesStage(FormStage):
             hardship = clean_data.get(prefix + "_hardship", False)
             self.all_data["your_finances"]["hardship"] = hardship
 
-            if not hardship:
-                self.set_next_step("review", skip=["hardship", "household_expenses", "other_expenses"])
+            if "complete" in clean_data:
+                if not hardship:
+                    self.set_next_step("review", skip=["hardship", "household_expenses", "other_expenses"])
 
         return clean_data
 
