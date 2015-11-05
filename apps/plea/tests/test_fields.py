@@ -1,9 +1,5 @@
-import datetime as dt
-
 from django.core.exceptions import ValidationError
-from django.conf import settings
 from django.test import TestCase
-from django.test.utils import override_settings
 
 from ..validators import is_urn_not_used
 from ..models import Case
