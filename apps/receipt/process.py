@@ -11,7 +11,6 @@ from django.template.loader import render_to_string
 from apps.plea.models import CourtEmailCount, Case
 from .models import ReceiptLog
 
-import gmail
 
 hmcts_body_re = re.compile("<<<makeaplea-ref:\s*(\d+)/(\d+)>>>")
 hmcts_subject_re = re.compile("(?:.*?)Receipt \((Failed|Passed)\) RE:(?:.*?)ONLINE PLEA: (\d{2}/\w{2}/\d{5,7}/\d{2}) DOH:\s+(\d{4}-\d{2}-\d{2})")
@@ -30,6 +29,9 @@ def get_receipt_emails(query_from, query_to):
     """
     Retrieve emails from gmail
     """
+
+    import gmail
+
     g = gmail.login(settings.RECEIPT_INBOX_USERNAME, settings.RECEIPT_INBOX_PASSWORD)
 
     # NOTE: the query_from/query_to has been removed.  This script will only
