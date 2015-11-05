@@ -14,17 +14,22 @@ from ..forms import (NoticeTypeForm,
                      CaseForm,
                      YourDetailsForm,
                      PleaForm,
-                     YourMoneyForm,
+                     YourStatusForm,
+                     YourFinancesEmployedForm,
+                     YourFinancesSelfEmployedForm,
+                     YourFinancesBenefitsForm,
+                     YourFinancesOtherForm,
                      HardshipForm,
                      HouseholdExpensesForm,
                      OtherExpensesForm,
                      ConfirmationForm)
+from ..stages import calculate_weekly_amount
 
 
 class EmailTemplateTests(TestCase):
 
     def assertContainsDefinition(self, content, label, value, count=None):
-        pair_regex = re.compile(r"<dt>{0}</dt>\s*<dd>{1}</dd>".format(re.escape(label), re.escape(value)))
+        pair_regex = re.compile(r"<dt[^>]*>{0}</dt>\s*<dd[^>]*>{1}</dd>".format(re.escape(label), re.escape(value)))
         matches = pair_regex.findall(content)
         if not matches:
             raise AssertionError("Definition pair \"" + label + "\"/\"" + value + "\" not found")
@@ -45,7 +50,7 @@ class EmailTemplateTests(TestCase):
             enabled=True,
             test_mode=True)
 
-    def get_context_data(self, notice_type_data=None, case_data=None, details_data=None, plea_data=None, finances_data=None, hardship_data=None, household_expenses_data=None, other_expenses_data=None, review_data=None):
+    def get_context_data(self, notice_type_data=None, case_data=None, details_data=None, plea_data=None, status_data = None, finances_data=None, hardship_data=None, household_expenses_data=None, other_expenses_data=None, review_data=None):
 
         self.hearing_date = datetime.today() + timedelta(30)
 
@@ -75,10 +80,12 @@ class EmailTemplateTests(TestCase):
             plea_data = {"guilty": "guilty",
                          "guilty_extra": "IT wasn't me driving!"}
 
+        if not status_data:
+            status_data = {"you_are": "Employed"}
+
         if not finances_data:
-            finances_data = {"you_are": "Employed",
-                             "employed_take_home_pay_period": "Weekly",
-                             "employed_take_home_pay_amount": "100",
+            finances_data = {"employed_pay_period": "Weekly",
+                             "employed_pay_amount": "100",
                              "employed_hardship": False}
 
         if not hardship_data:
@@ -108,7 +115,19 @@ class EmailTemplateTests(TestCase):
         cf = CaseForm(case_data)
         df = YourDetailsForm(details_data)
         pf = PleaForm(plea_data)
-        mf = YourMoneyForm(finances_data)
+        sf = YourStatusForm(status_data)
+
+        finances_forms = {
+            "Employed": YourFinancesEmployedForm,
+            "Self-employed": YourFinancesSelfEmployedForm,
+            "Receiving benefits": YourFinancesBenefitsForm,
+            "Other": YourFinancesOtherForm
+        }
+
+        finances_form = finances_forms.get(status_data["you_are"])
+
+        ff = finances_form(finances_data)
+
         hf = HardshipForm(hardship_data)
         hef = HouseholdExpensesForm(household_expenses_data)
         oef = OtherExpensesForm(other_expenses_data)
@@ -126,22 +145,31 @@ class EmailTemplateTests(TestCase):
                                 "other_court_payments",
                                 "other_child_maintenance"]
 
-        if all([ntf.is_valid(), cf.is_valid(), df.is_valid(), pf.is_valid(), mf.is_valid(), hf.is_valid(), hef.is_valid(), oef.is_valid(), rf.is_valid()]):
+        if all([ntf.is_valid(), cf.is_valid(), df.is_valid(), pf.is_valid(), sf.is_valid(), ff.is_valid(), hf.is_valid(), hef.is_valid(), oef.is_valid(), rf.is_valid()]):
             data = {"notice_type": ntf.cleaned_data,
                     "case": cf.cleaned_data,
                     "your_details": df.cleaned_data,
                     "plea": {"data": [pf.cleaned_data]},
-                    "your_finances": mf.cleaned_data,
+                    "your_status": sf.cleaned_data,
+                    "your_finances": ff.cleaned_data,
                     "hardship": hf.cleaned_data,
                     "household_expenses": hef.cleaned_data,
                     "other_expenses": oef.cleaned_data,
                     "review": rf.cleaned_data}
 
-            data["your_finances"]["hardship"] = any([
-                mf.cleaned_data.get("employed_hardship", False),
-                mf.cleaned_data.get("self_employed_hardship", False),
-                mf.cleaned_data.get("receiving_benefits_hardship", False),
-                mf.cleaned_data.get("other_hardship", False)])
+            status_prefixes = {
+                "Employed": "employed",
+                "Self-employed": "self_employed",
+                "Receiving benefits": "benefits",
+                "Other": "other"
+            }
+            prefix = status_prefixes.get(data["your_status"]["you_are"], False)
+
+            pay_period = ff.cleaned_data.get(prefix + "_pay_period", "Weekly")
+            pay_amount = ff.cleaned_data.get(prefix + "_pay_amount", 0)
+
+            data["your_finances"]["weekly_amount"] = calculate_weekly_amount(amount=pay_amount, period=pay_period)
+            data["your_finances"]["hardship"] = ff.cleaned_data.get(prefix + "_hardship", False)
 
             total_household = sum(int(hef.cleaned_data[field] or 0) for field in household_expense_fields)
             total_other = sum(int(oef.cleaned_data[field] or 0) for field in other_expense_fields)
@@ -153,7 +181,7 @@ class EmailTemplateTests(TestCase):
 
             return data
         else:
-            raise Exception(ntf.errors, cf.errors, df.errors, pf.errors, mf.errors, hf.errors, hef.errors, oef.errors, rf.errors)
+            raise Exception(ntf.errors, cf.errors, df.errors, pf.errors, sf.errors, ff.errors, hf.errors, hef.errors, oef.errors, rf.errors)
 
     def get_mock_response(self, html):
         response = Mock()
@@ -378,10 +406,18 @@ class EmailTemplateTests(TestCase):
         self.assertContainsDefinition(response.content, "Your plea", "Guilty", count=1)
         self.assertContainsDefinition(response.content, "Your plea", "Not guilty", count=1)
 
+    def test_status_output(self):
+        context_data = self.get_context_data()
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        self.assertContainsDefinition(response.content, "You are", "Employed")
+
     def test_employed_email_finances_output(self):
-        context_data_finances = {"you_are": "Employed",
-                                 "employed_take_home_pay_period": "Weekly",
-                                 "employed_take_home_pay_amount": "200",
+        context_data_finances = {"employed_pay_period": "Weekly",
+                                 "employed_pay_amount": "200",
                                  "employed_hardship": False}
         context_data = self.get_context_data(finances_data=context_data_finances)
 
@@ -391,13 +427,38 @@ class EmailTemplateTests(TestCase):
 
         self.assertContainsDefinition(response.content, "You get paid", "Weekly", count=1)
         self.assertContainsDefinition(response.content, "Amount", "£200.00", count=1)
+        self.assertContainsDefinition(response.content, "Weekly take home pay", "£200.00", count=1)
+
+    def test_employed_fortnightly_pay_weekly_financials(self):
+        context_data_finances = {"employed_pay_period": "Fortnightly",
+                                 "employed_pay_amount": "200",
+                                 "employed_hardship": False}
+        context_data = self.get_context_data(finances_data=context_data_finances)
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        self.assertContainsDefinition(response.content, "Weekly take home pay", "£100.00", count=1)
+
+    def test_employed_monthly_pay_weekly_financials(self):
+        context_data_finances = {"employed_pay_period": "Monthly",
+                                 "employed_pay_amount": "200",
+                                 "employed_hardship": False}
+        context_data = self.get_context_data(finances_data=context_data_finances)
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        self.assertContainsDefinition(response.content, "Weekly take home pay", "£46.15", count=1)
 
     def test_self_employed_email_finances_output(self):
-        context_data_finances = {"you_are": "Self-employed",
-                              "self_employed_pay_period": "Weekly",
-                              "self_employed_pay_amount": "200",
-                              "self_employed_hardship": False}
-        context_data = self.get_context_data(finances_data=context_data_finances)
+        context_data_status = {"you_are": "Self-employed"}
+        context_data_finances = {"self_employed_pay_period": "Weekly",
+                                 "self_employed_pay_amount": "200",
+                                 "self_employed_hardship": False}
+        context_data = self.get_context_data(status_data=context_data_status, finances_data=context_data_finances)
 
         send_plea_email(context_data)
 
@@ -405,31 +466,57 @@ class EmailTemplateTests(TestCase):
 
         self.assertContainsDefinition(response.content, "You get paid", "Weekly", count=1)
         self.assertContainsDefinition(response.content, "Amount", "£200.00", count=1)
+        self.assertContainsDefinition(response.content, "Weekly take home pay", "£200.00", count=1)
 
     def test_self_employed_other_email_finances_output(self):
-        context_data_finances = {"you_are": "Self-employed",
-                              "self_employed_pay_period": "Self-employed other",
-                              "self_employed_pay_amount": "20",
-                              "self_employed_pay_other": "by the window",
-                              "self_employed_hardship": False}
-        context_data = self.get_context_data(finances_data=context_data_finances)
+        context_data_status = {"you_are": "Self-employed"}
+        context_data_finances = {"self_employed_pay_period": "Other",
+                                 "self_employed_pay_amount": "200",
+                                 "self_employed_hardship": False}
+        context_data = self.get_context_data(status_data=context_data_status, finances_data=context_data_finances)
 
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
         self.assertContainsDefinition(response.content, "You get paid", "Other", count=1)
-        self.assertContainsDefinition(response.content, "Details", "by the window", count=1)
-        self.assertContainsDefinition(response.content, "Amount", "£20.00", count=1)
+        self.assertContainsDefinition(response.content, "Amount", "£200.00", count=1)
+        self.assertContainsDefinition(response.content, "Weekly take home pay", "£200.00", count=1)
+
+    def test_self_employed_fortnightly_pay_weekly_financials(self):
+        context_data_status = {"you_are": "Self-employed"}
+        context_data_finances = {"self_employed_pay_period": "Fortnightly",
+                                 "self_employed_pay_amount": "200",
+                                 "self_employed_hardship": False}
+        context_data = self.get_context_data(finances_data=context_data_finances, status_data=context_data_status)
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        self.assertContainsDefinition(response.content, "Weekly take home pay", "£100.00", count=1)
+
+    def test_self_employed_monthly_pay_weekly_financials(self):
+        context_data_status = {"you_are": "Self-employed"}
+        context_data_finances = {"self_employed_pay_period": "Monthly",
+                                 "self_employed_pay_amount": "200",
+                                 "self_employed_hardship": False}
+        context_data = self.get_context_data(finances_data=context_data_finances, status_data=context_data_status)
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        self.assertContainsDefinition(response.content, "Weekly take home pay", "£46.15", count=1)
 
     def test_benefits_email_finances_output(self):
-        context_data_finances = {"you_are": "Receiving benefits",
-                              "benefits_details": "Housing benefit\nUniversal Credit",
-                              "benefits_dependents": True,
-                              "benefits_period": "Weekly",
-                              "benefits_amount": "120",
-                              "receiving_benefits_hardship": False}
-        context_data = self.get_context_data(finances_data=context_data_finances)
+        context_data_status = {"you_are": "Receiving benefits"}
+        context_data_finances = {"benefits_details": "Housing benefit\nUniversal Credit",
+                                 "benefits_dependents": True,
+                                 "benefits_pay_period": "Weekly",
+                                 "benefits_pay_amount": "200",
+                                 "benefits_hardship": False}
+        context_data = self.get_context_data(status_data=context_data_status, finances_data=context_data_finances)
 
         send_plea_email(context_data)
 
@@ -437,19 +524,19 @@ class EmailTemplateTests(TestCase):
 
         self.assertContainsDefinition(response.content, "Your benefits", "Housing benefit<br />Universal Credit", count=1)
         self.assertContainsDefinition(response.content, "You get paid", "Weekly", count=1)
-        self.assertContainsDefinition(response.content, "Amount", "£120.00", count=1)
+        self.assertContainsDefinition(response.content, "Amount", "£200.00", count=1)
         self.assertContainsDefinition(response.content, "Includes payment for dependents?", "Yes", count=1)
+        self.assertContainsDefinition(response.content, "Weekly take home pay", "£200.00", count=1)
 
 
     def test_benefits_other_email_finances_output(self):
-        context_data_finances = {"you_are": "Receiving benefits",
-                              "benefits_details": "Housing benefit\nUniversal Credit",
-                              "benefits_dependents": True,
-                              "benefits_period": "Benefits other",
-                              "benefits_pay_other": "Other details!",
-                              "benefits_amount": "120",
-                              "receiving_benefits_hardship": False}
-        context_data = self.get_context_data(finances_data=context_data_finances)
+        context_data_status = {"you_are": "Receiving benefits"}
+        context_data_finances = {"benefits_details": "Housing benefit\nUniversal Credit",
+                                 "benefits_dependents": True,
+                                 "benefits_pay_period": "Other",
+                                 "benefits_pay_amount": "200",
+                                 "benefits_hardship": False}
+        context_data = self.get_context_data(status_data=context_data_status, finances_data=context_data_finances)
 
         send_plea_email(context_data)
 
@@ -457,30 +544,62 @@ class EmailTemplateTests(TestCase):
 
         self.assertContainsDefinition(response.content, "Your benefits", "Housing benefit<br />Universal Credit", count=1)
         self.assertContainsDefinition(response.content, "You get paid", "Other", count=1)
-        self.assertContainsDefinition(response.content, "Details", "Other details!", count=1)
-        self.assertContainsDefinition(response.content, "Amount", "£120.00", count=1)
+        self.assertContainsDefinition(response.content, "Amount", "£200.00", count=1)
         self.assertContainsDefinition(response.content, "Includes payment for dependents?", "Yes", count=1)
+        self.assertContainsDefinition(response.content, "Weekly take home pay", "£200.00", count=1)
+
+    def test_benefits_fortnightly_pay_weekly_financials(self):
+        context_data_status = {"you_are": "Receiving benefits"}
+        context_data_finances = {"benefits_details": "Housing benefit\nUniversal Credit",
+                                 "benefits_dependents": True,
+                                 "benefits_pay_period": "Fortnightly",
+                                 "benefits_pay_other": "Other details!",
+                                 "benefits_pay_amount": "200",
+                                 "benefits_hardship": False}
+        context_data = self.get_context_data(finances_data=context_data_finances, status_data=context_data_status)
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        self.assertContainsDefinition(response.content, "Weekly take home pay", "£100.00", count=1)
+
+    def test_benefits_monthly_pay_weekly_financials(self):
+        context_data_status = {"you_are": "Receiving benefits"}
+        context_data_finances = {"benefits_details": "Housing benefit\nUniversal Credit",
+                                 "benefits_dependents": True,
+                                 "benefits_pay_period": "Monthly",
+                                 "benefits_pay_other": "Other details!",
+                                 "benefits_pay_amount": "200",
+                                 "benefits_hardship": False}
+        context_data = self.get_context_data(finances_data=context_data_finances, status_data=context_data_status)
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+
+        self.assertContainsDefinition(response.content, "Weekly take home pay", "£46.15", count=1)
 
 
     def test_other_email_finances_output(self):
-        context_data_finances = {"you_are": "Other",
-                              "other_details": u"I am a pensioner and I earn\n£500 a month.",
-                              "other_pay_amount": "120",
-                              "other_hardship": False}
-        context_data = self.get_context_data(finances_data=context_data_finances)
+        context_data_status = {"you_are": "Other"}
+        context_data_finances = {"other_details": u"I am a pensioner and I earn\n£500 a month.",
+                                 "other_pay_amount": "200",
+                                 "other_hardship": False}
+        context_data = self.get_context_data(status_data=context_data_status, finances_data=context_data_finances)
 
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
         self.assertContainsDefinition(response.content, "Details", "I am a pensioner and I earn<br />£500 a month.", count=1)
-        self.assertContainsDefinition(response.content, "Amount", "£120.00", count=1)
+        self.assertContainsDefinition(response.content, "Amount", "£200.00", count=1)
+        self.assertContainsDefinition(response.content, "Weekly take home pay", "£200.00", count=1)
 
 
     def test_expenses_output_default(self):
-        context_data_finances = {"you_are": "Employed",
-                                 "employed_take_home_pay_period": "Weekly",
-                                 "employed_take_home_pay_amount": "100",
+        context_data_finances = {"employed_pay_period": "Weekly",
+                                 "employed_pay_amount": "100",
                                  "employed_hardship": True}
 
         context_data = self.get_context_data(finances_data=context_data_finances)
@@ -489,16 +608,15 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
-        self.assertContainsDefinition(response.content, "Financial hardship details", "Lorem<br />Ipsum", count=1)
+        self.assertContainsDefinition(response.content, "Paying a fine would cause me financial problems because", "Lorem<br />Ipsum", count=1)
         self.assertContainsDefinition(response.content, "Other contributors to household bills", "No", count=1)
         self.assertContainsDefinition(response.content, "Total household expenses", "£46.00", count=1)
         self.assertContainsDefinition(response.content, "Total other expenses", "£99.00", count=1)
         self.assertContainsDefinition(response.content, "Total expenses", "£145.00", count=1)
 
     def test_expenses_output_other_contributors_yes(self):
-        context_data_finances = {"you_are": "Employed",
-                                 "employed_take_home_pay_period": "Weekly",
-                                 "employed_take_home_pay_amount": "100",
+        context_data_finances = {"employed_pay_period": "Weekly",
+                                 "employed_pay_amount": "100",
                                  "employed_hardship": True}
 
         household_expenses_data = {"household_accommodation": 10,

@@ -31,7 +31,7 @@
     <section class="review-section" id="case-details">
         <header>
             <h2>{% blocktrans %}Case details{% endblocktrans %}</h2>
-            <a class="change-link" href="{% url "plea_form_step" "case" %}" class="review">{% blocktrans %}Change case details{% endblocktrans %}</a>
+            <a class="change-link" href="{% url "plea_form_step" "case" %}">{% blocktrans %}Change case details{% endblocktrans %}</a>
         </header>
 
         {% include "partials/review_case.html" %}
@@ -41,12 +41,12 @@
         <header>
         {% if case.plea_made_by == "Defendant" %}
             <h2>{% blocktrans %}Your details{% endblocktrans %}</h2>
-            <a class="change-link" href="{% url "plea_form_step" "your_details" %}" class="review">{% blocktrans %}Change your details{% endblocktrans %}</a>
+            <a class="change-link" href="{% url "plea_form_step" "your_details" %}">{% blocktrans %}Change your details{% endblocktrans %}</a>
         {% endif %}
 
         {% if case.plea_made_by == "Company representative" %}
             <h2>{% blocktrans %}Company representative details{% endblocktrans %}</h2>
-            <a class="change-link" href="{% url "plea_form_step" "company_details" %}" class="review">{% blocktrans %}Change your details{% endblocktrans %}</a>
+            <a class="change-link" href="{% url "plea_form_step" "company_details" %}">{% blocktrans %}Change your details{% endblocktrans %}</a>
         {% endif %}
         </header>
 
@@ -70,22 +70,20 @@
     {% if case.plea_made_by == "Defendant" and not your_finances.skipped %}
     <section class="review-section" id="your-finances">
         <header>
-            <h2>{% blocktrans %}Your finances{% endblocktrans %}</h2>
-            <a class="change-link" href="{% url "plea_form_step" "your_finances" %}" class="review">{% blocktrans %}Change your finances{% endblocktrans %}</a>
+            <h2>{% blocktrans %}Your employment status and finances{% endblocktrans %}</h2>
         </header>
 
-        {% include "partials/review_finances.html" %}
+        {% include "partials/review_finances.html" with show_edit_link=True %}
     </section>
 
 
         {% if your_finances.hardship %}
     <section class="review-section" id="your-expenses">
         <header>
-            <h2>{% blocktrans %}Your expenses{% endblocktrans %}</h2>
-            <a class="change-link" href="{% url "plea_form_step" "hardship" %}" class="review">{% blocktrans %}Change your expenses{% endblocktrans %}</a>
+            <h2>{% blocktrans %}Special financial circumstances{% endblocktrans %}</h2>
         </header>
 
-        {% include "partials/review_expenses.html" %}
+        {% include "partials/review_expenses.html" with show_edit_link=True %}
     </section>
         {% endif %}
 
@@ -95,7 +93,7 @@
     <section class="review-section" id="company-details">
         <header>
             <h2>{% blocktrans %}Company financial details{% endblocktrans %}</h2>
-            <a class="change-link" href="{% url "plea_form_step" "company_finances" %}" class="review">{% blocktrans %}Change details{% endblocktrans %}</a>
+            <a class="change-link" href="{% url "plea_form_step" "company_finances" %}">{% blocktrans %}Change details{% endblocktrans %}</a>
         </header>
 
         {% include "partials/review_company_finances.html" %}
