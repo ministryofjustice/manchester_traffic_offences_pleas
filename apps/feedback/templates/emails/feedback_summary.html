@@ -15,14 +15,12 @@
     </tr>
     <tr>
         <th valign="top" align="right">Comments</th>
-        <td>{{ comments|linebreaksbr }}</td>
+        <td>{{ comments|linebreaksbr|default:"-" }}</td>
     </tr>
-    {% if email %}
     <tr>
         <th valign="top" align="right">Email</th>
-        <td>{{ email }}</td>
+        <td>{{ email|default:"-" }}</td>
     </tr>
-    {% endif %}
 </table>
 
 <p>
