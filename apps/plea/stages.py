@@ -57,6 +57,15 @@ def get_offences(case_data):
         return offences
 
 
+def calculate_weekly_amount(amount, period="Weekly"):
+    if period == "Monthly":
+        return (amount*12)/52
+    elif period == "Fortnightly":
+        return amount/2
+    else:
+        return amount
+
+
 class NoticeTypeStage(FormStage):
     name = "notice_type"
     template = "notice_type.html"
@@ -105,6 +114,12 @@ class CaseStage(FormStage):
 
         if "posting_date" in clean_data:
             clean_data["contact_deadline"] = clean_data["posting_date"] + relativedelta(days=+28)
+
+        try:
+            if len(self.all_data["plea"]["data"]) > clean_data["number_of_charges"]:
+                del self.all_data["plea"]["data"][clean_data["number_of_charges"]:]
+        except KeyError:
+            pass
 
         if "complete" in clean_data:
             if clean_data.get("plea_made_by", "Defendant") == "Defendant":
@@ -227,8 +242,8 @@ class PleaStage(IndexedStage):
                 else:
                     if stage_data["none_guilty"]:
                         self.set_next_step("review", skip=["your_status", "your_finances"])
-                    elif "skipped" in self.all_data["your_status"]:
-                        del self.all_data["your_status"]["skipped"]
+                    elif "skipped" in self.all_data["your_finances"]:
+                        del self.all_data["your_finances"]["skipped"]
 
         return stage_data
 
@@ -271,7 +286,6 @@ class YourFinancesStage(FormStage):
         except KeyError:
             pass
 
-
     def load(self, request_context=None):
         return super(YourFinancesStage, self).load(request_context)
 
@@ -281,11 +295,20 @@ class YourFinancesStage(FormStage):
 
         you_are = self.all_data["your_status"]["you_are"]
 
-        if you_are:
-            hardship_field = you_are.replace(" ", "_").replace("-", "_").lower() + "_hardship"
+        prefixes = {
+            "Employed": "employed",
+            "Self-employed": "self_employed",
+            "Receiving benefits": "benefits",
+            "Other": "other"
+        }
+        prefix = prefixes.get(you_are, False)
 
-            hardship = clean_data.get(hardship_field, False)
+        if you_are and prefix:
+            pay_period = clean_data.get(prefix + "_pay_period", "Weekly")
+            pay_amount = clean_data.get(prefix + "_pay_amount", 0)
+            self.all_data["your_finances"]["weekly_amount"] = calculate_weekly_amount(amount=pay_amount, period=pay_period)
 
+            hardship = clean_data.get(prefix + "_hardship", False)
             self.all_data["your_finances"]["hardship"] = hardship
 
             if not hardship:
