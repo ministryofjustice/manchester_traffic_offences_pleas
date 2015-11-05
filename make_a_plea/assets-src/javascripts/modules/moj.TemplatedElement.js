@@ -6,14 +6,20 @@
  * -----------------------------------------------------------------------
  * Usage:
  *
- * <span class="js-TemplatedElement"
- *     data-template-trigger="field_name"
- *     data-template="Content with {value}"
- *     data-template-defaults-for="Excluded value"
- *     data-template-delegate="#other-element">Original content</span>
+ * <span id="templated">Original content</span>
  *
- * If templateDelegate is set, the functionality will be transferred to the
- * matching element.
+ * <script>
+ * $(function(){
+ *   options = {
+ *     "trigger": "field_name",
+ *     "templates": {
+ *       "value_one": "Template one",
+ *       "value_two": "Template two"
+ *     }
+ *   }
+ *   new moj.Modules.TemplatedElement($('#templated'), options);
+ * });
+ * </script>
  */
 (function() {
   'use strict';
@@ -27,22 +33,14 @@
 
   TemplatedElement.prototype = {
     defaults: {
-      trigger: '',
-      template: '{value}',
-      defaultsFor: null
+      trigger: ''
     },
 
     init: function($el, options) {
       this.settings = $.extend({}, this.defaults, options);
 
-      this.trigger = $el.data('templateTrigger') || this.settings.trigger;
-      this.template = $el.data('template') || this.settings.template;
-      this.defaultsFor = $el.data('templateDefaultsFor') || this.settings.defaultsFor;
-
-      if ($el.data('templateDelegate')) {
-        $el = $($el.data('templateDelegate'));
-      }
-
+      this.trigger = this.settings.trigger;
+      this.templates = this.settings.templates;
       this.originalText = $el.eq(0).text();
 
       this.cacheElements($el);
@@ -52,7 +50,7 @@
 
     cacheElements: function($el) {
       this.$element = $el;
-      this.$inputs = $(':radio[name="' + this.trigger + '"]');
+      this.$inputs = $(':radio' + this.trigger);
     },
 
     bindEvents: function() {
@@ -66,14 +64,7 @@
     },
 
     getCurrentValue: function() {
-      var $currentSelection = this.$inputs.filter(':checked');
-      var currentValue = $currentSelection.attr('data-template-value') || $currentSelection.parent('label').text();
-
-      return currentValue.trim();
-    },
-
-    formatValue: function(value) {
-      return value.toLowerCase();
+      return this.$inputs.filter(':checked').val();
     },
 
     updateText: function() {
@@ -84,27 +75,14 @@
       var text = this.originalText,
           value = this.getCurrentValue();
 
-      if (value && value !== this.defaultsFor) {
-        value = this.formatValue(value);
-        text = this.populateTemplate(value);
+      if (value && this.templates.hasOwnProperty(value)) {
+        text = this.templates[value];
       }
 
       return text;
-    },
-
-    populateTemplate: function(value) {
-      return this.template.replace('{value}', value);
     }
   };
 
   moj.Modules._TemplatedElement = TemplatedElement;
-
-  moj.Modules.TemplatedElement = {
-    init: function() {
-      return $('[data-template]').each(function() {
-        $(this).data('TemplatedElement', new TemplatedElement($(this), $(this).data()));
-      });
-    }
-  };
 
 }());
