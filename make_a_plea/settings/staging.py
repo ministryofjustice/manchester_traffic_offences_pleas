@@ -38,8 +38,6 @@ BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1',
                             'polling_interval': 1,
                             'visibility_timeout': 3600}
 
-INSTALLED_APPS += ('raven.contrib.django.raven_compat', )
-
 ALLOWED_HOSTS = ["staging.makeaplea.dsd.io", "makeaplea.dsd.io"]
 
 # Enable CachedStaticFilesStorage for cache-busting assets
