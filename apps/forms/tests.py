@@ -20,10 +20,12 @@ class TestForm1(forms.Form):
     field1 = forms.CharField()
     field2 = forms.IntegerField()
 
-
 class TestForm2(forms.Form):
     field3 = forms.CharField()
     field4 = forms.EmailField()
+
+class TestForm3(forms.Form):
+    skip_stage_5 = forms.BooleanField()
 
 
 class Intro(FormStage):
@@ -31,17 +33,16 @@ class Intro(FormStage):
     template = "test/intro.html"
     form_class = None
 
-
 class Stage2(FormStage):
     name = "stage_2"
-    template = "test/stage2.html"
+    template = "test/stage.html"
     form_class = TestForm1
-
 
 class Stage3(FormStage):
     name = "stage_3"
     form_class= TestForm2
-    template = "test/stage3.html"
+    template = "test/stage.html"
+    dependencies = ["stage_2"]
 
     def load_forms(self, data=None, initial=False):
         count = self.all_data["stage_2"].get("field2", 1)
@@ -49,7 +50,6 @@ class Stage3(FormStage):
         TestForm2Factory = formset_factory(TestForm2, extra=count)
         if initial:
             initial_factory_data = self.all_data[self.name].get("Factory", [])
-            initial_form_data = self.all_data[self.name]
             self.form = TestForm2Factory(initial=initial_factory_data)
         else:
             self.form = TestForm2Factory(data)
@@ -66,16 +66,38 @@ class Stage3(FormStage):
 
         return form_data
 
+class Stage4(FormStage):
+    name = "stage_4"
+    form_class = TestForm3
+    template = "test/stage.html"
+    dependencies = ["stage_2", "stage_3"]
+
+    def save(self, form_data, next_step=None):
+        clean_data = super(Stage4, self).save(form_data, next_step)
+
+        if "skip_stage_5" in clean_data and clean_data["skip_stage_5"] == True:
+            self.set_next_step("review", skip=["stage_5"])
+        else:
+            self.set_next_step("stage_5")
+
+        return clean_data
+
+class Stage5(FormStage):
+    name = "stage_5"
+    form_class = TestForm1
+    template = "test/stage.html"
+    dependencies = ["stage_2", "stage_3", "stage_4"]
 
 class Review(FormStage):
     name = "review"
     template = "test/review.html"
     form_class = None
+    dependencies = ["stage_2", "stage_3", "stage_4", "stage_5"]
 
 
 class MultiStageFormTest(MultiStageForm):
     url_name = "msf-url"
-    stage_classes = [Intro, Stage2, Stage3, Review]
+    stage_classes = [Intro, Stage2, Stage3, Stage4, Stage5, Review]
 
 
 class TestMultiStageForm(TestCase):
@@ -90,6 +112,7 @@ class TestMultiStageForm(TestCase):
         msf = MultiStageFormTest({}, "intro")
         msf.load(request_context)
         response = msf.render()
+
         self.assertContains(response, "<h1>Test intro page</h1>")
 
     @patch("apps.forms.stages.reverse", reverse)
@@ -98,6 +121,7 @@ class TestMultiStageForm(TestCase):
         msf = MultiStageFormTest({}, "stage_2")
         msf.load(request_context)
         response = msf.render()
+
         self.assertContains(response, "id_field1")
         self.assertContains(response, "id_field2")
 
@@ -107,8 +131,8 @@ class TestMultiStageForm(TestCase):
         msf = MultiStageFormTest({}, "stage_2")
         msf.load(request_context)
         msf.save({"field1": "Joe",
-                             "field2": 10},
-                            request_context)
+                  "field2": 10},
+                 request_context)
         response = msf.render()
 
         self.assertEqual(msf.all_data["stage_2"]["field1"], "Joe")
@@ -118,12 +142,24 @@ class TestMultiStageForm(TestCase):
                          "/path/to/msf-url/stage_3")
 
     @patch("apps.forms.stages.reverse", reverse)
+    def test_form_stage3_unmet_dependencies(self):
+        request_context = {}
+        session_data = {}
+        msf = MultiStageFormTest(session_data, "stage_3")
+        response = msf.load(request_context)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/path/to/msf-url/intro")
+
+    @patch("apps.forms.stages.reverse", reverse)
     def test_form_stage3_loads(self):
         request_context = {}
-        msf = MultiStageFormTest({}, "stage_3")
-        msf.all_data["stage_2"]["field2"] = 2
+        session_data = {"stage_2": {"complete": True,
+                                    "field2": 2}}
+        msf = MultiStageFormTest(session_data, "stage_3")
         msf.load(request_context)
         response = msf.render()
+
         self.assertContains(response, "id_form-0-field3")
         self.assertContains(response, "id_form-0-field4")
         self.assertContains(response, "id_form-1-field3")
@@ -132,7 +168,8 @@ class TestMultiStageForm(TestCase):
     @patch("apps.forms.stages.reverse", reverse)
     def test_form_stage3_saves(self):
         request_context = {}
-        msf = MultiStageFormTest({}, "stage_3")
+        session_data = {"stage_2": {"complete": True}}
+        msf = MultiStageFormTest(session_data, "stage_3")
         msf.all_data["field2"] = 2
         mgmt_data = {"form-TOTAL_FORMS": "2",
                      "form-INITIAL_FORMS": "0",
@@ -143,6 +180,14 @@ class TestMultiStageForm(TestCase):
                      "form-1-field4": "jill.smith@example.org"}
         form_data.update(mgmt_data)
         msf.save(form_data, request_context)
+        response = msf.render()
+
+        self.assertEqual(msf.all_data["stage_3"]["Factory"][0]["field3"], "Jim Smith")
+        self.assertEqual(msf.all_data["stage_3"]["Factory"][0]["field4"], "jim.smith@example.org")
+        self.assertEqual(msf.all_data["stage_3"]["Factory"][1]["field3"], "Jill Smith")
+        self.assertEqual(msf.all_data["stage_3"]["Factory"][1]["field4"], "jill.smith@example.org")
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response._headers['location'][1], "/path/to/msf-url/stage_4")
 
     @patch("apps.forms.stages.reverse", reverse)
     @patch("apps.forms.stages.messages.add_message")
@@ -160,15 +205,107 @@ class TestMultiStageForm(TestCase):
         form_data.update(mgmt_data)
         msf.save(form_data, request_context)
         msf.process_messages({})
+
         add_message.assert_called_once_with({}, 25, "This is a test message", extra_tags=None)
+
+    @patch("apps.forms.stages.reverse", reverse)
+    def test_form_stage4_unmet_dependencies(self):
+        request_context = {}
+        session_data = {}
+        msf = MultiStageFormTest(session_data, "stage_4")
+        response = msf.load(request_context)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/path/to/msf-url/intro")
+
+    @patch("apps.forms.stages.reverse", reverse)
+    def test_form_stage4_loads(self):
+        request_context = {}
+        session_data = {"stage_2": {"complete": True,
+                                    "field2": 1},
+                        "stage_3": {"complete": True,
+                                    "Factory": [{"field3": "Jim Smith",
+                                                 "field4": "jim.smith@example.org"}]}}
+        msf = MultiStageFormTest(session_data, "stage_4")
+        msf.load(request_context)
+        response = msf.render()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "id_skip_stage_5")
+
+    @patch("apps.forms.stages.reverse", reverse)
+    def test_form_stage5_marked_skipped(self):
+        request_context = {}
+        session_data = {"stage_2": {"complete": True},
+                        "stage_3": {"complete": True}}
+        msf = MultiStageFormTest(session_data, "stage_4")
+        msf.load(request_context)
+        msf.save({"skip_stage_5": True}, request_context)
+
+        self.assertIn("skipped", msf.all_data["stage_5"])
+        self.assertEqual(msf.all_data["stage_5"]["skipped"], True)
+
+    @patch("apps.forms.stages.reverse", reverse)
+    def test_form_stage5_marked_not_skipped(self):
+        request_context = {}
+        session_data = {"stage_2": {"complete": True},
+                        "stage_3": {"complete": True}}
+        msf = MultiStageFormTest(session_data, "stage_4")
+        msf.load(request_context)
+        msf.save({"skip_stage_5": False}, request_context)
+
+        self.assertNotIn("skipped", msf.all_data["stage_5"])
+
+
+    @patch("apps.forms.stages.reverse", reverse)
+    def test_form_review_unmet_dependencies(self):
+        request_context = {}
+        msf = MultiStageFormTest({}, "review")
+        response = msf.load(request_context)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/path/to/msf-url/intro")
+
+    @patch("apps.forms.stages.reverse", reverse)
+    def test_form_review_loads_skipped_dependencies(self):
+        request_context = {}
+        session_data = {"stage_2": {"complete": True},
+                        "stage_3": {"complete": True},
+                        "stage_4": {"complete": True},
+                        "stage_5": {"complete": True, "skipped": True}}
+        msf = MultiStageFormTest(session_data, "review")
+        msf.load(request_context)
+        response = msf.render()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "<h1>Review</h1>")
 
     @patch("apps.forms.stages.reverse", reverse)
     def test_form_review_loads(self):
         request_context = {}
-        msf = MultiStageFormTest({}, "review")
+        session_data = {"stage_2": {"complete": True},
+                        "stage_3": {"complete": True},
+                        "stage_4": {"complete": True},
+                        "stage_5": {"complete": True}}
+        msf = MultiStageFormTest(session_data, "review")
         msf.load(request_context)
         response = msf.render()
+
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "<h1>Review</h1>")
+
+    @patch("apps.forms.stages.reverse", reverse)
+    def test_form_stage5_unskipped(self):
+        request_context = {}
+        session_data = {"stage_2": {"complete": True},
+                        "stage_3": {"complete": True},
+                        "stage_4": {"complete": True},
+                        "stage_5": {"complete": True, "skipped": True}}
+        msf = MultiStageFormTest(session_data, "stage_4")
+        msf.load(request_context)
+        msf.save({"skip_stage_5": False}, request_context)
+
+        self.assertNotIn("skipped", session_data["stage_5"])
 
     @patch("apps.forms.stages.reverse", reverse)
     def test_save_doesnt_blank_storage_dict_and_nothing_is_added(self):
@@ -177,6 +314,7 @@ class TestMultiStageForm(TestCase):
         msf = MultiStageFormTest(fake_storage, "intro")
         msf.load(request_context)
         msf.save({}, request_context)
+
         self.assertTrue(fake_storage["extra"]["field0"], "Not on the form")
         self.assertEqual(len(fake_storage["extra"]), 1)
 
@@ -187,9 +325,9 @@ class TestMultiStageForm(TestCase):
         msf = MultiStageFormTest(fake_storage, "stage_2")
         msf.load(request_context)
 
-        response = msf.save({"field1": "Joe",
-                             "field2": 2},
-                            request_context)
+        msf.save({"field1": "Joe",
+                  "field2": 2},
+                 request_context)
 
         msf = MultiStageFormTest(fake_storage, "stage_3")
         mgmt_data = {"form-TOTAL_FORMS": "2",
@@ -200,7 +338,7 @@ class TestMultiStageForm(TestCase):
                      "form-1-field3": "Jill Smith",
                      "form-1-field4": "jill.smith@example.org"}
         form_data.update(mgmt_data)
-        response = msf.save(form_data, request_context)
+        msf.save(form_data, request_context)
 
         self.assertEqual(fake_storage["stage_2"]["field1"], "Joe")
         self.assertEqual(fake_storage["stage_2"]["field2"], 2)
