@@ -26,8 +26,6 @@ BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1',
                             'polling_interval': 1,
                             'visibility_timeout': 3600}
 
-INSTALLED_APPS += ('raven.contrib.django.raven_compat', )
-
 ALLOWED_HOSTS = ["www.makeaplea.justice.gov.uk", "www.makeaplea.service.gov.uk"]
 
 # Enable CachedStaticFilesStorage for cache-busting assets
