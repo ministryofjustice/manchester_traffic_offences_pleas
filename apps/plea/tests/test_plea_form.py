@@ -580,8 +580,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form = self._get_your_finances_stage(status="Employed")
 
         test_data = {
-            "employed_take_home_pay_period": "Fortnightly",
-            "employed_take_home_pay_amount": "1000",
+            "employed_pay_period": "Fortnightly",
+            "employed_pay_amount": "1000",
             "employed_hardship": True
         }
 
@@ -626,9 +626,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         test_data = {
             "benefits_details": "Some data about my benefits",
             "benefits_dependents": True,
-            "benefits_period": "Fortnightly",
-            "benefits_amount": "1000",
-            "receiving_benefits_hardship": False
+            "benefits_pay_period": "Fortnightly",
+            "benefits_pay_amount": "1000",
+            "benefits_hardship": False
         }
 
         form.save(test_data, self.request_context)
@@ -1309,8 +1309,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         test_data = {
             "you_are": "Employed",
-            "employed_take_home_pay_period": "Fortnightly",
-            "employed_take_home_pay_amount": "1000",
+            "employed_pay_period": "Fortnightly",
+            "employed_pay_amount": "1000",
             "employed_hardship": True
         }
 
@@ -1402,8 +1402,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         test_data = {
             "you_are": "Employed",
-            "employed_take_home_pay_period": "Fortnightly",
-            "employed_take_home_pay_amount": "1000",
+            "employed_pay_period": "Fortnightly",
+            "employed_pay_amount": "1000",
             "employed_hardship": False
         }
 
@@ -1473,9 +1473,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         test_data = {
             "benefits_details": "Some data about my benefits",
             "benefits_dependents": True,
-            "benefits_period": "Fortnightly",
-            "benefits_amount": "1000",
-            "receiving_benefits_hardship": True
+            "benefits_pay_period": "Fortnightly",
+            "benefits_pay_amount": "1000",
+            "benefits_hardship": True
         }
 
         form.save(test_data, request_context)
@@ -1498,9 +1498,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         test_data = {
             "benefits_details": "Some data about my benefits",
             "benefits_dependents": True,
-            "benefits_period": "Fortnightly",
-            "benefits_amount": "1000",
-            "receiving_benefits_hardship": False
+            "benefits_pay_period": "Fortnightly",
+            "benefits_pay_amount": "1000",
+            "benefits_hardship": False
         }
 
         form.save(test_data, request_context)
