@@ -14,7 +14,11 @@ from .forms import (NoticeTypeForm,
                     CompanyDetailsForm,
                     PleaForm,
                     SJPPleaForm,
-                    YourMoneyForm,
+                    YourStatusForm,
+                    YourFinancesEmployedForm,
+                    YourFinancesSelfEmployedForm,
+                    YourFinancesBenefitsForm,
+                    YourFinancesOtherForm,
                     HardshipForm,
                     HouseholdExpensesForm,
                     OtherExpensesForm,
@@ -51,6 +55,15 @@ def get_offences(case_data):
                 ).order_by("seq_number", "id")
 
         return offences
+
+
+def calculate_weekly_amount(amount, period="Weekly"):
+    if period == "Monthly":
+        return (amount*12)/52
+    elif period == "Fortnightly":
+        return amount/2
+    else:
+        return amount
 
 
 class NoticeTypeStage(FormStage):
@@ -101,6 +114,12 @@ class CaseStage(FormStage):
 
         if "posting_date" in clean_data:
             clean_data["contact_deadline"] = clean_data["posting_date"] + relativedelta(days=+28)
+
+        try:
+            if len(self.all_data["plea"]["data"]) > clean_data["number_of_charges"]:
+                del self.all_data["plea"]["data"][clean_data["number_of_charges"]:]
+        except KeyError:
+            pass
 
         if "complete" in clean_data:
             if clean_data.get("plea_made_by", "Defendant") == "Defendant":
@@ -217,15 +236,12 @@ class PleaStage(IndexedStage):
                 if self.all_data["case"].get("plea_made_by", "Defendant") == "Company representative":
                     if stage_data["none_guilty"]:
                         self.set_next_step("review", skip=["company_finances",
-                                                           "your_finances"])
+                                                           "your_status", "your_finances"])
                     else:
-                        self.set_next_step("company_finances", skip=["your_finances"])
+                        self.set_next_step("company_finances", skip=["your_status", "your_finances"])
                 else:
-                    # determine if your_finances needs to be loaded
                     if stage_data["none_guilty"]:
-                        self.all_data["your_finances"]["complete"] = True
-                        self.all_data["your_finances"]["skipped"] = True
-                        self.set_next_step("review")
+                        self.set_next_step("review", skip=["your_status", "your_finances"])
                     elif "skipped" in self.all_data["your_finances"]:
                         del self.all_data["your_finances"]["skipped"]
 
@@ -243,29 +259,60 @@ class CompanyFinancesStage(FormStage):
     dependencies = ["notice_type", "case"]
 
 
-class YourMoneyStage(FormStage):
-    name = "your_finances"
-    template = "your_finances.html"
-    form_class = YourMoneyForm
+class YourStatusStage(FormStage):
+    name = "your_status"
+    template = "your_status.html"
+    form_class = YourStatusForm
     dependencies = ["notice_type", "case", "your_details", "plea"]
 
+class YourFinancesStage(FormStage):
+    name = "your_finances"
+    form_class = YourFinancesEmployedForm
+    template = "your_finances.html"
+    dependencies = ["notice_type", "case", "your_details", "plea", "your_status"]
+
+    def __init__(self, *args, **kwargs):
+        super(YourFinancesStage, self).__init__(*args, **kwargs)
+
+        finance_forms = {
+            "Employed": YourFinancesEmployedForm,
+            "Self-employed": YourFinancesSelfEmployedForm,
+            "Receiving benefits": YourFinancesBenefitsForm,
+            "Other": YourFinancesOtherForm
+        }
+
+        try:
+            self.form_class = finance_forms.get(self.all_data["your_status"]["you_are"], YourFinancesEmployedForm)
+        except KeyError:
+            pass
+
     def load(self, request_context=None):
-        return super(YourMoneyStage, self).load(request_context)
+        return super(YourFinancesStage, self).load(request_context)
 
     def save(self, form_data, next_step=None):
 
-        clean_data = super(YourMoneyStage, self).save(form_data, next_step)
+        clean_data = super(YourFinancesStage, self).save(form_data, next_step)
 
-        you_are = clean_data.get("you_are", None)
+        you_are = self.all_data["your_status"]["you_are"]
 
-        if self.split_form is None or self.split_form == "split_form_last_step":
-            if you_are:
-                hardship_field = you_are.replace(" ", "_").replace("-", "_").lower() + "_hardship"
+        prefixes = {
+            "Employed": "employed",
+            "Self-employed": "self_employed",
+            "Receiving benefits": "benefits",
+            "Other": "other"
+        }
+        prefix = prefixes.get(you_are, False)
 
-                hardship = clean_data.get(hardship_field, False)
+        if you_are and prefix:
 
-                self.all_data["your_finances"]["hardship"] = hardship
+            pay_period = clean_data.get(prefix + "_pay_period", "Weekly")
+            pay_amount = clean_data.get(prefix + "_pay_amount", 0)
+            self.all_data["your_finances"]["weekly_amount"] = calculate_weekly_amount(amount=pay_amount, period=pay_period)
 
+            hardship = clean_data.get(prefix + "_hardship", False)
+            self.all_data["your_finances"]["hardship"] = hardship
+
+            if "complete" in clean_data:
                 if not hardship:
                     self.set_next_step("review", skip=["hardship", "household_expenses", "other_expenses"])
 
@@ -276,14 +323,25 @@ class HardshipStage(FormStage):
     name = "hardship"
     template = "hardship.html"
     form_class = HardshipForm
-    dependencies = ["notice_type", "case", "your_details", "plea", "your_finances"]
+    dependencies = ["notice_type",
+                    "case",
+                    "your_details",
+                    "plea",
+                    "your_status",
+                    "your_finances"]
 
 
 class HouseholdExpensesStage(FormStage):
     name = "household_expenses"
     template = "household_expenses.html"
     form_class = HouseholdExpensesForm
-    dependencies = ["notice_type", "case", "your_details", "plea", "your_finances", "hardship"]
+    dependencies = ["notice_type",
+                    "case",
+                    "your_details",
+                    "plea",
+                    "your_status",
+                    "your_finances",
+                    "hardship"]
 
     def save(self, form_data, next_step=None):
 
@@ -305,7 +363,14 @@ class OtherExpensesStage(FormStage):
     name = "other_expenses"
     template = "other_expenses.html"
     form_class = OtherExpensesForm
-    dependencies = ["notice_type", "case", "your_details", "plea", "your_finances", "hardship", "household_expenses"]
+    dependencies = ["notice_type",
+                    "case",
+                    "your_details",
+                    "plea",
+                    "your_status",
+                    "your_finances",
+                    "hardship",
+                    "household_expenses"]
 
     def save(self, form_data, next_step=None):
 
@@ -336,8 +401,17 @@ class ReviewStage(FormStage):
     name = "review"
     template = "review.html"
     form_class = ConfirmationForm
-    dependencies = ["notice_type", "case", "company_details", "your_details", "plea",
-                    "your_finances", "company_finances"]
+    dependencies = ["notice_type",
+                    "case",
+                    "your_details",
+                    "company_details",
+                    "plea",
+                    "your_status",
+                    "your_finances",
+                    "hardship",
+                    "household_expenses",
+                    "other_expenses",
+                    "company_finances"]
 
     def save(self, form_data, next_step=None):
         clean_data = super(ReviewStage, self).save(form_data, next_step)
@@ -371,8 +445,18 @@ class CompleteStage(FormStage):
     name = "complete"
     template = "complete.html"
     form_class = None
-    dependencies = ["notice_type", "case", "your_details", "company_details", "plea",
-                    "your_finances", "company_finances", "review"]
+    dependencies = ["notice_type",
+                    "case",
+                    "your_details",
+                    "company_details",
+                    "plea",
+                    "your_status",
+                    "your_finances",
+                    "hardship",
+                    "household_expenses",
+                    "other_expenses",
+                    "company_finances",
+                    "review"]
 
     def __init__(self, *args, **kwargs):
         super(CompleteStage, self).__init__(*args, **kwargs)

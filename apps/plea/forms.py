@@ -21,6 +21,11 @@ from .validators import (is_date_in_past,
                          is_urn_valid)
 
 
+PERIOD_CHOICES = (("Weekly", _("Weekly")),
+                  ("Fortnightly", _("Fortnightly")),
+                  ("Monthly", _("Monthly")))
+
+
 def reorder_fields(fields, order):
     for key, v in fields.items():
         if key not in order:
@@ -248,68 +253,26 @@ class CompanyDetailsForm(BaseStageForm):
                                      error_messages={"required": ERROR_MESSAGES["COMPANY_CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
 
-
-class YourMoneyForm(SplitStageForm):
-
+class YourStatusForm(BaseStageForm):
     YOU_ARE_CHOICES = (("Employed", _("Employed")),
                        ("Self-employed", _("Self-employed")),
                        ("Receiving benefits", _("Receiving benefits")),
                        ("Other", _("Other")))
-    PERIOD_CHOICES = (("Weekly", _("Weekly")),
-                      ("Fortnightly", _("Fortnightly")),
-                      ("Monthly", _("Monthly")))
-    SE_PERIOD_CHOICES = (("Weekly", _("Weekly")),
-                         ("Fortnightly", _("Fortnightly")),
-                         ("Monthly", _("Monthly")),
-                         ("Self-employed other", _("Other")),)
-    BEN_PERIOD_CHOICES = (("Weekly", _("Weekly")),
-                         ("Fortnightly", _("Fortnightly")),
-                         ("Monthly", _("Monthly")),
-                         ("Benefits other", _("Other")),)
-
-    dependencies = {
-        "employed_take_home_pay_period": {"field": "you_are", "value": "Employed"},
-        "employed_take_home_pay_amount": {"field": "you_are", "value": "Employed"},
-        "employed_hardship": {"field": "you_are", "value": "Employed"},
-
-        "self_employed_pay_period": {"field": "you_are", "value": "Self-employed"},
-        "self_employed_pay_other": {"field": "self_employed_pay_period", "value": "Self-employed other"},
-
-        "self_employed_pay_amount": {"field": "you_are", "value": "Self-employed"},
-        "self_employed_hardship": {"field": "you_are", "value": "Self-employed"},
-
-        "benefits_details": {"field": "you_are", "value": "Receiving benefits"},
-        "benefits_dependents": {"field": "you_are", "value": "Receiving benefits"},
-        "benefits_period": {"field": "you_are", "value": "Receiving benefits"},
-        "benefits_pay_other": {"field": "benefits_period", "value": "Benefits other"},
-        "benefits_amount": {"field": "you_are", "value": "Receiving benefits"},
-        "receiving_benefits_hardship": {"field": "you_are", "value": "Receiving benefits"},
-
-        "other_details": {"field": "you_are", "value": "Other"},
-        "other_pay_amount": {"field": "you_are", "value": "Other"},
-        "other_hardship": {"field": "you_are", "value": "Other"}
-    }
-
-    split_form_options = {
-        "trigger": "you_are"
-    }
 
     you_are = forms.ChoiceField(label=_("Are you? (employment status)"), choices=YOU_ARE_CHOICES,
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
-    # Employed
-    employed_take_home_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+
+class YourFinancesEmployedForm(BaseStageForm):
+    employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                       choices=PERIOD_CHOICES,
                                                       label=_("How often do you get paid?"),
                                                       error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                                       "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
 
-    employed_take_home_pay_amount = forms.DecimalField(label=_("What's your take home pay (after tax)?"),
+    employed_pay_amount = forms.DecimalField(label=_("What's your take home pay (after tax)?"),
                                                        localize=True,
                                                        widget=forms.TextInput(attrs={"pattern": "[0-9]*",
-                                                                                     "data-template-trigger": "employed_take_home_pay_period",
-                                                                                     "data-template": _("What's your {value} take home pay (after tax)?"),
-                                                                                     "data-template-delegate": "[for=id_employed_take_home_pay_amount] .label-text",
                                                                                      "class": "form-control-inline"}),
                                                        error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                                        "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
@@ -321,7 +284,16 @@ class YourMoneyForm(SplitStageForm):
                                                coerce=to_bool,
                                                error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
-    # Self-employed
+class YourFinancesSelfEmployedForm(BaseStageForm):
+    SE_PERIOD_CHOICES = (("Weekly", _("Weekly")),
+                         ("Fortnightly", _("Fortnightly")),
+                         ("Monthly", _("Monthly")),
+                         ("Other", _("Other")),)
+
+    dependencies = {
+        "self_employed_pay_other": {"field": "self_employed_pay_period", "value": "Other"}
+    }
+
     self_employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                  choices=SE_PERIOD_CHOICES,
                                                  label=_("How often do you get paid?"),
@@ -331,18 +303,9 @@ class YourMoneyForm(SplitStageForm):
     self_employed_pay_amount = forms.DecimalField(label=_("What's your average take home pay?"),
                                                   localize=True,
                                                   widget=forms.TextInput(attrs={"pattern": "[0-9]*",
-                                                                                "data-template-trigger": "self_employed_pay_period",
-                                                                                "data-template": _("What's your average {value} take home pay?"),
-                                                                                "data-template-defaults-for": _("Other"),
-                                                                                "data-template-delegate": "[for=id_self_employed_pay_amount] .label-text",
                                                                                 "class": "form-control-inline"}),
                                                   error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                                   "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
-
-    self_employed_pay_other = forms.CharField(label="",
-                                              max_length=500,
-                                              widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
-                                              help_text=_("If you selected 'other', tell us how often you get paid."))
 
     self_employed_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
                                                     help_text=_("For example, you would become homeless."),
@@ -351,7 +314,16 @@ class YourMoneyForm(SplitStageForm):
                                                     coerce=to_bool,
                                                     error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
-    # On benefits
+class YourFinancesBenefitsForm(BaseStageForm):
+    BEN_PERIOD_CHOICES = (("Weekly", _("Weekly")),
+                         ("Fortnightly", _("Fortnightly")),
+                         ("Monthly", _("Monthly")),
+                         ("Other", _("Other")),)
+
+    dependencies = {
+        "benefits_pay_other": {"field": "benefits_pay_period", "value": "Other"}
+    }
+
     benefits_details = forms.CharField(label=_("Which benefits do you receive?"),
                                        help_text=_("For example, Income Support or Disability Living Allowance."),
                                        max_length=500,
@@ -364,36 +336,27 @@ class YourMoneyForm(SplitStageForm):
                                             label=_("Does this include payment for dependants?"),
                                             error_messages={"required": ERROR_MESSAGES["BENEFITS_DEPENDANTS_REQUIRED"]})
 
-    benefits_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+    benefits_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                         choices=BEN_PERIOD_CHOICES,
                                         label=_("How often are your benefits paid?"),
                                         error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
                                                         "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
 
-    benefits_pay_other = forms.CharField(label="",
-                                         max_length=500,
-                                         widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
-                                         help_text=_("If you selected 'other', tell us how often you get paid."))
-
-    benefits_amount = forms.DecimalField(label=_("What's your average take home pay?"),
+    benefits_pay_amount = forms.DecimalField(label=_("What's your average take home pay?"),
                                          localize=True,
                                          widget=forms.TextInput(attrs={"pattern": "[0-9]*",
-                                                                       "data-template-trigger": "benefits_period",
-                                                                       "data-template": _("What's your average {value} take home pay?"),
-                                                                       "data-template-defaults-for": _("Other"),
-                                                                       "data-template-delegate": "[for=id_benefits_amount] .label-text",
                                                                        "class": "form-control-inline"}),
                                          error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
                                                          "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
-    receiving_benefits_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
+    benefits_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
                                                          help_text=_("For example, you would become homeless."),
                                                          widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                          choices=YESNO_CHOICES["Byddai/Na fyddai"],
                                                          coerce=to_bool,
                                                          error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
-    # Other
+class YourFinancesOtherForm(BaseStageForm):
     other_details = forms.CharField(max_length=500, label=_("Provide details"),
                                     help_text=_("For example, student or retired."),
                                     widget=forms.TextInput(attrs={"class": "form-control"}),
