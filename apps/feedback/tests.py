@@ -81,7 +81,7 @@ class FeedbackFormTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(form.current_stage.form.errors), 1)
 
-    def test_comments_stage_shows_email(self):
+    def test_comments_stage_loads(self):
         session_data = {
             "service": {
                 "complete": True,
@@ -94,24 +94,8 @@ class FeedbackFormTestCase(TestCase):
         form.load(self.request_context)
 
         response = form.render()
-        self.assertIn("Email address", response.content)
-
-    def test_comments_stage_hides_email(self):
-        session_data = {
-            "service": {
-                "complete": True,
-                "used_call_centre": True,
-                "call_centre_satisfaction": 5,
-                "service_satisfaction": 3
-            }
-        }
-
-        form = FeedbackForms(session_data, "comments")
-        form.load(self.request_context)
-
-        with self.assertTemplateUsed("comments.html"):
-            response = form.render()
-            self.assertNotIn("Email address", response.content)
+        self.assertIn('id="id_comments"', response.content)
+        self.assertIn('id="id_email"', response.content)
 
     def test_email_is_sent(self):
         form = FeedbackForms(self.complete_session_data, "comments")
