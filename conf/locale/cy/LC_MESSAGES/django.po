@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Fred Marecesche, 2015
 # Welsh Language Unit <welsh.language.unit.manager@hmcts.gsi.gov.uk>, 2015
@@ -2346,27 +2346,3 @@ msgstr "Cwestiynau am eich pledion?"
 #: make_a_plea/templates/start.html:54
 msgid "Need help using this service?"
 msgstr "Angen help i ddefnyddio'r gwasanaeth hwn?"
-
-#~ msgid "What's your average {value} take home pay?"
-#~ msgstr "Beth yw eich cyflog clir {value} (ar ôl didyniadau) ar gyfartaledd?"
-
-#~ msgid "If you selected 'other', tell us how often you get paid."
-#~ msgstr "Os ydych wedi dewis 'arall', dywedwch wrthym pa mor aml rydych yn cael eich talu."
-
-#~ msgid "Financial hardship details"
-#~ msgstr "Manylion caledi ariannol"
-
-#~ msgid "Total expenses"
-#~ msgstr "Cyfanswm treuliau"
-
-#~ msgid "Your finances continued"
-#~ msgstr "Eich cyllid - parhad"
-
-#~ msgid "You are:"
-#~ msgstr "Chi yw:"
-
-#~ msgid "You must tell us why paying a fine will cause you serious financial problems"
-#~ msgstr "Rhaid i chi ddweud wrthym pam fyddai talu dirwy yn achosi problemau ariannol difrifol i chi"
-
-#~ msgid "What the court should consider when deciding how much your fine should be:"
-#~ msgstr "Beth ddylai’r llys ystyried wrth benderfynu faint o ddirwy i'w rhoi i chi:"
