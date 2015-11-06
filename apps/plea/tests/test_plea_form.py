@@ -78,6 +78,10 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "last_name": "Brown",
                 "contact_number": "07802639892"
             },
+            "company_details": {
+                "complete": True,
+                "skipped": True
+            },
             "plea": {
                 "data": [
                     {
@@ -115,6 +119,10 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             },
             "your_expenses": {
                 "total_household_expenses": 999
+            },
+            "company_finances": {
+                "complete": True,
+                "skipped": True
             },
             "review": {
                 "receive_email_updates": True,
@@ -1558,7 +1566,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
     def test_hardship_calculations_on_review_page(self):
 
         session_data = self.test_session_data
-        session_data["company_details"] = {"complete": True}
         session_data["your_finances"]["hardship"] = True
 
         fake_request = self.get_request_mock("/plea/other_expenses")
@@ -1592,8 +1599,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
     def test_hardship_on_review(self):
 
         session_data = self.test_session_data
-        session_data["company_details"] = {"complete": True, "skipped": True}
-        session_data["company_finances"] = {"complete": True, "skipped": True}
         session_data["your_status"]["you_are"] = "Other"
 
         fake_request = self.get_request_mock("/plea/your_finances")
@@ -1622,8 +1627,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
     def test_no_hardship_review(self):
 
         session_data = self.test_session_data
-        session_data["company_details"] = {"complete": True}
-        session_data["company_finances"] = {"complete": True}
 
         fake_request = self.get_request_mock("/plea/your_finances")
         request_context = RequestContext(fake_request)
