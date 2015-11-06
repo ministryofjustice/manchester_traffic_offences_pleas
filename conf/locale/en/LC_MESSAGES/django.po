@@ -611,18 +611,6 @@ msgstr ""
 msgid "You must provide an email address if you want to receive email updates about this case"
 msgstr ""
 
-#: apps/plea/forms.py:24 apps/plea/forms.py:286 apps/plea/forms.py:316
-msgid "Weekly"
-msgstr ""
-
-#: apps/plea/forms.py:25 apps/plea/forms.py:287 apps/plea/forms.py:317
-msgid "Fortnightly"
-msgstr ""
-
-#: apps/plea/forms.py:26 apps/plea/forms.py:288 apps/plea/forms.py:318
-msgid "Monthly"
-msgstr ""
-
 #: apps/plea/forms.py:46
 msgid "The person named in the notice"
 msgstr ""
@@ -777,18 +765,6 @@ msgstr ""
 
 #: apps/plea/forms.py:258 apps/plea/forms.py:289 apps/plea/forms.py:319
 msgid "Other"
-msgstr ""
-
-#: apps/plea/forms.py:258 apps/plea/forms.py:261 apps/plea/forms.py:265
-msgid "Weekly"
-msgstr ""
-
-#: apps/plea/forms.py:259 apps/plea/forms.py:262 apps/plea/forms.py:266
-msgid "Fortnightly"
-msgstr ""
-
-#: apps/plea/forms.py:260 apps/plea/forms.py:263 apps/plea/forms.py:267
-msgid "Monthly"
 msgstr ""
 
 #: apps/plea/forms.py:297
