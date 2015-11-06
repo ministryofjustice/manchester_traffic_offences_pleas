@@ -8,7 +8,7 @@ from .models import Case, Court
 from .standardisers import get_standardiser
 
 
-URN_PATTERNS = {
+FORMATTED_URN_PATTERNS = {
     "02": r"^02TJ[A-Z]{0,2}[0-9]{8,16}[A-Z]{2,3}$",
     "05": r"^[0-9]{2}/[A-Z]{1}[0-9]{1}/(?:[0-9]{5}|[0-9]{7})/[0-9]{2}$",
     "10": r"^[0-9]{2}/[A-Z]{1}[0-9]{1}/(?:[0-9]{5}|[0-9]{7})/[0-9]{2}$",
@@ -17,8 +17,20 @@ URN_PATTERNS = {
 }
 
 
-def get_pattern(urn):
-    return URN_PATTERNS.get(urn[:2], URN_PATTERNS["*"])
+UNFORMATTED_URN_PATTERNS = {
+    "02": r"^02TJ[A-Z]{0,2}[0-9]{8,16}[A-Z]{2,3}$",
+    "05": r"^[0-9]{2}[A-Z]{1}[0-9]{1}(?:[0-9]{5}|[0-9]{7})[0-9]{2}$",
+    "10": r"^[0-9]{2}[A-Z]{1}[0-9]{1}(?:[0-9]{5}|[0-9]{7})[0-9]{2}$",
+    "17": r"^[0-9]{2}[A-Z]{1}[0-9]{1}(?:[0-9]{5}|[0-9]{7})[0-9]{2}$",
+    "*": r"^[0-9]{2}[A-Z]{2}(?:[0-9]{5}|[0-9]{7})[0-9]{2}$"
+}
+
+
+def get_pattern(urn, formatted=False):
+    if formatted:
+        return FORMATTED_URN_PATTERNS.get(urn[:2], FORMATTED_URN_PATTERNS["*"])
+    else:
+        return UNFORMATTED_URN_PATTERNS.get(urn[:2], UNFORMATTED_URN_PATTERNS["*"])
 
 
 def is_date_in_past(date):
@@ -51,7 +63,7 @@ def is_date_in_next_6_months(date):
 
 def is_urn_valid(urn):
     """
-    URN is 11 or 13 characters long in the following format:
+    urn is 11 or 13 characters long in the following format:
 
     00/AA/0000000/00
     or
