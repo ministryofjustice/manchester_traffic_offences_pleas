@@ -19,3 +19,6 @@ DATABASES = {
 }
 
 ALLOWED_HOSTS = ["api.makeaplea.justice.gov.uk", ]
+
+# Enable CachedStaticFilesStorage for cache-busting assets
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
