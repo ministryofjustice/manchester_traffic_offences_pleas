@@ -123,9 +123,15 @@ class CaseStage(FormStage):
 
         if "complete" in clean_data:
             if clean_data.get("plea_made_by", "Defendant") == "Defendant":
-                self.set_next_step("your_details")
+                self.set_next_step("your_details", skip=["company_details",
+                                                         "company_finances"])
             else:
-                self.set_next_step("company_details")
+                self.set_next_step("company_details", skip=["your_details",
+                                                            "your_status",
+                                                            "your_finances",
+                                                            "hardship",
+                                                            "household_expenses",
+                                                            "other_expenses"])
 
         return clean_data
 
@@ -141,7 +147,7 @@ class CompanyDetailsStage(FormStage):
                            self).save(form_data, next_step)
 
         if "complete" in clean_data:
-            self.set_next_step("plea", skip=["your_details", "your_finances", "household_expenses"])
+            self.set_next_step("plea")
 
         return clean_data
 
@@ -157,8 +163,7 @@ class YourDetailsStage(FormStage):
                            self).save(form_data, next_step)
 
         if "complete" in clean_data:
-            self.set_next_step("plea", skip=["company_details",
-                                             "company_finances"])
+            self.set_next_step("plea")
 
         return clean_data
 
@@ -235,15 +240,18 @@ class PleaStage(IndexedStage):
             else:
                 if self.all_data["case"].get("plea_made_by", "Defendant") == "Company representative":
                     if stage_data["none_guilty"]:
-                        self.set_next_step("review", skip=["company_finances",
-                                                           "your_status", "your_finances"])
+                        self.set_next_step("review", skip=["company_finances"])
                     else:
-                        self.set_next_step("company_finances", skip=["your_status", "your_finances"])
+                        self.set_next_step("company_finances")
                 else:
                     if stage_data["none_guilty"]:
-                        self.set_next_step("review", skip=["your_status", "your_finances"])
-                    elif "skipped" in self.all_data["your_finances"]:
-                        del self.all_data["your_finances"]["skipped"]
+                        self.set_next_step("review", skip=["your_status",
+                                                           "your_finances",
+                                                           "hardship",
+                                                           "household_expenses",
+                                                           "other_expenses"])
+                    else:
+                        self.set_next_step("your_status")
 
         return stage_data
 
@@ -293,17 +301,16 @@ class YourFinancesStage(FormStage):
 
         clean_data = super(YourFinancesStage, self).save(form_data, next_step)
 
-        you_are = self.all_data["your_status"]["you_are"]
+        if "complete" in clean_data:
+            you_are = self.all_data["your_status"]["you_are"]
 
-        prefixes = {
-            "Employed": "employed",
-            "Self-employed": "self_employed",
-            "Receiving benefits": "benefits",
-            "Other": "other"
-        }
-        prefix = prefixes.get(you_are, False)
-
-        if you_are and prefix:
+            prefixes = {
+                "Employed": "employed",
+                "Self-employed": "self_employed",
+                "Receiving benefits": "benefits",
+                "Other": "other"
+            }
+            prefix = prefixes.get(you_are, False)
 
             pay_period = clean_data.get(prefix + "_pay_period", "Weekly")
             pay_amount = clean_data.get(prefix + "_pay_amount", 0)
@@ -312,9 +319,8 @@ class YourFinancesStage(FormStage):
             hardship = clean_data.get(prefix + "_hardship", False)
             self.all_data["your_finances"]["hardship"] = hardship
 
-            if "complete" in clean_data:
-                if not hardship:
-                    self.set_next_step("review", skip=["hardship", "household_expenses", "other_expenses"])
+            if not hardship:
+                self.set_next_step("review", skip=["hardship", "household_expenses", "other_expenses"])
 
         return clean_data
 
@@ -384,7 +390,7 @@ class OtherExpensesStage(FormStage):
         clean_data = super(OtherExpensesStage, self).save(form_data, next_step)
 
         if "complete" in clean_data:
-            self.set_next_step("review", skip=["company_finances"])
+            self.set_next_step("review")
 
             total_household = self.all_data["your_expenses"]["total_household_expenses"]
 
