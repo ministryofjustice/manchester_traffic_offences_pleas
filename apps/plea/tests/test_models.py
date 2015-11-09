@@ -209,10 +209,10 @@ class CourtEmailCountModelTestCase(TestCase):
 
         self.assertEqual(len(stats), 2)
         self.assertEqual(stats[0]["court_name"], "Court 01")
-        self.assertEqual(stats[0]["stats"]["submissions"], 7)
-        self.assertEqual(stats[0]["stats"]["pleas"], 13)
-        self.assertEqual(stats[0]["stats"]["guilty"], 8)
-        self.assertEqual(stats[0]["stats"]["not_guilty"], 5)
+        self.assertEqual(stats[0]["submissions"], 7)
+        self.assertEqual(stats[0]["pleas"], 13)
+        self.assertEqual(stats[0]["guilty"], 8)
+        self.assertEqual(stats[0]["not_guilty"], 5)
 
 
     def test_get_stats_days_from_hearing(self):
