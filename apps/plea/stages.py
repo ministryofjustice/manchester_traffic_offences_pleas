@@ -74,6 +74,27 @@ class URNEntryStage(FormStage):
     form_class = URNEntryForm
     dependencies = []
 
+    def save(self, form_data, next_step=None):
+        clean_data = super(URNEntryStage, self).save(form_data, next_step)
+
+        if "urn" in clean_data:
+            try:
+                court = Court.objects.get_by_urn(clean_data["urn"])
+            except Court.DoesNotExist:
+                court = None
+
+            if court is not None:
+                sjp = court.sjp_area
+            else:
+                sjp = True
+
+            if not sjp:
+                self.all_data["notice_type"]["sjp"] = False
+                self.all_data["notice_type"]["complete"] = True
+                self.set_next_step("case")
+
+        return clean_data
+
     def render(self, request_context):
         if "urn" in self.form.errors and ERROR_MESSAGES["URN_ALREADY_USED"] in self.form.errors["urn"]:
             self.context["urn_already_used"] = True
