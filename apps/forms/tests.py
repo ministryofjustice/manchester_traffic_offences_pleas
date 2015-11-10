@@ -225,6 +225,19 @@ class TestMultiStageForm(TestCase):
         add_msg.assert_called_once_with({}, 25, "This is a test message", extra_tags=None)
 
     @patch("apps.forms.stages.reverse", reverse)
+    def test_form_stage45_loads_specified_key(self):
+        request_context = {}
+        session_data = {"stage_2": {"complete": True},
+                        "stage_3": {"complete": True},
+                        "stage_4": {"complete": True,
+                                    "field1": "Stage 45 field 1 data"}}
+        msf = MultiStageFormTest(session_data, "stage_45")
+        msf.load(request_context)
+        response = msf.render()
+
+        self.assertContains(response, 'value="Stage 45 field 1 data"')
+
+    @patch("apps.forms.stages.reverse", reverse)
     def test_form_stage45_saves_to_specified_key(self):
         request_context = {}
         msf = MultiStageFormTest({}, "stage_45")
