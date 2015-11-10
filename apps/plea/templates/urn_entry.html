@@ -4,12 +4,12 @@
 {% load form_widgets %}
 {% load static %}
 
-{% block page_title %}{% blocktrans %}Case details{% endblocktrans %} - {{ block.super }}{% endblock %}
+{% block page_title %}{% blocktrans %}Your case{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 {% block errors_summary %}
     {% if urn_already_used %}
 
-        <h2>{% blocktrans %}The details you've entered have already been used to make a plea online{% endblocktrans %}</h2>
+        <h1 class="heading-medium">{% blocktrans %}The details you've entered have already been used to make a plea online{% endblocktrans %}</h1>
 
         <p>{% blocktrans %}Check and try again.{% endblocktrans %}</p>
 
@@ -43,7 +43,7 @@
 {% endblock errors_summary %}
 
 {% block stage_header %}
-    <h1>{% blocktrans %}Case details{% endblocktrans %}</h1>
+    <h1>{% blocktrans %}Your case{% endblocktrans %}</h1>
 {% endblock stage_header %}
 
 {% block stage_form %}
@@ -55,7 +55,5 @@
 {% block stage_submit %}
     <div class="form-submit">
         <button class="button" type="submit">{% blocktrans %}Continue{% endblocktrans %}</button>
-
-        <p><a href="{% url "plea_form_step" "notice_type" %}">{% blocktrans %}Back{% endblocktrans %}</a></p>
     </div>
 {% endblock stage_submit %}
