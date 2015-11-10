@@ -24,7 +24,10 @@ class PublicStatsViewSet(viewsets.ViewSet):
     permission_classes = (AllowAny,)
 
     def list(self, request):
-        stats = CourtEmailCount.objects.get_stats()
+        start_date = request.GET.get("start", None)
+        end_date = request.GET.get("end", None)
+
+        stats = CourtEmailCount.objects.get_stats(start=start_date, end=end_date)
 
         return Response(stats)
 
