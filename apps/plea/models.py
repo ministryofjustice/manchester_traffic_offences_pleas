@@ -26,59 +26,51 @@ INITIATION_TYPE_CHOICES = (("C", "Charge"),
                            ("S", "Summons"))
 
 
+def get_totals(qs):
+    totals = qs.aggregate(Sum('total_pleas'),
+                          Sum('total_guilty'),
+                          Sum('total_not_guilty'))
+
+    return {
+        'submissions': qs.count(),
+        'pleas': totals['total_pleas__sum'] or 0,
+        'guilty': totals['total_guilty__sum'] or 0,
+        'not_guilty': totals['total_not_guilty__sum'] or 0
+    }
+
+
 class CourtEmailCountManager(models.Manager):
     def calculate_aggregates(self, start_date, days=7):
         """
-        Calculate aggregate stats (subs, guilty pleas, not guilty pleas) over the
-        specified date period.
+        Calculate aggregate stats (submissions, total pleas,
+        guilty pleas, not guilty pleas) over the specified date period.
         """
-        start_datetime = dt.datetime.combine(
-            start_date, dt.datetime.min.time())
+        start_datetime = start_date
 
-        end_datetime = dt.datetime.combine(
-            start_date+dt.timedelta(days), dt.datetime.max.time())
+        end_datetime = start_date + dt.timedelta(days)
 
-        qs = self.filter(
-            hearing_date__gte=start_datetime,
-            hearing_date__lte=end_datetime)
+        qs = self.filter(sent=True,
+                         court__test_mode=False,
+                         date_sent__gte=start_datetime,
+                         date_sent__lt=end_datetime)
 
-        totals = qs.aggregate(Sum('total_pleas'),
-                              Sum('total_guilty'),
-                              Sum('total_not_guilty'))
+        totals = get_totals(qs)
 
-        return {
-            'submissions': qs.count(),
-            'pleas': totals['total_pleas__sum'] or 0,
-            'guilty': totals['total_guilty__sum'] or 0,
-            'not_guilty': totals['total_not_guilty__sum'] or 0
-        }
+        return totals
 
-    def get_stats(self):
+    def get_stats(self, start=None, end=None):
         """
-        Return some basic stats
+        Return stats, which can be filtered by start date or end date
         """
+        qs = self.filter(sent=True, court__test_mode=False)
 
-        def _get_totals(qs):
-            totals = qs.aggregate(Sum('total_pleas'), Sum('total_guilty'), Sum('total_not_guilty'))
+        if start:
+            qs = qs.filter(date_sent__gte=start)
 
-            return {
-                'total': totals['total_pleas__sum'] or 0,
-                'guilty': totals['total_guilty__sum'] or 0,
-                'not_guilty': totals['total_not_guilty__sum'] or 0
-            }
+        if end:
+            qs = qs.filter(date_sent__lte=end)
 
-        stats = {
-            'submissions': {},
-            'pleas': {}
-        }
-
-        to_date = self.filter(sent=True, court__test_mode=False)
-
-        stats['submissions']['to_date'] = to_date.count()
-
-        stats['pleas']['to_date'] = _get_totals(to_date)
-
-        return stats
+        return get_totals(qs)
 
     def get_stats_by_hearing_date(self, days=None, start_date=None):
         """
@@ -119,14 +111,10 @@ class CourtEmailCountManager(models.Manager):
             qs = self.filter(sent=True,
                              court__id=court.id)
 
-            totals = qs.aggregate(Sum('total_pleas'), Sum('total_guilty'), Sum('total_not_guilty'))
-
             data = {"court_name": court.court_name,
-                    "region_code": court.region_code,
-                    "submissions": qs.count(),
-                    "pleas": totals['total_pleas__sum'],
-                    "guilty": totals['total_guilty__sum'],
-                    "not_guilty": totals['total_not_guilty__sum']}
+                    "region_code": court.region_code}
+
+            data.update(get_totals(qs))
 
             stats.append(data)
 

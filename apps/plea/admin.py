@@ -34,7 +34,7 @@ class CaseAdmin(admin.ModelAdmin):
 
 
 class CourtEmailCountAdmin(admin.ModelAdmin):
-    list_display = ("court", "initiation_type", "total_pleas", "total_guilty", "total_not_guilty", "hearing_date", "sent", "processed")
+    list_display = ("court", "date_sent", "initiation_type", "total_pleas", "total_guilty", "total_not_guilty", "hearing_date", "sent", "processed")
     model = CourtEmailCount
 
 
