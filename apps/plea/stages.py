@@ -426,8 +426,7 @@ class ReviewStage(FormStage):
             self.all_data["case"]["urn"]
         except KeyError:
             # session has timed out
-            self.add_message(messages.ERROR, "Your session has timed out",
-                             extra_tags="session_timeout")
+            self.add_message(messages.ERROR, _("Your session has timed out"), extra_tags="session_timeout")
 
             self.set_next_step("case")
             return clean_data
