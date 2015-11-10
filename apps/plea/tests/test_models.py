@@ -146,14 +146,14 @@ class CourtEmailCountModelTestCase(TestStatsBase):
 
         totals = CourtEmailCount.objects.get_stats(start="2015-01-12")
 
-        self.assertEquals(totals["submissions"], 7)
+        self.assertEquals(totals["submissions"], 4)
         self.assertEquals(totals["pleas"], 9)
         self.assertEquals(totals["guilty"], 6)
         self.assertEquals(totals["not_guilty"], 3)
 
     def test_get_stats_end_date(self):
 
-        totals = CourtEmailCount.objects.get_stats(end="2015-01-12")
+        totals = CourtEmailCount.objects.get_stats(end="2015-01-11")
 
         self.assertEquals(totals["submissions"], 4)
         self.assertEquals(totals["pleas"], 7)
