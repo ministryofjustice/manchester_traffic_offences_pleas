@@ -70,7 +70,7 @@ class FormStage(object):
 
     def load_forms(self, data=None, initial=False):
         if initial:
-            initial_data = self.all_data.get(self.name, None)
+            initial_data = self.all_data.get(self.storage_key, None)
             if self.form_class:
                 self.form = self.form_class(initial=initial_data, label_suffix="")
             return
@@ -89,9 +89,9 @@ class FormStage(object):
         if hasattr(request_context, "request") and ("reset" in request_context.request.GET):
 
             try:
-                self.all_data[self.name].get("data")[self.index-1].pop("split_form", None)
+                self.all_data[self.storage_key].get("data")[self.index-1].pop("split_form", None)
             except AttributeError:
-                self.all_data[self.name].pop("split_form", None)
+                self.all_data[self.storage_key].pop("split_form", None)
 
         self.load_forms(initial=True)
 
@@ -114,7 +114,7 @@ class FormStage(object):
                 clean_data["complete"] = True
                 self.next_step = self.get_next(next_step)
             else:
-                self.all_data[self.name].pop("complete", None)
+                self.all_data[self.storage_key].pop("complete", None)
                 self.form.data["split_form"] = "split_form_last_step"
                 clean_data["split_form"] = "split_form_last_step"
 
