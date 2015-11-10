@@ -36,7 +36,7 @@ def reorder_fields(fields, order):
 
 class URNEntryForm(BaseStageForm):
     urn = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                          label=_("Unique reference number (URN)"),
+                          label=_("What is your Unique Reference Number (URN)?"),
                           required=True,
                           validators=[is_urn_valid, is_urn_not_used],
                           help_text=_("On page 1 of the notice, usually at the top."),

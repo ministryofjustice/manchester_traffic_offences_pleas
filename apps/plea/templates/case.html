@@ -6,42 +6,6 @@
 
 {% block page_title %}{% blocktrans %}Case details{% endblocktrans %} - {{ block.super }}{% endblock %}
 
-{% block errors_summary %}
-    {% if urn_already_used %}
-
-        <h2>{% blocktrans %}The details you've entered have already been used to make a plea online{% endblocktrans %}</h2>
-
-        <p>{% blocktrans %}Check and try again.{% endblocktrans %}</p>
-
-        <ul>
-            <li><a href="#section_urn">{% blocktrans %}Enter the correct URN{% endblocktrans %}</a></li>
-        </ul>
-
-        <p>{% blocktrans %}To make changes to a plea you’ve already made online, email or write to the court before your hearing with:{% endblocktrans %}</p>
-
-        <ul class="list-bullet">
-            <li>{% blocktrans %}details of the changes you want to make{% endblocktrans %}</li>
-            <li>{% blocktrans %}your unique reference number{% endblocktrans %}</li>
-        </ul>
-
-        <div class="js-Details" data-summary-open="{% blocktrans %}Hide court contact details{% endblocktrans %}">
-            <a class="details-trigger" href="#court-details"><span class="summary">{% blocktrans %}View court contact details{% endblocktrans %}</span></a>
-            <div class="details-content" id="court-details">
-                <h3 class="heading-small">{% blocktrans %}Send letters to:{% endblocktrans %}</h3>
-                <address>{{ court.court_address|linebreaksbr }}</address>
-
-                <h3 class="heading-small">{% blocktrans %}Send email to:{% endblocktrans %}</h3>
-                <p><a href="mailto:{{ court.court_email }}">{{ court.court_email }}</a></p>
-            </div>
-        </div>
-
-    {% else %}
-
-        {{ block.super }}
-
-    {% endif %}
-{% endblock errors_summary %}
-
 {% block stage_header %}
     <h1>{% blocktrans %}Case details{% endblocktrans %}</h1>
 {% endblock stage_header %}
@@ -66,7 +30,5 @@
 {% block stage_submit %}
     <div class="form-submit">
         <button class="button" type="submit">{% blocktrans %}Continue{% endblocktrans %}</button>
-
-        <p><a href="{% url "plea_form_step" "notice_type" %}">{% blocktrans %}Back{% endblocktrans %}</a></p>
     </div>
 {% endblock stage_submit %}
