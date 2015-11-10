@@ -28,6 +28,12 @@ class FeedbackViews(StorageView):
             nxt = kw_args.pop("next")
             if kw_args:
                 redirect_url = reverse(nxt, kwargs=kw_args)
+
+                try:
+                    if kw_args["stage"] == "complete":
+                        redirect_url = "/"
+                except KeyError:
+                    pass
             else:
                 redirect_url = reverse(nxt)
 
