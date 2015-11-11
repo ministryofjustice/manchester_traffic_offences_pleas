@@ -116,7 +116,7 @@ class CaseAPICallTestCase(APITestCase):
 
         case_view = CaseViewSet.as_view({"post": "create"})
 
-        response = case_view(request)
+        case_view(request)
 
         case = Case.objects.all()[0]
 
@@ -137,7 +137,7 @@ class CaseAPICallTestCase(APITestCase):
 
         case_view = CaseViewSet.as_view({"post": "create"})
 
-        response = case_view(request)
+        case_view(request)
 
         case = Case.objects.all()[0]
 
