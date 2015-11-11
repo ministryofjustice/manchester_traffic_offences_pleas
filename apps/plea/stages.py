@@ -7,7 +7,8 @@ from django.utils.translation import ugettext as _
 from apps.forms.stages import FormStage, IndexedStage
 
 from .email import send_plea_email, get_plea_type
-from .forms import (NoticeTypeForm,
+from .forms import (URNEntryForm,
+                    NoticeTypeForm,
                     CaseForm,
                     SJPCaseForm,
                     YourDetailsForm,
@@ -66,6 +67,46 @@ def calculate_weekly_amount(amount, period="Weekly"):
         return amount
 
 
+class URNEntryStage(FormStage):
+    name = "enter_urn"
+    storage_key = "case"
+    template = "urn_entry.html"
+    form_class = URNEntryForm
+    dependencies = []
+
+    def save(self, form_data, next_step=None):
+        clean_data = super(URNEntryStage, self).save(form_data, next_step)
+
+        if "urn" in clean_data:
+            try:
+                court = Court.objects.get_by_urn(clean_data["urn"])
+            except Court.DoesNotExist:
+                court = None
+
+            if court is not None:
+                sjp = court.sjp_area
+            else:
+                sjp = True
+
+            if not sjp:
+                self.all_data["notice_type"]["sjp"] = False
+                self.all_data["notice_type"]["complete"] = True
+                self.set_next_step("case")
+
+        return clean_data
+
+    def render(self, request_context):
+        if "urn" in self.form.errors and ERROR_MESSAGES["URN_ALREADY_USED"] in self.form.errors["urn"]:
+            self.context["urn_already_used"] = True
+
+            try:
+                self.context["court"] = Court.objects.get_by_urn(self.form.data["urn"])
+            except Court.DoesNotExist:
+                pass
+
+        return super(URNEntryStage, self).render(request_context)
+
+
 class NoticeTypeStage(FormStage):
     name = "notice_type"
     template = "notice_type.html"
@@ -86,17 +127,6 @@ class CaseStage(FormStage):
                 self.form_class = SJPCaseForm
         except KeyError:
             pass
-
-    def render(self, request_context):
-        if "urn" in self.form.errors and ERROR_MESSAGES["URN_ALREADY_USED"] in self.form.errors["urn"]:
-            self.context["urn_already_used"] = True
-
-            try:
-                self.context["court"] = Court.objects.get_by_urn(self.form.data["urn"])
-            except Court.DoesNotExist:
-                pass
-
-        return super(CaseStage, self).render(request_context)
 
     def save(self, form_data, next_step=None):
         clean_data = super(CaseStage, self).save(form_data, next_step)
@@ -264,7 +294,7 @@ class CompanyFinancesStage(FormStage):
     name = "company_finances"
     template = "company_finances.html"
     form_class = CompanyFinancesForm
-    dependencies = ["notice_type", "case"]
+    dependencies = ["notice_type", "case", "company_details", "plea"]
 
 
 class YourStatusStage(FormStage):
@@ -426,8 +456,7 @@ class ReviewStage(FormStage):
             self.all_data["case"]["urn"]
         except KeyError:
             # session has timed out
-            self.add_message(messages.ERROR, "Your session has timed out",
-                             extra_tags="session_timeout")
+            self.add_message(messages.ERROR, _("Your session has timed out"), extra_tags="session_timeout")
 
             self.set_next_step("case")
             return clean_data

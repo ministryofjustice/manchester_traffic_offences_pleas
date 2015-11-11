@@ -124,6 +124,16 @@ class FeedbackFormTestCase(TestCase):
         self.assertEquals(response.status_code, 302)
         self.assertEquals(response.url, "/terms-and-conditions-and-privacy-policy/")
 
+    def test_redirect_is_set_to_home_if_complete_stage(self):
+        fake_request = self.get_request_mock("/feedback/?next=plea_form_step&stage=complete")
+        fake_request.session = {"feedback_data": self.complete_session_data}
+
+        view = FeedbackViews()
+        response = view.get(fake_request, stage="complete")
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response.url, "/")
+
     def test_user_rating_is_recorded(self):
         form = FeedbackForms(self.complete_session_data, "comments")
         form.save({}, self.request_context)
