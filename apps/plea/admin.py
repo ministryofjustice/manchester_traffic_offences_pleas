@@ -9,9 +9,8 @@ class UsageStatsAdmin(admin.ModelAdmin):
 
 
 class CourtAdmin(admin.ModelAdmin):
-    list_display = ('court_code', 'region_code', 'court_name', 'court_address',
-                    'court_telephone', 'court_email', 'submission_email',
-                    'enabled', 'test_mode')
+    list_display = ('court_name', 'region_code', 'court_address', 'court_email', 'plp_email',
+                    'enabled', 'test_mode', 'sjp_area')
 
 
 class InlineCaseAction(admin.TabularInline):
