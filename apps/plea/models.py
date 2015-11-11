@@ -436,6 +436,10 @@ class Court(models.Model):
         default=False,
         help_text="Is this court entry used for testing purposes?")
 
+    sjp_area = models.BooleanField(
+        default=False,
+        help_text="Is this area sending out SJP notices?")
+
     validate_urn = models.BooleanField(
         default=False,
         help_text="Do we have a full set of incoming DX data?"
