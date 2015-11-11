@@ -14,7 +14,8 @@ from apps.forms.views import StorageView
 
 from .models import Case, Court
 from .forms import CourtFinderForm
-from .stages import (NoticeTypeStage,
+from .stages import (URNEntryStage,
+                     NoticeTypeStage,
                      CaseStage,
                      YourDetailsStage,
                      CompanyDetailsStage,
@@ -32,7 +33,8 @@ from .fields import ERROR_MESSAGES
 
 class PleaOnlineForms(MultiStageForm):
     url_name = "plea_form_step"
-    stage_classes = [NoticeTypeStage,
+    stage_classes = [URNEntryStage,
+                     NoticeTypeStage,
                      CaseStage,
                      YourDetailsStage,
                      CompanyDetailsStage,
@@ -75,6 +77,8 @@ class PleaOnlineForms(MultiStageForm):
 
 
 class PleaOnlineViews(StorageView):
+    start = "enter_urn"
+
     def __init__(self, *args, **kwargs):
         super(PleaOnlineViews, self).__init__(*args, **kwargs)
         self.index = None
@@ -82,8 +86,8 @@ class PleaOnlineViews(StorageView):
 
     def dispatch(self, request, *args, **kwargs):
         # If the session has timed out, redirect to start page
-        if not request.session.get("plea_data") and kwargs.get("stage", "notice_type") != "notice_type":
-            messages.add_message(request, messages.ERROR, _("Your session has timed out"), extra_tags="session_timeout")
+        if not request.session.get("plea_data") and kwargs.get("stage", self.start) != self.start:
+            # messages.add_message(request, messages.ERROR, _("Your session has timed out"), extra_tags="session_timeout")
             return HttpResponseRedirect("/")
 
         # Store the index if we've got one
