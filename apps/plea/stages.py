@@ -264,7 +264,7 @@ class CompanyFinancesStage(FormStage):
     name = "company_finances"
     template = "company_finances.html"
     form_class = CompanyFinancesForm
-    dependencies = ["notice_type", "case"]
+    dependencies = ["notice_type", "case", "company_details", "plea"]
 
 
 class YourStatusStage(FormStage):
