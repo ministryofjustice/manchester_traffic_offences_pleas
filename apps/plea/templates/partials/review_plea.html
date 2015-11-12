@@ -4,10 +4,9 @@
 <section class="review-subsection">
     <header>
         <h3>{% spaceless %}
+            {% blocktrans %}Charge{% endblocktrans %} {{ forloop.counter }}
             {% if pleaform.title  %}
-                {{ pleaform.title }}
-            {% else %}
-                {% blocktrans %}Charge{% endblocktrans %} {{ forloop.counter }}
+                <br>{{ pleaform.title }}
             {% endif %}
         {% endspaceless %}</h3>
 
