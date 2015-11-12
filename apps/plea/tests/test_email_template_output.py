@@ -352,6 +352,7 @@ class EmailTemplateTests(TestCase):
         context_data["notice_type"]["sjp"] = True
         context_data["plea"]["data"][0]["guilty"] = "guilty"
         context_data["plea"]["data"][0]["come_to_court"] = True
+        context_data["plea"]["data"][0]["show_interpreter_question"] = True
         context_data["plea"]["data"][0]["sjp_interpreter_needed"] = True
         context_data["plea"]["data"][0]["sjp_interpreter_language"] = "French"
 
@@ -378,6 +379,7 @@ class EmailTemplateTests(TestCase):
         context_data = self.get_context_data()
         context_data["plea"]["data"][0]["guilty"] = "not_guilty"
         context_data["plea"]["data"][0]["not_guilty_extra"] = "dsa"
+        context_data["plea"]["data"][0]["show_interpreter_question"] = True
         context_data["plea"]["data"][0]["interpreter_needed"] = True
         context_data["plea"]["data"][0]["interpreter_language"] = "French"
         context_data["plea"]["data"][0]["disagree_with_evidence"] = True
@@ -393,7 +395,7 @@ class EmailTemplateTests(TestCase):
 
         self.assertContainsDefinition(response.content, "Your plea", "Not guilty", count=1)
         self.assertContainsDefinition(response.content, "Not guilty because", "dsa", count=1)
-        self.assertContainsDefinition(response.content, "Interpreter required", "Yes", count=2)
+        self.assertContainsDefinition(response.content, "Interpreter required", "Yes", count=2) # One for the defendant, one for the witness
         self.assertContainsDefinition(response.content, "Language", "French", count=1)
         self.assertContainsDefinition(response.content, "Disagree with any evidence from a witness statement?", "Yes", count=1)
         self.assertContainsDefinition(response.content, "Name of the witness and what you disagree with", "Disagreement", count=1)
