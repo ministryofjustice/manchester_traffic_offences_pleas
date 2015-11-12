@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
 from apps.plea.models import Case, UsageStats, Offence
-from apps.plea.standardisers import get_standardiser
-from apps.plea.validators import get_pattern
+from apps.plea.standardisers import standardise_urn
+from apps.plea.validators import is_urn_valid
 
 
 class OffenceSerializer(serializers.ModelSerializer):
@@ -27,10 +27,11 @@ class CaseSerializer(serializers.ModelSerializer):
         offences = validated_data.pop("offences", [])
 
         urn = validated_data.pop("urn")
-        std = get_standardiser(urn)
-        std_urn = std(urn)
+        std_urn = standardise_urn(urn)
 
-        validator = get_pattern(urn, )
+        is_urn_valid(std_urn)
+
+        validated_data["urn"] = std_urn
 
         case = Case.objects.create(**validated_data)
 

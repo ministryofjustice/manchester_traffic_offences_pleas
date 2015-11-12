@@ -75,7 +75,7 @@ class CaseAPICallTestCase(APITestCase):
         self.endpoint = reverse('api-v0:case-list', format="json")
 
         self.test_data = {
-            u'urn': u'00/aa/00000/00',
+            u'urn': u'00AA0000000',
             u'case_number': '16273482',
             u'offences': [
                 {
