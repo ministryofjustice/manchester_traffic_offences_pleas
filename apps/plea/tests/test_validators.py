@@ -76,7 +76,7 @@ class TestValidators(TestCase):
         self.court06.validate_urn = True
         self.court06.save()
 
-        case = Case(urn="06/QQ/00000/00", sent=False)
+        case = Case(urn="06QQ0000000", sent=False)
         case.save()
 
         self.assertTrue(is_urn_valid("06/QQ/00000/00"))

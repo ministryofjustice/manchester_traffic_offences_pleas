@@ -5,16 +5,8 @@ class StandardiserNoOutputException(Exception):
     pass
 
 
-def get_standardiser(urn):
-    return URN_NORMALISERS.get(urn[:2], URN_NORMALISERS["*"])
-
-
-def normalise_standard_urn(urn):
-    return format_urn(standardise_urn(urn))
-
-
-def normalise_met_urn(urn):
-    return format_met_urn(standardise_urn(urn))
+def get_formatter(urn):
+    return URN_FORMATTERS.get(urn[:2], URN_FORMATTERS["*"])
 
 
 def standardise_urn(urn):
@@ -40,8 +32,5 @@ def format_urn(urn):
 def format_met_urn(urn):
     return urn
 
-
-URN_NORMALISERS = {
-    "02": normalise_met_urn,
-    "*": normalise_standard_urn
-}
+URN_FORMATTERS = {"02": format_met_urn,
+                  "*": format_urn}

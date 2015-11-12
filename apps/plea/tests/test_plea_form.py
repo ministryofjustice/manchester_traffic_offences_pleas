@@ -163,7 +163,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         request_context = RequestContext(fake_request)
 
         case = Case()
-        case.urn = "06/AA/0000000/00"
+        case.urn = "06AA000000000"
         case.sent = True
         case.save()
 
