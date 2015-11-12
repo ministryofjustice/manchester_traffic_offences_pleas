@@ -1,6 +1,7 @@
 {% load i18n %}
 
 {% for pleaform in plea.data %}
+{{pleaform}}
 <section class="review-subsection">
     <header>
         <h3>{% spaceless %}
@@ -43,14 +44,13 @@
         <dt>{% blocktrans %}Plead guilty in court{% endblocktrans %}</dt>
         <dd>{{ pleaform.come_to_court|yesno:_("Yes,No (v1)") }}</dd>
 
-                {% if pleaform.come_to_court %}
+                {% if pleaform.come_to_court and pleaform.show_interpreter_question %}
         <dt>{% blocktrans %}Interpreter required{% endblocktrans %}</dt>
         <dd>{{ pleaform.sjp_interpreter_needed|yesno:_("Yes,No (v3)") }}</dd>
 
                     {% if pleaform.sjp_interpreter_needed %}
         <dt>{% blocktrans %}Language{% endblocktrans %}</dt>
         <dd>{{ pleaform.sjp_interpreter_language }}</dd>
-
                     {% endif %}
                 {% endif %}
             {% endif %}
@@ -60,12 +60,14 @@
         <dt>{% blocktrans %}Not guilty because{% endblocktrans %}</dt>
         <dd>{{ pleaform.not_guilty_extra|linebreaksbr|default:"-" }}</dd>
 
+            {% if pleaform.show_interpreter_question %}
         <dt>{% blocktrans %}Interpreter required{% endblocktrans %}</dt>
         <dd>{{ pleaform.interpreter_needed|yesno:_("Yes,No (v3)") }}</dd>
 
-            {% if pleaform.interpreter_needed %}
+                {% if pleaform.interpreter_needed %}
         <dt>{% blocktrans %}Language{% endblocktrans %}</dt>
         <dd>{{ pleaform.interpreter_language }}</dd>
+                {% endif %}
             {% endif %}
 
         <dt>{% blocktrans %}Disagree with any evidence from a witness statement?{% endblocktrans %}</dt>
