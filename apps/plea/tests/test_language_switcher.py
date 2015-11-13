@@ -103,7 +103,7 @@ class TestLanguage(TestMultiPleaFormBase):
                 "complete": True,
                 "date_of_hearing": "2015-01-01",
                 "contact_deadline": "2015-01-01",
-                "urn": "51/AA/0000000/00",
+                "urn": "51AA000000000",
                 "number_of_charges": 3,
                 "plea_made_by": "Defendant"
             },

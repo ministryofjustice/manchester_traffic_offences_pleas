@@ -78,6 +78,7 @@ class URNEntryStage(FormStage):
         clean_data = super(URNEntryStage, self).save(form_data, next_step)
 
         if "urn" in clean_data:
+            clean_data["urn"] = standardise_urn(clean_data["urn"])
             try:
                 court = Court.objects.get_by_urn(clean_data["urn"])
             except Court.DoesNotExist:
