@@ -444,10 +444,6 @@ class Court(models.Model):
         choices=NOTICE_TYPES_CHOICES,
         help_text="What kind of notices are being sent out by this area?")
 
-    sjp_area = models.BooleanField(
-        default=False,
-        help_text="Is this area sending out SJP notices?")
-
     validate_urn = models.BooleanField(
         default=False,
         help_text="Do we have a full set of incoming DX data?"
