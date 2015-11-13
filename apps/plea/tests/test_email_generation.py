@@ -9,6 +9,7 @@ from apps.plea.attachment import TemplateAttachmentEmail
 
 from ..email import send_plea_email
 from ..models import Case, CourtEmailCount, Court
+from ..standardisers import format_for_region
 
 
 class EmailGenerationTests(TestCase):
@@ -66,12 +67,12 @@ class EmailGenerationTests(TestCase):
                                              "understand": True}}
 
     def test_template_attachment_sends_email(self):
-        email_context = {"URN": "062B3C4D5E"}
+        email_context = {"case": {"urn": "062B3C4D5E"}}
         email = TemplateAttachmentEmail("test_from@example.org",
                                         "test.html",
                                         "emails/attachments/plea_email.html",
                                         email_context,
-                                        "<p>Test Content</p><br><p>{{ URN }}</p>")
+                                        "<p>Test Content</p><br><p>{{ urn }}</p>")
 
         email.send(["test_to@example.org", ],
                    "Subject line",
@@ -125,8 +126,8 @@ class EmailGenerationTests(TestCase):
         send_plea_email(self.test_data_defendant)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertIn(self.test_data_defendant['case']['urn'].upper(), mail.outbox[-1].body)
-        self.assertIn(self.test_data_defendant['case']['urn'].upper(), mail.outbox[-1].alternatives[0][0])
+        self.assertIn(format_for_region(self.test_data_defendant['case']['urn']), mail.outbox[-1].body)
+        self.assertIn(format_for_region(self.test_data_defendant['case']['urn']), mail.outbox[-1].alternatives[0][0])
         self.assertIn(self.test_data_defendant['review']['email'], mail.outbox[-1].to)
 
     def test_user_confirmation_sends_no_email(self):
@@ -140,8 +141,8 @@ class EmailGenerationTests(TestCase):
         send_plea_email(self.test_data_company)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertIn(self.test_data_company['case']['urn'].upper(), mail.outbox[-1].body)
-        self.assertIn(self.test_data_company['case']['urn'].upper(), mail.outbox[-1].alternatives[0][0])
+        self.assertIn(format_for_region(self.test_data_company['case']['urn']), mail.outbox[-1].body)
+        self.assertIn(format_for_region(self.test_data_company['case']['urn']), mail.outbox[-1].alternatives[0][0])
         self.assertIn(self.test_data_company['review']['email'], mail.outbox[-1].to)
 
     def test_email_addresses_from_court_model(self):
