@@ -10,6 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from .models import Case, CourtEmailCount, Court
 from .encrypt import encrypt_and_store_user_data
 from tasks import email_send_court, email_send_prosecutor, email_send_user
+from standardisers import format_for_region
 
 
 logger = logging.getLogger(__name__)
@@ -112,7 +113,7 @@ def send_plea_email(context_data):
         return True
 
     data = {
-        "urn": context_data["case"]["urn"],
+        "urn": format_for_region(context_data["urn"]),
         "plea_made_by": context_data["case"]["plea_made_by"],
         "number_of_charges": context_data["case"]["number_of_charges"],
         "plea_type": get_plea_type(context_data),

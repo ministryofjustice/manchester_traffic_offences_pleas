@@ -5,8 +5,9 @@ class StandardiserNoOutputException(Exception):
     pass
 
 
-def get_formatter(urn):
-    return URN_FORMATTERS.get(urn[:2], URN_FORMATTERS["*"])
+def format_for_region(urn):
+    format = URN_FORMATTERS.get(urn[:2], URN_FORMATTERS["*"])
+    return format(standardise_urn(urn))
 
 
 def standardise_urn(urn):
