@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-10 15:00+0000\n"
+"POT-Creation-Date: 2015-11-16 16:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,7 +77,7 @@ msgstr ""
 msgid "Your feedback has been submitted"
 msgstr ""
 
-#: apps/feedback/stages.py:37 apps/plea/stages.py:473
+#: apps/feedback/stages.py:37 apps/plea/stages.py:472
 msgid "Submission Error"
 msgstr ""
 
@@ -729,7 +729,7 @@ msgid "Entering your UK driving licence number means you don't have to send your
 msgstr ""
 
 #: apps/plea/forms.py:196
-msgid "If yes, enter it here. It's on your driving licence photocard and starts with letters from your last name."
+msgid "If yes, enter it here. Your driving licence number is in section 5 of your driving licence photocard."
 msgstr ""
 
 #: apps/plea/forms.py:209
@@ -1025,7 +1025,11 @@ msgstr ""
 msgid "On page 1, usually at the top."
 msgstr ""
 
-#: apps/plea/stages.py:474
+#: apps/plea/stages.py:459
+msgid "Your session has timed out"
+msgstr ""
+
+#: apps/plea/stages.py:473
 msgid "There seems to have been a problem submitting your plea. Please try again."
 msgstr ""
 
@@ -1044,8 +1048,8 @@ msgstr ""
 #: apps/plea/templates/company_details.html:10
 #: apps/plea/templates/emails/attachments/plea_email.html:21
 #: apps/plea/templates/emails/attachments/plp_email.html:21
-#: apps/plea/templates/review.html:43 apps/plea/templates/your_details.html:6
-#: apps/plea/templates/your_details.html:10
+#: apps/plea/templates/review.html:43 apps/plea/templates/your_details.html:7
+#: apps/plea/templates/your_details.html:11
 msgid "Your details"
 msgstr ""
 
@@ -1894,15 +1898,15 @@ msgstr ""
 msgid "Start now"
 msgstr ""
 
-#: apps/plea/templates/your_details.html:12
+#: apps/plea/templates/your_details.html:13
 msgid "We need these in case we have to get in touch with you about your plea."
 msgstr ""
 
-#: apps/plea/templates/your_details.html:44
+#: apps/plea/templates/your_details.html:57
 msgid "Important:"
 msgstr ""
 
-#: apps/plea/templates/your_details.html:45
+#: apps/plea/templates/your_details.html:58
 msgid "If you have a UK driving licence and fail to tell us, your licence may be suspended."
 msgstr ""
 
