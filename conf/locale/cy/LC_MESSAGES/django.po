@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-16 16:21+0000\n"
-"PO-Revision-Date: 2015-11-17 09:18+0000\n"
+"PO-Revision-Date: 2015-10-29 09:30+0000\n"
 "Last-Translator: Welsh Language Unit <welsh.language.unit.manager@hmcts.gsi.gov.uk>\n"
 "Language-Team: Welsh (http://www.transifex.com/make-a-plea-gds/make-a-plea/language/cy/)\n"
 "MIME-Version: 1.0\n"
@@ -2075,8 +2075,7 @@ msgid "Start now"
 msgstr "Dechrau nawr"
 
 #: apps/plea/templates/your_details.html:13
-msgid ""
-"We need these in case we have to get in touch with you about your plea."
+msgid "We need these in case we have to get in touch with you about your plea."
 msgstr "Mae angen y rhain arnom rhag ofn y bydd rhaid inni gysylltu â chi ynghylch eich ple."
 
 #: apps/plea/templates/your_details.html:57
@@ -2084,9 +2083,7 @@ msgid "Important:"
 msgstr "Pwysig:"
 
 #: apps/plea/templates/your_details.html:58
-msgid ""
-"If you have a UK driving licence and fail to tell us, your licence may be "
-"suspended."
+msgid "If you have a UK driving licence and fail to tell us, your licence may be suspended."
 msgstr "Os oes gennych drwydded yrru y DU a'ch bod yn methu a dweud wrthym, mae'n bosib y caiff eich trwydded ei hatal."
 
 #: apps/plea/templates/your_finances.html:17

@@ -193,7 +193,7 @@ class YourDetailsForm(BaseStageForm):
     driving_licence_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                                              required=True,
                                              label="",
-                                             help_text=_("If yes, enter it here. It's on your driving licence photocard and starts with letters from your last name."),
+                                             help_text=_("If yes, enter it here. Your driving licence number is in section 5 of your driving licence photocard."),
                                              error_messages={"required": ERROR_MESSAGES["DRIVING_LICENCE_NUMBER_REQUIRED"]})
 
 
