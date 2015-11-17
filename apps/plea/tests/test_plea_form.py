@@ -142,6 +142,79 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             }
         }
 
+    def test_urn_entry_sjp_only_sets_notice_type(self):
+        Court.objects.create(court_code="0000",
+                             region_code="99",
+                             court_name="SJP only court",
+                             court_address="test address",
+                             court_telephone="0800 MAKEAPLEA",
+                             court_email="test@test.com",
+                             submission_email="test@test.com",
+                             plp_email="test@test.com",
+                             enabled=True,
+                             test_mode=False,
+                             notice_types="sjp")
+
+        form = PleaOnlineForms(self.session, "enter_urn")
+        form.load(self.request_context)
+        form.save({"urn": "99/AA/00000/00"}, self.request_context)
+
+        response = form.render()
+
+        self.assertEqual(form.all_data["notice_type"]["complete"], True)
+        self.assertEqual(form.all_data["notice_type"]["auto_set"], True)
+        self.assertEqual(form.all_data["notice_type"]["sjp"], True)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/plea/case/")
+
+    def test_urn_entry_non_sjp_only_sets_notice_type(self):
+        Court.objects.create(court_code="0000",
+                             region_code="98",
+                             court_name="Non-SJP only court",
+                             court_address="test address",
+                             court_telephone="0800 MAKEAPLEA",
+                             court_email="test@test.com",
+                             submission_email="test@test.com",
+                             plp_email="test@test.com",
+                             enabled=True,
+                             test_mode=False,
+                             notice_types="non-sjp")
+
+        form = PleaOnlineForms(self.session, "enter_urn")
+        form.load(self.request_context)
+        form.save({"urn": "98/AA/00000/00"}, self.request_context)
+
+        response = form.render()
+
+        self.assertEqual(form.all_data["notice_type"]["complete"], True)
+        self.assertEqual(form.all_data["notice_type"]["auto_set"], True)
+        self.assertEqual(form.all_data["notice_type"]["sjp"], False)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/plea/case/")
+
+    def test_urn_entry_both_shows_notice_type(self):
+        form = PleaOnlineForms(self.session, "enter_urn")
+        form.load(self.request_context)
+        form.save({"urn": "06/AA/00000/00"}, self.request_context)
+
+        response = form.render()
+
+        self.assertEqual(form.all_data.get("notice_type", {}).get("auto_set", None), None)
+        self.assertEqual(form.all_data.get("notice_type", {}).get("sjp", None), None)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/plea/notice_type/")
+
+    def test_auto_set_notice_type_prevents_notice_type_stage_access(self):
+        self.session.update({"case": {"urn": "99/AA/00000/00"},
+                             "notice_type": {"auto_set": True}})
+
+        form = PleaOnlineForms(self.session, "notice_type")
+        form.load(self.request_context)
+        response = form.render()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/plea/case/")
+
     def test_notice_type_stage_missing_data(self):
         form = PleaOnlineForms(self.session, "notice_type")
         form.load(self.request_context)
@@ -176,8 +249,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         case.urn = "06/AA/0000000/00"
         case.sent = True
         case.save()
-
-        hearing_date = datetime.date.today()+datetime.timedelta(30)
 
         form = PleaOnlineForms(self.session, "enter_urn")
         form.load(request_context)
