@@ -35,7 +35,7 @@
 {% blocktrans %}We're constantly working to improve this service.{% endblocktrans %}
 
 {% blocktrans %}Please give us feedback so we can make it better:{% endblocktrans %}
-https://www.makeaplea.justice.gov.uk/feedback/
+https://www.makeaplea.service.gov.uk/feedback/
 
 -------
 
@@ -45,7 +45,7 @@ https://www.makeaplea.justice.gov.uk/feedback/
 - {% blocktrans %}forward it to{% endblocktrans %} feedback@makeaplea.gov.uk
 
 {% blocktrans %}Terms and Conditions and Privacy Policy:{% endblocktrans %}
-https://www.makeaplea.justice.gov.uk/terms-and-conditions-and-privacy-policy
+https://www.makeaplea.service.gov.uk/terms-and-conditions-and-privacy-policy
 
 {% add_test_tag "<<MAP>>" %}
 {% if plea_type == "guilty" %}{% add_test_tag "<<GUILTY>>" %}{% endif %}

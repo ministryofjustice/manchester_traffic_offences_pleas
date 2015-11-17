@@ -7,7 +7,6 @@ from django.core import exceptions
 from .models import Case, Court
 from .standardisers import get_standardiser
 
-
 URN_PATTERNS = {
     "02": r"^02TJ[A-Z]{0,2}[0-9]{8,16}[A-Z]{2,3}$",
     "05": r"^[0-9]{2}/[A-Z]{1}[0-9]{1}/(?:[0-9]{5}|[0-9]{7})/[0-9]{2}$",
