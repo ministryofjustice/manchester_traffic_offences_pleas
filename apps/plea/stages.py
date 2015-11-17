@@ -2,6 +2,7 @@ from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.core.exceptions import MultipleObjectsReturned
 from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 
 from apps.forms.stages import FormStage, IndexedStage
@@ -84,14 +85,18 @@ class URNEntryStage(FormStage):
                 court = None
 
             if court is not None:
-                sjp = court.sjp_area
-            else:
-                sjp = True
+                notice_types = court.notice_types
 
-            if not sjp:
-                self.all_data["notice_type"]["sjp"] = False
-                self.all_data["notice_type"]["complete"] = True
-                self.set_next_step("case")
+                if notice_types == "both":
+                    try:
+                        del self.all_data["notice_type"]["auto_set"]
+                    except KeyError:
+                        pass
+                else:
+                    self.all_data["notice_type"]["sjp"] = (notice_types == "sjp")
+                    self.all_data["notice_type"]["complete"] = True
+                    self.all_data["notice_type"]["auto_set"] = True
+                    self.set_next_step("case")
 
         return clean_data
 
@@ -112,6 +117,15 @@ class NoticeTypeStage(FormStage):
     template = "notice_type.html"
     form_class = NoticeTypeForm
     dependencies = []
+
+    def render(self, request_context):
+        try:
+            if self.all_data["notice_type"]["auto_set"]:
+                return HttpResponseRedirect(self.all_urls["case"])
+        except KeyError:
+            pass
+
+        return super(NoticeTypeStage, self).render(request_context)
 
 
 class CaseStage(FormStage):
