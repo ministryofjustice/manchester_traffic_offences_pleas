@@ -267,6 +267,20 @@ class PleaStage(IndexedStage):
         if len(stage_data["data"]) < self.index:
             stage_data["data"].append({})
 
+        if clean_data.get("guilty") == "guilty":
+            try:
+                del clean_data["interpreter_needed"]
+                del clean_data["interpreter_language"]
+            except KeyError:
+                pass
+
+        if clean_data.get("guilty") == "not_guilty":
+            try:
+                del clean_data["sjp_interpreter_needed"]
+                del clean_data["sjp_interpreter_language"]
+            except KeyError:
+                pass
+
         clean_data["show_interpreter_question"] = self.show_interpreter_question
 
         stage_data["data"][self.index-1] = clean_data
@@ -307,7 +321,6 @@ class PleaStage(IndexedStage):
 
     def render(self, request_context):
         self.context["index"] = self.index
-        self.context["show_interpreter_question"] = self.show_interpreter_question
         return super(PleaStage, self).render(request_context)
 
 
