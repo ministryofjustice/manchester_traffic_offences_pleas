@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load form_widgets %}
+{% load static %}
 
 {% block page_title %}{% blocktrans %}Your details{% endblocktrans %} - {{ block.super }}{% endblock %}
 
@@ -37,7 +38,19 @@
     {% radio_field form.have_driving_licence_number inline=True %}
 
     <div class="panel-indent move-up" data-conditional="have_driving_licence_number" data-conditional-value="True">
-        {% std_field form.driving_licence_number hide_optional=True %}
+        {% with field=form.driving_licence_number hide_optional=True %}
+        <div class="form-group{% if field.wide %}-wide{% endif %}{% if field.errors %} with-error{% endif %}" id="section_{{ field.name }}{% if field.counter %}_{{ field.counter }}{% endif %}">
+            <label for="{{ field.id_for_label }}">
+                <span class="form-hint">{{ field.help_text|safe }}</span>
+
+                <img src="{% static "images/driving-licence.png" %}" width="235" height="166" alt="">
+
+                {{ field.errors }}
+            </label>
+
+            {{ field }}
+        </div>
+        {% endwith %}
     </div>
 
     <div class="panel-indent move-up" data-conditional="have_driving_licence_number" data-conditional-value="False">
