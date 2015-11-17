@@ -110,7 +110,7 @@ STATICFILES_FINDERS = (
 
 # Options for Premailer, which inlines the CSS on the fly in email templates and
 # makes all URLs absolute
-PREMAILER_OPTIONS = {"base_url": "https://www.makeaplea.justice.gov.uk",
+PREMAILER_OPTIONS = {"base_url": "https://www.makeaplea.service.gov.uk",
                      "remove_classes": False,
                      "keep_style_tags": True,
                      "cssutils_logging_level": logging.ERROR}
