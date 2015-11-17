@@ -118,11 +118,12 @@ Main styles
 	@extend %contain-floats;
 
 	margin: 0 0 2em;
-	padding: 1em 0 0;
 	border: 1px solid $grey-2;
 	border-width: 1px 0 0;
 
 	> header {
+		clear: both;
+		padding: 1em 0 0;
 
 		h2,
 		h3 {
