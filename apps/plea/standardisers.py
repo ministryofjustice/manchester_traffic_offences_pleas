@@ -19,7 +19,7 @@ def normalise_met_urn(urn):
 
 def standardise_urn(urn):
     """
-    Strips non-alphanumeric characters from given URN, and 
+    Strips non-alphanumeric characters from given URN, and
     capitalise any letter
     """
     output = re.sub(r"[\W_]+", "", urn).upper()

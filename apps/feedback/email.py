@@ -15,7 +15,7 @@ def send_feedback_email(email_data):
                      "referrer": email_data.get("feedback_redirect", "/"),
                      "user_agent": email_data.get("user_agent", "")}
 
-    email = EmailMessage("Feedback from makeaplea.justice.gov.uk",
+    email = EmailMessage("Feedback from makeaplea.service.gov.uk",
                          render_to_string("emails/feedback_summary.html",
                                           email_context),
                          settings.FEEDBACK_EMAIL_FROM,
