@@ -250,6 +250,24 @@ class PleaStage(IndexedStage):
             except IndexError:
                 pass
 
+        self.show_interpreter_question = True
+
+        previous_charges = self.all_data["plea"].get("data", [])
+        previous_charges = previous_charges[:self.index-1]
+
+        for charge in previous_charges:
+            if charge.get("interpreter_needed", None) is not None or charge.get("sjp_interpreter_needed", None) is not None:
+                self.show_interpreter_question = False
+
+                del self.form.fields["interpreter_needed"]
+                del self.form.fields["interpreter_language"]
+
+                if self.all_data["notice_type"]["sjp"]:
+                    del self.form.fields["sjp_interpreter_needed"]
+                    del self.form.fields["sjp_interpreter_language"]
+
+                break
+
     def save(self, form_data, next_step=None):
         clean_data = super(PleaStage, self).save(form_data, next_step)
         plea_count = self.all_data["case"]["number_of_charges"]
@@ -262,6 +280,22 @@ class PleaStage(IndexedStage):
 
         if len(stage_data["data"]) < self.index:
             stage_data["data"].append({})
+
+        if clean_data.get("guilty") == "guilty":
+            try:
+                del clean_data["interpreter_needed"]
+                del clean_data["interpreter_language"]
+            except KeyError:
+                pass
+
+        if clean_data.get("guilty") == "not_guilty":
+            try:
+                del clean_data["sjp_interpreter_needed"]
+                del clean_data["sjp_interpreter_language"]
+            except KeyError:
+                pass
+
+        clean_data["show_interpreter_question"] = self.show_interpreter_question
 
         stage_data["data"][self.index-1] = clean_data
 
