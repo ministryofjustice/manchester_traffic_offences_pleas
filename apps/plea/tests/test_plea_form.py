@@ -576,6 +576,24 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertNotContains(response, 'id="section_interpreter_needed"')
         self.assertNotContains(response, 'id="section_interpreter_language"')
 
+    def test_plea_stage_charge_3_shows_interpreter_fields_after_charge_2_change(self):
+        self.session.update(self.plea_stage_pre_data_3_charges)
+        self.session.update({"plea": {"data": [{"complete": True,
+                                                "guilty": "guilty"},
+                                               {"complete": True,
+                                                "guilty": "not_guilty",
+                                                "interpreter_needed": False}]}})
+        form = PleaOnlineForms(self.session, "plea", 2)
+        form.save({"guilty": "guilty"}, self.request_context)
+
+        form = PleaOnlineForms(self.session, "plea", 3)
+
+        form.load(self.request_context)
+        response = form.render()
+
+        self.assertContains(response, 'id="section_interpreter_needed"')
+        self.assertContains(response, 'id="section_interpreter_language"')
+
     def test_your_status_missing_data(self):
         form = PleaOnlineForms(self.test_session_data, "your_status")
 
