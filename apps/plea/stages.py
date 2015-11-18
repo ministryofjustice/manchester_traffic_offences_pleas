@@ -288,7 +288,7 @@ class PleaStage(IndexedStage):
             except KeyError:
                 pass
 
-        if clean_data.get("guilty") == "not_guilty":
+        if clean_data.get("guilty") == "not_guilty" or clean_data.get("come_to_court") == False:
             try:
                 del clean_data["sjp_interpreter_needed"]
                 del clean_data["sjp_interpreter_language"]
