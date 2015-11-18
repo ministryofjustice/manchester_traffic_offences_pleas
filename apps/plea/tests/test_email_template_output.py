@@ -2,6 +2,7 @@
 import re
 
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from mock import Mock
 
 from django.core import mail
@@ -173,6 +174,12 @@ class EmailTemplateTests(TestCase):
                     "review": rf.cleaned_data}
 
             data["case"].update(uf.cleaned_data)
+
+            if "date_of_hearing" in data["case"]:
+                data["case"]["contact_deadline"] = data["case"]["date_of_hearing"]
+
+            if "posting_date" in data["case"]:
+                data["case"]["contact_deadline"] = data["case"]["posting_date"] + relativedelta(days=+28)
 
             status_prefixes = {
                 "Employed": "employed",
