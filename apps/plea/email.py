@@ -105,11 +105,10 @@ def send_plea_email(context_data):
     if court_obj.plp_email:
         email_send_prosecutor.delay(case.id, context_data)
 
+    send_user_email = context_data.get("review", {}).get("receive_email_updates", False)
     email_address = context_data.get("review", {}).get("email", False)
 
-    if not email_address:
-        case.add_action("No email entered, user email not sent", "")
-    else:
+    if send_user_email and email_address:
         data = {
             "urn": context_data["case"]["urn"],
             "plea_made_by": context_data["case"]["plea_made_by"],
@@ -133,6 +132,9 @@ def send_plea_email(context_data):
         subject = _("Online plea submission confirmation")
 
         email_send_user.delay(case.id, email_address, subject, html_body, txt_body)
+
+    else:
+        case.add_action("No email entered, user email not sent", "")
 
     if not court_obj.test_mode:
         case.sent = True
