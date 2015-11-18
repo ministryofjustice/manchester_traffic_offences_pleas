@@ -113,6 +113,7 @@ def send_plea_email(context_data):
             "urn": context_data["case"]["urn"],
             "plea_made_by": context_data["case"]["plea_made_by"],
             "number_of_charges": context_data["case"]["number_of_charges"],
+            "contact_deadline": context_data["case"]["contact_deadline"],
             "plea_type": get_plea_type(context_data),
             "court_address": court_obj.court_address,
             "court_email": court_obj.court_email
