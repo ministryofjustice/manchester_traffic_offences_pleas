@@ -135,11 +135,11 @@ def send_plea_email(context_data):
 
     email_send_user.delay(case.id, email_address, subject, html_body, txt_body)
 
-    case.sent = True
-    case.save()
-
     if not court_obj.test_mode:
+        case.sent = True
         email_count.sent = True
         email_count.save()
+
+    case.save()
 
     return True
