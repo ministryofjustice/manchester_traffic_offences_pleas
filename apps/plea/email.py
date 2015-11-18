@@ -109,31 +109,30 @@ def send_plea_email(context_data):
 
     if not email_address:
         case.add_action("No email entered, user email not sent", "")
-        return True
+    else:
+        data = {
+            "urn": context_data["case"]["urn"],
+            "plea_made_by": context_data["case"]["plea_made_by"],
+            "number_of_charges": context_data["case"]["number_of_charges"],
+            "plea_type": get_plea_type(context_data),
+            "court_address": court_obj.court_address,
+            "court_email": court_obj.court_email
+        }
 
-    data = {
-        "urn": context_data["case"]["urn"],
-        "plea_made_by": context_data["case"]["plea_made_by"],
-        "number_of_charges": context_data["case"]["number_of_charges"],
-        "plea_type": get_plea_type(context_data),
-        "court_address": court_obj.court_address,
-        "court_email": court_obj.court_email
-    }
+        email_template = "emails/user_plea_confirmation"
 
-    email_template = "emails/user_plea_confirmation"
+        try:
+            if context_data["notice_type"]["sjp"]:
+                email_template = "emails/user_plea_confirmation_sjp"
+        except KeyError:
+            pass
 
-    try:
-        if context_data["notice_type"]["sjp"]:
-            email_template = "emails/user_plea_confirmation_sjp"
-    except KeyError:
-        pass
+        html_body = render_to_string(email_template + ".html", data)
+        txt_body = wrap(render_to_string(email_template + ".txt", data), 72)
 
-    html_body = render_to_string(email_template + ".html", data)
-    txt_body = wrap(render_to_string(email_template + ".txt", data), 72)
+        subject = _("Online plea submission confirmation")
 
-    subject = _("Online plea submission confirmation")
-
-    email_send_user.delay(case.id, email_address, subject, html_body, txt_body)
+        email_send_user.delay(case.id, email_address, subject, html_body, txt_body)
 
     if not court_obj.test_mode:
         case.sent = True
