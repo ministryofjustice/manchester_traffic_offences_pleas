@@ -1,6 +1,7 @@
 FROM python:2.7
 
 ENV APP_HOME=/makeaplea/
+ENV DJANGO_SETTINGS_MODULE=make_a_plea.settings.docker
 WORKDIR $APP_HOME
 
 RUN apt-get -y update && apt-get -y install python-psycopg2
