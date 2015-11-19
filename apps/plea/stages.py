@@ -2,12 +2,14 @@ from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.core.exceptions import MultipleObjectsReturned
 from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 
 from apps.forms.stages import FormStage, IndexedStage
 
 from .email import send_plea_email, get_plea_type
-from .forms import (NoticeTypeForm,
+from .forms import (URNEntryForm,
+                    NoticeTypeForm,
                     CaseForm,
                     SJPCaseForm,
                     YourDetailsForm,
@@ -66,11 +68,64 @@ def calculate_weekly_amount(amount, period="Weekly"):
         return amount
 
 
+class URNEntryStage(FormStage):
+    name = "enter_urn"
+    storage_key = "case"
+    template = "urn_entry.html"
+    form_class = URNEntryForm
+    dependencies = []
+
+    def save(self, form_data, next_step=None):
+        clean_data = super(URNEntryStage, self).save(form_data, next_step)
+
+        if "urn" in clean_data:
+            try:
+                court = Court.objects.get_by_urn(clean_data["urn"])
+            except Court.DoesNotExist:
+                court = None
+
+            if court is not None:
+                notice_types = court.notice_types
+
+                if notice_types == "both":
+                    try:
+                        del self.all_data["notice_type"]["auto_set"]
+                    except KeyError:
+                        pass
+                else:
+                    self.all_data["notice_type"]["sjp"] = (notice_types == "sjp")
+                    self.all_data["notice_type"]["complete"] = True
+                    self.all_data["notice_type"]["auto_set"] = True
+                    self.set_next_step("case")
+
+        return clean_data
+
+    def render(self, request_context):
+        if "urn" in self.form.errors and ERROR_MESSAGES["URN_ALREADY_USED"] in self.form.errors["urn"]:
+            self.context["urn_already_used"] = True
+
+            try:
+                self.context["court"] = Court.objects.get_by_urn(self.form.data["urn"])
+            except Court.DoesNotExist:
+                pass
+
+        return super(URNEntryStage, self).render(request_context)
+
+
 class NoticeTypeStage(FormStage):
     name = "notice_type"
     template = "notice_type.html"
     form_class = NoticeTypeForm
     dependencies = []
+
+    def render(self, request_context):
+        try:
+            if self.all_data["notice_type"]["auto_set"]:
+                return HttpResponseRedirect(self.all_urls["case"])
+        except KeyError:
+            pass
+
+        return super(NoticeTypeStage, self).render(request_context)
 
 
 class CaseStage(FormStage):
@@ -86,17 +141,6 @@ class CaseStage(FormStage):
                 self.form_class = SJPCaseForm
         except KeyError:
             pass
-
-    def render(self, request_context):
-        if "urn" in self.form.errors and ERROR_MESSAGES["URN_ALREADY_USED"] in self.form.errors["urn"]:
-            self.context["urn_already_used"] = True
-
-            try:
-                self.context["court"] = Court.objects.get_by_urn(self.form.data["urn"])
-            except Court.DoesNotExist:
-                pass
-
-        return super(CaseStage, self).render(request_context)
 
     def save(self, form_data, next_step=None):
         clean_data = super(CaseStage, self).save(form_data, next_step)
@@ -123,9 +167,15 @@ class CaseStage(FormStage):
 
         if "complete" in clean_data:
             if clean_data.get("plea_made_by", "Defendant") == "Defendant":
-                self.set_next_step("your_details")
+                self.set_next_step("your_details", skip=["company_details",
+                                                         "company_finances"])
             else:
-                self.set_next_step("company_details")
+                self.set_next_step("company_details", skip=["your_details",
+                                                            "your_status",
+                                                            "your_finances",
+                                                            "hardship",
+                                                            "household_expenses",
+                                                            "other_expenses"])
 
         return clean_data
 
@@ -141,7 +191,7 @@ class CompanyDetailsStage(FormStage):
                            self).save(form_data, next_step)
 
         if "complete" in clean_data:
-            self.set_next_step("plea", skip=["your_details", "your_finances", "household_expenses"])
+            self.set_next_step("plea")
 
         return clean_data
 
@@ -157,8 +207,7 @@ class YourDetailsStage(FormStage):
                            self).save(form_data, next_step)
 
         if "complete" in clean_data:
-            self.set_next_step("plea", skip=["company_details",
-                                             "company_finances"])
+            self.set_next_step("plea")
 
         return clean_data
 
@@ -201,6 +250,24 @@ class PleaStage(IndexedStage):
             except IndexError:
                 pass
 
+        self.show_interpreter_question = True
+
+        previous_charges = self.all_data["plea"].get("data", [])
+        previous_charges = previous_charges[:self.index-1]
+
+        for charge in previous_charges:
+            if charge.get("interpreter_needed", None) is not None or charge.get("sjp_interpreter_needed", None) is not None:
+                self.show_interpreter_question = False
+
+                del self.form.fields["interpreter_needed"]
+                del self.form.fields["interpreter_language"]
+
+                if self.all_data["notice_type"]["sjp"]:
+                    del self.form.fields["sjp_interpreter_needed"]
+                    del self.form.fields["sjp_interpreter_language"]
+
+                break
+
     def save(self, form_data, next_step=None):
         clean_data = super(PleaStage, self).save(form_data, next_step)
         plea_count = self.all_data["case"]["number_of_charges"]
@@ -213,6 +280,22 @@ class PleaStage(IndexedStage):
 
         if len(stage_data["data"]) < self.index:
             stage_data["data"].append({})
+
+        if clean_data.get("guilty") == "guilty":
+            try:
+                del clean_data["interpreter_needed"]
+                del clean_data["interpreter_language"]
+            except KeyError:
+                pass
+
+        if clean_data.get("guilty") == "not_guilty" or clean_data.get("come_to_court") == False:
+            try:
+                del clean_data["sjp_interpreter_needed"]
+                del clean_data["sjp_interpreter_language"]
+            except KeyError:
+                pass
+
+        clean_data["show_interpreter_question"] = self.show_interpreter_question
 
         stage_data["data"][self.index-1] = clean_data
 
@@ -235,15 +318,18 @@ class PleaStage(IndexedStage):
             else:
                 if self.all_data["case"].get("plea_made_by", "Defendant") == "Company representative":
                     if stage_data["none_guilty"]:
-                        self.set_next_step("review", skip=["company_finances",
-                                                           "your_status", "your_finances"])
+                        self.set_next_step("review", skip=["company_finances"])
                     else:
-                        self.set_next_step("company_finances", skip=["your_status", "your_finances"])
+                        self.set_next_step("company_finances")
                 else:
                     if stage_data["none_guilty"]:
-                        self.set_next_step("review", skip=["your_status", "your_finances"])
-                    elif "skipped" in self.all_data["your_finances"]:
-                        del self.all_data["your_finances"]["skipped"]
+                        self.set_next_step("review", skip=["your_status",
+                                                           "your_finances",
+                                                           "hardship",
+                                                           "household_expenses",
+                                                           "other_expenses"])
+                    else:
+                        self.set_next_step("your_status")
 
         return stage_data
 
@@ -256,7 +342,7 @@ class CompanyFinancesStage(FormStage):
     name = "company_finances"
     template = "company_finances.html"
     form_class = CompanyFinancesForm
-    dependencies = ["notice_type", "case"]
+    dependencies = ["notice_type", "case", "company_details", "plea"]
 
 
 class YourStatusStage(FormStage):
@@ -293,17 +379,16 @@ class YourFinancesStage(FormStage):
 
         clean_data = super(YourFinancesStage, self).save(form_data, next_step)
 
-        you_are = self.all_data["your_status"]["you_are"]
+        if "complete" in clean_data:
+            you_are = self.all_data["your_status"]["you_are"]
 
-        prefixes = {
-            "Employed": "employed",
-            "Self-employed": "self_employed",
-            "Receiving benefits": "benefits",
-            "Other": "other"
-        }
-        prefix = prefixes.get(you_are, False)
-
-        if you_are and prefix:
+            prefixes = {
+                "Employed": "employed",
+                "Self-employed": "self_employed",
+                "Receiving benefits": "benefits",
+                "Other": "other"
+            }
+            prefix = prefixes.get(you_are, False)
 
             pay_period = clean_data.get(prefix + "_pay_period", "Weekly")
             pay_amount = clean_data.get(prefix + "_pay_amount", 0)
@@ -312,9 +397,8 @@ class YourFinancesStage(FormStage):
             hardship = clean_data.get(prefix + "_hardship", False)
             self.all_data["your_finances"]["hardship"] = hardship
 
-            if "complete" in clean_data:
-                if not hardship:
-                    self.set_next_step("review", skip=["hardship", "household_expenses", "other_expenses"])
+            if not hardship:
+                self.set_next_step("review", skip=["hardship", "household_expenses", "other_expenses"])
 
         return clean_data
 
@@ -384,7 +468,7 @@ class OtherExpensesStage(FormStage):
         clean_data = super(OtherExpensesStage, self).save(form_data, next_step)
 
         if "complete" in clean_data:
-            self.set_next_step("review", skip=["company_finances"])
+            self.set_next_step("review")
 
             total_household = self.all_data["your_expenses"]["total_household_expenses"]
 
@@ -420,8 +504,7 @@ class ReviewStage(FormStage):
             self.all_data["case"]["urn"]
         except KeyError:
             # session has timed out
-            self.add_message(messages.ERROR, "Your session has timed out",
-                             extra_tags="session_timeout")
+            self.add_message(messages.ERROR, _("Your session has timed out"), extra_tags="session_timeout")
 
             self.set_next_step("case")
             return clean_data

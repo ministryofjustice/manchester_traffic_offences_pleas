@@ -4,6 +4,7 @@ from django.test import TestCase
 from django import forms
 from django.forms import ValidationError
 
+from ..models import Court, Case
 from ..standardisers import standardise_urn
 from ..validators import *
 

@@ -22,7 +22,8 @@ class TestNoJS(TestCase):
                                                   "plea_made_by": "Company representative"},
                                          "company_details": {"complete": True},
                                          "plea": {"complete": True,
-                                                  "data": [{"guilty": "guilty"}]}}
+                                                  "data": [{"guilty": "guilty",
+                                                            "complete": True}]}}
 
         self.request_context = {}
 
