@@ -9,9 +9,8 @@ class UsageStatsAdmin(admin.ModelAdmin):
 
 
 class CourtAdmin(admin.ModelAdmin):
-    list_display = ('court_code', 'region_code', 'court_name', 'court_address',
-                    'court_telephone', 'court_email', 'submission_email',
-                    'enabled', 'test_mode')
+    list_display = ('court_name', 'region_code', 'court_address', 'court_email', 'plp_email',
+                    'enabled', 'test_mode', 'notice_types')
 
 
 class InlineCaseAction(admin.TabularInline):
@@ -35,7 +34,7 @@ class CaseAdmin(admin.ModelAdmin):
 
 
 class CourtEmailCountAdmin(admin.ModelAdmin):
-    list_display = ("court", "initiation_type", "total_pleas", "total_guilty", "total_not_guilty", "hearing_date", "sent", "processed")
+    list_display = ("court", "date_sent", "initiation_type", "total_pleas", "total_guilty", "total_not_guilty", "hearing_date", "sent", "processed")
     model = CourtEmailCount
 
 
