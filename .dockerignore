@@ -9,10 +9,15 @@ Vagrantfile
 
 lib/
 
-node_modules/*
+node_modules/
 
 make_a_plea/settings/local.py
+api/settings/settings/local.py
+court_admin/settings/local.py
 
 local.py
 
 *.pyc
+
+make_a_plea/assets
+make_a_plea/assets-src
