@@ -218,7 +218,7 @@ class EmailTemplateTests(TestCase):
         self.assertEqual(len(mail.outbox), 3)
         self.assertEqual(
             mail.outbox[0].subject,
-            "ONLINE PLEA: 06/AA/00000/00 DOH: {} PUBLIC Joe".format(self.hearing_date.strftime("%Y-%m-%d")))
+            "ONLINE PLEA: 06/AA/0000000/00 DOH: {} PUBLIC Joe".format(self.hearing_date.strftime("%Y-%m-%d")))
 
     def test_sjp_subject_output(self):
         context_data = self.get_context_data(notice_type_data={"sjp": True})
@@ -226,7 +226,7 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertEqual(mail.outbox[0].subject, "ONLINE PLEA: 06/AA/00000/00 <SJP> PUBLIC Joe")
+        self.assertEqual(mail.outbox[0].subject, "ONLINE PLEA: 06/AA/0000000/00 <SJP> PUBLIC Joe")
 
     def test_notice_type_not_sjp_output(self):
         context_data = self.get_context_data()
@@ -255,7 +255,7 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
-        self.assertContainsDefinition(response.content, "Unique reference number", "06/AA/00000/00", count=1)
+        self.assertContainsDefinition(response.content, "Unique reference number", "06/AA/0000000/00", count=1)
         self.assertContainsDefinition(response.content, "Court hearing date", self.hearing_date.strftime("%d/%m/%Y"), count=1)
 
     def test_case_details_output_is_english(self):
@@ -269,7 +269,7 @@ class EmailTemplateTests(TestCase):
 
         translation.deactivate()
 
-        self.assertContainsDefinition(response.content, "Unique reference number", "06/AA/00000/00", count=1)
+        self.assertContainsDefinition(response.content, "Unique reference number", "06/AA/0000000/00", count=1)
         self.assertContainsDefinition(response.content, "Court hearing date", self.hearing_date.strftime("%d/%m/%Y"), count=1)
 
     def test_welsh_journey_adds_welsh_flag(self):
@@ -692,7 +692,7 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertEqual(mail.outbox[1].subject, "POLICE ONLINE PLEA: 06/AA/00000/00 DOH: {} PUBLIC Joe"
+        self.assertEqual(mail.outbox[1].subject, "POLICE ONLINE PLEA: 06/AA/0000000/00 DOH: {} PUBLIC Joe"
                          .format(self.hearing_date.strftime("%Y-%m-%d")))
 
     def test_PLP_case_details_output(self):
