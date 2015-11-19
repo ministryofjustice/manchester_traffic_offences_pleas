@@ -75,10 +75,11 @@ def email_send_court(self, case_id, count_id, email_data):
         raise self.retry(args=[case_id, count_id, email_data], exc=exc)
 
     case.add_action("Court email sent", "Sent mail to {0} via {1}".format(plea_email_to, smtp_route))
-    case.sent = True
-    case.save()
 
     if not court_obj.test_mode:
+        case.sent = True
+        case.save()
+
         email_count.get_status_from_case(case)
         email_count.save()
 
