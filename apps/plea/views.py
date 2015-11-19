@@ -1,8 +1,10 @@
 from django.utils.decorators import method_decorator
 from django.conf import settings
+from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import RequestContext, redirect
+from django.utils.translation import ugettext as _
 from django.views.generic import FormView
 
 from brake.decorators import ratelimit
@@ -12,7 +14,8 @@ from apps.forms.views import StorageView
 
 from .models import Case, Court
 from .forms import CourtFinderForm
-from .stages import (NoticeTypeStage,
+from .stages import (URNEntryStage,
+                     NoticeTypeStage,
                      CaseStage,
                      YourDetailsStage,
                      CompanyDetailsStage,
@@ -30,7 +33,8 @@ from .fields import ERROR_MESSAGES
 
 class PleaOnlineForms(MultiStageForm):
     url_name = "plea_form_step"
-    stage_classes = [NoticeTypeStage,
+    stage_classes = [URNEntryStage,
+                     NoticeTypeStage,
                      CaseStage,
                      YourDetailsStage,
                      CompanyDetailsStage,
@@ -73,15 +77,18 @@ class PleaOnlineForms(MultiStageForm):
 
 
 class PleaOnlineViews(StorageView):
+    start = "enter_urn"
+
     def __init__(self, *args, **kwargs):
         super(PleaOnlineViews, self).__init__(*args, **kwargs)
         self.index = None
         self.storage = None
 
     def dispatch(self, request, *args, **kwargs):
-        # If the session has timed out, redirect to case
-        if not request.session.get("plea_data") and kwargs.get("stage") != "notice_type":
-            return HttpResponseRedirect(reverse_lazy("plea_form_step", args=("notice_type",)))
+        # If the session has timed out, redirect to start page
+        if not request.session.get("plea_data") and kwargs.get("stage", self.start) != self.start:
+            # messages.add_message(request, messages.ERROR, _("Your session has timed out"), extra_tags="session_timeout")
+            return HttpResponseRedirect("/")
 
         # Store the index if we've got one
         idx = kwargs.pop("index", None)

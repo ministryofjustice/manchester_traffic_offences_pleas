@@ -18,6 +18,9 @@ class FormStage(object):
         self.context = {}
         self.messages = []
 
+        if not hasattr(self, "storage_key"):
+            self.storage_key = self.name
+
         if not hasattr(self, "dependencies"):
             self.dependencies = []
 
@@ -67,7 +70,7 @@ class FormStage(object):
 
     def load_forms(self, data=None, initial=False):
         if initial:
-            initial_data = self.all_data.get(self.name, None)
+            initial_data = self.all_data.get(self.storage_key, None)
             if self.form_class:
                 self.form = self.form_class(initial=initial_data, label_suffix="")
             return
@@ -86,9 +89,9 @@ class FormStage(object):
         if hasattr(request_context, "request") and ("reset" in request_context.request.GET):
 
             try:
-                self.all_data[self.name].get("data")[self.index-1].pop("split_form", None)
+                self.all_data[self.storage_key].get("data")[self.index-1].pop("split_form", None)
             except AttributeError:
-                self.all_data[self.name].pop("split_form", None)
+                self.all_data[self.storage_key].pop("split_form", None)
 
         self.load_forms(initial=True)
 
@@ -111,7 +114,7 @@ class FormStage(object):
                 clean_data["complete"] = True
                 self.next_step = self.get_next(next_step)
             else:
-                self.all_data[self.name].pop("complete", None)
+                self.all_data[self.storage_key].pop("complete", None)
                 self.form.data["split_form"] = "split_form_last_step"
                 clean_data["split_form"] = "split_form_last_step"
 
@@ -158,7 +161,11 @@ class MultiStageForm(object):
             else:
                 self.urls[stage_class.name] = reverse(self.url_name, args=(stage_class.name,))
 
-            self.all_data[stage_class.name] = {}
+            try:
+                self.all_data[stage_class.storage_key] = {}
+            except AttributeError:
+                self.all_data[stage_class.name] = {}
+
             if stage_class.name == current_stage:
                 self.current_stage_class = stage_class
 
@@ -207,10 +214,10 @@ class MultiStageForm(object):
         else:
             self.current_stage = self.current_stage_class(self.urls, self.all_data)
 
-        if self.current_stage.name not in self.all_data:
-            self.all_data[self.current_stage.name] = {}
+        if self.current_stage.storage_key not in self.all_data:
+            self.all_data[self.current_stage.storage_key] = {}
 
-        self.all_data[self.current_stage.name].update(self.current_stage.save(form_data, next_step=next_url))
+        self.all_data[self.current_stage.storage_key].update(self.current_stage.save(form_data, next_step=next_url))
         self.save_to_storage()
 
         return True
