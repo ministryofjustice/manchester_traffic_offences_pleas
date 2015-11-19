@@ -2,6 +2,7 @@
 import re
 
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from mock import Mock
 
 from django.core import mail
@@ -10,7 +11,8 @@ from django.utils import translation
 
 from ..email import send_plea_email
 from ..models import Court
-from ..forms import (NoticeTypeForm,
+from ..forms import (URNEntryForm,
+                     NoticeTypeForm,
                      CaseForm,
                      YourDetailsForm,
                      PleaForm,
@@ -50,16 +52,29 @@ class EmailTemplateTests(TestCase):
             enabled=True,
             test_mode=True)
 
-    def get_context_data(self, notice_type_data=None, case_data=None, details_data=None, plea_data=None, status_data = None, finances_data=None, hardship_data=None, household_expenses_data=None, other_expenses_data=None, review_data=None):
+    def get_context_data(self,
+                         urn_entry_data=None,
+                         notice_type_data=None,
+                         case_data=None,
+                         details_data=None,
+                         plea_data=None,
+                         status_data = None,
+                         finances_data=None,
+                         hardship_data=None,
+                         household_expenses_data=None,
+                         other_expenses_data=None,
+                         review_data=None):
 
         self.hearing_date = datetime.today() + timedelta(30)
+
+        if not urn_entry_data:
+            urn_entry_data = {"urn": "06/AA/00000/00"}
 
         if not notice_type_data:
             notice_type_data = {"sjp": False}
 
         if not case_data:
-            case_data = {"urn": "06/AA/00000/00",
-                         "date_of_hearing_0": str(self.hearing_date.day),
+            case_data = {"date_of_hearing_0": str(self.hearing_date.day),
                          "date_of_hearing_1": str(self.hearing_date.month),
                          "date_of_hearing_2": str(self.hearing_date.year),
                          "number_of_charges": 1,
@@ -111,6 +126,7 @@ class EmailTemplateTests(TestCase):
                            "email": "test@test.com",
                            "understand": True}
 
+        uf = URNEntryForm(urn_entry_data)
         ntf = NoticeTypeForm(notice_type_data)
         cf = CaseForm(case_data)
         df = YourDetailsForm(details_data)
@@ -145,7 +161,7 @@ class EmailTemplateTests(TestCase):
                                 "other_court_payments",
                                 "other_child_maintenance"]
 
-        if all([ntf.is_valid(), cf.is_valid(), df.is_valid(), pf.is_valid(), sf.is_valid(), ff.is_valid(), hf.is_valid(), hef.is_valid(), oef.is_valid(), rf.is_valid()]):
+        if all([uf.is_valid(), ntf.is_valid(), cf.is_valid(), df.is_valid(), pf.is_valid(), sf.is_valid(), ff.is_valid(), hf.is_valid(), hef.is_valid(), oef.is_valid(), rf.is_valid()]):
             data = {"notice_type": ntf.cleaned_data,
                     "case": cf.cleaned_data,
                     "your_details": df.cleaned_data,
@@ -156,6 +172,14 @@ class EmailTemplateTests(TestCase):
                     "household_expenses": hef.cleaned_data,
                     "other_expenses": oef.cleaned_data,
                     "review": rf.cleaned_data}
+
+            data["case"].update(uf.cleaned_data)
+
+            if "date_of_hearing" in data["case"]:
+                data["case"]["contact_deadline"] = data["case"]["date_of_hearing"]
+
+            if "posting_date" in data["case"]:
+                data["case"]["contact_deadline"] = data["case"]["posting_date"] + relativedelta(days=+28)
 
             status_prefixes = {
                 "Employed": "employed",
@@ -335,6 +359,7 @@ class EmailTemplateTests(TestCase):
         context_data["notice_type"]["sjp"] = True
         context_data["plea"]["data"][0]["guilty"] = "guilty"
         context_data["plea"]["data"][0]["come_to_court"] = True
+        context_data["plea"]["data"][0]["show_interpreter_question"] = True
         context_data["plea"]["data"][0]["sjp_interpreter_needed"] = True
         context_data["plea"]["data"][0]["sjp_interpreter_language"] = "French"
 
@@ -361,6 +386,7 @@ class EmailTemplateTests(TestCase):
         context_data = self.get_context_data()
         context_data["plea"]["data"][0]["guilty"] = "not_guilty"
         context_data["plea"]["data"][0]["not_guilty_extra"] = "dsa"
+        context_data["plea"]["data"][0]["show_interpreter_question"] = True
         context_data["plea"]["data"][0]["interpreter_needed"] = True
         context_data["plea"]["data"][0]["interpreter_language"] = "French"
         context_data["plea"]["data"][0]["disagree_with_evidence"] = True
@@ -376,7 +402,7 @@ class EmailTemplateTests(TestCase):
 
         self.assertContainsDefinition(response.content, "Your plea", "Not guilty", count=1)
         self.assertContainsDefinition(response.content, "Not guilty because", "dsa", count=1)
-        self.assertContainsDefinition(response.content, "Interpreter required", "Yes", count=2)
+        self.assertContainsDefinition(response.content, "Interpreter required", "Yes", count=2) # One for the defendant, one for the witness
         self.assertContainsDefinition(response.content, "Language", "French", count=1)
         self.assertContainsDefinition(response.content, "Disagree with any evidence from a witness statement?", "Yes", count=1)
         self.assertContainsDefinition(response.content, "Name of the witness and what you disagree with", "Disagreement", count=1)

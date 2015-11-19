@@ -34,6 +34,17 @@ def reorder_fields(fields, order):
     return OrderedDict(sorted(fields.items(), key=lambda k: order.index(k[0])))
 
 
+class URNEntryForm(BaseStageForm):
+    urn = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                          label=_("What is your Unique Reference Number (URN)?"),
+                          required=True,
+                          validators=[is_urn_valid, is_urn_not_used],
+                          help_text=_("On page 1 of the notice, usually at the top."),
+                          error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"],
+                                          "is_urn_valid": ERROR_MESSAGES["URN_INVALID"],
+                                          "is_urn_not_used": ERROR_MESSAGES['URN_ALREADY_USED']})
+
+
 class NoticeTypeForm(BaseStageForm):
     SJP_CHOICES = ((True, _("Single Justice Procedure Notice")),
                    (False, _("Something else")))
@@ -50,15 +61,6 @@ class BaseCaseForm(BaseStageForm):
     PLEA_MADE_BY_CHOICES = (
         ("Defendant", _("The person named in the notice")),
         ("Company representative", _("Pleading on behalf of a company")))
-
-    urn = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                          label=_("Unique reference number (URN)"),
-                          required=True,
-                          validators=[is_urn_valid, is_urn_not_used],
-                          help_text=_("On page 1 of the notice, usually at the top."),
-                          error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"],
-                                          "is_urn_valid": ERROR_MESSAGES["URN_INVALID"],
-                                          "is_urn_not_used": ERROR_MESSAGES['URN_ALREADY_USED']})
 
     number_of_charges = forms.IntegerField(label=_("Number of charges"),
                                            widget=forms.TextInput(attrs={"pattern": "[0-9]*",
@@ -191,7 +193,7 @@ class YourDetailsForm(BaseStageForm):
     driving_licence_number = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                                              required=True,
                                              label="",
-                                             help_text=_("If yes, enter it here. It's on your driving licence photocard and starts with letters from your last name."),
+                                             help_text=_("If yes, enter it here. Your driving licence number is in section 5 of your driving licence photocard."),
                                              error_messages={"required": ERROR_MESSAGES["DRIVING_LICENCE_NUMBER_REQUIRED"]})
 
 
