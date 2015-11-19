@@ -44,7 +44,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.plea_stage_pre_data_1_charge = {"notice_type": {"sjp": False},
                                              "case": {"date_of_hearing": "2015-01-01",
-                                                      "urn": "06AA000000000",
+                                                      "urn": "06AA000000015",
                                                       "number_of_charges": 1,
                                                       "plea_made_by": "Defendant"},
                                              "your_details": {"first_name": "Charlie",
@@ -53,7 +53,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.plea_stage_pre_data_3_charges = {"notice_type": {"sjp": False},
                                               "case": {"date_of_hearing": "2015-01-01",
-                                                       "urn": "06AA000000000",
+                                                       "urn": "06AA000000015",
                                                        "number_of_charges": 3,
                                                        "plea_made_by": "Defendant"},
                                               "your_details": {"first_name": "Charlie",
@@ -68,7 +68,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "case": {
                 "complete": True,
                 "date_of_hearing": "2015-01-01",
-                "urn": "06AA000000000",
+                "urn": "06AA000000015",
                 "number_of_charges": 3,
                 "plea_made_by": "Defendant"
             },
@@ -163,7 +163,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         request_context = RequestContext(fake_request)
 
         case = Case()
-        case.urn = "06AA000000000"
+        case.urn = "06AA0000015"
         case.sent = True
         case.save()
 
@@ -172,7 +172,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form = PleaOnlineForms(self.session, "enter_urn")
         form.load(request_context)
 
-        form.save({"urn": "06/AA/0000000/00"},
+        form.save({"urn": "06/AA/0000000/15"},
                   request_context)
 
         response = form.render()
@@ -197,7 +197,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.save({"date_of_hearing_0": str(hearing_date.day),
                    "date_of_hearing_1": str(hearing_date.month),
                    "date_of_hearing_2": str(hearing_date.year),
-                   "urn": "06/AA/0000000/00",
+                   "urn": "06/AA/0000000/15",
                    "number_of_charges": 1,
                    "plea_made_by": "Defendant"},
                   self.request_context)
@@ -214,7 +214,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.save({"date_of_hearing_0": str(hearing_date.day),
                    "date_of_hearing_1": str(hearing_date.month),
                    "date_of_hearing_2": str(hearing_date.year),
-                   "urn": "06/AA/0000000/00",
+                   "urn": "06/AA/0000000/15",
                    "number_of_charges": 1,
                    "plea_made_by": "Company representative"},
                   self.request_context)
@@ -233,7 +233,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.save({"date_of_hearing_0": str(hearing_date.day),
                    "date_of_hearing_1": str(hearing_date.month),
                    "date_of_hearing_2": str(hearing_date.year),
-                   "urn": "06/AA/0000000/00",
+                   "urn": "06/AA/0000000/15",
                    "number_of_charges": 1,
                    "plea_made_by": "Defendant"},
                   self.request_context)
@@ -462,7 +462,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "case": {
                 "complete": True,
                 "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
-                "urn": "06AA000000000",
+                "urn": "06AA000000015",
                 "number_of_charges": 1,
                 "plea_made_by": "Company representative"
             },
@@ -499,7 +499,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "case": {
                 "complete": True,
                 "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
-                "urn": "06AA000000000",
+                "urn": "06AA000000015",
                 "number_of_charges": 1,
                 "plea_made_by": "Company representative"
             },
@@ -556,7 +556,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "case": {
                 "complete": True,
                 "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
-                "urn": "06AA000000000",
+                "urn": "06AA000000015",
                 "number_of_charges": 1,
                 "plea_made_by": "Defendant"
             },
@@ -691,7 +691,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "case": {
                 "complete": True,
                 "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
-                "urn": "06AA000000000",
+                "urn": "06AA000000015",
                 "number_of_charges": 1,
                 "plea_made_by": "Company representative"
             },
@@ -770,7 +770,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "case": {
                 "complete": True,
                 "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
-                "urn": "06AA000000000",
+                "urn": "06AA000000015",
                 "number_of_charges": 1,
                 "plea_made_by": "Company representative"
             },
@@ -847,7 +847,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "case": {
                 "complete": True,
                 "date_of_hearing": hearing_date.strftime("%Y-%m-%d"),
-                "urn": "06AA000000000",
+                "urn": "06AA000000015",
                 "number_of_charges": 1,
                 "plea_made_by": "Defendant"
             },
@@ -888,7 +888,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         with self.assertTemplateUsed("review.html"):
             response = form.render()
-            self.assertIn("06/AA/0000000/00", response.content)
+            self.assertIn("06/AA/0000000/15", response.content)
 
     def test_review_stage_missing_data(self):
         form = PleaOnlineForms(self.session, "review")
@@ -1063,7 +1063,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.load(request_context)
 
         self.assertEqual(fake_session["case"]["date_of_hearing"], hearing_date)
-        self.assertEqual(fake_session["case"]["urn"], "06AA000000000")
+        self.assertEqual(fake_session["case"]["urn"], "06AA0000000")
         self.assertEqual(fake_session["case"]["number_of_charges"], 1)
         self.assertEqual(fake_session["your_details"]["first_name"], "Charlie")
         self.assertEqual(fake_session["your_details"]["last_name"], "Brown")
@@ -1155,7 +1155,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.load(request_context)
 
         self.assertEqual(fake_session["case"]["date_of_hearing"], hearing_date)
-        self.assertEqual(fake_session["case"]["urn"], "06AA000000000")
+        self.assertEqual(fake_session["case"]["urn"], "06AA0000000")
         self.assertEqual(fake_session["case"]["number_of_charges"], 2)
         self.assertEqual(fake_session["case"]["plea_made_by"], "Defendant")
         self.assertEqual(fake_session["your_details"]["first_name"], "Charlie")
