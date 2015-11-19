@@ -82,9 +82,6 @@ def send_plea_email(context_data):
     case.language = translation.get_language().split("-")[0]
     case.save()
 
-    if "court" in context_data:
-        del context_data["court"]
-
     if getattr(settings, "STORE_USER_DATA", False):
         encrypt_and_store_user_data(case.urn, case.id, context_data)
 
@@ -136,12 +133,5 @@ def send_plea_email(context_data):
 
     else:
         case.add_action("No email entered, user email not sent", "")
-
-    if not court_obj.test_mode:
-        case.sent = True
-        email_count.sent = True
-        email_count.save()
-
-    case.save()
 
     return True
