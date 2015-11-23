@@ -1,10 +1,11 @@
 {% load i18n %}
 {% load date testing %}
+{% load urn %}
 
 <dl>
 
     <dt>{% blocktrans %}Unique reference number{% endblocktrans %}</dt>
-    <dd>{{ case.urn }}</dd>
+    <dd>{{ case.urn|format_urn }}</dd>
 
 {% if notice_type.sjp %}
     <dt>{% blocktrans %}Posting date{% endblocktrans %}</dt>
