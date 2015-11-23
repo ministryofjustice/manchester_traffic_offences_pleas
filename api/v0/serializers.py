@@ -4,6 +4,8 @@ from apps.plea.models import Case, UsageStats, Offence
 from apps.plea.standardisers import standardise_urn
 from apps.plea.validators import is_urn_valid
 
+from api.validators import validate_case_number
+
 
 class OffenceSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,7 +14,8 @@ class OffenceSerializer(serializers.ModelSerializer):
 
 
 class CaseSerializer(serializers.ModelSerializer):
-    case_number = serializers.CharField(required=True)
+    case_number = serializers.CharField(required=True, validators=[validate_case_number, ])
+    urn = serializers.CharField(required=True, validators=[is_urn_valid, ])
 
     offences = OffenceSerializer(many=True)
 
@@ -29,8 +32,6 @@ class CaseSerializer(serializers.ModelSerializer):
         urn = validated_data.pop("urn")
         std_urn = standardise_urn(urn)
 
-        is_urn_valid(std_urn)
-
         validated_data["urn"] = std_urn
 
         case = Case.objects.create(**validated_data)
@@ -42,18 +43,6 @@ class CaseSerializer(serializers.ModelSerializer):
             offence.save()
 
         return case
-
-    def validate_case_number(self, value):
-        """
-        Make sure case number is unique
-        """
-
-        try:
-            Case.objects.get(case_number=value)
-        except (Case.DoesNotExist, Case.MultipleObjectsReturned):
-            return value
-        else:
-            raise serializers.ValidationError("Case with this case number already exists")
 
 
 class UsageStatsSerializer(serializers.ModelSerializer):
