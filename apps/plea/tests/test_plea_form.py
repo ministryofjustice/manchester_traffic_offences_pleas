@@ -42,23 +42,33 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.session = {}
         self.request_context = {}
 
-        self.plea_stage_pre_data_1_charge = {"notice_type": {"sjp": False},
-                                             "case": {"date_of_hearing": "2015-01-01",
+        self.plea_stage_pre_data_1_charge = {"notice_type": {"complete": True,
+                                                             "sjp": False},
+                                             "case": {"complete": True,
+                                                      "date_of_hearing": "2015-01-01",
                                                       "urn": "06AA000000015",
                                                       "number_of_charges": 1,
                                                       "plea_made_by": "Defendant"},
-                                             "your_details": {"first_name": "Charlie",
+                                             "your_details": {"complete": True,
+                                                              "first_name": "Charlie",
                                                               "last_name": "Brown",
-                                                              "contact_number": "012345678"}}
+                                                              "contact_number": "012345678"},
+                                             "company_details": {"complete": True,
+                                                                 "skipped": True}}
 
-        self.plea_stage_pre_data_3_charges = {"notice_type": {"sjp": False},
-                                              "case": {"date_of_hearing": "2015-01-01",
+        self.plea_stage_pre_data_3_charges = {"notice_type": {"complete": True,
+                                                              "sjp": False},
+                                              "case": {"complete": True,
+                                                       "date_of_hearing": "2015-01-01",
                                                        "urn": "06AA000000015",
                                                        "number_of_charges": 3,
                                                        "plea_made_by": "Defendant"},
-                                              "your_details": {"first_name": "Charlie",
+                                              "your_details": {"complete": True,
+                                                               "first_name": "Charlie",
                                                                "last_name": "Brown",
-                                                               "contact_number": "012345678"}}
+                                                               "contact_number": "012345678"},
+                                              "company_details": {"complete": True,
+                                                                  "skipped": True}}
 
         self.test_session_data = {
             "notice_type": {
@@ -132,6 +142,79 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             }
         }
 
+    def test_urn_entry_sjp_only_sets_notice_type(self):
+        Court.objects.create(court_code="0000",
+                             region_code="99",
+                             court_name="SJP only court",
+                             court_address="test address",
+                             court_telephone="0800 MAKEAPLEA",
+                             court_email="test@test.com",
+                             submission_email="test@test.com",
+                             plp_email="test@test.com",
+                             enabled=True,
+                             test_mode=False,
+                             notice_types="sjp")
+
+        form = PleaOnlineForms(self.session, "enter_urn")
+        form.load(self.request_context)
+        form.save({"urn": "99/AA/00000/00"}, self.request_context)
+
+        response = form.render()
+
+        self.assertEqual(form.all_data["notice_type"]["complete"], True)
+        self.assertEqual(form.all_data["notice_type"]["auto_set"], True)
+        self.assertEqual(form.all_data["notice_type"]["sjp"], True)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/plea/case/")
+
+    def test_urn_entry_non_sjp_only_sets_notice_type(self):
+        Court.objects.create(court_code="0000",
+                             region_code="98",
+                             court_name="Non-SJP only court",
+                             court_address="test address",
+                             court_telephone="0800 MAKEAPLEA",
+                             court_email="test@test.com",
+                             submission_email="test@test.com",
+                             plp_email="test@test.com",
+                             enabled=True,
+                             test_mode=False,
+                             notice_types="non-sjp")
+
+        form = PleaOnlineForms(self.session, "enter_urn")
+        form.load(self.request_context)
+        form.save({"urn": "98/AA/00000/00"}, self.request_context)
+
+        response = form.render()
+
+        self.assertEqual(form.all_data["notice_type"]["complete"], True)
+        self.assertEqual(form.all_data["notice_type"]["auto_set"], True)
+        self.assertEqual(form.all_data["notice_type"]["sjp"], False)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/plea/case/")
+
+    def test_urn_entry_both_shows_notice_type(self):
+        form = PleaOnlineForms(self.session, "enter_urn")
+        form.load(self.request_context)
+        form.save({"urn": "06/AA/00000/00"}, self.request_context)
+
+        response = form.render()
+
+        self.assertEqual(form.all_data.get("notice_type", {}).get("auto_set", None), None)
+        self.assertEqual(form.all_data.get("notice_type", {}).get("sjp", None), None)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/plea/notice_type/")
+
+    def test_auto_set_notice_type_prevents_notice_type_stage_access(self):
+        self.session.update({"case": {"urn": "99/AA/00000/00"},
+                             "notice_type": {"auto_set": True}})
+
+        form = PleaOnlineForms(self.session, "notice_type")
+        form.load(self.request_context)
+        response = form.render()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/plea/case/")
+
     def test_notice_type_stage_missing_data(self):
         form = PleaOnlineForms(self.session, "notice_type")
         form.load(self.request_context)
@@ -166,8 +249,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         case.urn = "06AA0000015"
         case.sent = True
         case.save()
-
-        hearing_date = datetime.date.today()+datetime.timedelta(30)
 
         form = PleaOnlineForms(self.session, "enter_urn")
         form.load(request_context)
@@ -527,6 +608,62 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/plea/review/")
+
+    def test_plea_stage_charge_1_shows_interpreter_fields(self):
+        self.session.update(self.plea_stage_pre_data_3_charges)
+
+        form = PleaOnlineForms(self.session, "plea", 1)
+
+        form.load(self.request_context)
+        response = form.render()
+
+        self.assertContains(response, 'id="section_interpreter_needed"')
+        self.assertContains(response, 'id="section_interpreter_language"')
+
+    def test_plea_stage_charge_2_shows_interpreter_fields(self):
+        self.session.update(self.plea_stage_pre_data_3_charges)
+        self.session.update({"plea": {"data": [{"complete": True,
+                                                "guilty": "guilty"}]}})
+        form = PleaOnlineForms(self.session, "plea", 2)
+
+        form.load(self.request_context)
+        response = form.render()
+
+        self.assertContains(response, 'id="section_interpreter_needed"')
+        self.assertContains(response, 'id="section_interpreter_language"')
+
+    def test_plea_stage_charge_3_doesnt_show_interpreter_fields(self):
+        self.session.update(self.plea_stage_pre_data_3_charges)
+        self.session.update({"plea": {"data": [{"complete": True,
+                                                "guilty": "guilty"},
+                                               {"complete": True,
+                                                "guilty": "not_guilty",
+                                                "interpreter_needed": False}]}})
+        form = PleaOnlineForms(self.session, "plea", 3)
+
+        form.load(self.request_context)
+        response = form.render()
+
+        self.assertNotContains(response, 'id="section_interpreter_needed"')
+        self.assertNotContains(response, 'id="section_interpreter_language"')
+
+    def test_plea_stage_charge_3_shows_interpreter_fields_after_charge_2_change(self):
+        self.session.update(self.plea_stage_pre_data_3_charges)
+        self.session.update({"plea": {"data": [{"complete": True,
+                                                "guilty": "guilty"},
+                                               {"complete": True,
+                                                "guilty": "not_guilty",
+                                                "interpreter_needed": False}]}})
+        form = PleaOnlineForms(self.session, "plea", 2)
+        form.save({"guilty": "guilty"}, self.request_context)
+
+        form = PleaOnlineForms(self.session, "plea", 3)
+
+        form.load(self.request_context)
+        response = form.render()
+
+        self.assertContains(response, 'id="section_interpreter_needed"')
+        self.assertContains(response, 'id="section_interpreter_language"')
 
     def test_your_status_missing_data(self):
         form = PleaOnlineForms(self.test_session_data, "your_status")
