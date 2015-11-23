@@ -106,41 +106,43 @@ def send_plea_email(context_data):
     if court_obj.plp_email:
         email_send_prosecutor.delay(case.id, context_data)
 
+    send_user_email = context_data.get("review", {}).get("receive_email_updates", False)
     email_address = context_data.get("review", {}).get("email", False)
 
-    if not email_address:
+    if send_user_email and email_address:
+        data = {
+            "urn": format_for_region(context_data["urn"]),
+            "plea_made_by": context_data["case"]["plea_made_by"],
+            "number_of_charges": context_data["case"]["number_of_charges"],
+            "contact_deadline": context_data["case"]["contact_deadline"],
+            "plea_type": get_plea_type(context_data),
+            "court_address": court_obj.court_address,
+            "court_email": court_obj.court_email
+        }
+
+        email_template = "emails/user_plea_confirmation"
+
+        try:
+            if context_data["notice_type"]["sjp"]:
+                email_template = "emails/user_plea_confirmation_sjp"
+        except KeyError:
+            pass
+
+        html_body = render_to_string(email_template + ".html", data)
+        txt_body = wrap(render_to_string(email_template + ".txt", data), 72)
+
+        subject = _("Online plea submission confirmation")
+
+        email_send_user.delay(case.id, email_address, subject, html_body, txt_body)
+
+    else:
         case.add_action("No email entered, user email not sent", "")
-        return True
-
-    data = {
-        "urn": format_for_region(context_data["urn"]),
-        "plea_made_by": context_data["case"]["plea_made_by"],
-        "number_of_charges": context_data["case"]["number_of_charges"],
-        "plea_type": get_plea_type(context_data),
-        "court_address": court_obj.court_address,
-        "court_email": court_obj.court_email
-    }
-
-    email_template = "emails/user_plea_confirmation"
-
-    try:
-        if context_data["notice_type"]["sjp"]:
-            email_template = "emails/user_plea_confirmation_sjp"
-    except KeyError:
-        pass
-
-    html_body = render_to_string(email_template + ".html", data)
-    txt_body = wrap(render_to_string(email_template + ".txt", data), 72)
-
-    subject = _("Online plea submission confirmation")
-
-    email_send_user.delay(case.id, email_address, subject, html_body, txt_body)
-
-    case.sent = True
-    case.save()
 
     if not court_obj.test_mode:
+        case.sent = True
         email_count.sent = True
         email_count.save()
+
+    case.save()
 
     return True

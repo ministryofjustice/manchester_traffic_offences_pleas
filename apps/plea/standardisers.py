@@ -12,9 +12,10 @@ def format_for_region(urn):
 
 def standardise_urn(urn):
     """
-    Strips non-alphanumeric characters from given URN, and 
+    Strips non-alphanumeric characters from given URN, and
     capitalise any letter. If any regional variations are
     available URN_STANDARDISERS it also applies them.
+
     """
     output = re.sub(r"[\W_]+", "", urn).upper()
 

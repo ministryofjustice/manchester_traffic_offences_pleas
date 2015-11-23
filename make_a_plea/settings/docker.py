@@ -36,8 +36,10 @@ ALLOWED_HOSTS = ["localhost:8000", ]
 # Enable CachedStaticFilesStorage for cache-busting assets
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
+CELERY_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", True)
 
 ENCRYPTED_COOKIE_KEYS = [
     os.environ["ENCRYPTED_COOKIE_KEY"]
