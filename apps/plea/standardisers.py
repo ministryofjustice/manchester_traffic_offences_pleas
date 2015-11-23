@@ -19,7 +19,7 @@ def standardise_urn(urn):
     """
     output = re.sub(r"[\W_]+", "", urn).upper()
 
-    regional_standardiser = URN_STANDARDISERS.get(urn[:2], None)
+    regional_standardiser = URN_STANDARDISERS.get(output[:2], None)
 
     if regional_standardiser:
         output = regional_standardiser(output)
