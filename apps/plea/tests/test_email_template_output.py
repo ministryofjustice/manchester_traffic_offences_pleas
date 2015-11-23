@@ -68,7 +68,7 @@ class EmailTemplateTests(TestCase):
         self.hearing_date = datetime.today() + timedelta(30)
 
         if not urn_entry_data:
-            urn_entry_data = {"urn": "06/AA/00000/00"}
+            urn_entry_data = {"urn": "06AA0000000"}
 
         if not notice_type_data:
             notice_type_data = {"sjp": False}
@@ -223,8 +223,9 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertEqual(mail.outbox[0].subject, "ONLINE PLEA: 06/AA/00000/00 DOH: {} PUBLIC Joe"
-            .format(self.hearing_date.strftime("%Y-%m-%d")))
+        self.assertEqual(
+            mail.outbox[0].subject,
+            "ONLINE PLEA: 06/AA/0000000/00 DOH: {} PUBLIC Joe".format(self.hearing_date.strftime("%Y-%m-%d")))
 
     def test_sjp_subject_output(self):
         context_data = self.get_context_data(notice_type_data={"sjp": True})
@@ -232,7 +233,7 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertEqual(mail.outbox[0].subject, "ONLINE PLEA: 06/AA/00000/00 <SJP> PUBLIC Joe")
+        self.assertEqual(mail.outbox[0].subject, "ONLINE PLEA: 06/AA/0000000/00 <SJP> PUBLIC Joe")
 
     def test_notice_type_not_sjp_output(self):
         context_data = self.get_context_data()
@@ -261,7 +262,7 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
-        self.assertContainsDefinition(response.content, "Unique reference number", "06/AA/00000/00", count=1)
+        self.assertContainsDefinition(response.content, "Unique reference number", "06/AA/0000000/00", count=1)
         self.assertContainsDefinition(response.content, "Court hearing date", self.hearing_date.strftime("%d/%m/%Y"), count=1)
 
     def test_case_details_output_is_english(self):
@@ -275,7 +276,7 @@ class EmailTemplateTests(TestCase):
 
         translation.deactivate()
 
-        self.assertContainsDefinition(response.content, "Unique reference number", "06/AA/00000/00", count=1)
+        self.assertContainsDefinition(response.content, "Unique reference number", "06/AA/0000000/00", count=1)
         self.assertContainsDefinition(response.content, "Court hearing date", self.hearing_date.strftime("%d/%m/%Y"), count=1)
 
     def test_welsh_journey_adds_welsh_flag(self):
@@ -664,7 +665,6 @@ class EmailTemplateTests(TestCase):
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
         self.assertContainsDefinition(response.content, "Other contributors to household bills", "Yes", count=1)
 
-
     def test_skipped_email_finances_output(self):
         context_data = self.get_context_data()
         context_data["your_finances"] = {"skipped": True}
@@ -673,7 +673,6 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
         self.assertContainsDefinition(response.content, "Status", "<i>Not completed/provided Financial details must be collected at hearing</i>", count=1)
-
 
     def test_receive_email_updates_output(self):
         context_data = self.get_context_data()
@@ -695,7 +694,6 @@ class EmailTemplateTests(TestCase):
         self.assertContainsDefinition(response.content, "Email updates", "No", count=1)
         self.assertContainsDefinition(response.content, "Email address", "-", count=1)
 
-
     # PLP Emails
     def test_PLP_subject_output(self):
         context_data = self.get_context_data()
@@ -703,7 +701,7 @@ class EmailTemplateTests(TestCase):
         send_plea_email(context_data)
 
         self.assertEqual(len(mail.outbox), 3)
-        self.assertEqual(mail.outbox[1].subject, "POLICE ONLINE PLEA: 06/AA/00000/00 DOH: {} PUBLIC Joe"
+        self.assertEqual(mail.outbox[1].subject, "POLICE ONLINE PLEA: 06/AA/0000000/00 DOH: {} PUBLIC Joe"
                          .format(self.hearing_date.strftime("%Y-%m-%d")))
 
     def test_PLP_case_details_output(self):
@@ -878,9 +876,7 @@ class EmailTemplateTests(TestCase):
 
 
 class TestCompanyFinancesEmailLogic(TestCase):
-
     def setUp(self):
-
         self.court = Court.objects.create(
             court_code="0000",
             region_code="06",
@@ -901,7 +897,7 @@ class TestCompanyFinancesEmailLogic(TestCase):
             "case": {
                 "complete": True,
                 "date_of_hearing": "2015-01-01",
-                "urn": "06/AA/0000000/00",
+                "urn": "06AA000000000",
                 "number_of_charges": 1,
                 "plea_made_by": "Company representative"
             },

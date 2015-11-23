@@ -6,9 +6,8 @@ from ..standardisers import *
 class TestStandardisers(TestCase):
 
     def test_blank_standardised_urn(self):
-        standardise = get_standardiser("")
         with self.assertRaises(StandardiserNoOutputException):
-            standardise("")
+            standardise_urn("")
 
     def test_standardise_urn(self):
         urns = {"00/AA/11111/99": "00AA1111199",
