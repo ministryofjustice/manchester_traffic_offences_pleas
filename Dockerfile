@@ -18,6 +18,6 @@ RUN pip install -r requirements.txt
 
 COPY . $APP_HOME
 
-CMD ["gunicorn",  "make_a_plea.wsgi", "--bind=0.0.0.0:8111"]
+CMD ["gunicorn",  "make_a_plea.wsgi", "--bind=0.0.0.0:9080"]
 
-EXPOSE 8111
+EXPOSE 9080

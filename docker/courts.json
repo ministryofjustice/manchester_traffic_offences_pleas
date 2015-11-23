@@ -1,0 +1,178 @@
+[
+   {
+      "fields":{
+         "plp_email":"test@test.com",
+         "court_code":"n/a",
+         "region_code":"51",
+         "court_name":"SJP Test Court",
+         "court_address":"SJP Test Court\r\nTest court building\r\nTest Road\r\nTestchester\r\nT35 TTT",
+         "validate_urn":false,
+         "enabled":true,
+         "notice_types":"both",
+         "court_email":"test@test.com",
+         "submission_email":"test@test.com",
+         "test_mode":false,
+         "local_receipt_email":"",
+         "display_case_data":true,
+         "court_language":"en",
+         "court_telephone":"0123456789",
+         "court_receipt_email":""
+      },
+      "model":"plea.court",
+      "pk":1
+   },
+   {
+      "fields":{
+         "plp_email":"",
+         "court_code":"XXX",
+         "region_code":"53",
+         "court_name":"Test Scripts Court (SJP only)",
+         "court_address":"Local",
+         "validate_urn":false,
+         "enabled":true,
+         "notice_types":"sjp",
+         "court_email":"test@test.com",
+         "submission_email":"test@test.com",
+         "test_mode":false,
+         "local_receipt_email":"",
+         "display_case_data":false,
+         "court_language":"en",
+         "court_telephone":"n/a",
+         "court_receipt_email":""
+      },
+      "model":"plea.court",
+      "pk":21
+   },
+   {
+      "fields":{
+         "plp_email":"",
+         "court_code":"XXXX",
+         "region_code":"02",
+         "court_name":"TEST Lavender Hill",
+         "court_address":"TEST Lavender Hill",
+         "validate_urn":false,
+         "enabled":true,
+         "notice_types":"sjp",
+         "court_email":"test@test.com",
+         "submission_email":"test@test.com",
+         "test_mode":false,
+         "local_receipt_email":"",
+         "display_case_data":false,
+         "court_language":"en",
+         "court_telephone":"n/a",
+         "court_receipt_email":""
+      },
+      "model":"plea.court",
+      "pk":22
+   },
+   {
+      "fields":{
+         "plp_email":"",
+         "court_code":"XXX",
+         "region_code":"52",
+         "court_name":"Test Court, non-SJP",
+         "court_address":"Test Court, non-SJP",
+         "validate_urn":false,
+         "enabled":true,
+         "notice_types":"non-sjp",
+         "court_email":"test@test.com",
+         "submission_email":"test@test.com",
+         "test_mode":false,
+         "local_receipt_email":"",
+         "display_case_data":false,
+         "court_language":"en",
+         "court_telephone":" ",
+         "court_receipt_email":""
+      },
+      "model":"plea.court",
+      "pk":23
+   },
+   {
+      "fields":{
+         "plp_email":"",
+         "court_code":"XXX",
+         "region_code":"10",
+         "court_name":"TEST Gateshead",
+         "court_address":"TEST Gateshead",
+         "validate_urn":false,
+         "enabled":true,
+         "notice_types":"both",
+         "court_email":"test@test.com",
+         "submission_email":"test@test.com",
+         "test_mode":false,
+         "local_receipt_email":"",
+         "display_case_data":false,
+         "court_language":"en",
+         "court_telephone":" ",
+         "court_receipt_email":""
+      },
+      "model":"plea.court",
+      "pk":24
+   },
+   {
+      "fields":{
+         "plp_email":"",
+         "court_code":"XXX",
+         "region_code":"05",
+         "court_name":"TEST Wirral",
+         "court_address":"TEST Wirral",
+         "validate_urn":false,
+         "enabled":true,
+         "notice_types":"both",
+         "court_email":"test@test.com",
+         "submission_email":"test@test.com",
+         "test_mode":false,
+         "local_receipt_email":"",
+         "display_case_data":false,
+         "court_language":"en",
+         "court_telephone":" ",
+         "court_receipt_email":""
+      },
+      "model":"plea.court",
+      "pk":25
+   },
+   {
+      "fields":{
+         "plp_email":"",
+         "court_code":"XXX",
+         "region_code":"17",
+         "court_name":"TEST Teesside",
+         "court_address":"TEST Teesside",
+         "validate_urn":false,
+         "enabled":true,
+         "notice_types":"both",
+         "court_email":"test@test.com",
+         "submission_email":"test@test.com",
+         "test_mode":false,
+         "local_receipt_email":"",
+         "display_case_data":false,
+         "court_language":"en",
+         "court_telephone":" ",
+         "court_receipt_email":""
+      },
+      "model":"plea.court",
+      "pk":26
+   },
+   {
+      "fields":{
+         "plp_email":"",
+         "court_code":"",
+         "region_code":"54",
+         "court_name":"DX Test Court",
+         "court_address":"DX Test Court",
+         "validate_urn":false,
+         "enabled":true,
+         "notice_types":"both",
+         "court_email":"test@test.com",
+         "submission_email":"test@test.com",
+         "test_mode":true,
+         "local_receipt_email":"",
+         "display_case_data":true,
+         "court_language":"en",
+         "court_telephone":" ",
+         "court_receipt_email":""
+      },
+      "model":"plea.court",
+      "pk":27
+   }
+]
