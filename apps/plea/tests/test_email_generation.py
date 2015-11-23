@@ -132,6 +132,7 @@ class EmailGenerationTests(TestCase):
 
     def test_user_confirmation_sends_no_email(self):
         self.test_data_defendant.update({"review": {"receive_email_updates": False,
+                                                    "email": "test@test.com",
                                                     "understand": True}})
         send_plea_email(self.test_data_defendant)
 

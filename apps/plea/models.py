@@ -25,6 +25,9 @@ INITIATION_TYPE_CHOICES = (("C", "Charge"),
                            ("R", "Remitted"),
                            ("S", "Summons"))
 
+NOTICE_TYPES_CHOICES = (("both", "Both"),
+                        ("sjp", "SJP"),
+                        ("non-sjp", "Non-SJP"))
 
 def get_totals(qs):
     totals = qs.aggregate(Sum('total_pleas'),
@@ -436,9 +439,10 @@ class Court(models.Model):
         default=False,
         help_text="Is this court entry used for testing purposes?")
 
-    sjp_area = models.BooleanField(
-        default=False,
-        help_text="Is this area sending out SJP notices?")
+    notice_types = models.CharField(
+        max_length=7, null=False, blank=False, default="both",
+        choices=NOTICE_TYPES_CHOICES,
+        help_text="What kind of notices are being sent out by this area?")
 
     validate_urn = models.BooleanField(
         default=False,

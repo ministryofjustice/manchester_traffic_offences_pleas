@@ -22,17 +22,11 @@ html {
 	@extend %site-width-container;
 	padding-bottom: 0;
 
-	.phase-tag {
-		@include phase-tag(beta);
-		margin-bottom: 8px;
-		vertical-align: baseline;
-	}
-
-	span {
+	p {
 		display: inline-block;
 		width: auto;
 		margin-bottom: 8px;
-		vertical-align: baseline;
+		vertical-align: top;
 	}
 }
 

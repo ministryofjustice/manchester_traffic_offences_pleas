@@ -2,6 +2,7 @@ from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.core.exceptions import MultipleObjectsReturned
 from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 
 from apps.forms.stages import FormStage, IndexedStage
@@ -85,14 +86,18 @@ class URNEntryStage(FormStage):
                 court = None
 
             if court is not None:
-                sjp = court.sjp_area
-            else:
-                sjp = True
+                notice_types = court.notice_types
 
-            if not sjp:
-                self.all_data["notice_type"]["sjp"] = False
-                self.all_data["notice_type"]["complete"] = True
-                self.set_next_step("case")
+                if notice_types == "both":
+                    try:
+                        del self.all_data["notice_type"]["auto_set"]
+                    except KeyError:
+                        pass
+                else:
+                    self.all_data["notice_type"]["sjp"] = (notice_types == "sjp")
+                    self.all_data["notice_type"]["complete"] = True
+                    self.all_data["notice_type"]["auto_set"] = True
+                    self.set_next_step("case")
 
         return clean_data
 
@@ -113,6 +118,15 @@ class NoticeTypeStage(FormStage):
     template = "notice_type.html"
     form_class = NoticeTypeForm
     dependencies = []
+
+    def render(self, request_context):
+        try:
+            if self.all_data["notice_type"]["auto_set"]:
+                return HttpResponseRedirect(self.all_urls["case"])
+        except KeyError:
+            pass
+
+        return super(NoticeTypeStage, self).render(request_context)
 
 
 class CaseStage(FormStage):
@@ -236,6 +250,24 @@ class PleaStage(IndexedStage):
             except IndexError:
                 pass
 
+        self.show_interpreter_question = True
+
+        previous_charges = self.all_data["plea"].get("data", [])
+        previous_charges = previous_charges[:self.index-1]
+
+        for charge in previous_charges:
+            if charge.get("interpreter_needed", None) is not None or charge.get("sjp_interpreter_needed", None) is not None:
+                self.show_interpreter_question = False
+
+                del self.form.fields["interpreter_needed"]
+                del self.form.fields["interpreter_language"]
+
+                if self.all_data["notice_type"]["sjp"]:
+                    del self.form.fields["sjp_interpreter_needed"]
+                    del self.form.fields["sjp_interpreter_language"]
+
+                break
+
     def save(self, form_data, next_step=None):
         clean_data = super(PleaStage, self).save(form_data, next_step)
         plea_count = self.all_data["case"]["number_of_charges"]
@@ -248,6 +280,22 @@ class PleaStage(IndexedStage):
 
         if len(stage_data["data"]) < self.index:
             stage_data["data"].append({})
+
+        if clean_data.get("guilty") == "guilty":
+            try:
+                del clean_data["interpreter_needed"]
+                del clean_data["interpreter_language"]
+            except KeyError:
+                pass
+
+        if clean_data.get("guilty") == "not_guilty" or clean_data.get("come_to_court") == False:
+            try:
+                del clean_data["sjp_interpreter_needed"]
+                del clean_data["sjp_interpreter_language"]
+            except KeyError:
+                pass
+
+        clean_data["show_interpreter_question"] = self.show_interpreter_question
 
         stage_data["data"][self.index-1] = clean_data
 
