@@ -33,7 +33,7 @@ class CaseCreationTests(TestCase):
 
         self.context_data = {
             'notice_type': {u'sjp': False},
-            'case': {u'urn': u'06/aa/0000000/00',
+            'case': {u'urn': u'06AA000000000',
                      u'date_of_hearing': datetime.date(2015, 1, 1),
                      u'contact_deadline': datetime.date(2015, 1, 1),
                      u'number_of_charges': 2,
@@ -163,8 +163,7 @@ class CaseCreationTests(TestCase):
     def test_user_email_not_requested(self, send):
         send.side_effect = iter([socket.error("Email failed to send, socket error"), True])
 
-        case = Case.objects.create(
-            urn="00/AA/00000/00")
+        case = Case.objects.create(urn="00AA0000000")
 
         self.context_data.update({u"review": {"receive_email_updates": False,
                                               "email": ""}})

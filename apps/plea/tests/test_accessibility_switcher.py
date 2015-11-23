@@ -5,6 +5,7 @@ from importlib import import_module
 
 from waffle.models import Switch
 
+
 class TestAccessibilitySwitcher(TestCase):
 
     def setUp(self):
@@ -17,12 +18,10 @@ class TestAccessibilitySwitcher(TestCase):
         self.session = store
         self.client.cookies[settings.SESSION_COOKIE_NAME] = store.session_key
 
-
     def test_a11y_testing_waffle_switch_off(self):
         response = self.client.get("/set-a11y-testing/")
 
         self.assertEqual(response.status_code, 404)
-
 
     def test_a11y_testing_mode_tota11y(self):
         Switch.objects.create(name="enable_a11y_testing", active=True)

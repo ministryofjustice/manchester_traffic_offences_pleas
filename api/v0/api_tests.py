@@ -41,7 +41,6 @@ def create_court(region):
 
 
 class GeneralAPiTestCase(APITestCase):
-
     def setUp(self):
         self.user, self.auth_header = create_api_user()
 
@@ -67,7 +66,6 @@ class GeneralAPiTestCase(APITestCase):
 
 
 class CaseAPICallTestCase(APITestCase):
-
     def setUp(self):
         create_court("00")
         self.user, self.auth_header = create_api_user()
@@ -75,7 +73,7 @@ class CaseAPICallTestCase(APITestCase):
         self.endpoint = reverse('api-v0:case-list', format="json")
 
         self.test_data = {
-            u'urn': u'00/aa/00000/00',
+            u'urn': u'00AA0000000',
             u'case_number': '16273482',
             u'offences': [
                 {
@@ -95,7 +93,7 @@ class CaseAPICallTestCase(APITestCase):
             ]
         }
 
-    def test_urn_dupe_validation(self):
+    def test_duplicate_submission_validation(self):
         self.test_data['urn'] = '00/aa/0000000/00'
         response = self.client.post(self.endpoint, self.test_data,
                                     **self.auth_header)
@@ -107,8 +105,28 @@ class CaseAPICallTestCase(APITestCase):
                                     **self.auth_header)
         self.assertEqual(response.status_code, 400)
 
-    def test_valid_submission(self):
+    def test_urn_blank_urn_validation(self):
+        self.test_data['urn'] = ""
 
+        response = self.client.post(self.endpoint, self.test_data,
+                                    **self.auth_header)
+        self.assertEqual(response.status_code, 400)
+
+    def test_empty_urn_validation(self):
+        del self.test_data['urn']
+
+        response = self.client.post(self.endpoint, self.test_data,
+                                    **self.auth_header)
+        self.assertEqual(response.status_code, 400)
+
+    def test_urn_invalid_format_validation(self):
+        self.test_data['urn'] = "aa/00/43224234/aa/25"
+
+        response = self.client.post(self.endpoint, self.test_data,
+                                    **self.auth_header)
+        self.assertEqual(response.status_code, 400)
+
+    def test_valid_submission(self):
         factory = APIRequestFactory()
         request = factory.post("/v0/case/", json.dumps(self.test_data),
                                content_type="application/json")
