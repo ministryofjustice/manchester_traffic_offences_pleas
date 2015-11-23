@@ -29,7 +29,7 @@ from .forms import (URNEntryForm,
 
 from .fields import ERROR_MESSAGES
 from .models import Court, Case, Offence
-from .standardisers import get_standardiser
+from .standardisers import standardise_urn
 
 
 def get_case(urn):
@@ -79,6 +79,7 @@ class URNEntryStage(FormStage):
         clean_data = super(URNEntryStage, self).save(form_data, next_step)
 
         if "urn" in clean_data:
+            clean_data["urn"] = standardise_urn(clean_data["urn"])
             try:
                 court = Court.objects.get_by_urn(clean_data["urn"])
             except Court.DoesNotExist:
@@ -146,8 +147,7 @@ class CaseStage(FormStage):
         clean_data = super(CaseStage, self).save(form_data, next_step)
 
         if "urn" in clean_data:
-            standardise = get_standardiser(clean_data["urn"])
-            clean_data["urn"] = standardise(clean_data["urn"])
+            clean_data["urn"] = standardise_urn(clean_data["urn"])
             offences = get_offences(clean_data)
             if offences:
                 clean_data["number_of_charges"] = len(offences)

@@ -12,7 +12,7 @@ class TestPleaFormIssues(TestMultiPleaFormBase):
         self.request_context = {}
 
     def test_used_urn_in_session(self):
-        case = Case.objects.create(urn="06/AA/0000000/00", name="Ian George",
+        case = Case.objects.create(urn="06AA000000000", name="Ian George",
                                    sent=True)
         case.save()
 
@@ -20,7 +20,7 @@ class TestPleaFormIssues(TestMultiPleaFormBase):
                                         "sjp": False},
                         "case": {"complete": True,
                                  "date_of_hearing": "2015-01-01",
-                                 "urn": "06/AA/0000000/00",
+                                 "urn": "06AA000000000",
                                  "number_of_charges": 1,
                                  "plea_made_by": "Defendant"}}
 
