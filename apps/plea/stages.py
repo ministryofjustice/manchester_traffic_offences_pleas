@@ -40,23 +40,23 @@ def get_case(urn):
 
 
 def get_offences(case_data):
-        urn = case_data.get("urn")
-        # TODO: change this to grabbing by case OU or a FK at some point
+    urn = case_data.get("urn")
+    # TODO: change this to grabbing by case OU or a FK at some point
 
-        offences = []
-        if urn:
-            case = get_case(urn)
-            court = Court.objects.get_by_urn(urn)
+    offences = []
+    if urn:
+        case = get_case(urn)
+        court = Court.objects.get_by_urn(urn)
 
-            # offence_seq_number is a char field so best to cast and order by
-            # rather than just grabbing case.offences.all() and hoping it's
-            # in the right order
-            if court.display_case_data:
-                offences = Offence.objects.filter(case=case).extra(
-                    select={"seq_number": "cast(coalesce(nullif(offence_seq_number,''),'0') as float)"}
-                ).order_by("seq_number", "id")
+        # offence_seq_number is a char field so best to cast and order by
+        # rather than just grabbing case.offences.all() and hoping it's
+        # in the right order
+        if court.display_case_data:
+            offences = Offence.objects.filter(case=case).extra(
+                select={"seq_number": "cast(coalesce(nullif(offence_seq_number,''),'0') as float)"}
+            ).order_by("seq_number", "id")
 
-        return offences
+    return offences
 
 
 def calculate_weekly_amount(amount, period="Weekly"):
@@ -91,6 +91,16 @@ class URNEntryStage(FormStage):
             dv.save()
 
             clean_data["urn"] = standardise_urn(clean_data["urn"])
+
+            offences = get_offences(clean_data)
+            if offences:
+                self.all_data.update({"dx": True})
+                self.all_data["case"]["number_of_charges"] = len(offences)
+            else:
+                self.all_data.update({"dx": False})
+                if self.all_data.get("case", {}).get("number_of_charges", False):
+                    del self.all_data["case"]["number_of_charges"]
+
             try:
                 court = Court.objects.get_by_urn(clean_data["urn"])
             except Court.DoesNotExist:
@@ -156,12 +166,6 @@ class CaseStage(FormStage):
 
     def save(self, form_data, next_step=None):
         clean_data = super(CaseStage, self).save(form_data, next_step)
-
-        if "urn" in clean_data:
-            clean_data["urn"] = standardise_urn(clean_data["urn"])
-            offences = get_offences(clean_data)
-            if offences:
-                clean_data["number_of_charges"] = len(offences)
 
         # Set the court contact deadline
         if "date_of_hearing" in clean_data:
