@@ -22,7 +22,11 @@
         {% multi_field form.date_of_hearing %}
     {% endif %}
 
-    {% std_field form.number_of_charges %}
+    {% if dx %}
+        {% hidden_field form.number_of_charges %}
+    {% else %}
+        {% std_field form.number_of_charges %}
+    {% endif %}
 
     {% radio_field form.plea_made_by %}
 {% endblock stage_form %}
