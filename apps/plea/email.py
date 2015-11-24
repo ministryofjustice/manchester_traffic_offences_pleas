@@ -72,10 +72,11 @@ def send_plea_email(context_data):
         context_data["welsh_language"] = True
 
     # Get or create case
-    try:
-        case = Case.objects.get(urn__iexact=context_data["case"]["urn"].upper(), sent=False)
-    except Case.DoesNotExist:
+    cases = Case.objects.filter(urn__iexact=context_data["case"]["urn"].upper(), sent=False)
+    if len(cases) == 0:
         case = Case(urn=context_data["case"]["urn"].upper(), sent=False)
+    else:
+        case = cases[0]
 
     if context_data["notice_type"]["sjp"]:
         case.initiation_type = "J"
