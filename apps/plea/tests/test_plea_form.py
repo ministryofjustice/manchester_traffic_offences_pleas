@@ -8,6 +8,7 @@ from django.template.context import RequestContext
 
 from ..models import Case, Court
 from ..views import PleaOnlineForms
+from ..standardisers import format_for_region
 
 
 class TestMultiPleaFormBase(TestCase):
@@ -1127,7 +1128,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             response,
             "<br />".join(court_obj.court_address.split("\n")))
 
-        self.assertIn(test_data["case"]["urn"], response.content)
+        self.assertIn(format_for_region(test_data["case"]["urn"]), response.content)
 
     def test_successful_completion_single_charge(self):
         fake_session = {}
