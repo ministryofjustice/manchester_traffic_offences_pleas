@@ -1,25 +1,35 @@
-{% extends "moj_template/base.html" %}
+{% extends "govuk_template/base.html" %}
 
 {% load i18n %}
 {% load staticfiles %}
 {% load waffle_tags %}
 
+{% block page_title %}{% blocktrans %}Make a Plea: Traffic offences{% endblocktrans %} - GOV.UK{% endblock page_title %}
+
 {% block cookie_message %}
     <p>{% blocktrans %}GOV.UK uses cookies to make the site simpler.{% endblocktrans %} <a href="{% url "terms" %}#cookies">{% blocktrans %}Find out more about cookies{% endblocktrans %}</a></p>
 {% endblock %}
 
-{% block licence_message %}
-    <p>{% blocktrans %}All content is available under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence v3.0</a>, except where otherwise stated{% endblocktrans %}</p>
-{% endblock %}
-
-{% block stylesheets %}
+{% block head %}
     <link rel="stylesheet" type="text/css" href="{% static "stylesheets/application.css" %}">
     <!--[if IE 6]><link href="{% static "stylesheets/application-ie6.css" %}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
     <!--[if IE 7]><link href="{% static "stylesheets/application-ie7.css" %}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
     <!--[if IE 8]><link href="{% static "stylesheets/application-ie8.css" %}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
-{% endblock %}
+{% endblock head %}
 
-{% block before_content %}
+{% block body_classes %}service{% endblock %}
+
+{% block header_class %}with-proposition{% endblock %}
+
+{% block proposition_header %}
+    <div class="header-proposition">
+      <div class="content">
+        <a href="/" id="proposition-name">{% blocktrans %}Make a Plea: Traffic offences{% endblocktrans %}</a>
+      </div>
+    </div>
+{% endblock proposition_header %}
+
+{% block content %}
     <div class="phase-banner">
         {% switch show_language_switcher %}
         <nav class="language-switcher">
@@ -36,43 +46,55 @@
         <p>{% blocktrans with feedback_url=feedback_url %}This is a new service - <a href="{{ feedback_url }}">your feedback</a> will help us to improve it.{% endblocktrans %}</p>
 
     </div>
-{% endblock %}
 
-{% block content %}
-    {%  if messages %}
-        {% for message in messages %}
+    <div id="wrapper" class="group">
+        <section id="content" role="main">
 
-            {% if "success" in message.tags %}
-            <section class="success-header" role="alert">
-                <p class="ticked">{{ message }}</p>
-            </section>
+            {%  if messages %}
+                {% for message in messages %}
+
+                    {% if "success" in message.tags %}
+                    <section class="success-header" role="alert">
+                        <p class="ticked">{{ message }}</p>
+                    </section>
+                    {% endif %}
+
+                    {% if "error" in message.tags %}
+                    <section class="error-summary">
+                        {% if "session_timeout" in message.tags %}
+                        <h1 class="heading-medium">{% blocktrans %}Session timeout{% endblocktrans %}</h1>
+                        <p>{% blocktrans %}Your session has expired, re-enter your details and try again.{% endblocktrans %}</p>
+                        {% else %}
+                        {{ message|safe }}
+                        {% endif %}
+                    </section>
+                    {% endif %}
+
+                {% endfor %}
             {% endif %}
 
-            {% if "error" in message.tags %}
-            <section class="error-summary">
-                {% if "session_timeout" in message.tags %}
-                <h1 class="heading-medium">{% blocktrans %}Session timeout{% endblocktrans %}</h1>
-                <p>{% blocktrans %}Your session has expired, re-enter your details and try again.{% endblocktrans %}</p>
-                {% else %}
-                {{ message|safe }}
-                {% endif %}
-            </section>
-            {% endif %}
 
-        {% endfor %}
-    {% endif %}
+            {% block page_content %}{% endblock %}
 
-    {% block page_content %}{% endblock %}
+        </section>
+    </div>
 
 {% endblock %}
 
 {% block footer_support_links %}
+<ul>
     <li><a href="{% url "terms" %}">{% blocktrans %}Terms and Conditions and Privacy Policy{% endblocktrans %}</a></li>
     <li><a href="{% url "terms" %}#cookies">{% blocktrans %}Cookies{% endblocktrans %}</a></li>
-    <li class="clear"><a href="http://www.gov.uk/help">{% blocktrans %}Help{% endblocktrans %}</a></li>
-    <li><a href="http://www.gov.uk/contact">{% blocktrans %}Contact{% endblocktrans %}</a></li>
+    <li class="clear"><a href="http://www.gov.uk/help" lang="en">{% blocktrans %}Help{% endblocktrans %}</a></li>
+    <li><a href="http://www.gov.uk/contact" lang="en">{% blocktrans %}Contact{% endblocktrans %}</a></li>
     <li><a href="http://www.gov.uk/cymraeg" lang="cy">{% blocktrans %}Cymraeg{% endblocktrans %}</a></li>
+    <li>{% blocktrans %}Built by <a href="https://mojdigital.blog.gov.uk/"><abbr title="Ministry of Justice">MOJ</abbr> Digital</a>{% endblocktrans %}</li>
+</ul>
 {% endblock %}
+
+{% block licence_message %}
+    <p>{% blocktrans %}All content is available under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence v3.0</a>, except where otherwise stated{% endblocktrans %}</p>
+{% endblock licence_message %}
 
 {% block javascripts %}
     <script src="{% static "javascripts/application.js" %}" type="text/javascript"></script>
