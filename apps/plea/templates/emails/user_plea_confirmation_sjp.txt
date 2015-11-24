@@ -1,4 +1,4 @@
-{% load testing date i18n %}{% blocktrans %}GOV.UK - Online plea submission confirmation{% endblocktrans %}
+{% load testing date i18n urn %}{% blocktrans %}GOV.UK - Online plea submission confirmation{% endblocktrans %}
 
 {% blocktrans count charges=number_of_charges %}Your online plea has been submitted{% plural %}Your online pleas have been submitted{% endblocktrans %}
 
@@ -17,7 +17,7 @@
 ------
 
 {% blocktrans %}Need to change a plea?{% endblocktrans %}
-{% blocktrans with urn=urn|upper contact_deadline=contact_deadline|parse_date|date:"d/m/Y" %}Contact the court by post or email quoting your URN {{ urn }} to arrive before {{ contact_deadline }}.{% endblocktrans %}
+{% blocktrans with urn=urn|format_urn contact_deadline=contact_deadline|parse_date|date:"d/m/Y" %}Contact the court by post or email quoting your URN {{ urn }} to arrive before {{ contact_deadline }}.{% endblocktrans %}
 
 {% blocktrans %}The contact details for the court are:{% endblocktrans %}
 
