@@ -108,7 +108,7 @@ def send_plea_email(context_data):
 
     if send_user_email and email_address:
         data = {
-            "urn": format_for_region(context_data["urn"]),
+            "urn": format_for_region(context_data["case"]["urn"]),
             "plea_made_by": context_data["case"]["plea_made_by"],
             "number_of_charges": context_data["case"]["number_of_charges"],
             "contact_deadline": context_data["case"]["contact_deadline"],
