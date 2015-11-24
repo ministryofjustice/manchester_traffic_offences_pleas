@@ -3,6 +3,7 @@
 {% load testing %}
 {% load date %}
 {% load i18n %}
+{% load urn %}
 
 {% block subject %}{% blocktrans %}Online plea submission confirmation{% endblocktrans %}{% endblock subject %}
 
@@ -61,7 +62,7 @@
 
     <h2>{% blocktrans %}Need to change a plea?{% endblocktrans %}</h2>
 
-    <p>{% blocktrans with urn=urn|upper hearing_date=contact_deadline|parse_date|date:"d/m/Y" %}Contact the court by post or email quoting your URN {{ urn }} to arrive before {{ hearing_date }}.{% endblocktrans %}</p>
+    <p>{% blocktrans with urn=urn|format_urn hearing_date=contact_deadline|parse_date|date:"d/m/Y" %}Contact the court by post or email quoting your URN {{ urn }} to arrive before {{ hearing_date }}.{% endblocktrans %}</p>
 
     <p>{% blocktrans %}The contact details for the court are:{% endblocktrans %}</p>
 
