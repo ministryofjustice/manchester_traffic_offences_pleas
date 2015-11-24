@@ -10,7 +10,7 @@ from django.test import TestCase
 from django.utils import translation
 
 from ..email import send_plea_email
-from ..models import Court
+from ..models import Court, Case
 from ..forms import (URNEntryForm,
                      NoticeTypeForm,
                      CaseForm,
@@ -555,7 +555,6 @@ class EmailTemplateTests(TestCase):
         self.assertContainsDefinition(response.content, "Includes payment for dependents?", "Yes", count=1)
         self.assertContainsDefinition(response.content, "Weekly take home pay", "£200.00", count=1)
 
-
     def test_benefits_other_email_finances_output(self):
         context_data_status = {"you_are": "Receiving benefits"}
         context_data_finances = {"benefits_details": "Housing benefit\nUniversal Credit",
@@ -607,7 +606,6 @@ class EmailTemplateTests(TestCase):
 
         self.assertContainsDefinition(response.content, "Weekly take home pay", "£46.15", count=1)
 
-
     def test_other_email_finances_output(self):
         context_data_status = {"you_are": "Other"}
         context_data_finances = {"other_details": u"I am a pensioner and I earn\n£500 a month.",
@@ -622,7 +620,6 @@ class EmailTemplateTests(TestCase):
         self.assertContainsDefinition(response.content, "Details", "I am a pensioner and I earn<br />£500 a month.", count=1)
         self.assertContainsDefinition(response.content, "Amount", "£200.00", count=1)
         self.assertContainsDefinition(response.content, "Weekly take home pay", "£200.00", count=1)
-
 
     def test_expenses_output_default(self):
         context_data_finances = {"employed_pay_period": "Weekly",
@@ -874,6 +871,15 @@ class EmailTemplateTests(TestCase):
         self.assertContains(response, "202")
         self.assertContains(response, "303")
 
+    def test_email_send_with_multiple_unsent_pleas(self):
+        data = self.get_context_data()
+        case = Case(urn=data["case"]["urn"], sent=False)
+        case.save()
+        case2 = Case(urn=data["case"]["urn"], sent=False)
+        case2.save()
+
+        send_plea_email(data)
+
 
 class TestCompanyFinancesEmailLogic(TestCase):
     def setUp(self):
@@ -967,4 +973,3 @@ class TestCompanyFinancesEmailLogic(TestCase):
         self.assertTrue("<<SHOWYOURDETAILS>>" not in attachment)
         self.assertTrue("<<SHOWCOMPANYFINANCES>>" in attachment)
         self.assertTrue("<<SHOWEXPENSES>>" not in attachment)
-
