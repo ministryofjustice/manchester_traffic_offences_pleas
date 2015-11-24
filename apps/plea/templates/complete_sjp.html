@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load date %}
 {% load testing %}
+{% load urn %}
 
 {% block page_title %}{% blocktrans count charges=case.number_of_charges %}Your plea has been sent to the magistrate{% plural %}Your pleas have been sent to the magistrate{% endblocktrans %} - {{ block.super }}{% endblock %}
 
@@ -64,7 +65,7 @@
 
         <h2 class="heading-medium">{% blocktrans %}Need to change a plea?{% endblocktrans %}</h2>
 
-        <p>{% blocktrans with urn=case.urn|upper contact_deadline=case.contact_deadline|parse_date|date:"d/m/Y" %}Contact the court by post or email quoting your URN {{ urn }} to arrive before {{ contact_deadline }}.{% endblocktrans %}</p>
+        <p>{% blocktrans with urn=case.urn|format_urn contact_deadline=case.contact_deadline|parse_date|date:"d/m/Y" %}Contact the court by post or email quoting your URN {{ urn }} to arrive before {{ contact_deadline }}.{% endblocktrans %}</p>
 
         <p>{% blocktrans %}The contact details for the court are:{% endblocktrans %}</p>
 
