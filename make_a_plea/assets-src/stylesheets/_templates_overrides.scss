@@ -4,18 +4,27 @@ GOV.UK Toolkit/Template overrides
 ====================================================
 */
 
-html {
-	background-color: white;
-}
-
 #global-cookie-message {
 	> div {
 		@extend %site-width-container;
 	}
 }
 
-#global-header .header-proposition a#proposition-name:hover {
-	text-decoration: none;
+#global-header .header-proposition {
+	@include media(tablet) {
+		padding-top: 8px;
+	}
+
+	a#proposition-name {
+		display: inline-block;
+		line-height: 1;
+
+		&:hover,
+		&:focus {
+			border-bottom: 1px solid white;
+			text-decoration: none;
+		}
+	}
 }
 
 .phase-banner {
@@ -30,9 +39,19 @@ html {
 	}
 }
 
+#wrapper {
+	background-color: white;
+	padding: 0 0 60px 0;
+	border-bottom: 10px solid $govuk-blue;
+}
+
 #content {
 	outline: none;
 	padding-top: 1px;
+
+	@include media(tablet) {
+		@include core-19;
+	}
 
 	@include ie-lte(8) {
 		width: 960px;

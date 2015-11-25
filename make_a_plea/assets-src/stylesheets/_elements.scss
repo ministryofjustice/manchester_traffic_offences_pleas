@@ -68,6 +68,8 @@ hr {
 	padding-top: 0;
 	padding-bottom: 0;
 	padding-left: 10px;
+	margin-bottom: 45px;
+	border-left-width: 4px;
 
 	@include media(tablet) {
 		padding-left: 15px;
