@@ -14,6 +14,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-file": "^0.2.0",
     "gulp-imagemin": "^2.4.0",
+    "gulp-include": "^2.0.3",
     "gulp-jasmine": "^2.2.1",
     "gulp-jshint": "^2.0.0",
     "gulp-sass": "^2.1.0",
