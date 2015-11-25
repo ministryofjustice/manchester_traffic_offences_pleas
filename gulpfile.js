@@ -7,11 +7,12 @@ var gulp = require('gulp'),
     runSequence = require('run-sequence'),
     vinylPaths = require('vinyl-paths'),
     jasmine = require('gulp-jasmine'),
-    karma = require('karma'),
+    karmaServer = require('karma').Server,
     uglify = require('gulp-uglify'),
     sourcemaps = require('gulp-sourcemaps'),
     sass = require('gulp-sass'),
-    file = require('gulp-file');
+    file = require('gulp-file'),
+    include = require('gulp-include');
 
 var paths = {
   dest_dir: 'make_a_plea/assets/',
@@ -20,11 +21,7 @@ var paths = {
     'make_a_plea/assets-src/stylesheets/**/*.scss',
     'node_modules/govuk_frontend_toolkit/stylesheets/**/*.scss'
   ],
-  scripts: [
-    'make_a_plea/assets-src/javascripts/modules/**/*.js',
-    'make_a_plea/assets-src/javascripts/application.js'
-  ],
-  shims: 'make_a_plea/assets-src/javascripts/shims/**/*.js',
+  scripts: 'make_a_plea/assets-src/javascripts/application.js',
   vendor_scripts: 'make_a_plea/assets-src/javascripts/vendor/**/*.js',
   test_scripts: 'make_a_plea/assets-src/tests/**/*.js',
   images: 'make_a_plea/assets-src/images/**/*'
@@ -62,18 +59,11 @@ gulp.task('sass', function() {
 
 // default js task
 gulp.task('js', function() {
-  // Main scripts are shims, modules and main application.js
-  paths.main_scripts = [paths.shims].concat(paths.scripts);
-
-  // ignore debug files
-  paths.main_scripts.push('!' + paths.src_dir + '**/*debug*');
-
-  // ignore unused scripts
-  paths.main_scripts.push('!' + paths.src_dir + '**/*ignore*');
-
   // create concatenated main js file
   gulp
-    .src(paths.main_scripts)
+    .src(paths.scripts)
+    .pipe(include())
+      .on('error', console.log)
     .pipe(sourcemaps.init())
     .pipe(concat('application.js'))
     .pipe(uglify())
@@ -84,12 +74,6 @@ gulp.task('js', function() {
   gulp
     .src(paths.vendor_scripts)
     .pipe(gulp.dest(paths.dest_dir + 'javascripts/vendor'));
-
-  // create debug js file
-  gulp
-    .src(paths.src_dir + 'javascripts/**/*debug*')
-    .pipe(concat('debug.js'))
-    .pipe(gulp.dest(paths.dest_dir + 'javascripts/'));
 });
 
 // jshint
@@ -104,11 +88,11 @@ gulp.task('lint', function() {
 
 // JS Tests
 gulp.task('test', function (done) {
-  karma.server.start({
+  new karmaServer({
     configFile: __dirname + '/karma.conf.js'
   }, function() {
     done();
-  });
+  }).start();
 });
 
 // optimise images
