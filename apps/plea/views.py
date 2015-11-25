@@ -90,8 +90,10 @@ class PleaOnlineViews(StorageView):
 
         # Store the index if we've got one
         idx = kwargs.pop("index", None)
-        if idx is not None:
+        try:
             self.index = int(idx)
+        except (ValueError, TypeError):
+            self.index = 0
 
         # Load storage
         self.storage = self.get_storage(request, "plea_data")
