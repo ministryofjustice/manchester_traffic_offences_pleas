@@ -8,7 +8,13 @@ django:
   links:
     - postgres:db
   # local dev env variables which are kept out of version control
-  env_file: docker/local-env
+  environment:
+    - POSTGRES_HOST=db
+    - POSTGRES_USER=makeaplea
+    - POSTGRES_PASS=password
+    - POSTGRES_PORT=5432
+    - POSTGRES_DB=makeaplea
+    - DJANGO_SETTINGS_MODULE=make_a_plea.settings.local
   command: ./manage.py runserver 0.0.0.0:8000 
   volumes:
     - .:/makeaplea
