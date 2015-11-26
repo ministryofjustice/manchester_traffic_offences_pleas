@@ -9,6 +9,8 @@ Forms
 .button {
 	width: 100%;
 	box-sizing: border-box;
+	margin: 0 15px 15px 0;
+
 	@include media(tablet) {
 		width: auto;
 	}
@@ -27,24 +29,13 @@ Forms
 	float: none;
 	margin: 0 0 2em;
 
+	&:last-child,
+	&:only-child {
+		margin: 0 0 2em;
+	}
+
 	@include media(tablet) {
 		max-width: 30em;
-	}
-
-	.inline .block-label {
-		margin-right: 0;
-	}
-
-	@include media(tablet) {
-		.inline .block-label {
-			margin-right: 15px;
-		}
-	}
-
-	@include ie(6) {
-		.inline .block-label {
-			clear: none;
-		}
 	}
 
 	.form-group {
@@ -58,8 +49,18 @@ label {
 	margin-bottom: .25em;
 }
 
-.block-label {
+.block-label,
+.block-label:first-child,
+.block-label:last-child {
 	@include core-19;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left: 45px;
+
+	@include media(tablet) {
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
 
 	@include ie(6) {
 		display: inline-block;
@@ -69,11 +70,27 @@ label {
 	}
 
 	input {
+		width: auto;
+		height: auto;
 		font-size: inherit;
-		top: 16px;
+		top: 19px;
+		left: 19px;
 
 		@include media(tablet) {
-			top: 18px;
+			top: 21px;
+			left: 20px;
+		}
+	}
+
+	.inline & {
+		margin-right: 0;
+
+		@include media(tablet) {
+			margin-right: 15px;
+		}
+
+		@include ie(6) {
+			clear: none;
 		}
 	}
 }
@@ -92,6 +109,7 @@ label {
 
 .form-control {
 	width: 100%;
+	border: 1px solid $grey-2;
 
 	@include media(tablet) {
 		max-width: 20em;

@@ -4,18 +4,6 @@ from django.utils.safestring import mark_safe
 
 def globals(request):
     return {
-        # Application Title (Populates <title>)
-        'app_title': _('Make a Plea: Traffic offences') + ' - GOV.UK',
-
-        # Proposition Title (Populates proposition header)
-        'proposition_title': _('Make a Plea: Traffic offences'),
-
-        # Current Phase (Sets the current phase and the colour of phase tags). Presumed values: alpha, beta, live
-        'phase': 'beta',
-
-        # Product Type (Adds class to body based on service type). Presumed values: information, service
-        'product_type': 'service',
-
         # Google Analytics ID (Tracking ID for the service)
         'google_analytics_id': getattr(settings, "GOOGLE_ANALYTICS_ID", None),
 

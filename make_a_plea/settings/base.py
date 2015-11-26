@@ -187,7 +187,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'djcelery',
     'waffle',
-    'moj_template',
+    'govuk_template',
     'make_a_plea',
     'apps.forms',
     'apps.plea',
