@@ -29,6 +29,7 @@ NOTICE_TYPES_CHOICES = (("both", "Both"),
                         ("sjp", "SJP"),
                         ("non-sjp", "Non-SJP"))
 
+
 def get_totals(qs):
     totals = qs.aggregate(Sum('total_pleas'),
                           Sum('total_guilty'),
@@ -460,3 +461,15 @@ class Court(models.Model):
                                      self.court_name)
 
     objects = CourtManager()
+
+
+class DataValidation(models.Model):
+    date_entered = models.DateTimeField(auto_now_add=True)
+    urn_entered = models.CharField(max_length=50, null=False, blank=False)
+    urn_standardised = models.CharField(max_length=50, null=False, blank=False)
+    urn_formatted = models.CharField(max_length=50, null=False, blank=False)
+    case_match = models.ForeignKey("plea.Case", null=True, blank=True)
+    case_match_count = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["-date_entered"]
