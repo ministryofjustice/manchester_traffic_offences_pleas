@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.plea.models import UsageStats, Court, Case, CaseAction, CourtEmailCount, Offence
+from apps.plea.models import UsageStats, Court, Case, CaseAction, CourtEmailCount, Offence, DataValidation
 
 
 class UsageStatsAdmin(admin.ModelAdmin):
@@ -38,7 +38,12 @@ class CourtEmailCountAdmin(admin.ModelAdmin):
     model = CourtEmailCount
 
 
+class DataValidationAdmin(admin.ModelAdmin):
+    list_display = ("date_entered", "urn_entered", "case_match", "case_match_count")
+
+
 admin.site.register(UsageStats, UsageStatsAdmin)
 admin.site.register(Court, CourtAdmin)
 admin.site.register(CourtEmailCount, CourtEmailCountAdmin)
 admin.site.register(Case, CaseAdmin)
+admin.site.register(DataValidation, DataValidationAdmin)
