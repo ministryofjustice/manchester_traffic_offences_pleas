@@ -20,8 +20,5 @@ django-premailer
 
 requests==2.7.0
 
-# MOJ Template
-# Temporarily using the forked version of moj_template, to bring in
-# new placeholders for translation
-# django-moj-template==0.23.1
-git+https://github.com/froddd/django-moj-template.git
+# GOVUK Template
+git+https://github.com/froddd/govuk_template_django.git
