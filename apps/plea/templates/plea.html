@@ -153,9 +153,7 @@
 
 {% endblock stage_form %}
 
-{% block javascripts %}
-    {{ block.super }}
-
+{% block extra_js %}
     {% if notice_type.sjp %}
     <script type="text/javascript">
     $(function() {
@@ -166,7 +164,7 @@
 
         conditional = new moj.Modules._Conditional($mitigations);
 
-        {% if show_interpreter_question %}
+        {% if form.sjp_interpreter_needed %}
         $('[name=come_to_court]').on('change', function(){
             if($(this).val() === "True") {
                 $mitigations.data('conditional', 'sjp_interpreter_needed');
@@ -175,9 +173,9 @@
                 $mitigations.data('conditional', 'come_to_court');
             }
             conditional.refresh();
-        });
+        }).change();
         {% endif %}
     });
     </script>
     {% endif %}
-{% endblock javascripts %}
+{% endblock extra_js %}
