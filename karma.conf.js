@@ -15,7 +15,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'make_a_plea/assets-src/javascripts/vendor/jquery-1.11.0.min.js',
+      'https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js',
       'make_a_plea/assets-src/javascripts/moj.js',
       'make_a_plea/assets-src/javascripts/modules/*.js',
       'make_a_plea/assets-src/tests/*.spec.js'
