@@ -28,8 +28,8 @@ from .forms import (URNEntryForm,
                     ConfirmationForm)
 
 from .fields import ERROR_MESSAGES
-from .models import Court, Case, Offence
-from .standardisers import standardise_urn
+from .models import Court, Case, Offence, DataValidation
+from .standardisers import standardise_urn, format_for_region
 
 
 def get_case(urn):
@@ -79,6 +79,17 @@ class URNEntryStage(FormStage):
         clean_data = super(URNEntryStage, self).save(form_data, next_step)
 
         if "urn" in clean_data:
+            dv = DataValidation()
+            dv.urn_entered = clean_data["urn"]
+            dv.urn_standardised = standardise_urn(clean_data["urn"])
+            dv.urn_formatted = format_for_region(dv.urn_standardised)
+            cases = Case.objects.filter(urn=dv.urn_standardised)
+            dv.case_match_count = len(cases)
+            if len(cases) > 0:
+                dv.case_match = cases[0]
+
+            dv.save()
+
             clean_data["urn"] = standardise_urn(clean_data["urn"])
             try:
                 court = Court.objects.get_by_urn(clean_data["urn"])
