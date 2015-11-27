@@ -150,6 +150,8 @@
         {% endif %}
 
         ga('set', 'dimension1', '{{ LANGUAGE_CODE }}');
+        {% if notice_type %}ga('set', 'dimension2', '{{ notice_type.sjp|yesno:"Yes,No" }}');{% endif %}
+        {% if case.plea_made_by %}ga('set', 'dimension3', '{{ case.plea_made_by }}');{% endif %}
 
         {% block extra_analytics %}{% endblock extra_analytics %}
 
