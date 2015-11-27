@@ -142,14 +142,16 @@ Main styles
 
 		.change-link {
 			float: right;
-			margin: .1em 0 0 1em;
+			margin: 0 0 0 1em;
 			@include core-19;
-
-			@include media(tablet) {
-				margin-top: .2em;
-			}
 		}
 	}
+
+	.charge-title {
+		clear: both;
+		margin-top: 0;
+	}
+
 
 	dl {
 		margin: 0;
