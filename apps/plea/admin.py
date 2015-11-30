@@ -1,6 +1,13 @@
 from django.contrib import admin
 
-from apps.plea.models import UsageStats, Court, Case, CaseAction, CourtEmailCount, Offence, DataValidation
+from apps.plea.models import (UsageStats, Court,
+                              Case, CaseAction,
+                              CourtEmailCount,
+                              Offence,
+                              Result,
+                              ResultOffence,
+                              ResultOffenceData,
+                              DataValidation)
 
 
 class UsageStatsAdmin(admin.ModelAdmin):
@@ -24,6 +31,17 @@ class InlineOffence(admin.StackedInline):
     extra = 0
 
 
+class InlineResultOffenceData(admin.StackedInline):
+    model = ResultOffenceData
+    extra = 0
+
+
+class InlineResultOffence(admin.StackedInline):
+    model = ResultOffence
+    extra = 0
+    inlines = [ResultOffenceData]
+
+
 class CaseAdmin(admin.ModelAdmin):
     list_display = ("urn", "sent", "processed", "charge_count", "initiation_type")
     inlines = [InlineCaseAction, InlineOffence]
@@ -38,6 +56,10 @@ class CourtEmailCountAdmin(admin.ModelAdmin):
     model = CourtEmailCount
 
 
+class ResultAdmin(admin.ModelAdmin):
+    inlines = [InlineResultOffence, ]
+
+
 class DataValidationAdmin(admin.ModelAdmin):
     list_display = ("date_entered", "urn_entered", "case_match", "case_match_count")
 
@@ -46,4 +68,5 @@ admin.site.register(UsageStats, UsageStatsAdmin)
 admin.site.register(Court, CourtAdmin)
 admin.site.register(CourtEmailCount, CourtEmailCountAdmin)
 admin.site.register(Case, CaseAdmin)
+admin.site.register(Result, ResultAdmin)
 admin.site.register(DataValidation, DataValidationAdmin)

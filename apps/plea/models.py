@@ -293,6 +293,8 @@ class Offence(models.Model):
 
 class Result(models.Model):
     case = models.ForeignKey(Case, related_name="results", null=True, blank=True)
+    urn = models.CharField(max_length=30, db_index=True)
+
     case_number = models.CharField(max_length=12, null=True, blank=True,
                                    help_text="as supplied by DX")
     ou_code = models.CharField(max_length=10, null=True, blank=True)
@@ -306,7 +308,7 @@ class Result(models.Model):
 
 
 class ResultOffence(models.Model):
-    result = models.ForeignKey(Case, related_name="result_offences")
+    result = models.ForeignKey(Result, related_name="result_offences")
 
     offence_code = models.CharField(max_length=10, null=True, blank=True)
     offence_seq_number = models.CharField(max_length=10, null=True, blank=True)
@@ -321,7 +323,6 @@ class ResultOffenceData(models.Model):
     result_wording = models.TextField(max_length=4000)
     result_wording_welsh = models.TextField(max_length=4000, null=True, blank=True)
     result_seq_number = models.CharField(max_length=10, null=True, blank=True)
-
 
 
 class UsageStatsManager(models.Manager):
