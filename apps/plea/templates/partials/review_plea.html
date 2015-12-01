@@ -4,15 +4,14 @@
 
 <section class="review-subsection">
     <header>
-        <h3>{% spaceless %}
-            {% blocktrans %}Charge{% endblocktrans %} {{ forloop.counter }}
-            {% if pleaform.title  %}
-                <br>{{ pleaform.title }}
-            {% endif %}
-        {% endspaceless %}</h3>
+        <h3>{% blocktrans %}Charge{% endblocktrans %} {{ forloop.counter }}</h3>
 
         {% if show_edit_link %}
         <a class="change-link" href="{% url "plea_form_step" "plea" forloop.counter %}" class="review">{% blocktrans with charge_number=forloop.counter %}Change your plea for charge {{ charge_number }}{% endblocktrans %}</a>
+        {% endif %}
+
+        {% if pleaform.title  %}
+        <h4 class="charge-title">{{ pleaform.title }}</h4>
         {% endif %}
     </header>
 
