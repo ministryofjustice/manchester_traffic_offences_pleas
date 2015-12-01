@@ -75,6 +75,21 @@ class CaseAPICallTestCase(APITestCase):
         self.test_data = {
             u'urn': u'00AA0000000',
             u'case_number': '16273482',
+            u'extra_data': """{"OrganisationName": "",
+                            "Forename1": "Jimmy",
+                            "Forename2": "the",
+                            "Forename3": "",
+                            "Surname": "Dog",
+                            "DOB": "1960-1-1",
+                            "Gender": "M",
+                            "Address1": "",
+                            "Address2": "",
+                            "Address3": "",
+                            "Address4": "",
+                            "Address5": "",
+                            "Postcode": "",
+                            "DriverNumber": "",
+                            "NINO": "AB00123456C"}""",
             u'offences': [
                 {
                     u"ou_code": u"test ou",
@@ -134,15 +149,14 @@ class CaseAPICallTestCase(APITestCase):
 
         case_view = CaseViewSet.as_view({"post": "create"})
 
-        case_view(request)
+        response = case_view(request)
 
         case = Case.objects.all()[0]
 
         self.assertEqual(Case.objects.all().count(), 1)
         self.assertEqual(case.offences.all().count(), 2)
         self.assertEqual(case.urn, self.test_data["urn"])
-
-        self.assertEquals(case.urn, self.test_data["urn"])
+        import ipdb; ipdb.set_trace()
 
     def test_submission_without_offence_data(self):
         self.test_data["offences"] = []
