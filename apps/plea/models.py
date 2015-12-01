@@ -5,6 +5,7 @@ import datetime as dt
 from django.db import models
 from django.db.models import Sum, Count, F
 from django.utils.translation import get_language
+from django.contrib.postgres.fields import HStoreField
 
 
 STATUS_CHOICES = (("created_not_sent", "Created but not sent"),
@@ -238,13 +239,7 @@ class Case(models.Model):
 
     urn = models.CharField(max_length=30, db_index=True)
 
-    title = models.CharField(max_length=35, null=True, blank=True)
-    name = models.CharField(max_length=255, null=True, blank=True)
-
-    forenames = models.CharField(max_length=105, null=True, blank=True,
-                                 help_text="as supplied by DX")
-    surname = models.CharField(max_length=35, null=True, blank=True,
-                               help_text="as supplied by DX")
+    extra_data = HStoreField(null=True, blank=True)
 
     case_number = models.CharField(max_length=12, null=True, blank=True,
                                    help_text="as supplied by DX")
