@@ -1,4 +1,7 @@
+import json
+
 from rest_framework import serializers
+from rest_framework_hstore.fields import HStoreField
 
 from apps.plea.models import Case, UsageStats, Offence, Result, ResultOffence, ResultOffenceData
 from apps.plea.standardisers import standardise_urn
@@ -16,18 +19,20 @@ class OffenceSerializer(serializers.ModelSerializer):
 class CaseSerializer(serializers.ModelSerializer):
     case_number = serializers.CharField(required=True, validators=[validate_case_number, ])
     urn = serializers.CharField(required=True, validators=[is_urn_valid, ])
-
+    extra_data = serializers.CharField(required=False)
     offences = OffenceSerializer(many=True)
 
     class Meta:
+
         model = Case
-        fields = ("offences", "urn", "title", "name", "forenames", "surname",
+        fields = ("offences", "urn", "extra_data",
                   "case_number", "initiation_type", "language")
 
     def create(self, validated_data):
 
         # Create the case instance
         offences = validated_data.pop("offences", [])
+        validated_data["extra_data"] = json.loads(validated_data["extra_data"])
 
         urn = validated_data.pop("urn")
         std_urn = standardise_urn(urn)
@@ -63,8 +68,6 @@ class ResultOffenceSerializer(serializers.ModelSerializer):
         offence_data = validated_data.pop("offence_data", [])
 
         case = ResultOffence.objects.create(**validated_data)
-
-        print validated_data
 
         # Create or update each page instance
         for item in offence_data:
