@@ -143,6 +143,61 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             }
         }
 
+    def test_dx_urn_sets_dx_flag(self):
+        Court.objects.create(court_code="0000",
+                             region_code="01",
+                             court_name="DX Court",
+                             court_address="DX Court",
+                             court_telephone="0800 MAKEAPLEA",
+                             court_email="test@test.com",
+                             submission_email="test@test.com",
+                             plp_email="test@test.com",
+                             enabled=True,
+                             test_mode=False,
+                             notice_types="both",
+                             display_case_data=True)
+
+        case = Case.objects.create(urn="01AA0000000",
+                                   sent=False)
+
+        case.offences.create(offence_short_title="Offence short title",
+                             offence_wording="Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+                             offence_seq_number="001")
+
+        form = PleaOnlineForms(self.session, "enter_urn")
+        form.load(self.request_context)
+        form.save({"urn": "01/AA/00000/00"}, self.request_context)
+
+        self.assertEqual(self.session["dx"], True)
+        self.assertEqual(self.session["case"]["number_of_charges"], 1)
+
+    def test_non_dx_urn_unsets_dx_flag(self):
+        self.session.update({"dx": True})
+        self.session.update({"case": {"number_of_charges": 2}})
+
+        Court.objects.create(court_code="0000",
+                             region_code="01",
+                             court_name="DX Court",
+                             court_address="DX Court",
+                             court_telephone="0800 MAKEAPLEA",
+                             court_email="test@test.com",
+                             submission_email="test@test.com",
+                             plp_email="test@test.com",
+                             enabled=True,
+                             test_mode=False,
+                             notice_types="both",
+                             display_case_data=True)
+
+        Case.objects.create(urn="01AA0000000",
+                            sent=False)
+
+        form = PleaOnlineForms(self.session, "enter_urn")
+        form.load(self.request_context)
+        form.save({"urn": "01/AA/00000/00"}, self.request_context)
+
+        self.assertEqual(self.session["dx"], False)
+        self.assertNotIn("number_of_charges", self.session["case"])
+
     def test_urn_entry_sjp_only_sets_notice_type(self):
         Court.objects.create(court_code="0000",
                              region_code="99",
