@@ -74,5 +74,5 @@ class TestDataValidation(TestCase):
         self.assertEqual(dv[0].urn_entered, "51/AA/00000/00")
         self.assertEqual(dv[0].urn_standardised, "51AA0000000")
         self.assertEqual(dv[0].urn_formatted, "51/AA/00000/00")
-        self.assertEqual(dv[0].case_match.id, case2.id)
+        self.assertEqual(dv[0].case_match.id, case.id)
         self.assertEqual(dv[0].case_match_count, 2)
