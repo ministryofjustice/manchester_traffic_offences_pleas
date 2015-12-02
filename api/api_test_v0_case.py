@@ -75,21 +75,21 @@ class CaseAPICallTestCase(APITestCase):
         self.test_data = {
             u'urn': u'00AA0000000',
             u'case_number': '16273482',
-            u'extra_data': """{"OrganisationName": "",
-                            "Forename1": "Jimmy",
-                            "Forename2": "the",
-                            "Forename3": "",
-                            "Surname": "Dog",
-                            "DOB": "1960-1-1",
-                            "Gender": "M",
-                            "Address1": "",
-                            "Address2": "",
-                            "Address3": "",
-                            "Address4": "",
-                            "Address5": "",
-                            "Postcode": "",
-                            "DriverNumber": "",
-                            "NINO": "AB00123456C"}""",
+            u'extra_data': {"OrganisationName": "",
+                                       "Forename1": "Jimmy",
+                                       "Forename2": "the",
+                                       "Forename3": "",
+                                       "Surname": "Dog",
+                                       "DOB": "1960-1-1",
+                                       "Gender": "M",
+                                       "Address1": "",
+                                       "Address2": "",
+                                       "Address3": "",
+                                       "Address4": "",
+                                       "Address5": "",
+                                       "Postcode": "",
+                                       "DriverNumber": "",
+                                       "NINO": "AB00123456C"},
             u'offences': [
                 {
                     u"ou_code": u"test ou",
@@ -108,76 +108,72 @@ class CaseAPICallTestCase(APITestCase):
             ]
         }
 
+    def _post_data(self, data):
+        factory = APIRequestFactory()
+
+        request = factory.post("/v0/case/", self.test_data,
+                               format="json")
+        force_authenticate(request, self.user)
+
+        case_view = CaseViewSet.as_view({"post": "create"})
+        response = case_view(request)
+        response.render()
+        return response
+
     def test_duplicate_submission_validation(self):
         self.test_data['urn'] = '00/aa/0000000/00'
-        response = self.client.post(self.endpoint, self.test_data,
-                                    **self.auth_header)
+        response = self._post_data(self.test_data)
         self.assertEqual(response.status_code, 201)
 
         self.test_data['urn'] = '00/aa/0000000/00'
-        response = self.client.post(self.endpoint, self.test_data,
-                                    **self.auth_header)
-
+        response = self._post_data(self.test_data)
         self.assertEqual(response.status_code, 400)
 
     def test_urn_blank_urn_validation(self):
         self.test_data['urn'] = ""
 
-        response = self.client.post(self.endpoint, self.test_data,
-                                    **self.auth_header)
+        response = self._post_data(self.test_data)
+
         self.assertEqual(response.status_code, 400)
 
     def test_empty_urn_validation(self):
         del self.test_data['urn']
 
-        response = self.client.post(self.endpoint, self.test_data,
-                                    **self.auth_header)
+        response = self._post_data(self.test_data)
+
         self.assertEqual(response.status_code, 400)
 
     def test_urn_invalid_format_validation(self):
         self.test_data['urn'] = "aa/00/43224234/aa/25"
 
-        response = self.client.post(self.endpoint, self.test_data,
-                                    **self.auth_header)
+        response = self._post_data(self.test_data)
+
         self.assertEqual(response.status_code, 400)
 
     def test_valid_submission(self):
-        factory = APIRequestFactory()
-        request = factory.post("/v0/case/", json.dumps(self.test_data),
-                               content_type="application/json")
-        force_authenticate(request, self.user)
-
-        case_view = CaseViewSet.as_view({"post": "create"})
-
-        response = case_view(request)
+        response = self._post_data(self.test_data)
 
         case = Case.objects.all()[0]
 
         self.assertEqual(Case.objects.all().count(), 1)
         self.assertEqual(case.offences.all().count(), 2)
         self.assertEqual(case.urn, self.test_data["urn"])
-        import ipdb; ipdb.set_trace()
 
     def test_submission_without_offence_data(self):
         self.test_data["offences"] = []
 
-        factory = APIRequestFactory()
-
-        request = factory.post("/v0/case/", json.dumps(self.test_data),
-                               content_type="application/json")
-        force_authenticate(request, self.user)
-
-        case_view = CaseViewSet.as_view({"post": "create"})
-
-        case_view(request)
+        response = self._post_data(self.test_data)
 
         case = Case.objects.all()[0]
 
         self.assertEquals(case.offences.all().count(), 0)
 
     def test_valid_submissions_returns_dict(self):
-        response = self.client.post(self.endpoint, self.test_data,
-                                    **self.auth_header)
+        response = self._post_data(self.test_data)
+
+
+        case = Case.objects.all()[0]
+
         self.assertEqual(response.status_code, 201)
 
         returned_data = json.loads(response.content)
