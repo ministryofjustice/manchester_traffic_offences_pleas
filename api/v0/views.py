@@ -6,18 +6,25 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 
-from .serializers import CaseSerializer, UsageStatsSerializer
+from .serializers import CaseSerializer, UsageStatsSerializer, ResultSerializer
 
-from apps.plea.models import Case, CourtEmailCount, UsageStats
+from apps.plea.models import Case, CourtEmailCount, UsageStats, Result
 
 
 class CaseViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     """
     Create new cases
     """
-
     queryset = Case.objects.all()
     serializer_class = CaseSerializer
+
+
+class ResultViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    """
+    Create new results
+    """
+    queryset = Result.objects.all()
+    serializer_class = ResultSerializer
 
 
 class PublicStatsViewSet(viewsets.ViewSet):
