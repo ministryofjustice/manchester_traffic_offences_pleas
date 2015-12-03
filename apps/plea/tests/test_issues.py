@@ -12,7 +12,9 @@ class TestPleaFormIssues(TestMultiPleaFormBase):
         self.request_context = {}
 
     def test_used_urn_in_session(self):
-        case = Case.objects.create(urn="06AA000000000", name="Ian George",
+        case = Case.objects.create(urn="06AA000000000",
+                                   extra_data={"FirstName1": "Frank",
+                                               "Surname": "Marsh"},
                                    sent=True)
         case.save()
 
