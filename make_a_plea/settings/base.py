@@ -184,6 +184,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.postgres',
     'django_extensions',
     'djcelery',
     'waffle',
@@ -195,8 +196,6 @@ INSTALLED_APPS = [
     'apps.receipt',
     'django_premailer',
 ]
-
-INSTALLED_APPS
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
