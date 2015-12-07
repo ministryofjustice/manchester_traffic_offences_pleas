@@ -20,6 +20,9 @@ class CaseSerializer(serializers.ModelSerializer):
     urn = serializers.CharField(required=True, validators=[is_urn_valid, ])
     offences = OffenceSerializer(many=True)
 
+    def __init__(self, *args, **kwargs):
+        super(CaseSerializer, self).__init__(*args, **kwargs)
+
     class Meta:
 
         model = Case
@@ -50,6 +53,9 @@ class CaseSerializer(serializers.ModelSerializer):
 class ResultOffenceDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = ResultOffenceData
+        fields = ("result_code", "result_short_title", "result_short_title_welsh",
+                  "result_wording",
+                  "result_wording_welsh")
 
 
 class ResultOffenceSerializer(serializers.ModelSerializer):
@@ -60,19 +66,18 @@ class ResultOffenceSerializer(serializers.ModelSerializer):
         fields = ("offence_data", "offence_code", "offence_seq_number")
 
     def create(self, validated_data):
-
         # Create the case instance
         offence_data = validated_data.pop("offence_data", [])
 
-        case = ResultOffence.objects.create(**validated_data)
+        result_offence = ResultOffence.objects.create(**validated_data)
 
         # Create or update each page instance
         for item in offence_data:
             data = ResultOffenceData(**item)
-            data.result_offence = case
+            data.result_offence = result_offence
             data.save()
 
-        return case
+        return result_offence
 
 
 class ResultSerializer(serializers.ModelSerializer):
@@ -91,7 +96,6 @@ class ResultSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Create the case instance
         offences = validated_data.pop("result_offences", [])
-
         urn = validated_data.pop("urn")
         std_urn = standardise_urn(urn)
 
@@ -104,10 +108,10 @@ class ResultSerializer(serializers.ModelSerializer):
             data = item.pop("offence_data")
             offence = ResultOffence(**item)
             offence.result = result
+            offence.save()
+
             for offence_data in data:
                 offence.offence_data.create(**offence_data)
-
-            offence.save()
 
         return result
 
