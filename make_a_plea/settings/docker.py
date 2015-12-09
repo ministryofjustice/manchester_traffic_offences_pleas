@@ -2,7 +2,7 @@ from .base import *
 import os
 
 
-DEBUG = True 
+DEBUG = os.environ.get("DJANGO_DEBUG", "") == "True"
 TEMPLATE_DEBUG = DEBUG
 
 DATABASES = {
@@ -27,7 +27,7 @@ SMTP_ROUTES["PNN"]["USERNAME"] = os.environ.get("PNN_EMAIL_USERNAME", "")
 SMTP_ROUTES["PNN"]["PASSWORD"] = os.environ.get("PNN_EMAIL_PASSWORD", "")
 
 BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1',
-                            'queue_name_prefix': 'dev-',
+                            'queue_name_prefix': os.environ.get("CELERY_QUEUE_POLLING_PREFIX", "dev-"),
                             'polling_interval': 1,
                             'visibility_timeout': 3600}
 
@@ -39,7 +39,8 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStora
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
-CELERY_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", True)
+CELERY_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
+BROKER_URL = os.environ.get("CELERY_BROKER_URL", "SQS://")
 
 ENCRYPTED_COOKIE_KEYS = [
     os.environ["ENCRYPTED_COOKIE_KEY"]
