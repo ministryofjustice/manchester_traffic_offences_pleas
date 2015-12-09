@@ -49,13 +49,6 @@ def is_date_in_next_6_months(date):
 
 
 def is_urn_valid(urn):
-    """
-    urn is 11 or 13 characters long in the following format:
-
-    00/AA/0000000/00
-    or
-    00/AA/00000/00
-    """
     urn = standardise_urn(urn)
     pattern = get_pattern(urn)
 
@@ -71,6 +64,16 @@ def is_urn_valid(urn):
 
     court = Court.objects.get_by_urn(urn)
     if court.validate_urn and not Case.objects.filter(urn__iexact=urn, sent=False).exists():
+        raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
+
+    return True
+
+
+def is_valid_urn_format(urn):
+    urn = standardise_urn(urn)
+    pattern = get_pattern(urn)
+
+    if not re.match(pattern, urn) or not Court.objects.has_court(urn):
         raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
 
     return True
