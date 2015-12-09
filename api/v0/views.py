@@ -73,7 +73,9 @@ class PublicStatsViewSet(viewsets.ViewSet):
 
     @list_route()
     def by_court(self, request):
+        start_date = request.GET.get("start", None)
+        end_date = request.GET.get("end", None)
 
-        stats = CourtEmailCount.objects.get_stats_by_court()
+        stats = CourtEmailCount.objects.get_stats_by_court(start=start_date, end=end_date)
 
         return Response(stats)
