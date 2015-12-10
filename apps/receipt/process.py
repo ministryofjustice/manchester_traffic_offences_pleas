@@ -10,6 +10,7 @@ from django.template.loader import render_to_string
 
 from apps.plea.models import CourtEmailCount, Case
 from .models import ReceiptLog
+from apps.plea.standardisers import standardise_urn
 
 
 hmcts_body_re = re.compile("<<<makeaplea-ref:\s*(\d+)/(\d+)>>>")
@@ -276,10 +277,10 @@ def process_receipt(subject, body):
         if case_obj.has_action("receipt_success"):
             return False, "{} already processed. Skipping.".format(urn)
 
-        if urn.upper() != case_obj.urn:
+        if standardise_urn(urn) != case_obj.urn:
             # HMCTS have changed the URN, update our records and log the change
 
-            old_urn, case_obj.urn = case_obj.urn, urn
+            old_urn, case_obj.urn = case_obj.urn, standardise_urn(urn)
 
             case_obj.add_action("receipt_success", "\URN CHANGED! Old Urn: {}".format(old_urn))
 
