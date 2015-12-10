@@ -45,7 +45,7 @@ class InlineResultOffence(admin.StackedInline):
 class CaseAdmin(admin.ModelAdmin):
     list_display = ("urn", "sent", "processed", "charge_count", "initiation_type")
     inlines = [InlineCaseAction, InlineOffence]
-    search_fields = ["urn", "name"]
+    search_fields = ["urn", ]
 
     def charge_count(self, obj):
         return obj.offences.count()
