@@ -141,7 +141,7 @@ class CourtEmailCountManager(models.Manager):
 class CourtEmailCount(models.Model):
     date_sent = models.DateTimeField(auto_now_add=True)
     court = models.ForeignKey("Court", related_name="court_email_counts")
-    initiation_type = models.CharField(max_length=2, null=False, blank=False, default="C",
+    initiation_type = models.CharField(max_length=2, null=False, blank=False, default="Q",
                                        choices=INITIATION_TYPE_CHOICES)
     language = models.CharField(max_length=2, null=False, blank=False, default="en",
                                 choices=COURT_LANGUAGE_CHOICES)
@@ -195,7 +195,7 @@ class CourtEmailCount(models.Model):
         except KeyError:
             return False
 
-        self.initiation_type = "J" if context["notice_type"]["sjp"] else "C"
+        self.initiation_type = "J" if context["notice_type"]["sjp"] else "Q"
         self.language = get_language().split("-")[0]
 
         for plea_data in context["plea"]["data"]:
@@ -245,7 +245,7 @@ class Case(models.Model):
                                    help_text="as supplied by DX")
 
     ou_code = models.CharField(max_length=10, null=True, blank=True)
-    initiation_type = models.CharField(max_length=2, null=False, blank=False, default="C",
+    initiation_type = models.CharField(max_length=2, null=False, blank=False, default="Q",
                                        choices=INITIATION_TYPE_CHOICES)
     language = models.CharField(max_length=2, null=False, blank=False, default="en",
                                 choices=COURT_LANGUAGE_CHOICES)
