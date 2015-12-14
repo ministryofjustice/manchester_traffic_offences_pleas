@@ -44,8 +44,9 @@ class InlineResultOffence(admin.StackedInline):
 
 class CaseAdmin(admin.ModelAdmin):
     list_display = ("urn", "sent", "processed", "charge_count", "initiation_type")
+    list_filter = ("sent", "processed", "initiation_type", "ou_code")
     inlines = [InlineCaseAction, InlineOffence]
-    search_fields = ["urn", ]
+    search_fields = ["urn", "case_number"]
 
     def charge_count(self, obj):
         return obj.offences.count()
@@ -57,7 +58,10 @@ class CourtEmailCountAdmin(admin.ModelAdmin):
 
 
 class ResultAdmin(admin.ModelAdmin):
+    list_display = ("urn", "case_number", "ou_code", "sent", "sent_on")
+    list_filter = ("ou_code", "sent", )
     inlines = [InlineResultOffence, ]
+    search_fields = ["urn", "case_number"]
 
 
 class DataValidationAdmin(admin.ModelAdmin):
