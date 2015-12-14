@@ -76,20 +76,20 @@ class CaseAPICallTestCase(APITestCase):
             u'urn': u'00AA0000000',
             u'case_number': '16273482',
             u'extra_data': {"OrganisationName": "",
-                                       "Forename1": "Jimmy",
-                                       "Forename2": "the",
-                                       "Forename3": "",
-                                       "Surname": "Dog",
-                                       "DOB": "1960-1-1",
-                                       "Gender": "M",
-                                       "Address1": "",
-                                       "Address2": "",
-                                       "Address3": "",
-                                       "Address4": "",
-                                       "Address5": "",
-                                       "Postcode": "",
-                                       "DriverNumber": "",
-                                       "NINO": "AB00123456C"},
+                            "Forename1": "Jimmy",
+                            "Forename2": "the",
+                            "Forename3": "",
+                            "Surname": "Dog",
+                            "DOB": "1960-1-1",
+                            "Gender": "M",
+                            "Address1": "",
+                            "Address2": "",
+                            "Address3": "",
+                            "Address4": "",
+                            "Address5": "",
+                            "Postcode": "",
+                            "DriverNumber": "",
+                            "NINO": "AB00123456C"},
             u'offences': [
                 {
                     u"ou_code": u"test ou",
@@ -124,6 +124,18 @@ class CaseAPICallTestCase(APITestCase):
         self.test_data['urn'] = '00/aa/0000000/00'
         response = self._post_data(self.test_data)
         self.assertEqual(response.status_code, 201)
+
+        self.test_data['urn'] = '00/aa/0000000/00'
+        response = self._post_data(self.test_data)
+        self.assertEqual(response.status_code, 201)
+
+    def test_duplicate_submission_with_sent_case(self):
+        self.test_data['urn'] = '00/aa/0000000/00'
+        response = self._post_data(self.test_data)
+        self.assertEqual(response.status_code, 201)
+        c = Case.objects.get(urn="00AA000000000")
+        c.sent = True
+        c.save()
 
         self.test_data['urn'] = '00/aa/0000000/00'
         response = self._post_data(self.test_data)

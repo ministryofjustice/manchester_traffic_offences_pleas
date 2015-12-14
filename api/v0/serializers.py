@@ -29,32 +29,37 @@ class CaseSerializer(serializers.ModelSerializer):
         fields = ("offences", "urn", "extra_data",
                   "case_number", "initiation_type", "language")
 
-    def create(self, validated_data):
-        # Create the case instance
-        offences = validated_data.pop("offences", [])
-
-        urn = validated_data.pop("urn")
+    def validate(self, data):
+        urn = data.pop("urn")
         std_urn = standardise_urn(urn)
-        validated_data["urn"] = std_urn
+        data["urn"] = std_urn
 
         # Has this URN been used already?
-        sent_case = Case.objects.filter(urn=urn,
-                                        case_number=validated_data["case_number"],
+        sent_case = Case.objects.filter(urn=std_urn,
+                                        case_number=data["case_number"],
                                         sent=True).exists()
 
         if sent_case:
             raise exceptions.ValidationError("URN / Case number already exists and has been used")
 
+        return data
+
+    def create(self, validated_data):
+        # Create the case instance
+        offences = validated_data.pop("offences", [])
+
         # Update or create?
-        open_cases = Case.objects.filter(urn=urn,
+        open_cases = Case.objects.filter(urn=validated_data["urn"],
                                          case_number=validated_data["case_number"],
                                          sent=False)
 
         if open_cases:
             case = open_cases[0]
             case.offences.all().delete()
-            case.initiation_type = validated_data["initiation_type"]
-            case.language = validated_data["initiation_type"]
+            if "initiation_type" in validated_data:
+                case.initiation_type = validated_data["initiation_type"]
+            if "language" in validated_data:
+                case.language = validated_data["language"]
             case.extra_data = validated_data["extra_data"]
             case.save()
         else:
@@ -98,35 +103,45 @@ class ResultSerializer(serializers.ModelSerializer):
                   "instalment_amount", "lump_sum_amount", "pay_by_date",
                   "payment_type")
 
-    def create(self, validated_data):
-        # Create the case instance
-        offences = validated_data.pop("result_offences", [])
-        urn = validated_data.pop("urn")
+    def validate(self, data):
+        urn = data.pop("urn")
         std_urn = standardise_urn(urn)
-        validated_data["urn"] = std_urn
+        data["urn"] = std_urn
 
         # Has this URN been used already?
         sent_results = Result.objects.filter(urn=urn,
-                                             case_number=validated_data["case_number"],
+                                             case_number=data["case_number"],
                                              sent=True).exists()
 
         if sent_results:
             raise exceptions.ValidationError("URN / Result number already exists and has been used")
 
+        return data
+
+    def create(self, validated_data):
+        # Create the case instance
+        offences = validated_data.pop("result_offences", [])
+
         # Update or create?
-        open_results = Result.objects.filter(urn=urn,
+        open_results = Result.objects.filter(urn=validated_data["urn"],
                                              case_number=validated_data["case_number"],
                                              sent=False)
 
         if open_results:
             result = open_results[0]
             result.result_offences.all().delete()
-            result.account_number = validated_data["account_number"]
-            result.division = validated_data["division"]
-            result.instalment_amount = validated_data["instalment_amount"]
-            result.lump_sum_amount = validated_data["lump_sum_amount"]
-            result.pay_by_date = validated_data["pay_by_date"]
-            result.payment_type = validated_data["payment_type"]
+            if "account_number" in validated_data:
+                result.account_number = validated_data["account_number"]
+            if "division" in validated_data:
+                result.division = validated_data["division"]
+            if "instalment_amount" in validated_data:
+                result.instalment_amount = validated_data["instalment_amount"]
+            if "lump_sum_amount" in validated_data:
+                result.lump_sum_amount = validated_data["lump_sum_amount"]
+            if "pay_by_date" in validated_data:
+                result.pay_by_date = validated_data["pay_by_date"]
+            if "payment_type" in validated_data:
+                result.payment_type = validated_data["payment_type"]
             result.save()
         else:
             result = Result.objects.create(**validated_data)
