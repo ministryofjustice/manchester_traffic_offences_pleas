@@ -5,7 +5,7 @@ COPY /docker/rds-combined-ca-bundle.pem /usr/local/share/ca-certificates/rds-com
 RUN chown root:root /usr/local/share/ca-certificates/rds-combined-ca-bundle.pem && \
     chmod 600 /usr/local/share/ca-certificates/rds-combined-ca-bundle.pem
 
-RUN groupadd makeaplea && useradd --create-home --home-dir /home/makeaplea -g makeaplea makeaplea
+#RUN groupadd makeaplea && useradd --create-home --home-dir /home/makeaplea -g makeaplea makeaplea
 
 ENV APP_HOME=/makeaplea/
 ENV DJANGO_SETTINGS_MODULE=make_a_plea.settings.docker
@@ -18,7 +18,12 @@ ADD requirements/ $APP_HOME/requirements/
 
 RUN pip install -r requirements.txt
 
-USER makeaplea
+RUN mkdir /user_data
+RUN mkdir /user_data/.gnupg
+#RUN chown -R makeaplea:makeaplea /user_data
+VOLUME ["/user_data"]
+
+#USER makeaplea
 COPY . $APP_HOME
 
 CMD ["gunicorn",  "make_a_plea.wsgi", "--bind=0.0.0.0:9080"]
