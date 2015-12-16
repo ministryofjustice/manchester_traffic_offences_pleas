@@ -136,8 +136,8 @@ class TestSJP(TestMultiPleaFormBase):
 
         # Check SJP is in the count table
         c = list(CourtEmailCount.objects.all())
-        self.assertEqual(c[0].initiation_type, "C")
+        self.assertEqual(c[0].initiation_type, "Q")
 
         # Check SJP is in the count table
         c = list(Case.objects.all())
-        self.assertEqual(c[0].initiation_type, "C")
+        self.assertEqual(c[0].initiation_type, "Q")
