@@ -72,7 +72,7 @@
     </div>
 {% endblock stage_form %}
 
-{% block javascripts %}
+{% block body_end %}
     {{ block.super }}
 
     <script type="text/javascript">
@@ -87,4 +87,4 @@
         new moj.Modules._TemplatedElement($('#accounts-heading'), options);
     });
     </script>
-{% endblock javascripts %}
+{% endblock body_end %}

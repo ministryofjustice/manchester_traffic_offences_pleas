@@ -86,7 +86,7 @@
 
 {% endblock stage_form %}
 
-{% block javascripts %}
+{% block body_end %}
     {{ block.super }}
 
     <script type="text/javascript">
@@ -115,4 +115,4 @@
         new moj.Modules._TemplatedElement($('[for$=_pay_amount] .label-text'), options);
     });
     </script>
-{% endblock javascripts %}
+{% endblock body_end %}
