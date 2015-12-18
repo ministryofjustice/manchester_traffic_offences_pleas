@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
 
 from apps.plea.models import (UsageStats, Court,
                               Case, CaseAction,
@@ -8,6 +9,47 @@ from apps.plea.models import (UsageStats, Court,
                               ResultOffence,
                               ResultOffenceData,
                               DataValidation)
+
+
+class RegionalFilter(admin.SimpleListFilter):
+    title = _('Region')
+
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = 'region'
+
+    def lookups(self, request, model_admin):
+        codes = [(c.region_code, "{} - {}".format(c.region_code, c.court_name)) for c in Court.objects.all()]
+        return codes
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(urn_entered__startswith=self.value())
+        else:
+            return queryset
+
+
+class MatchFilter(admin.SimpleListFilter):
+    title = _('Match')
+
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = 'match'
+
+    def lookups(self, request, model_admin):
+        codes = [(True, "Yes"), (False, "No")]
+        return codes
+
+    def queryset(self, request, queryset):
+
+        if self.value() is not None:
+            v = True if self.value() == u"True" else False
+            if v is True:
+                return queryset.filter(case_match__isnull=False)
+            elif v is False:
+                return queryset.filter(case_match__isnull=True)
+            else:
+                return queryset
+        else:
+            return queryset
 
 
 class UsageStatsAdmin(admin.ModelAdmin):
@@ -66,6 +108,7 @@ class ResultAdmin(admin.ModelAdmin):
 
 class DataValidationAdmin(admin.ModelAdmin):
     list_display = ("date_entered", "urn_entered", "case_match", "case_match_count")
+    list_filter = (MatchFilter, RegionalFilter)
 
 
 admin.site.register(UsageStats, UsageStatsAdmin)
