@@ -103,7 +103,7 @@ class CourtEmailCountManager(models.Manager):
 
         return results
 
-    def get_stats_by_court(self):
+    def get_stats_by_court(self, start=None, end=None):
         """
         Return stats grouped by court
         """
@@ -115,6 +115,12 @@ class CourtEmailCountManager(models.Manager):
 
             qs = self.filter(sent=True,
                              court__id=court.id)
+
+            if start:
+                qs = qs.filter(date_sent__gte=start)
+
+            if end:
+                qs = qs.filter(date_sent__lte=end)
 
             data = {"court_name": court.court_name,
                     "region_code": court.region_code}
