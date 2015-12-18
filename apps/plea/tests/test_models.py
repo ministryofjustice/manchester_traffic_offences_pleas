@@ -199,6 +199,28 @@ class CourtEmailCountModelTestCase(TestStatsBase):
         self.assertEqual(stats[0]["guilty"], 8)
         self.assertEqual(stats[0]["not_guilty"], 5)
 
+    def test_get_stats_by_court_with_start_date(self):
+
+        stats = CourtEmailCount.objects.get_stats_by_court(start="2015-01-12")
+
+        self.assertEqual(len(stats), 2)
+        self.assertEqual(stats[0]["court_name"], "Court 01")
+        self.assertEqual(stats[0]["submissions"], 3)
+        self.assertEqual(stats[0]["pleas"], 6)
+        self.assertEqual(stats[0]["guilty"], 3)
+        self.assertEqual(stats[0]["not_guilty"], 3)
+
+    def test_get_stats_by_court_with_end_date(self):
+
+        stats = CourtEmailCount.objects.get_stats_by_court(end="2015-01-11")
+
+        self.assertEqual(len(stats), 2)
+        self.assertEqual(stats[0]["court_name"], "Court 01")
+        self.assertEqual(stats[0]["submissions"], 4)
+        self.assertEqual(stats[0]["pleas"], 7)
+        self.assertEqual(stats[0]["guilty"], 5)
+        self.assertEqual(stats[0]["not_guilty"], 2)
+
     def test_get_stats_days_from_hearing(self):
 
         stats = CourtEmailCount.objects.get_stats_days_from_hearing()
