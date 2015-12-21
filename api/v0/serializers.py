@@ -91,7 +91,7 @@ class ResultOffenceSerializer(serializers.ModelSerializer):
 
 
 class ResultSerializer(serializers.ModelSerializer):
-    case_number = serializers.CharField(required=True, validators=[validate_case_number, ])
+    case_number = serializers.CharField(required=True)
     urn = serializers.CharField(required=True, validators=[is_valid_urn_format, ])
 
     result_offences = ResultOffenceSerializer(many=True)
