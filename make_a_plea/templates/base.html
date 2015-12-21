@@ -55,14 +55,14 @@
 
                     {% if "success" in message.tags %}
                     <section class="success-header" role="alert">
-                        <p class="ticked">{{ message }}</p>
+                        <h1>{{ message }}</h1>
                     </section>
                     {% endif %}
 
                     {% if "error" in message.tags %}
                     <section class="error-summary">
                         {% if "session_timeout" in message.tags %}
-                        <h1 class="heading-medium">{% blocktrans %}Session timeout{% endblocktrans %}</h1>
+                        <h1>{% blocktrans %}Session timeout{% endblocktrans %}</h1>
                         <p>{% blocktrans %}Your session has expired, re-enter your details and try again.{% endblocktrans %}</p>
                         {% else %}
                         {{ message|safe }}
