@@ -1,0 +1,120 @@
+{% extends "base_user_email.html" %}
+
+{% load date %}
+{% load i18n %}
+{% load urn %}
+{% load humanize %}
+
+{% block subject %}{% blocktrans %}Notice of fine and collection order{% endblocktrans %}{% endblock subject %}
+
+{% block extra_css %}
+    h1 {
+        font-size: 32px;
+    }
+    .name {
+        font-weight: 400;
+    }
+    .collapse {
+        margin: 6px 0;
+    }
+{% endblock extra_css %}
+
+{% block content %}
+
+    <h1>{% blocktrans %}Notice of fine and collection order{% endblocktrans %}</h1>
+
+    <hr>
+
+
+    {# Case information #}
+    <h3 class="name">{{ name }}</h3>
+
+    <h3 class="collapse">{% blocktrans %}URN:{% endblocktrans %}</h3>
+    <p class="collapse">{{ urn|format_urn }}</p>
+
+    <h3 class="collapse">{% blocktrans %}Your court:{% endblocktrans %}</h3>
+    <p class="collapse">{{ court }}</p>
+
+    <hr>
+
+
+    {# Fines and penalties #}
+    <h2>{% blocktrans %}Fines and penalties{% endblocktrans %}</h2>
+
+    {% if fines %}
+    <p>{% for fine in fines %}
+        {% if forloop.counter != 1 %}<br>{% endif %}
+        {{ fine.label }} £{{ fine.amount|floatformat:2|intcomma }}.
+    {% endfor %}</p>
+    {% endif %}
+
+    <h3>{% blocktrans %}Total to pay:{% endblocktrans %}</h3>
+    <p>£{{ total|floatformat:2|intcomma }}</p>
+
+    <h3>{% blocktrans %}Pay by:{% endblocktrans %}</h3>
+    <p>{{ pay_by|date:"d/m/Y" }}</p>
+
+    {% if endorsements %}
+    <h3>{% blocktrans %}Endorsements:{% endblocktrans %}</h3>
+    <p>{% for endorsement in endorsements %}
+        {% if forloop.counter != 1 %}<br>{% endif %}
+        {{ endorsement }}
+    {% endfor %}</p>
+    {% endif %}
+
+    <p><strong>{% blocktrans %}Do not send your driving licence to the court. The DVLA will contact you if they need you to send it to them.{% endblocktrans %}</strong></p>
+
+    <hr>
+
+
+    {# What happens next #}
+    <h2>{% blocktrans %}What happens next{% endblocktrans %}</h2>
+
+    <h3>{% blocktrans %}When paying your fine{% endblocktrans %}</h3>
+    <p>{% blocktrans %}You will need to tell us:{% endblocktrans %}<br>
+        {% blocktrans %}Division:{% endblocktrans %} {{ payment_details.division }}<br>
+        {% blocktrans %}Account number:{% endblocktrans %} {{ payment_details.account_number }}</p>
+
+    <p>{% blocktrans %}Payments can be made 24 hours a day using credit or debit card (Visa, Visa Electron, Mastercard, Maestro or Solo).{% endblocktrans %}</p>
+
+    <p>{% blocktrans %}Payments must be received on or before the date ordered.{% endblocktrans %}<br>
+        {% blocktrans %}If you want more information about your account contact the court.{% endblocktrans %}</p>
+
+    <h2>{% blocktrans %}Ways to pay{% endblocktrans %}</h2>
+
+    <h3>{% blocktrans %}Online:{% endblocktrans %}</h3>
+    <p>www.gov.uk/pay-court-fine-online<br>
+        {% blocktrans %}Copy and paste this web address into a new browser window.{% endblocktrans %}</p>
+
+    <h3>{% blocktrans %}Phone:{% endblocktrans %}</h3>
+    <p>0300 790 9901</p>
+
+    <h3>{% blocktrans %}Note:{% endblocktrans %}</h3>
+    <p>{% blocktrans %}When you pay you will be given an authorisation number. Keep this as proof of payment along with the date and amount paid:{% endblocktrans %}</p>
+    <ul>
+        <li>{% blocktrans %}the court will not issue a receipt unless you ask for it in writing{% endblocktrans %}</li>
+        <li>{% blocktrans %}any written request for a receipt needs to include a stamped addressed envelope{% endblocktrans %}</li>
+    </ul>
+
+    <h3>{% blocktrans %}If you're having difficulty paying{% endblocktrans %}</h3>
+    <p>{% blocktrans %}You can apply for more time to pay by contacting the Fines Team at your court.{% endblocktrans %}</p>
+    <p>{% blocktrans %}If you cannot pay as instructed or can no longer pay as ordered due to a change in your financial circumstances, contact the Fines Team to discuss your options.{% endblocktrans %}</p>
+    <p>{% blocktrans %}You can find the contact details for your court's Fines Team using the Find a court or tribunal service and searching for your court.{% endblocktrans %}</p>
+    <p>{% blocktrans %}You can get free, confidential and independent advice from Civil Legal Advice{% endblocktrans %}</p>
+
+    <h3>{% blocktrans %}If you do not pay{% endblocktrans %}</h3>
+    <p>{% blocktrans %}If you fail to pay this fine as ordered you will be liable for further penalties. This could include:{% endblocktrans %}</p>
+
+    <ul>
+        <li>{% blocktrans %}Deductions from your earnings or benefits{% endblocktrans %}</li>
+        <li>{% blocktrans %}50% increase in your fine{% endblocktrans %}</li>
+        <li>{% blocktrans %}Clamping, removal and sale of your vehicle{% endblocktrans %}</li>
+        <li>{% blocktrans %}Registering the account in the Register of Judgments, Orders and Fines (making it harder for you to get credit){% endblocktrans %}</li>
+        <li>{% blocktrans %}A distress warrant being issued to the Court Bailiffs to seize your goods (incurring additional costs){% endblocktrans %}</li>
+        <li>{% blocktrans %}Continued default - you may be sent to prison{% endblocktrans %}</li>
+    </ul>
+
+    <h3>{% blocktrans %}What should I do if I change my name or address?{% endblocktrans %}</h3>
+    <p>{% blocktrans %}If you change your name or address you must tell your court immediately. You'll find your court's contact details by using the Find a court or tribunal service and searching for your court.{% endblocktrans %}</p>
+
+{% endblock content %}
