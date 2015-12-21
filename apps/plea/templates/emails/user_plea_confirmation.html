@@ -23,7 +23,7 @@
         {% endif %}
     {% endspaceless %}</h1>
 
-    <h2>{% blocktrans %}What happens next:{% endblocktrans %}</h2>
+    <h3>{% blocktrans %}What happens next:{% endblocktrans %}</h3>
 
     <ul>
     {% if plea_type == "guilty" or plea_type == "mixed" %}
@@ -51,7 +51,7 @@
         <li>{% blocktrans %}you can print a copy of this plea confirmation for your records{% endblocktrans %}</li>
     </ul>
 
-    <h2>{% blocktrans %}Do not:{% endblocktrans %}</h2>
+    <h3>{% blocktrans %}Do not:{% endblocktrans %}</h3>
     <ul>
         <li>{% blocktrans %}come to court on the hearing date shown on page 1 of the requisition notice we sent to you{% endblocktrans %}</li>
 
@@ -60,7 +60,7 @@
         {% endif %}
     </ul>
 
-    <h2>{% blocktrans %}Need to change a plea?{% endblocktrans %}</h2>
+    <h3>{% blocktrans %}Need to change a plea?{% endblocktrans %}</h3>
 
     <p>{% blocktrans with urn=urn|format_urn hearing_date=contact_deadline|parse_date|date:"d/m/Y" %}Contact the court by post or email quoting your URN {{ urn }} to arrive before {{ hearing_date }}.{% endblocktrans %}</p>
 
@@ -72,7 +72,7 @@
     <p><strong>{% blocktrans %}By email:{% endblocktrans %}</strong><br>
         <a href="mailto:{{ court_email }}">{{ court_email }}</a></p>
 
-    <h2>{% blocktrans %}We're constantly working to improve this service.{% endblocktrans %}</h2>
+    <h3>{% blocktrans %}We're constantly working to improve this service.{% endblocktrans %}</h3>
 
     <p>{% blocktrans %}Please give us <a href="/feedback/">feedback</a> so we can make it better.{% endblocktrans %}</p>
 
