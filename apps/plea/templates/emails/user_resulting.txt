@@ -1,0 +1,92 @@
+{% load date i18n urn humanize %}{% filter wordwrap:72 %}GOV.UK - {% blocktrans %}Notice of fine and collection order{% endblocktrans %}
+
+------------------------------------------------------------------------
+
+{{ name|safe }}
+{% blocktrans %}URN:{% endblocktrans %} {{ urn|format_urn }}
+{% blocktrans %}Your court:{% endblocktrans %} {{ court|safe }}
+
+------------------------------------------------------------------------
+
+{% blocktrans %}Fines and penalties{% endblocktrans %}
+{% if fines %}{% for fine in fines %}
+{{ fine.label }} £{{ fine.amount|floatformat:2|intcomma }}.{% endfor %}{% endif %}
+
+{% blocktrans %}Total to pay:{% endblocktrans %} £{{ total|floatformat:2|intcomma }}
+
+{% blocktrans %}Pay by:{% endblocktrans %} {{ pay_by|date:"d/m/Y" }}
+{% if endorsements %}
+{% blocktrans %}Endorsements:{% endblocktrans %}{% for endorsement in endorsements %}
+{{ endorsement }}{% endfor %}{% endif %}
+
+{% blocktrans %}Do not send your driving licence to the court. The DVLA will contact you if they need you to send it to them.{% endblocktrans %}
+
+------------------------------------------------------------------------
+
+{% blocktrans %}What happens next{% endblocktrans %}
+
+{% blocktrans %}When paying your fine{% endblocktrans %}
+{% blocktrans %}You will need to tell us:{% endblocktrans %}
+{% blocktrans %}Division:{% endblocktrans %} {{ payment_details.division }}
+{% blocktrans %}Account number:{% endblocktrans %} {{ payment_details.account_number }}
+
+{% blocktrans %}Payments can be made 24 hours a day using credit or debit card (Visa, Visa Electron, Mastercard, Maestro or Solo).{% endblocktrans %}
+
+{% blocktrans %}Payments must be received on or before the date ordered.
+If you want more information about your account contact the court.{% endblocktrans %}
+
+------------------------------------------------------------------------
+
+{% blocktrans %}Ways to pay{% endblocktrans %}
+
+{% blocktrans %}Online:{% endblocktrans %}
+www.gov.uk/pay-court-fine-online
+{% blocktrans %}Copy and paste this web address into a new browser window.{% endblocktrans %}
+
+{% blocktrans %}Phone:{% endblocktrans %}
+0300 790 9901
+
+{% blocktrans %}Note:{% endblocktrans %}
+{% blocktrans %}When you pay you will be given an authorisation number. Keep this as proof of payment along with the date and amount paid:{% endblocktrans %}
+- {% blocktrans %}the court will not issue a receipt unless you ask for it in writing{% endblocktrans %}
+- {% blocktrans %}any written request for a receipt needs to include a stamped addressed envelope{% endblocktrans %}
+
+------------------------------------------------------------------------
+
+{% blocktrans %}If you're having difficulty paying{% endblocktrans %}
+
+{% blocktrans %}You can apply for more time to pay by contacting the Fines Team at your court.{% endblocktrans %}
+
+{% blocktrans %}If you cannot pay as instructed or can no longer pay as ordered due to a change in your financial circumstances, contact the Fines Team to discuss your options.{% endblocktrans %}
+
+{% blocktrans %}You can find the contact details for your court's Fines Team using the Find a court or tribunal service and searching for your court.{% endblocktrans %}
+
+{% blocktrans %}You can get free, confidential and independent advice from Civil Legal Advice{% endblocktrans %}
+
+------------------------------------------------------------------------
+
+{% blocktrans %}If you do not pay{% endblocktrans %}
+
+{% blocktrans %}If you fail to pay this fine as ordered you will be liable for further penalties. This could include:{% endblocktrans %}
+- {% blocktrans %}Deductions from your earnings or benefits{% endblocktrans %}
+- {% blocktrans %}50% increase in your fine{% endblocktrans %}
+- {% blocktrans %}Clamping, removal and sale of your vehicle{% endblocktrans %}
+- {% blocktrans %}Registering the account in the Register of Judgments, Orders and Fines (making it harder for you to get credit){% endblocktrans %}
+- {% blocktrans %}A distress warrant being issued to the Court Bailiffs to seize your goods (incurring additional costs){% endblocktrans %}
+- {% blocktrans %}Continued default - you may be sent to prison{% endblocktrans %}
+
+{% blocktrans %}What should I do if I change my name or address?{% endblocktrans %}
+
+{% blocktrans %}If you change your name or address you must tell your court immediately. You'll find your court's contact details by using the Find a court or tribunal service and searching for your court.{% endblocktrans %}
+
+------------------------------------------------------------------------
+
+{% blocktrans %}If you're unsure an email is from the Ministry of Justice:{% endblocktrans %}
+
+- {% blocktrans %}do not reply to it or click any links{% endblocktrans %}
+- {% blocktrans %}forward it to{% endblocktrans %} feedback@makeaplea.gov.uk
+
+{% blocktrans %}Terms and Conditions and Privacy Policy:{% endblocktrans %}
+https://www.makeaplea.service.gov.uk/terms-and-conditions-and-privacy-policy
+
+{% endfilter %}
