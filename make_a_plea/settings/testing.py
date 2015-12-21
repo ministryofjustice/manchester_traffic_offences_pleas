@@ -8,11 +8,11 @@ ADMINS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'manchester_traffic_offences',
-        'USER': 'jenkins',
-        'PASSWORD': 'moomoo',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'NAME': os.environ.get('POSTGRES_DB','manchester_traffic_offences'),
+        'USER': os.environ.get('POSTGRES_USER', 'jenkins'),
+        'PASSWORD': os.environ.get('POSTGRES_PASS', 'moomoo'),
+        'HOST': os.environ.get('POSTGRES_HOST', ''),
+        'PORT': os.environ.get('POSTGRES_PORT', ''),
     }
 }
 
