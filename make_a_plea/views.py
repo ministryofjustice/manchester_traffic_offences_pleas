@@ -1,3 +1,5 @@
+import datetime
+
 from django.conf import settings
 from django import http
 from django.shortcuts import render
@@ -126,16 +128,13 @@ def test_template(request):
     court_data = {"court_address": "Court address\nSome Place\nT357TER",
                   "court_email": "email@court.com"}
 
-    content_type = "text/html"
-
     if template_name == "complete":
         context.update({"case": case_data, "court": court_data})
     else:
         context.update(case_data)
         context.update(court_data)
 
-        if template_name == "email_txt":
-            content_type = "text/plain"
+    content_type = "text/plain; charset=utf-8" if template_name == "email_txt" else "text/html"
 
     response = render(request, template, context, content_type=content_type)
     return response
@@ -177,3 +176,28 @@ def test_email_attachment(request):
 
     response = render(request, template, context)
     return response
+
+
+@waffle_switch("test_template")
+def test_resulting_email(request):
+    templates = {"html": "emails/user_resulting.html",
+                 "txt": "emails/user_resulting.txt"}
+
+    context = {"name": "Frank Marsh",
+               "urn": "51AA000000015",
+               "court": "Manchester and Salford Magistrates' Court",
+               "fines": [{"label": "Fine - Fined", "amount": 440},
+                         {"label": "Victim surcharge - To pay victim surcharge of", "amount": 44},
+                         {"label": "To pay costs of", "amount": 85}],
+               "total": 569,
+               "pay_by": datetime.date(2016, 2, 13),
+               "endorsements": ["Driving record endorsed with 6 points."],
+               "payment_details": {"division": "104",
+                                   "account_number": "15083002"}}
+
+    email_type = request.GET.get("template", "html")
+    template = templates[email_type]
+
+    content_type = "text/plain; charset=utf-8" if email_type == "txt" else "text/html"
+
+    return render(request, template, context, content_type=content_type)
