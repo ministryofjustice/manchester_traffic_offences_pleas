@@ -32,8 +32,8 @@
 
 {% blocktrans %}Payments can be made 24 hours a day using credit or debit card (Visa, Visa Electron, Mastercard, Maestro or Solo).{% endblocktrans %}
 
-{% blocktrans %}Payments must be received on or before the date ordered.
-If you want more information about your account contact the court.{% endblocktrans %}
+{% blocktrans %}Payments must be received on or before the date ordered.{% endblocktrans %}
+{% blocktrans %}If you want more information about your account contact the court.{% endblocktrans %}
 
 ------------------------------------------------------------------------
 
