@@ -22,7 +22,7 @@
 
       /* Reset styles */
       body{margin:0; padding:0;}
-      img{border:0; height:auto; line-height:100%; outline:none; text-decoration:none;}
+      img{border:0; max-width:100%; height:auto; outline:none; text-decoration:none;}
       table{border-collapse:collapse !important;}
       body, #bodyTable, #bodyCell{height:100% !important; margin:0; width:100% !important;}
 
@@ -41,6 +41,13 @@
         max-width: 600px;
       }
 
+      #logo {
+        font-size:42px;
+        font-weight: bold;
+        color: white;
+        height: 50px;
+      }
+
       /* Typography */
       h1, h2, h3, h4 {
         font-family: Arial, sans-serif;
@@ -53,39 +60,55 @@
 
       h1 {
         font-size: 36px;
-        margin: 10px 0 18px;
+        margin: 10px 0;
       }
 
-      h2,
-      p.lede {
-        font-size: 24px;
-        margin: 36px 0 18px;
+      h2 {
+        font-size: 36px;
+        margin: 36px 0 24px;
+      }
+
+      hr + h2 {
+        margin: 0 0 24px;
       }
 
       h3 {
-        font-size: 18px;
-        margin: 18px 0 0;
+        font-size: 24px;
+        margin: 32px 0 6px;
+      }
+
+      hr + h3 {
+        margin: 0 0 6px;
+      }
+
+      p.lede {
+        font-size: 24px;
+      }
+
+      h4 {
+        font-size: 19px;
+        margin: 19px 0 3px;
       }
 
       p {
         font-family: Arial, sans-serif;
-        font-size: 18px;
-        line-height: 1.25;
-        margin: 0 0 18px;
+        font-size: 19px;
+        line-height: 1.5;
+        margin: 0 0 19px;
         color: #000000;
       }
 
       ul,
       ol {
-        padding: 0 0 0 18px;
-        margin: 18px 0 9px;
+        padding: 0 0 0 19px;
+        margin: 0 0 10px;
       }
 
       li {
         margin: 0 0 9px;
         font-family: Arial, sans-serif;
-        font-size: 18px;
-        line-height: 1.25;
+        font-size: 19px;
+        line-height: 1.5;
         color: #000000;
       }
 
@@ -94,6 +117,15 @@
         text-decoration: underline;
         border: none;
         color: #005ea5;
+      }
+
+      hr {
+          display: block;
+          height: 1px;
+          border: 0;
+          border-top: 1px solid #dee0e2;
+          margin: 24px 0;
+          padding: 0;
       }
 
 
@@ -124,7 +156,7 @@
       }
 
       #footerCell ul {
-        margin: 13px 0 10px 16px;
+        margin: 13px 0 10px 0;
       }
 
       #footerCell p,
@@ -173,12 +205,12 @@
             <tr>
               <td id="headerCell" bgcolor="#000000">
                 <a href="https://www.gov.uk" title="Go to the GOV.UK homepage">
-                  <img id="logo" src="/static/images/email/gov-uk-logo.png" alt="GOV.UK" width="211" height="53">
+                  <img id="logo" src="/static/images/email/govuk-logo-email.png" alt="GOV.UK" width="170" height="50">
                 </a>
               </td>
             </tr>
           </table>
-          <table class="templateContainer" align="center" border="0" cellpadding="00" cellspacing="0" width="100%">
+          <table class="templateContainer" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td id="contentCell" bgcolor="#ffffff">
 
@@ -187,7 +219,7 @@
               </td>
             </tr>
           </table>
-          <table class="templateContainer" align="center" border="0" cellpadding="00" cellspacing="0" width="100%">
+          <table class="templateContainer" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td id="footerCell">
                 <p>{% blocktrans %}If you're unsure an email is from the Ministry of Justice:{% endblocktrans %}</p>
