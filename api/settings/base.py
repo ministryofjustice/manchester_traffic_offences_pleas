@@ -16,7 +16,6 @@ INSTALLED_APPS = (
 )
 
 PROJECT_APPS = (
-    'moj_template',
     'apps.forms',
     'apps.plea',
     'api',
