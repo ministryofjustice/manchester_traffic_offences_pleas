@@ -93,6 +93,6 @@ ERROR_MESSAGES = {
     "COMPANY_NET_TURNOVER": _("Enter the company's net turnover"),
     "COMPANY_GROSS_TURNOVER_PROJECTED": _("Enter the company's projected gross turnover"),
     "COMPANY_NET_TURNOVER_PROJECTED": _("Enter the company's projected net turnover"),
-    "RECEIVE_EMAIL_UPDATES_REQUIRED": _("Tell us if you want to receive email updates about this case"),
+    "RECEIVE_EMAIL_UPDATES_REQUIRED": _("Tell us if you want to receive an email confirming your plea submission"),
     "UPDATES_EMAIL_REQUIRED": _("You must provide an email address if you want to receive email updates about this case")
 }
