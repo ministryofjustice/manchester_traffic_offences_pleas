@@ -2011,10 +2011,8 @@ msgstr[0] "Review the information you’ve given before making your plea."
 msgstr[1] "Review the information you’ve given before making your pleas."
 
 #: apps/plea/templates/review.html:33
-#, fuzzy
-#| msgid "Change case details"
 msgid "Change <span>case details</span>"
-msgstr "Change case details"
+msgstr "Change <span>case details</span>"
 
 #: apps/plea/templates/review.html:43 apps/plea/templates/review.html.py:48
 msgid "Change <span>your details</span>"
