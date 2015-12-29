@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
+from copy import deepcopy
 import re
 
 from django.test import TestCase
@@ -121,6 +122,13 @@ class EmailGenerationTests(TestCase):
 
         self.assertEqual(int(case_id), case_obj.id)
         self.assertEqual(int(count_id), count_obj.id)
+
+    def test_send_plea_email_with_unicode(self):
+        data = deepcopy(self.test_data_defendant)
+        data["your_details"]["first_name"] = u"Nørbert"
+        data["your_details"]["last_name"] = u"W\\xd3JTOWICZ"
+
+        send_plea_email(data)
 
     def test_user_confirmation_sends_email(self):
         send_plea_email(self.test_data_defendant)
