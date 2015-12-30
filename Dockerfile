@@ -20,11 +20,14 @@ RUN pip install -r requirements.txt
 
 RUN mkdir /user_data
 RUN mkdir /user_data/.gnupg
+RUN mkdir -p make_a_plea/assets
+
 #RUN chown -R makeaplea:makeaplea /user_data
 VOLUME ["/user_data"]
 
 #USER makeaplea
 COPY . $APP_HOME
+RUN  python manage.py collectstatic --noinput
 
 CMD ["gunicorn",  "make_a_plea.wsgi", "--bind=0.0.0.0:9080"]
 
