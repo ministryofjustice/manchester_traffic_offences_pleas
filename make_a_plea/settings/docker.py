@@ -42,6 +42,12 @@ CSRF_COOKIE_SECURE = False
 CELERY_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
 BROKER_URL = os.environ.get("CELERY_BROKER_URL", "SQS://")
 
+#
+# Temporary keys to run collectstatic on docker image build.
+#
+# Override in your environment.
+#
+SECRET_KEY = os.environ.get("SECRET_KEY", "***REMOVED***")
 ENCRYPTED_COOKIE_KEYS = [
-    os.environ["ENCRYPTED_COOKIE_KEY"]
+    os.environ.get("ENCRYPTED_COOKIE_KEY", "***REMOVED***")
 ]
