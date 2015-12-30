@@ -47,14 +47,18 @@
     </header>
 
     <dl>
+        {% if other_expenses.other_not_listed %}
+        <dt>{% blocktrans %}Other expenses (not listed){% endblocktrans %}</dt>
+        <dd>{{ other_expenses.other_not_listed_details|linebreaksbr }}</dd>
+        {% endif %}
         <dt>{% blocktrans %}Total other expenses{% endblocktrans %}</dt>
         <dd>£{{ your_expenses.total_other_expenses|floatformat:2|intcomma }}</dd>
     </dl>
 </section>
 
-<section class="review-subsection">
+<section class="review-subsection bold-medium">
     <dl>
-        <dt class="bold-small">Total expenses</dt>
+        <dt>Total expenses</dt>
         <dd>£{{ your_expenses.total_expenses|floatformat:2|intcomma }}</dd>
     </dl>
 </section>
