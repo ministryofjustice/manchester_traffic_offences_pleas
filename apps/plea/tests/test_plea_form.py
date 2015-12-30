@@ -1586,7 +1586,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "other_telephone": "40",
             "other_loan_repayments": "60",
             "other_court_payments": "30",
-            "other_child_maintenance": "50"
+            "other_child_maintenance": "50",
+            "other_not_listed": False
         }
 
         form.save(test_data, request_context)
@@ -1761,7 +1762,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(response.url, "/plea/review/")
 
-    def test_hardship_calculations_on_review_page(self):
+    def test_expenses_calculations_on_review_page(self):
 
         session_data = self.test_session_data
         session_data["your_finances"]["hardship"] = True
@@ -1779,7 +1780,10 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "other_telephone": "111",
             "other_loan_repayments": "111",
             "other_court_payments": "111",
-            "other_child_maintenance": "111"
+            "other_child_maintenance": "111",
+            "other_not_listed": True,
+            "other_not_listed_details": "lorem",
+            "other_not_listed_amount": "111"
         }
 
         form.save(test_data, request_context)
@@ -1791,8 +1795,8 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         response = form.render()
 
         self.assertContains(response, "999.00")
-        self.assertContains(response, "666.00")
-        self.assertContains(response, "1,665.00")
+        self.assertContains(response, "777.00")
+        self.assertContains(response, "1,776.00")
 
     def test_hardship_on_review(self):
 
@@ -1922,6 +1926,8 @@ class TestYourExpensesStage(TestMultiPleaFormBase):
         response = form.render()
 
         self.assertEquals(response.status_code, 200)
+        self.assertEquals(len(form.current_stage.form.errors), 1)
+        self.assertIn("hardship_details", form.current_stage.form.errors)
 
     def test_household_expenses_form_requires_validation(self):
 
@@ -1934,3 +1940,34 @@ class TestYourExpensesStage(TestMultiPleaFormBase):
         response = form.render()
 
         self.assertEquals(response.status_code, 200)
+        self.assertEquals(len(form.current_stage.form.errors), 1)
+        self.assertIn("other_bill_payers", form.current_stage.form.errors)
+
+    def test_other_expenses_form_requires_validation(self):
+
+        form = PleaOnlineForms(self.test_data, "other_expenses")
+
+        form.load(self.request_context)
+
+        form.save({}, self.request_context)
+
+        response = form.render()
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(len(form.current_stage.form.errors), 1)
+        self.assertIn("other_not_listed", form.current_stage.form.errors)
+
+    def test_other_expenses_form_requires_validation_not_listed(self):
+
+        form = PleaOnlineForms(self.test_data, "other_expenses")
+
+        form.load(self.request_context)
+
+        form.save({"other_not_listed": True}, self.request_context)
+
+        response = form.render()
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(len(form.current_stage.form.errors), 2)
+        self.assertIn("other_not_listed_details", form.current_stage.form.errors)
+        self.assertIn("other_not_listed_amount", form.current_stage.form.errors)

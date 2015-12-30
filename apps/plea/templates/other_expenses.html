@@ -47,4 +47,12 @@
         </div>
     </div>
 
+    {% radio_field form.other_not_listed inline=True %}
+
+    <div class="panel-indent move-up" data-conditional="other_not_listed" data-conditional-value="True">
+        {% std_field form.other_not_listed_details hide_optional=True %}
+
+        {% std_field form.other_not_listed_amount hide_optional=True prefix="£" %}
+    </div>
+
 {% endblock stage_form %}
