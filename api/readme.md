@@ -205,13 +205,13 @@ Returns Submission Totals for each court. Also returned:
 
 Exclude stats _before_ the start of the given date. Format: `YYYY-MM-DD`
 
-`/stats/?start=2015-10-31`
+`/stats/by_court/?start=2015-10-31`
 
 ##### end (optional)
 
 Exclude stats _after_ the start of the given date. Format: `YYYY-MM-DD`
 
-`/stats/?end=2015-12-21`
+`/stats/by_court/?end=2015-12-21`
 
 #### Example response
 
