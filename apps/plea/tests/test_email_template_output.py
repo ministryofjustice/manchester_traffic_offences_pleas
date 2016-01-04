@@ -119,7 +119,10 @@ class EmailTemplateTests(TestCase):
                                    "other_telephone": 16,
                                    "other_loan_repayments": 17,
                                    "other_court_payments": 18,
-                                   "other_child_maintenance": 19}
+                                   "other_child_maintenance": 19,
+                                   "other_not_listed": True,
+                                   "other_not_listed_details": "Lorem",
+                                   "other_not_listed_amount": 10}
 
         if not review_data:
             review_data = {"receive_email_updates": True,
@@ -159,7 +162,8 @@ class EmailTemplateTests(TestCase):
                                 "other_telephone",
                                 "other_loan_repayments",
                                 "other_court_payments",
-                                "other_child_maintenance"]
+                                "other_child_maintenance",
+                                "other_not_listed_amount"]
 
         if all([uf.is_valid(), ntf.is_valid(), cf.is_valid(), df.is_valid(), pf.is_valid(), sf.is_valid(), ff.is_valid(), hf.is_valid(), hef.is_valid(), oef.is_valid(), rf.is_valid()]):
             data = {"notice_type": ntf.cleaned_data,
@@ -635,8 +639,8 @@ class EmailTemplateTests(TestCase):
         self.assertContainsDefinition(response.content, "Paying a fine would cause me financial problems because", "Lorem<br />Ipsum", count=1)
         self.assertContainsDefinition(response.content, "Other contributors to household bills", "No", count=1)
         self.assertContainsDefinition(response.content, "Total household expenses", "£46.00", count=1)
-        self.assertContainsDefinition(response.content, "Total other expenses", "£99.00", count=1)
-        self.assertContainsDefinition(response.content, "Total expenses", "£145.00", count=1)
+        self.assertContainsDefinition(response.content, "Total other expenses", "£109.00", count=1)
+        self.assertContainsDefinition(response.content, "Total expenses", "£155.00", count=1)
 
     def test_expenses_output_other_contributors_yes(self):
         context_data_finances = {"employed_pay_period": "Weekly",
@@ -653,7 +657,8 @@ class EmailTemplateTests(TestCase):
                                "other_telephone": 16,
                                "other_loan_repayments": 17,
                                "other_court_payments": 18,
-                               "other_child_maintenance": 19}
+                               "other_child_maintenance": 19,
+                               "other_not_listed": False}
 
         context_data = self.get_context_data(finances_data=context_data_finances, household_expenses_data=household_expenses_data, other_expenses_data=other_expenses_data)
 
@@ -661,6 +666,33 @@ class EmailTemplateTests(TestCase):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
         self.assertContainsDefinition(response.content, "Other contributors to household bills", "Yes", count=1)
+
+    def test_expenses_output_not_listed(self):
+        context_data_finances = {"employed_pay_period": "Weekly",
+                                 "employed_pay_amount": "100",
+                                 "employed_hardship": True}
+
+        household_expenses_data = {"household_accommodation": 10,
+                                   "household_utility_bills": 11,
+                                   "household_insurance": 12,
+                                   "household_council_tax": 13,
+                                   "other_bill_payers": False}
+        other_expenses_data = {"other_tv_subscription": 14,
+                               "other_travel_expenses": 15,
+                               "other_telephone": 16,
+                               "other_loan_repayments": 17,
+                               "other_court_payments": 18,
+                               "other_child_maintenance": 19,
+                               "other_not_listed": True,
+                               "other_not_listed_details": "Extra expenses.",
+                               "other_not_listed_amount": 10}
+
+        context_data = self.get_context_data(finances_data=context_data_finances, household_expenses_data=household_expenses_data, other_expenses_data=other_expenses_data)
+
+        send_plea_email(context_data)
+
+        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        self.assertContainsDefinition(response.content, "Other expenses (not listed)", "Extra expenses.", count=1)
 
     def test_skipped_email_finances_output(self):
         context_data = self.get_context_data()
