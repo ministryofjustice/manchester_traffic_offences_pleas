@@ -33,7 +33,7 @@ class CommentsStage(FormStage):
                 UserRating.objects.record(self.all_data["service"]["service_satisfaction"], self.all_data["service"]["call_centre_satisfaction"])
                 self.set_next_step("complete")
             else:
-                self.add_message(messages.ERROR, '<h2 class="heading-medium">{}</h2><p>{}</p>'.format(
+                self.add_message(messages.ERROR, '<h1>{}</h1><p>{}</p>'.format(
                     _("Submission Error"),
                     _("There seems to have been a problem submitting your feedback. Please try again.")))
                 self.set_next_step("comments")
