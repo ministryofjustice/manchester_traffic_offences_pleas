@@ -24,9 +24,9 @@ class EmailGenerationTests(TestCase):
             court_name="Test Magistrates' Court",
             court_address="test address",
             court_telephone="0800 MAKEAPLEA",
-            court_email="court_email_address@test.com",
-            submission_email="test@test.com",
-            plp_email="test@test.com",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
             enabled=True,
             test_mode=False)
 
@@ -44,7 +44,7 @@ class EmailGenerationTests(TestCase):
                                     "plea": {"data": [{"guilty": "guilty", "guilty_extra": "test1"},
                                                        {"guilty": "guilty", "guilty_extra": "test2"}]},
                                     "review": {"receive_email_updates": True,
-                                               "email": "test@test.com",
+                                               "email": "user@example.org",
                                                "understand": True}}
 
         self.test_data_company = {"notice_type": {"sjp": False},
@@ -64,7 +64,7 @@ class EmailGenerationTests(TestCase):
                                   "plea": {"data": [{"guilty": "guilty", "guilty_extra": "test1"},
                                                      {"guilty": "guilty", "guilty_extra": "test2"}]},
                                   "review": {"receive_email_updates": True,
-                                             "email": "test@test.com",
+                                             "email": "user@example.org",
                                              "understand": True}}
 
     def test_template_attachment_sends_email(self):
@@ -140,7 +140,7 @@ class EmailGenerationTests(TestCase):
 
     def test_user_confirmation_sends_no_email(self):
         self.test_data_defendant.update({"review": {"receive_email_updates": False,
-                                                    "email": "test@test.com",
+                                                    "email": "user@example.org",
                                                     "understand": True}})
         send_plea_email(self.test_data_defendant)
 
