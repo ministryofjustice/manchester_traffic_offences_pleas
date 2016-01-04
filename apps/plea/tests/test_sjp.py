@@ -17,9 +17,9 @@ class TestMultiPleaFormBase(TestCase):
             court_name="test court",
             court_address="test address",
             court_telephone="0800 MAKEAPLEA",
-            court_email="test@test.com",
-            submission_email=True,
-            plp_email="test@test.com",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
             enabled=True,
             test_mode=False)
 
@@ -106,7 +106,7 @@ class TestSJP(TestMultiPleaFormBase):
 
         form = PleaOnlineForms(self.session, "review")
         form.save({"receive_email_updates": True,
-                   "email": "test@test.com",
+                   "email": "user@example.org",
                    "understand": True},
                   request_context)
         response = form.render()
@@ -128,7 +128,7 @@ class TestSJP(TestMultiPleaFormBase):
 
         form = PleaOnlineForms(self.session, "review")
         form.save({"receive_email_updates": True,
-                   "email": "test@test.com",
+                   "email": "user@example.org",
                    "understand": True},
                   request_context)
         response = form.render()
