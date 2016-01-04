@@ -25,9 +25,9 @@ class CaseCreationTests(TestCase):
             court_name="test court",
             court_address="test address",
             court_telephone="0800 MAKEAPLEA",
-            court_email="test@test.com",
-            submission_email="test@test.com",
-            plp_email="test@test.com",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
             enabled=True,
             test_mode=False)
 
@@ -47,7 +47,7 @@ class CaseCreationTests(TestCase):
             'complete': {},
             'review': {u'csrfmiddlewaretoken': [u'z6Pz8e3M1rX2c31M0YpZtGnIv1V74ml7'],
                        u'receive_email_updates': u'True',
-                       u'email': u'test@test.com'},
+                       u'email': u'user@example.org'},
             'send_error': {},
             'plea': {u'data': [{u'guilty_extra': u'fdsfdsff\r\nds\r\nf',
                                  u'guilty': u'guilty'},
