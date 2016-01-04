@@ -23,6 +23,9 @@
         {% endif %}
     {% endspaceless %}</h1>
 
+    <p><strong>{% blocktrans %}Your URN:{% endblocktrans %}</strong> {{ urn|format_urn }}<br>
+        {% blocktrans %}You will need to quote this if you contact the court{% endblocktrans %}</p>
+
     <h3>{% blocktrans %}What happens next:{% endblocktrans %}</h3>
 
     <ul>
@@ -62,14 +65,11 @@
 
     <h3>{% blocktrans %}Need to change a plea?{% endblocktrans %}</h3>
 
-    <p>{% blocktrans with urn=urn|format_urn hearing_date=contact_deadline|parse_date|date:"d/m/Y" %}Contact the court by post or email quoting your URN {{ urn }} to arrive before {{ hearing_date }}.{% endblocktrans %}</p>
+    <p>{% blocktrans with court=court_name %}Email {{ court }} quoting your URN.{% endblocktrans %}</p>
 
-    <p>{% blocktrans %}The contact details for the court are:{% endblocktrans %}</p>
+    <p>{% blocktrans with date=contact_deadline|parse_date|date:"d/m/Y" %}Your email must arrive before {{ date }}.{% endblocktrans %}</p>
 
-    <p><strong>{% blocktrans %}By Post:{% endblocktrans %}</strong><br>
-        {{ court_address|linebreaksbr }}</p>
-
-    <p><strong>{% blocktrans %}By email:{% endblocktrans %}</strong><br>
+    <p><strong>{% blocktrans %}Email:{% endblocktrans %}</strong><br>
         <a href="mailto:{{ court_email }}">{{ court_email }}</a></p>
 
     <h3>{% blocktrans %}We're constantly working to improve this service.{% endblocktrans %}</h3>
