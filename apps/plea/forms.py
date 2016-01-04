@@ -625,8 +625,7 @@ class ConfirmationForm(BaseStageForm):
                                                    required=True,
                                                    coerce=to_bool,
                                                    choices=YESNO_CHOICES["Ydw/Nac ydw"],
-                                                   label=_("Do you want to receive email updates about your case?"),
-                                                   help_text=_("We'll use this for all future correspondence as well as contacting you by post."),
+                                                   label=_("Do you want to receive an email confirming your plea has been sent to the court?"),
                                                    error_messages={"required": ERROR_MESSAGES["RECEIVE_EMAIL_UPDATES_REQUIRED"]})
 
     email = forms.EmailField(widget=forms.TextInput(attrs={"type": "email", "class": "form-control"}),

@@ -139,11 +139,15 @@ Main styles
 		h3 {
 			@include bold-19();
 		}
+	}
 
-		.change-link {
-			float: right;
-			margin: 0 0 0 1em;
-			@include core-19;
+	.change-link {
+		float: right;
+		margin: 0 0 0 1em;
+		@include core-19;
+
+		span {
+			@extend .visuallyhidden;
 		}
 	}
 
@@ -189,7 +193,16 @@ Main styles
 	border-width: 0;
 }
 
+.email-confirmation {
+	.label-text {
+		@include bold-24();
+	}
+}
+
 #section_understand {
+	h2 {
+		margin-bottom: .25em;
+	}
 	.block-label {
 		@include core-19;
 		padding: 1em;
@@ -222,24 +235,6 @@ Main styles
 
 
 /*== Complete screen ===============================================*/
-.success-header {
-	margin: 2em 0;
-	padding: 40px;
-	background: $turquoise;
-	color: $white;
-
-	h1,
-	p {
-		@include bold-36();
-		margin: 0;
-	}
-
-	.ticked {
-		padding-left: 40px;
-		background: url(../images/icons/tick.png) 0 7px no-repeat;
-	}
-}
-
 .next-steps {
 	.heading-medium,
 	.heading-small {

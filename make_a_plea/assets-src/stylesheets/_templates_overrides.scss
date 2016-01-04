@@ -10,19 +10,21 @@ GOV.UK Toolkit/Template overrides
 	}
 }
 
-#global-header .header-proposition {
-	@include media(tablet) {
-		padding-top: 8px;
-	}
+#global-header {
+	.header-proposition {
+		@include media(tablet) {
+			padding-top: 8px;
+		}
 
-	a#proposition-name {
-		display: inline-block;
-		line-height: 1;
+		a#proposition-name {
+			display: inline-block;
+			line-height: 1;
 
-		&:hover,
-		&:focus {
-			border-bottom: 1px solid white;
-			text-decoration: none;
+			&:hover,
+			&:focus {
+				border-bottom: 1px solid white;
+				text-decoration: none;
+			}
 		}
 	}
 }
@@ -37,12 +39,21 @@ GOV.UK Toolkit/Template overrides
 		margin-bottom: 8px;
 		vertical-align: top;
 	}
+
+	@media print {
+		display: none;
+	}
 }
 
 #wrapper {
 	background-color: white;
 	padding: 0 0 60px 0;
 	border-bottom: 10px solid $govuk-blue;
+
+	@media print {
+		padding: 0;
+		border-bottom: none;
+	}
 }
 
 #content {
@@ -56,7 +67,19 @@ GOV.UK Toolkit/Template overrides
 	@include ie-lte(8) {
 		width: 960px;
 	}
+
+	@media print {
+		margin: 0;
+		padding: 0;
+	}
+
+	// Responsive images
+	img {
+		max-width: 100%;
+		height: auto;
+	}
 }
+
 
 .footer-wrapper p.footer-top {
 	@extend %site-width-container;
