@@ -9,7 +9,7 @@
         <h3>{% blocktrans %}Information for the magistrate{% endblocktrans %}</h3>
 
         {% if show_edit_link %}
-        <a class="change-link" href="{% url "plea_form_step" "hardship" %}">{% blocktrans %}Change magistrate information{% endblocktrans %}</a>
+        <a class="change-link" href="{% url "plea_form_step" "hardship" %}">{% blocktrans %}Change <span>magistrate information</span>{% endblocktrans %}</a>
         {% endif %}
     </header>
 
@@ -24,7 +24,7 @@
         <h3>{% blocktrans %}Household expenses{% endblocktrans %}</h3>
 
         {% if show_edit_link %}
-        <a class="change-link" href="{% url "plea_form_step" "household_expenses" %}">{% blocktrans %}Change your household expenses{% endblocktrans %}</a>
+        <a class="change-link" href="{% url "plea_form_step" "household_expenses" %}">{% blocktrans %}Change <span>your household expenses</span>{% endblocktrans %}</a>
         {% endif %}
     </header>
 
@@ -42,7 +42,7 @@
         <h3>{% blocktrans %}Other expenses{% endblocktrans %}</h3>
 
         {% if show_edit_link %}
-        <a class="change-link" href="{% url "plea_form_step" "other_expenses" %}">{% blocktrans %}Change your other expenses{% endblocktrans %}</a>
+        <a class="change-link" href="{% url "plea_form_step" "other_expenses" %}">{% blocktrans %}Change <span>your other expenses</span>{% endblocktrans %}</a>
         {% endif %}
     </header>
 
