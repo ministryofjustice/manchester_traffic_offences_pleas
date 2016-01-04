@@ -6,7 +6,7 @@
         <h3>{% blocktrans %}Your employment status{% endblocktrans %}</h3>
 
         {% if show_edit_link %}
-        <a class="change-link" href="{% url "plea_form_step" "your_status" %}">{% blocktrans %}Change your employment status{% endblocktrans %}</a>
+        <a class="change-link" href="{% url "plea_form_step" "your_status" %}">{% blocktrans %}Change <span>your employment status</span>{% endblocktrans %}</a>
         {% endif %}
     </header>
 
@@ -21,7 +21,7 @@
         <h3>{% blocktrans %}Your finances{% endblocktrans %}</h3>
 
         {% if show_edit_link %}
-        <a class="change-link" href="{% url "plea_form_step" "your_finances" %}">{% blocktrans %}Change your finances{% endblocktrans %}</a>
+        <a class="change-link" href="{% url "plea_form_step" "your_finances" %}">{% blocktrans %}Change <span>your finances</span>{% endblocktrans %}</a>
         {% endif %}
     </header>
 
