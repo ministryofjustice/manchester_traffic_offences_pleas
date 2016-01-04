@@ -4,6 +4,7 @@ Elements
 ====================================================
 */
 
+/*== Horizontal rule ===============*/
 hr {
     display: block;
     height: 1px;
@@ -13,6 +14,8 @@ hr {
     padding: 0;
 }
 
+
+/*== phase banner language switcher ===============*/
 .language-switcher {
 	float: right;
 	margin: 0 0 0 1em;
@@ -29,6 +32,8 @@ hr {
 	}
 }
 
+
+/*== content header ========================*/
 .content-header {
 	margin: 0 0 1.675em;
 
@@ -41,6 +46,8 @@ hr {
 	}
 }
 
+
+/*== sidebar/related content =================*/
 .related {
 	margin-top: .75em;
 	padding-top: 5px;
@@ -64,6 +71,8 @@ hr {
 	}
 }
 
+
+/*== indent panel ===================*/
 .panel-indent {
 	padding-top: 0;
 	padding-bottom: 0;
@@ -76,6 +85,14 @@ hr {
 	}
 }
 
+
+/*== nudge element up ==================*/
+.move-up {
+	margin-top: -1em;
+}
+
+
+/*== grey intro panel =================*/
 .panel-grey {
 	background: $grey-3;
 	padding: 10px;
@@ -93,32 +110,46 @@ hr {
 	margin-bottom: 0;
 }
 
-.move-up {
-	margin-top: -1em;
-}
 
-#content {
-	// Responsive images
-	img {
-		max-width: 100%;
-		height: auto;
+/*== Success header ====================*/
+.success-header {
+	margin: 2em 0;
+	padding: 40px 20px;
+	background: $turquoise;
+	color: $white;
+	text-align: center;
+
+	h1 {
+		@include bold-36();
+		margin: .25em 0;
+	}
+
+	p {
+		margin: .25em 0;
+	}
+
+	.ticked:before {
+		content: "✓";
+		background: url(../images/icons/tick.png) 0 center no-repeat;
+    display: inline-block;
+    width: 40px;
+    height: 0;
+    padding-top: 1em;
+    overflow: hidden;
+    vertical-align: top;
 	}
 }
 
+
+/*== Important paragraph with icon =============*/
 p.important {
 	padding: 7px 0 0 40px;
 	min-height: 27px;
 	background: url(../images/icons/icon-important.png) no-repeat top left;
 }
 
-.back-button {
-	margin-top: 2em;
 
-	.form-submit & {
-		margin-top: 1em;
-	}
-}
-
+/*== Header with grey line to the right =======*/
 .header-line {
 	position: relative;
 
@@ -135,52 +166,4 @@ p.important {
 		padding-right: 10px;
 		background: #fff;
 	}
-}
-
-/*== Details pseudo-element ===============================*/
-.js-Details {
-	.details-trigger {
-		display: none;
-	}
-}
-
-.js-enabled .js-Details {
-
-	.details-trigger {
-		display: inline-block;
-		margin-bottom: 0.263158em;
-		text-decoration: none;
-
-		.arrow {
-			font-style: normal;
-			margin-right: .35em;
-		}
-		.summary {
-			text-decoration: underline;
-		}
-	}
-
-	.details-content {
-		display: none;
-	}
-}
-
-/*== JS classes ======================================*/
-// It turns out that IE6 can handle dat javascriptz
-// So we can override the default from MoJ Template
-@include ie(6) {
-	.js-hidden {
-		display: none;
-	}
-	.nojs-hidden {
-		display: block;
-	}
-}
-
-.nojs-hidden {
-	display: none;
-}
-
-.js-enabled .nojs-hidden {
-	display: block;
 }

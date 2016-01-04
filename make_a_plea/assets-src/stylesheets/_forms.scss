@@ -5,11 +5,11 @@ Forms
 */
 
 /*== Buttons ========================================*/
-
 .button {
 	width: 100%;
 	box-sizing: border-box;
 	margin: 0 15px 15px 0;
+	text-align: center;
 
 	@include media(tablet) {
 		width: auto;
@@ -21,9 +21,25 @@ Forms
 	@include bold-24();
 }
 
+.back-button {
+	margin-top: 2em;
+
+	.form-submit & {
+		margin-top: 1em;
+	}
+}
 
 
-/*== Main form styles ===============================*/
+
+/*== Fieldsets ===============================*/
+fieldset {
+	margin: 0;
+
+	-webkit-margin-top-collapse: separate;
+}
+
+
+/*== Form row ==========================*/
 .form-group {
 	width: auto;
 	float: none;
@@ -43,6 +59,8 @@ Forms
 	}
 }
 
+
+/*== Labels ===================*/
 label {
 	@include core-24;
 	display: block;
@@ -95,6 +113,33 @@ label {
 	}
 }
 
+
+legend {
+	@include core-24;
+	padding: 0;
+	margin: 0 0 .25em;
+	width: 100%;
+
+	&.form-label {
+		@include core-24;
+	}
+
+	@include ie-lte(8) {
+		color: #000;
+		margin-left: -7px;
+
+		@include ie(8) {
+			margin-left: -2px;
+		}
+	}
+}
+
+legend + * {
+  -webkit-margin-top-collapse: separate;
+}
+
+
+/*== Hint text =====================*/
 .form-hint {
 	display: block;
 	margin: .5em 0 .75em;
@@ -107,6 +152,8 @@ label {
 	vertical-align: baseline;
 }
 
+
+/*== Form inputs ======================*/
 .form-control {
 	width: 100%;
 	border: 1px solid $grey-2;
@@ -168,50 +215,19 @@ label {
 	width: 3em;
 }
 
-.form-group-extra {
-	.form-group {
-		margin-top: 0;
-	}
-}
 
-fieldset {
-	margin: 0;
 
-	-webkit-margin-top-collapse: separate;
-}
 
-legend {
-	@include core-24;
-	padding: 0;
-	margin: 0 0 .25em;
-	width: 100%;
-
-	&.form-label {
-		@include core-24;
-	}
-
-	@include ie-lte(8) {
-		color: #000;
-		margin-left: -7px;
-
-		@include ie(8) {
-			margin-left: -2px;
-		}
-	}
-}
-
-legend + * {
-  -webkit-margin-top-collapse: separate;
-}
-
+/*== Form submit ====================*/
 .form-submit {
-	@extend .form-group;
 	clear: left;
-	margin-top: 3em;
+	float: none;
+	width: auto;
+	margin: 3em 0 1em;
 }
 
 
-/*== Error styles ==================================*/
+/*== Error summary ==================================*/
 .error-summary {
 	margin: 1.625em 0;
 	padding: 15px;
@@ -219,6 +235,12 @@ legend + * {
 	border: 4px solid $error-colour;
 
 	h1 {
+		@extend .heading-medium;
+		margin-top: 0;
+	}
+
+	.heading-large {
+		@extend .heading-large;
 		margin-top: 0;
 	}
 
@@ -248,41 +270,14 @@ legend + * {
 	}
 }
 
+
+/*== Form group errors ================*/
 .with-error {
 	padding-left: 10px;
 	border-left: 4px solid $error-colour;
 
 	@include media(tablet) {
 		padding-left: 15px;
-	}
-}
-
-.panel-indent {
-	.with-error {
-		position: relative;
-		margin-left: -14px;
-
-		@include media(tablet) {
-			margin-left: -19px;
-		}
-
-		&:before,
-		&:after {
-			content: " ";
-			position: absolute;
-			left: -4px;
-			display: block;
-			width: 0;
-			height: 8px;
-			border-left: 4px solid #fff;
-		}
-
-		&:before {
-			top: -8px;
-		}
-		&:after {
-			bottom: -8px;
-		}
 	}
 }
 
@@ -294,6 +289,35 @@ legend + * {
 
 	li {
 		list-style: none;
+	}
+}
+
+
+/*== Indented panels with errors ====================*/
+.panel-indent .with-error {
+	position: relative;
+	margin-left: -14px;
+
+	@include media(tablet) {
+		margin-left: -19px;
+	}
+
+	&:before,
+	&:after {
+		content: " ";
+		position: absolute;
+		left: -4px;
+		display: block;
+		width: 0;
+		height: 8px;
+		border-left: 4px solid #fff;
+	}
+
+	&:before {
+		top: -8px;
+	}
+	&:after {
+		bottom: -8px;
 	}
 }
 
@@ -336,7 +360,7 @@ legend + * {
 }
 
 
-/*== NOJS headers ======================================*/
+/*== Summary headers ======================================*/
 .form-header {
 	margin-bottom: 2em;
 	border-bottom: 2px solid $grey-2;
