@@ -14,7 +14,7 @@ def create_api_user():
     password = "apitest"
 
     user = User.objects.create(username="apitest",
-                               email="test@test.com")
+                               email="user@example.org")
 
     user.set_password(password)
     user.save()
@@ -33,9 +33,9 @@ def create_court(region):
         court_name="test court",
         court_address="test address",
         court_telephone="0800 MAKEAPLEA",
-        court_email="test@test.com",
-        submission_email=True,
-        plp_email="test@test.com",
+        court_email="court@example.org",
+        submission_email="court@example.org",
+        plp_email="plp@example.org",
         enabled=True,
         test_mode=False)
 

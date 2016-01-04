@@ -92,10 +92,10 @@ class TestProcessReceipts(TestCase):
             court_address="asdf",
             enabled=True,
             court_telephone="00000",
-            court_email="test@test.com",
+            court_email="court@example.org",
             submission_email="",
-            court_receipt_email="sending@test.com",
-            local_receipt_email="incoming@test.com",
+            court_receipt_email="sending@example.org",
+            local_receipt_email="incoming@example.org",
             test_mode=False)
 
         self.email_count = CourtEmailCount.objects.create(
@@ -312,10 +312,10 @@ class WebHookTestCase(TestCase):
             court_address="asdf",
             enabled=True,
             court_telephone="00000",
-            court_email="test@test.com",
+            court_email="court@example.org",
             submission_email="",
-            court_receipt_email="sending@test.com",
-            local_receipt_email="incoming@test.com",
+            court_receipt_email="sending@example.org",
+            local_receipt_email="incoming@example.org",
             test_mode=False)
 
         self.email_count = CourtEmailCount.objects.create(
@@ -339,8 +339,8 @@ class WebHookTestCase(TestCase):
                 "msg": {
                     "subject": subject or self.passed_email_subject,
                     "text": text or self.email_body_valid,
-                    "from_email": from_email or "sending@test.com",
-                    "email": email or "incoming@test.com",
+                    "from_email": from_email or "sending@example.org",
+                    "email": email or "incoming@example.org",
                     "headers": {
                         "Received": [
                             "DKIMwhatever: somerequiredtext"
