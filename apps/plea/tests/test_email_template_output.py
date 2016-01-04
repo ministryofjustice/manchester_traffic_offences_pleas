@@ -46,9 +46,9 @@ class EmailTemplateTests(TestCase):
             court_name="test court",
             court_address="test address",
             court_telephone="0800 MAKEAPLEA",
-            court_email="test@test.com",
-            submission_email="test@test.com",
-            plp_email="test@test.com",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
             enabled=True,
             test_mode=True)
 
@@ -123,7 +123,7 @@ class EmailTemplateTests(TestCase):
 
         if not review_data:
             review_data = {"receive_email_updates": True,
-                           "email": "test@test.com",
+                           "email": "user@example.org",
                            "understand": True}
 
         uf = URNEntryForm(urn_entry_data)
@@ -679,7 +679,7 @@ class EmailTemplateTests(TestCase):
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
         self.assertContainsDefinition(response.content, "Email updates", "Yes", count=1)
-        self.assertContainsDefinition(response.content, "Email address", "test@test.com", count=1)
+        self.assertContainsDefinition(response.content, "Email address", "user@example.org", count=1)
 
     def test_receive_email_no_updates_output(self):
         context_data = self.get_context_data(review_data={"receive_email_updates": False, "understand": True})
@@ -889,11 +889,11 @@ class TestCompanyFinancesEmailLogic(TestCase):
             court_name="test court",
             court_address="test address",
             court_telephone="0800 MAKEAPLEA",
-            court_email="test@test.com",
-            submission_email="test@test.com",
-            plp_email="test@test.com",
-            enabled="test@test.com",
-            test_mode="test@test.com")
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
+            enabled=True,
+            test_mode=True)
 
         self.test_session_data = {
             "notice_type": {

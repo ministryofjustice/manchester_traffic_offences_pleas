@@ -29,7 +29,7 @@ class FeedbackFormTestCase(TestCase):
             "comments": {
                 "complete": True,
                 "comments": "ra ra ra",
-                "email": "test@test.com"
+                "email": "user@example.org"
             }
         }
 
