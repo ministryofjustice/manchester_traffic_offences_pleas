@@ -77,7 +77,7 @@ msgstr "If you'd like us to get back to you, tell us your email address below:"
 msgid "Your feedback has been submitted"
 msgstr "Your feedback has been submitted"
 
-#: apps/feedback/stages.py:37 apps/plea/stages.py:535
+#: apps/feedback/stages.py:37 apps/plea/stages.py:538
 msgid "Submission Error"
 msgstr "Submission Error"
 
@@ -589,26 +589,46 @@ msgid "Child maintenance must be a number greater than, or equal to, 0"
 msgstr "Child maintenance must be a number greater than, or equal to, 0"
 
 #: apps/plea/fields.py:90
+msgid "Tell us if you have any other significant expenses"
+msgstr "Tell us if you have any other significant expenses"
+
+#: apps/plea/fields.py:91
+msgid "Enter your other significant expenses"
+msgstr "Enter your other significant expenses"
+
+#: apps/plea/fields.py:92
+msgid "Enter the monthly total of your other significant expenses"
+msgstr "Enter the monthly total of your other significant expenses"
+
+#: apps/plea/fields.py:93
+msgid "The monthly total must be a number"
+msgstr "The monthly total must be a number"
+
+#: apps/plea/fields.py:94
+msgid "The monthly total must be a number greater than, or equal to, 0"
+msgstr "The monthly total must be a number greater than, or equal to, 0"
+
+#: apps/plea/fields.py:95
 msgid "You must tell us if the company has been trading for more than 12 months"
 msgstr "You must tell us if the company has been trading for more than 12 months"
 
-#: apps/plea/fields.py:91
+#: apps/plea/fields.py:96
 msgid "Enter the number of employees"
 msgstr "Enter the number of employees"
 
-#: apps/plea/fields.py:92
+#: apps/plea/fields.py:97
 msgid "Enter the company's gross turnover"
 msgstr "Enter the company's gross turnover"
 
-#: apps/plea/fields.py:93
+#: apps/plea/fields.py:98
 msgid "Enter the company's net turnover"
 msgstr "Enter the company's net turnover"
 
-#: apps/plea/fields.py:94
+#: apps/plea/fields.py:99
 msgid "Enter the company's projected gross turnover"
 msgstr "Enter the company's projected gross turnover"
 
-#: apps/plea/fields.py:95
+#: apps/plea/fields.py:100
 msgid "Enter the company's projected net turnover"
 msgstr "Enter the company's projected net turnover"
 
@@ -616,7 +636,7 @@ msgstr "Enter the company's projected net turnover"
 msgid "Tell us if you want to receive an email confirming your plea submission"
 msgstr "Tell us if you want to receive an email confirming your plea submission"
 
-#: apps/plea/fields.py:97
+#: apps/plea/fields.py:102
 msgid "You must provide an email address if you want to receive email updates about this case"
 msgstr "You must provide an email address if you want to receive email updates about this case"
 
@@ -854,75 +874,75 @@ msgstr "For example, student or retired."
 msgid "What is your monthly disposable income?"
 msgstr "What is your monthly disposable income?"
 
-#: apps/plea/forms.py:384
+#: apps/plea/forms.py:383
 msgid "How would paying a fine cause you serious financial problems?"
 msgstr "How would paying a fine cause you serious financial problems?"
 
-#: apps/plea/forms.py:385
+#: apps/plea/forms.py:384
 msgid "Why you think the court should allow you to pay your fine in instalments:"
 msgstr "Why you think the court should allow you to pay your fine in instalments:"
 
-#: apps/plea/forms.py:397
+#: apps/plea/forms.py:395
 msgid "Accommodation"
 msgstr "Accommodation"
 
-#: apps/plea/forms.py:398
+#: apps/plea/forms.py:396
 msgid "Rent, mortgage or lodgings"
 msgstr "Rent, mortgage or lodgings"
 
-#: apps/plea/forms.py:410
+#: apps/plea/forms.py:407
 msgid "Utility bills"
 msgstr "Utility bills"
 
-#: apps/plea/forms.py:411
+#: apps/plea/forms.py:408
 msgid "Gas, water, electricity etc"
 msgstr "Gas, water, electricity etc"
 
-#: apps/plea/forms.py:423
+#: apps/plea/forms.py:419
 msgid "Insurance"
 msgstr "Insurance"
 
-#: apps/plea/forms.py:424
+#: apps/plea/forms.py:420
 msgid "Home, life insurance etc"
 msgstr "Home, life insurance etc"
 
-#: apps/plea/forms.py:436
+#: apps/plea/forms.py:431
 msgid "Council tax"
 msgstr "Council tax"
 
-#: apps/plea/forms.py:445
+#: apps/plea/forms.py:439
 msgid "Does anyone else contribute to these bills?"
 msgstr "Does anyone else contribute to these bills?"
 
-#: apps/plea/forms.py:457
+#: apps/plea/forms.py:461
 msgid "Television subscription"
 msgstr "Television subscription"
 
-#: apps/plea/forms.py:458
+#: apps/plea/forms.py:462
 msgid "TV licence, satellite etc"
 msgstr "TV licence, satellite etc"
 
-#: apps/plea/forms.py:470
+#: apps/plea/forms.py:473
 msgid "Travel expenses"
 msgstr "Travel expenses"
 
-#: apps/plea/forms.py:471
+#: apps/plea/forms.py:474
 msgid "Fuel, car, public transport etc"
 msgstr "Fuel, car, public transport etc"
 
-#: apps/plea/forms.py:483
+#: apps/plea/forms.py:485
 msgid "Telephone"
 msgstr "Telephone"
 
-#: apps/plea/forms.py:484
+#: apps/plea/forms.py:486
 msgid "Landline and/or mobile"
 msgstr "Landline and/or mobile"
 
-#: apps/plea/forms.py:496
+#: apps/plea/forms.py:497
 msgid "Loan repayments"
 msgstr "Loan repayments"
 
-#: apps/plea/forms.py:497
+#: apps/plea/forms.py:498
 msgid "Credit card, bank etc"
 msgstr "Credit card, bank etc"
 
@@ -930,34 +950,50 @@ msgstr "Credit card, bank etc"
 msgid "County court orders"
 msgstr "County court orders"
 
-#: apps/plea/forms.py:521
+#: apps/plea/forms.py:520
 msgid "Child maintenance"
 msgstr "Child maintenance"
 
-#: apps/plea/forms.py:550
+#: apps/plea/forms.py:530
+msgid "Any other expenses that are not listed above?"
+msgstr "Any other expenses that are not listed above?"
+
+#: apps/plea/forms.py:531
+msgid "Other significant expenses you think the court should know about. For example, childcare"
+msgstr "Other significant expenses you think the court should know about. For example, childcare"
+
+#: apps/plea/forms.py:535
+msgid "If yes, tell us here"
+msgstr "If yes, tell us here"
+
+#: apps/plea/forms.py:544
+msgid "Monthly total of your other significant expenses"
+msgstr "Monthly total of your other significant expenses"
+
+#: apps/plea/forms.py:573
 msgid "Has the company been trading for more than 12 months?"
 msgstr "Has the company been trading for more than 12 months?"
 
-#: apps/plea/forms.py:553
+#: apps/plea/forms.py:576
 #: apps/plea/templates/partials/review_company_finances.html:11
 msgid "Number of employees"
 msgstr "Number of employees"
 
-#: apps/plea/forms.py:568
+#: apps/plea/forms.py:591
 #: apps/plea/templates/partials/review_company_finances.html:22
 msgid "Gross turnover"
 msgstr "Gross turnover"
 
-#: apps/plea/forms.py:569
+#: apps/plea/forms.py:592
 msgid "For example, 150000"
 msgstr "For example, 150000"
 
-#: apps/plea/forms.py:575
+#: apps/plea/forms.py:598
 #: apps/plea/templates/partials/review_company_finances.html:25
 msgid "Net turnover"
 msgstr "Net turnover"
 
-#: apps/plea/forms.py:576
+#: apps/plea/forms.py:599
 msgid "For example, 110000"
 msgstr "For example, 110000"
 
@@ -1029,11 +1065,11 @@ msgstr "Unique reference number (URN)"
 msgid "On page 1, usually at the top."
 msgstr "On page 1, usually at the top."
 
-#: apps/plea/stages.py:522
+#: apps/plea/stages.py:525
 msgid "Your session has timed out"
 msgstr "Your session has timed out"
 
-#: apps/plea/stages.py:536
+#: apps/plea/stages.py:539
 msgid "There seems to have been a problem submitting your plea. Please try again."
 msgstr "There seems to have been a problem submitting your plea. Please try again."
 
@@ -1805,7 +1841,11 @@ msgstr "Total household expenses"
 msgid "Change <span>your other expenses</span>"
 msgstr "Change <span>your other expenses</span>"
 
-#: apps/plea/templates/partials/review_expenses.html:50
+#: apps/plea/templates/partials/review_expenses.html:51
+msgid "Other expenses (not listed)"
+msgstr "Other expenses (not listed)"
+
+#: apps/plea/templates/partials/review_expenses.html:54
 msgid "Total other expenses"
 msgstr "Total other expenses"
 
@@ -2367,16 +2407,3 @@ msgstr "Questions about your pleas?"
 #: make_a_plea/templates/start.html:54
 msgid "Need help using this service?"
 msgstr "Need help using this service?"
-
-#~ msgid "Contact the court by post or email quoting your URN %(urn)s to arrive before %(hearing_date)s."
-#~ msgstr "Contact the court by post or email quoting your URN %(urn)s to arrive before %(hearing_date)s."
-
-#~ msgid "By Post:"
-#~ msgstr "By Post:"
-
-#~ msgid ""
-#~ "Payments must be received on or before the date ordered.<br>\n"
-#~ "        If you want more information about your account contact the court."
-#~ msgstr ""
-#~ "Payments must be received on or before the date ordered.<br>\n"
-#~ "        If you want more information about your account contact the court."

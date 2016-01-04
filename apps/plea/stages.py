@@ -487,6 +487,9 @@ class OtherExpensesStage(FormStage):
 
             total_household = self.all_data["your_expenses"]["total_household_expenses"]
 
+            if clean_data["other_not_listed"]:
+                other_expense_fields.append("other_not_listed_amount")
+
             total_other = sum(float(clean_data[field] or 0) for field in other_expense_fields)
             total_expenses = total_household + total_other
 
