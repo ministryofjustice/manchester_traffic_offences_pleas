@@ -19,9 +19,9 @@ class TestValidators(TestCase):
             court_name="test court",
             court_address="test address",
             court_telephone="0800 MAKEAPLEA",
-            court_email="test@test.com",
-            submission_email="test@test.com",
-            plp_email="test@test.com",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
             enabled=True,
             test_mode=False)
 
@@ -31,9 +31,9 @@ class TestValidators(TestCase):
             court_name="test court",
             court_address="test address",
             court_telephone="0800 MAKEAPLEA",
-            court_email="test@test.com",
-            submission_email="test@test.com",
-            plp_email="test@test.com",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
             enabled=True,
             test_mode=False)
 
@@ -43,9 +43,9 @@ class TestValidators(TestCase):
             court_name="test court",
             court_address="test address",
             court_telephone="0800 MAKEAPLEA",
-            court_email="test@test.com",
-            submission_email="test@test.com",
-            plp_email="test@test.com",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
             enabled=True,
             test_mode=False)
 
@@ -55,9 +55,9 @@ class TestValidators(TestCase):
             court_name="test court",
             court_address="test address",
             court_telephone="0800 MAKEAPLEA",
-            court_email="test@test.com",
-            submission_email="test@test.com",
-            plp_email="test@test.com",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
             enabled=True,
             test_mode=False)
 
@@ -67,9 +67,9 @@ class TestValidators(TestCase):
             court_name="test court",
             court_address="test address",
             court_telephone="0800 MAKEAPLEA",
-            court_email="test@test.com",
-            submission_email="test@test.com",
-            plp_email="test@test.com",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
             enabled=True,
             test_mode=False)
 

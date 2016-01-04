@@ -34,9 +34,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             court_name="test court",
             court_address="test address",
             court_telephone="0800 MAKEAPLEA",
-            court_email="test@test.com",
-            submission_email=True,
-            plp_email="test@test.com",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
             enabled=True,
             test_mode=False)
 
@@ -137,7 +137,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             },
             "review": {
                 "receive_email_updates": True,
-                "email": "test@test.com",
+                "email": "user@example.org",
                 "understand": True,
                 "complete": True
             }
@@ -149,9 +149,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                              court_name="DX Court",
                              court_address="DX Court",
                              court_telephone="0800 MAKEAPLEA",
-                             court_email="test@test.com",
-                             submission_email="test@test.com",
-                             plp_email="test@test.com",
+                             court_email="court@example.org",
+                             submission_email="court@example.org",
+                             plp_email="plp@example.org",
                              enabled=True,
                              test_mode=False,
                              notice_types="both",
@@ -180,9 +180,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                              court_name="DX Court",
                              court_address="DX Court",
                              court_telephone="0800 MAKEAPLEA",
-                             court_email="test@test.com",
-                             submission_email="test@test.com",
-                             plp_email="test@test.com",
+                             court_email="court@example.org",
+                             submission_email="court@example.org",
+                             plp_email="plp@example.org",
                              enabled=True,
                              test_mode=False,
                              notice_types="both",
@@ -204,9 +204,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                              court_name="SJP only court",
                              court_address="test address",
                              court_telephone="0800 MAKEAPLEA",
-                             court_email="test@test.com",
-                             submission_email="test@test.com",
-                             plp_email="test@test.com",
+                             court_email="court@example.org",
+                             submission_email="court@example.org",
+                             plp_email="plp@example.org",
                              enabled=True,
                              test_mode=False,
                              notice_types="sjp")
@@ -229,9 +229,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                              court_name="Non-SJP only court",
                              court_address="test address",
                              court_telephone="0800 MAKEAPLEA",
-                             court_email="test@test.com",
-                             submission_email="test@test.com",
-                             plp_email="test@test.com",
+                             court_email="court@example.org",
+                             submission_email="court@example.org",
+                             plp_email="plp@example.org",
                              enabled=True,
                              test_mode=False,
                              notice_types="non-sjp")
@@ -1103,7 +1103,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form = PleaOnlineForms(self.session, "review")
         form.load(self.request_context)
         form.save({"receive_email_updates": True,
-                   "email": "test@test.com",
+                   "email": "user@example.org",
                    "understand": True},
                   self.request_context)
 
@@ -1246,7 +1246,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form = PleaOnlineForms(fake_session, "review")
         form.load(request_context)
         form.save({"receive_email_updates": True,
-                   "email": "test@test.com",
+                   "email": "user@example.org",
                    "understand": True},
                   request_context)
         response = form.render()
@@ -1338,7 +1338,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form = PleaOnlineForms(fake_session, "review")
         form.load(request_context)
         form.save({"receive_email_updates": True,
-                   "email": "test@test.com",
+                   "email": "user@example.org",
                    "understand": True},
                   request_context)
         response = form.render()
@@ -1861,10 +1861,10 @@ class TestYourExpensesStage(TestMultiPleaFormBase):
             court_name="test court",
             court_address="test address",
             court_telephone="0800 MAKEAPLEA",
-            court_email="test@test.com",
-            submission_email="test@test.com",
-            plp_email="test@test.com",
-            enabled="test@test.com",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
+            enabled=True,
             test_mode=False)
 
         hearing_date = datetime.date.today()+datetime.timedelta(30)

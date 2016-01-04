@@ -27,7 +27,7 @@ SECRET_KEY = "Trdfgjgfghfdgjlfdtr_+@3gvuedrs873w"
 # the test user data directory
 USER_DATA_DIRECTORY = os.path.join(PROJECT_ROOT, 'test_user_data')
 GPG_HOME_DIRECTORY = os.path.join(PROJECT_ROOT, 'test_gpg_home')
-GPG_RECIPIENT = "test@test.com"
+GPG_RECIPIENT = "test@example.org"
 
 TEST_RUNNER = 'make_a_plea.runner.MAPTestRunner'
 

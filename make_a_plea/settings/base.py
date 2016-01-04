@@ -303,7 +303,7 @@ RECEIPT_ADMIN_EMAIL_SUBJECT = "Makeaplea receipt processing script"
 RECEIPT_HEADER_FRAGMENT_CHECK = os.environ.get("RECEIPT_HEADER_FRAGMENT_CHECK", "")
 
 USER_DATA_DIRECTORY = os.environ.get('USER_DATA_DIRECTORY', os.path.abspath(here('../../user_data')))
-GPG_RECIPIENT = os.environ.get('GPG_RECIPIENT', 'test@test.com')
+GPG_RECIPIENT = os.environ.get('GPG_RECIPIENT', 'test@example.org')
 GPG_HOME_DIRECTORY = os.environ.get('GPG_HOME_DIRECTORY', '/home/vagrant/.gnupg/')
 
 ENV_BASE_URL = os.environ.get("ENV_BASE_URL", "")

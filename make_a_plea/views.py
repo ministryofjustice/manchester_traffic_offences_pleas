@@ -127,7 +127,7 @@ def test_template(request):
 
     court_data = {"court_name": "Test Magistrates' court",
                   "court_address": "Test Magistrates' court\nTest address\nSomewhere\nTE57ER",
-                  "court_email": "email@court.com"}
+                  "court_email": "court@example.org"}
 
     if template_name == "complete":
         context.update({"case": case_data, "court": court_data})
@@ -171,7 +171,7 @@ def test_email_attachment(request):
                                     "gross_turnover": "120000",
                                     "net_turnover": "9999"},
                "review": {"receive_email_updates": True,
-                          "email": "test@test.com",
+                          "email": "user@example.org",
                           "understand": True},
                "welsh_language": True}
 
