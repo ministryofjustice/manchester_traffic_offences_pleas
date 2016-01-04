@@ -2,6 +2,9 @@
 
 {% if plea_made_by == "Defendant" %}{% blocktrans count charges=number_of_charges %}Your plea has been sent to the court{% plural %}Your pleas have been sent to the court{% endblocktrans %}{% elif plea_made_by == "Company representative" %}{% blocktrans count charges=number_of_charges %}Your company's plea has been sent to the court{% plural %}Your company's pleas have been sent to the court{% endblocktrans %}{% endif %}
 
+{% blocktrans %}Your URN:{% endblocktrans %} {{ urn|format_urn }}
+{% blocktrans %}You will need to quote this if you contact the court{% endblocktrans %}
+
 ------------------------------------------------------------------------
 
 {% blocktrans %}What happens next:{% endblocktrans %}{% if plea_type == "guilty" or plea_type == "mixed" %}{% if plea_made_by == "Defendant" %}
@@ -20,14 +23,11 @@
 ------------------------------------------------------------------------
 
 {% blocktrans %}Need to change a plea?{% endblocktrans %}
-{% blocktrans with urn=urn|format_urn hearing_date=contact_deadline|parse_date|date:"d/m/Y" %}Contact the court by post or email quoting your URN {{ urn }} to arrive before {{ hearing_date }}.{% endblocktrans %}
+{% blocktrans with court=court_name|safe %}Email {{ court }} quoting your URN.{% endblocktrans %}
 
-{% blocktrans %}The contact details for the court are:{% endblocktrans %}
+{% blocktrans with date=contact_deadline|parse_date|date:"d/m/Y" %}Your email must arrive before {{ date }}.{% endblocktrans %}
 
-{% blocktrans %}By Post:{% endblocktrans %}
-{{ court_address }}
-
-{% blocktrans %}By email:{% endblocktrans %}
+{% blocktrans %}Email:{% endblocktrans %}
 {{ court_email }}
 
 ------------------------------------------------------------------------

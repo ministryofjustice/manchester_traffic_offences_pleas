@@ -125,7 +125,8 @@ def test_template(request):
                  "number_of_charges": int(number_of_charges),
                  "contact_deadline": "2015-11-17"}
 
-    court_data = {"court_address": "Court address\nSome Place\nT357TER",
+    court_data = {"court_name": "Test Magistrates' court",
+                  "court_address": "Test Magistrates' court\nTest address\nSomewhere\nTE57ER",
                   "court_email": "email@court.com"}
 
     if template_name == "complete":
