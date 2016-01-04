@@ -222,24 +222,6 @@ Main styles
 
 
 /*== Complete screen ===============================================*/
-.success-header {
-	margin: 2em 0;
-	padding: 40px;
-	background: $turquoise;
-	color: $white;
-
-	h1,
-	p {
-		@include bold-36();
-		margin: 0;
-	}
-
-	.ticked {
-		padding-left: 40px;
-		background: url(../images/icons/tick.png) 0 7px no-repeat;
-	}
-}
-
 .next-steps {
 	.heading-medium,
 	.heading-small {
