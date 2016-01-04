@@ -8,11 +8,11 @@ TEMPLATE_DEBUG = DEBUG
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('POSTGRES_DB',''),
-        'USER': os.environ.get('POSTGRES_USER', ''),
-        'PASSWORD': os.environ.get('POSTGRES_PASS', ''),
-        'HOST': os.environ.get('POSTGRES_HOST', ''),
-        'PORT': os.environ.get('POSTGRES_PORT', ''),
+        'NAME': os.environ.get('POSTGRES_DB', ''),
+        'USER': os.environ.get('DB_USERNAME', ''),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', ''),
+        'PORT': os.environ.get('DB_PORT', ''),
     }
 }
 
@@ -31,7 +31,7 @@ BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1',
                             'polling_interval': 1,
                             'visibility_timeout': 3600}
 
-ALLOWED_HOSTS = ["localhost:8000", ]
+ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOSTS", "localhost:8000"), ]
 
 # Enable CachedStaticFilesStorage for cache-busting assets
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
@@ -42,6 +42,12 @@ CSRF_COOKIE_SECURE = False
 CELERY_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
 BROKER_URL = os.environ.get("CELERY_BROKER_URL", "SQS://")
 
+#
+# Temporary keys to run collectstatic on docker image build.
+#
+# Override in your environment.
+#
+SECRET_KEY = os.environ.get("SECRET_KEY", "***REMOVED***")
 ENCRYPTED_COOKIE_KEYS = [
-    os.environ["ENCRYPTED_COOKIE_KEY"]
+    os.environ.get("ENCRYPTED_COOKIE_KEY", "***REMOVED***")
 ]
