@@ -217,12 +217,12 @@ msgstr[0] "Your plea"
 msgstr[1] "Your pleas"
 
 #: apps/forms/templates/widgets/plea_radio_field.html:76
-#: apps/plea/forms.py:622 apps/plea/templates/partials/review_plea.html:31
+#: apps/plea/forms.py:621 apps/plea/templates/partials/review_plea.html:31
 msgid "Guilty"
 msgstr "Guilty"
 
 #: apps/forms/templates/widgets/plea_radio_field.html:76
-#: apps/plea/forms.py:623 apps/plea/templates/partials/review_plea.html:33
+#: apps/plea/forms.py:622 apps/plea/templates/partials/review_plea.html:33
 msgid "Not guilty"
 msgstr "Not guilty"
 
@@ -613,8 +613,8 @@ msgid "Enter the company's projected net turnover"
 msgstr "Enter the company's projected net turnover"
 
 #: apps/plea/fields.py:96
-msgid "Tell us if you want to receive email updates about this case"
-msgstr "Tell us if you want to receive email updates about this case"
+msgid "Tell us if you want to receive an email confirming your plea submission"
+msgstr "Tell us if you want to receive an email confirming your plea submission"
 
 #: apps/plea/fields.py:97
 msgid "You must provide an email address if you want to receive email updates about this case"
@@ -962,74 +962,70 @@ msgid "For example, 110000"
 msgstr "For example, 110000"
 
 #: apps/plea/forms.py:605
-msgid "Do you want to receive email updates about your case?"
-msgstr "Do you want to receive email updates about your case?"
+msgid "Do you want to receive an email confirming your plea has been sent to the court?"
+msgstr "Do you want to receive an email confirming your plea has been sent to the court?"
 
-#: apps/plea/forms.py:606
-msgid "We'll use this for all future correspondence as well as contacting you by post."
-msgstr "We'll use this for all future correspondence as well as contacting you by post."
-
-#: apps/plea/forms.py:612
+#: apps/plea/forms.py:611
 msgid "If yes, enter your email address here:"
 msgstr "If yes, enter your email address here:"
 
-#: apps/plea/forms.py:634 apps/plea/templates/partials/review_plea.html:38
+#: apps/plea/forms.py:633 apps/plea/templates/partials/review_plea.html:38
 msgid "Mitigation"
 msgstr "Mitigation"
 
-#: apps/plea/forms.py:636
+#: apps/plea/forms.py:635
 msgid "Is there something you would like the court to consider?"
 msgstr "Is there something you would like the court to consider?"
 
-#: apps/plea/forms.py:640
+#: apps/plea/forms.py:639
 msgid "Not guilty because?"
 msgstr "Not guilty because?"
 
-#: apps/plea/forms.py:642
+#: apps/plea/forms.py:641
 msgid "Why do you believe you are not guilty?"
 msgstr "Why do you believe you are not guilty?"
 
-#: apps/plea/forms.py:650 apps/plea/forms.py:742
+#: apps/plea/forms.py:649 apps/plea/forms.py:741
 msgid "Do you need an interpreter in court?"
 msgstr "Do you need an interpreter in court?"
 
-#: apps/plea/forms.py:657 apps/plea/forms.py:698 apps/plea/forms.py:749
+#: apps/plea/forms.py:656 apps/plea/forms.py:697 apps/plea/forms.py:748
 msgid "If yes, tell us which language (include sign language):"
 msgstr "If yes, tell us which language (include sign language):"
 
-#: apps/plea/forms.py:664
+#: apps/plea/forms.py:663
 msgid "Do you disagree with any evidence from a witness statement in the notice we sent to you?"
 msgstr "Do you disagree with any evidence from a witness statement in the notice we sent to you?"
 
-#: apps/plea/forms.py:669
+#: apps/plea/forms.py:668
 msgid "If yes, tell us the name of the witness (on the top left of the statement) and what you disagree with:"
 msgstr "If yes, tell us the name of the witness (on the top left of the statement) and what you disagree with:"
 
-#: apps/plea/forms.py:677
+#: apps/plea/forms.py:676
 msgid "Do you want to call a defence witness?"
 msgstr "Do you want to call a defence witness?"
 
-#: apps/plea/forms.py:678
+#: apps/plea/forms.py:677
 msgid "Someone who can give evidence in court supporting your case."
 msgstr "Someone who can give evidence in court supporting your case."
 
-#: apps/plea/forms.py:683
+#: apps/plea/forms.py:682
 msgid "If yes, tell us the name, address and date of birth of any witnesses you want to call  to support your case:"
 msgstr "If yes, tell us the name, address and date of birth of any witnesses you want to call  to support your case:"
 
-#: apps/plea/forms.py:691
+#: apps/plea/forms.py:690
 msgid "Does your witness need an interpreter in court?"
 msgstr "Does your witness need an interpreter in court?"
 
-#: apps/plea/forms.py:735
+#: apps/plea/forms.py:734
 msgid "Do you want to come to court to plead guilty?"
 msgstr "Do you want to come to court to plead guilty?"
 
-#: apps/plea/forms.py:774
+#: apps/plea/forms.py:773
 msgid "Unique reference number (URN)"
 msgstr "Unique reference number (URN)"
 
-#: apps/plea/forms.py:777
+#: apps/plea/forms.py:776
 msgid "On page 1, usually at the top."
 msgstr "On page 1, usually at the top."
 
@@ -1779,16 +1775,16 @@ msgid "Position held"
 msgstr "Position held"
 
 #: apps/plea/templates/partials/review_expenses.html:12
-msgid "Change magistrate information"
-msgstr "Change magistrate information"
+msgid "Change <span>magistrate information</span>"
+msgstr "Change <span>magistrate information</span>"
 
 #: apps/plea/templates/partials/review_expenses.html:17
 msgid "Paying a fine would cause me financial problems because"
 msgstr "Paying a fine would cause me financial problems because"
 
 #: apps/plea/templates/partials/review_expenses.html:27
-msgid "Change your household expenses"
-msgstr "Change your household expenses"
+msgid "Change <span>your household expenses</span>"
+msgstr "Change <span>your household expenses</span>"
 
 #: apps/plea/templates/partials/review_expenses.html:32
 msgid "Other contributors to household bills"
@@ -1806,8 +1802,8 @@ msgid "Total household expenses"
 msgstr "Total household expenses"
 
 #: apps/plea/templates/partials/review_expenses.html:45
-msgid "Change your other expenses"
-msgstr "Change your other expenses"
+msgid "Change <span>your other expenses</span>"
+msgstr "Change <span>your other expenses</span>"
 
 #: apps/plea/templates/partials/review_expenses.html:50
 msgid "Total other expenses"
@@ -1820,16 +1816,16 @@ msgid "Your employment status"
 msgstr "Your employment status"
 
 #: apps/plea/templates/partials/review_finances.html:9
-msgid "Change your employment status"
-msgstr "Change your employment status"
+msgid "Change <span>your employment status</span>"
+msgstr "Change <span>your employment status</span>"
 
 #: apps/plea/templates/partials/review_finances.html:14
 msgid "You are"
 msgstr "You are"
 
 #: apps/plea/templates/partials/review_finances.html:24
-msgid "Change your finances"
-msgstr "Change your finances"
+msgid "Change <span>your finances</span>"
+msgstr "Change <span>your finances</span>"
 
 #: apps/plea/templates/partials/review_finances.html:31
 #: apps/plea/templates/partials/review_finances.html:39
@@ -1865,9 +1861,8 @@ msgid "Charge"
 msgstr "Charge"
 
 #: apps/plea/templates/partials/review_plea.html:10
-#, python-format
-msgid "Change your plea for charge %(charge_number)s"
-msgstr "Change your plea for charge %(charge_number)s"
+msgid "Change <span>your plea for charge %(charge_number)s</span>"
+msgstr "Change <span>your plea for charge %(charge_number)s</span>"
 
 #: apps/plea/templates/partials/review_plea.html:42
 msgid "Plead guilty in court"
@@ -2000,12 +1995,12 @@ msgstr[0] "Review the information you’ve given before making your plea."
 msgstr[1] "Review the information you’ve given before making your pleas."
 
 #: apps/plea/templates/review.html:33
-msgid "Change case details"
-msgstr "Change case details"
+msgid "Change <span>case details</span>"
+msgstr "Change <span>case details</span>"
 
 #: apps/plea/templates/review.html:43 apps/plea/templates/review.html.py:48
-msgid "Change your details"
-msgstr "Change your details"
+msgid "Change <span>your details</span>"
+msgstr "Change <span>your details</span>"
 
 #: apps/plea/templates/review.html:72
 msgid "Your employment status and finances"
@@ -2016,8 +2011,8 @@ msgid "Special financial circumstances"
 msgstr "Special financial circumstances"
 
 #: apps/plea/templates/review.html:95
-msgid "Change details"
-msgstr "Change details"
+msgid "Change <span>details</span>"
+msgstr "Change <span>details</span>"
 
 #: apps/plea/templates/review.html:120
 msgid "Important"
