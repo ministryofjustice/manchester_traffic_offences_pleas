@@ -35,8 +35,10 @@ from .standardisers import standardise_urn, format_for_region
 def get_case(urn):
     try:
         return Case.objects.get(urn__iexact=urn, sent=False)
-    except (Case.DoesNotExist, MultipleObjectsReturned):
+    except Case.DoesNotExist:
         return None
+    except MultipleObjectsReturned:
+        return Case.objects.filter(urn__iexact=urn, sent=False)[0]
 
 
 def get_offences(case_data):
@@ -79,6 +81,11 @@ class URNEntryStage(FormStage):
         clean_data = super(URNEntryStage, self).save(form_data, next_step)
 
         if "urn" in clean_data:
+            try:
+                court = Court.objects.get_by_urn(clean_data["urn"])
+            except Court.DoesNotExist:
+                court = None
+
             dv = DataValidation()
             dv.urn_entered = clean_data["urn"]
             dv.urn_standardised = standardise_urn(clean_data["urn"])
@@ -91,20 +98,24 @@ class URNEntryStage(FormStage):
             dv.save()
 
             clean_data["urn"] = standardise_urn(clean_data["urn"])
-
             offences = get_offences(clean_data)
-            if offences:
+            case = get_case(clean_data["urn"])
+            case_type_set = False
+
+            if offences and court.display_case_data:
                 self.all_data.update({"dx": True})
                 self.all_data["case"]["number_of_charges"] = len(offences)
+                self.all_data["notice_type"]["sjp"] = (case.initiation_type == "J")
+                self.all_data["notice_type"]["complete"] = True
+                self.all_data["notice_type"]["auto_set"] = True
+                case_type_set = True
+                self.set_next_step("case")
             else:
+                self.all_data["notice_type"] = {}
+
                 self.all_data.update({"dx": False})
                 if self.all_data.get("case", {}).get("number_of_charges", False):
                     del self.all_data["case"]["number_of_charges"]
-
-            try:
-                court = Court.objects.get_by_urn(clean_data["urn"])
-            except Court.DoesNotExist:
-                court = None
 
             if court is not None:
                 notice_types = court.notice_types
@@ -114,7 +125,7 @@ class URNEntryStage(FormStage):
                         del self.all_data["notice_type"]["auto_set"]
                     except KeyError:
                         pass
-                else:
+                elif not case_type_set:
                     self.all_data["notice_type"]["sjp"] = (notice_types == "sjp")
                     self.all_data["notice_type"]["complete"] = True
                     self.all_data["notice_type"]["auto_set"] = True
