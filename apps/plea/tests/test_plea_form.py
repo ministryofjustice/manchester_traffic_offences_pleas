@@ -1190,6 +1190,13 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         fake_request = self.get_request_mock("/plea/notice_type/")
         request_context = RequestContext(fake_request)
 
+        form = PleaOnlineForms(fake_session, "enter_urn")
+        form.load(request_context)
+        form.save({"urn": "06/AA/0000000/00"},
+                  request_context)
+        response = form.render()
+        self.assertEqual(response.status_code, 302)
+
         form = PleaOnlineForms(fake_session, "notice_type")
         form.load(request_context)
         form.save({"sjp": False},
@@ -1198,13 +1205,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertEqual(response.status_code, 302)
 
         hearing_date = datetime.date.today()+datetime.timedelta(30)
-
-        form = PleaOnlineForms(fake_session, "enter_urn")
-        form.load(request_context)
-        form.save({"urn": "06/AA/0000000/00"},
-                  request_context)
-        response = form.render()
-        self.assertEqual(response.status_code, 302)
 
         form = PleaOnlineForms(fake_session, "case")
         form.load(request_context)
@@ -1271,6 +1271,12 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         request_context = RequestContext(fake_request)
 
+        form = PleaOnlineForms(fake_session, "enter_urn")
+        form.load(request_context)
+        form.save({"urn": "06/AA/0000000/00"},
+                  request_context)
+        response = form.render()
+
         form = PleaOnlineForms(fake_session, "notice_type")
         form.load(request_context)
         form.save({"sjp": False},
@@ -1279,12 +1285,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertEqual(response.status_code, 302)
 
         hearing_date = datetime.date.today()+datetime.timedelta(30)
-
-        form = PleaOnlineForms(fake_session, "enter_urn")
-        form.load(request_context)
-        form.save({"urn": "06/AA/0000000/00"},
-                  request_context)
-        response = form.render()
 
         form = PleaOnlineForms(fake_session, "case")
         form.load(request_context)
