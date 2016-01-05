@@ -4,7 +4,7 @@ from django.conf import settings
 from django import http
 from django.shortcuts import render
 from django.utils.http import is_safe_url
-from django.utils.translation import check_for_language, get_language
+from django.utils.translation import check_for_language, get_language, activate
 from django.views.generic import TemplateView
 
 from waffle.decorators import waffle_switch
@@ -98,6 +98,7 @@ def test_template(request):
     - plea_made_by: defendant|company
     - plea_type: guilty|not_guilty|mixed
     - number_of_charges: (int)
+    - language: en|cy
     """
 
     options = {"template": {"map": {"complete": "complete.html",
@@ -115,6 +116,9 @@ def test_template(request):
     plea_made_by = request.GET.get("plea_made_by", "defendant")
     plea_type = request.GET.get("plea_type", "guilty")
     number_of_charges = request.GET.get("number_of_charges", 1)
+    language = request.GET.get("language", "en")
+
+    activate(language)
 
     template = options["template"][notice][template_name]
 
@@ -181,6 +185,14 @@ def test_email_attachment(request):
 
 @waffle_switch("test_template")
 def test_resulting_email(request):
+    """
+    View to render a dummy version of the resulting email.
+
+    Some parameters can be toggled in the query string:
+    - template: html|txt
+    - language: en|cy
+    """
+
     templates = {"html": "emails/user_resulting.html",
                  "txt": "emails/user_resulting.txt"}
 
@@ -197,7 +209,11 @@ def test_resulting_email(request):
                                    "account_number": "15083002"}}
 
     email_type = request.GET.get("template", "html")
+    language = request.GET.get("language", "en")
+
     template = templates[email_type]
+
+    activate(language)
 
     content_type = "text/plain; charset=utf-8" if email_type == "txt" else "text/html"
 
