@@ -29,20 +29,25 @@ class CommentsStage(FormStage):
             email_data.update({"comments": clean_data})
             email_result = send_feedback_email(email_data)
             if email_result:
-                self.add_message(messages.SUCCESS, _("Your feedback has been submitted"))
-                UserRating.objects.record(self.all_data["service"]["service_satisfaction"], self.all_data["service"]["call_centre_satisfaction"])
+                UserRating.objects.record(self.all_data["service"]["service_satisfaction"],
+                                          self.all_data["service"].get("call_centre_satisfaction", ""))
                 self.set_next_step("complete")
             else:
                 self.add_message(messages.ERROR, '<h1>{}</h1><p>{}</p>'.format(
                     _("Submission Error"),
                     _("There seems to have been a problem submitting your feedback. Please try again.")))
-                self.set_next_step("comments")
 
         return clean_data
 
 
 class CompleteStage(FormStage):
     name = "complete"
-    template = None
+    template = "complete_feedback.html"
     form_class = None
     dependencies = ["service", "comments"]
+
+    def render(self, request_context):
+
+        self.context["feedback_redirect"] = self.all_data.get("feedback_redirect", "/")
+
+        return super(CompleteStage, self).render(request_context)
