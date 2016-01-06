@@ -282,7 +282,7 @@ class YourStatusForm(BaseStageForm):
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
                                 error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
 
-class YourFinancesEmployedForm(BaseStageForm):
+class YourEmploymentEmployedForm(BaseStageForm):
     employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                       choices=PERIOD_CHOICES,
                                                       label=_("How often do you get paid?"),
@@ -303,7 +303,7 @@ class YourFinancesEmployedForm(BaseStageForm):
                                                coerce=to_bool,
                                                error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
-class YourFinancesSelfEmployedForm(BaseStageForm):
+class YourEmploymentSelfEmployedForm(BaseStageForm):
     SE_PERIOD_CHOICES = (("Weekly", _("Weekly")),
                          ("Fortnightly", _("Fortnightly")),
                          ("Monthly", _("Monthly")),
@@ -333,7 +333,7 @@ class YourFinancesSelfEmployedForm(BaseStageForm):
                                                     coerce=to_bool,
                                                     error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
-class YourFinancesBenefitsForm(BaseStageForm):
+class YourEmploymentBenefitsForm(BaseStageForm):
     BEN_PERIOD_CHOICES = (("Weekly", _("Weekly")),
                          ("Fortnightly", _("Fortnightly")),
                          ("Monthly", _("Monthly")),
@@ -375,7 +375,7 @@ class YourFinancesBenefitsForm(BaseStageForm):
                                                          coerce=to_bool,
                                                          error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
-class YourFinancesOtherForm(BaseStageForm):
+class YourEmploymentOtherForm(BaseStageForm):
     other_details = forms.CharField(max_length=500, label=_("Provide details"),
                                     help_text=_("For example, student or retired."),
                                     widget=forms.TextInput(attrs={"class": "form-control"}),
