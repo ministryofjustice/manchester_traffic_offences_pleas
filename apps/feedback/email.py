@@ -7,7 +7,7 @@ from django.template.loader import render_to_string
 
 def send_feedback_email(email_data):
     email_context = {"used_call_centre": email_data["service"]["used_call_centre"],
-                     "call_centre_satisfaction": email_data["service"]["call_centre_satisfaction"],
+                     "call_centre_satisfaction": email_data["service"].get("call_centre_satisfaction", ""),
                      "service_satisfaction": email_data["service"]["service_satisfaction"],
                      "comments": email_data["comments"]["comments"],
                      "email": email_data["comments"]["email"],
@@ -20,7 +20,7 @@ def send_feedback_email(email_data):
                                           email_context),
                          settings.FEEDBACK_EMAIL_FROM,
                          settings.FEEDBACK_EMAIL_TO)
-    
+
     email.content_subtype = "html"
     email.send(fail_silently=False)
 
