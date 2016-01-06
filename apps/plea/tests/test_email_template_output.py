@@ -17,10 +17,10 @@ from ..forms import (URNEntryForm,
                      YourDetailsForm,
                      PleaForm,
                      YourStatusForm,
-                     YourFinancesEmployedForm,
-                     YourFinancesSelfEmployedForm,
-                     YourFinancesBenefitsForm,
-                     YourFinancesOtherForm,
+                     YourEmploymentEmployedForm,
+                     YourEmploymentSelfEmployedForm,
+                     YourEmploymentBenefitsForm,
+                     YourEmploymentOtherForm,
                      HardshipForm,
                      HouseholdExpensesForm,
                      OtherExpensesForm,
@@ -137,10 +137,10 @@ class EmailTemplateTests(TestCase):
         sf = YourStatusForm(status_data)
 
         finances_forms = {
-            "Employed": YourFinancesEmployedForm,
-            "Self-employed": YourFinancesSelfEmployedForm,
-            "Receiving benefits": YourFinancesBenefitsForm,
-            "Other": YourFinancesOtherForm
+            "Employed": YourEmploymentEmployedForm,
+            "Self-employed": YourEmploymentSelfEmployedForm,
+            "Receiving benefits": YourEmploymentBenefitsForm,
+            "Other": YourEmploymentOtherForm
         }
 
         finances_form = finances_forms.get(status_data["you_are"])
@@ -171,7 +171,7 @@ class EmailTemplateTests(TestCase):
                     "your_details": df.cleaned_data,
                     "plea": {"data": [pf.cleaned_data]},
                     "your_status": sf.cleaned_data,
-                    "your_finances": ff.cleaned_data,
+                    "your_employment": ff.cleaned_data,
                     "hardship": hf.cleaned_data,
                     "household_expenses": hef.cleaned_data,
                     "other_expenses": oef.cleaned_data,
@@ -196,8 +196,8 @@ class EmailTemplateTests(TestCase):
             pay_period = ff.cleaned_data.get(prefix + "_pay_period", "Weekly")
             pay_amount = ff.cleaned_data.get(prefix + "_pay_amount", 0)
 
-            data["your_finances"]["weekly_amount"] = calculate_weekly_amount(amount=pay_amount, period=pay_period)
-            data["your_finances"]["hardship"] = ff.cleaned_data.get(prefix + "_hardship", False)
+            data["your_employment"]["weekly_amount"] = calculate_weekly_amount(amount=pay_amount, period=pay_period)
+            data["your_employment"]["hardship"] = ff.cleaned_data.get(prefix + "_hardship", False)
 
             total_household = sum(int(hef.cleaned_data[field] or 0) for field in household_expense_fields)
             total_other = sum(int(oef.cleaned_data[field] or 0) for field in other_expense_fields)
@@ -696,7 +696,7 @@ class EmailTemplateTests(TestCase):
 
     def test_skipped_email_finances_output(self):
         context_data = self.get_context_data()
-        context_data["your_finances"] = {"skipped": True}
+        context_data["your_employment"] = {"skipped": True}
 
         send_plea_email(context_data)
 
@@ -887,7 +887,7 @@ class EmailTemplateTests(TestCase):
     def test_plea_email_with_hardship(self):
         context_data = self.get_context_data()
 
-        context_data["your_finances"]["hardship"] = True
+        context_data["your_employment"]["hardship"] = True
         context_data["your_expenses"] = {}
         context_data["your_expenses"]["other_bill_pays"] = True
         context_data["your_expenses"]["complete"] = True
@@ -960,7 +960,7 @@ class TestCompanyFinancesEmailLogic(TestCase):
                     }
                 ]
             },
-            "your_finances": {
+            "your_employment": {
                 "complete": True,
                 "skipped": True
             },
