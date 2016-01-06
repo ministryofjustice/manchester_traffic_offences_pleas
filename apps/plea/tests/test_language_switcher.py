@@ -132,7 +132,7 @@ class TestLanguage(TestMultiPleaFormBase):
                     }
                 ]
             },
-            "your_finances": {
+            "your_employment": {
                 "complete": True,
                 "you_are": "Employed",
                 "employer_name": "test",

@@ -18,10 +18,10 @@ from .forms import (URNEntryForm,
                     PleaForm,
                     SJPPleaForm,
                     YourStatusForm,
-                    YourFinancesEmployedForm,
-                    YourFinancesSelfEmployedForm,
-                    YourFinancesBenefitsForm,
-                    YourFinancesOtherForm,
+                    YourEmploymentEmployedForm,
+                    YourEmploymentSelfEmployedForm,
+                    YourEmploymentBenefitsForm,
+                    YourEmploymentOtherForm,
                     HardshipForm,
                     HouseholdExpensesForm,
                     OtherExpensesForm,
@@ -251,7 +251,7 @@ class CaseStage(FormStage):
             else:
                 self.set_next_step("company_details", skip=["your_details",
                                                             "your_status",
-                                                            "your_finances",
+                                                            "your_employment",
                                                             "hardship",
                                                             "household_expenses",
                                                             "other_expenses"])
@@ -403,7 +403,7 @@ class PleaStage(IndexedStage):
                 else:
                     if stage_data["none_guilty"]:
                         self.set_next_step("review", skip=["your_status",
-                                                           "your_finances",
+                                                           "your_employment",
                                                            "hardship",
                                                            "household_expenses",
                                                            "other_expenses"])
@@ -430,34 +430,33 @@ class YourStatusStage(FormStage):
     form_class = YourStatusForm
     dependencies = ["notice_type", "case", "your_details", "plea"]
 
-
-class YourFinancesStage(FormStage):
-    name = "your_finances"
-    form_class = YourFinancesEmployedForm
-    template = "your_finances.html"
+class YourEmploymentStage(FormStage):
+    name = "your_employment"
+    form_class = YourEmploymentEmployedForm
+    template = "your_employment.html"
     dependencies = ["notice_type", "case", "your_details", "plea", "your_status"]
 
     def __init__(self, *args, **kwargs):
-        super(YourFinancesStage, self).__init__(*args, **kwargs)
+        super(YourEmploymentStage, self).__init__(*args, **kwargs)
 
         finance_forms = {
-            "Employed": YourFinancesEmployedForm,
-            "Self-employed": YourFinancesSelfEmployedForm,
-            "Receiving benefits": YourFinancesBenefitsForm,
-            "Other": YourFinancesOtherForm
+            "Employed": YourEmploymentEmployedForm,
+            "Self-employed": YourEmploymentSelfEmployedForm,
+            "Receiving benefits": YourEmploymentBenefitsForm,
+            "Other": YourEmploymentOtherForm
         }
 
         try:
-            self.form_class = finance_forms.get(self.all_data["your_status"]["you_are"], YourFinancesEmployedForm)
+            self.form_class = finance_forms.get(self.all_data["your_status"]["you_are"], YourEmploymentEmployedForm)
         except KeyError:
             pass
 
     def load(self, request_context=None):
-        return super(YourFinancesStage, self).load(request_context)
+        return super(YourEmploymentStage, self).load(request_context)
 
     def save(self, form_data, next_step=None):
 
-        clean_data = super(YourFinancesStage, self).save(form_data, next_step)
+        clean_data = super(YourEmploymentStage, self).save(form_data, next_step)
 
         if "complete" in clean_data:
             you_are = self.all_data["your_status"]["you_are"]
@@ -472,10 +471,10 @@ class YourFinancesStage(FormStage):
 
             pay_period = clean_data.get(prefix + "_pay_period", "Weekly")
             pay_amount = clean_data.get(prefix + "_pay_amount", 0)
-            self.all_data["your_finances"]["weekly_amount"] = calculate_weekly_amount(amount=pay_amount, period=pay_period)
+            self.all_data["your_employment"]["weekly_amount"] = calculate_weekly_amount(amount=pay_amount, period=pay_period)
 
             hardship = clean_data.get(prefix + "_hardship", False)
-            self.all_data["your_finances"]["hardship"] = hardship
+            self.all_data["your_employment"]["hardship"] = hardship
 
             if not hardship:
                 self.set_next_step("review", skip=["hardship", "household_expenses", "other_expenses"])
@@ -492,7 +491,7 @@ class HardshipStage(FormStage):
                     "your_details",
                     "plea",
                     "your_status",
-                    "your_finances"]
+                    "your_employment"]
 
 
 class HouseholdExpensesStage(FormStage):
@@ -504,7 +503,7 @@ class HouseholdExpensesStage(FormStage):
                     "your_details",
                     "plea",
                     "your_status",
-                    "your_finances",
+                    "your_employment",
                     "hardship"]
 
     def save(self, form_data, next_step=None):
@@ -532,7 +531,7 @@ class OtherExpensesStage(FormStage):
                     "your_details",
                     "plea",
                     "your_status",
-                    "your_finances",
+                    "your_employment",
                     "hardship",
                     "household_expenses"]
 
@@ -574,7 +573,7 @@ class ReviewStage(FormStage):
                     "company_details",
                     "plea",
                     "your_status",
-                    "your_finances",
+                    "your_employment",
                     "hardship",
                     "household_expenses",
                     "other_expenses",
@@ -617,7 +616,7 @@ class CompleteStage(FormStage):
                     "company_details",
                     "plea",
                     "your_status",
-                    "your_finances",
+                    "your_employment",
                     "hardship",
                     "household_expenses",
                     "other_expenses",

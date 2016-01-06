@@ -116,7 +116,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "complete": True,
                 "you_are": "Employed",
             },
-            "your_finances": {
+            "your_employment": {
                 "complete": True,
             },
             "hardship": {
@@ -306,7 +306,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/plea/company_details/")
 
-    def test_case_stage_redirects_to_your_finances_stage(self):
+    def test_case_stage_redirects_to_your_employment_stage(self):
         form = PleaOnlineForms(self.session, "case")
 
         hearing_date = datetime.date.today()+datetime.timedelta(30)
@@ -551,7 +551,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "your_details": {
                 "complete": True
             },
-            "your_finances": {
+            "your_employment": {
                 "complete": True
             },
             "plea": {
@@ -588,7 +588,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "your_details": {
                 "complete": True
             },
-            "your_finances": {
+            "your_employment": {
                 "complete": True
             },
             "plea": {
@@ -681,9 +681,9 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         response = form.render()
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, "/plea/your_finances/")
+        self.assertEqual(response.url, "/plea/your_employment/")
 
-    def _get_your_finances_stage(self, status="Employed"):
+    def _get_your_employment_stage(self, status="Employed"):
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
         test_data = {
@@ -710,15 +710,15 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             }
         }
 
-        form = PleaOnlineForms(test_data, "your_finances")
+        form = PleaOnlineForms(test_data, "your_employment")
 
         form.load(self.request_context)
 
         return form
 
-    def test_your_finances_employed_option_with_valid_data(self):
+    def test_your_employment_employed_option_with_valid_data(self):
 
-        form = self._get_your_finances_stage(status="Employed")
+        form = self._get_your_employment_stage(status="Employed")
 
         test_data = {
             "employed_pay_period": "Fortnightly",
@@ -730,17 +730,17 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertTrue(form.current_stage.form.is_valid())
 
-    def test_your_finances_self_employed_option_with_required_fields_missing(self):
+    def test_your_employment_self_employed_option_with_required_fields_missing(self):
 
-        form = self._get_your_finances_stage(status="Self-employed")
+        form = self._get_your_employment_stage(status="Self-employed")
 
         form.save({}, self.request_context)
 
         self.assertEqual(len(form.current_stage.form.errors), 3)
 
-    def test_your_finances_self_employed_option_with_valid_data(self):
+    def test_your_employment_self_employed_option_with_valid_data(self):
 
-        form = self._get_your_finances_stage(status="Self-employed")
+        form = self._get_your_employment_stage(status="Self-employed")
 
         test_data = {
             "self_employed_pay_period": "Fortnightly",
@@ -752,17 +752,17 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertTrue(form.current_stage.form.is_valid())
 
-    def test_your_finances_benefits_option_with_required_fields_missing(self):
+    def test_your_employment_benefits_option_with_required_fields_missing(self):
 
-        form = self._get_your_finances_stage(status="Receiving benefits")
+        form = self._get_your_employment_stage(status="Receiving benefits")
 
         form.save({}, self.request_context)
 
         self.assertEqual(len(form.current_stage.form.errors), 5)
 
-    def test_your_finances_benefits_option_with_valid_data(self):
+    def test_your_employment_benefits_option_with_valid_data(self):
 
-        form = self._get_your_finances_stage(status="Receiving benefits")
+        form = self._get_your_employment_stage(status="Receiving benefits")
 
         test_data = {
             "benefits_details": "Some data about my benefits",
@@ -776,17 +776,17 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertTrue(form.current_stage.form.is_valid())
 
-    def test_your_finances_other_option_with_required_fields_missing(self):
+    def test_your_employment_other_option_with_required_fields_missing(self):
 
-        form = self._get_your_finances_stage(status="Other")
+        form = self._get_your_employment_stage(status="Other")
 
         form.save({}, self.request_context)
 
         self.assertEqual(len(form.current_stage.form.errors), 3)
 
-    def test_your_finances_other_option_with_valid_data(self):
+    def test_your_employment_other_option_with_valid_data(self):
 
-        form = self._get_your_finances_stage(status="Other")
+        form = self._get_your_employment_stage(status="Other")
 
         test_data = {
             "other_details": "woo woo woo",
@@ -859,7 +859,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "complete": True,
                 "skipped": True
             },
-            "your_finances":  {
+            "your_employment":  {
                 "complete": True,
                 "skipped": True
             },
@@ -938,7 +938,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
                 "complete": True,
                 "skipped": True
             },
-            "your_finances":  {
+            "your_employment":  {
                 "complete": True,
                 "skipped": True
             },
@@ -998,7 +998,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "your_status": {
                 "complete": True
             },
-            "your_finances":  {
+            "your_employment":  {
                 "complete": True
             },
             "hardship": {
@@ -1090,7 +1090,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             "your_status": {
                 "complete": True
             },
-            "your_finances":  {
+            "your_employment":  {
                 "complete": True
             },
             "hardship":  {
@@ -1448,13 +1448,13 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_your_finances_employed_hardship_redirects_to_hardship(self):
+    def test_your_employment_employed_hardship_redirects_to_hardship(self):
 
         session_data = self.test_session_data
-        fake_request = self.get_request_mock("/plea/your_finances")
+        fake_request = self.get_request_mock("/plea/your_employment")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms(session_data, "your_finances")
+        form = PleaOnlineForms(session_data, "your_employment")
 
         form.load(request_context)
 
@@ -1542,13 +1542,13 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/plea/review/")
 
-    def test_your_finances_employed_no_hardship_redirects_to_review(self):
+    def test_your_employment_employed_no_hardship_redirects_to_review(self):
 
         session_data = self.test_session_data
-        fake_request = self.get_request_mock("/plea/your_finances")
+        fake_request = self.get_request_mock("/plea/your_employment")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms(session_data, "your_finances")
+        form = PleaOnlineForms(session_data, "your_employment")
 
         form.load(request_context)
 
@@ -1565,14 +1565,14 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(response.url, "/plea/review/")
 
-    def test_your_finances_self_employed_hardship_redirects_to_hardship(self):
+    def test_your_employment_self_employed_hardship_redirects_to_hardship(self):
 
         session_data = self.test_session_data
         session_data["your_status"]["you_are"] = "Self-employed"
-        fake_request = self.get_request_mock("/plea/your_finances")
+        fake_request = self.get_request_mock("/plea/your_employment")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms(session_data, "your_finances")
+        form = PleaOnlineForms(session_data, "your_employment")
 
         form.load(request_context)
 
@@ -1588,14 +1588,14 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(response.url, "/plea/hardship/")
 
-    def test_your_finances_self_employed_no_hardship_redirects_to_review(self):
+    def test_your_employment_self_employed_no_hardship_redirects_to_review(self):
 
         session_data = self.test_session_data
         session_data["your_status"]["you_are"] = "Self-employed"
-        fake_request = self.get_request_mock("/plea/your_finances")
+        fake_request = self.get_request_mock("/plea/your_employment")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms(session_data, "your_finances")
+        form = PleaOnlineForms(session_data, "your_employment")
 
         form.load(request_context)
 
@@ -1611,14 +1611,14 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(response.url, "/plea/review/")
 
-    def test_your_finances_benefits_hardship_redirects_to_hardship(self):
+    def test_your_employment_benefits_hardship_redirects_to_hardship(self):
 
         session_data = self.test_session_data
         session_data["your_status"]["you_are"] = "Receiving benefits"
-        fake_request = self.get_request_mock("/plea/your_finances")
+        fake_request = self.get_request_mock("/plea/your_employment")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms(session_data, "your_finances")
+        form = PleaOnlineForms(session_data, "your_employment")
 
         form.load(request_context)
 
@@ -1636,14 +1636,14 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(response.url, "/plea/hardship/")
 
-    def test_your_finances_benefits_no_hardship_redirects_to_review(self):
+    def test_your_employment_benefits_no_hardship_redirects_to_review(self):
 
         session_data = self.test_session_data
         session_data["your_status"]["you_are"] = "Receiving benefits"
-        fake_request = self.get_request_mock("/plea/your_finances")
+        fake_request = self.get_request_mock("/plea/your_employment")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms(session_data, "your_finances")
+        form = PleaOnlineForms(session_data, "your_employment")
 
         form.load(request_context)
 
@@ -1661,14 +1661,14 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(response.url, "/plea/review/")
 
-    def test_your_finances_other_hardship_redirects_to_hardship(self):
+    def test_your_employment_other_hardship_redirects_to_hardship(self):
 
         session_data = self.test_session_data
         session_data["your_status"]["you_are"] = "Other"
-        fake_request = self.get_request_mock("/plea/your_finances")
+        fake_request = self.get_request_mock("/plea/your_employment")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms(session_data, "your_finances")
+        form = PleaOnlineForms(session_data, "your_employment")
 
         form.load(request_context)
 
@@ -1684,14 +1684,14 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(response.url, "/plea/hardship/")
 
-    def test_your_finances_other_no_hardship_redirects_to_review(self):
+    def test_your_employment_other_no_hardship_redirects_to_review(self):
 
         session_data = self.test_session_data
         session_data["your_status"]["you_are"] = "Other"
         fake_request = self.get_request_mock("/plea/your_expenses")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms(session_data, "your_finances")
+        form = PleaOnlineForms(session_data, "your_employment")
 
         form.load(request_context)
 
@@ -1710,7 +1710,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
     def test_expenses_calculations_on_review_page(self):
 
         session_data = self.test_session_data
-        session_data["your_finances"]["hardship"] = True
+        session_data["your_employment"]["hardship"] = True
 
         fake_request = self.get_request_mock("/plea/other_expenses")
         request_context = RequestContext(fake_request)
@@ -1748,10 +1748,10 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         session_data = self.test_session_data
         session_data["your_status"]["you_are"] = "Other"
 
-        fake_request = self.get_request_mock("/plea/your_finances")
+        fake_request = self.get_request_mock("/plea/your_employment")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms(session_data, "your_finances")
+        form = PleaOnlineForms(session_data, "your_employment")
 
         form.load(request_context)
 
@@ -1775,10 +1775,10 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         session_data = self.test_session_data
 
-        fake_request = self.get_request_mock("/plea/your_finances")
+        fake_request = self.get_request_mock("/plea/your_employment")
         request_context = RequestContext(fake_request)
 
-        form = PleaOnlineForms(session_data, "your_finances")
+        form = PleaOnlineForms(session_data, "your_employment")
 
         form.load(request_context)
 
@@ -1818,7 +1818,7 @@ class TestYourExpensesStage(TestMultiPleaFormBase):
 
         hearing_date = datetime.date.today()+datetime.timedelta(30)
 
-        self.fake_request = self.get_request_mock("/plea/your_finances")
+        self.fake_request = self.get_request_mock("/plea/your_employment")
         self.request_context = RequestContext(self.fake_request)
 
         self.test_data = {
@@ -1849,7 +1849,7 @@ class TestYourExpensesStage(TestMultiPleaFormBase):
                     }
                 ]
             },
-            "your_finances":  {
+            "your_employment":  {
                 "complete": True
             },
             "your_expenses": {
