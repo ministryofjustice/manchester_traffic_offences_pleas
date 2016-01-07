@@ -39,3 +39,5 @@ STORE_USER_DATA = True
 ENCRYPTED_COOKIE_KEYS = [
     os.environ["ENCRYPTED_COOKIE_KEY"]
 ]
+
+REDIRECT_START_PAGE = "https://www.gov.uk/make-a-plea"
