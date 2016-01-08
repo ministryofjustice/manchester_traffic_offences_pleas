@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load form_widgets %}
+
+{% block page_title %}{% blocktrans %}Your feedback has been submitted{% endblocktrans %} - {{ block.super }}{% endblock %}
+
+{% block page_content %}
+
+    <header class="success-header" role="alert">
+        <h1 class="ticked">{% blocktrans %}Your feedback has been submitted{% endblocktrans %}</h1>
+    </header>
+
+    <section>
+        <p><a class="button" href="{{ feedback_redirect }}">Finish</a></p>
+    </section>
+
+{% endblock page_content %}
