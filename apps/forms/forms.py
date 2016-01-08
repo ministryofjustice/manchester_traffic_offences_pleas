@@ -69,6 +69,13 @@ class BaseStageForm(forms.Form):
                     if self.split_form is None or self.split_form != dependency_field:
                         self.fields[field].required = test_dependency_match(dependency_field, dependency_value)
 
+                        # If the field is not required anymore, remove its value from the form data to prevent other validation errors
+                        if self.fields[field].required == False:
+                            try:
+                                del self.data[field]
+                            except KeyError:
+                                pass
+
 
 class SplitStageForm(BaseStageForm):
     split_form = forms.CharField(widget=forms.HiddenInput(), required=False)
