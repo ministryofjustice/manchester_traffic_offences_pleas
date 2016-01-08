@@ -73,6 +73,18 @@ class TestValidators(TestCase):
             enabled=True,
             test_mode=False)
 
+        self.court20 = Court.objects.create(
+            court_code="0000",
+            region_code="20",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
+            enabled=True,
+            test_mode=False)
+
     def test_urn_valid_database(self):
         self.court06.validate_urn = True
         self.court06.save()
@@ -95,6 +107,8 @@ class TestValidators(TestCase):
             "05/A1/12345/01",
             "10/A1/12345/01",
             "17/A1/12345/01",
+            "20/AA/12345/01",
+            "20/A1/12345/01",
             "06/AA/12345/99",
             "06/AA/0012345/99",
             "06/bb/1234567/12",
