@@ -1,8 +1,13 @@
 from datetime import datetime
 
 from django.test import TestCase
+from django.test.utils import override_settings
+from django.test.client import RequestFactory
+from mock import Mock
 
 from make_a_plea.serializers import DateAwareSerializer
+
+from views import start
 
 
 class DateAwareSerializerTests(TestCase):
@@ -29,3 +34,33 @@ class DateAwareSerializerTests(TestCase):
 
         ds = DateAwareSerializer().dumps(test_dict)
         self.assertEqual(ds, test_str)
+
+
+class TestStartRedirect(TestCase):
+
+    def get_request_mock(self, url, url_name="", url_kwargs=None):
+        request_factory = RequestFactory()
+
+        if not url_kwargs:
+            url_kwargs = {}
+        request = request_factory.get(url)
+        request.resolver_match = Mock()
+        request.resolver_match.url_name = url_name
+        request.resolver_match.kwargs = url_kwargs
+        return request
+
+    @override_settings(REDIRECT_START_PAGE="http://redirect.test")
+    def test_start_screen_redirects(self):
+        fake_request = self.get_request_mock("/")
+
+        response = start(fake_request)
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response.url, "http://redirect.test")
+
+    def test_start_screen_does_not_redirect(self):
+        fake_request = self.get_request_mock("/")
+
+        response = start(fake_request)
+
+        self.assertEquals(response.status_code, 200)

@@ -9,6 +9,12 @@ from django.views.generic import TemplateView
 
 from waffle.decorators import waffle_switch
 
+def start(request):
+    if hasattr(settings, "REDIRECT_START_PAGE"):
+        return http.HttpResponseRedirect(settings.REDIRECT_START_PAGE)
+
+    return render(request, "start.html")
+
 
 class TranslatedView(TemplateView):
     """

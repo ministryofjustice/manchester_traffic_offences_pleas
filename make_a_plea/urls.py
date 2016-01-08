@@ -9,7 +9,6 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from apps.plea.views import CourtFinderView
 
-
 admin.autodiscover()
 
 
@@ -17,7 +16,7 @@ handler500 = "make_a_plea.views.server_error"
 
 urlpatterns = patterns(
     "",
-    url(r"^$", TemplateView.as_view(template_name="start.html"), name="home"),
+    url(r"^$", views.start, name="home"),
     url(r"^helping-you-plead-online/$", views.TranslatedView.as_view(template_name="ad_support.html"), name="ad_support"),
     url(r"^terms-and-conditions-and-privacy-policy/$", views.TranslatedView.as_view(template_name="terms.html"), name="terms"),
     url(r"^plea/", include("apps.plea.urls", )),
