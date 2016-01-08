@@ -19,10 +19,24 @@ class FeedbackForms(MultiStageForm):
 
 
 class FeedbackViews(StorageView):
+    start = "service"
+
+    def __init__(self, *args, **kwargs):
+        super(FeedbackViews, self).__init__(*args, **kwargs)
+        self.storage = {}
+
+    def dispatch(self, request, *args, **kwargs):
+        self.storage = self.get_storage(request, "feedback_data")
+
+        self.redirect_url = self.storage.get("feedback_redirect", "/")
+
+        # If the session has timed out, redirect to start page
+        if not request.session.get("feedback_data") and kwargs.get("stage", self.start) != self.start:
+            return HttpResponseRedirect(self.redirect_url)
+
+        return super(FeedbackViews, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, stage=None):
-        storage = self.get_storage(request, "feedback_data")
-
         kw_args = {k: v for (k, v) in request.GET.items()}
         if request.GET.get("next"):
             nxt = kw_args.pop("next")
@@ -37,16 +51,16 @@ class FeedbackViews(StorageView):
             else:
                 redirect_url = reverse(nxt)
 
-            storage["feedback_redirect"] = redirect_url
+            self.storage["feedback_redirect"] = redirect_url
 
-        if not storage.get("user_agent"):
-            storage["user_agent"] = request.META["HTTP_USER_AGENT"]
+        if not self.storage.get("user_agent"):
+            self.storage["user_agent"] = request.META["HTTP_USER_AGENT"]
 
         if not stage:
             stage = FeedbackForms.stage_classes[0].name
             return HttpResponseRedirect(reverse_lazy("feedback_form_step", args=(stage,)))
 
-        form = FeedbackForms(storage, stage)
+        form = FeedbackForms(self.storage, stage)
         redirect = form.load(RequestContext(request))
         if redirect:
             return redirect
@@ -54,19 +68,15 @@ class FeedbackViews(StorageView):
         form.process_messages(request)
 
         if stage == "complete":
-            redirect_url = storage.get("feedback_redirect", "/")
             self.clear_storage(request, "feedback_data")
-            return HttpResponseRedirect(redirect_url)
 
         return form.render()
 
     @method_decorator(ratelimit(block=True, rate=settings.RATE_LIMIT))
     def post(self, request, stage):
-        storage = self.get_storage(request, "feedback_data")
-
         nxt = request.GET.get("next", None)
 
-        form = FeedbackForms(storage, stage)
+        form = FeedbackForms(self.storage, stage)
         form.save(request.POST, RequestContext(request), nxt)
         form.process_messages(request)
         request.session.modified = True

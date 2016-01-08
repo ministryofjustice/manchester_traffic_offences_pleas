@@ -1,5 +1,5 @@
 import datetime as dt
-from mock import Mock, patch
+from mock import Mock
 
 from django.core import mail
 from django.test import TestCase
@@ -23,8 +23,7 @@ class FeedbackFormTestCase(TestCase):
             "service": {
                 "complete": True,
                 "used_call_centre": False,
-                "service_satisfaction": 3,
-                "call_centre_satisfaction": 5
+                "service_satisfaction": 3
             },
             "comments": {
                 "complete": True,
@@ -81,6 +80,21 @@ class FeedbackFormTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(form.current_stage.form.errors), 1)
 
+    def test_service_stage_redirects_to_comments(self):
+        form = FeedbackForms(self.empty_session_data, "service")
+        form.load(self.request_context)
+
+        save_data = {
+            "used_call_centre": False,
+            "service_satisfaction": 3
+        }
+        form.save(save_data, self.request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/feedback/comments/")
+
     def test_comments_stage_loads(self):
         session_data = {
             "service": {
@@ -105,34 +119,80 @@ class FeedbackFormTestCase(TestCase):
 
         self.assertEquals(len(mail.outbox), 1)
 
-    @patch("apps.forms.stages.messages")
-    def test_success_message_is_added(self, messages):
-        form = FeedbackForms(self.complete_session_data, "comments")
-        form.save({}, self.request_context)
+    def test_comments_stage_redirects_to_complete(self):
+        session_data = {
+            "service": {
+                "complete": True,
+                "used_call_centre": False,
+                "service_satisfaction": 3
+            }
+        }
 
-        form.process_messages({})
+        form = FeedbackForms(session_data, "comments")
+        form.load(self.request_context)
 
-        self.assertEquals(messages.add_message.call_count, 1)
+        save_data = {
+            "comments": "ra ra ra",
+            "email": "user@example.org"
+        }
+        form.save(save_data, self.request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/feedback/complete/")
+
+    def test_complete_stage_resets_data(self):
+        session_data = {
+            "service": {
+                "complete": True,
+                "used_call_centre": False,
+                "service_satisfaction": 3
+            },
+            "comments": {
+                "complete": True
+            }
+        }
+
+        fake_request = self.get_request_mock("/feedback/complete/")
+        fake_request.session = {"feedback_data": session_data}
+
+        view = FeedbackViews()
+        view.get(fake_request, stage="complete")
+
+        self.assertNotIn("service", view.storage)
+        self.assertNotIn("comments", view.storage)
+
+    def test_complete_stage_has_correct_finish_button_url(self):
+        form = FeedbackForms(self.complete_session_data, "complete")
+        form.load(self.request_context)
+
+        response = form.render()
+
+        self.assertContains(response, 'href="/court-finder/"')
 
     def test_redirect_is_set(self):
         fake_request = self.get_request_mock("/feedback/?next=terms")
-        fake_request.session = {"feedback_data": self.complete_session_data}
 
         view = FeedbackViews()
-        response = view.get(fake_request, stage="complete")
+        view.get(fake_request, stage="service")
 
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(response.url, "/terms-and-conditions-and-privacy-policy/")
+        self.assertEquals(view.storage["feedback_redirect"], "/terms-and-conditions-and-privacy-policy/")
 
-    def test_redirect_is_set_to_home_if_complete_stage(self):
+    def test_redirect_is_set_to_home_for_complete_stage(self):
         fake_request = self.get_request_mock("/feedback/?next=plea_form_step&stage=complete")
-        fake_request.session = {"feedback_data": self.complete_session_data}
 
         view = FeedbackViews()
-        response = view.get(fake_request, stage="complete")
+        view.get(fake_request, stage="complete")
 
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(response.url, "/")
+        self.assertEquals(view.storage["feedback_redirect"], "/")
+
+    def test_complete_stage_redirects_to_start_if_no_session_feedback_data(self):
+        form = FeedbackForms({}, "complete")
+        response = form.load(self.request_context)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/")
 
     def test_user_rating_is_recorded(self):
         form = FeedbackForms(self.complete_session_data, "comments")
