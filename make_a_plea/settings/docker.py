@@ -51,3 +51,5 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "46c4b7f21d407686230bbe39ebd8da2834fe2
 ENCRYPTED_COOKIE_KEYS = [
     os.environ.get("ENCRYPTED_COOKIE_KEY", "12fcb4f3db7032b8260fff87074dd29a71128277")
 ]
+
+STORE_USER_DATA = os.environ.get("STORE_USER_DATA", "") == "True"
