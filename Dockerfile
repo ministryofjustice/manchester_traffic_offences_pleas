@@ -15,6 +15,7 @@ COPY requirements.txt $APP_HOME
 ADD requirements/ $APP_HOME/requirements/
 
 RUN pip install -r requirements.txt
+RUN pip install awscli
 
 RUN mkdir /user_data
 RUN mkdir /user_data/.gnupg
