@@ -9,6 +9,7 @@ from apps.forms.stages import FormStage, IndexedStage
 
 from .email import send_plea_email, get_plea_type
 from .forms import (URNEntryForm,
+                    AuthForm,
                     NoticeTypeForm,
                     CaseForm,
                     SJPCaseForm,
@@ -29,7 +30,7 @@ from .forms import (URNEntryForm,
 
 from .fields import ERROR_MESSAGES
 from .models import Court, Case, Offence, DataValidation
-from .standardisers import standardise_urn, format_for_region
+from .standardisers import standardise_urn, format_for_region, standardise_postcode
 
 
 def get_case(urn):
@@ -70,7 +71,19 @@ def calculate_weekly_amount(amount, period="Weekly"):
         return amount
 
 
-class URNEntryStage(FormStage):
+class SJPChoiceBase(FormStage):
+    def set_next_no_data(self, court):
+        if court.notice_types == "both":
+            self.all_data["notice_type"] = {}
+            self.set_next_step("notice_type")
+        else:
+            self.all_data["notice_type"]["sjp"] = (court.notice_types == "sjp")
+            self.all_data["notice_type"]["complete"] = True
+            self.all_data["notice_type"]["auto_set"] = True
+            self.set_next_step("case")
+
+
+class URNEntryStage(SJPChoiceBase):
     name = "enter_urn"
     storage_key = "case"
     template = "urn_entry.html"
@@ -98,38 +111,13 @@ class URNEntryStage(FormStage):
             dv.save()
 
             clean_data["urn"] = standardise_urn(clean_data["urn"])
-            offences = get_offences(clean_data)
+
             case = get_case(clean_data["urn"])
-            case_type_set = False
 
-            if offences and court.display_case_data:
-                self.all_data.update({"dx": True})
-                self.all_data["case"]["number_of_charges"] = len(offences)
-                self.all_data["notice_type"]["sjp"] = (case.initiation_type == "J")
-                self.all_data["notice_type"]["complete"] = True
-                self.all_data["notice_type"]["auto_set"] = True
-                case_type_set = True
-                self.set_next_step("case")
+            if case and court.display_case_data:
+                self.set_next_step("case_2")
             else:
-                self.all_data["notice_type"] = {}
-
-                self.all_data.update({"dx": False})
-                if self.all_data.get("case", {}).get("number_of_charges", False):
-                    del self.all_data["case"]["number_of_charges"]
-
-            if court is not None:
-                notice_types = court.notice_types
-
-                if notice_types == "both":
-                    try:
-                        del self.all_data["notice_type"]["auto_set"]
-                    except KeyError:
-                        pass
-                elif not case_type_set:
-                    self.all_data["notice_type"]["sjp"] = (notice_types == "sjp")
-                    self.all_data["notice_type"]["complete"] = True
-                    self.all_data["notice_type"]["auto_set"] = True
-                    self.set_next_step("case")
+                self.set_next_no_data(court)
 
         return clean_data
 
@@ -143,6 +131,65 @@ class URNEntryStage(FormStage):
                 pass
 
         return super(URNEntryStage, self).render(request_context)
+
+
+class AuthenticationStage(SJPChoiceBase):
+    name = "case_2"
+    template = "authenticate.html"
+    form_class = AuthForm
+    dependencies = []
+
+    def load(self, request_context=None):
+        return super(AuthenticationStage, self).load(request_context)
+
+    def save(self, form_data, next_step=None):
+        clean_data = super(AuthenticationStage, self).save(form_data, next_step)
+
+        if "number_of_charges" in clean_data:
+            case = get_case(self.all_data["case"]["urn"])
+
+            try:
+                court = Court.objects.get_by_urn(self.all_data["case"]["urn"])
+            except Court.DoesNotExist:
+                court = None
+
+            std_postcode_input = standardise_postcode(clean_data["postcode"])
+            std_postcode_db = standardise_postcode(case.extra_data["PostCode"])
+
+            if case.offences.count() == clean_data["number_of_charges"] and std_postcode_db == std_postcode_input:
+                self.all_data.update({"dx": True})
+
+                self.all_data["notice_type"]["sjp"] = (case.initiation_type == "J")
+                self.all_data["notice_type"]["complete"] = True
+                self.all_data["notice_type"]["auto_set"] = True
+
+                self.all_data["case"]["number_of_charges"] = clean_data["number_of_charges"]
+                if case.initiation_type == "J":
+                    self.all_data["case"]["posting_date"] = case.date_of_hearing
+                else:
+                    self.all_data["case"]["date_of_hearing"] = case.date_of_hearing
+                self.all_data["case"]["contact_deadline"] = case.date_of_hearing
+
+                if case.extra_data.get("OrganisationName", None):
+                    plea_made_by = "Company representative"
+                    self.set_next_step("company_details", skip=["your_details",
+                                                                "your_status",
+                                                                "your_finances",
+                                                                "hardship",
+                                                                "household_expenses",
+                                                                "other_expenses"])
+                else:
+                    plea_made_by = "Defendant"
+                    self.set_next_step("your_details", skip=["company_details",
+                                                             "company_finances"])
+
+                self.all_data["case"]["plea_made_by"] = plea_made_by
+                self.all_data["case"]["complete"] = True
+            else:
+                self.all_data.update({"dx": False})
+                self.set_next_no_data(court)
+
+        return clean_data
 
 
 class NoticeTypeStage(FormStage):
@@ -377,6 +424,7 @@ class YourStatusStage(FormStage):
     form_class = YourStatusForm
     dependencies = ["notice_type", "case", "your_details", "plea"]
 
+
 class YourFinancesStage(FormStage):
     name = "your_finances"
     form_class = YourFinancesEmployedForm
@@ -525,6 +573,10 @@ class ReviewStage(FormStage):
                     "household_expenses",
                     "other_expenses",
                     "company_finances"]
+
+    def load(self, request_context=None):
+        super(ReviewStage, self).load(request_context)
+        print self.all_data
 
     def save(self, form_data, next_step=None):
         clean_data = super(ReviewStage, self).save(form_data, next_step)
