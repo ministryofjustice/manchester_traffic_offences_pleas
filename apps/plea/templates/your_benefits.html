@@ -1,0 +1,42 @@
+{% extends "base_form.html" %}
+
+{% load i18n %}
+{% load form_widgets %}
+
+{% block page_title %}{% blocktrans %}Your benefits{% endblocktrans %} - {{ block.super }}{% endblock %}
+
+
+{% block stage_header %}
+    <h1>{% blocktrans %}Your benefits{% endblocktrans %}</h1>
+{% endblock stage_header %}
+
+
+{% block stage_form %}
+
+    {% radio_field form.benefit_type %}
+
+    {% radio_field form.pay_period %}
+
+    {% std_field form.pay_amount prefix="£" wide=True %}
+
+{% endblock stage_form %}
+
+
+{% block body_end %}
+    {{ block.super }}
+
+    <script type="text/javascript">
+    $(function(){
+        var options = {
+            "trigger": "[name=pay_period]",
+            "templates": {
+                "Weekly": "{% blocktrans %}How much is your weekly benefits payment?{% endblocktrans %}",
+                "Fortnightly": "{% blocktrans %}How much is your fortnightly benefits payment?{% endblocktrans %}",
+                "Monthly": "{% blocktrans %}How much is your monthly benefits payment?{% endblocktrans %}"
+            }
+        };
+
+        new moj.Modules._TemplatedElement($('[for=id_pay_amount] .label-text'), options);
+    });
+    </script>
+{% endblock body_end %}

@@ -3,11 +3,11 @@
 {% load i18n %}
 {% load form_widgets %}
 
-{% block page_title %}{% blocktrans %}Your employment{% endblocktrans %} - {{ block.super }}{% endblock %}
+{% block page_title %}{% blocktrans %}Your self-employment{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 
 {% block stage_header %}
-    <h1>{% blocktrans %}Your employment{% endblocktrans %}</h1>
+    <h1>{% blocktrans %}Your self-employment{% endblocktrans %}</h1>
 
     <div class="panel-grey">
         <p>{% blocktrans %}For this type of offence you'll usually have to pay a fine:{% endblocktrans %}</p>
@@ -39,7 +39,8 @@
             "templates": {
                 "Weekly": "{% blocktrans %}What is your weekly take home pay (after tax)?{% endblocktrans %}",
                 "Fortnightly": "{% blocktrans %}What is your fortnightly take home pay (after tax)?{% endblocktrans %}",
-                "Monthly": "{% blocktrans %}What is your monthly take home pay (after tax)?{% endblocktrans %}"
+                "Monthly": "{% blocktrans %}What is your monthly take home pay (after tax)?{% endblocktrans %}",
+                "Other": "{% blocktrans %}What is your average weekly take home pay (after tax)?{% endblocktrans %}"
             }
         };
 
