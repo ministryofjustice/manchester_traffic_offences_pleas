@@ -13,6 +13,7 @@ from apps.forms.views import StorageView
 from .models import Case, Court
 from .forms import CourtFinderForm
 from .stages import (URNEntryStage,
+                     AuthenticationStage,
                      NoticeTypeStage,
                      CaseStage,
                      YourDetailsStage,
@@ -32,6 +33,7 @@ from .fields import ERROR_MESSAGES
 class PleaOnlineForms(MultiStageForm):
     url_name = "plea_form_step"
     stage_classes = [URNEntryStage,
+                     AuthenticationStage,
                      NoticeTypeStage,
                      CaseStage,
                      YourDetailsStage,

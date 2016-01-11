@@ -1,0 +1,25 @@
+{% extends "base_form.html" %}
+
+{% load i18n %}
+{% load form_widgets %}
+{% load static %}
+
+{% block page_title %}{% blocktrans %}Your case continued{% endblocktrans %} - {{ block.super }}{% endblock %}
+
+{% block stage_header %}
+    <h1>{% blocktrans %}Your case continued{% endblocktrans %}</h1>
+{% endblock stage_header %}
+
+{% block stage_form %}
+
+    {% std_field form.number_of_charges %}
+
+    {% std_field form.postcode %}
+
+{% endblock stage_form %}
+
+{% block stage_submit %}
+    <div class="form-submit">
+        <button class="button" type="submit">{% blocktrans %}Continue{% endblocktrans %}</button>
+    </div>
+{% endblock stage_submit %}
