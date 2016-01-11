@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.forms.formsets import formset_factory
 from django.http import Http404
 from django.test import TestCase
+
+from .forms import to_bool, BaseStageForm
 from .stages import MultiStageForm, FormStage
 
 
@@ -28,6 +30,20 @@ class TestForm2(forms.Form):
 
 class TestForm3(forms.Form):
     skip_stage_5 = forms.BooleanField()
+
+
+class TestForm4(BaseStageForm):
+    dependencies = {
+        "field7": {
+            "field": "field6",
+            "value": "True"
+        }
+    }
+
+    field6 = forms.TypedChoiceField(coerce=to_bool,
+                                    choices=((True, "Yes"),
+                                             (False, "No")))
+    field7 = forms.DecimalField(required=True, min_value=10)
 
 
 class Intro(FormStage):
@@ -104,16 +120,23 @@ class Stage5(FormStage):
     dependencies = ["stage_2", "stage_3", "stage_4"]
 
 
+class Stage6(FormStage):
+    name = "stage_6"
+    form_class = TestForm4
+    template = "test/stage.html"
+    dependencies = ["stage_2", "stage_3", "stage_4", "stage_5"]
+
+
 class Review(FormStage):
     name = "review"
     template = "test/review.html"
     form_class = None
-    dependencies = ["stage_2", "stage_3", "stage_4", "stage_5"]
+    dependencies = ["stage_2", "stage_3", "stage_4", "stage_5", "stage_6"]
 
 
 class MultiStageFormTest(MultiStageForm):
     url_name = "msf-url"
-    stage_classes = [Intro, Stage2, Stage3, Stage4, Stage45, Stage5, Review]
+    stage_classes = [Intro, Stage2, Stage3, Stage4, Stage45, Stage5, Stage6, Review]
 
 
 class TestMultiStageForm(TestCase):
@@ -297,6 +320,58 @@ class TestMultiStageForm(TestCase):
         msf.save({"skip_stage_5": False}, request_context)
 
         self.assertNotIn("skipped", msf.all_data["stage_5"])
+
+    @patch("apps.forms.stages.reverse", reverse)
+    def test_form_stage6_field7_required(self):
+        request_context = {}
+        session_data = {"stage_2": {"complete": True},
+                        "stage_3": {"complete": True},
+                        "stage_4": {"complete": True},
+                        "stage_5": {"complete": True}}
+        msf = MultiStageFormTest(session_data, "stage_6")
+        msf.load(request_context)
+        msf.save({"field6": True}, request_context)
+
+        self.assertIn("field7", msf.current_stage.form.errors)
+
+    @patch("apps.forms.stages.reverse", reverse)
+    def test_form_stage6_field7_validates(self):
+        request_context = {}
+        session_data = {"stage_2": {"complete": True},
+                        "stage_3": {"complete": True},
+                        "stage_4": {"complete": True},
+                        "stage_5": {"complete": True}}
+        msf = MultiStageFormTest(session_data, "stage_6")
+        msf.load(request_context)
+        msf.save({"field6": True, "field7": 0}, request_context)
+
+        self.assertIn("field7", msf.current_stage.form.errors)
+
+    @patch("apps.forms.stages.reverse", reverse)
+    def test_form_stage6_field7_not_required(self):
+        request_context = {}
+        session_data = {"stage_2": {"complete": True},
+                        "stage_3": {"complete": True},
+                        "stage_4": {"complete": True},
+                        "stage_5": {"complete": True}}
+        msf = MultiStageFormTest(session_data, "stage_6")
+        msf.load(request_context)
+        msf.save({"field6": False}, request_context)
+
+        self.assertNotIn("field7", msf.current_stage.form.errors)
+
+    @patch("apps.forms.stages.reverse", reverse)
+    def test_form_stage6_field7_suppress_validation_errors(self):
+        request_context = {}
+        session_data = {"stage_2": {"complete": True},
+                        "stage_3": {"complete": True},
+                        "stage_4": {"complete": True},
+                        "stage_5": {"complete": True}}
+        msf = MultiStageFormTest(session_data, "stage_6")
+        msf.load(request_context)
+        msf.save({"field6": False, "field7": 0}, request_context)
+
+        self.assertNotIn("field7", msf.current_stage.form.errors)
 
     @patch("apps.forms.stages.reverse", reverse)
     def test_form_review_unmet_dependencies(self):
