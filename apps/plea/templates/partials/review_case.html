@@ -18,6 +18,11 @@
     <dt>{% blocktrans %}Number of charges{% endblocktrans %}</dt>
     <dd>{{ case.number_of_charges }}</dd>
 
+{% if case.postcode %}
+    <dt>{% blocktrans %}Postcode{% endblocktrans %}</dt>
+    <dd>{{ case.postcode }}</dd>
+{% endif %}
+
     <dt>{% blocktrans %}Plea made by{% endblocktrans %}</dt>
     <dd>{% if case.plea_made_by == "Defendant" %}{% blocktrans %}Person named on the notice{% endblocktrans %}{% else %}{% blocktrans %}Pleading on behalf of a company{% endblocktrans %}{% endif %}</dd>
 

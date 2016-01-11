@@ -62,7 +62,7 @@ class TestURNStageDataBase(TestCase):
                       "complete": {}}
 
         self.urls = OrderedDict((("enter_urn", "enter_urn"),
-                                 ("case_2", "case_2"),
+                                 ("your_case_continued", "your_case_continued"),
                                  ("notice_type", "notice_type"),
                                  ("your_details", "your_details"),
                                  ("your_status", "your_status"),
