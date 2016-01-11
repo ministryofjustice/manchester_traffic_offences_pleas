@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 from django.core import exceptions
 
 from .models import Case, Court
-from .standardisers import standardise_urn
+from .standardisers import standardise_urn, StandardiserNoOutputException
 
 UNFORMATTED_URN_PATTERNS = {
     "02": r"^02TJ[A-Z]{0,2}[0-9]{6,18}[A-Z]{2,5}$",
@@ -50,7 +50,10 @@ def is_date_in_next_6_months(date):
 
 
 def is_urn_valid(urn):
-    urn = standardise_urn(urn)
+    try:
+        urn = standardise_urn(urn)
+    except StandardiserNoOutputException:
+        raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
     pattern = get_pattern(urn)
 
     """
@@ -84,8 +87,10 @@ def is_urn_not_used(urn):
     """
     Check that the urn hasn't already been used in a previous submission
     """
-
-    urn = standardise_urn(urn)
+    try:
+        urn = standardise_urn(urn)
+    except StandardiserNoOutputException:
+        raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
 
     if not Case.objects.can_use_urn(urn):
         raise exceptions.ValidationError("The URN has already been used", code="is_urn_not_used")
