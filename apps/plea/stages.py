@@ -115,8 +115,13 @@ class URNEntryStage(SJPChoiceBase):
             case = get_case(clean_data["urn"])
 
             if case and court.display_case_data:
-                self.set_next_step("case_2")
+                self.set_next_step("your_case_continued")
             else:
+                try:
+                    del self.all_data["case"]["postcode"]
+                except KeyError:
+                    pass
+
                 self.set_next_no_data(court)
 
         return clean_data
@@ -134,7 +139,8 @@ class URNEntryStage(SJPChoiceBase):
 
 
 class AuthenticationStage(SJPChoiceBase):
-    name = "case_2"
+    name = "your_case_continued"
+    storage_key = "case"
     template = "authenticate.html"
     form_class = AuthForm
     dependencies = []
@@ -573,10 +579,6 @@ class ReviewStage(FormStage):
                     "household_expenses",
                     "other_expenses",
                     "company_finances"]
-
-    def load(self, request_context=None):
-        super(ReviewStage, self).load(request_context)
-        print self.all_data
 
     def save(self, form_data, next_step=None):
         clean_data = super(ReviewStage, self).save(form_data, next_step)
