@@ -10,6 +10,10 @@ def format_for_region(urn):
     return format(standardise_urn(urn))
 
 
+def standardise_postcode(postcode):
+    return re.sub(r"[\W_]+", "", postcode).upper()
+
+
 def standardise_urn(urn):
     """
     Strips non-alphanumeric characters from given URN, and
