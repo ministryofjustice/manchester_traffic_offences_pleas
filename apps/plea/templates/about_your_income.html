@@ -3,11 +3,11 @@
 {% load i18n %}
 {% load form_widgets %}
 
-{% block page_title %}{% blocktrans %}Your employment{% endblocktrans %} - {{ block.super }}{% endblock %}
+{% block page_title %}{% blocktrans %}About your income{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 
 {% block stage_header %}
-    <h1>{% blocktrans %}Your employment{% endblocktrans %}</h1>
+    <h1>{% blocktrans %}About your income{% endblocktrans %}</h1>
 
     <div class="panel-grey">
         <p>{% blocktrans %}For this type of offence you'll usually have to pay a fine:{% endblocktrans %}</p>
@@ -17,14 +17,20 @@
             <li>{% blocktrans %}your details will be stored securely by the court{% endblocktrans %}</li>
         </ul>
     </div>
+
+    <h2 class="heading-medium">{% blocktrans %}You've selected 'other' as your employment status{% endblocktrans %}</h2>
 {% endblock stage_header %}
 
 
 {% block stage_form %}
 
+    {% std_field form.income_source %}
+
     {% radio_field form.pay_period %}
 
-    {% std_field form.pay_amount prefix="£" %}
+    {% std_field form.pay_amount prefix="£" wide=True %}
+
+    {% radio_field form.pension_credit inline=True %}
 
 {% endblock stage_form %}
 
@@ -37,9 +43,10 @@
         var options = {
             "trigger": "[name=pay_period]",
             "templates": {
-                "Weekly": "{% blocktrans %}What is your weekly take home pay (after tax)?{% endblocktrans %}",
-                "Fortnightly": "{% blocktrans %}What is your fortnightly take home pay (after tax)?{% endblocktrans %}",
-                "Monthly": "{% blocktrans %}What is your monthly take home pay (after tax)?{% endblocktrans %}"
+                "Weekly": "{% blocktrans %}How much is your weekly take home income (after tax)?{% endblocktrans %}",
+                "Fortnightly": "{% blocktrans %}How much is your fortnightly take home income (after tax)?{% endblocktrans %}",
+                "Monthly": "{% blocktrans %}How much is your monthly take home income (after tax)?{% endblocktrans %}",
+                "Other": "{% blocktrans %}How much is your average weekly take home income (after tax)?{% endblocktrans %}"
             }
         };
 
