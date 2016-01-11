@@ -18,10 +18,13 @@ from .forms import (URNEntryForm,
                     PleaForm,
                     SJPPleaForm,
                     YourStatusForm,
-                    YourEmploymentEmployedForm,
-                    YourEmploymentSelfEmployedForm,
-                    YourEmploymentBenefitsForm,
-                    YourEmploymentOtherForm,
+                    YourEmploymentForm,
+                    YourSelfEmploymentForm,
+                    YourOutOfWorkBenefitsForm,
+                    AboutYourIncomeForm,
+                    YourBenefitsForm,
+                    YourPensionCreditForm,
+                    YourIncomeForm,
                     HardshipForm,
                     HouseholdExpensesForm,
                     OtherExpensesForm,
@@ -424,62 +427,168 @@ class CompanyFinancesStage(FormStage):
     dependencies = ["notice_type", "case", "company_details", "plea"]
 
 
-class YourStatusStage(FormStage):
+class IncomeBaseStage(FormStage):
+    pass
+
+
+class YourStatusStage(IncomeBaseStage):
     name = "your_status"
     template = "your_status.html"
     form_class = YourStatusForm
     dependencies = ["notice_type", "case", "your_details", "plea"]
 
-class YourEmploymentStage(FormStage):
+    def save(self, form_data, next_step=None):
+        clean_data = super(YourStatusStage, self).save(form_data, next_step)
+
+        if "complete" in clean_data:
+            if clean_data["you_are"] == "Employed":
+                self.set_next_step("your_employment", skip=["your_self_employment",
+                                                            "your_out_of_work_benefits",
+                                                            "about_your_income",
+                                                            "your_pension_credit"])
+
+            if clean_data["you_are"] == "Employed and also receiving benefits":
+                self.set_next_step("your_employment", skip=["your_self_employment",
+                                                            "your_out_of_work_benefits",
+                                                            "about_your_income",
+                                                            "your_pension_credit"])
+
+            if clean_data["you_are"] == "Self-employed":
+                self.set_next_step("your_self_employment", skip=["your_employment",
+                                                                 "your_out_of_work_benefits",
+                                                                 "about_your_income",
+                                                                 "your_pension_credit"])
+
+            if clean_data["you_are"] == "Self-employed and also receiving benefits":
+                self.set_next_step("your_self_employment", skip=["your_employment",
+                                                                 "your_out_of_work_benefits",
+                                                                 "about_your_income",
+                                                                 "your_pension_credit"])
+
+            if clean_data["you_are"] == "Receiving out of work benefits":
+                self.set_next_step("your_out_of_work_benefits", skip=["your_employment",
+                                                                      "your_self_employment",
+                                                                      "about_your_income",
+                                                                      "your_benefits",
+                                                                      "your_pension_credit"])
+
+            if clean_data["you_are"] == "Other":
+                self.set_next_step("about_your_income", skip=["your_employment",
+                                                              "your_self_employment",
+                                                              "your_out_of_work_benefits",
+                                                              "your_benefits"])
+
+        return clean_data
+
+
+class YourEmploymentStage(IncomeBaseStage):
     name = "your_employment"
-    form_class = YourEmploymentEmployedForm
+    form_class = YourEmploymentForm
     template = "your_employment.html"
     dependencies = ["notice_type", "case", "your_details", "plea", "your_status"]
 
-    def __init__(self, *args, **kwargs):
-        super(YourEmploymentStage, self).__init__(*args, **kwargs)
-
-        finance_forms = {
-            "Employed": YourEmploymentEmployedForm,
-            "Self-employed": YourEmploymentSelfEmployedForm,
-            "Receiving benefits": YourEmploymentBenefitsForm,
-            "Other": YourEmploymentOtherForm
-        }
-
-        try:
-            self.form_class = finance_forms.get(self.all_data["your_status"]["you_are"], YourEmploymentEmployedForm)
-        except KeyError:
-            pass
-
-    def load(self, request_context=None):
-        return super(YourEmploymentStage, self).load(request_context)
-
     def save(self, form_data, next_step=None):
-
         clean_data = super(YourEmploymentStage, self).save(form_data, next_step)
 
         if "complete" in clean_data:
-            you_are = self.all_data["your_status"]["you_are"]
-
-            prefixes = {
-                "Employed": "employed",
-                "Self-employed": "self_employed",
-                "Receiving benefits": "benefits",
-                "Other": "other"
-            }
-            prefix = prefixes.get(you_are, False)
-
-            pay_period = clean_data.get(prefix + "_pay_period", "Weekly")
-            pay_amount = clean_data.get(prefix + "_pay_amount", 0)
-            self.all_data["your_employment"]["weekly_amount"] = calculate_weekly_amount(amount=pay_amount, period=pay_period)
-
-            hardship = clean_data.get(prefix + "_hardship", False)
-            self.all_data["your_employment"]["hardship"] = hardship
-
-            if not hardship:
-                self.set_next_step("review", skip=["hardship", "household_expenses", "other_expenses"])
+            if self.all_data["your_status"]["you_are"] == "Employed":
+                self.set_next_step("your_income", skip=["your_benefits"])
+            else:
+                self.set_next_step("your_benefits")
 
         return clean_data
+
+
+class YourSelfEmploymentStage(IncomeBaseStage):
+    name = "your_self_employment"
+    form_class = YourSelfEmploymentForm
+    template = "your_self_employment.html"
+    dependencies = ["notice_type", "case", "your_details", "plea", "your_status"]
+
+    def save(self, form_data, next_step=None):
+        clean_data = super(YourSelfEmploymentStage, self).save(form_data, next_step)
+
+        if "complete" in clean_data:
+            if self.all_data["your_status"]["you_are"] == "Self-employed":
+                self.set_next_step("your_income", skip=["your_benefits"])
+            else:
+                self.set_next_step("your_benefits")
+
+        return clean_data
+
+
+class YourOutOfWorkBenefitsStage(IncomeBaseStage):
+    name = "your_out_of_work_benefits"
+    form_class = YourOutOfWorkBenefitsForm
+    template = "your_out_of_work_benefits.html"
+    dependencies = ["notice_type", "case", "your_details", "plea", "your_status"]
+
+    def save(self, form_data, next_step=None):
+        clean_data = super(YourOutOfWorkBenefitsStage, self).save(form_data, next_step)
+
+        if "complete" in clean_data:
+            self.set_next_step("your_income")
+
+        return clean_data
+
+
+class AboutYourIncomeStage(IncomeBaseStage):
+    name = "about_your_income"
+    form_class = AboutYourIncomeForm
+    template = "about_your_income.html"
+    dependencies = ["notice_type", "case", "your_details", "plea", "your_status"]
+
+    def save(self, form_data, next_step=None):
+        clean_data = super(AboutYourIncomeStage, self).save(form_data, next_step)
+
+        if "complete" in clean_data:
+            if clean_data["pension_credit"] == False:
+                self.set_next_step("your_income", skip=["your_pension_credit"])
+            else:
+                self.set_next_step("your_pension_credit")
+
+        return clean_data
+
+
+class YourBenefitsStage(IncomeBaseStage):
+    name = "your_benefits"
+    form_class = YourBenefitsForm
+    template = "your_benefits.html"
+    dependencies = ["notice_type", "case", "your_details", "plea", "your_status",
+                    "your_employment", "your_self_employment"]
+
+    def save(self, form_data, next_step=None):
+        clean_data = super(YourBenefitsStage, self).save(form_data, next_step)
+
+        if "complete" in clean_data:
+            self.set_next_step("your_income")
+
+        return clean_data
+
+
+class YourPensionCreditStage(IncomeBaseStage):
+    name = "your_pension_credit"
+    form_class = YourPensionCreditForm
+    template = "your_pension_credit.html"
+    dependencies = ["notice_type", "case", "your_details", "plea", "your_status",
+                    "about_your_income"]
+
+    def save(self, form_data, next_step=None):
+        clean_data = super(YourPensionCreditStage, self).save(form_data, next_step)
+
+        if "complete" in clean_data:
+            self.set_next_step("your_income")
+
+        return clean_data
+
+
+class YourIncomeStage(IncomeBaseStage):
+    name = "your_income"
+    form_class = YourIncomeForm
+    template = "your_income.html"
+    dependencies = ["notice_type", "case", "your_details", "plea", "your_status",
+                    "your_employment", "your_self_employment", "your_out_of_work_benefits", "about_your_income",
+                    "your_benefits", "your_pension_credit"]
 
 
 class HardshipStage(FormStage):
@@ -491,7 +600,13 @@ class HardshipStage(FormStage):
                     "your_details",
                     "plea",
                     "your_status",
-                    "your_employment"]
+                    "your_employment",
+                    "your_self_employment",
+                    "your_out_of_work_benefits",
+                    "about_your_income",
+                    "your_benefits",
+                    "your_pension_credit",
+                    "your_income"]
 
 
 class HouseholdExpensesStage(FormStage):
@@ -504,6 +619,12 @@ class HouseholdExpensesStage(FormStage):
                     "plea",
                     "your_status",
                     "your_employment",
+                    "your_self_employment",
+                    "your_out_of_work_benefits",
+                    "about_your_income",
+                    "your_benefits",
+                    "your_pension_credit",
+                    "your_income",
                     "hardship"]
 
     def save(self, form_data, next_step=None):
@@ -532,6 +653,12 @@ class OtherExpensesStage(FormStage):
                     "plea",
                     "your_status",
                     "your_employment",
+                    "your_self_employment",
+                    "your_out_of_work_benefits",
+                    "about_your_income",
+                    "your_benefits",
+                    "your_pension_credit",
+                    "your_income",
                     "hardship",
                     "household_expenses"]
 
@@ -574,6 +701,12 @@ class ReviewStage(FormStage):
                     "plea",
                     "your_status",
                     "your_employment",
+                    "your_self_employment",
+                    "your_out_of_work_benefits",
+                    "about_your_income",
+                    "your_benefits",
+                    "your_pension_credit",
+                    "your_income",
                     "hardship",
                     "household_expenses",
                     "other_expenses",
@@ -617,6 +750,12 @@ class CompleteStage(FormStage):
                     "plea",
                     "your_status",
                     "your_employment",
+                    "your_self_employment",
+                    "your_out_of_work_benefits",
+                    "about_your_income",
+                    "your_benefits",
+                    "your_pension_credit",
+                    "your_income",
                     "hardship",
                     "household_expenses",
                     "other_expenses",
