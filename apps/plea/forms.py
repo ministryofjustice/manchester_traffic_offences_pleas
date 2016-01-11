@@ -45,6 +45,23 @@ class URNEntryForm(BaseStageForm):
                                           "is_urn_not_used": ERROR_MESSAGES['URN_ALREADY_USED']})
 
 
+class AuthForm(BaseStageForm):
+    number_of_charges = forms.IntegerField(label=_("Number of charges"),
+                                           help_text=_("How many offences are listed on your notice?"),
+                                           widget=forms.TextInput(attrs={"pattern": "[0-9]*",
+                                                                         "maxlength": "2",
+                                                                         "class": "form-control-inline",
+                                                                         "size": "2"}),
+                                           min_value=1, max_value=10,
+                                           error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]})
+
+    postcode = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+                               label=_("Postcode"),
+                               required=True,
+                               help_text=_("As written on the notice we sent you"),
+                               error_messages={"required": ERROR_MESSAGES["POSTCODE_REQUIRED"]})
+
+
 class NoticeTypeForm(BaseStageForm):
     SJP_CHOICES = ((True, _("Single Justice Procedure Notice")),
                    (False, _("Something else")))
@@ -67,7 +84,7 @@ class BaseCaseForm(BaseStageForm):
                                                                          "maxlength": "2",
                                                                          "class": "form-control-inline",
                                                                          "size": "2"}),
-                                           help_text=_("On the charge sheet, in numbered boxes."),
+                                           help_text=_("How many offences are listed on your notice?"),
                                            min_value=1, max_value=10,
                                            error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]})
 
