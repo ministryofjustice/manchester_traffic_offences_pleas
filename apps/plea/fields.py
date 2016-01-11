@@ -14,7 +14,7 @@ ERROR_MESSAGES = {
     "POSTING_DATE_INVALID": _("The posting date isn't a valid format"),
     "POSTING_DATE_IN_FUTURE": _("The posting date must be before today"),
     "POSTING_DATE_INCORRECT": _("Enter the correct posting date"),
-    "NUMBER_OF_CHARGES_REQUIRED": _("Select the number of charges against you"),
+    "NUMBER_OF_CHARGES_REQUIRED": _("Enter the number of charges against you"),
     "PLEA_MADE_BY_REQUIRED": _("You must tell us if you are the person named in the notice or pleading on behalf of a company"),
     "FIRST_NAME_REQUIRED": _("Enter your first name"),
     "LAST_NAME_REQUIRED": _("Enter your last name"),
@@ -99,5 +99,6 @@ ERROR_MESSAGES = {
     "COMPANY_GROSS_TURNOVER_PROJECTED": _("Enter the company's projected gross turnover"),
     "COMPANY_NET_TURNOVER_PROJECTED": _("Enter the company's projected net turnover"),
     "RECEIVE_EMAIL_UPDATES_REQUIRED": _("Tell us if you want to receive an email confirming your plea submission"),
-    "UPDATES_EMAIL_REQUIRED": _("You must provide an email address if you want to receive email updates about this case")
+    "UPDATES_EMAIL_REQUIRED": _("You must provide an email address if you want to receive email updates about this case"),
+    "POSTCODE_REQUIRED": _("Enter your postcode")
 }

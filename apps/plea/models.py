@@ -250,6 +250,9 @@ class Case(models.Model):
     case_number = models.CharField(max_length=12, null=True, blank=True,
                                    help_text="as supplied by DX")
 
+    date_of_hearing = models.DateField(null=True, blank=True)
+    imported = models.BooleanField(default=False)
+
     ou_code = models.CharField(max_length=10, null=True, blank=True)
     initiation_type = models.CharField(max_length=2, null=False, blank=False, default="Q",
                                        choices=INITIATION_TYPE_CHOICES)

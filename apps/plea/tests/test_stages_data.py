@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from django.test import TestCase
 
-from ..stages import URNEntryStage
+from ..stages import URNEntryStage, AuthenticationStage
 from ..models import Court, Case
 
 
@@ -24,7 +24,8 @@ class TestURNStageDataBase(TestCase):
             urn="06AA0000015",
             case_number="12345",
             ou_code="06",
-            initiation_type="Q")
+            initiation_type="Q",
+            extra_data={"PostCode": "M60 1PR"})
 
         self.case.offences.create(
             offence_code="RT12345",
@@ -42,11 +43,35 @@ class TestURNStageDataBase(TestCase):
 
         self.data = {"enter_urn": {},
                      "notice_type": {},
+                     "your_details": {},
+                     "company_details": {},
                      "case": {},
                      "complete": {}}
 
+        self.data2 = {"enter_urn": {},
+                      "notice_type": {},
+                      "your_details": {},
+                      "your_status": {},
+                      "your_finances": {},
+                      "hardship": {},
+                      "household_expenses": {},
+                      "other_expenses": {},
+                      "company_details": {},
+                      "company_finances": {},
+                      "case": {"urn": "06AA0000015"},
+                      "complete": {}}
+
         self.urls = OrderedDict((("enter_urn", "enter_urn"),
+                                 ("your_case_continued", "your_case_continued"),
                                  ("notice_type", "notice_type"),
+                                 ("your_details", "your_details"),
+                                 ("your_status", "your_status"),
+                                 ("your_finances", "your_finances"),
+                                 ("hardship", "hardship"),
+                                 ("household_expenses", "household_expenses"),
+                                 ("other_expenses", "other_expenses"),
+                                 ("company_details", "company_details"),
+                                 ("company_finances", "company_finances"),
                                  ("case", "case"),
                                  ("complete", "complete")))
 
@@ -91,7 +116,7 @@ class TestURNStageNoData(TestURNStageDataBase):
         self.assertEqual(stage.next_step, "notice_type")
 
 
-class TestURNStageDataCourtSJP(TestURNStageDataBase):
+class TestAuthStageSJP(TestURNStageDataBase):
     def test_data_court_sjp_case_sjp(self):
         """
         Data switched on, court set to SJP, case initiation_type J
@@ -102,10 +127,10 @@ class TestURNStageDataCourtSJP(TestURNStageDataBase):
         self.case.initiation_type = "J"
         self.case.save()
 
-        stage = URNEntryStage(self.urls, self.data)
-        stage.save({"urn": "06AA0000015"})
-        self.assertEqual(stage.next_step, "case")
-        self.assertEqual(self.data["notice_type"]["sjp"], True)
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "your_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], True)
 
     def test_data_court_sjp_case_req(self):
         """
@@ -117,10 +142,10 @@ class TestURNStageDataCourtSJP(TestURNStageDataBase):
         self.case.initiation_type = "Q"
         self.case.save()
 
-        stage = URNEntryStage(self.urls, self.data)
-        stage.save({"urn": "06AA0000015"})
-        self.assertEqual(stage.next_step, "case")
-        self.assertEqual(self.data["notice_type"]["sjp"], False)
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "your_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], False)
 
     def test_data_court_sjp_case_other(self):
         """
@@ -132,13 +157,13 @@ class TestURNStageDataCourtSJP(TestURNStageDataBase):
         self.case.initiation_type = "C"
         self.case.save()
 
-        stage = URNEntryStage(self.urls, self.data)
-        stage.save({"urn": "06AA0000015"})
-        self.assertEqual(stage.next_step, "case")
-        self.assertEqual(self.data["notice_type"]["sjp"], False)
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "your_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], False)
 
 
-class TestURNStageDataCourtMAP(TestURNStageDataBase):
+class TestAuthStageMAP(TestURNStageDataBase):
     def test_data_court_map_case_sjp(self):
         """
         Data switched on, court set to non-SJP, case initiation_type J
@@ -149,10 +174,10 @@ class TestURNStageDataCourtMAP(TestURNStageDataBase):
         self.case.initiation_type = "J"
         self.case.save()
 
-        stage = URNEntryStage(self.urls, self.data)
-        stage.save({"urn": "06AA0000015"})
-        self.assertEqual(stage.next_step, "case")
-        self.assertEqual(self.data["notice_type"]["sjp"], True)
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "your_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], True)
 
     def test_data_court_map_case_req(self):
         """
@@ -164,10 +189,10 @@ class TestURNStageDataCourtMAP(TestURNStageDataBase):
         self.case.initiation_type = "Q"
         self.case.save()
 
-        stage = URNEntryStage(self.urls, self.data)
-        stage.save({"urn": "06AA0000015"})
-        self.assertEqual(stage.next_step, "case")
-        self.assertEqual(self.data["notice_type"]["sjp"], False)
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "your_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], False)
 
     def test_data_court_map_case_other(self):
         """
@@ -179,13 +204,13 @@ class TestURNStageDataCourtMAP(TestURNStageDataBase):
         self.case.initiation_type = "C"
         self.case.save()
 
-        stage = URNEntryStage(self.urls, self.data)
-        stage.save({"urn": "06AA0000015"})
-        self.assertEqual(stage.next_step, "case")
-        self.assertEqual(self.data["notice_type"]["sjp"], False)
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "your_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], False)
 
 
-class TestURNStageDataCourtBoth(TestURNStageDataBase):
+class TestAuthStageBoth(TestURNStageDataBase):
     def test_data_court_both_case_sjp(self):
         """
         Data switched on, court set to both, case initiation_type J
@@ -196,10 +221,10 @@ class TestURNStageDataCourtBoth(TestURNStageDataBase):
         self.case.initiation_type = "J"
         self.case.save()
 
-        stage = URNEntryStage(self.urls, self.data)
-        stage.save({"urn": "06AA0000015"})
-        self.assertEqual(stage.next_step, "case")
-        self.assertEqual(self.data["notice_type"]["sjp"], True)
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "your_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], True)
 
     def test_data_court_both_case_req(self):
         """
@@ -211,10 +236,10 @@ class TestURNStageDataCourtBoth(TestURNStageDataBase):
         self.case.initiation_type = "Q"
         self.case.save()
 
-        stage = URNEntryStage(self.urls, self.data)
-        stage.save({"urn": "06AA0000015"})
-        self.assertEqual(stage.next_step, "case")
-        self.assertEqual(self.data["notice_type"]["sjp"], False)
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "your_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], False)
 
     def test_data_court_both_case_other(self):
         """
@@ -226,7 +251,212 @@ class TestURNStageDataCourtBoth(TestURNStageDataBase):
         self.case.initiation_type = "C"
         self.case.save()
 
-        stage = URNEntryStage(self.urls, self.data)
-        stage.save({"urn": "06AA0000015"})
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "your_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], False)
+
+
+class TestAuthStage(TestURNStageDataBase):
+    def test_wrong_entry_data_disabled_both(self):
+        """
+        Data switched on, court set to both, case initiation_type J
+        """
+        self.court.notice_types = "both"
+        self.court.save()
+
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m331pr", "number_of_charges": 5})
+        self.assertEqual(stage.next_step, "notice_type")
+
+    def test_wrong_entry_data_disabled_SJP(self):
+        """
+        Data switched on, court set to both, case initiation_type J
+        """
+        self.court.notice_types = "sjp"
+        self.court.save()
+
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m331pr", "number_of_charges": 5})
         self.assertEqual(stage.next_step, "case")
-        self.assertEqual(self.data["notice_type"]["sjp"], False)
+        self.assertEqual(self.data2["notice_type"]["sjp"], True)
+
+    def test_wrong_entry_data_disabled_MAP(self):
+        """
+        Data switched on, court set to both, case initiation_type J
+        """
+        self.court.notice_types = "non-sjp"
+        self.court.save()
+
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m331pr", "number_of_charges": 5})
+        self.assertEqual(stage.next_step, "case")
+        self.assertEqual(self.data2["notice_type"]["sjp"], False)
+
+
+class TestCompanyAuthStageSJP(TestURNStageDataBase):
+    def test_data_court_sjp_case_sjp(self):
+        """
+        Data switched on, court set to SJP, case initiation_type J
+        """
+        self.case.extra_data["OrganisationName"] = "Marsh Incorporated"
+        self.case.save()
+
+        self.court.notice_types = "sjp"
+        self.court.save()
+
+        self.case.initiation_type = "J"
+        self.case.save()
+
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "company_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], True)
+
+    def test_data_court_sjp_case_req(self):
+        """
+        Data switched on, court set to SJP, case initiation_type Q
+        """
+        self.case.extra_data["OrganisationName"] = "Marsh Incorporated"
+        self.case.save()
+
+        self.court.notice_types = "sjp"
+        self.court.save()
+
+        self.case.initiation_type = "Q"
+        self.case.save()
+
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "company_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], False)
+
+    def test_data_court_sjp_case_other(self):
+        """
+        Data switched on, court set to SJP, case initiation_type C
+        """
+        self.case.extra_data["OrganisationName"] = "Marsh Incorporated"
+        self.case.save()
+
+        self.court.notice_types = "sjp"
+        self.court.save()
+
+        self.case.initiation_type = "C"
+        self.case.save()
+
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "company_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], False)
+
+
+class TestCompanyAuthStageMAP(TestURNStageDataBase):
+    def test_data_court_map_case_sjp(self):
+        """
+        Data switched on, court set to non-SJP, case initiation_type J
+        """
+        self.case.extra_data["OrganisationName"] = "Marsh Incorporated"
+        self.case.save()
+
+        self.court.notice_types = "non-sjp"
+        self.court.save()
+
+        self.case.initiation_type = "J"
+        self.case.save()
+
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "company_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], True)
+
+    def test_data_court_map_case_req(self):
+        """
+        Data switched on, court set to non-SJP, case initiation_type Q
+        """
+        self.case.extra_data["OrganisationName"] = "Marsh Incorporated"
+        self.case.save()
+
+        self.court.notice_types = "non-sjp"
+        self.court.save()
+
+        self.case.initiation_type = "Q"
+        self.case.save()
+
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "company_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], False)
+
+    def test_data_court_map_case_other(self):
+        """
+        Data switched on, court set to non-SJP, case initiation_type C
+        """
+        self.case.extra_data["OrganisationName"] = "Marsh Incorporated"
+        self.case.save()
+
+        self.court.notice_types = "non-sjp"
+        self.court.save()
+
+        self.case.initiation_type = "C"
+        self.case.save()
+
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "company_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], False)
+
+
+class TestCompanyAuthStageBoth(TestURNStageDataBase):
+    def test_data_court_both_case_sjp(self):
+        """
+        Data switched on, court set to both, case initiation_type J
+        """
+        self.case.extra_data["OrganisationName"] = "Marsh Incorporated"
+        self.case.save()
+
+        self.court.notice_types = "both"
+        self.court.save()
+
+        self.case.initiation_type = "J"
+        self.case.save()
+
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "company_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], True)
+
+    def test_data_court_both_case_req(self):
+        """
+        Data switched on, court set to both, case initiation_type Q
+        """
+        self.case.extra_data["OrganisationName"] = "Marsh Incorporated"
+        self.case.save()
+
+        self.court.notice_types = "both"
+        self.court.save()
+
+        self.case.initiation_type = "Q"
+        self.case.save()
+
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "company_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], False)
+
+    def test_data_court_both_case_other(self):
+        """
+        Data switched on, court set to both, case initiation_type C
+        """
+        self.case.extra_data["OrganisationName"] = "Marsh Incorporated"
+        self.case.save()
+
+        self.court.notice_types = "both"
+        self.court.save()
+
+        self.case.initiation_type = "C"
+        self.case.save()
+
+        stage = AuthenticationStage(self.urls, self.data2)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "company_details")
+        self.assertEqual(self.data2["notice_type"]["sjp"], False)
