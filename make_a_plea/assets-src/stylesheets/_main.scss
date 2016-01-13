@@ -156,8 +156,14 @@ Main styles
 		margin-top: 0;
 	}
 
+	.dl-wrap {
+		clear: both;
+		position: relative;
+	}
 
 	dl {
+		clear: left;
+		padding: 1em 0 0;
 		margin: 0;
 	}
 
@@ -165,23 +171,70 @@ Main styles
 		float: left;
 		clear: left;
 		width: 40%;
-		padding: .625em 5% .625em 0;
+		padding: .625em 0;
 	}
 
 	dd {
 		float: left;
-		width: 55%;
-		margin: 0;
-		padding: .625em 0 .625em;
+		max-width: 55%;
+		padding: .625em 0;
+		margin: 0 0 0 5%;
+
+		&:after {
+			clear: both;
+		}
+	}
+
+	.change-link-dl {
+		@extend .change-link;
+		float: none;
+		padding: 1.625em 0 .625em;
+		position: absolute;
+		top: 0;
+		right: 0;
 	}
 
 	@include media(tablet) {
 		dt {
 			width: 25%;
 		}
-
 		dd {
-			width: 70%;
+			max-width: 70%;
+		}
+	}
+
+	@include media($max-width: 480px) {
+		.change-link {
+			float: none;
+			display: block;
+			margin: 0 0 1em;
+		}
+		dl {
+			padding-top: 0;
+		}
+
+		dt,
+		dd {
+			float: none;
+			width: auto;
+			display: block;
+			padding: 0;
+			margin: 0;
+		}
+
+		dt {
+			margin-top: 1em;
+
+			&:after {
+				content: ":";
+			}
+		}
+
+		.change-link-dl {
+			float: none;
+			position: relative;
+			padding: 0;
+			margin: 0;
 		}
 	}
 }
