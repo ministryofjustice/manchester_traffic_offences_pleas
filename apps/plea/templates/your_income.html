@@ -2,46 +2,49 @@
 
 {% load i18n %}
 {% load form_widgets %}
+{% load humanize %}
 
 {% block page_title %}{% blocktrans %}Your income{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 
 {% block stage_header %}
     <h1>{% blocktrans %}Your income{% endblocktrans %}</h1>
+
+    <div class="totals-panel text">
+        <h2>{% blocktrans %}Totals{% endblocktrans %}</h2>
+
+        <p class="hint">{% blocktrans %}Your fine will be based on what the court considers to be your weekly income, calculated from the information you've provided.{% endblocktrans %}</p>
+    </div>
 {% endblock stage_header %}
 
 
 {% block stage_form %}
 
-    <div class="hint text">
-        <h2>{% blocktrans %}Totals{% endblocktrans %}</h2>
+    <div class="table-wrap">
+        <table class="cookies-table text" role="table">
+            <caption><span class="visuallyhidden">{% blocktrans %}Your income sources and your total weekly income{% endblocktrans %}</span></caption>
+            <tr>
+                <th scope="col">{% blocktrans %}Income source{% endblocktrans %}</th>
+                <th scope="col">{% blocktrans %}Frequency{% endblocktrans %}</th>
+                <th scope="col">{% blocktrans %}Amount (take home){% endblocktrans %}</th>
+                <th></th>
+            </tr>
 
-        <p>{% blocktrans %}Your fine will be based on what the court considers to be your weekly income, calculated from the information you've provided.{% endblocktrans %}</p>
+            {% for key, source in income_sources.items %}
+            <tr>
+                <td scope="row">{% trans source.label %}</td>
+                <td>{% trans source.pay_period %}</td>
+                <td>£{{ source.pay_amount|floatformat:2|intcomma }}</td>
+                <td><a href="{% url "plea_form_step" key %}">{% blocktrans %}Edit{% endblocktrans %}</a></td>
+            </tr>
+            {% endfor %}
+
+            <tr class="no-border">
+                <th colspan="2" scope="row">{% blocktrans %}Total weekly income{% endblocktrans %}</th>
+                <th colspan="2">£{{ your_income.weekly_total|floatformat:2|intcomma }}</th>
+            </tr>
+        </table>
     </div>
-
-    <table class="cookies-table" role="table">
-        <caption><span class="visuallyhidden">{% blocktrans %}Your income sources and the weekly total of your income{% endblocktrans %}</span></caption>
-        <tr>
-            <th scope="col">{% blocktrans %}Income source{% endblocktrans %}</th>
-            <th scope="col">{% blocktrans %}Frequency{% endblocktrans %}</th>
-            <th scope="col">{% blocktrans %}Amount (take home){% endblocktrans %}</th>
-            <th></th>
-        </tr>
-
-        {% for income in income_sources %}
-        <tr>
-            <td scope="row">{% trans income.source %}</td>
-            <td>{% trans income.frequency %}</td>
-            <td>{{ income.amount }}</td>
-            <td><a href="{% url "plea_form_step" income.form_step %}">{% blocktrans %}Edit{% endblocktrans %}</a></td>
-        </tr>
-        {% endfor %}
-
-        <tr class="weekly-total">
-            <th colspan="2" scope="row">{% blocktrans %}Total weekly income{% endblocktrans %}</th>
-            <th colspan="2">£</th>
-        </tr>
-    </table>
 
     {% radio_field form.hardship wide=True inline=True %}
 

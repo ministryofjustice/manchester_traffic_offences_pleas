@@ -167,3 +167,34 @@ p.important {
 		background: #fff;
 	}
 }
+
+
+/*== Tables =====================================*/
+.table-wrap {
+	max-width: 100%;
+	overflow-x: visible;
+	overflow-y: auto;
+}
+
+table {
+	margin-bottom: 2em;
+
+	th, td {
+		@include core-19;
+		vertical-align: top;
+
+		&:last-child {
+			padding-right: 0;
+		}
+	}
+	th {
+		font-weight: 700;
+	}
+
+	.no-border {
+		td,
+		th {
+			border-bottom: none;
+		}
+	}
+}

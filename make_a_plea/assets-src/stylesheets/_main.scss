@@ -94,6 +94,18 @@ Main styles
 	margin-top: 0;
 }
 
+
+/*== Your Income screen =======================*/
+.totals-panel {
+	h2 {
+		@include core-24();
+		margin-bottom: 0;
+	}
+	p {
+		color: $secondary-text-colour;
+	}
+}
+
 /*== Expenses screen =======================================*/
 #expense-summary {
 
@@ -318,16 +330,6 @@ Main styles
 
 /*== Terms ==========================================================*/
 .cookies-table {
-	margin-bottom: 1em;
-
-	th, td {
-		@include core-19;
-		vertical-align: top;
-	}
-	th {
-		font-weight: 700;
-	}
-
 	.name {
 		width: 10%;
 	}

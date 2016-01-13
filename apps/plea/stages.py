@@ -1,3 +1,6 @@
+from __future__ import division
+
+from collections import OrderedDict
 from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.core.exceptions import MultipleObjectsReturned
@@ -428,7 +431,33 @@ class CompanyFinancesStage(FormStage):
 
 
 class IncomeBaseStage(FormStage):
-    pass
+    def add_income_source(self, label, period, amount):
+        try:
+            sources = self.all_data["your_income"]["sources"]
+        except KeyError:
+            sources = OrderedDict()
+
+        if period == "Other":
+            period = "Weekly"
+
+        sources[self.name] = {"label": label,
+                              "pay_period": period,
+                              "pay_amount": amount}
+
+        weekly_total = 0
+        for source in sources:
+            weekly_total += calculate_weekly_amount(sources[source]["pay_amount"],
+                                                    sources[source]["pay_period"])
+
+        self.all_data["your_income"]["sources"] = sources
+        self.all_data["your_income"]["weekly_total"] = weekly_total
+
+    def remove_income_sources(self, sources):
+        for source in sources:
+            try:
+                del self.all_data["your_income"]["sources"][source]
+            except KeyError:
+                pass
 
 
 class YourStatusStage(IncomeBaseStage):
@@ -442,41 +471,52 @@ class YourStatusStage(IncomeBaseStage):
 
         if "complete" in clean_data:
             if clean_data["you_are"] == "Employed":
-                self.set_next_step("your_employment", skip=["your_self_employment",
-                                                            "your_out_of_work_benefits",
-                                                            "about_your_income",
-                                                            "your_pension_credit"])
+                next_stage = "your_employment"
+                skip_stages = ["your_self_employment",
+                               "your_out_of_work_benefits",
+                               "about_your_income",
+                               "your_benefits",
+                               "your_pension_credit"]
 
             if clean_data["you_are"] == "Employed and also receiving benefits":
-                self.set_next_step("your_employment", skip=["your_self_employment",
-                                                            "your_out_of_work_benefits",
-                                                            "about_your_income",
-                                                            "your_pension_credit"])
+                next_stage = "your_employment"
+                skip_stages = ["your_self_employment",
+                               "your_out_of_work_benefits",
+                               "about_your_income",
+                               "your_pension_credit"]
 
             if clean_data["you_are"] == "Self-employed":
-                self.set_next_step("your_self_employment", skip=["your_employment",
-                                                                 "your_out_of_work_benefits",
-                                                                 "about_your_income",
-                                                                 "your_pension_credit"])
+                next_stage = "your_self_employment"
+                skip_stages = ["your_employment",
+                               "your_out_of_work_benefits",
+                               "about_your_income",
+                               "your_benefits",
+                               "your_pension_credit"]
 
             if clean_data["you_are"] == "Self-employed and also receiving benefits":
-                self.set_next_step("your_self_employment", skip=["your_employment",
-                                                                 "your_out_of_work_benefits",
-                                                                 "about_your_income",
-                                                                 "your_pension_credit"])
+                next_stage = "your_self_employment"
+                skip_stages = ["your_employment",
+                               "your_out_of_work_benefits",
+                               "about_your_income",
+                               "your_pension_credit"]
 
             if clean_data["you_are"] == "Receiving out of work benefits":
-                self.set_next_step("your_out_of_work_benefits", skip=["your_employment",
-                                                                      "your_self_employment",
-                                                                      "about_your_income",
-                                                                      "your_benefits",
-                                                                      "your_pension_credit"])
+                next_stage = "your_out_of_work_benefits"
+                skip_stages = ["your_employment",
+                               "your_self_employment",
+                               "about_your_income",
+                               "your_benefits",
+                               "your_pension_credit"]
 
             if clean_data["you_are"] == "Other":
-                self.set_next_step("about_your_income", skip=["your_employment",
-                                                              "your_self_employment",
-                                                              "your_out_of_work_benefits",
-                                                              "your_benefits"])
+                next_stage = "about_your_income"
+                skip_stages = ["your_employment",
+                               "your_self_employment",
+                               "your_out_of_work_benefits",
+                               "your_benefits"]
+
+            self.remove_income_sources(skip_stages)
+            self.set_next_step(next_stage, skip=skip_stages)
 
         return clean_data
 
@@ -491,8 +531,10 @@ class YourEmploymentStage(IncomeBaseStage):
         clean_data = super(YourEmploymentStage, self).save(form_data, next_step)
 
         if "complete" in clean_data:
+            self.add_income_source("Employment", clean_data["pay_period"], clean_data["pay_amount"])
+
             if self.all_data["your_status"]["you_are"] == "Employed":
-                self.set_next_step("your_income", skip=["your_benefits"])
+                self.set_next_step("your_income")
             else:
                 self.set_next_step("your_benefits")
 
@@ -509,8 +551,10 @@ class YourSelfEmploymentStage(IncomeBaseStage):
         clean_data = super(YourSelfEmploymentStage, self).save(form_data, next_step)
 
         if "complete" in clean_data:
+            self.add_income_source("Self-employment", clean_data["pay_period"], clean_data["pay_amount"])
+
             if self.all_data["your_status"]["you_are"] == "Self-employed":
-                self.set_next_step("your_income", skip=["your_benefits"])
+                self.set_next_step("your_income")
             else:
                 self.set_next_step("your_benefits")
 
@@ -527,6 +571,8 @@ class YourOutOfWorkBenefitsStage(IncomeBaseStage):
         clean_data = super(YourOutOfWorkBenefitsStage, self).save(form_data, next_step)
 
         if "complete" in clean_data:
+            self.add_income_source("Benefits", clean_data["pay_period"], clean_data["pay_amount"])
+
             self.set_next_step("your_income")
 
         return clean_data
@@ -543,9 +589,12 @@ class AboutYourIncomeStage(IncomeBaseStage):
 
         if "complete" in clean_data:
             if clean_data["pension_credit"] == False:
+                self.remove_income_sources(["pension_credit"])
                 self.set_next_step("your_income", skip=["your_pension_credit"])
             else:
                 self.set_next_step("your_pension_credit")
+
+            self.add_income_source(clean_data["income_source"], clean_data["pay_period"], clean_data["pay_amount"])
 
         return clean_data
 
@@ -561,6 +610,8 @@ class YourBenefitsStage(IncomeBaseStage):
         clean_data = super(YourBenefitsStage, self).save(form_data, next_step)
 
         if "complete" in clean_data:
+            self.add_income_source("Benefits", clean_data["pay_period"], clean_data["pay_amount"])
+
             self.set_next_step("your_income")
 
         return clean_data
@@ -577,6 +628,7 @@ class YourPensionCreditStage(IncomeBaseStage):
         clean_data = super(YourPensionCreditStage, self).save(form_data, next_step)
 
         if "complete" in clean_data:
+            self.add_income_source("Pension Credit", clean_data["pay_period"], clean_data["pay_amount"])
             self.set_next_step("your_income")
 
         return clean_data
@@ -590,6 +642,18 @@ class YourIncomeStage(IncomeBaseStage):
                     "your_employment", "your_self_employment", "your_out_of_work_benefits", "about_your_income",
                     "your_benefits", "your_pension_credit"]
 
+    def render(self, request_context):
+        sources = self.all_data["your_income"]["sources"]
+        sources_order = ["your_employment",
+                         "your_self_employment",
+                         "your_out_of_work_benefits",
+                         "about_your_income",
+                         "your_benefits",
+                         "your_pension_credit"]
+
+        self.context["income_sources"] = OrderedDict([(k, sources[k]) for k in sources_order if k in sources])
+
+        return super(YourIncomeStage, self).render(request_context)
 
 class HardshipStage(FormStage):
     name = "hardship"
