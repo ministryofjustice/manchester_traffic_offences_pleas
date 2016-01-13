@@ -21,11 +21,6 @@ from .validators import (is_date_in_past,
                          is_urn_valid)
 
 
-PERIOD_CHOICES = (("Weekly", _("Weekly")),
-                  ("Fortnightly", _("Fortnightly")),
-                  ("Monthly", _("Monthly")))
-
-
 def reorder_fields(fields, order):
     for key, v in fields.items():
         if key not in order:
@@ -287,6 +282,10 @@ class YourStatusForm(BaseStageForm):
 
 
 class YourEmploymentForm(BaseStageForm):
+    PERIOD_CHOICES = (("Weekly", _("Weekly")),
+                         ("Fortnightly", _("Fortnightly")),
+                         ("Monthly", _("Monthly")),)
+
     pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                    choices=PERIOD_CHOICES,
                                    label=_("How often do you get paid from your employer?"),
