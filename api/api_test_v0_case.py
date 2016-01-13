@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from rest_framework.reverse import reverse
 from rest_framework.test import (APITestCase, APIRequestFactory, force_authenticate)
 
-from apps.plea.models import Case, Court
+from apps.plea.models import Case, Court, CaseOffenceFilter
 from api.v0.views import CaseViewSet
 
 
@@ -38,6 +38,10 @@ def create_court(region):
         plp_email="plp@example.org",
         enabled=True,
         test_mode=False)
+
+
+def add_white_list(filter, desc):
+    return CaseOffenceFilter.objects.create(filter_match=filter, description=desc)
 
 
 class GeneralAPITestCase(APITestCase):
@@ -72,9 +76,13 @@ class CaseAPICallTestCase(APITestCase):
 
         self.endpoint = reverse('api-v0:case-list', format="json")
 
+        add_white_list("RT01", "Test RT filter")
+        add_white_list("SZ09", "Test RT filter 2")
+
         self.test_data = {
             u'urn': u'00AA0000000',
             u'case_number': '16273482',
+            u'date_of_hearing': u'2016-05-05',
             u'extra_data': {"OrganisationName": "",
                             "Forename1": "Jimmy",
                             "Forename2": "the",
@@ -93,14 +101,14 @@ class CaseAPICallTestCase(APITestCase):
             u'offences': [
                 {
                     u"ou_code": u"test ou",
-                    u"offence_code": u"test",
+                    u"offence_code": u"RT0123",
                     u"offence_short_title": u"test title",
                     u"offence_wording": u"test title",
                     u"offence_seq_number": u"2"
                 },
                 {
                     u"ou_code": u"test ou2",
-                    u"offence_code": u"test",
+                    u"offence_code": u"SZ0987",
                     u"offence_short_title": u"test title",
                     u"offence_wording": u"test title",
                     u"offence_seq_number": u"2"
@@ -176,9 +184,34 @@ class CaseAPICallTestCase(APITestCase):
 
         response = self._post_data(self.test_data)
 
-        case = Case.objects.all()[0]
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "case has no offences")
+        self.assertEquals(Case.objects.count(), 0)
 
-        self.assertEquals(case.offences.all().count(), 0)
+    def test_submission_with_first_non_listed_offence_code(self):
+        self.test_data["offences"][0]["offence_code"] = "DF0987"
+
+        response = self._post_data(self.test_data)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "Case contains offence codes not present in the whitelist")
+
+    def test_submission_with_second_non_listed_offence_code(self):
+        self.test_data["offences"][1]["offence_code"] = "DF0987"
+
+        response = self._post_data(self.test_data)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "Case contains offence codes not present in the whitelist")
+
+    def test_submission_with_both_non_listed_offence_codes(self):
+        self.test_data["offences"][0]["offence_code"] = "DF0987"
+        self.test_data["offences"][1]["offence_code"] = "DF0988"
+
+        response = self._post_data(self.test_data)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "Case contains offence codes not present in the whitelist")
 
     def test_valid_submissions_returns_dict(self):
         response = self._post_data(self.test_data)
