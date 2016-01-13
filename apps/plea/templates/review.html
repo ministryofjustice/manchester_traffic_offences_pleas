@@ -30,10 +30,9 @@
     <section class="review-section" id="case-details">
         <header>
             <h2>{% blocktrans %}Case details{% endblocktrans %}</h2>
-            <a class="change-link" href="{% url "plea_form_step" "enter_urn" %}">{% blocktrans %}Change <span>case details</span>{% endblocktrans %}</a>
         </header>
 
-        {% include "partials/review_case.html" %}
+        {% include "partials/review_case.html" with show_edit_link=True %}
     </section>
 
     <section class="review-section" id="your-details">

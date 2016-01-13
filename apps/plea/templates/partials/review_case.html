@@ -2,28 +2,73 @@
 {% load date testing %}
 {% load urn %}
 
-<dl>
+<div class="dl-wrap">
+    <dl>
+        <dt>{% blocktrans %}Unique reference number{% endblocktrans %}</dt>
+        <dd>{{ case.urn|format_urn }}</dd>
+    </dl>
 
-    <dt>{% blocktrans %}Unique reference number{% endblocktrans %}</dt>
-    <dd>{{ case.urn|format_urn }}</dd>
-
-{% if notice_type.sjp %}
-    <dt>{% blocktrans %}Posting date{% endblocktrans %}</dt>
-    <dd>{{ case.posting_date|parse_date|date:"d/m/Y" }}</dd>
-{% else %}
-    <dt>{% blocktrans %}Court hearing date{% endblocktrans %}</dt>
-    <dd>{{ case.date_of_hearing|parse_date|date:"d/m/Y" }}</dd>
-{% endif %}
-
-    <dt>{% blocktrans %}Number of charges{% endblocktrans %}</dt>
-    <dd>{{ case.number_of_charges }}</dd>
+    {% if show_edit_link %}
+    <a href="{% url "plea_form_step" "enter_urn" %}" class="change-link-dl">{% blocktrans %}Change <span>Unique Reference Number</span>{% endblocktrans %}</a>
+    {% endif %}
+</div>
 
 {% if case.postcode %}
-    <dt>{% blocktrans %}Postcode{% endblocktrans %}</dt>
-    <dd>{{ case.postcode }}</dd>
+    <div class="dl-wrap">
+        <dl>
+            <dt>{% blocktrans %}Number of charges{% endblocktrans %}</dt>
+            <dd>{{ case.number_of_charges }}</dd>
+
+            <dt>{% blocktrans %}Postcode{% endblocktrans %}</dt>
+            <dd>{{ case.postcode }}</dd>
+        </dl>
+
+        {% if show_edit_link %}
+        <a href="{% url "plea_form_step" "your_case_continued" %}" class="change-link-dl">{% blocktrans %}Change <span>number of charges and postcode</span>{% endblocktrans %}</a>
+        {% endif %}
+    </div>
+
+    {% if not dx %}
+    <div class="dl-wrap">
+        <dl>
+            {% if notice_type.sjp %}
+                <dt>{% blocktrans %}Posting date{% endblocktrans %}</dt>
+                <dd>{{ case.posting_date|parse_date|date:"d/m/Y" }}</dd>
+            {% else %}
+                <dt>{% blocktrans %}Court hearing date{% endblocktrans %}</dt>
+                <dd>{{ case.date_of_hearing|parse_date|date:"d/m/Y" }}</dd>
+            {% endif %}
+
+            <dt>{% blocktrans %}You are{% endblocktrans %}</dt>
+            <dd>{% if case.plea_made_by == "Defendant" %}{% blocktrans %}Person named on the notice{% endblocktrans %}{% else %}{% blocktrans %}Pleading on behalf of a company{% endblocktrans %}{% endif %}</dd>
+        </dl>
+
+        {% if show_edit_link %}
+        <a href="{% url "plea_form_step" "case" %}" class="change-link-dl">{% blocktrans %}Change <span>case details</span>{% endblocktrans %}</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+{% else %}
+    <div class="dl-wrap">
+        <dl>
+            {% if notice_type.sjp %}
+                <dt>{% blocktrans %}Posting date{% endblocktrans %}</dt>
+                <dd>{{ case.posting_date|parse_date|date:"d/m/Y" }}</dd>
+            {% else %}
+                <dt>{% blocktrans %}Court hearing date{% endblocktrans %}</dt>
+                <dd>{{ case.date_of_hearing|parse_date|date:"d/m/Y" }}</dd>
+            {% endif %}
+
+            <dt>{% blocktrans %}Number of charges{% endblocktrans %}</dt>
+            <dd>{{ case.number_of_charges }}</dd>
+
+            <dt>{% blocktrans %}You are{% endblocktrans %}</dt>
+            <dd>{% if case.plea_made_by == "Defendant" %}{% blocktrans %}Person named on the notice{% endblocktrans %}{% else %}{% blocktrans %}Pleading on behalf of a company{% endblocktrans %}{% endif %}</dd>
+        </dl>
+
+        {% if show_edit_link %}
+        <a href="{% url "plea_form_step" "case" %}" class="change-link-dl">{% blocktrans %}Change <span>case details</span>{% endblocktrans %}</a>
+        {% endif %}
+    </div>
 {% endif %}
-
-    <dt>{% blocktrans %}Plea made by{% endblocktrans %}</dt>
-    <dd>{% if case.plea_made_by == "Defendant" %}{% blocktrans %}Person named on the notice{% endblocktrans %}{% else %}{% blocktrans %}Pleading on behalf of a company{% endblocktrans %}{% endif %}</dd>
-
-</dl>
