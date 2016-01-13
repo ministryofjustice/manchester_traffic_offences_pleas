@@ -3,11 +3,9 @@ import json
 from django.core import exceptions
 from rest_framework import serializers
 
-from apps.plea.models import Case, UsageStats, Offence, Result, ResultOffence, ResultOffenceData
+from apps.plea.models import Case, UsageStats, Offence, Result, ResultOffence, ResultOffenceData, CaseOffenceFilter
 from apps.plea.standardisers import standardise_urn
 from apps.plea.validators import is_valid_urn_format
-
-from api.validators import validate_case_number
 
 
 class OffenceSerializer(serializers.ModelSerializer):
@@ -26,10 +24,28 @@ class CaseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Case
-        fields = ("offences", "urn", "extra_data",
+        fields = ("offences", "urn", "extra_data", "date_of_hearing",
                   "case_number", "initiation_type", "language")
 
     def validate(self, data):
+        if "date_of_hearing" not in data:
+            raise exceptions.ValidationError("date_of_hearing is a required field")
+
+        if len(data.get("offences", [])) == 0:
+            raise exceptions.ValidationError("case has no offences")
+
+        offence_codes = [offence["offence_code"][:4] for offence in data["offences"]]
+        match = False
+        for offence_code in offence_codes:
+            if CaseOffenceFilter.objects.filter(filter_match__startswith=offence_code).exists():
+                match = True
+            else:
+                match = False
+                break
+
+        if not match:
+            raise exceptions.ValidationError("Case contains offence codes not present in the whitelist")
+
         urn = data.pop("urn")
         std_urn = standardise_urn(urn)
         data["urn"] = std_urn

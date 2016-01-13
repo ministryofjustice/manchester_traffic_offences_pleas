@@ -295,6 +295,11 @@ class Offence(models.Model):
     offence_seq_number = models.CharField(max_length=10, null=True, blank=True)
 
 
+class CaseOffenceFilter(models.Model):
+    filter_match = models.CharField(max_length=20)
+    description = models.CharField(max_length=500, null=True, blank=True)
+
+
 class Result(models.Model):
     case = models.ForeignKey(Case, related_name="results", null=True, blank=True)
     urn = models.CharField(max_length=30, db_index=True)
@@ -514,3 +519,4 @@ class DataValidation(models.Model):
 
     class Meta:
         ordering = ["-date_entered"]
+
