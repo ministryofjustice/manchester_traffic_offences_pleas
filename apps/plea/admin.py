@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from apps.plea.models import (UsageStats, Court,
                               Case, CaseAction,
+                              CaseOffenceFilter,
                               CourtEmailCount,
                               Offence,
                               Result,
@@ -94,6 +95,11 @@ class CaseAdmin(admin.ModelAdmin):
         return obj.offences.count()
 
 
+class OffenceFilterAdmin(admin.ModelAdmin):
+    list_display = ("filter_match", "description")
+    search_fields = ("filter_match", "description")
+
+
 class CourtEmailCountAdmin(admin.ModelAdmin):
     list_display = ("court", "date_sent", "initiation_type", "total_pleas", "total_guilty", "total_not_guilty", "hearing_date", "sent", "processed")
     model = CourtEmailCount
@@ -115,5 +121,6 @@ admin.site.register(UsageStats, UsageStatsAdmin)
 admin.site.register(Court, CourtAdmin)
 admin.site.register(CourtEmailCount, CourtEmailCountAdmin)
 admin.site.register(Case, CaseAdmin)
+admin.site.register(CaseOffenceFilter, OffenceFilterAdmin)
 admin.site.register(Result, ResultAdmin)
 admin.site.register(DataValidation, DataValidationAdmin)
