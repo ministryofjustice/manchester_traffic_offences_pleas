@@ -159,10 +159,13 @@ class AuthenticationStage(SJPChoiceBase):
             except Court.DoesNotExist:
                 court = None
 
-            std_postcode_input = standardise_postcode(clean_data["postcode"])
-            std_postcode_db = standardise_postcode(case.extra_data["PostCode"])
+            std_postcode_input = standardise_postcode(clean_data.get("postcode"))
+            if case.extra_data is not None:
+                std_postcode_db = standardise_postcode(case.extra_data.get("PostCode"))
+            else:
+                std_postcode_db = None
 
-            if case.offences.count() == clean_data["number_of_charges"] and std_postcode_db == std_postcode_input:
+            if case.offences.count() == clean_data["number_of_charges"] and std_postcode_db is not None and std_postcode_db == std_postcode_input:
                 self.all_data.update({"dx": True})
 
                 self.all_data["notice_type"]["sjp"] = (case.initiation_type == "J")
