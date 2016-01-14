@@ -1,5 +1,3 @@
-from __future__ import division
-
 from collections import OrderedDict
 from dateutil.relativedelta import relativedelta
 from django.contrib import messages
@@ -69,6 +67,8 @@ def get_offences(case_data):
 
 
 def calculate_weekly_amount(amount, period="Weekly"):
+    amount = float(amount)
+
     if period == "Monthly":
         return (amount*12)/52
     elif period == "Fortnightly":
@@ -573,6 +573,8 @@ class YourOutOfWorkBenefitsStage(IncomeBaseStage):
         if "complete" in clean_data:
             self.add_income_source("Benefits", clean_data["pay_period"], clean_data["pay_amount"])
 
+            self.all_data["your_income"]["sources"]["your_out_of_work_benefits"].update({"benefit_type": clean_data["benefit_type"]})
+
             self.set_next_step("your_income")
 
         return clean_data
@@ -612,6 +614,8 @@ class YourBenefitsStage(IncomeBaseStage):
         if "complete" in clean_data:
             self.add_income_source("Benefits", clean_data["pay_period"], clean_data["pay_amount"])
 
+            self.all_data["your_income"]["sources"]["your_benefits"].update({"benefit_type": clean_data["benefit_type"]})
+
             self.set_next_step("your_income")
 
         return clean_data
@@ -641,6 +645,15 @@ class YourIncomeStage(IncomeBaseStage):
     dependencies = ["notice_type", "case", "your_details", "plea", "your_status",
                     "your_employment", "your_self_employment", "your_out_of_work_benefits", "about_your_income",
                     "your_benefits", "your_pension_credit"]
+
+    def save(self, form_data, next_step=None):
+        clean_data = super(YourIncomeStage, self).save(form_data, next_step)
+
+        if "complete" in clean_data:
+            if not clean_data["hardship"]:
+                self.set_next_step("review", skip=["hardship", "household_expenses", "other_expenses"])
+
+        return clean_data
 
     def render(self, request_context):
         sources = self.all_data["your_income"]["sources"]

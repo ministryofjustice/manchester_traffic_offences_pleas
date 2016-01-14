@@ -1,0 +1,164 @@
+{% load i18n %}
+{% load humanize %}
+
+<section class="review-subsection">
+    <header>
+        <h3>{% blocktrans %}Your employment status{% endblocktrans %}</h3>
+
+        {% if show_edit_link %}
+        <a class="change-link" href="{% url "plea_form_step" "your_status" %}">{% blocktrans %}Change <span>your employment status</span>{% endblocktrans %}</a>
+        {% endif %}
+    </header>
+
+    <dl>
+        <dt>{% blocktrans %}You are{% endblocktrans %}</dt>
+        <dd>{% trans your_status.you_are %}</dd>
+    </dl>
+</section>
+
+{% if your_income.sources.your_employment %}
+    <section class="review-subsection">
+        <header>
+            <h3>{% blocktrans %}Your employment{% endblocktrans %}</h3>
+
+            {% if show_edit_link %}
+            <a class="change-link" href="{% url "plea_form_step" "your_employment" %}">{% blocktrans %}Change <span>your employment</span>{% endblocktrans %}</a>
+            {% endif %}
+        </header>
+
+        <dl>
+            <dt>{% blocktrans %}You get paid{% endblocktrans %}</dt>
+            <dd>{% trans your_income.sources.your_employment.pay_period %}</dd>
+
+            <dt>{% blocktrans %}Amount{% endblocktrans %}</dt>
+            <dd>£{{ your_income.sources.your_employment.pay_amount|floatformat:2|intcomma }}</dd>
+        </dl>
+    </section>
+{% endif %}
+
+{% if your_income.sources.your_self_employment %}
+    <section class="review-subsection">
+        <header>
+            <h3>{% blocktrans %}Your self-employment{% endblocktrans %}</h3>
+
+            {% if show_edit_link %}
+            <a class="change-link" href="{% url "plea_form_step" "your_self_employment" %}">{% blocktrans %}Change <span>your self-employment</span>{% endblocktrans %}</a>
+            {% endif %}
+        </header>
+
+        <dl>
+            <dt>{% blocktrans %}You get paid{% endblocktrans %}</dt>
+            <dd>{% trans your_income.sources.your_self_employment.pay_period %}</dd>
+
+            <dt>{% blocktrans %}Amount{% endblocktrans %}</dt>
+            <dd>£{{ your_income.sources.your_self_employment.pay_amount|floatformat:2|intcomma }}</dd>
+        </dl>
+    </section>
+{% endif %}
+
+{% if your_income.sources.your_out_of_work_benefits %}
+    <section class="review-subsection">
+        <header>
+            <h3>{% blocktrans %}Your out of work benefits{% endblocktrans %}</h3>
+
+            {% if show_edit_link %}
+            <a class="change-link" href="{% url "plea_form_step" "your_out_of_work_benefits" %}">{% blocktrans %}Change <span>your out of work benefits</span>{% endblocktrans %}</a>
+            {% endif %}
+        </header>
+
+        <dl>
+            <dt>{% blocktrans %}You receive{% endblocktrans %}</dt>
+            <dd>{% trans your_income.sources.your_out_of_work_benefits.benefit_type %}</dd>
+
+            <dt>{% blocktrans %}Your benefit is paid{% endblocktrans %}</dt>
+            <dd>{% trans your_income.sources.your_out_of_work_benefits.pay_period %}</dd>
+
+            <dt>{% blocktrans %}Amount{% endblocktrans %}</dt>
+            <dd>£{{ your_income.sources.your_out_of_work_benefits.pay_amount|floatformat:2|intcomma }}</dd>
+        </dl>
+    </section>
+{% endif %}
+
+{% if your_income.sources.about_your_income %}
+    <section class="review-subsection">
+        <header>
+            <h3>{% blocktrans %}Your income{% endblocktrans %}</h3>
+
+            {% if show_edit_link %}
+            <a class="change-link" href="{% url "plea_form_step" "about_your_income" %}">{% blocktrans %}Change <span>your income</span>{% endblocktrans %}</a>
+            {% endif %}
+        </header>
+
+        <dl>
+            <dt>{% blocktrans %}Source{% endblocktrans %}</dt>
+            <dd>{{ your_income.sources.about_your_income.label }}</dd>
+
+            <dt>{% blocktrans %}Your get paid{% endblocktrans %}</dt>
+            <dd>{% trans your_income.sources.about_your_income.pay_period %}</dd>
+
+            <dt>{% blocktrans %}Amount{% endblocktrans %}</dt>
+            <dd>£{{ your_income.sources.about_your_income.pay_amount|floatformat:2|intcomma }}</dd>
+        </dl>
+    </section>
+{% endif %}
+
+{% if your_income.sources.your_benefits %}
+    <section class="review-subsection">
+        <header>
+            <h3>{% blocktrans %}Your benefits{% endblocktrans %}</h3>
+
+            {% if show_edit_link %}
+            <a class="change-link" href="{% url "plea_form_step" "your_benefits" %}">{% blocktrans %}Change <span>your benefits</span>{% endblocktrans %}</a>
+            {% endif %}
+        </header>
+
+        <dl>
+            <dt>{% blocktrans %}You receive{% endblocktrans %}</dt>
+            <dd>{% trans your_income.sources.your_benefits.benefit_type %}</dd>
+
+            <dt>{% blocktrans %}Your benefits are paid{% endblocktrans %}</dt>
+            <dd>{% trans your_income.sources.your_benefits.pay_period %}</dd>
+
+            <dt>{% blocktrans %}Amount{% endblocktrans %}</dt>
+            <dd>£{{ your_income.sources.your_benefits.pay_amount|floatformat:2|intcomma }}</dd>
+        </dl>
+    </section>
+{% endif %}
+
+{% if your_income.sources.your_pension_credit %}
+    <section class="review-subsection">
+        <header>
+            <h3>{% blocktrans %}Your Pension Credit{% endblocktrans %}</h3>
+
+            {% if show_edit_link %}
+            <a class="change-link" href="{% url "plea_form_step" "your_pension_credit" %}">{% blocktrans %}Change <span>your Pension Credit</span>{% endblocktrans %}</a>
+            {% endif %}
+        </header>
+
+        <dl>
+            <dt>{% blocktrans %}Paid{% endblocktrans %}</dt>
+            <dd>{% trans your_income.sources.your_pension_credit.pay_period %}</dd>
+
+            <dt>{% blocktrans %}Amount{% endblocktrans %}</dt>
+            <dd>£{{ your_income.sources.your_pension_credit.pay_amount|floatformat:2|intcomma }}</dd>
+        </dl>
+    </section>
+{% endif %}
+
+<section class="review-subsection">
+    <header>
+        <h3>{% blocktrans %}Total weekly income{% endblocktrans %}</h3>
+
+        {% if show_edit_link %}
+        <a class="change-link" href="{% url "plea_form_step" "your_income" %}">{% blocktrans %}Change <span>your income</span>{% endblocktrans %}</a>
+        {% endif %}
+    </header>
+
+    <dl>
+        <dt>{% blocktrans %}Amount{% endblocktrans %}</dt>
+        <dd>£{{ your_income.weekly_total|floatformat:2|intcomma }}</dd>
+
+        <dt>{% blocktrans %}Financial hardship{% endblocktrans %}</dt>
+        <dd>{{ your_income.hardship|yesno:_("Yes,No (v3)") }}</dd>
+    </dl>
+</section>
