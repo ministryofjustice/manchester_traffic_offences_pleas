@@ -41,6 +41,26 @@ class TestURNStageDataBase(TestCase):
             offence_seq_number="002"
         )
 
+        self.case_no_data = Case.objects.create(
+            urn="06AA0000115",
+            case_number="12346",
+            ou_code="06",
+            initiation_type="Q")
+
+        self.case_no_data.offences.create(
+            offence_code="RT12345",
+            offence_short_title="Some Traffic problem",
+            offence_wording="On the 30th December 2015 ... blah blah",
+            offence_seq_number="001"
+        )
+
+        self.case_no_data.offences.create(
+            offence_code="RT12346",
+            offence_short_title="Some Other Traffic problem",
+            offence_wording="On the 31st December 2015 ... blah blah",
+            offence_seq_number="002"
+        )
+
         self.data = {"enter_urn": {},
                      "notice_type": {},
                      "your_details": {},
@@ -61,6 +81,19 @@ class TestURNStageDataBase(TestCase):
                       "case": {"urn": "06AA0000015"},
                       "complete": {}}
 
+        self.data3 = {"enter_urn": {},
+                      "notice_type": {},
+                      "your_details": {},
+                      "your_status": {},
+                      "your_finances": {},
+                      "hardship": {},
+                      "household_expenses": {},
+                      "other_expenses": {},
+                      "company_details": {},
+                      "company_finances": {},
+                      "case": {"urn": "06AA0000115"},
+                      "complete": {}}
+
         self.urls = OrderedDict((("enter_urn", "enter_urn"),
                                  ("your_case_continued", "your_case_continued"),
                                  ("notice_type", "notice_type"),
@@ -74,6 +107,13 @@ class TestURNStageDataBase(TestCase):
                                  ("company_finances", "company_finances"),
                                  ("case", "case"),
                                  ("complete", "complete")))
+
+
+class TestURNStageBadData(TestURNStageDataBase):
+    def test_with_no_extra_data(self):
+        stage = AuthenticationStage(self.urls, self.data3)
+        stage.save({"postcode": "m601pr", "number_of_charges": 2})
+        self.assertEqual(stage.next_step, "notice_type")
 
 
 class TestURNStageNoData(TestURNStageDataBase):
