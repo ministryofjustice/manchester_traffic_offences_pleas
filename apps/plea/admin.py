@@ -1,5 +1,10 @@
+from __future__ import division
+
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from functools import update_wrapper
 
 from apps.plea.models import (UsageStats, Court,
                               Case, CaseAction,
@@ -115,6 +120,54 @@ class ResultAdmin(admin.ModelAdmin):
 class DataValidationAdmin(admin.ModelAdmin):
     list_display = ("date_entered", "urn_entered", "case_match", "case_match_count")
     list_filter = (MatchFilter, RegionalFilter)
+
+    statistics_template = 'admin/statistics.html'
+
+    def get_urls(self):
+        from django.conf.urls import patterns, url
+
+        def wrap(view):
+            def wrapper(*args, **kwargs):
+                return self.admin_site.admin_view(view)(*args, **kwargs)
+            return update_wrapper(wrapper, view)
+
+        info = self.model._meta.app_label, self.model._meta.model_name
+
+        urls = patterns('',
+            url(r'^statistics/$',
+                wrap(self.statistics_view),
+                name='%s_%s_manage' % info),
+        )
+
+        super_urls = super(DataValidationAdmin, self).get_urls()
+
+        return urls + super_urls
+
+    def statistics_view(self, request):
+        regions = []
+        court_codes = []
+        for court in Court.objects.all():
+            court_codes.append(court.region_code)
+            dv = DataValidation.objects.filter(urn_entered__startswith=court.region_code)
+            total = dv.count()
+            matched = dv.filter(case_match__isnull=False).count()
+            if total > 0:
+                percentage = round(matched / total * 100, 2)
+            else:
+                percentage = 0
+
+            if total > 0:
+                reg = {"name": court.court_name,
+                       "total": total,
+                       "matched": matched,
+                       "percentage": percentage}
+                regions.append(reg)
+
+        return render_to_response(self.statistics_template, {
+            'title': 'Data Validation Statistics',
+            'opts': self.model._meta,
+            'regions': regions
+        }, context_instance=RequestContext(request))
 
 
 admin.site.register(UsageStats, UsageStatsAdmin)
