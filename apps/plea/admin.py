@@ -1,5 +1,11 @@
+from __future__ import division
+
+from datetime import date, timedelta
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from functools import update_wrapper
 
 from apps.plea.models import (UsageStats, Court,
                               Case, CaseAction,
@@ -116,6 +122,75 @@ class DataValidationAdmin(admin.ModelAdmin):
     list_display = ("date_entered", "urn_entered", "case_match", "case_match_count")
     list_filter = (MatchFilter, RegionalFilter)
 
+    statistics_template = "admin/statistics.html"
+    change_list_template = "admin/datavalidation_change_list.html"
+
+    def get_urls(self):
+        from django.conf.urls import patterns, url
+
+        def wrap(view):
+            def wrapper(*args, **kwargs):
+                return self.admin_site.admin_view(view)(*args, **kwargs)
+            return update_wrapper(wrapper, view)
+
+        info = self.model._meta.app_label, self.model._meta.model_name
+
+        urls = patterns('',
+            url(r'^statistics/$',
+                wrap(self.statistics_view),
+                name='%s_%s_statistics' % info),
+        )
+
+        super_urls = super(DataValidationAdmin, self).get_urls()
+
+        return urls + super_urls
+
+    def statistics_view(self, request):
+        recent_days = 30
+        regions = []
+        court_codes = []
+        for court in Court.objects.all():
+            court_codes.append(court.region_code)
+            dv = DataValidation.objects.filter(urn_entered__startswith=court.region_code)
+            all_total = dv.count()
+            all_matched = dv.filter(case_match__isnull=False).count()
+            if all_total > 0:
+                all_percentage = round(all_matched / all_total * 100, 2)
+            else:
+                all_percentage = 0
+
+            dv_recent = DataValidation.objects.filter(urn_entered__startswith=court.region_code,
+                                                      date_entered__gt=date.today() - timedelta(days=recent_days))
+            recent_total = dv_recent.count()
+            recent_matched = dv_recent.filter(case_match__isnull=False).count()
+            if recent_total > 0:
+                recent_percentage = round(recent_matched / recent_total * 100, 2)
+            else:
+                recent_percentage = 0
+
+            change_percentage = recent_percentage - all_percentage
+            if change_percentage > 0:
+                change_percentage = "+ {}".format(change_percentage)
+            else:
+                change_percentage = "{}".format(change_percentage)
+
+            if all_total > 0:
+                reg = {"name": court.court_name,
+                       "all_total": all_total,
+                       "all_matched": all_matched,
+                       "all_percentage": all_percentage,
+                       "recent_total": recent_total,
+                       "recent_matched": recent_matched,
+                       "recent_percentage": recent_percentage,
+                       "change_percentage": change_percentage}
+                regions.append(reg)
+
+        return render_to_response(self.statistics_template, {
+            'title': 'Data Validation Statistics',
+            'opts': self.model._meta,
+            'recent_days': recent_days,
+            'regions': regions
+        }, context_instance=RequestContext(request))
 
 admin.site.register(UsageStats, UsageStatsAdmin)
 admin.site.register(Court, CourtAdmin)
