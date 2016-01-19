@@ -1,0 +1,49 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls admin_static admin_list %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-list{% endblock %}
+
+{% if not is_popup %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label="plea" %}">Plea</a>
+    &rsaquo; <a href="{% url opts|admin_urlname:'changelist' %}">Data validations</a>
+    &rsaquo; Statistics
+</div>
+{% endblock %}
+{% endif %}
+
+{% block content %}
+<div class="actions">
+<table>
+    <tr>
+        <th></th>
+        <th colspan="3">All time</th>
+        <th colspan="3">Last {{ recent_days }} days</th>
+    </tr>
+    <tr>
+        <th>Region</th>
+        <th>Entered</th>
+        <th>Matched</th>
+        <th>Percentage</th>
+        <th>Entered</th>
+        <th>Matched</th>
+        <th>Percentage</th>
+        <th>Change</th>
+    </tr>
+    {% for region in regions %}
+        <tr>
+            <td>{{ region.name }}</td>
+            <td>{{ region.all_total }}</td>
+            <td>{{ region.all_matched }}</td>
+            <td>{{ region.all_percentage }}</td>
+            <td>{{ region.recent_total }}</td>
+            <td>{{ region.recent_matched }}</td>
+            <td>{{ region.recent_percentage }}</td>
+            <td align="right">{{ region.change_percentage }}</td>
+        </tr>
+    {% endfor %}
+</table>
+</div>
+{% endblock %}
