@@ -57,8 +57,6 @@ ERROR_MESSAGES = {
     "INCOME_PAY_PERIOD_REQUIRED": _("Select how often your main income is paid"),
     "INCOME_PAY_AMOUNT_REQURIED": _("Enter your take home income"),
     "BENEFITS_TYPE_REQUIRED": _("Select which benefit you receive"),
-    "BENEFITS_PAY_PERIOD_REQUIRED": _("Select how often you receive your benefit"),
-    "BENEFITS_PAY_AMOUNT_REQUIRED": _("Enter the amount of your benefit payment"),
     "PENSION_CREDIT_REQUIRED": _("Tell us if you receive Pension Credit"),
     "PENSION_CREDIT_PERIOD_REQUIRED": _("Select how often your Pension Credit is paid"),
     "PENSION_CREDIT_AMOUNT_REQUIRED": _("Enter how much Pension Credit you receive"),

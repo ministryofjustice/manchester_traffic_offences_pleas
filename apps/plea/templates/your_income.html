@@ -32,7 +32,19 @@
 
             {% for key, source in income_sources.items %}
             <tr>
-                <td scope="row">{% trans source.label %}</td>
+                <td scope="row">{% spaceless %}
+                    {% if key == "your_employment" %}
+                        {% blocktrans %}Employment{% endblocktrans %}
+                    {% elif key == "your_self_employment" %}
+                        {% blocktrans %}Self-employment{% endblocktrans %}
+                    {% elif key == "your_out_of_work_benefits" or key == "your_benefits" %}
+                        {% blocktrans %}Benefits{% endblocktrans %}
+                    {% elif key == "your_pension_credit" %}
+                        {% blocktrans %}Pension Credit{% endblocktrans %}
+                    {% else %}
+                        {{ source.label }}
+                    {% endif %}
+                {% endspaceless %}</td>
                 <td>{% trans source.pay_period %}</td>
                 <td>£{{ source.pay_amount|floatformat:2|intcomma }}</td>
                 <td><a href="{% url "plea_form_step" key %}">{% blocktrans %}Edit{% endblocktrans %}</a></td>
