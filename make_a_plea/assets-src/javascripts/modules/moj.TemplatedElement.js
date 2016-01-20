@@ -58,9 +58,7 @@
       this.$inputs.on('change.TemplatedElement', function() {
         self.updateText();
       });
-      moj.Events.on('render.TemplatedElement', function() {
-        self.updateText();
-      });
+      this.updateText();
     },
 
     getCurrentValue: function() {
