@@ -319,6 +319,7 @@ class YourSelfEmploymentForm(BaseStageForm):
 class YourOutOfWorkBenefitsForm(BaseStageForm):
     BENEFIT_TYPE_CHOICES = (("Contributory Jobseeker's Allowance", _("Contributory Jobseeker's Allowance")),
                             ("Income-based Jobseekers Allowance", _("Income-based Jobseekers Allowance")),
+                            ("Universal Credit", _("Universal Credit")),
                             ("Other", _("Other")))
 
     PERIOD_CHOICES = (("Weekly", _("Weekly")),
@@ -336,7 +337,7 @@ class YourOutOfWorkBenefitsForm(BaseStageForm):
                                    label=_("How often is your benefit paid?"),
                                    error_messages={"required": ERROR_MESSAGES["BENEFIT_PAY_PERIOD_REQUIRED"]})
 
-    pay_amount = forms.DecimalField(label=_("What is your average benefit payment?"),
+    pay_amount = forms.DecimalField(label=_("How much is your benefit payment?"),
                                     localize=True,
                                     widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                   "class": "form-control-inline"}),
@@ -376,6 +377,7 @@ class YourBenefitsForm(BaseStageForm):
     BENEFIT_TYPE_CHOICES = (("Contributory Employment and Support Allowance", _("Contributory Employment and Support Allowance")),
                             ("Income-related Employment and Support Allowance", _("Income-related Employment and Support Allowance")),
                             ("Income Support", _("Income Support")),
+                            ("Universal Credit", _("Universal Credit")),
                             ("Other", _("Other")))
 
     PERIOD_CHOICES = (("Weekly", _("Weekly")),
@@ -387,16 +389,16 @@ class YourBenefitsForm(BaseStageForm):
                                      choices=BENEFIT_TYPE_CHOICES,
                                      error_messages={"required": ERROR_MESSAGES["BENEFITS_TYPE_REQUIRED"]})
 
-    pay_period = forms.ChoiceField(label=_("How often are your benefits paid?"),
+    pay_period = forms.ChoiceField(label=_("How often is your benefit paid?"),
                                    widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                    choices=PERIOD_CHOICES,
-                                   error_messages={"required": ERROR_MESSAGES["BENEFITS_PAY_PERIOD_REQUIRED"]})
+                                   error_messages={"required": ERROR_MESSAGES["BENEFIT_PAY_PERIOD_REQUIRED"]})
 
-    pay_amount = forms.DecimalField(label=_("How much is your benefits payment?"),
+    pay_amount = forms.DecimalField(label=_("How much is your benefit payment?"),
                                     localize=True,
                                     widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                   "class": "form-control-inline"}),
-                                    error_messages={"required": ERROR_MESSAGES["BENEFITS_PAY_AMOUNT_REQUIRED"]})
+                                    error_messages={"required": ERROR_MESSAGES["BENEFIT_PAY_AMOUNT_REQUIRED"]})
 
 
 class YourPensionCreditForm(BaseStageForm):

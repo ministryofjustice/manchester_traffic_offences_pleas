@@ -3,11 +3,11 @@
 {% load i18n %}
 {% load form_widgets %}
 
-{% block page_title %}{% blocktrans %}Your benefit{% endblocktrans %} - {{ block.super }}{% endblock %}
+{% block page_title %}{% blocktrans %}Your benefits{% endblocktrans %} - {{ block.super }}{% endblock %}
 
 
 {% block stage_header %}
-    <h1>{% blocktrans %}Your benefit{% endblocktrans %}</h1>
+    <h1>{% blocktrans %}Your benefits{% endblocktrans %}</h1>
 
     <div class="panel-grey">
         <p>{% blocktrans %}For this type of offence you'll usually have to pay a fine:{% endblocktrans %}</p>
@@ -39,10 +39,10 @@
         var options = {
             "trigger": "[name=pay_period]",
             "templates": {
-                "Weekly": "{% blocktrans %}What is your weekly benefit payment?{% endblocktrans %}",
-                "Fortnightly": "{% blocktrans %}What is your fortnightly benefit payment?{% endblocktrans %}",
-                "Monthly": "{% blocktrans %}What is your monthly benefit payment?{% endblocktrans %}",
-                "Other": "{% blocktrans %}What is your average weekly benefit payment?{% endblocktrans %}"
+                "Weekly": "{% blocktrans %}How much is your weekly benefit payment?{% endblocktrans %}",
+                "Fortnightly": "{% blocktrans %}How much is your fortnightly benefit payment?{% endblocktrans %}",
+                "Monthly": "{% blocktrans %}How much is your monthly benefit payment?{% endblocktrans %}",
+                "Other": "{% blocktrans %}How much is your average weekly benefit payment?{% endblocktrans %}"
             }
         };
 
