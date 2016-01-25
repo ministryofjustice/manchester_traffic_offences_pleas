@@ -21,11 +21,6 @@ from .validators import (is_date_in_past,
                          is_urn_valid)
 
 
-PERIOD_CHOICES = (("Weekly", _("Weekly")),
-                  ("Fortnightly", _("Fortnightly")),
-                  ("Monthly", _("Monthly")))
-
-
 def reorder_fields(fields, order):
     for key, v in fields.items():
         if key not in order:
@@ -272,128 +267,164 @@ class CompanyDetailsForm(BaseStageForm):
                                      error_messages={"required": ERROR_MESSAGES["COMPANY_CONTACT_NUMBER_REQUIRED"],
                                                      "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
 
+
 class YourStatusForm(BaseStageForm):
     YOU_ARE_CHOICES = (("Employed", _("Employed")),
+                       ("Employed and also receiving benefits", _("Employed and also receiving benefits")),
                        ("Self-employed", _("Self-employed")),
-                       ("Receiving benefits", _("Receiving benefits")),
+                       ("Self-employed and also receiving benefits", _("Self-employed and also receiving benefits")),
+                       ("Receiving out of work benefits", _("Receiving out of work benefits")),
                        ("Other", _("Other")))
 
     you_are = forms.ChoiceField(label=_("Are you? (employment status)"), choices=YOU_ARE_CHOICES,
                                 widget=forms.RadioSelect(renderer=DSRadioFieldRenderer),
-                                error_messages={"required": ERROR_MESSAGES["YOU_ARE_REQUIRED"]})
+                                error_messages={"required": ERROR_MESSAGES["EMPLOYMENT_STATUS_REQUIRED"]})
 
-class YourFinancesEmployedForm(BaseStageForm):
-    employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                                      choices=PERIOD_CHOICES,
-                                                      label=_("How often do you get paid?"),
-                                                      error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
-                                                                      "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
 
-    employed_pay_amount = forms.DecimalField(label=_("What's your take home pay (after tax)?"),
-                                                       localize=True,
-                                                       widget=forms.TextInput(attrs={"pattern": "[0-9]*",
-                                                                                     "class": "form-control-inline"}),
-                                                       error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
-                                                                       "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
+class YourEmploymentForm(BaseStageForm):
+    PERIOD_CHOICES = (("Weekly", _("Weekly")),
+                         ("Fortnightly", _("Fortnightly")),
+                         ("Monthly", _("Monthly")),)
 
-    employed_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
-                                               help_text=_("For example, you would become homeless."),
-                                               widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                               choices=YESNO_CHOICES["Byddai/Na fyddai"],
-                                               coerce=to_bool,
-                                               error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
+    pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                   choices=PERIOD_CHOICES,
+                                   label=_("How often do you get paid from your employer?"),
+                                   error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
 
-class YourFinancesSelfEmployedForm(BaseStageForm):
-    SE_PERIOD_CHOICES = (("Weekly", _("Weekly")),
+    pay_amount = forms.DecimalField(label=_("What is your take home pay (after tax)?"),
+                                    localize=True,
+                                    widget=forms.TextInput(attrs={"pattern": "[0-9]*",
+                                                                  "class": "form-control-inline"}),
+                                    error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
+
+
+class YourSelfEmploymentForm(BaseStageForm):
+    PERIOD_CHOICES = (("Weekly", _("Weekly")),
                          ("Fortnightly", _("Fortnightly")),
                          ("Monthly", _("Monthly")),
                          ("Other", _("Other")),)
 
-    dependencies = {
-        "self_employed_pay_other": {"field": "self_employed_pay_period", "value": "Other"}
-    }
+    pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                   choices=PERIOD_CHOICES,
+                                   label=_("How often do you get paid?"),
+                                   error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
 
-    self_employed_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                                 choices=SE_PERIOD_CHOICES,
-                                                 label=_("How often do you get paid?"),
-                                                 error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
-                                                                 "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
+    pay_amount = forms.DecimalField(label=_("What is your take home pay (after tax)?"),
+                                    localize=True,
+                                    widget=forms.TextInput(attrs={"pattern": "[0-9]*",
+                                                                  "class": "form-control-inline"}),
+                                    error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
-    self_employed_pay_amount = forms.DecimalField(label=_("What's your average take home pay?"),
-                                                  localize=True,
-                                                  widget=forms.TextInput(attrs={"pattern": "[0-9]*",
-                                                                                "class": "form-control-inline"}),
-                                                  error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
-                                                                  "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
 
-    self_employed_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
-                                                    help_text=_("For example, you would become homeless."),
-                                                    widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                                    choices=YESNO_CHOICES["Byddai/Na fyddai"],
-                                                    coerce=to_bool,
-                                                    error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
+class YourOutOfWorkBenefitsForm(BaseStageForm):
+    BENEFIT_TYPE_CHOICES = (("Contributory Jobseeker's Allowance", _("Contributory Jobseeker's Allowance")),
+                            ("Income-based Jobseekers Allowance", _("Income-based Jobseekers Allowance")),
+                            ("Universal Credit", _("Universal Credit")),
+                            ("Other", _("Other")))
 
-class YourFinancesBenefitsForm(BaseStageForm):
-    BEN_PERIOD_CHOICES = (("Weekly", _("Weekly")),
-                         ("Fortnightly", _("Fortnightly")),
-                         ("Monthly", _("Monthly")),
-                         ("Other", _("Other")),)
+    PERIOD_CHOICES = (("Weekly", _("Weekly")),
+                      ("Fortnightly", _("Fortnightly")),
+                      ("Monthly", _("Monthly")),
+                      ("Other", _("Other")),)
 
-    dependencies = {
-        "benefits_pay_other": {"field": "benefits_pay_period", "value": "Other"}
-    }
+    benefit_type = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                     choices=BENEFIT_TYPE_CHOICES,
+                                     label=_("Which out of work benefit do you receive?"),
+                                     error_messages={"required": ERROR_MESSAGES["BENEFIT_TYPE_REQUIRED"]})
 
-    benefits_details = forms.CharField(label=_("Which benefits do you receive?"),
-                                       help_text=_("For example, Income Support or Disability Living Allowance."),
-                                       max_length=500,
-                                       widget=forms.Textarea(attrs={"rows": "2", "class": "form-control"}),
-                                       error_messages={"required": ERROR_MESSAGES["BENEFITS_DETAILS_REQUIRED"]})
+    pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                   choices=PERIOD_CHOICES,
+                                   label=_("How often is your benefit paid?"),
+                                   error_messages={"required": ERROR_MESSAGES["BENEFIT_PAY_PERIOD_REQUIRED"]})
 
-    benefits_dependents = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                            choices=YESNO_CHOICES["Ydy/Nac ydy"],
-                                            coerce=to_bool,
-                                            label=_("Does this include payment for dependants?"),
-                                            error_messages={"required": ERROR_MESSAGES["BENEFITS_DEPENDANTS_REQUIRED"]})
+    pay_amount = forms.DecimalField(label=_("How much is your benefit payment?"),
+                                    localize=True,
+                                    widget=forms.TextInput(attrs={"pattern": "[0-9]*",
+                                                                  "class": "form-control-inline"}),
+                                    error_messages={"required": ERROR_MESSAGES["BENEFIT_PAY_AMOUNT_REQUIRED"]})
 
-    benefits_pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                        choices=BEN_PERIOD_CHOICES,
-                                        label=_("How often are your benefits paid?"),
-                                        error_messages={"required": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"],
-                                                        "incomplete": ERROR_MESSAGES["PAY_PERIOD_REQUIRED"]})
 
-    benefits_pay_amount = forms.DecimalField(label=_("What's your average take home pay?"),
-                                         localize=True,
-                                         widget=forms.TextInput(attrs={"pattern": "[0-9]*",
-                                                                       "class": "form-control-inline"}),
-                                         error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
-                                                         "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
+class AboutYourIncomeForm(BaseStageForm):
+    PERIOD_CHOICES = (("Weekly", _("Weekly")),
+                      ("Fortnightly", _("Fortnightly")),
+                      ("Monthly", _("Monthly")),
+                      ("Other", _("Other")),)
 
-    benefits_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
-                                                         help_text=_("For example, you would become homeless."),
-                                                         widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                                         choices=YESNO_CHOICES["Byddai/Na fyddai"],
-                                                         coerce=to_bool,
-                                                         error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
-
-class YourFinancesOtherForm(BaseStageForm):
-    other_details = forms.CharField(max_length=500, label=_("Provide details"),
-                                    help_text=_("For example, student or retired."),
+    income_source = forms.CharField(label=_("What is the source of your main income?"),
+                                    help_text=_("For example, student loan, pension or investments."),
                                     widget=forms.TextInput(attrs={"class": "form-control"}),
-                                    error_messages={"required": ERROR_MESSAGES["OTHER_INFO_REQUIRED"]})
+                                    error_messages={"required": ERROR_MESSAGES["INCOME_SOURCE_REQUIRED"]})
 
-    other_pay_amount = forms.DecimalField(label=_("What is your monthly disposable income?"),
-                                          localize=True,
-                                          widget=forms.TextInput(attrs={"pattern": "[0-9]*",
-                                                                        "class": "form-control-inline"}),
-                                          error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"],
-                                                          "incomplete": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
+    pay_period = forms.ChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                   choices=PERIOD_CHOICES,
+                                   label=_("How often is your main income paid?"),
+                                   error_messages={"required": ERROR_MESSAGES["INCOME_PAY_PERIOD_REQUIRED"]})
 
-    other_hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
-                                            help_text=_("For example, you would become homeless."),
+    pay_amount = forms.DecimalField(label=_("How much is your take home income (after tax)?"),
+                                    localize=True,
+                                    widget=forms.TextInput(attrs={"pattern": "[0-9]*",
+                                                                  "class": "form-control-inline"}),
+                                    error_messages={"required": ERROR_MESSAGES["PAY_AMOUNT_REQUIRED"]})
+
+    pension_credit = forms.TypedChoiceField(label=_("Do you receive Pension Credit?"),
                                             widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                             choices=YESNO_CHOICES["Byddai/Na fyddai"],
                                             coerce=to_bool,
-                                            error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
+                                            error_messages={"required": ERROR_MESSAGES["PENSION_CREDIT_REQUIRED"]})
+
+
+class YourBenefitsForm(BaseStageForm):
+    BENEFIT_TYPE_CHOICES = (("Contributory Employment and Support Allowance", _("Contributory Employment and Support Allowance")),
+                            ("Income-related Employment and Support Allowance", _("Income-related Employment and Support Allowance")),
+                            ("Income Support", _("Income Support")),
+                            ("Universal Credit", _("Universal Credit")),
+                            ("Other", _("Other")))
+
+    PERIOD_CHOICES = (("Weekly", _("Weekly")),
+                      ("Fortnightly", _("Fortnightly")),
+                      ("Monthly", _("Monthly")))
+
+    benefit_type = forms.ChoiceField(label=_("Which benefit do you receive?"),
+                                     widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                     choices=BENEFIT_TYPE_CHOICES,
+                                     error_messages={"required": ERROR_MESSAGES["BENEFITS_TYPE_REQUIRED"]})
+
+    pay_period = forms.ChoiceField(label=_("How often is your benefit paid?"),
+                                   widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                   choices=PERIOD_CHOICES,
+                                   error_messages={"required": ERROR_MESSAGES["BENEFIT_PAY_PERIOD_REQUIRED"]})
+
+    pay_amount = forms.DecimalField(label=_("How much is your benefit payment?"),
+                                    localize=True,
+                                    widget=forms.TextInput(attrs={"pattern": "[0-9]*",
+                                                                  "class": "form-control-inline"}),
+                                    error_messages={"required": ERROR_MESSAGES["BENEFIT_PAY_AMOUNT_REQUIRED"]})
+
+
+class YourPensionCreditForm(BaseStageForm):
+    PERIOD_CHOICES = (("Weekly", _("Weekly")),
+                      ("Fortnightly", _("Fortnightly")),
+                      ("Monthly", _("Monthly")))
+
+    pay_period = forms.ChoiceField(label=_("How often is your Pension Credit paid?"),
+                                   widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                   choices=PERIOD_CHOICES,
+                                   error_messages={"required": ERROR_MESSAGES["PENSION_CREDIT_PERIOD_REQUIRED"]})
+
+    pay_amount = forms.DecimalField(label=_("How much is your Pension Credit payment?"),
+                                    localize=True,
+                                    widget=forms.TextInput(attrs={"pattern": "[0-9]*",
+                                                                  "class": "form-control-inline"}),
+                                    error_messages={"required": ERROR_MESSAGES["PENSION_CREDIT_AMOUNT_REQUIRED"]})
+
+
+class YourIncomeForm(BaseStageForm):
+    hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
+                                      help_text=_("For example, you would become homeless."),
+                                      widget=RadioSelect(renderer=DSRadioFieldRenderer),
+                                      choices=YESNO_CHOICES["Byddai/Na fyddai"],
+                                      coerce=to_bool,
+                                      error_messages={"required": ERROR_MESSAGES["HARDSHIP_REQUIRED"]})
 
 
 class HardshipForm(BaseStageForm):
