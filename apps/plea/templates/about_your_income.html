@@ -1,0 +1,56 @@
+{% extends "base_form.html" %}
+
+{% load i18n %}
+{% load form_widgets %}
+
+{% block page_title %}{% blocktrans %}About your income{% endblocktrans %} - {{ block.super }}{% endblock %}
+
+
+{% block stage_header %}
+    <h1>{% blocktrans %}About your income{% endblocktrans %}</h1>
+
+    <div class="panel-grey">
+        <p>{% blocktrans %}For this type of offence you'll usually have to pay a fine:{% endblocktrans %}</p>
+        <ul>
+            <li>{% blocktrans %}you must provide your income details{% endblocktrans %}</li>
+            <li>{% blocktrans %}the court will decide your fine based on your finances and the seriousness of the offence{% endblocktrans %}</li>
+            <li>{% blocktrans %}your details will be stored securely by the court{% endblocktrans %}</li>
+        </ul>
+    </div>
+
+    <h2 class="heading-medium">{% blocktrans %}You've selected 'other' as your employment status{% endblocktrans %}</h2>
+{% endblock stage_header %}
+
+
+{% block stage_form %}
+
+    {% std_field form.income_source %}
+
+    {% radio_field form.pay_period %}
+
+    {% std_field form.pay_amount prefix="£" wide=True %}
+
+    {% radio_field form.pension_credit inline=True %}
+
+{% endblock stage_form %}
+
+
+{% block body_end %}
+    {{ block.super }}
+
+    <script type="text/javascript">
+    $(function(){
+        var options = {
+            "trigger": "[name=pay_period]",
+            "templates": {
+                "Weekly": "{% blocktrans %}How much is your weekly take home income (after tax)?{% endblocktrans %}",
+                "Fortnightly": "{% blocktrans %}How much is your fortnightly take home income (after tax)?{% endblocktrans %}",
+                "Monthly": "{% blocktrans %}How much is your monthly take home income (after tax)?{% endblocktrans %}",
+                "Other": "{% blocktrans %}How much is your average weekly take home income (after tax)?{% endblocktrans %}"
+            }
+        };
+
+        new moj.Modules._TemplatedElement($('[for=id_pay_amount] .label-text'), options);
+    });
+    </script>
+{% endblock body_end %}

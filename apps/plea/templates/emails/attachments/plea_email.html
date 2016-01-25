@@ -40,7 +40,7 @@
     </section>
 
     {% if case.plea_made_by == "Defendant" %}
-        {% if your_finances.skipped %}
+        {% if your_income.skipped %}
     <section id="your-finances">
         <header>
             <h2>{% blocktrans %}Your finances{% endblocktrans %}</h2>
@@ -59,10 +59,10 @@
             <h2>{% blocktrans %}Your finances{% endblocktrans %}</h2>
         </header>
 
-        {% include "partials/review_finances.html" with show_weekly_financials=True %}
+        {% include "partials/review_income.html" %}
     </section>
 
-            {% if your_finances.hardship %}
+            {% if your_income.hardship %}
     <section id="your-expenses">
         <header>
             <h2>{% blocktrans %}Your expenses{% endblocktrans %}</h2>
