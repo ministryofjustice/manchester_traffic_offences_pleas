@@ -81,18 +81,3 @@ def is_valid_urn_format(urn):
         raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
 
     return True
-
-
-def is_urn_not_used(urn):
-    """
-    Check that the urn hasn't already been used in a previous submission
-    """
-    try:
-        urn = standardise_urn(urn)
-    except StandardiserNoOutputException:
-        raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
-
-    if not Case.objects.can_use_urn(urn):
-        raise exceptions.ValidationError("The URN has already been used", code="is_urn_not_used")
-
-    return True

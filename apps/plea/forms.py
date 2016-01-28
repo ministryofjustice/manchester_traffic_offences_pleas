@@ -17,7 +17,6 @@ from .validators import (is_date_in_past,
                          is_date_in_future,
                          is_date_in_last_28_days,
                          is_date_in_next_6_months,
-                         is_urn_not_used,
                          is_urn_valid)
 
 
@@ -33,7 +32,7 @@ class URNEntryForm(BaseStageForm):
     urn = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
                           label=_("What is your Unique Reference Number (URN)?"),
                           required=True,
-                          validators=[is_urn_valid, is_urn_not_used],
+                          validators=[is_urn_valid],
                           help_text=_("On page 1 of the notice, usually at the top."),
                           error_messages={"required": ERROR_MESSAGES["URN_REQUIRED"],
                                           "is_urn_valid": ERROR_MESSAGES["URN_INVALID"],
