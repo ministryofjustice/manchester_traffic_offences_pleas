@@ -15,6 +15,7 @@ class TestPleaFormIssues(TestMultiPleaFormBase):
         case = Case.objects.create(urn="06AA000000000",
                                    extra_data={"FirstName1": "Frank",
                                                "Surname": "Marsh"},
+                                   name="frank marsh",
                                    sent=True)
         case.save()
 
@@ -24,7 +25,9 @@ class TestPleaFormIssues(TestMultiPleaFormBase):
                                  "date_of_hearing": "2015-01-01",
                                  "urn": "06AA000000000",
                                  "number_of_charges": 1,
-                                 "plea_made_by": "Defendant"}}
+                                 "plea_made_by": "Defendant"},
+                        "your_details": {"first_name": "Frank",
+                                         "last_name": "Marsh"}}
 
         save_data = {"date_of_hearing": "2015-01-01",
                      "urn": "06/AA/0000000/00",
