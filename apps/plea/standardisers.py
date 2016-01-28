@@ -14,6 +14,15 @@ def standardise_postcode(postcode):
     return re.sub(r"[\W_]+", "", postcode).upper()
 
 
+def standardise_name(first_name, last_name):
+    if first_name:
+        first_name = first_name.strip().lower()
+    if last_name:
+        last_name = last_name.strip().lower()
+    return u"{} {}".format(first_name,
+                           last_name)
+
+
 def standardise_urn(urn):
     """
     Strips non-alphanumeric characters from given URN, and
