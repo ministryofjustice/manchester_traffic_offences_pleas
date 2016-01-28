@@ -189,7 +189,13 @@ class AuthenticationStage(SJPChoiceBase):
                     plea_made_by = "Company representative"
                     self.set_next_step("company_details", skip=["your_details",
                                                                 "your_status",
-                                                                "your_finances",
+                                                                "your_employment",
+                                                                "your_self_employment",
+                                                                "your_out_of_work_benefits",
+                                                                "about_your_income",
+                                                                "your_benefits",
+                                                                "your_pension_credit",
+                                                                "your_income",
                                                                 "hardship",
                                                                 "household_expenses",
                                                                 "other_expenses"])
@@ -261,6 +267,12 @@ class CaseStage(FormStage):
                 self.set_next_step("company_details", skip=["your_details",
                                                             "your_status",
                                                             "your_employment",
+                                                            "your_self_employment",
+                                                            "your_out_of_work_benefits",
+                                                            "about_your_income",
+                                                            "your_benefits",
+                                                            "your_pension_credit",
+                                                            "your_income",
                                                             "hardship",
                                                             "household_expenses",
                                                             "other_expenses"])
@@ -413,9 +425,16 @@ class PleaStage(IndexedStage):
                     if stage_data["none_guilty"]:
                         self.set_next_step("review", skip=["your_status",
                                                            "your_employment",
+                                                           "your_self_employment",
+                                                           "your_out_of_work_benefits",
+                                                           "about_your_income",
+                                                           "your_benefits",
+                                                           "your_pension_credit",
+                                                           "your_income",
                                                            "hardship",
                                                            "household_expenses",
-                                                           "other_expenses"])
+                                                           "other_expenses",
+                                                           "company_finances"])
                     else:
                         self.set_next_step("your_status")
 
