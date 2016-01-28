@@ -94,13 +94,6 @@ class TestValidators(TestCase):
 
         self.assertTrue(is_urn_valid("06/QQ/00000/00"))
 
-    def test_urn_invalid_database(self):
-        self.court06.validate_urn = True
-        self.court06.save()
-
-        with self.assertRaises(ValidationError):
-            is_urn_valid("06/QQ/00000/01")
-
     def test_is_valid_urn_format(self):
         good_urns = [
             "02TJDS0479/15/0014AP",

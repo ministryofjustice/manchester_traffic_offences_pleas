@@ -10,7 +10,7 @@ from django.utils.translation import ugettext as _
 from .models import Case, CourtEmailCount, Court
 from .encrypt import encrypt_and_store_user_data
 from tasks import email_send_court, email_send_prosecutor, email_send_user
-from standardisers import format_for_region
+from standardisers import format_for_region, standardise_name
 
 
 logger = logging.getLogger(__name__)
@@ -49,6 +49,9 @@ def send_plea_email(context_data):
             context_data["case"]["urn"]))
         raise
 
+    send_user_email = context_data.get("review", {}).get("receive_email_updates", False)
+    email_address = context_data.get("review", {}).get("email", False)
+
     # add DOH / name to the email subject for compliance with the current format
     if context_data["notice_type"]["sjp"] is False:
         if isinstance(context_data["case"]["date_of_hearing"], basestring):
@@ -82,6 +85,10 @@ def send_plea_email(context_data):
         case.initiation_type = "J"
 
     case.language = translation.get_language().split("-")[0]
+    case.name = standardise_name(first_name, last_name)
+    if send_user_email and email_address:
+        case.email = email_address
+        case.send_user_email = True
     case.save()
 
     if getattr(settings, "STORE_USER_DATA", False):
@@ -103,9 +110,6 @@ def send_plea_email(context_data):
 
     if court_obj.plp_email:
         email_send_prosecutor.delay(case.id, context_data)
-
-    send_user_email = context_data.get("review", {}).get("receive_email_updates", False)
-    email_address = context_data.get("review", {}).get("email", False)
 
     if send_user_email and email_address:
         data = {
