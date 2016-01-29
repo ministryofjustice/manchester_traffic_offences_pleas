@@ -279,10 +279,27 @@ class CompanyDetailsStage(FormStage):
         clean_data = super(CompanyDetailsStage,
                            self).save(form_data, next_step)
 
-        if "complete" in clean_data:
-            self.set_next_step("plea")
+        if Case.objects.filter(urn__iexact=self.all_data.get("case", {}).get("urn"),
+                               sent=True).exists():
+            self.form.errors[NON_FIELD_ERRORS] = [ERROR_MESSAGES["URN_ALREADY_USED"]]
+            self.next_step = ""
+            return {}
+        else:
+            if "complete" in clean_data:
+                self.set_next_step("plea")
 
-        return clean_data
+            return clean_data
+
+    def render(self, request_context):
+        if NON_FIELD_ERRORS in self.form.errors and ERROR_MESSAGES["URN_ALREADY_USED"] in self.form.errors[NON_FIELD_ERRORS]:
+            self.context["urn_already_used"] = True
+
+            try:
+                self.context["court"] = Court.objects.get_by_urn(self.all_data.get("case", {}).get("urn"))
+            except Court.DoesNotExist:
+                pass
+
+        return super(CompanyDetailsStage, self).render(request_context)
 
 
 class YourDetailsStage(FormStage):
