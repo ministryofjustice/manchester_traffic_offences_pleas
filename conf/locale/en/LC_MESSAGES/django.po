@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-20 15:11+0000\n"
+"POT-Creation-Date: 2016-01-27 10:17+0000\n"
 "PO-Revision-Date: 2015-11-16 16:24+0000\n"
 "Last-Translator: Fred Marecesche\n"
 "Language-Team: English (http://www.transifex.com/make-a-plea-gds/make-a-plea/language/en/)\n"
@@ -232,11 +232,11 @@ msgstr "Not guilty"
 msgid "Change your plea for this charge"
 msgstr "Change your plea for this charge"
 
-#: apps/plea/admin.py:16
+#: apps/plea/admin.py:22
 msgid "Region"
 msgstr "Region"
 
-#: apps/plea/admin.py:33
+#: apps/plea/admin.py:39
 msgid "Match"
 msgstr "Match"
 
@@ -1226,6 +1226,15 @@ msgstr "How much is your monthly take home income (after tax)?"
 #: apps/plea/templates/about_your_income.html:49
 msgid "How much is your average weekly take home income (after tax)?"
 msgstr "How much is your average weekly take home income (after tax)?"
+
+#: apps/plea/templates/admin/datavalidation_change_list.html:11
+#, python-format
+msgid "Add %(name)s"
+msgstr ""
+
+#: apps/plea/templates/admin/statistics.html:9
+msgid "Home"
+msgstr ""
 
 #: apps/plea/templates/authenticate.html:7
 #: apps/plea/templates/authenticate.html:10
