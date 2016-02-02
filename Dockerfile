@@ -29,6 +29,7 @@ RUN gpg --import /makeaplea/docker/user_data.gpg
 RUN python manage.py collectstatic --noinput
 RUN python manage.py compilemessages
 
-CMD ["gunicorn",  "make_a_plea.wsgi", "--bind=0.0.0.0:9080"]
+CMD ["./run.sh"]
 
 EXPOSE 9080
+
