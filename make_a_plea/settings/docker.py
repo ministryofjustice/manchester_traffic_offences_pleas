@@ -42,6 +42,8 @@ CSRF_COOKIE_SECURE = False
 CELERY_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
 BROKER_URL = os.environ.get("CELERY_BROKER_URL", "SQS://")
 
+RATE_LIMIT = os.environ.get("RATE_LIMIT", "120/m")
+
 #
 # Temporary keys to run collectstatic on docker image build.
 #
