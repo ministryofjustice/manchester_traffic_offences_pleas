@@ -41,3 +41,5 @@ ENCRYPTED_COOKIE_KEYS = [
 ]
 
 REDIRECT_START_PAGE = "https://www.gov.uk/make-a-plea"
+
+RATE_LIMIT = "500/m"
