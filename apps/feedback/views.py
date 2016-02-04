@@ -49,6 +49,7 @@ class FeedbackViews(StorageView):
                 except KeyError:
                     pass
             else:
+                if nxt == "plea_form_step": nxt = "plea_form"
                 redirect_url = reverse(nxt)
 
             self.storage["feedback_redirect"] = redirect_url
