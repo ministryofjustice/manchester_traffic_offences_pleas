@@ -7,6 +7,8 @@ from django.db.models import Sum, Count, F
 from django.utils.translation import get_language
 from django.contrib.postgres.fields import HStoreField
 
+from standardisers import standardise_name
+
 
 STATUS_CHOICES = (("created_not_sent", "Created but not sent"),
                   ("sent", "Sent"),
@@ -229,9 +231,11 @@ class CaseManager(models.Manager):
     class Meta:
         ordering = ["offence_seq_number"]
 
-    def can_use_urn(self, urn):
+    def can_use_urn(self, urn, first_name, last_name):
+        name = standardise_name(first_name, last_name)
         return not self.filter(
             urn__iexact=urn,
+            name=name,
             sent=True).exists()
 
 
@@ -249,6 +253,10 @@ class Case(models.Model):
 
     case_number = models.CharField(max_length=12, null=True, blank=True,
                                    help_text="as supplied by DX")
+
+    name = models.CharField(max_length=250, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    email_permission = models.BooleanField(default=False)
 
     date_of_hearing = models.DateField(null=True, blank=True)
     imported = models.BooleanField(default=False)

@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from dateutil.relativedelta import relativedelta
 from django.contrib import messages
-from django.core.exceptions import MultipleObjectsReturned
+from django.core.exceptions import MultipleObjectsReturned, NON_FIELD_ERRORS
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
@@ -131,17 +131,6 @@ class URNEntryStage(SJPChoiceBase):
                 self.set_next_no_data(court)
 
         return clean_data
-
-    def render(self, request_context):
-        if "urn" in self.form.errors and ERROR_MESSAGES["URN_ALREADY_USED"] in self.form.errors["urn"]:
-            self.context["urn_already_used"] = True
-
-            try:
-                self.context["court"] = Court.objects.get_by_urn(self.form.data["urn"])
-            except Court.DoesNotExist:
-                pass
-
-        return super(URNEntryStage, self).render(request_context)
 
 
 class AuthenticationStage(SJPChoiceBase):
@@ -290,10 +279,27 @@ class CompanyDetailsStage(FormStage):
         clean_data = super(CompanyDetailsStage,
                            self).save(form_data, next_step)
 
-        if "complete" in clean_data:
-            self.set_next_step("plea")
+        if Case.objects.filter(urn__iexact=self.all_data.get("case", {}).get("urn"),
+                               sent=True).exists():
+            self.form.errors[NON_FIELD_ERRORS] = [ERROR_MESSAGES["URN_ALREADY_USED"]]
+            self.next_step = ""
+            return {}
+        else:
+            if "complete" in clean_data:
+                self.set_next_step("plea")
 
-        return clean_data
+            return clean_data
+
+    def render(self, request_context):
+        if NON_FIELD_ERRORS in self.form.errors and ERROR_MESSAGES["URN_ALREADY_USED"] in self.form.errors[NON_FIELD_ERRORS]:
+            self.context["urn_already_used"] = True
+
+            try:
+                self.context["court"] = Court.objects.get_by_urn(self.all_data.get("case", {}).get("urn"))
+            except Court.DoesNotExist:
+                pass
+
+        return super(CompanyDetailsStage, self).render(request_context)
 
 
 class YourDetailsStage(FormStage):
@@ -306,10 +312,30 @@ class YourDetailsStage(FormStage):
         clean_data = super(YourDetailsStage,
                            self).save(form_data, next_step)
 
-        if "complete" in clean_data:
-            self.set_next_step("plea")
+        urn, first_name, last_name = (self.all_data.get("case", {}).get("urn"),
+                                      clean_data.get("first_name"),
+                                      clean_data.get("last_name"))
 
-        return clean_data
+        if not Case.objects.can_use_urn(urn, first_name, last_name):
+            self.form.errors[NON_FIELD_ERRORS] = [ERROR_MESSAGES["URN_ALREADY_USED"]]
+            self.next_step = ""
+            return {}
+        else:
+            if "complete" in clean_data:
+                self.set_next_step("plea")
+
+            return clean_data
+
+    def render(self, request_context):
+        if NON_FIELD_ERRORS in self.form.errors and ERROR_MESSAGES["URN_ALREADY_USED"] in self.form.errors[NON_FIELD_ERRORS]:
+            self.context["urn_already_used"] = True
+
+            try:
+                self.context["court"] = Court.objects.get_by_urn(self.all_data.get("case", {}).get("urn"))
+            except Court.DoesNotExist:
+                pass
+
+        return super(YourDetailsStage, self).render(request_context)
 
 
 class PleaStage(IndexedStage):
