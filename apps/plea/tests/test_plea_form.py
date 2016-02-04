@@ -1,11 +1,14 @@
+from copy import copy
 import datetime
 from mock import Mock, patch
 
 from django.core.urlresolvers import reverse
+from django.core.exceptions import NON_FIELD_ERRORS
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.template.context import RequestContext
 
+from ..fields import ERROR_MESSAGES
 from ..models import Case, Court
 from ..views import PleaOnlineForms
 from ..standardisers import format_for_region
@@ -259,20 +262,43 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(len(form.current_stage.form.errors), 3)
 
-    def test_case_stage_urn_already_submitted(self):
+    def test_your_details_stage_urn_already_submitted(self):
 
-        fake_request = self.get_request_mock("/plea/case/")
+        fake_request = self.get_request_mock("/plea/your_details/")
         request_context = RequestContext(fake_request)
 
+        self.session = {
+            "notice_type": {
+                "complete": True,
+                "sjp": False
+            },
+            "case": {
+                "complete": True,
+                "date_of_hearing": "2015-01-01",
+                "urn": "06AA000000015",
+                "number_of_charges": 3,
+                "plea_made_by": "Defendant"
+            }
+        }
+
         case = Case()
-        case.urn = "06AA0000015"
+        case.urn = "06AA000000015"
+        case.name = "frank marsh"
         case.sent = True
         case.save()
 
-        form = PleaOnlineForms(self.session, "enter_urn")
+        form = PleaOnlineForms(self.session, "your_details")
         form.load(request_context)
 
-        form.save({"urn": "06/AA/0000000/15"},
+        form.save({"first_name": "Frank",
+                   "last_name": "Marsh",
+                   "contact_number": "012345678",
+                   "correct_address": True,
+                   "date_of_birth_0": "01",
+                   "date_of_birth_1": "01",
+                   "date_of_birth_2": "1970",
+                   "have_ni_number": False,
+                   "have_driving_licence_number": False},
                   request_context)
 
         response = form.render()
@@ -283,10 +309,10 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             response,
             "<br />".join(court_obj.court_address.split("\n")))
 
-        self.assertContains(response, court_obj.court_email)
-
-        self.assertEqual(form.current_stage.form.errors.keys()[0], "urn")
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, court_obj.court_email)
+        self.assertEqual(form.current_stage.form.errors.keys()[0], NON_FIELD_ERRORS)
+        self.assertEqual(form.current_stage.form.errors.values()[0][0], ERROR_MESSAGES["URN_ALREADY_USED"])
 
     def test_case_stage_good_data(self):
         form = PleaOnlineForms(self.session, "case")
@@ -1499,10 +1525,12 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         urn = "06/AA/0000000/00"
 
         case = Case()
-        case.urn = urn
+        case.urn = format_for_region(urn)
+        case.name = "charlie brown"
         case.sent = True
         case.save()
 
+        self.session = copy(self.plea_stage_pre_data_3_charges)
         self.session["case"] = dict(urn=urn)
 
         form = PleaOnlineForms(self.session, "case")
@@ -1510,7 +1538,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         form.save({}, self.request_context)
 
         response = form.render()
-
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, reverse("urn_already_used"))
 
@@ -1523,7 +1550,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         case.status = "network_error"
         case.save()
 
-        self.session["enter_urn"] = dict(urn=urn)
+        self.session["case"] = dict(urn=urn)
 
         form = PleaOnlineForms(self.session, "enter_urn")
         form.load(self.request_context)
