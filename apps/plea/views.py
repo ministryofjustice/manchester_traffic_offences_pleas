@@ -69,12 +69,11 @@ class PleaOnlineForms(MultiStageForm):
         """
         Check that the URN has not already been used.
         """
-        try:
-            saved_urn = self.all_data["case"]["urn"]
-        except KeyError:
-            saved_urn = None
+        saved_urn = self.all_data.get("case", {}).get("urn")
+        saved_first_name = self.all_data.get("your_details", {}).get("first_name")
+        saved_last_name = self.all_data.get("your_details", {}).get("last_name")
 
-        if saved_urn and not Case.objects.can_use_urn(saved_urn):
+        if saved_urn and saved_first_name and saved_last_name and not Case.objects.can_use_urn(saved_urn, saved_first_name, saved_last_name):
             self._urn_invalid = True
 
             return
