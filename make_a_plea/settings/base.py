@@ -204,14 +204,14 @@ INSTALLED_APPS = [
 # more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
     'formatters': {
         'verbose': {
             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
         },
         'simple': {
             'format': '%(levelname)s %(message)s'
-        },
+        }
     },
     'filters': {
         'require_debug_false': {
@@ -235,20 +235,25 @@ LOGGING = {
         },
     },
     'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
         'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
+            'handlers': ['mail_admins', 'console'],
+            'level': 'INFO',
             'propagate': True,
         },
         'apps.plea.email': {
-                'handlers': ['console'],
-                'level': 'ERROR',
-                'propagate': True,
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
         },
         'apps.plea.tasks': {
-                'handlers': ['console'],
-                'level': 'ERROR',
-                'propagate': True,
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
         }
     }
 }
