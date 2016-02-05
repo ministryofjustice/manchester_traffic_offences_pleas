@@ -136,6 +136,7 @@ MIDDLEWARE_CLASSES = (
     'make_a_plea.middleware.AdminLocaleURLMiddleware',
     'make_a_plea.middleware.TimeoutRedirectMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
+    'axes.middleware.FailedLoginMiddleware'
 )
 
 CACHE_MIDDLEWARE_SECONDS = 0
@@ -186,6 +187,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.postgres',
     'django_extensions',
+    'axes',
     'djcelery',
     'waffle',
     'govuk_template',
@@ -308,6 +310,8 @@ GPG_HOME_DIRECTORY = os.environ.get('GPG_HOME_DIRECTORY', '/home/vagrant/.gnupg/
 
 ENV_BASE_URL = os.environ.get("ENV_BASE_URL", "")
 FTP_SERVER_IP = os.environ.get("FTP_SERVER_IP", "")
+
+AXES_COOLOFF_TIME = 1
 
 # .local.py overrides all the common settings.
 try:
