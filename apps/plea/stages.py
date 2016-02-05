@@ -103,15 +103,15 @@ class URNEntryStage(SJPChoiceBase):
             std_urn = standardise_urn(clean_data["urn"])
 
             try:
-                court = Court.objects.get_by_urn(clean_data["urn"])
+                court = Court.objects.get_by_urn(std_urn)
             except Court.DoesNotExist:
                 court = None
 
             dv = DataValidation()
             dv.urn_entered = clean_data["urn"]
             dv.urn_standardised = std_urn
-            dv.urn_formatted = format_for_region(dv.urn_standardised)
-            cases = Case.objects.filter(urn=dv.urn_standardised)
+            dv.urn_formatted = format_for_region(std_urn)
+            cases = Case.objects.filter(urn=std_urn)
             dv.case_match_count = len(cases)
             if len(cases) > 0:
                 dv.case_match = cases[0]
