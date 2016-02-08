@@ -22,7 +22,6 @@ class HealthCheckTestCase(unittest.TestCase):
         check_methods = [
             "check_mandrill",
             "check_address",
-            "check_ftp",
             "check_url",
             "check_database"]
 
@@ -55,22 +54,8 @@ class HealthCheckTestCase(unittest.TestCase):
         self.assertTrue(output["database"]["ok"])
         self.assertTrue(output["dashboard"]["ok"])
         self.assertTrue(output["mandrill"]["ok"])
-        self.assertTrue(output["ftp"]["ok"])
 
         self.assertTrue(output["ok"])
-
-    @patch("apps.monitoring.check_methods.FTP.connect")
-    def test_ftp_failure(self, ftp_mock):
-
-        ftp_mock.side_effect = Exception("broken")
-
-        with self._patch(True, exclude=["check_ftp"]):
-            response = self.client.get("/healthcheck")
-
-        output = json.loads(response.content)
-
-        self.assertFalse(output["ftp"]["ok"])
-        self.assertFalse(output["ok"])
 
     @patch("apps.monitoring.check_methods.os.system")
     def test_ping_failure(self, sys_mock):
