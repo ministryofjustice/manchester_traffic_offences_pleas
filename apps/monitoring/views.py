@@ -27,10 +27,6 @@ class HealthCheckView(View):
                 "description": "Transactional inbound/outbound emails via mandrill",
                 "ok": check_mandrill()
             },
-            "ftp": {
-                "description": "The DX FTP interface",
-                "ok": check_ftp(settings.FTP_SERVER_IP, 443)
-            },
             "dashboard": {
                 "description": "The MaP dashboard",
                 "ok": check_url(urljoin("http://dashboard."+url_base, "makeaplea"))
