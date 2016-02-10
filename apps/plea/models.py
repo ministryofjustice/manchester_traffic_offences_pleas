@@ -451,6 +451,7 @@ class Court(models.Model):
 
     region_code = models.CharField(
         max_length=2,
+        verbose_name="URN Region Code",
         help_text="The initial two digit URN number, e.g. 06",
         unique=True)
 
@@ -464,30 +465,34 @@ class Court(models.Model):
 
     court_email = models.CharField(
         max_length=255,
-        help_text="A user facing email address")
+        help_text="The email address for users to contact the court")
 
     court_language = models.CharField(max_length=4, null=False, blank=False, default="en",
                                       choices=COURT_LANGUAGE_CHOICES)
 
     submission_email = models.CharField(
+        verbose_name="Internal contact details",
         max_length=255,
         help_text="The outbound court email used to send submission data")
 
     court_receipt_email = models.CharField(
+        verbose_name="Plea receipt email",
         max_length=255, null=True, blank=True,
-        help_text="The email address the court uses to send receipt emails to MaP")
+        help_text="The email address to send receipts confirming the plea has been filed correctly")
 
     local_receipt_email = models.CharField(
         max_length=255, null=True, blank=True,
         help_text="The inbound receipt email address. Used for validation purposes.")
 
     plp_email = models.CharField(
+        verbose_name="Police submission email",
         max_length=255,
-        help_text="The PLP outbound email - if left empty the PLP email won't be sent",
+        help_text="The email address provided by the police to receive pleas",
         null=True,
         blank=True)
 
     enabled = models.BooleanField(
+        verbose_name="Live",
         default=False)
 
     test_mode = models.BooleanField(
