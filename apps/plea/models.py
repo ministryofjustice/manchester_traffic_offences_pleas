@@ -233,10 +233,15 @@ class CaseManager(models.Manager):
 
     def can_use_urn(self, urn, first_name, last_name):
         name = standardise_name(first_name, last_name)
-        return not self.filter(
-            urn__iexact=urn,
-            name=name,
-            sent=True).exists()
+
+        cases = self.filter(urn__iexact=urn, sent=True)
+
+        for case in cases:
+            if case.extra_data and case.extra_data.get("OrganisationName"):
+                return False
+            elif case.name == name:
+                return False
+        return True
 
 
 class Case(models.Model):
