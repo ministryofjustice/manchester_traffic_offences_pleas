@@ -34,6 +34,6 @@ urlpatterns = patterns(
     url(r"^test-template/$", views.test_template, name="test_template"),
     url(r"^test-email-attachment/$", views.test_email_attachment, name="test_email_attachment"),
     url(r"^test-resulting-email/$", views.test_resulting_email, name="test_resulting_email"),
-    url(r'^ping.json$', PingJsonView.as_view(build_date_key="build_date_key", commit_id_key="commit_id_key"), name='ping_json'),
+    url(r'^ping.json$', PingJsonView.as_view(build_date_key="APP_BUILD_DATE", commit_id_key="APP_GIT_COMMIT"), name='ping_json'),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
