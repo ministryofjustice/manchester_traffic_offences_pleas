@@ -86,6 +86,13 @@ def send_plea_email(context_data):
 
     case.language = translation.get_language().split("-")[0]
     case.name = standardise_name(first_name, last_name)
+
+    if context_data["case"]["plea_made_by"] == "Defendant":
+        if case.extra_data and "OrganisationName" in case.extra_data:
+            case.extra_data["OrganisationName"] = context_data.get("company_details", {}).get("company_name")
+        else:
+            case.extra_data = {"OrganisationName": context_data.get("company_details", {}).get("company_name")}
+
     if send_user_email and email_address:
         case.email = email_address
         case.send_user_email = True

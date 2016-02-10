@@ -247,9 +247,9 @@ class CompanyDetailsForm(BaseStageForm):
                                  error_messages={"required": ERROR_MESSAGES["FIRST_NAME_REQUIRED"]})
 
     last_name = forms.CharField(label=_("Your last name"),
-                                 widget=forms.TextInput(attrs={"class": "form-control"}),
-                                 required=True,
-                                 error_messages={"required": ERROR_MESSAGES["LAST_NAME_REQUIRED"]})
+                                widget=forms.TextInput(attrs={"class": "form-control"}),
+                                required=True,
+                                error_messages={"required": ERROR_MESSAGES["LAST_NAME_REQUIRED"]})
 
     position_in_company = forms.ChoiceField(label=_("Your position in the company"),
                                             choices=COMPANY_POSITION_CHOICES,
