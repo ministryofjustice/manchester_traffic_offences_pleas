@@ -18,6 +18,7 @@ class CaseSerializer(serializers.ModelSerializer):
     case_number = serializers.CharField(required=True)
     urn = serializers.CharField(required=True, validators=[is_valid_urn_format, ])
     offences = OffenceSerializer(many=True)
+    ou_code = serializers.CharField(required=True)
 
     def __init__(self, *args, **kwargs):
         super(CaseSerializer, self).__init__(*args, **kwargs)
@@ -25,7 +26,7 @@ class CaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Case
         fields = ("offences", "urn", "extra_data", "date_of_hearing",
-                  "case_number", "initiation_type", "language")
+                  "case_number", "initiation_type", "language", "ou_code")
 
     def validate(self, data):
         if "date_of_hearing" not in data:
@@ -44,7 +45,8 @@ class CaseSerializer(serializers.ModelSerializer):
                 break
 
         if not match:
-            raise exceptions.ValidationError("Case contains offence codes not present in the whitelist")
+            raise exceptions.ValidationError("Case {} contains offence codes [{}] not present in the whitelist".format(data.get("urn"),
+                                                                                                                       offence_codes))
 
         urn = data.pop("urn")
         std_urn = standardise_urn(urn)
@@ -72,6 +74,8 @@ class CaseSerializer(serializers.ModelSerializer):
         if open_cases:
             case = open_cases[0]
             case.offences.all().delete()
+            if "ou_code" in validated_data:
+                case.ou_code = validated_data["ou_code"]
             if "initiation_type" in validated_data:
                 case.initiation_type = validated_data["initiation_type"]
             if "language" in validated_data:
@@ -79,6 +83,7 @@ class CaseSerializer(serializers.ModelSerializer):
             case.extra_data = validated_data["extra_data"]
             case.save()
         else:
+            validated_data["imported"] = True
             case = Case.objects.create(**validated_data)
 
         # Create or update each page instance
