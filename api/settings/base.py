@@ -15,6 +15,20 @@ INSTALLED_APPS = (
     'rest_framework',
 )
 
+MIDDLEWARE_CLASSES = (
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'make_a_plea.middleware.AdminLocaleURLMiddleware',
+    'make_a_plea.middleware.TimeoutRedirectMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware'
+)
+
 PROJECT_APPS = (
     'apps.forms',
     'apps.plea',
