@@ -1,9 +1,7 @@
-import csv
 from django.core.management.base import BaseCommand
 
-
-from apps.plea.models import DataValidation, Case
-from apps.plea.standardisers import standardise_urn, format_for_region
+from apps.plea.models import Case
+from apps.plea.standardisers import standardise_urn
 
 
 class Command(BaseCommand):
@@ -13,17 +11,17 @@ class Command(BaseCommand):
         parser.add_argument('csv_file', nargs='+')
 
     def handle(self, *args, **options):
-        with open(options['csv_file'][0]) as csvfile:
-            total_matched, total_missed, matched, missed = 0, 0, 0, 0
+        total_matched, total_missed, matched, missed = 0, 0, 0, 0
 
+        with open(options['csv_file'][0]) as csvfile:
             for row in csvfile.readlines():
                 if not row.strip():
-                    continue
+                    print "----------------\nMatched {}\nMissed {}\n\n".format(matched, missed)
+                    total_matched += matched
+                    total_missed += missed
+
                 elif row.startswith("#"):
                     if matched > 0 or missed > 0:
-                        print "----------------\nMatched {}\nMissed {}\n\n".format(matched, missed)
-                        total_matched += matched
-                        total_missed += missed
                         matched = 0
                         missed = 0
                     print row
@@ -33,6 +31,6 @@ class Command(BaseCommand):
                         matched += 1
                     else:
                         missed += 1
-                        print "{} - failed".format(urn)
+                        print "{} - failed".format(row.strip())
 
         print "----------------\nTotal:\nMatched {}\nMissed {}".format(total_matched, total_missed)
