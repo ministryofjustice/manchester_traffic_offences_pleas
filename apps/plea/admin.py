@@ -93,7 +93,7 @@ class InlineResultOffence(admin.StackedInline):
 
 class CaseAdmin(admin.ModelAdmin):
     list_display = ("urn", "sent", "processed", "charge_count", "initiation_type")
-    list_filter = ("sent", "processed", "initiation_type", "ou_code")
+    list_filter = ("sent", "processed", "initiation_type", "ou_code", "imported")
     inlines = [InlineCaseAction, InlineOffence]
     search_fields = ["urn", "case_number"]
 
@@ -161,7 +161,7 @@ class DataValidationAdmin(admin.ModelAdmin):
             dv = DataValidation.objects.filter(urn_entered__startswith=court.region_code,
                                                date_entered__lte=date.today() - timedelta(days=recent_days))
             all_total = dv.count()
-            all_matched = dv.filter(case_match__isnull=False).count()
+            all_matched = dv.filter(case_match_count__gt=0).count()
 
             if all_total > 0:
                 all_percentage = round(all_matched / all_total * 100, 2)
@@ -171,7 +171,7 @@ class DataValidationAdmin(admin.ModelAdmin):
             dv_recent = DataValidation.objects.filter(urn_entered__startswith=court.region_code,
                                                       date_entered__gt=date.today() - timedelta(days=recent_days))
             recent_total = dv_recent.count()
-            recent_matched = dv_recent.filter(case_match__isnull=False).count()
+            recent_matched = dv_recent.filter(case_match_count__gt=0).count()
             if recent_total > 0:
                 recent_percentage = round(recent_matched / recent_total * 100, 2)
             else:
