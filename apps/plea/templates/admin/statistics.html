@@ -16,6 +16,15 @@
 
 {% block content %}
 <div class="actions">
+    <form method="GET">
+        <p>
+            Recent days to view
+            <input type="text" name="days" size="3" value="{{ recent_days }}">
+            <input type="submit" value="Go">
+        </p>
+    </form>
+</div>
+<div class="actions">
 <table>
     <tr>
         <th></th>
