@@ -146,7 +146,13 @@ class DataValidationAdmin(admin.ModelAdmin):
         return urls + super_urls
 
     def statistics_view(self, request):
-        recent_days = int(request.GET.get("days", 30))
+        default_recent = 30
+        try:
+            recent_days = int(request.GET.get("days", default_recent))
+            if recent_days < 1:
+                recent_days = default_recent
+        except ValueError:
+            recent_days = default_recent
 
         regions = []
         court_codes = []
