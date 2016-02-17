@@ -8,9 +8,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for dv in DataValidation.objects.all():
-            cases = Case.objects.filter(urn=dv.urn_standardised)
+            cases = Case.objects.filter(urn=dv.urn_standardised, case_number__isnull=False)
             dv.case_match_count = len(cases)
             if len(cases) > 0:
                 dv.case_match = cases[0]
+            else:
+                dv.case_match = None
 
             dv.save()
