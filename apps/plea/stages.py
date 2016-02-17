@@ -43,7 +43,36 @@ def get_case(urn):
     except Case.DoesNotExist:
         return None
     except MultipleObjectsReturned:
-        return Case.objects.filter(urn__iexact=urn, sent=False)[0]
+        # If we've got multiple un-sent records in the database it may be a case
+        # with more than one defendant for the URN, if that is the case we shouldn't
+        # be showing data to the user due to the potential for showing the wrong
+        # data to the user so the safest thing to do is return None so it looks as if
+        # there is no data for the case.
+
+        cases = Case.objects.filter(urn__iexact=urn, sent=False)
+        fields = ["Surname", "Forename1", "DOB"]
+        last_match = None
+        for case in cases:
+            if case.extra_data:
+                # If we don't have all the data to match on then drop out
+                for field in fields:
+                    if case.extra_data.get(field) is None:
+                        return None
+                matching = []
+                for field in fields:
+                    if field in case.extra_data and case.extra_data[field]:
+                        matching.append(case.extra_data[field])
+
+                # if any of the fields differ then we need to drop out
+                if last_match is not None and matching != last_match:
+                    return None
+                else:
+                    last_match = matching
+                    continue
+            else:
+                continue
+
+        return cases[0]
 
 
 def get_offences(case_data):
