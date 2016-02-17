@@ -25,7 +25,10 @@ class TestURNStageDataBase(TestCase):
             case_number="12345",
             ou_code="06",
             initiation_type="Q",
-            extra_data={"PostCode": "M60 1PR"})
+            extra_data={"PostCode": "M60 1PR",
+                        "Surname": "Marsh",
+                        "Forename1": "Frank",
+                        "DOB": "1970-01-01"})
 
         self.case.offences.create(
             offence_code="RT12345",
@@ -171,6 +174,31 @@ class TestURNStageNoData(TestURNStageDataBase):
 
         stage = URNEntryStage(self.urls, self.data)
         stage.save({"urn": "06AA0000015"})
+        self.assertEqual(stage.next_step, "notice_type")
+
+
+class TestURNStageDuplicateCases(TestURNStageDataBase):
+    def setUp(self):
+        super(TestURNStageDuplicateCases, self).setUp()
+        self.case.pk = None
+        self.case.save()
+
+    def test_duplicate_cases_same_name_continues(self):
+        stage = URNEntryStage(self.urls, self.data)
+        stage.save({"urn": "06AA0000015"})
+
+        response = stage.render({})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(stage.next_step, "your_case_continued")
+
+    def test_duplicate_cases_different_names_drops_out(self):
+        self.case.extra_data["Forename1"] = "Freda"
+        self.case.save()
+        stage = URNEntryStage(self.urls, self.data)
+        stage.save({"urn": "06AA0000015"})
+
+        response = stage.render({})
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(stage.next_step, "notice_type")
 
 
@@ -518,3 +546,5 @@ class TestCompanyAuthStageBoth(TestURNStageDataBase):
         stage.save({"postcode": "m601pr", "number_of_charges": 2})
         self.assertEqual(stage.next_step, "company_details")
         self.assertEqual(self.data2["notice_type"]["sjp"], False)
+
+
