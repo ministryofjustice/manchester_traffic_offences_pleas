@@ -146,14 +146,17 @@ class DataValidationAdmin(admin.ModelAdmin):
         return urls + super_urls
 
     def statistics_view(self, request):
-        recent_days = 30
+        recent_days = int(request.GET.get("days", 30))
+
         regions = []
         court_codes = []
         for court in Court.objects.all():
             court_codes.append(court.region_code)
-            dv = DataValidation.objects.filter(urn_entered__startswith=court.region_code)
+            dv = DataValidation.objects.filter(urn_entered__startswith=court.region_code,
+                                               date_entered__lte=date.today() - timedelta(days=recent_days))
             all_total = dv.count()
             all_matched = dv.filter(case_match__isnull=False).count()
+
             if all_total > 0:
                 all_percentage = round(all_matched / all_total * 100, 2)
             else:
