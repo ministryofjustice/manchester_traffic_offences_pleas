@@ -196,6 +196,7 @@ INSTALLED_APPS = [
     'apps.plea',
     'apps.feedback',
     'apps.receipt',
+    'apps.result',
     'django_premailer',
 ]
 
