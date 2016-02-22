@@ -10,7 +10,8 @@ from rest_framework.response import Response
 
 from .serializers import CaseSerializer, UsageStatsSerializer, ResultSerializer
 
-from apps.plea.models import Case, CourtEmailCount, UsageStats, Result
+from apps.plea.models import Case, CourtEmailCount, UsageStats
+from apps.result.models import Result
 
 
 class CaseViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):

@@ -8,7 +8,8 @@ from django.contrib.auth.models import User
 from rest_framework.reverse import reverse
 from rest_framework.test import (APITestCase, APIRequestFactory, force_authenticate)
 
-from apps.plea.models import Result, Court
+from apps.result.models import Result
+from apps.plea.models import Court
 from api.v0.views import ResultViewSet
 
 
