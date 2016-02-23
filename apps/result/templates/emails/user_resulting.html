@@ -44,7 +44,7 @@
     {% if fines %}
     <p>{% for fine in fines %}
         {% if forloop.counter != 1 %}<br>{% endif %}
-        {{ fine.label }} £{{ fine.amount|floatformat:2|intcomma }}.
+        {{ fine.label }}.
     {% endfor %}</p>
     {% endif %}
 
