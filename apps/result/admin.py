@@ -23,4 +23,11 @@ class ResultAdmin(admin.ModelAdmin):
     search_fields = ["urn", "case_number"]
 
 
+class ResultOffenceAdmin(admin.ModelAdmin):
+    list_display = ("result", "offence_code")
+    search_fields = ("result__urn", "result__case_number",)
+    inlines = [InlineResultOffenceData, ]
+
+
 admin.site.register(Result, ResultAdmin)
+admin.site.register(ResultOffence, ResultOffenceAdmin)
