@@ -4,20 +4,20 @@
 
 {{ name|safe }}
 {% blocktrans %}URN:{% endblocktrans %} {{ urn|format_urn }}
-{% blocktrans %}Your court:{% endblocktrans %} {{ court|safe }}
+{% blocktrans %}Your court:{% endblocktrans %} {{ court.court_name|safe }}
 
 ------------------------------------------------------------------------
 
 {% blocktrans %}Fines and penalties{% endblocktrans %}
 {% if fines %}{% for fine in fines %}
-{{ fine.label }} £{{ fine.amount|floatformat:2|intcomma }}.{% endfor %}{% endif %}
+- {{ fine.label }}{% endfor %}{% endif %}
 
 {% blocktrans %}Total to pay:{% endblocktrans %} £{{ total|floatformat:2|intcomma }}
 
 {% blocktrans %}Pay by:{% endblocktrans %} {{ pay_by|date:"d/m/Y" }}
 {% if endorsements %}
 {% blocktrans %}Endorsements:{% endblocktrans %}{% for endorsement in endorsements %}
-{{ endorsement }}{% endfor %}{% endif %}
+- {{ endorsement }}{% endfor %}{% endif %}
 
 {% blocktrans %}Do not send your driving licence to the court. The DVLA will contact you if they need you to send it to them.{% endblocktrans %}
 
