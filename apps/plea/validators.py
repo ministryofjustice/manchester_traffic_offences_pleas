@@ -77,7 +77,7 @@ def is_valid_urn_format(urn):
     urn = standardise_urn(urn)
     pattern = get_pattern(urn)
 
-    if not re.match(pattern, urn) or not Court.objects.has_court(urn):
+    if not re.match(pattern, urn):
         raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
 
     return True
