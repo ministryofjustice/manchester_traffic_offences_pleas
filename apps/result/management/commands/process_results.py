@@ -1,5 +1,8 @@
 # coding=utf-8
+from datetime import datetime
 from decimal import Decimal
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives, get_connection
 from django.core.management.base import BaseCommand
 from django.utils import translation
 from django.template.loader import get_template
@@ -7,41 +10,54 @@ import re
 
 
 from apps.result.models import Result
-from apps.plea.models import Case, Court
+from apps.plea.models import Case, CaseOffenceFilter, Court
 from apps.plea.standardisers import standardise_urn, StandardiserNoOutputException
-
-
-
-
-"""
-Needs:
-URN
-name
-court
-fines
-- label
-- amount
-total
-endorsements
-"""
 
 
 class Command(BaseCommand):
     help = "Send out result emails"
+
+    def mark_done(self, result, sent=False):
+        result.processed = True
+        if sent:
+            result.sent = True
+            result.sent_on = datetime.now()
+        result.save()
 
     def handle(self, *args, **options):
         # May need to change to CY if we get a proper result language
         translation.activate("en")
         text_template = get_template("emails/user_resulting.txt")
         html_template = get_template("emails/user_resulting.html")
-        # Need a better filter than sent ... most of these will never get sent
-        # maybe add a processed flag to the result obj
-        count = 0
-        for result in Result.objects.filter(sent=False, result_offences__offence_data__result_code="GPTAC"):
-            case = Case.objects.filter(case_number=result.case_number)
+
+        processed_count = 0
+        unprocessed_count = 0
+        # Iterate through any results that don't have an adjournment code
+        for result in Result.objects.filter(processed=False).exclude(result_offences__offence_data__result_code__in=["A", "ADJNN", "ADJN"]):
+            # Only use results that we can match back to a sent case with an email address
+            case = Case.objects.filter(case_number=result.case_number, email__isnull=False, sent=True)
             if len(case):
+                # Shouldn't be more than one but just in case there is grab the first
                 case = case[0]
+
+                # Get out early if this result has offence codes we shouldn't be dealing with
+                offence_codes = [offence.offence_code[:4] for offence in result.result_offences.all()]
+                match = False
+
+                for offence_code in offence_codes:
+                    if CaseOffenceFilter.objects.filter(filter_match__startswith=offence_code).exists():
+                        match = True
+                    else:
+                        match = False
+                        break
+
+                if not match:
+                    unprocessed_count += 1
+                    self.mark_done(result)
+
                 total = Decimal()
+
+                # Only process cases that have final codes (maybe this should be done in the initial result filtering?)
                 if result.result_offences.filter(offence_data__result_code__startswith="F").exists():
                     data = {"urn": result.urn,
                             "fines": [],
@@ -58,11 +74,14 @@ class Command(BaseCommand):
                     data["payment_details"] = {"division": result.division,
                                                "account_number": result.account_number}
 
+                    # If we move to using OU codes in Case data this should be replaced by a lookup using the
+                    # Case OU code
                     try:
                         data["court"] = Court.objects.get_by_urn(standardise_urn(result.urn))
                     except StandardiserNoOutputException:
                         print "URN failed to standardise: {}".format(result.urn)
 
+                    # Loop through the offences and results and pick out what we need to display
                     fines = []
                     endorsements = []
                     for offence in result.result_offences.all():
@@ -72,11 +91,12 @@ class Command(BaseCommand):
                                 value = sum(Decimal(v) for v in values)
                                 total += value
                                 fines.append({"label": r.result_wording})
-                            elif r.result_code in ["DDP", "LEP"]:
+                            elif r.result_code in ["LEP", ]:
                                 endorsements.append(r.result_wording)
                             else:
                                 print offence.offence_code, r.result_code, r.result_wording.encode("utf-8")
 
+                    # Collect everything, render and send the email.
                     data["fines"] = fines
                     data["endorsements"] = endorsements
                     data["total"] = total
@@ -85,7 +105,22 @@ class Command(BaseCommand):
                     h_output = html_template.render(data)
 
                     # Send email and mark as sent
-                    print t_output.encode("utf-8")
-                    count += 1
-                    if count > 10:
-                        break
+                    connection = get_connection(host=settings.EMAIL_HOST,
+                                                port=settings.EMAIL_PORT,
+                                                username=settings.EMAIL_HOST_USER,
+                                                password=settings.EMAIL_HOST_PASSWORD,
+                                                use_tls=settings.EMAIL_USE_TLS)
+
+                    email = EmailMultiAlternatives("Make a plea result", t_output, settings.PLEA_CONFIRMATION_EMAIL_FROM,
+                                                   [case.email], connection=connection)
+
+                    email.attach_alternative(h_output, "text/html")
+                    # email.send(fail_silently=False)
+                    print "Email sent to {}".format(case.email)
+
+                    self.mark_done(result, sent=True)
+                    processed_count += 1
+            else:
+                unprocessed_count += 1
+
+        print "Processed: {}, skipped: {}".format(processed_count, unprocessed_count)
