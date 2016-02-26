@@ -367,7 +367,7 @@ class AboutYourIncomeForm(BaseStageForm):
 
     pension_credit = forms.TypedChoiceField(label=_("Do you receive Pension Credit?"),
                                             widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                            choices=YESNO_CHOICES["Byddai/Na fyddai"],
+                                            choices=YESNO_CHOICES["Ydw/Nac ydw"],
                                             coerce=to_bool,
                                             error_messages={"required": ERROR_MESSAGES["PENSION_CREDIT_REQUIRED"]})
 
