@@ -16,6 +16,7 @@ class Result(models.Model):
     pay_by_date = models.DateField(null=True, blank=True)
     payment_type = models.CharField(max_length=10, null=True, blank=True)
 
+    processed = models.BooleanField(default=False)
     sent = models.BooleanField(default=False)
     sent_on = models.DateTimeField(null=True, blank=True)
 
