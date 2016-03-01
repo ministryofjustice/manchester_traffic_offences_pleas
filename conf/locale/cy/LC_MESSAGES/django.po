@@ -454,7 +454,7 @@ msgstr "Dewiswch eich statws cyflogaeth"
 
 #: apps/plea/fields.py:51
 msgid "Tell us how often you get paid"
-msgstr "Dywedwch wrthym pa mor aml yr rydych yn cael eich talu"
+msgstr "Dywedwch wrthym pa mor aml rydych yn cael eich talu"
 
 #: apps/plea/fields.py:52
 msgid "Enter your take home pay"
@@ -462,7 +462,7 @@ msgstr "Rhowch eich cyflog clir (cyflog ar ôl didyniadau)"
 
 #: apps/plea/fields.py:53
 msgid "Select the out of work benefit you receive"
-msgstr "Dewiswch y budd-daliadau diweithdra rydych yn eu gael"
+msgstr "Dewiswch y budd-daliadau diweithdra rydych yn eu cael"
 
 #: apps/plea/fields.py:54
 msgid "Select how often your benefit is paid"
@@ -486,7 +486,7 @@ msgstr "Rhowch eich incwm clir"
 
 #: apps/plea/fields.py:59
 msgid "Select which benefit you receive"
-msgstr "Dewiswch pa fudd-dal rydych chi'n ei dderbyn"
+msgstr "Dewiswch pa fudd-dal rydych chi'n ei gael"
 
 #: apps/plea/fields.py:60
 msgid "Tell us if you receive Pension Credit"
@@ -989,7 +989,7 @@ msgstr "Cymhorthdal Incwm"
 
 #: apps/plea/forms.py:387
 msgid "Which benefit do you receive?"
-msgstr "Pa fudd-dal ydych chi'n ei dderbyn?"
+msgstr "Pa fudd-dal rydych chi'n ei gael?"
 
 #: apps/plea/forms.py:409
 msgid "How often is your Pension Credit paid?"
