@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
-import os
 
-from moj_irat.views import PingJsonView, HealthcheckView
+from moj_irat.views import PingJsonView
 
 import views
 

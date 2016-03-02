@@ -1,19 +1,9 @@
-from .base import *
+from .docker import *
 
-DEBUG = False
-TEMPLATE_DEBUG = DEBUG
 
-INSTALLED_APPS += ('raven.contrib.django.raven_compat', )
+INSTALLED_APPS.append('raven.contrib.django.raven_compat')
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('POSTGRES_DB',''),
-        'USER': os.environ.get('POSTGRES_USER', ''),
-        'PASSWORD': os.environ.get('POSTGRES_PASS', ''),
-        'HOST': os.environ.get('POSTGRES_HOST', ''),
-        'PORT': os.environ.get('POSTGRES_PORT', ''),
-    }
+RAVEN_CONFIG = {
+    'dsn': os.environ["SENTRY_DSN"],
+    'release': os.environ.get("APP_GIT_COMMIT", "no-git-commit-available")
 }
-
-ALLOWED_HOSTS = ["api.makeaplea.dsd.io", ]
