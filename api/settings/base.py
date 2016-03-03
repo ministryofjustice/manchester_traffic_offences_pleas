@@ -2,8 +2,7 @@ from make_a_plea.settings.base import *
 
 ROOT_URLCONF = 'api.urls'
 
-INSTALLED_APPS = (
-    #'django.contrib.admin',
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.messages',
@@ -13,7 +12,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'rest_framework',
-)
+]
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.cache.UpdateCacheMiddleware',
