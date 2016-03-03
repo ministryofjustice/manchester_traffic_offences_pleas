@@ -28,12 +28,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.cache.FetchFromCacheMiddleware'
 )
 
-PROJECT_APPS = (
+PROJECT_APPS = [
     'apps.forms',
     'apps.plea',
     'api',
     'api.v0',
-)
+]
 
 # Django-rest-framework throttling config
 
