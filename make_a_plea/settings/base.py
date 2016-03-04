@@ -136,7 +136,8 @@ MIDDLEWARE_CLASSES = (
     'make_a_plea.middleware.AdminLocaleURLMiddleware',
     'make_a_plea.middleware.TimeoutRedirectMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
-    'axes.middleware.FailedLoginMiddleware'
+    'axes.middleware.FailedLoginMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware'
 )
 
 CACHE_MIDDLEWARE_SECONDS = 0
