@@ -1,8 +1,8 @@
 from collections import OrderedDict
 from django.test import TestCase
 
-from ..stages import URNEntryStage, AuthenticationStage
-from ..models import Court, Case
+from ..stages import URNEntryStage, AuthenticationStage, PleaStage
+from ..models import Court, Case, Offence
 
 
 class TestURNStageDataBase(TestCase):
@@ -546,5 +546,31 @@ class TestCompanyAuthStageBoth(TestURNStageDataBase):
         stage.save({"postcode": "m601pr", "number_of_charges": 2})
         self.assertEqual(stage.next_step, "company_details")
         self.assertEqual(self.data2["notice_type"]["sjp"], False)
+
+
+class TestPleaAuthStage(TestURNStageDataBase):
+    def test_offences_shown_with_dx(self):
+
+        self.data["dx"] = True
+        self.data["plea"] = {}
+        self.data["case"]["urn"] = "06AA0000015"
+
+        stage = PleaStage(self.urls, self.data)
+        stage.load_forms({})
+
+        self.assertIsInstance(stage.form.case_data, Offence)
+
+    def test_offences_not_shown_with_no_dx(self):
+
+        self.data["dx"] = False
+        self.data["plea"] = {}
+
+        stage = PleaStage(self.urls, self.data)
+        stage.load_forms({})
+
+        self.assertFalse(getattr(stage.form, "case_data", False))
+
+
+
 
 
