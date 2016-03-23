@@ -136,7 +136,8 @@ MIDDLEWARE_CLASSES = (
     'make_a_plea.middleware.AdminLocaleURLMiddleware',
     'make_a_plea.middleware.TimeoutRedirectMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
-    'axes.middleware.FailedLoginMiddleware'
+    'axes.middleware.FailedLoginMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware'
 )
 
 CACHE_MIDDLEWARE_SECONDS = 0
@@ -237,6 +238,11 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
+        #'sentry': {
+        #    'level': 'ERROR',
+        #    'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        #    'tags': {'custom-tag': 'x'},
+        #}
     },
     'loggers': {
         '': {
