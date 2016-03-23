@@ -2,6 +2,7 @@ from django.conf import settings
 from django.utils.translation import ugettext as _, get_language
 from django.utils.safestring import mark_safe
 
+
 def globals(request):
     return {
         # Google Analytics ID (Tracking ID for the service)

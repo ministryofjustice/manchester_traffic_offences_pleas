@@ -85,6 +85,30 @@ class TestValidators(TestCase):
             enabled=True,
             test_mode=False)
 
+        self.court32 = Court.objects.create(
+            court_code="0000",
+            region_code="32",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
+            enabled=True,
+            test_mode=False)
+
+        self.court41 = Court.objects.create(
+            court_code="0000",
+            region_code="41",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
+            enabled=True,
+            test_mode=False)
+
     def test_urn_valid_database(self):
         self.court06.validate_urn = True
         self.court06.save()
@@ -109,7 +133,9 @@ class TestValidators(TestCase):
             "06/JJ/50534/14",
             "06AB/12345/99",
             "06AB12345/99",
-            "06AB123456711"
+            "06AB123456711",
+            "32C90000000",
+            "41/A9/00000/00"
         ]
         bad_urns = [
             "123",
@@ -120,7 +146,9 @@ class TestValidators(TestCase):
             "06/BB/1234/99",
             "06/BB/123456/99",
             "06/BB/12345/9",
-            "06/BB/1234567/9"
+            "06/BB/1234567/9",
+            "32CC0000000",
+            "41/AA/00000/00"
         ]
 
         for URN in good_urns:
