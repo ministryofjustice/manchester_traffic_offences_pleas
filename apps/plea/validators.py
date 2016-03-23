@@ -13,6 +13,8 @@ UNFORMATTED_URN_PATTERNS = {
     "10": r"^[0-9]{2}[A-Z]{1}[0-9]{1}(?:[0-9]{5}|[0-9]{7})[0-9]{2}$",
     "17": r"^[0-9]{2}[A-Z]{1}[0-9]{1}(?:[0-9]{5}|[0-9]{7})[0-9]{2}$",
     "20": r"^[0-9]{2}[A-Z]{1}[A-Z0-9]{1}(?:[0-9]{5}|[0-9]{7})[0-9]{2}$",
+    "32": r"^[0-9]{2}[A-Z]{1}[0-9]{6}[0-9]{2}$",
+    "41": r"^[0-9]{2}[A-Z]{1}[0-9]{6}[0-9]{2}$",
     "*": r"^[0-9]{2}[A-Z]{2}(?:[0-9]{5}|[0-9]{7})[0-9]{2}$"
 }
 
@@ -77,7 +79,7 @@ def is_valid_urn_format(urn):
     urn = standardise_urn(urn)
     pattern = get_pattern(urn)
 
-    if not re.match(pattern, urn) or not Court.objects.has_court(urn):
+    if not re.match(pattern, urn):
         raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
 
     return True

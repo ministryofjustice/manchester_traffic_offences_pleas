@@ -384,9 +384,14 @@ class PleaStage(IndexedStage):
             pass
 
     def load_forms(self, data=None, initial=False):
+
         initial_data = None
-        # TODO: change this to grabbing by case OU or a FK at some point
-        offences = get_offences(self.all_data["case"])
+
+        # Only show offence data for DX cases
+        if self.all_data.get("dx", False):
+            offences = get_offences(self.all_data["case"])
+        else:
+            offences = False
 
         if initial:
             data = self.all_data.get(self.name, {}).get("data", [])

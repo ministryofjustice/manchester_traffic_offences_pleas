@@ -21,6 +21,8 @@ PREMAILER_OPTIONS = {"base_url": "http://dev.makeaplea.dsd.io",
                      "keep_style_tags": True,
                      "cssutils_logging_level": logging.ERROR}
 
+GOOGLE_ANALYTICS_ID = os.environ.get("GOOGLE_ANALYTICS_ID", None)
+
 SMTP_ROUTES["GSI"]["USERNAME"] = os.environ.get("GSI_EMAIL_USERNAME", "")
 SMTP_ROUTES["GSI"]["PASSWORD"] = os.environ.get("GSI_EMAIL_PASSWORD", "")
 SMTP_ROUTES["PNN"]["USERNAME"] = os.environ.get("PNN_EMAIL_USERNAME", "")

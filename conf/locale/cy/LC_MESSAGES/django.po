@@ -454,7 +454,7 @@ msgstr "Dewiswch eich statws cyflogaeth"
 
 #: apps/plea/fields.py:51
 msgid "Tell us how often you get paid"
-msgstr "Dywedwch wrthym pa mor aml yr ydych yn cael eich talu"
+msgstr "Dywedwch wrthym pa mor aml rydych yn cael eich talu"
 
 #: apps/plea/fields.py:52
 msgid "Enter your take home pay"
@@ -462,11 +462,11 @@ msgstr "Rhowch eich cyflog clir (cyflog ar ôl didyniadau)"
 
 #: apps/plea/fields.py:53
 msgid "Select the out of work benefit you receive"
-msgstr "Dewiswch y budd-daliadau diweithdra rydych yn eu derbyn"
+msgstr "Dewiswch y budd-daliadau diweithdra rydych yn eu cael"
 
 #: apps/plea/fields.py:54
 msgid "Select how often your benefit is paid"
-msgstr "Dewiswch pa mor aml y telir budd-daliadau i chi"
+msgstr "Dewiswch pa mor aml y telir eich budd-dal i chi"
 
 #: apps/plea/fields.py:55
 msgid "Enter the amount of your benefit payment"
@@ -486,7 +486,7 @@ msgstr "Rhowch eich incwm clir"
 
 #: apps/plea/fields.py:59
 msgid "Select which benefit you receive"
-msgstr "Dewiswch pa fudd-dal rydych chi'n ei dderbyn"
+msgstr "Dewiswch pa fudd-dal rydych chi'n ei gael"
 
 #: apps/plea/fields.py:60
 msgid "Tell us if you receive Pension Credit"
@@ -498,11 +498,11 @@ msgstr "Dewiswch pa mor aml y telir eich Credyd Pensiwn i chi"
 
 #: apps/plea/fields.py:62
 msgid "Enter how much Pension Credit you receive"
-msgstr "Nodwch faint o Gredyd Pensiwn rydych chi'n ei dderbyn"
+msgstr "Nodwch faint o Gredyd Pensiwn rydych chi'n ei gael"
 
 #: apps/plea/fields.py:63
 msgid "Tell us if paying a fine would cause you serious financial problems"
-msgstr "Dywedwch wrthym pe bai talu dirwy yn achosi problemau ariannol difrifol i chi"
+msgstr "Dywedwch wrthym a fyddai talu dirwy yn achosi problemau ariannol difrifol i chi"
 
 #: apps/plea/fields.py:64
 msgid ""
@@ -917,11 +917,11 @@ msgstr "Pob pythefnos"
 #: apps/plea/forms.py:287 apps/plea/forms.py:304 apps/plea/forms.py:327
 #: apps/plea/forms.py:350 apps/plea/forms.py:385 apps/plea/forms.py:407
 msgid "Monthly"
-msgstr "Misol"
+msgstr "Fisol"
 
 #: apps/plea/forms.py:291
 msgid "How often do you get paid from your employer?"
-msgstr "Pa mor aml ydych chi'n cael eich talu gan eich cyflogwr?"
+msgstr "Pa mor aml rydych chi'n cael eich talu gan eich cyflogwr?"
 
 #: apps/plea/forms.py:294 apps/plea/forms.py:312
 msgid "What is your take home pay (after tax)?"
@@ -929,7 +929,7 @@ msgstr "Beth yw eich cyflog clir (ar ôl treth)?"
 
 #: apps/plea/forms.py:309
 msgid "How often do you get paid?"
-msgstr "Pa mor aml ydych chi’n cael eich talu?"
+msgstr "Pa mor aml rydych chi’n cael eich talu?"
 
 #: apps/plea/forms.py:320
 msgid "Contributory Jobseeker's Allowance"
@@ -945,7 +945,7 @@ msgstr "Credyd Cynhwysol"
 
 #: apps/plea/forms.py:332
 msgid "Which out of work benefit do you receive?"
-msgstr "Pa fudd-dal diweithdra ydych chi'n ei dderbyn?"
+msgstr "Pa fudd-dal diweithdra rydych chi'n ei gael?"
 
 #: apps/plea/forms.py:337 apps/plea/forms.py:392
 msgid "How often is your benefit paid?"
@@ -989,7 +989,7 @@ msgstr "Cymhorthdal Incwm"
 
 #: apps/plea/forms.py:387
 msgid "Which benefit do you receive?"
-msgstr "Pa fudd-dal ydych chi'n ei dderbyn?"
+msgstr "Pa fudd-dal rydych chi'n ei gael?"
 
 #: apps/plea/forms.py:409
 msgid "How often is your Pension Credit paid?"
@@ -1244,7 +1244,7 @@ msgstr "rhaid i chi ddarparu manylion eich incwm"
 msgid ""
 "the court will decide your fine based on your finances and the seriousness "
 "of the offence"
-msgstr "bydd y llys yn penderfynu faint fydd eich dirwy ar sail eich cyllid a pha mor ddifrifol yw’r drosedd"
+msgstr "bydd y llys yn penderfynu faint fydd eich dirwy ar sail eich sefyllfa ariannol a pha mor ddifrifol yw’r drosedd"
 
 #: apps/plea/templates/about_your_income.html:17
 #: apps/plea/templates/your_employment.html:17
@@ -2276,7 +2276,7 @@ msgstr "Newid <span>eich Credyd Pensiwn</span>"
 
 #: apps/plea/templates/partials/review_income.html:139
 msgid "Paid"
-msgstr "Rydych yn cael eich talu"
+msgstr "Rydych yn cael eich talu yn"
 
 #: apps/plea/templates/partials/review_income.html:150
 #: apps/plea/templates/your_income.html:55
@@ -2738,7 +2738,7 @@ msgstr "Bydd hyn yn:"
 
 #: apps/plea/templates/your_status.html:16
 msgid "make sure your fine is based on your circumstances"
-msgstr "gwnewch yn siŵr bod eich dirwy yn seiliedig ar eich amgylchiadau"
+msgstr "sicrhau bod eich dirwy yn seiliedig ar eich amgylchiadau"
 
 #: apps/plea/templates/your_status.html:17
 msgid "help to speed up the processing of your case"
