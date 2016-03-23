@@ -4,30 +4,25 @@ from apps.result.models import (Result,
                                 ResultOffence,
                                 ResultOffenceData)
 
+import nested_admin
 
-class InlineResultOffenceData(admin.StackedInline):
+
+class InlineResultOffenceData(nested_admin.NestedStackedInline):
     model = ResultOffenceData
     extra = 0
 
 
-class InlineResultOffence(admin.StackedInline):
+class InlineResultOffence(nested_admin.NestedStackedInline):
     model = ResultOffence
     extra = 0
-    inlines = [ResultOffenceData]
+    inlines = [InlineResultOffenceData]
 
 
-class ResultAdmin(admin.ModelAdmin):
+class ResultAdmin(nested_admin.NestedModelAdmin):
     list_display = ("urn", "case_number", "ou_code", "sent", "sent_on")
     list_filter = ("ou_code", "sent", )
     inlines = [InlineResultOffence, ]
     search_fields = ["urn", "case_number"]
 
 
-class ResultOffenceAdmin(admin.ModelAdmin):
-    list_display = ("result", "offence_code")
-    search_fields = ("result__urn", "result__case_number",)
-    inlines = [InlineResultOffenceData, ]
-
-
 admin.site.register(Result, ResultAdmin)
-admin.site.register(ResultOffence, ResultOffenceAdmin)

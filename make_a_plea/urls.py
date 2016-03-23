@@ -26,6 +26,7 @@ urlpatterns = patterns(
     url(r"^receipt/", include("apps.receipt.urls")),
     url(r"^feedback/", include("apps.feedback.urls")),
     url(r"^admin/", include(admin.site.urls)),
+    url(r'^nested_admin/', include('nested_admin.urls')),
     url(r"^court-finder/$", CourtFinderView.as_view(), name="court_finder"),
     url(r"^change-language/$", views.set_language, name="set_language"),
     url(r"^set-a11y-testing/$", views.set_a11y_testing, name="set_a11y_testing"),
