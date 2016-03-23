@@ -198,6 +198,7 @@ INSTALLED_APPS = [
     'apps.receipt',
     'apps.result',
     'django_premailer',
+    'nested_admin',
 ]
 
 # A sample logging configuration. The only tangible logging

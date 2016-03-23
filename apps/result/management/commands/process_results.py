@@ -1,4 +1,5 @@
 # coding=utf-8
+import datetime as dt
 from datetime import datetime
 from decimal import Decimal
 from django.conf import settings
@@ -32,10 +33,29 @@ class Command(BaseCommand):
 
         processed_count = 0
         unprocessed_count = 0
+
         # Iterate through any results that don't have an adjournment code
         for result in Result.objects.filter(processed=False).exclude(result_offences__offence_data__result_code__in=["A", "ADJNN", "ADJN"]):
             # Only use results that we can match back to a sent case with an email address
             case = Case.objects.filter(case_number=result.case_number, email__isnull=False, sent=True)
+
+            # ------ temporary code - only process results wtih a hearing date of today ------
+            if dt.date.today() != result.date_of_hearing:
+                continue
+            # ------ end temp test code ------
+
+            # ------ temporary test code - get a fake court
+            c, created = Case.objects.get_or_create(
+                case_number="resulting_test",
+                defaults={
+                    "name": "Test case",
+                    "email": "hugh.ivory@agilesphere.eu",
+                    "extra_data": {},
+            })
+
+            case = [c]
+            # -------end of temporary code
+
             if len(case):
                 # Shouldn't be more than one but just in case there is grab the first
                 case = case[0]
@@ -44,16 +64,18 @@ class Command(BaseCommand):
                 offence_codes = [offence.offence_code[:4] for offence in result.result_offences.all()]
                 match = False
 
-                for offence_code in offence_codes:
-                    if CaseOffenceFilter.objects.filter(filter_match__startswith=offence_code).exists():
-                        match = True
-                    else:
-                        match = False
-                        break
-
-                if not match:
-                    unprocessed_count += 1
-                    self.mark_done(result)
+                # --- commented out whilst testing
+                # for offence_code in offence_codes:
+                #     if CaseOffenceFilter.objects.filter(filter_match__startswith=offence_code).exists():
+                #         match = True
+                #     else:
+                #         match = False
+                #         break
+                #
+                # if not match:
+                #     unprocessed_count += 1
+                #     self.mark_done(result)
+                # --- end of commented out block
 
                 total = Decimal()
 
