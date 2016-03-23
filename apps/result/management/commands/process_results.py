@@ -46,7 +46,7 @@ class Command(BaseCommand):
 
             # ------ temporary test code - get a fake court
             c, created = Case.objects.get_or_create(
-                case_number="resulting_test",
+                case_number="resulting",
                 defaults={
                     "name": "Test case",
                     "email": "hugh.ivory@agilesphere.eu",
@@ -133,8 +133,14 @@ class Command(BaseCommand):
                                                 password=settings.EMAIL_HOST_PASSWORD,
                                                 use_tls=settings.EMAIL_USE_TLS)
 
+                    recipients = [case.email]
+
+                    recipients.append("lyndon.garvey@digital.justice.gov.uk")
+                    recipients.append("s.walker-russell@hmcts.gsi.gov.uk ")
+                    recipients.append("james.hehir@hmcts.gsi.gov.uk")
+
                     email = EmailMultiAlternatives("Make a plea result", t_output, settings.PLEA_CONFIRMATION_EMAIL_FROM,
-                                                   [case.email], connection=connection)
+                                                   recipients, connection=connection)
 
                     email.attach_alternative(h_output, "text/html")
                     # email.send(fail_silently=False)
