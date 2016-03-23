@@ -63,7 +63,7 @@ class UsageStatsAdmin(admin.ModelAdmin):
 
 class CourtAdmin(admin.ModelAdmin):
     list_display = ('court_name', 'region_code', 'court_address', 'court_email', 'plp_email',
-                    'enabled', 'test_mode', 'notice_types')
+                    'enabled', 'test_mode', 'notice_types', 'validate_urn', 'display_case_data')
 
 
 class InlineCaseAction(admin.TabularInline):
