@@ -1,154 +1,174 @@
 # coding=utf-8
+import cStringIO as StringIO
 import datetime as dt
-from datetime import datetime
-from decimal import Decimal
+
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, get_connection
+from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
 from django.utils import translation
 from django.template.loader import get_template
-import re
-
 
 from apps.result.models import Result
-from apps.plea.models import Case, CaseOffenceFilter, Court
-from apps.plea.standardisers import standardise_urn, StandardiserNoOutputException
+from apps.plea.models import Court
+
+
+RESULTING_START_DATE = dt.date(2016, 03, 28)
 
 
 class Command(BaseCommand):
     help = "Send out result emails"
 
-    def mark_done(self, result, sent=False):
-        result.processed = True
-        if sent:
-            result.sent = True
-            result.sent_on = datetime.now()
-        result.save()
+    def __init__(self, *args, **kwargs):
 
-    def handle(self, *args, **options):
-        # May need to change to CY if we get a proper result language
-        translation.activate("en")
+        super(Command, self).__init__(*args, **kwargs)
+
+        # we want to capture the output of the handle command
+        self._log_output = StringIO.StringIO()
+
+    def log(self, message):
+        self.stdout.write(message)
+        self._log_output.write(message)
+
+    def mark_done(self, result, dry_run=False, message=None, sent=False):
+
+        if message:
+            self.log(message)
+
+        if not dry_run:
+            result.processed = True
+            if sent:
+                result.sent = True
+                result.sent_on = dt.datetime.now()
+            result.save()
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--dry-run",
+            action="store_true",
+            dest="dry_run",
+            default=False,
+            help="Don't send user emails or update result status")
+
+        parser.add_argument(
+            "--override-recipient",
+            action="store_true",
+            dest="override_recipient",
+            default="",
+            help=
+            "Send a status email to a comma separated list of email addresses, "
+            "instead of the user. Combine with --dry-run=True to receive test "
+            "resulting emails without changing the database, or emailing the user"
+        )
+
+        parser.add_argument(
+            "--send-status-email-to",
+            action="store_true",
+            dest="status_email_recipients",
+            default="",
+            help="A comma separate list of email recipients to receive the status email. "
+                 "If blank, then output will be sent to stdout"
+        )
+
+    def email_user(self, data, recipients, lang="en"):
+
+        translation.activate(lang)
+
         text_template = get_template("emails/user_resulting.txt")
         html_template = get_template("emails/user_resulting.html")
 
-        processed_count = 0
-        unprocessed_count = 0
+        t_output = text_template.render(data)
+        h_output = html_template.render(data)
 
-        # Iterate through any results that don't have an adjournment code
-        for result in Result.objects.filter(processed=False).exclude(result_offences__offence_data__result_code__in=["A", "ADJNN", "ADJN"]):
-            # Only use results that we can match back to a sent case with an email address
-            case = Case.objects.filter(case_number=result.case_number, email__isnull=False, sent=True)
+        connection = get_connection(host=settings.EMAIL_HOST,
+                                    port=settings.EMAIL_PORT,
+                                    username=settings.EMAIL_HOST_USER,
+                                    password=settings.EMAIL_HOST_PASSWORD,
+                                    use_tls=settings.EMAIL_USE_TLS)
 
-            # ------ temporary code - only process results wtih a hearing date of today ------
-            if dt.date.today() != result.date_of_hearing:
+        email = EmailMultiAlternatives("Make a plea result", t_output,
+                                       settings.PLEA_CONFIRMATION_EMAIL_FROM,
+                                       recipients, connection=connection)
+
+        email.attach_alternative(h_output, "text/html")
+
+        email.send(fail_silently=False)
+
+    def get_result_data(self, case, result):
+        data = dict(urn=result.urn)
+
+        data["fines"], data["endorsements"], data["total"] = result.get_offence_totals()
+
+        # If we move to using OU codes in Case data this should be replaced by a lookup using the
+        # Case OU code
+        data["court"] = Court.objects.get_by_standardised_urn(result.urn)
+
+        if not data["court"]:
+            self.log("URN failed to standardise: {}".format(result.urn))
+
+        data["name"] = case.get_users_name()
+        data["pay_by"] = result.pay_by_date
+        data["payment_details"] = {"division": result.division,
+                                   "account_number": result.account_number}
+
+        return data
+
+    def handle(self, *args, **options):
+
+        resulted_count, not_resulted_count = 0, 0
+
+        if options["override_recipient"]:
+            override_recipients = options["override_recipient"].split(",")
+        else:
+            override_recipients = None
+
+        for result in Result.objects.filter(processed=False, sent=False, date_of_hearing__gte=RESULTING_START_DATE):
+
+            can_result, reason = result.can_result()
+
+            if not can_result:
+
+                if not options["dry_run"]:
+                    self.mark_done(result, message="Skipping {} because {}".format(result.urn, reason))
+
+                not_resulted_count += 1
                 continue
-            # ------ end temp test code ------
 
-            # ------ temporary test code - get a fake court
-            c, created = Case.objects.get_or_create(
-                case_number="resulting",
-                defaults={
-                    "name": "Test case",
-                    "email": "hugh.ivory@agilesphere.eu",
-                    "extra_data": {},
-            })
+            case = result.get_associated_case()
+            if not case:
 
-            case = [c]
-            # -------end of temporary code
+                self.mark_done(
+                    result,
+                    message="Skipping {} because no matching case".format(result.urn),
+                    dry_run=options["dry_run"])
 
-            if len(case):
-                # Shouldn't be more than one but just in case there is grab the first
-                case = case[0]
+                not_resulted_count += 1
+                continue
 
-                # Get out early if this result has offence codes we shouldn't be dealing with
-                offence_codes = [offence.offence_code[:4] for offence in result.result_offences.all()]
-                match = False
+            data = self.get_result_data(case, result)
 
-                # --- commented out whilst testing
-                # for offence_code in offence_codes:
-                #     if CaseOffenceFilter.objects.filter(filter_match__startswith=offence_code).exists():
-                #         match = True
-                #     else:
-                #         match = False
-                #         break
-                #
-                # if not match:
-                #     unprocessed_count += 1
-                #     self.mark_done(result)
-                # --- end of commented out block
+            if override_recipients:
+                self.email_user(data, override_recipients)
 
-                total = Decimal()
+                self.mark_done(result, sent=True,
+                               message="Email sent to {}".format(override_recipients),
+                               dry_run=options["dry_run"])
 
-                # Only process cases that have final codes (maybe this should be done in the initial result filtering?)
-                if result.result_offences.filter(offence_data__result_code__startswith="F").exists():
-                    data = {"urn": result.urn,
-                            "fines": [],
-                            "endorsements": []}
+            elif not options["dry_run"]:
+                self.email_user(data, [case.email])
 
-                    if case.name:
-                        data["name"] = case.name
-                    elif case.extra_data and "Forename1" in case.extra_data:
-                        data["name"] = "{} {}".format(case.extra_data["Forename1"], case.extra_data["Surname"])
-                    else:
-                        data["name"] = ""
+                self.mark_done(result, sent=True,
+                               message="Email sent to {}".format(case.email),
+                               dry_run=options["dry_run"])
 
-                    data["pay_by"] = result.pay_by_date
-                    data["payment_details"] = {"division": result.division,
-                                               "account_number": result.account_number}
+            resulted_count += 1
 
-                    # If we move to using OU codes in Case data this should be replaced by a lookup using the
-                    # Case OU code
-                    try:
-                        data["court"] = Court.objects.get_by_urn(standardise_urn(result.urn))
-                    except StandardiserNoOutputException:
-                        print "URN failed to standardise: {}".format(result.urn)
+        self.log("total resulted: {}\ntotal not resulted: {}".format(resulted_count, not_resulted_count))
 
-                    # Loop through the offences and results and pick out what we need to display
-                    fines = []
-                    endorsements = []
-                    for offence in result.result_offences.all():
-                        for r in offence.offence_data.all():
-                            if r.result_code.startswith("F"):
-                                values = re.findall(r'\xa3([0-9]+\.*[0-9]{0,2})', r.result_wording)
-                                value = sum(Decimal(v) for v in values)
-                                total += value
-                                fines.append({"label": r.result_wording})
-                            elif r.result_code in ["LEP", ]:
-                                endorsements.append(r.result_wording)
-                            else:
-                                print offence.offence_code, r.result_code, r.result_wording.encode("utf-8")
+        if options["status_email_recipients"]:
+            recipients = options["status_email_recipients"].split(",")
 
-                    # Collect everything, render and send the email.
-                    data["fines"] = fines
-                    data["endorsements"] = endorsements
-                    data["total"] = total
-
-                    t_output = text_template.render(data)
-                    h_output = html_template.render(data)
-
-                    # Send email and mark as sent
-                    connection = get_connection(host=settings.EMAIL_HOST,
-                                                port=settings.EMAIL_PORT,
-                                                username=settings.EMAIL_HOST_USER,
-                                                password=settings.EMAIL_HOST_PASSWORD,
-                                                use_tls=settings.EMAIL_USE_TLS)
-
-                    recipients = [case.email]
-
-                    recipients.append("lyndon.garvey@digital.justice.gov.uk")
-                    recipients.append("s.walker-russell@hmcts.gsi.gov.uk ")
-                    recipients.append("james.hehir@hmcts.gsi.gov.uk")
-
-                    email = EmailMultiAlternatives("Make a plea result", t_output, settings.PLEA_CONFIRMATION_EMAIL_FROM,
-                                                   recipients, connection=connection)
-
-                    email.attach_alternative(h_output, "text/html")
-                    # email.send(fail_silently=False)
-                    print "Email sent to {}".format(case.email)
-
-                    self.mark_done(result, sent=True)
-                    processed_count += 1
-            else:
-                unprocessed_count += 1
-
-        print "Processed: {}, skipped: {}".format(processed_count, unprocessed_count)
+            send_mail('make-a-plea resulting status email',
+                      self._log_output.read(),
+                      settings.PLEA_EMAIL_FROM,
+                      recipients, fail_silently=False)

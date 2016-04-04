@@ -7,7 +7,7 @@ from django.db.models import Sum, Count, F
 from django.utils.translation import get_language
 from django.contrib.postgres.fields import HStoreField
 
-from standardisers import standardise_name
+from standardisers import standardise_name, StandardiserNoOutputException, standardise_urn
 
 
 STATUS_CHOICES = (("created_not_sent", "Created but not sent"),
@@ -286,6 +286,19 @@ class Case(models.Model):
     def get_actions(self, status):
         return self.actions.filter(status=status)
 
+    def get_users_name(self):
+        """
+        Attempt to get the user's name
+        """
+
+        if self.name:
+            return self.name
+
+        if self.extra_data and "Forename1" in self.extra_data:
+            return "{} {}".format(self.extra_data["Forename1"], self.extra_data["Surname"])
+
+        return ""
+
 
 class CaseAction(models.Model):
     case = models.ForeignKey(Case, related_name="actions", null=False, blank=False)
@@ -311,8 +324,6 @@ class Offence(models.Model):
 class CaseOffenceFilter(models.Model):
     filter_match = models.CharField(max_length=20)
     description = models.CharField(max_length=500, null=True, blank=True)
-
-
 
 
 class UsageStatsManager(models.Manager):
@@ -402,6 +413,16 @@ class CourtManager(models.Manager):
 
         return self.get(region_code=urn[:2],
                         enabled=True)
+
+    def get_by_standardised_urn(self, urn):
+        """
+        Standardise the URN before matching it
+        """
+        try:
+            return Court.objects.get_by_urn(standardise_urn(urn))
+        except StandardiserNoOutputException:
+            return False
+
 
     def validate_emails(self, sending_email, receipt_email):
         try:
