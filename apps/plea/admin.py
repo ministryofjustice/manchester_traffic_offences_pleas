@@ -82,6 +82,7 @@ class CaseAdmin(admin.ModelAdmin):
     list_filter = ("sent", "processed", "initiation_type", "ou_code", "imported")
     inlines = [InlineCaseAction, InlineOffence]
     search_fields = ["urn", "case_number"]
+    readonly_fields = ('created',)
 
     def charge_count(self, obj):
         return obj.offences.count()
