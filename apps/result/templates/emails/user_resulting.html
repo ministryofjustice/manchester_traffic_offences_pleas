@@ -44,7 +44,7 @@
     {% if fines %}
     <p>{% for fine in fines %}
         {% if forloop.counter != 1 %}<br>{% endif %}
-        {{ fine }}.
+        {{ fine }}
     {% endfor %}</p>
     {% endif %}
 
@@ -100,7 +100,6 @@
     <p>{% blocktrans %}You can apply for more time to pay by contacting the Fines Team at your court.{% endblocktrans %}</p>
     <p>{% blocktrans %}If you cannot pay as instructed or can no longer pay as ordered due to a change in your financial circumstances, contact the Fines Team to discuss your options.{% endblocktrans %}</p>
     <p>{% blocktrans %}You can find the contact details for your court's Fines Team using the Find a court or tribunal service and searching for your court.{% endblocktrans %}</p>
-    <p>{% blocktrans %}You can get free, confidential and independent advice from Civil Legal Advice{% endblocktrans %}</p>
 
     <h3>{% blocktrans %}If you do not pay{% endblocktrans %}</h3>
     <p>{% blocktrans %}If you fail to pay this fine as ordered you will be liable for further penalties. This could include:{% endblocktrans %}</p>
