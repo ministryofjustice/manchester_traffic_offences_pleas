@@ -43,6 +43,8 @@ WITHDRAWN_CODES = {
 
 
 class Result(models.Model):
+    created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
     case = models.ForeignKey("plea.Case", related_name="results", null=True, blank=True)
     urn = models.CharField(max_length=30, db_index=True)
 
