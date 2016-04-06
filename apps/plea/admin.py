@@ -12,9 +12,6 @@ from apps.plea.models import (UsageStats, Court,
                               CaseOffenceFilter,
                               CourtEmailCount,
                               Offence,
-                              Result,
-                              ResultOffence,
-                              ResultOffenceData,
                               DataValidation)
 
 
@@ -80,17 +77,6 @@ class InlineOffence(admin.StackedInline):
     extra = 0
 
 
-class InlineResultOffenceData(admin.StackedInline):
-    model = ResultOffenceData
-    extra = 0
-
-
-class InlineResultOffence(admin.StackedInline):
-    model = ResultOffence
-    extra = 0
-    inlines = [ResultOffenceData]
-
-
 class CaseAdmin(admin.ModelAdmin):
     list_display = ("urn", "sent", "processed", "charge_count", "initiation_type")
     list_filter = ("sent", "processed", "initiation_type", "ou_code", "imported")
@@ -109,13 +95,6 @@ class OffenceFilterAdmin(admin.ModelAdmin):
 class CourtEmailCountAdmin(admin.ModelAdmin):
     list_display = ("court", "date_sent", "initiation_type", "total_pleas", "total_guilty", "total_not_guilty", "hearing_date", "sent", "processed")
     model = CourtEmailCount
-
-
-class ResultAdmin(admin.ModelAdmin):
-    list_display = ("urn", "case_number", "ou_code", "sent", "sent_on")
-    list_filter = ("ou_code", "sent", )
-    inlines = [InlineResultOffence, ]
-    search_fields = ["urn", "case_number"]
 
 
 class DataValidationAdmin(admin.ModelAdmin):
@@ -206,5 +185,4 @@ admin.site.register(Court, CourtAdmin)
 admin.site.register(CourtEmailCount, CourtEmailCountAdmin)
 admin.site.register(Case, CaseAdmin)
 admin.site.register(CaseOffenceFilter, OffenceFilterAdmin)
-admin.site.register(Result, ResultAdmin)
 admin.site.register(DataValidation, DataValidationAdmin)
