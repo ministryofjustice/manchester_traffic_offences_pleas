@@ -28,7 +28,7 @@ class Command(BaseCommand):
 
     def log(self, message):
         self.stdout.write(message)
-        self._log_output.write(message)
+        self._log_output.write(message+"\n")
 
     def mark_done(self, result, dry_run=False, message=None, sent=False):
 
@@ -52,7 +52,6 @@ class Command(BaseCommand):
 
         parser.add_argument(
             "--override-recipient",
-            action="store_true",
             dest="override_recipient",
             default="",
             help=
@@ -63,14 +62,14 @@ class Command(BaseCommand):
 
         parser.add_argument(
             "--send-status-email-to",
-            action="store_true",
             dest="status_email_recipients",
             default="",
             help="A comma separate list of email recipients to receive the status email. "
                  "If blank, then output will be sent to stdout"
         )
 
-    def email_user(self, data, recipients, lang="en"):
+    @staticmethod
+    def email_user(data, recipients, lang="en"):
 
         translation.activate(lang)
 
@@ -114,22 +113,23 @@ class Command(BaseCommand):
         return data
 
     def handle(self, *args, **options):
-
         resulted_count, not_resulted_count = 0, 0
 
         if options["override_recipient"]:
-            override_recipients = options["override_recipient"].split(",")
+            override_recipient = options["override_recipient"].split(",")
         else:
-            override_recipients = None
+            override_recipient = None
 
-        for result in Result.objects.filter(processed=False, sent=False, date_of_hearing__gte=RESULTING_START_DATE):
+        for result in Result.objects.filter(processed=False,
+                                            sent=False,
+                                            date_of_hearing__gte=RESULTING_START_DATE):
 
             can_result, reason = result.can_result()
 
             if not can_result:
 
-                if not options["dry_run"]:
-                    self.mark_done(result, message="Skipping {} because {}".format(result.urn, reason))
+                self.mark_done(result, dry_run=options["dry_run"],
+                               message="Skipping {} because {}".format(result.urn, reason))
 
                 not_resulted_count += 1
                 continue
@@ -137,29 +137,22 @@ class Command(BaseCommand):
             case = result.get_associated_case()
             if not case:
 
-                self.mark_done(
-                    result,
-                    message="Skipping {} because no matching case".format(result.urn),
-                    dry_run=options["dry_run"])
+                self.mark_done(result, dry_run=options["dry_run"],
+                               message="Skipping {} because no matching case".format(result.urn))
 
                 not_resulted_count += 1
                 continue
 
             data = self.get_result_data(case, result)
 
-            if override_recipients:
-                self.email_user(data, override_recipients)
-
-                self.mark_done(result, sent=True,
-                               message="Email sent to {}".format(override_recipients),
-                               dry_run=options["dry_run"])
+            if override_recipient:
+                self.email_user(data, override_recipient)
 
             elif not options["dry_run"]:
                 self.email_user(data, [case.email])
 
-                self.mark_done(result, sent=True,
-                               message="Email sent to {}".format(case.email),
-                               dry_run=options["dry_run"])
+            self.mark_done(result, sent=True, dry_run=options["dry_run"],
+                           message="Completed case Email sent to {}".format(case.email))
 
             resulted_count += 1
 
@@ -169,6 +162,6 @@ class Command(BaseCommand):
             recipients = options["status_email_recipients"].split(",")
 
             send_mail('make-a-plea resulting status email',
-                      self._log_output.read(),
+                      self._log_output.getvalue(),
                       settings.PLEA_EMAIL_FROM,
                       recipients, fail_silently=False)
