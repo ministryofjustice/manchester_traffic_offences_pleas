@@ -3,7 +3,8 @@ import json
 from django.core import exceptions
 from rest_framework import serializers
 
-from apps.plea.models import Case, UsageStats, Offence, Result, ResultOffence, ResultOffenceData, CaseOffenceFilter
+from apps.plea.models import Case, UsageStats, Offence, CaseOffenceFilter
+from apps.result.models import Result, ResultOffence, ResultOffenceData
 from apps.plea.standardisers import standardise_urn
 from apps.plea.validators import is_valid_urn_format
 

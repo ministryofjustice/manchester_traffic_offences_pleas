@@ -81,6 +81,7 @@ class CaseAPICallTestCase(APITestCase):
 
         self.test_data = {
             u'urn': u'00AA0000000',
+            u"ou_code": u"test ou",
             u'case_number': '16273482',
             u'date_of_hearing': u'2016-05-05',
             u'extra_data': {"OrganisationName": "",
@@ -100,14 +101,12 @@ class CaseAPICallTestCase(APITestCase):
                             "NINO": "AB00123456C"},
             u'offences': [
                 {
-                    u"ou_code": u"test ou",
                     u"offence_code": u"RT0123",
                     u"offence_short_title": u"test title",
                     u"offence_wording": u"test title",
                     u"offence_seq_number": u"2"
                 },
                 {
-                    u"ou_code": u"test ou2",
                     u"offence_code": u"SZ0987",
                     u"offence_short_title": u"test title",
                     u"offence_wording": u"test title",
@@ -194,7 +193,7 @@ class CaseAPICallTestCase(APITestCase):
         response = self._post_data(self.test_data)
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "Case contains offence codes not present in the whitelist")
+        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "Case 00AA0000000 contains offence codes [[u'DF09', u'SZ09']] not present in the whitelist")
 
     def test_submission_with_second_non_listed_offence_code(self):
         self.test_data["offences"][1]["offence_code"] = "DF0987"
@@ -202,7 +201,7 @@ class CaseAPICallTestCase(APITestCase):
         response = self._post_data(self.test_data)
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "Case contains offence codes not present in the whitelist")
+        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "Case 00AA0000000 contains offence codes [[u'RT01', u'DF09']] not present in the whitelist")
 
     def test_submission_with_both_non_listed_offence_codes(self):
         self.test_data["offences"][0]["offence_code"] = "DF0987"
@@ -211,11 +210,10 @@ class CaseAPICallTestCase(APITestCase):
         response = self._post_data(self.test_data)
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "Case contains offence codes not present in the whitelist")
+        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "Case 00AA0000000 contains offence codes [[u'DF09', u'DF09']] not present in the whitelist")
 
     def test_valid_submissions_returns_dict(self):
         response = self._post_data(self.test_data)
-
 
         case = Case.objects.all()[0]
 

@@ -4,20 +4,20 @@
 
 {{ name|safe }}
 {% blocktrans %}URN:{% endblocktrans %} {{ urn|format_urn }}
-{% blocktrans %}Your court:{% endblocktrans %} {{ court|safe }}
+{% blocktrans %}Your court:{% endblocktrans %} {{ court.court_name|safe }}
 
 ------------------------------------------------------------------------
 
 {% blocktrans %}Fines and penalties{% endblocktrans %}
 {% if fines %}{% for fine in fines %}
-{{ fine.label }} £{{ fine.amount|floatformat:2|intcomma }}.{% endfor %}{% endif %}
+- {{ fine }}{% endfor %}{% endif %}
 
 {% blocktrans %}Total to pay:{% endblocktrans %} £{{ total|floatformat:2|intcomma }}
 
 {% blocktrans %}Pay by:{% endblocktrans %} {{ pay_by|date:"d/m/Y" }}
 {% if endorsements %}
 {% blocktrans %}Endorsements:{% endblocktrans %}{% for endorsement in endorsements %}
-{{ endorsement }}{% endfor %}{% endif %}
+- {{ endorsement }}{% endfor %}{% endif %}
 
 {% blocktrans %}Do not send your driving licence to the court. The DVLA will contact you if they need you to send it to them.{% endblocktrans %}
 
@@ -60,8 +60,6 @@ www.gov.uk/pay-court-fine-online
 {% blocktrans %}If you cannot pay as instructed or can no longer pay as ordered due to a change in your financial circumstances, contact the Fines Team to discuss your options.{% endblocktrans %}
 
 {% blocktrans %}You can find the contact details for your court's Fines Team using the Find a court or tribunal service and searching for your court.{% endblocktrans %}
-
-{% blocktrans %}You can get free, confidential and independent advice from Civil Legal Advice{% endblocktrans %}
 
 ------------------------------------------------------------------------
 
