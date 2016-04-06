@@ -31,6 +31,7 @@ MIDDLEWARE_CLASSES = (
 PROJECT_APPS = [
     'apps.forms',
     'apps.plea',
+    'apps.result',
     'api',
     'api.v0',
 ]
