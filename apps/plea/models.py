@@ -251,6 +251,7 @@ class Case(models.Model):
     User data is gpg encrypted and persisted to disc then
     transferred to an encrypted S3 account.
     """
+    created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     urn = models.CharField(max_length=30, db_index=True)
 
