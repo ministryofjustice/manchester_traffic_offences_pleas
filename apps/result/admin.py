@@ -23,6 +23,7 @@ class ResultAdmin(nested_admin.NestedModelAdmin):
     list_filter = ("ou_code", "sent", )
     inlines = [InlineResultOffence, ]
     search_fields = ["urn", "case_number"]
+    readonly_fields = ('created',)
 
 
 admin.site.register(Result, ResultAdmin)
