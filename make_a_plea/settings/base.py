@@ -197,7 +197,9 @@ INSTALLED_APPS = [
     'apps.plea',
     'apps.feedback',
     'apps.receipt',
+    'apps.result',
     'django_premailer',
+    'nested_admin',
 ]
 
 # A sample logging configuration. The only tangible logging
