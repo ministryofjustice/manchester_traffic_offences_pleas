@@ -151,7 +151,7 @@ class URNEntryStage(SJPChoiceBase):
 
             case = get_case(clean_data["urn"])
 
-            if case and court.display_case_data:
+            if case and court.display_case_data and case.can_auth():
                 self.set_next_step("your_case_continued")
             else:
                 try:

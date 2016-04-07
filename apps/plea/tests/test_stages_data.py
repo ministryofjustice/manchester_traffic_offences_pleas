@@ -176,6 +176,15 @@ class TestURNStageNoData(TestURNStageDataBase):
         stage.save({"urn": "06AA0000015"})
         self.assertEqual(stage.next_step, "notice_type")
 
+    def test_no_postcode_drops_user_into_non_validated_route(self):
+
+        del self.case.extra_data["PostCode"]
+        self.case.save()
+
+        stage = URNEntryStage(self.urls, self.data)
+        stage.save({"urn": "06AA0000015"})
+        self.assertEqual(stage.next_step, "notice_type")
+
 
 class TestURNStageDuplicateCases(TestURNStageDataBase):
     def setUp(self):
@@ -195,7 +204,7 @@ class TestURNStageDuplicateCases(TestURNStageDataBase):
         self.case.extra_data["Forename1"] = "Freda"
         self.case.save()
         stage = URNEntryStage(self.urls, self.data)
-        stage.save({"urn": "06AA0000015"})
+        stage.save({"urn": self.case.urn})
 
         response = stage.render({})
         self.assertEqual(response.status_code, 302)
