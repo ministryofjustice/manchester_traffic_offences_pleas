@@ -13,9 +13,6 @@ from apps.result.models import Result
 from apps.plea.models import Court
 
 
-RESULTING_START_DATE = dt.date(2016, 03, 28)
-
-
 class Command(BaseCommand):
     help = "Send out result emails"
 
@@ -120,9 +117,11 @@ class Command(BaseCommand):
         else:
             override_recipient = None
 
+        start_date = dt.datetime.today()-dt.timedelta(3)
+
         for result in Result.objects.filter(processed=False,
                                             sent=False,
-                                            date_of_hearing__gte=RESULTING_START_DATE):
+                                            date_of_hearing__gte=start_date):
 
             can_result, reason = result.can_result()
 
