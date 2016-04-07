@@ -300,6 +300,13 @@ class Case(models.Model):
 
         return ""
 
+    def can_auth(self):
+        """
+        Do we have the relevant data to authenticate the user?
+        """
+
+        return "PostCode" in self.extra_data and self.extra_data["PostCode"]
+
 
 class CaseAction(models.Model):
     case = models.ForeignKey(Case, related_name="actions", null=False, blank=False)
