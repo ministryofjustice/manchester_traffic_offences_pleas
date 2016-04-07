@@ -152,7 +152,7 @@ class Command(BaseCommand):
                 self.email_user(data, [case.email])
 
             self.mark_done(result, sent=True, dry_run=options["dry_run"],
-                           message="Completed case Email sent to {}".format(case.email))
+                           message="Completed case {} email sent to {}".format(case.urn, case.email))
 
             resulted_count += 1
 
