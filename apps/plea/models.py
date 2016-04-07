@@ -305,7 +305,7 @@ class Case(models.Model):
         Do we have the relevant data to authenticate the user?
         """
 
-        return "PostCode" in self.extra_data and self.extra_data["PostCode"]
+        return self.extra_data and "PostCode" in self.extra_data and self.extra_data["PostCode"]
 
 
 class CaseAction(models.Model):
