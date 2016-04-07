@@ -578,8 +578,3 @@ class TestPleaAuthStage(TestURNStageDataBase):
         stage.load_forms({})
 
         self.assertFalse(getattr(stage.form, "case_data", False))
-
-
-
-
-
