@@ -75,6 +75,8 @@ class ResultTestCase(TestCase):
 
     def test_can_result_with_adjourned_offence_is_false(self):
 
+        self.f_code_offence.delete()
+
         self.adjourned_offence = ResultOffenceData.objects.create(
             result_offence=self.offence1,
             result_code="A",
@@ -95,13 +97,28 @@ class ResultTestCase(TestCase):
 
         self.withdrawn_offence = ResultOffenceData.objects.create(
             result_offence=self.offence1,
-            result_code="WDRN",
-            result_short_title="WITHDRAWN!"
+            result_code="FVS",
+            result_short_title="FINE VICTIM SURCHARGE!"
         )
 
         result, _ = self.test_result1.can_result()
 
         self.assertTrue(result)
+
+    def test_can_result_with_adjourned_and_final_codes_is_true(self):
+
+        self.adjourned_offence = ResultOffenceData.objects.create(
+            result_offence=self.offence1,
+            result_code="A",
+            result_short_title="ADJOURNED!"
+        )
+
+        self.withdrawn_offence = ResultOffenceData.objects.create(
+            result_offence=self.offence1,
+            result_code="WDRN",
+            result_short_title="WITHDRAWN!"
+        )
+
 
     def test_can_result_with_no_F_codes_is_false(self):
         self.f_code_offence.delete()
