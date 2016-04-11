@@ -89,30 +89,34 @@ class Result(models.Model):
         4. An offence has been adjourned but subsequently withdrawn? If yes, then we can result
         """
 
-        has_final_codes = False
+        has_fine_codes = False
 
         for result in self.result_offences.all():
             adjourned = False
             withdrawn = False
 
-            for offence_data in result.offence_data.all():
-                if offence_data.result_code[0].upper() == "F":
-                    has_final_codes = True
+            offence_has_fine_codes = False
 
-                if offence_data.result_code in DO_NOT_RESULT_CODES:
+            for offence_data in result.offence_data.all():
+
+                if offence_data.result_code[0].upper() == "F":
+                    has_fine_codes = True
+                    offence_has_fine_codes = True
+
+                elif offence_data.result_code in DO_NOT_RESULT_CODES:
                     return False, "out of scope result code: {}".format(offence_data.result_code)
 
-                if offence_data.result_code in ADJOURNED_CODES:
+                elif offence_data.result_code in ADJOURNED_CODES:
                     adjourned = True
 
-                if offence_data.result_code in WITHDRAWN_CODES:
+                elif offence_data.result_code in WITHDRAWN_CODES:
                     withdrawn = True
 
-            if adjourned and not withdrawn:
+            if adjourned and not (withdrawn or offence_has_fine_codes):
                 return False, "adjournment"
 
-        if not has_final_codes:
-            return False, "no final codes"
+        if not has_fine_codes:
+            return False, "no fine codes"
         else:
             return True, ""
 
@@ -144,8 +148,6 @@ class Result(models.Model):
 
                 elif r.result_code in ["LEP", ]:
                     endorsements.append(r.result_wording)
-                # else:
-                #     print offence.offence_code, r.result_code, r.result_wording.encode("utf-8")
 
         return fines, endorsements, total
 
