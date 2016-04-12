@@ -12,6 +12,8 @@ from django.template.loader import get_template
 from apps.result.models import Result
 from apps.plea.models import Court
 
+from dateutil.parser import parse
+
 
 class Command(BaseCommand):
     help = "Send out result emails"
@@ -63,6 +65,14 @@ class Command(BaseCommand):
             default="",
             help="A comma separate list of email recipients to receive the status email. "
                  "If blank, then output will be sent to stdout"
+        )
+
+        parser.add_argument(
+            "--date",
+            dest="date",
+            default="",
+            help="The date to process results - uses the created timestamp of the Result model. "
+                 "If not specified the script will default to today"
         )
 
     @staticmethod
@@ -117,11 +127,20 @@ class Command(BaseCommand):
         else:
             override_recipient = None
 
-        start_date = dt.datetime.today()-dt.timedelta(3)
+        if options["date"]:
+            filter_date = parse(options["date"]).date()
+        else:
+            filter_date = dt.date.today()
+
+        filter_date_range = (dt.datetime.combine(filter_date, dt.time.min),
+                             dt.datetime.combine(filter_date, dt.time.max))
+
+        self.log("Processing results that were imported on {}".format(
+            filter_date.strftime("%d/%m/%Y")))
 
         for result in Result.objects.filter(processed=False,
                                             sent=False,
-                                            date_of_hearing__gte=start_date):
+                                            created__range=filter_date_range):
 
             can_result, reason = result.can_result()
 
