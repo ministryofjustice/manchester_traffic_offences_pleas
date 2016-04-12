@@ -243,7 +243,8 @@ class ProcessResultsTestCase(TestCase):
         self.opts = dict(
             override_recipient="",
             status_email_recipients="",
-            dry_run=False)
+            dry_run=False,
+            date="")
 
     def test_matching_case_with_email_is_sent(self):
 
@@ -340,3 +341,18 @@ class ProcessResultsTestCase(TestCase):
 
         self.assertTrue(result.sent)
         self.assertTrue(result.processed)
+
+    def test_date_option(self):
+
+        assert self.test_result1.created.date() == dt.date.today()
+
+        self.opts["date"] = (dt.date.today()-dt.timedelta(7)).strftime("%d/%m/%Y")
+
+        self.command.handle(**self.opts)
+
+        result = Result.objects.get(pk=self.test_result1.id)
+
+        self.assertFalse(result.sent)
+        self.assertFalse(result.processed)
+
+
