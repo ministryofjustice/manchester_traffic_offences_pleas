@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from dateutil.relativedelta import relativedelta
+
 from django.contrib import messages
 from django.core.exceptions import MultipleObjectsReturned, NON_FIELD_ERRORS
 from django.core.urlresolvers import reverse
@@ -7,6 +8,7 @@ from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 
 from apps.forms.stages import FormStage, IndexedStage
+from make_a_plea.sentry_logging import log_user_data
 
 from .email import send_plea_email, get_plea_type
 from .forms import (URNEntryForm,
@@ -876,6 +878,8 @@ class ReviewStage(FormStage):
     def save(self, form_data, next_step=None):
         clean_data = super(ReviewStage, self).save(form_data, next_step)
 
+        log_user_data(self.all_data, {"stage": "review"})
+
         try:
             self.all_data["case"]["urn"]
         except KeyError:
@@ -888,7 +892,9 @@ class ReviewStage(FormStage):
         if clean_data.get("complete", False):
             email_data = {k: v for k, v in self.all_data.items()}
             email_data.update({"review": clean_data})
+
             email_result = send_plea_email(email_data)
+
             if email_result:
                 self.set_next_step("complete")
             else:
