@@ -53,7 +53,7 @@ def send_plea_email(context_data):
     email_address = context_data.get("review", {}).get("email", False)
 
     # add DOH / name to the email subject for compliance with the current format
-    if context_data["notice_type"]["sjp"] is False:
+    if not context_data["notice_type"]["sjp"]:
         if isinstance(context_data["case"]["date_of_hearing"], basestring):
             date_of_hearing = parser.parse(context_data["case"]["date_of_hearing"])
         else:

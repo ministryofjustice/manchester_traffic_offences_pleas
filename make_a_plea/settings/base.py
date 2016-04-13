@@ -200,6 +200,7 @@ INSTALLED_APPS = [
     'apps.result',
     'django_premailer',
     'nested_admin',
+    'raven.contrib.django.raven_compat',
 ]
 
 # A sample logging configuration. The only tangible logging
@@ -325,6 +326,11 @@ ENV_BASE_URL = os.environ.get("ENV_BASE_URL", "")
 FTP_SERVER_IP = os.environ.get("FTP_SERVER_IP", "")
 
 AXES_COOLOFF_TIME = 1
+
+RAVEN_CONFIG = {
+    'dsn': os.environ.get("SENTRY_DSN", ""),
+    'release': os.environ.get("APP_GIT_COMMIT", "no-git-commit-available")
+}
 
 # .local.py overrides all the common settings.
 try:
