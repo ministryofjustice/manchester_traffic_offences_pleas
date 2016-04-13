@@ -75,9 +75,10 @@
         {% blocktrans %}Division:{% endblocktrans %} {{ payment_details.division }}<br>
         {% blocktrans %}Account number:{% endblocktrans %} {{ payment_details.account_number }}</p>
 
-    <p>{% blocktrans %}Payments can be made 24 hours a day using credit or debit card (Visa, Visa Electron, Mastercard, Maestro or Solo).{% endblocktrans %}</p>
+    <p>{% blocktrans %}Payments can be made 24 hours a day using credit or debit card (Visa, Mastercard, Maestro).{% endblocktrans %}</p>
 
     <p>{% blocktrans %}Payments must be received on or before the date ordered.{% endblocktrans %}<br>
+        {% blocktrans %}Please allow 5 days to allow the payment to be credited to your account.{% endblocktrans %}<br>
         {% blocktrans %}If you want more information about your account contact the court.{% endblocktrans %}</p>
 
     <h2>{% blocktrans %}Ways to pay{% endblocktrans %}</h2>
@@ -87,13 +88,16 @@
         {% blocktrans %}Copy and paste this web address into a new browser window.{% endblocktrans %}</p>
 
     <h3>{% blocktrans %}Phone:{% endblocktrans %}</h3>
+    {% if court.court_language == "cy" %}
+    <p>0300 790 9980</p>
+    {% else %}
     <p>0300 790 9901</p>
+    {% endif %}
 
     <h3>{% blocktrans %}Note:{% endblocktrans %}</h3>
     <p>{% blocktrans %}When you pay you will be given an authorisation number. Keep this as proof of payment along with the date and amount paid:{% endblocktrans %}</p>
     <ul>
-        <li>{% blocktrans %}the court will not issue a receipt unless you ask for it in writing{% endblocktrans %}</li>
-        <li>{% blocktrans %}any written request for a receipt needs to include a stamped addressed envelope{% endblocktrans %}</li>
+        <li>{% blocktrans %}the court will not issue a receipt{% endblocktrans %}</li>
     </ul>
 
     <h3>{% blocktrans %}If you're having difficulty paying{% endblocktrans %}</h3>
@@ -109,7 +113,7 @@
         <li>{% blocktrans %}50% increase in your fine{% endblocktrans %}</li>
         <li>{% blocktrans %}Clamping, removal and sale of your vehicle{% endblocktrans %}</li>
         <li>{% blocktrans %}Registering the account in the Register of Judgments, Orders and Fines (making it harder for you to get credit){% endblocktrans %}</li>
-        <li>{% blocktrans %}A distress warrant being issued to the Court Bailiffs to seize your goods (incurring additional costs){% endblocktrans %}</li>
+        <li>{% blocktrans %}A warrant of control being issued to the enforcement agents to take control of your goods (incurring additional costs){% endblocktrans %}</li>
         <li>{% blocktrans %}Continued default - you may be sent to prison{% endblocktrans %}</li>
     </ul>
 
