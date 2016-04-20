@@ -1,3 +1,4 @@
+import datetime as dt
 from dateutil import parser
 import logging
 
@@ -86,6 +87,7 @@ def send_plea_email(context_data):
 
     case.language = translation.get_language().split("-")[0]
     case.name = standardise_name(first_name, last_name)
+    case.completed_on = dt.datetime.now()
 
     if context_data["case"]["plea_made_by"] == "Company representative":
         if case.extra_data and "OrganisationName" in case.extra_data:
