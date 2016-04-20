@@ -200,3 +200,21 @@ class CaseCreationTests(TestCase):
         if len(files) > 0:
             self.fail('User data directory is not empty')
 
+    def test_completed_on_timestamp_is_set(self):
+
+        assert Case.objects.all().count() == 0
+
+        clear_user_data()
+
+        send_plea_email(self.context_data)
+
+        case = Case.objects.all()[0]
+
+        self.assertIsNotNone(case.completed_on)
+        self.assertIsInstance(case.completed_on, datetime.datetime)
+        
+
+
+
+
+
