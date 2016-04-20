@@ -278,6 +278,10 @@ class Case(models.Model):
 
     objects = CaseManager()
 
+    completed_on = models.DateTimeField(
+        blank=True, null=True,
+        help_text="The date/time a user completes a submission.")
+
     def add_action(self, status, status_info):
         self.actions.create(status=status, status_info=status_info)
 
@@ -512,6 +516,18 @@ class Court(models.Model):
         default=False,
         help_text="Display the updated plea page for cases that have offence data attached"
     )
+
+    ou_code = models.CharField(max_length=10, null=True, blank=True)
+
+    enforcement_email = models.CharField(
+        verbose_name="Email address of the enforcement team",
+        max_length=255, null=True, blank=True,
+        help_text="")
+
+    enforcement_telephone = models.CharField(
+        verbose_name="Email address of the enforcement team",
+        max_length=255, null=True, blank=True,
+        help_text="")
 
     def __unicode__(self):
         return "{} / {} / {}".format(self.court_code,
