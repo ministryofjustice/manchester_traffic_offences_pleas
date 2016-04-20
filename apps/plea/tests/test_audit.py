@@ -212,9 +212,4 @@ class CaseCreationTests(TestCase):
 
         self.assertIsNotNone(case.completed_on)
         self.assertIsInstance(case.completed_on, datetime.datetime)
-        
-
-
-
-
 
