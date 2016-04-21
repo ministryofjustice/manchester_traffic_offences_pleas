@@ -59,11 +59,18 @@ www.gov.uk/pay-court-fine-online
 
 {% blocktrans %}If you're having difficulty paying{% endblocktrans %}
 
-{% blocktrans %}You can apply for more time to pay by contacting the Fines Team at your court.{% endblocktrans %}
+{% blocktrans %}You can apply for more time to pay by contacting the Fines Team.{% endblocktrans %}
 
 {% blocktrans %}If you cannot pay as instructed or can no longer pay as ordered due to a change in your financial circumstances, contact the Fines Team to discuss your options.{% endblocktrans %}
 
-{% blocktrans %}You can find the contact details for your court's Fines Team using the Find a court or tribunal service and searching for your court.{% endblocktrans %}
+{% blocktrans %}Fines Team contact details:{% endblocktrans %}
+{% if court.enforcement_email %}
+{% blocktrans %}email:{% endblocktrans %} {{ court.enforcement_email }}
+{% endif %}
+
+{% if court.enforcement_telephone %}
+{% blocktrans %}telephone:{% endblocktrans %} {{ court.enforcement_telephone }}
+{% endif %}
 
 ------------------------------------------------------------------------
 
@@ -79,7 +86,9 @@ www.gov.uk/pay-court-fine-online
 
 {% blocktrans %}What should I do if I change my name or address?{% endblocktrans %}
 
-{% blocktrans %}If you change your name or address you must tell your court immediately. You'll find your court's contact details by using the Find a court or tribunal service and searching for your court.{% endblocktrans %}
+{% blocktrans %}If you change your name or address you must tell your Fines Team immediately.{% endblocktrans %}
+
+{% blocktrans %}A hard copy of your fine and collection notice will be posted to you by the court.{% endblocktrans %}
 
 ------------------------------------------------------------------------
 

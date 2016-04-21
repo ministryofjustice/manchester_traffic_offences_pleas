@@ -525,7 +525,7 @@ class Court(models.Model):
         help_text="")
 
     enforcement_telephone = models.CharField(
-        verbose_name="Email address of the enforcement team",
+        verbose_name="Telephone number of the enforcement team",
         max_length=255, null=True, blank=True,
         help_text="")
 

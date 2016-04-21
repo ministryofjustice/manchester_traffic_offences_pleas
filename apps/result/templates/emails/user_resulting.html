@@ -101,9 +101,17 @@
     </ul>
 
     <h3>{% blocktrans %}If you're having difficulty paying{% endblocktrans %}</h3>
-    <p>{% blocktrans %}You can apply for more time to pay by contacting the Fines Team at your court.{% endblocktrans %}</p>
+    <p>{% blocktrans %}You can apply for more time to pay by contacting the Fines Team.{% endblocktrans %}</p>
     <p>{% blocktrans %}If you cannot pay as instructed or can no longer pay as ordered due to a change in your financial circumstances, contact the Fines Team to discuss your options.{% endblocktrans %}</p>
-    <p>{% blocktrans %}You can find the contact details for your court's Fines Team using the Find a court or tribunal service and searching for your court.{% endblocktrans %}</p>
+
+    <h3>{% blocktrans %}Fines Team contact details:{% endblocktrans %}</h3>
+    {% if court.enforcement_email %}
+    <p>{% blocktrans %}email:{% endblocktrans %} {{ court.enforcement_email }}</p>
+    {% endif %}
+
+    {% if court.enforcement_telephone %}
+    <p>{% blocktrans %}Phone:{% endblocktrans %} {{ court.enforcement_telephone }}</p>
+    {% endif %}
 
     <h3>{% blocktrans %}If you do not pay{% endblocktrans %}</h3>
     <p>{% blocktrans %}If you fail to pay this fine as ordered you will be liable for further penalties. This could include:{% endblocktrans %}</p>
@@ -118,6 +126,8 @@
     </ul>
 
     <h3>{% blocktrans %}What should I do if I change my name or address?{% endblocktrans %}</h3>
-    <p>{% blocktrans %}If you change your name or address you must tell your court immediately. You'll find your court's contact details by using the Find a court or tribunal service and searching for your court.{% endblocktrans %}</p>
+    <p>{% blocktrans %}If you change your name or address you must tell your Fines Team immediately.{% endblocktrans %}</p>
+
+    <p>A hard copy of your fine and collection notice will be posted to you by the court.</p>
 
 {% endblock content %}
