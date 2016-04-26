@@ -197,9 +197,6 @@ class AuthenticationStage(SJPChoiceBase):
     form_class = AuthForm
     dependencies = []
 
-    def load(self, request_context=None):
-        return super(AuthenticationStage, self).load(request_context)
-
     def save(self, form_data, next_step=None):
         clean_data = super(AuthenticationStage, self).save(form_data, next_step)
 
@@ -212,7 +209,7 @@ class AuthenticationStage(SJPChoiceBase):
                 case = get_case(self.all_data["case"]["urn"])
 
             if case.authenticate(clean_data["number_of_charges"],
-                                 clean_data["postcode"],
+                                 None, #clean_data["postcode"],
                                  clean_data["date_of_birth"]):
 
                 self.all_data.update({"dx": True})
@@ -369,10 +366,12 @@ class YourDetailsStage(FormStage):
     def __init__(self, *args, **kwargs):
         super(YourDetailsStage, self).__init__(*args, **kwargs)
 
-        court = Court.objects.get_by_urn(self.all_data["case"]["urn"])
-
-        if court.validate_urn:
-            self.form_class = YourDetailsValidatedRouteForm
+        ## demo-ing auth with DOB only
+        # if "urn" in self.all_data["case"]:
+        #     court = Court.objects.get_by_urn(self.all_data["case"]["urn"])
+        #
+        #     if court.validate_urn:
+        #         self.form_class = YourDetailsValidatedRouteForm
 
     def save(self, form_data, next_step=None):
         clean_data = super(YourDetailsStage,
