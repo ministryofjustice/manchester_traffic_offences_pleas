@@ -55,6 +55,14 @@ class AuthForm(BaseStageForm):
                                help_text=_("As written on the notice we sent you"),
                                error_messages={"required": ERROR_MESSAGES["POSTCODE_REQUIRED"]})
 
+    date_of_birth = forms.DateField(widget=DateWidget,
+                                    required=True,
+                                    validators=[is_date_in_past],
+                                    label=_("Date of birth"),
+                                    error_messages={"required": ERROR_MESSAGES["DATE_OF_BIRTH_REQUIRED"],
+                                                    "invalid": ERROR_MESSAGES["DATE_OF_BIRTH_INVALID"],
+                                                    "is_date_in_past": ERROR_MESSAGES["DATE_OF_BIRTH_IN_FUTURE"]})
+
 
 class NoticeTypeForm(BaseStageForm):
     SJP_CHOICES = ((True, _("Single Justice Procedure Notice")),
@@ -124,6 +132,7 @@ class SJPCaseForm(BaseCaseForm):
 
 
 class YourDetailsForm(BaseStageForm):
+
     dependencies = {
         "updated_address": {
             "field": "correct_address",
@@ -206,6 +215,14 @@ class YourDetailsForm(BaseStageForm):
                                              label="",
                                              help_text=_("If yes, enter it here. Your driving licence number is in section 5 of your driving licence photocard."),
                                              error_messages={"required": ERROR_MESSAGES["DRIVING_LICENCE_NUMBER_REQUIRED"]})
+
+
+class YourDetailsValidatedRouteForm(YourDetailsForm):
+
+    def __init__(self, *args, **kwargs):
+        super(YourDetailsValidatedRouteForm, self).__init__(*args, **kwargs)
+
+        del self.fields["date_of_birth"]
 
 
 class CompanyDetailsForm(BaseStageForm):

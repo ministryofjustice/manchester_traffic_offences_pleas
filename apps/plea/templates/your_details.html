@@ -58,7 +58,9 @@
 
     {% std_field form.contact_number %}
 
-    {% multi_field form.date_of_birth %}
+    {% if form.date_of_birth %}
+        {% multi_field form.date_of_birth %}
+    {% endif %}
 
     {% radio_field form.have_ni_number inline=True %}
 
