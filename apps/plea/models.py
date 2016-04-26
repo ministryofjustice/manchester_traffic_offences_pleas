@@ -321,7 +321,9 @@ class Case(models.Model):
         Do we have the relevant data to authenticate the user?
         """
 
-        return self.extra_data and "PostCode" in self.extra_data or "DOB" in self.extra_data
+        #return self.extra_data and "PostCode" in self.extra_data or "DOB" in self.extra_data
+        # DEMO-ing DOB only
+        return self.extra_data and "DOB" in self.extra_data
 
     def authenticate(self, num_charges, postcode, dob):
 

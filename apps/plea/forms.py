@@ -49,11 +49,11 @@ class AuthForm(BaseStageForm):
                                            min_value=1, max_value=10,
                                            error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]})
 
-    postcode = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                               label=_("Postcode"),
-                               required=True,
-                               help_text=_("As written on the notice we sent you"),
-                               error_messages={"required": ERROR_MESSAGES["POSTCODE_REQUIRED"]})
+    # postcode = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
+    #                            label=_("Postcode"),
+    #                            required=True,
+    #                            help_text=_("As written on the notice we sent you"),
+    #                            error_messages={"required": ERROR_MESSAGES["POSTCODE_REQUIRED"]})
 
     date_of_birth = forms.DateField(widget=DateWidget,
                                     required=True,
