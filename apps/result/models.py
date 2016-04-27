@@ -91,6 +91,11 @@ class Result(models.Model):
 
         has_fine_codes = False
 
+        case = self.get_associated_case()
+
+        if case and case.language == "cy":
+            return False, "Skipping Welsh cases for now"
+
         for result in self.result_offences.all():
             adjourned = False
             withdrawn = False

@@ -24,12 +24,13 @@ class ResultTestCase(TestCase):
 
         self.test_case1 = Case.objects.create(
             case_number="12345678",
-            urn="51/XX/00000/00",
+            urn="51XX0000000",
+            email="test@test123.com",
             sent=True
         )
 
         self.test_result1 = Result.objects.create(
-            urn="51/XX/00000/00",
+            urn="51XX0000000",
             case_number="12345678",
             date_of_hearing=dt.date.today(),
             sent=False,
@@ -72,6 +73,15 @@ class ResultTestCase(TestCase):
         result, _ = self.test_result1.can_result()
 
         self.assertTrue(result)
+
+    def test_can_result_no_welsh(self):
+
+        self.test_case1.language = "cy"
+        self.test_case1.save()
+
+        result, _ = self.test_result1.can_result()
+
+        self.assertFalse(result)
 
     def test_can_result_with_adjourned_offence_is_false(self):
 
