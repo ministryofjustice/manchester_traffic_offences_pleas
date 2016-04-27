@@ -321,9 +321,7 @@ class Case(models.Model):
         Do we have the relevant data to authenticate the user?
         """
 
-        #return self.extra_data and "PostCode" in self.extra_data or "DOB" in self.extra_data
-        # DEMO-ing DOB only
-        return self.extra_data and "DOB" in self.extra_data
+        return self.extra_data and "PostCode" in self.extra_data or "DOB" in self.extra_data
 
     def authenticate(self, num_charges, postcode, dob):
 
@@ -343,6 +341,17 @@ class Case(models.Model):
 
         return self.offences.count() == num_charges and (postcode_match or dob_match)
 
+    def auth_field(self):
+        """
+        Determine which field to use for auth
+        """
+
+        if "DOB" in self.extra_data:
+            return "DOB"
+        elif "PostCode" in self.extra_data:
+            return "PostCode"
+        else:
+            return None
 
 class CaseAction(models.Model):
     case = models.ForeignKey(Case, related_name="actions", null=False, blank=False)
@@ -466,7 +475,6 @@ class CourtManager(models.Manager):
             return Court.objects.get_by_urn(standardise_urn(urn))
         except StandardiserNoOutputException:
             return False
-
 
     def validate_emails(self, sending_email, receipt_email):
         try:

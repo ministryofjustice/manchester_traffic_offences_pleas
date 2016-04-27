@@ -14,9 +14,13 @@
 
     {% std_field form.number_of_charges %}
 
-    {# std_field form.postcode #}
+    {% if form.postcode %}
+        {% std_field form.postcode %}
+    {% endif %}
 
-    {% std_field form.date_of_birth %}
+    {% if form.date_of_birth %}
+        {% std_field form.date_of_birth %}
+    {% endif %}
 
 {% endblock stage_form %}
 
