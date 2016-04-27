@@ -197,6 +197,27 @@ class AuthenticationStage(SJPChoiceBase):
     form_class = AuthForm
     dependencies = []
 
+    def load_forms(self, data=None, initial=False):
+
+        initial_data = None
+
+        court = Court.objects.get_by_urn(self.all_data["case"]["urn"])
+
+        if court.validate_urn:
+            case = Case.objects.get_case_for_urn(self.all_data["case"]["urn"])
+        else:
+            case = get_case(self.all_data["case"]["urn"])
+
+        if not case:
+            raise Exception("Cannot continue without a case")
+
+        auth_field = case.auth_field()
+
+        if initial:
+            self.form = self.form_class(auth_field=auth_field, initial=initial_data, label_suffix="")
+        else:
+            self.form = self.form_class(data, auth_field=auth_field, label_suffix="")
+
     def save(self, form_data, next_step=None):
         clean_data = super(AuthenticationStage, self).save(form_data, next_step)
 
@@ -209,8 +230,8 @@ class AuthenticationStage(SJPChoiceBase):
                 case = get_case(self.all_data["case"]["urn"])
 
             if case.authenticate(clean_data["number_of_charges"],
-                                 None, #clean_data["postcode"],
-                                 clean_data["date_of_birth"]):
+                                 clean_data.get("postcode", None),
+                                 clean_data.get("date_of_birth", None)):
 
                 self.all_data.update({"dx": True})
 
