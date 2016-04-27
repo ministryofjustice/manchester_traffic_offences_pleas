@@ -327,16 +327,18 @@ class Case(models.Model):
 
         postcode_match, dob_match = False, False
 
+        assert postcode or dob, "Provide at least one value"
+
         if not self.can_auth():
             return False
 
-        if "PostCode" in self.extra_data:
+        if postcode and "PostCode" in self.extra_data:
             inputted_postcode = standardise_postcode(postcode)
             stored_postcode = standardise_postcode(self.extra_data.get("PostCode"))
 
             postcode_match = inputted_postcode == stored_postcode
 
-        if "DOB" in self.extra_data:
+        if dob and "DOB" in self.extra_data:
             dob_match = dob == date_parse(self.extra_data["DOB"]).date()
 
         return self.offences.count() == num_charges and (postcode_match or dob_match)
@@ -346,12 +348,13 @@ class Case(models.Model):
         Determine which field to use for auth
         """
 
-        if "DOB" in self.extra_data:
-            return "DOB"
-        elif "PostCode" in self.extra_data:
-            return "PostCode"
-        else:
-            return None
+        if self.extra_data:
+            if "DOB" in self.extra_data:
+                return "DOB"
+            elif "PostCode" in self.extra_data:
+                return "PostCode"
+
+        return None
 
 class CaseAction(models.Model):
     case = models.ForeignKey(Case, related_name="actions", null=False, blank=False)

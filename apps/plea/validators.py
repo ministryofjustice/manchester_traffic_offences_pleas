@@ -71,7 +71,7 @@ def is_urn_valid(urn):
 
     court = Court.objects.get_by_urn(urn)
     if court.validate_urn:
-        if not Case.objects.filter(urn__iexact=urn, imported=True, sent=False).exists():
+        if not Case.objects.filter(urn__iexact=urn, sent=False).exists():
             raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
 
     return True
