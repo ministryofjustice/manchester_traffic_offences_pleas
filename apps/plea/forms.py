@@ -227,13 +227,12 @@ class YourDetailsForm(BaseStageForm):
                                              help_text=_("If yes, enter it here. Your driving licence number is in section 5 of your driving licence photocard."),
                                              error_messages={"required": ERROR_MESSAGES["DRIVING_LICENCE_NUMBER_REQUIRED"]})
 
-
-class YourDetailsValidatedRouteForm(YourDetailsForm):
-
     def __init__(self, *args, **kwargs):
-        super(YourDetailsValidatedRouteForm, self).__init__(*args, **kwargs)
+        exclude_dob = kwargs.pop("exclude_dob", False)
+        super(YourDetailsForm, self).__init__(*args, **kwargs)
 
-        del self.fields["date_of_birth"]
+        if exclude_dob:
+            del self.fields["date_of_birth"]
 
 
 class CompanyDetailsForm(BaseStageForm):
