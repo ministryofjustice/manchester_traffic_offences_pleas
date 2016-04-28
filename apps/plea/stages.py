@@ -17,7 +17,7 @@ from .forms import (URNEntryForm,
                     CaseForm,
                     SJPCaseForm,
                     YourDetailsForm,
-                    YourDetailsValidatedRouteForm,
+                    #YourDetailsValidatedRouteForm,
                     CompanyDetailsForm,
                     PleaForm,
                     SJPPleaForm,
@@ -149,10 +149,9 @@ class URNEntryStage(SJPChoiceBase):
         if not case or not case.can_auth():
             self.add_message(
                 messages.ERROR,
-                "<h1>You cannot complete your submission online</h1>"
-                "<p>Due to a problem with your URN data from libra,"
-                "you cannot complete your plea online. "
-                "You'll need to complete your paper requisition form instead.</p>")
+                _("""<h1>You can’t make a plea online</h1>
+                     <p>To make your plea, you need to complete the paper form sent to you by the police.<p>
+                     <p>You must return the form within xx days of it being issued.</p>"""))
             self.next_step = None
         else:
             self.set_next_step("your_case_continued")
@@ -270,7 +269,11 @@ class AuthenticationStage(SJPChoiceBase):
             else:
                 if court.validate_urn:
                     self.next_step = None
-                    self.add_message(messages.ERROR, "Your details don't match what is on the requisition form. You can't continue.")
+                    self.add_message(
+                        messages.ERROR,
+                        """<h1>Check the details you’ve entered</h1>
+                           <p>The information you’ve entered does not match our records.</p>
+                           <p>Check the paper form sent by the police then enter the details exactly as shown on it.</p>""")
                 else:
                     self.all_data.update({"dx": False})
                     self.set_next_no_data(court)
@@ -422,6 +425,17 @@ class YourDetailsStage(FormStage):
                 pass
 
         return super(YourDetailsStage, self).render(request_context)
+
+    def load_forms(self, data=None, initial=False):
+
+        initial_data = None
+
+        exclude_dob = "date_of_birth" in self.all_data["case"]
+
+        if initial:
+            self.form = self.form_class(initial=initial_data, exclude_dob=exclude_dob, label_suffix="")
+        else:
+            self.form = self.form_class(data, exclude_dob=exclude_dob, label_suffix="")
 
 
 class PleaStage(IndexedStage):
