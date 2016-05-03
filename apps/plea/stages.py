@@ -17,7 +17,6 @@ from .forms import (URNEntryForm,
                     CaseForm,
                     SJPCaseForm,
                     YourDetailsForm,
-                    #YourDetailsValidatedRouteForm,
                     CompanyDetailsForm,
                     PleaForm,
                     SJPPleaForm,
@@ -37,7 +36,7 @@ from .forms import (URNEntryForm,
 
 from .fields import ERROR_MESSAGES
 from .models import Court, Case, Offence, DataValidation
-from .standardisers import standardise_urn, format_for_region, standardise_postcode
+from .standardisers import standardise_urn, format_for_region
 
 
 def get_case(urn):
@@ -389,13 +388,6 @@ class YourDetailsStage(FormStage):
 
     def __init__(self, *args, **kwargs):
         super(YourDetailsStage, self).__init__(*args, **kwargs)
-
-        ## demo-ing auth with DOB only
-        # if "urn" in self.all_data["case"]:
-        #     court = Court.objects.get_by_urn(self.all_data["case"]["urn"])
-        #
-        #     if court.validate_urn:
-        #         self.form_class = YourDetailsValidatedRouteForm
 
     def save(self, form_data, next_step=None):
         clean_data = super(YourDetailsStage,

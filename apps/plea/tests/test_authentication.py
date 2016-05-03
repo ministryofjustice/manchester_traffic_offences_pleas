@@ -4,7 +4,7 @@ import datetime as dt
 from django.test import TestCase
 
 from apps.plea.models import Case, Court
-from apps.plea.stages import URNEntryStage
+from apps.plea.stages import URNEntryStage, AuthenticationStage, YourDetailsStage
 
 
 class BaseTestCase(TestCase):
@@ -46,7 +46,7 @@ class BaseTestCase(TestCase):
             offence_wording="On the 31st December 2015 ... blah blah",
             offence_seq_number="002")
 
-        self.data3 = {"enter_urn": {},
+        self.data = {"enter_urn": {},
                       "notice_type": {},
                       "your_details": {},
                       "your_status": {},
@@ -86,7 +86,7 @@ class BaseTestCase(TestCase):
                                  ("complete", "complete")))
 
 
-class PleaModelTestCase(TestCase):
+class PleaModelTestCase(BaseTestCase):
 
     def setUp(self):
         super(PleaModelTestCase, self).setUp()
@@ -99,7 +99,7 @@ class PleaModelTestCase(TestCase):
     def test_can_auth_no_postcode(self):
         case = Case(extra_data=dict(DOB="2015-11-11"))
 
-        self.asserTrue(case.can_auth())
+        self.assertTrue(case.can_auth())
 
     def test_can_auth_no_dob_and_no_password(self):
         case = Case(extra_data={})
@@ -114,14 +114,14 @@ class PleaModelTestCase(TestCase):
 
     def test_authenticate_invalid_dob(self):
         self.case.extra_data["DOB"] = "1979-03-11"
-        self.assertFalse(self.case.authenticate(1, None, dt.date(2016, 10, 5)))
+        self.assertFalse(self.case.authenticate(1, None, dt.date(1979, 10, 5)))
 
     def test_authenticate_valid_dob(self):
         self.case.extra_data["DOB"] = "1979-03-11"
-        self.assertTrue(self.case.authenticate(1, None, dt.date(2016, 3, 11)))
+        self.assertTrue(self.case.authenticate(2, None, dt.date(1979, 3, 11)))
 
     def test_authenticate_valid_postcode(self):
-        self.assertTrue(self.case.authenticate(1, "m601pr"))
+        self.assertTrue(self.case.authenticate(2, "m601pr", None))
 
     def test_auth_field_dob(self):
         self.assertEquals(self.case.auth_field(), "PostCode")
@@ -132,7 +132,7 @@ class PleaModelTestCase(TestCase):
         self.assertEquals(self.case.auth_field(), "DOB")
 
 
-class URNStageWithURNValidation(TestCase):
+class URNStageWithURNValidation(BaseTestCase):
 
     def setUp(self):
         super(URNStageWithURNValidation, self).setUp()
@@ -147,31 +147,59 @@ class URNStageWithURNValidation(TestCase):
         stage = URNEntryStage(self.urls, self.data)
         stage.save({"urn": "06AA0000015"})
 
-        import pdb; pdb.set_trace()
+        self.assertEquals(len(stage.messages), 1)
+        self.assertIn("You can't make a plea online", stage.messages[0].message)
 
     def test_multiple_defendants_per_urn_cannot_continue(self):
-        pass
+        self.case.id = None
+        self.case.save()
 
-    def test_urn_not_in_database_cannot_continue(self):
-        pass
+        stage = URNEntryStage(self.urls, self.data)
+        stage.save({"urn": "06AA0000015"})
 
+        self.assertEquals(len(stage.messages), 1)
+        self.assertIn("You can't make a plea online", stage.messages[0].message)
 
-class AuthStageWithURNValidationTestCase(TestCase):
+class AuthStageWithURNValidationTestCase(BaseTestCase):
+
+    def setUp(self):
+        super(AuthStageWithURNValidationTestCase, self).setUp()
+
     def test_valid_auth_details(self):
-        pass
+        self.data["case"]["urn"] = "06AA0000015"
+
+        stage = AuthenticationStage(self.urls, self.data)
+
+        stage.save({"number_of_charges": "2", "postcode": "m60 1pr"})
+        self.assertEquals(stage.next_step, "your_details")
 
     def test_invalid_auth_details(self):
-        pass
+        self.data["case"]["urn"] = "06AA0000015"
+
+        stage = AuthenticationStage(self.urls, self.data)
+
+        stage.save({"number_of_charges": "1", "postcode": "m60 1pr"})
+
+        self.assertEquals(len(stage.messages), 1)
+        self.assertIsNone(stage.next_step)
+        self.assertIn("Check the details you've entered", stage.messages[0].message)
 
 
-class YourDetailsStageWithStrictURNTestCase(TestCase):
+class YourDetailsStageWithStrictURNTestCase(BaseTestCase):
     def test_dob_field_present_if_authed_with_postcode(self):
-        pass
+        self.data["case"]["date_of_birth"] = dt.date.today()
+
+        stage = YourDetailsStage(self.urls, self.data)
+
+        stage.load()
+
+        self.assertNotIn("date_of_birth", stage.form.fields)
 
     def test_dob_field_hidden_if_authed_with_dob(self):
-        pass
+        assert "date_of_birth" not in self.data["case"]
 
+        stage = YourDetailsStage(self.urls, self.data)
 
-class CourtEmailWithStrictValidationTestCase(TestCase):
-    def test_court_email_includes_dob_when_user_authenticates_with_dob(self):
-        pass
+        stage.load()
+
+        self.assertIn("date_of_birth", stage.form.fields)
