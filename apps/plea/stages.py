@@ -36,7 +36,7 @@ from .forms import (URNEntryForm,
 
 from .fields import ERROR_MESSAGES
 from .models import Court, Case, Offence, DataValidation
-from .standardisers import standardise_urn, format_for_region, standardise_postcode
+from .standardisers import standardise_urn, format_for_region
 
 
 def get_case(urn):
@@ -127,41 +127,63 @@ class URNEntryStage(SJPChoiceBase):
     form_class = URNEntryForm
     dependencies = []
 
+    @staticmethod
+    def _create_data_validation(urn, std_urn):
+        dv = DataValidation()
+        dv.urn_entered = urn
+        dv.urn_standardised = std_urn
+        dv.urn_formatted = format_for_region(std_urn)
+        cases = Case.objects.filter(urn=std_urn, imported=True)
+        dv.case_match_count = len(cases)
+
+        if len(cases) > 0:
+            dv.case_match = cases[0]
+
+        dv.save()
+
+    def _save_with_validation(self, court, clean_data):
+
+        case = Case.objects.get_case_for_urn(clean_data["urn"])
+
+        if not case or not case.can_auth():
+            self.add_message(
+                messages.ERROR,
+                _("""<h1>You can't make a plea online</h1>
+                     <p>To make your plea, you need to complete the paper form sent to you by the police.<p>
+                     <p>You must return the form within xx days of it being issued.</p>"""))
+            self.next_step = None
+        else:
+            self.set_next_step("your_case_continued")
+
+    def _save_unvalidated(self, court, clean_data):
+        case = get_case(clean_data["urn"])
+
+        if case and court.display_case_data and case.can_auth():
+            self.set_next_step("your_case_continued")
+        else:
+            try:
+                del self.all_data["case"]["postcode"]
+            except KeyError:
+                pass
+
+            self.set_next_no_data(court)
+
     def save(self, form_data, next_step=None):
+
         clean_data = super(URNEntryStage, self).save(form_data, next_step)
 
         if "urn" in clean_data:
             std_urn = standardise_urn(clean_data["urn"])
+            court = Court.objects.get_by_urn(std_urn)
 
-            try:
-                court = Court.objects.get_by_urn(std_urn)
-            except Court.DoesNotExist:
-                court = None
-
-            dv = DataValidation()
-            dv.urn_entered = clean_data["urn"]
-            dv.urn_standardised = std_urn
-            dv.urn_formatted = format_for_region(std_urn)
-            cases = Case.objects.filter(urn=std_urn)
-            dv.case_match_count = len(cases)
-            if len(cases) > 0:
-                dv.case_match = cases[0]
-
-            dv.save()
+            self._create_data_validation(clean_data["urn"], std_urn)
 
             clean_data["urn"] = std_urn
 
-            case = get_case(clean_data["urn"])
-
-            if case and court.display_case_data and case.can_auth():
-                self.set_next_step("your_case_continued")
+            if court.validate_urn:
+                self._save_with_validation(court, clean_data)
             else:
-                try:
-                    del self.all_data["case"]["postcode"]
-                except KeyError:
-                    pass
-
-                self.set_next_no_data(court)
+                self._save_unvalidated(court, clean_data)
 
         return clean_data
 
@@ -173,27 +195,42 @@ class AuthenticationStage(SJPChoiceBase):
     form_class = AuthForm
     dependencies = []
 
-    def load(self, request_context=None):
-        return super(AuthenticationStage, self).load(request_context)
+    def load_forms(self, data=None, initial=False):
+
+        initial_data = None
+
+        court = Court.objects.get_by_urn(self.all_data["case"]["urn"])
+
+        if court.validate_urn:
+            case = Case.objects.get_case_for_urn(self.all_data["case"]["urn"])
+        else:
+            case = get_case(self.all_data["case"]["urn"])
+
+        if not case:
+            raise Exception("Cannot continue without a case")
+
+        auth_field = case.auth_field()
+
+        if initial:
+            self.form = self.form_class(auth_field=auth_field, initial=initial_data, label_suffix="")
+        else:
+            self.form = self.form_class(data, auth_field=auth_field, label_suffix="")
 
     def save(self, form_data, next_step=None):
         clean_data = super(AuthenticationStage, self).save(form_data, next_step)
 
         if "number_of_charges" in clean_data:
-            case = get_case(self.all_data["case"]["urn"])
+            court = Court.objects.get_by_urn(self.all_data["case"]["urn"])
 
-            try:
-                court = Court.objects.get_by_urn(self.all_data["case"]["urn"])
-            except Court.DoesNotExist:
-                court = None
-
-            std_postcode_input = standardise_postcode(clean_data.get("postcode"))
-            if case.extra_data is not None:
-                std_postcode_db = standardise_postcode(case.extra_data.get("PostCode"))
+            if court.validate_urn:
+                case = Case.objects.get_case_for_urn(self.all_data["case"]["urn"])
             else:
-                std_postcode_db = None
+                case = get_case(self.all_data["case"]["urn"])
 
-            if case.offences.count() == clean_data["number_of_charges"] and std_postcode_db is not None and std_postcode_db == std_postcode_input:
+            if case.authenticate(clean_data["number_of_charges"],
+                                 clean_data.get("postcode", None),
+                                 clean_data.get("date_of_birth", None)):
+
                 self.all_data.update({"dx": True})
 
                 self.all_data["notice_type"]["sjp"] = (case.initiation_type == "J")
@@ -229,8 +266,16 @@ class AuthenticationStage(SJPChoiceBase):
                 self.all_data["case"]["plea_made_by"] = plea_made_by
                 self.all_data["case"]["complete"] = True
             else:
-                self.all_data.update({"dx": False})
-                self.set_next_no_data(court)
+                if court.validate_urn:
+                    self.next_step = None
+                    self.add_message(
+                        messages.ERROR,
+                        _("""<h1>Check the details you've entered</h1>
+                             <p>The information you've entered does not match our records.</p>
+                             <p>Check the paper form sent by the police then enter the details exactly as shown on it.</p>"""))
+                else:
+                    self.all_data.update({"dx": False})
+                    self.set_next_no_data(court)
 
         return clean_data
 
@@ -341,6 +386,9 @@ class YourDetailsStage(FormStage):
     form_class = YourDetailsForm
     dependencies = ["notice_type", "case"]
 
+    def __init__(self, *args, **kwargs):
+        super(YourDetailsStage, self).__init__(*args, **kwargs)
+
     def save(self, form_data, next_step=None):
         clean_data = super(YourDetailsStage,
                            self).save(form_data, next_step)
@@ -369,6 +417,17 @@ class YourDetailsStage(FormStage):
                 pass
 
         return super(YourDetailsStage, self).render(request_context)
+
+    def load_forms(self, data=None, initial=False):
+
+        initial_data = None
+
+        exclude_dob = "date_of_birth" in self.all_data["case"]
+
+        if initial:
+            self.form = self.form_class(initial=initial_data, exclude_dob=exclude_dob, label_suffix="")
+        else:
+            self.form = self.form_class(data, exclude_dob=exclude_dob, label_suffix="")
 
 
 class PleaStage(IndexedStage):

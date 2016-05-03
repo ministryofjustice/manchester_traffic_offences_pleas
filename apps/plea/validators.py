@@ -7,6 +7,7 @@ from django.core import exceptions
 from .models import Case, Court
 from .standardisers import standardise_urn, StandardiserNoOutputException
 
+
 UNFORMATTED_URN_PATTERNS = {
     "02": r"^02TJ[A-Z]{0,2}[0-9]{6,18}[A-Z]{2,5}$",
     "05": r"^[0-9]{2}[A-Z]{1}[0-9]{1}(?:[0-9]{5}|[0-9]{7})[0-9]{2}$",
@@ -69,8 +70,9 @@ def is_urn_valid(urn):
         raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
 
     court = Court.objects.get_by_urn(urn)
-    if court.validate_urn and not Case.objects.filter(urn__iexact=urn, sent=False).exists():
-        raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
+    if court.validate_urn:
+        if not Case.objects.filter(urn__iexact=urn, sent=False).exists():
+            raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
 
     return True
 
@@ -83,3 +85,4 @@ def is_valid_urn_format(urn):
         raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
 
     return True
+
