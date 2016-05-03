@@ -150,7 +150,7 @@ class URNEntryStage(SJPChoiceBase):
                 messages.ERROR,
                 _("""<h1>You can't make a plea online</h1>
                      <p>To make your plea, you need to complete the paper form sent to you by the police.<p>
-                     <p>You must return the form within xx days of it being issued.</p>"""))
+                     <p>You must return the form within the time stated.</p>"""))
             self.next_step = None
         else:
             self.set_next_step("your_case_continued")
