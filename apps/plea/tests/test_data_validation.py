@@ -43,7 +43,7 @@ class TestDataValidation(TestCase):
         self.assertEqual(dv[0].case_match_count, 0)
 
     def test_urn_entry_finds_case(self):
-        case = Case.objects.create(urn="51AA0000000")
+        case = Case.objects.create(urn="51AA0000000", imported=True)
         case.offences.create()
 
         form = PleaOnlineForms(self.session, "enter_urn")
@@ -59,10 +59,10 @@ class TestDataValidation(TestCase):
         self.assertEqual(dv[0].case_match_count, 1)
 
     def test_urn_entry_finds_cases(self):
-        case = Case.objects.create(urn="51AA0000000")
+        case = Case.objects.create(urn="51AA0000000", imported=True)
         case.offences.create()
 
-        case2 = Case.objects.create(urn="51AA0000000")
+        case2 = Case.objects.create(urn="51AA0000000", imported=True)
         case2.offences.create()
 
         form = PleaOnlineForms(self.session, "enter_urn")
