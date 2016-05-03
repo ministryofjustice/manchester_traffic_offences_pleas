@@ -40,6 +40,17 @@ class URNEntryForm(BaseStageForm):
 
 
 class AuthForm(BaseStageForm):
+
+    def __init__(self, *args, **kwargs):
+    
+        self.auth_field = kwargs.pop("auth_field", "DOB")
+        super(AuthForm, self).__init__(*args, **kwargs)
+
+        if self.auth_field == "DOB":
+            del self.fields["postcode"]
+        elif self.auth_field == "PostCode":
+            del self.fields["date_of_birth"]
+
     number_of_charges = forms.IntegerField(label=_("Number of charges"),
                                            help_text=_("How many offences are listed on your notice?"),
                                            widget=forms.TextInput(attrs={"pattern": "[0-9]*",
@@ -50,10 +61,18 @@ class AuthForm(BaseStageForm):
                                            error_messages={"required": ERROR_MESSAGES["NUMBER_OF_CHARGES_REQUIRED"]})
 
     postcode = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}),
-                               label=_("Postcode"),
-                               required=True,
-                               help_text=_("As written on the notice we sent you"),
-                               error_messages={"required": ERROR_MESSAGES["POSTCODE_REQUIRED"]})
+                                label=_("Postcode"),
+                                required=True,
+                                help_text=_("As written on the notice we sent you"),
+                                error_messages={"required": ERROR_MESSAGES["POSTCODE_REQUIRED"]})
+
+    date_of_birth = forms.DateField(widget=DateWidget,
+                                    required=True,
+                                    validators=[is_date_in_past],
+                                    label=_("Date of birth"),
+                                    error_messages={"required": ERROR_MESSAGES["DATE_OF_BIRTH_REQUIRED"],
+                                                    "invalid": ERROR_MESSAGES["DATE_OF_BIRTH_INVALID"],
+                                                    "is_date_in_past": ERROR_MESSAGES["DATE_OF_BIRTH_IN_FUTURE"]})
 
 
 class NoticeTypeForm(BaseStageForm):
@@ -124,6 +143,7 @@ class SJPCaseForm(BaseCaseForm):
 
 
 class YourDetailsForm(BaseStageForm):
+
     dependencies = {
         "updated_address": {
             "field": "correct_address",
@@ -206,6 +226,13 @@ class YourDetailsForm(BaseStageForm):
                                              label="",
                                              help_text=_("If yes, enter it here. Your driving licence number is in section 5 of your driving licence photocard."),
                                              error_messages={"required": ERROR_MESSAGES["DRIVING_LICENCE_NUMBER_REQUIRED"]})
+
+    def __init__(self, *args, **kwargs):
+        exclude_dob = kwargs.pop("exclude_dob", False)
+        super(YourDetailsForm, self).__init__(*args, **kwargs)
+
+        if exclude_dob:
+            del self.fields["date_of_birth"]
 
 
 class CompanyDetailsForm(BaseStageForm):

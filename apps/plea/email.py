@@ -69,6 +69,9 @@ def send_plea_email(context_data):
         first_name = context_data["company_details"]["first_name"]
         last_name = context_data["company_details"]["last_name"]
 
+    if "date_of_birth" in context_data["case"]:
+        context_data["your_details"]["date_of_birth"] = context_data["case"]["date_of_birth"]
+
     context_data["email_name"] = " ".join([last_name.upper(), first_name])
 
     # Add Welsh flag if journey was completed in Welsh
