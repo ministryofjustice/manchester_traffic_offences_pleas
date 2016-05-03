@@ -7,7 +7,7 @@ from django.db.models import Sum, Count, F
 from django.utils.translation import get_language
 from django.contrib.postgres.fields import HStoreField
 
-from standardisers import standardise_name, StandardiserNoOutputException, standardise_urn
+from standardisers import standardise_name, StandardiserNoOutputException, standardise_urn, standardise_postcode
 
 
 STATUS_CHOICES = (("created_not_sent", "Created but not sent"),
@@ -243,6 +243,18 @@ class CaseManager(models.Manager):
                 return False
         return True
 
+    def get_case_for_urn(self, urn):
+        """
+        Can the user use this URN for a DX based submission?
+        """
+
+        cases = self.filter(urn__iexact=urn, sent=False, imported=True)
+
+        if not cases or cases.count() > 1 or not cases[0].can_auth():
+            return None
+
+        return cases[0]
+
 
 class Case(models.Model):
     """
@@ -309,8 +321,40 @@ class Case(models.Model):
         Do we have the relevant data to authenticate the user?
         """
 
-        return self.extra_data and "PostCode" in self.extra_data and self.extra_data["PostCode"]
+        return self.extra_data and "PostCode" in self.extra_data or "DOB" in self.extra_data
 
+    def authenticate(self, num_charges, postcode, dob):
+
+        postcode_match, dob_match = False, False
+
+        assert postcode or dob, "Provide at least one value"
+
+        if not self.can_auth():
+            return False
+
+        if postcode and "PostCode" in self.extra_data:
+            inputted_postcode = standardise_postcode(postcode)
+            stored_postcode = standardise_postcode(self.extra_data.get("PostCode"))
+
+            postcode_match = inputted_postcode == stored_postcode
+
+        if dob and "DOB" in self.extra_data:
+            dob_match = dob == date_parse(self.extra_data["DOB"]).date()
+
+        return self.offences.count() == num_charges and (postcode_match or dob_match)
+
+    def auth_field(self):
+        """
+        Determine which field to use for auth
+        """
+
+        if self.extra_data:
+            if "DOB" in self.extra_data:
+                return "DOB"
+            elif "PostCode" in self.extra_data:
+                return "PostCode"
+
+        return None
 
 class CaseAction(models.Model):
     case = models.ForeignKey(Case, related_name="actions", null=False, blank=False)
@@ -434,7 +478,6 @@ class CourtManager(models.Manager):
             return Court.objects.get_by_urn(standardise_urn(urn))
         except StandardiserNoOutputException:
             return False
-
 
     def validate_emails(self, sending_email, receipt_email):
         try:

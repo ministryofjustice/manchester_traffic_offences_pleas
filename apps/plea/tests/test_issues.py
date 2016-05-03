@@ -2,7 +2,7 @@ from django.core.exceptions import NON_FIELD_ERRORS
 from django.http.response import HttpResponseRedirect
 
 from ..views import PleaOnlineForms
-from ..models import Case
+from ..models import Case, Court
 from ..standardisers import standardise_name
 
 from test_plea_form import TestMultiPleaFormBase
@@ -44,6 +44,11 @@ class TestPleaFormIssues(TestMultiPleaFormBase):
 
 
 class TestDuplicateCaseIssues(TestMultiPleaFormBase):
+
+    def setUp(self):
+        Court.objects.create(region_code="51",
+                             enabled=True)
+
     def create_person_case(self, urn, first_name, last_name):
         return Case.objects.create(urn=urn,
                                    name=standardise_name(first_name, last_name),
