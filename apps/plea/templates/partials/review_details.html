@@ -20,7 +20,12 @@
     <dd>{{ your_details.contact_number }}</dd>
 
     <dt>{% blocktrans %}Date of birth{% endblocktrans %}</dt>
-    <dd>{{ your_details.date_of_birth|parse_date|date:"d/m/Y" }}</dd>
+    <dd>{% if your_details.date_of_birth %}
+            {{ your_details.date_of_birth|parse_date|date:"d/m/Y" }}
+        {% else %}
+            {{ case.date_of_birth|parse_date|date:"d/m/Y" }}
+        {% endif %}
+    </dd>
 
     <dt>{% blocktrans %}National Insurance number{% endblocktrans %}</dt>
     <dd>{{ your_details.ni_number|default:"-" }}</dd>
