@@ -1003,7 +1003,7 @@ class CompleteStage(FormStage):
         self.context["plea_type"] = get_plea_type(self.all_data)
 
         try:
-            self.context["court"] = Court.objects.get_by_urn(self.all_data["case"]["urn"])
+            self.context["court"] = Court.objects.get_court_dx(self.all_data["case"]["urn"])
         except Court.DoesNotExist:
             pass
 
