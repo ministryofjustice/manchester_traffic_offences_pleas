@@ -3,7 +3,7 @@ import datetime as dt
 
 from django.test import TestCase
 
-from ..models import CourtEmailCount, UsageStats, Court
+from ..models import CourtEmailCount, UsageStats, Court, Case
 
 
 class TestStatsBase(TestCase):
@@ -258,4 +258,83 @@ class UsageStatsTestCase(TestStatsBase):
 
         self.assertEquals(wk2.start_date, dt.date(2015, 01, 12))
         self.assertEquals(wk2.online_submissions, 4)
+
+
+class TestCourtModel(TestCase):
+    def setUp(self):
+        self.court = Court.objects.create(
+            region_code="51",
+            ou_code="12345",
+            court_name="Test Court",
+            court_address="28 Court Street",
+            court_telephone="0800 Court",
+            court_email="test@court.com",
+            court_language="en",
+            submission_email="test@court.com",
+            enabled=True)
+
+        self.court2 = Court.objects.create(
+            region_code="61",
+            ou_code="54321",
+            court_name="Test Court 2",
+            court_address="29 Court Street",
+            court_telephone="0800 Court",
+            court_email="test@court.com",
+            court_language="en",
+            submission_email="test@court.com",
+            enabled=True)
+
+        self.case = Case.objects.create(
+            ou_code="54321",
+            imported=True,
+            urn="51XX0000000")
+
+    def test_manager_get_by_urn(self):
+        self.assertEquals(self.court.id, Court.objects.get_by_urn("51/xx/00000/00").id)
+
+    def test_manager_get_by_urn_no_match(self):
+        self.court.enabled = False
+        self.court.save()
+
+        with self.assertRaises(Court.DoesNotExist):
+            Court.objects.get_by_urn("51/xx/00000/00")
+
+    def test_get_by_court_with_ou_code(self):
+
+        self.assertEquals(self.court.id, Court.objects.get_court("99/xx/00000/00", ou_code="12345").id)
+
+    def test_get_by_court_ou_code_no_match(self):
+        self.assertEquals(self.court.id, Court.objects.get_court("51/xx/00000/00", ou_code="99999").id)
+
+    def test_get_by_court_ou_code_and_urn_no_match(self):
+        with self.assertRaises(Court.DoesNotExist):
+            Court.objects.get_court("99/xx/00000/00", ou_code="9999999")
+
+    def test_get_court_dx_ou_code_different_court(self):
+
+        court = Court.objects.get_court_dx(self.case.urn)
+
+        self.assertEquals(self.court2.id, court.id)
+
+    def test_get_court_dx_no_case(self):
+
+        court = Court.objects.get_court_dx("51/AA/00000/00")
+
+        self.assertEquals(self.court.id, court.id)
+
+    def test_get_court_dx_duplicate_cases(self):
+        """
+        IF there's multiple URNs (e.g. multiple defendants per URN resulting
+        in multiple cases in the DB with the same URN) then we drop back to URN
+        based matching
+        """
+
+        self.case.id = None
+        self.case.save()
+
+        court = Court.objects.get_court_dx(self.case.urn)
+
+        self.assertEquals(court.id, self.court.id)
+
+
 
