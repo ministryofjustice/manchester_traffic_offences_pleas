@@ -28,6 +28,15 @@ def get_email_subject(email_data):
     return subject.format(**email_data)
 
 
+def get_court(urn, ou_code):
+    try:
+        court_obj = Court.objects.get_court(urn, ou_code=ou_code)
+    except Court.DoesNotExist:
+        logger.warning("URN does not have a matching Court entry: {}".format(urn))
+        raise
+    return court_obj
+
+
 @app.task(bind=True, max_retries=10, default_retry_delay=900)
 def email_send_court(self, case_id, count_id, email_data):
     smtp_route = "GSI"
@@ -37,12 +46,7 @@ def email_send_court(self, case_id, count_id, email_data):
     # No error trapping, let these fail hard if the objects can't be found
     case = Case.objects.get(pk=case_id)
 
-    try:
-        court_obj = Court.objects.get_by_urn(email_data["case"]["urn"])
-    except Court.DoesNotExist:
-        logger.warning("URN does not have a matching Court entry: {}".format(
-            email_data["case"]["urn"]))
-        raise
+    court_obj = get_court(email_data["case"]["urn"], case.ou_code)
 
     plea_email_to = [court_obj.submission_email]
 
@@ -96,15 +100,11 @@ def email_send_prosecutor(self, case_id, email_data):
 
     email_data["urn"] = format_for_region(email_data["case"]["urn"])
 
-    try:
-        court_obj = Court.objects.get_by_urn(email_data["case"]["urn"])
-    except Court.DoesNotExist:
-        logger.warning("URN does not have a matching Court entry: {}".format(
-            email_data["case"]["urn"]))
-        raise
-
     # No error trapping, let these fail hard if the objects can't be found
     case = Case.objects.get(pk=case_id)
+
+    court_obj = get_court(email_data["case"]["urn"], case.ou_code)
+
     case.add_action("Prosecutor email started", "")
 
     email_subject = "POLICE " + get_email_subject(email_data)
