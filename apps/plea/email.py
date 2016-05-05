@@ -43,12 +43,15 @@ def send_plea_email(context_data):
 
     context_data: dict populated by form fields
     """
-    try:
-        court_obj = Court.objects.get_by_urn(context_data["case"]["urn"])
-    except Court.DoesNotExist:
-        logger.error("URN does not have a matching Court entry: {}".format(
-            context_data["case"]["urn"]))
-        raise
+
+    # Get or create case
+    cases = Case.objects.filter(urn__iexact=context_data["case"]["urn"].upper(), sent=False)
+    if len(cases) == 0:
+        case = Case(urn=context_data["case"]["urn"].upper(), sent=False)
+    else:
+        case = cases[0]
+
+    court_obj = Court.objects.get_court(context_data["case"]["urn"], ou_code=case.ou_code)
 
     send_user_email = context_data.get("review", {}).get("receive_email_updates", False)
     email_address = context_data.get("review", {}).get("email", False)
@@ -77,13 +80,6 @@ def send_plea_email(context_data):
     # Add Welsh flag if journey was completed in Welsh
     if translation.get_language() == "cy":
         context_data["welsh_language"] = True
-
-    # Get or create case
-    cases = Case.objects.filter(urn__iexact=context_data["case"]["urn"].upper(), sent=False)
-    if len(cases) == 0:
-        case = Case(urn=context_data["case"]["urn"].upper(), sent=False)
-    else:
-        case = cases[0]
 
     if context_data["notice_type"]["sjp"]:
         case.initiation_type = "J"

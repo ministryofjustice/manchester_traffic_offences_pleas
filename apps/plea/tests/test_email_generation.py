@@ -27,11 +27,12 @@ class EmailGenerationTests(TestCase):
             court_email="court@example.org",
             submission_email="court@example.org",
             plp_email="plp@example.org",
+            ou_code="12345",
             enabled=True,
             test_mode=False)
 
         self.test_data_defendant = {"notice_type": {"sjp": False},
-                                    "case": {"urn": "06xcvx89",
+                                    "case": {"urn": "06XX0000000",
                                              "date_of_hearing": "2014-06-30",
                                              "contact_deadline": "2014-06-30",
                                              "number_of_charges": 2,
@@ -199,3 +200,74 @@ class EmailGenerationTests(TestCase):
         send_plea_email(self.test_data_defendant)
 
         self.assertEquals(anon_total, CourtEmailCount.objects.all().count())
+
+    def test_ou_code_email_routing_with_associated_case_no_ou_code(self):
+        Case.objects.create(
+            urn=self.test_data_defendant["case"]["urn"],
+            case_number="xxxxxxx",
+            imported=True,
+            ou_code="99999")
+
+        self.test_data_defendant["dx"] = True
+
+        send_plea_email(self.test_data_defendant)
+
+        to_emails = [item.to[0] for item in mail.outbox]
+
+        self.assertIn(self.court_obj.submission_email, to_emails)
+
+    def test_ou_code_email_routing_with_associated_case_and_matching_ou_code(self):
+        """
+        If we have two courts with the same region code, e.g. Lavender Hill and
+        Bromley both have URNs that start with 21, then we should be
+        sending emails to the correct court based on ou code that is provided in the
+        incoming libra data
+        """
+        Case.objects.create(
+            urn=self.test_data_defendant["case"]["urn"],
+            case_number="xxxxxxx",
+            imported=True,
+            ou_code="99999")
+
+        court2 = Court.objects.get(pk=self.court_obj.id)
+        court2.id = None
+        court2.submission_email = "court2@court.com"
+        court2.ou_code = "99999"
+        court2.save()
+
+        self.test_data_defendant["dx"] = True
+
+        send_plea_email(self.test_data_defendant)
+
+        to_emails = [item.to[0] for item in mail.outbox]
+
+        self.assertIn(court2.submission_email, to_emails)
+        self.assertNotIn(self.court_obj.submission_email, to_emails)
+
+    def test_ou_code_email_routing_with_no_case(self):
+        """
+        If we have an ou code for a case and that doesn't match any courts
+        then we need to fall back to maching on region code
+        """
+        Case.objects.create(
+            urn="78xx0000000",
+            case_number="xxxxxxx",
+            imported=True,
+            ou_code="99999")
+
+        court2 = Court.objects.get(pk=self.court_obj.id)
+        court2.id = None
+        court2.region_code = "01"
+        court2.submission_email = "court2@court.com"
+        court2.ou_code = "99999"
+        court2.save()
+
+        self.test_data_defendant["dx"] = True
+
+        send_plea_email(self.test_data_defendant)
+
+        to_emails = [item.to[0] for item in mail.outbox]
+
+        self.assertIn(self.court_obj.submission_email, to_emails)
+        self.assertNotIn(court2.submission_email, to_emails)
+

@@ -160,7 +160,7 @@ class CourtFinderView(FormView):
 
     def form_valid(self, form):
         try:
-            court = Court.objects.get_by_urn(form.cleaned_data["urn"])
+            court = Court.objects.get_court_dx(form.cleaned_data["urn"])
         except Court.DoesNotExist:
             court = False
 

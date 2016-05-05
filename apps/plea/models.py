@@ -452,30 +452,55 @@ class CourtManager(models.Manager):
         """
         Take a URN and return True if the region_code is valid
         """
-
-        try:
-            self.get(region_code=urn[:2],
-                     enabled=True)
-
-            return True
-
-        except Court.DoesNotExist:
-            return False
+        return self.filter(region_code=urn[:2],
+                           enabled=True).exists()
 
     def get_by_urn(self, urn):
         """
         Retrieve court model by URN
         """
 
-        return self.get(region_code=urn[:2],
-                        enabled=True)
+        courts = self.filter(region_code=urn[:2],
+                             enabled=True).order_by("id")
+
+        if courts:
+            return courts[0]
+        else:
+            raise Court.DoesNotExist
+
+    def get_court(self, urn, ou_code=None):
+        """
+        Attempt to return the court by URN or ou code.
+
+        Prioritise matching on ou code but if there is no match then attempt to match on URN 
+        """
+
+        if ou_code:
+            try:
+                return self.get(ou_code=ou_code, enabled=True)
+            except Court.DoesNotExist:
+                pass
+
+        return self.get_by_urn(urn)
+
+    def get_court_dx(self, urn):
+        """
+        Get court whilst using DX data and ou-code matching where possible
+        """
+
+        try:
+            ou_code = Case.objects.get(urn=standardise_urn(urn), imported=True, ou_code__isnull=False).ou_code
+        except (Case.DoesNotExist, Case.MultipleObjectsReturned, StandardiserNoOutputException):
+            ou_code = None
+
+        return self.get_court(urn, ou_code=ou_code)
 
     def get_by_standardised_urn(self, urn):
         """
         Standardise the URN before matching it
         """
         try:
-            return Court.objects.get_by_urn(standardise_urn(urn))
+            return self.get_by_urn(standardise_urn(urn))
         except StandardiserNoOutputException:
             return False
 
@@ -498,8 +523,7 @@ class Court(models.Model):
     region_code = models.CharField(
         max_length=2,
         verbose_name="URN Region Code",
-        help_text="The initial two digit URN number, e.g. 06",
-        unique=True)
+        help_text="The initial two digit URN number, e.g. 06")
 
     court_name = models.CharField(
         max_length=255)
