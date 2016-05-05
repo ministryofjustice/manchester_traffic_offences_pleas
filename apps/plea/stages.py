@@ -84,7 +84,9 @@ def get_offences(case_data):
     offences = []
     if urn:
         case = get_case(urn)
-        court = Court.objects.get_by_urn(urn)
+
+        ou_code = case.ou_code if case else None
+        court = Court.objects.get_court(urn, ou_code=ou_code)
 
         # offence_seq_number is a char field so best to cast and order by
         # rather than just grabbing case.offences.all() and hoping it's
