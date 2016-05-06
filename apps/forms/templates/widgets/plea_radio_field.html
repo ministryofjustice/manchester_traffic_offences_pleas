@@ -4,18 +4,19 @@
 {% load form_widgets %}
 {% load debug %}
 
-{% get_current_language as LANGUAGE_CODE %}
-
 {% with plea_data=plea.data|index:index %}
 
+{% get_current_language as LANGUAGE_CODE %}
+
 <div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty">
+
     <fieldset role="radiogroup" aria-labelledby="label_charge">
 
         <legend>
             <div class="header-line" id="label_charge">
                 <span class="label-text">{% spaceless %}
                 {% if form.case_data %}
-                    {% if LANGUAGE_CODE=="cy" and form.case_data.offence_short_title_welsh %}
+                    {% if LANGUAGE_CODE == "cy" and form.case_data.offence_short_title_welsh %}
                         {{ form.case_data.offence_short_title_welsh }}
                     {% else %}
                         {{ form.case_data.offence_short_title }}
@@ -38,7 +39,11 @@
             <div class="charge-details js-Details open" data-summary-open="{% blocktrans %}Hide charge information{% endblocktrans %}">
                 <a class="details-trigger" href="#charge-details"><span class="summary">{% blocktrans %}View charge information{% endblocktrans %}</span></a>
                 <div class="details-content" id="charge-details">
-                    {{ form.case_data.offence_wording|linebreaks }}
+                    {% if LANGUAGE_CODE == "cy" and form.case_data.offence_wording_welsh %}
+                        {{ form.case_data.offence_wording_welsh|linebreaks }}
+                    {% else %}
+                        {{ form.case_data.offence_wording|linebreaks }}
+                    {% endif %}
                 </div>
             </div>
 
