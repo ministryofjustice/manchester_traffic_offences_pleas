@@ -560,7 +560,6 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(response.status_code, 302)
 
-
         # plea 2
         form = PleaOnlineForms(self.session, "plea", 2)
         plea_1 = {"guilty": "not_guilty",

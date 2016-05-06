@@ -4,6 +4,8 @@
 {% load form_widgets %}
 {% load debug %}
 
+{% get_current_language as LANGUAGE_CODE %}
+
 {% with plea_data=plea.data|index:index %}
 
 <div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty">
@@ -13,7 +15,11 @@
             <div class="header-line" id="label_charge">
                 <span class="label-text">{% spaceless %}
                 {% if form.case_data %}
-                    {{ form.case_data.offence_short_title }}
+                    {% if LANGUAGE_CODE=="cy" and form.case_data.offence_short_title_welsh %}
+                        {{ form.case_data.offence_short_title_welsh }}
+                    {% else %}
+                        {{ form.case_data.offence_short_title }}
+                    {% endif %}
                 {% else %}
                     {% if plea_data.split_form == "split_form_last_step" %}
                         {% blocktrans with counter=index %}Charge {{ counter }}{% endblocktrans %}
