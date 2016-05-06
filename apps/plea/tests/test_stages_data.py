@@ -575,3 +575,12 @@ class TestPleaAuthStage(TestURNStageDataBase):
         stage.load_forms({})
 
         self.assertFalse(getattr(stage.form, "case_data", False))
+
+    def test_offence_data_is_displayed_in_welsh(self):
+        pass
+
+    def test_offence_data_falls_back_to_en_when_cy_data_is_not_available(self):
+        pass
+
+    def test_offence_data_is_displayed_in_welsh(self):
+        pass
