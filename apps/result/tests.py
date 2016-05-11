@@ -74,15 +74,6 @@ class ResultTestCase(TestCase):
 
         self.assertTrue(result)
 
-    def test_can_result_no_welsh(self):
-
-        self.test_case1.language = "cy"
-        self.test_case1.save()
-
-        result, _ = self.test_result1.can_result()
-
-        self.assertFalse(result)
-
     def test_can_result_with_adjourned_offence_is_false(self):
 
         self.f_code_offence.delete()

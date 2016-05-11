@@ -148,12 +148,12 @@ class URNEntryStage(SJPChoiceBase):
         if not case or not case.can_auth():
             self.add_message(
                 messages.ERROR,
-                """<h1>{}</h1>
+                u"""<h1>{}</h1>
                    <p>{}</p>
                    <p>{}</p>""".format(
                 _("You can't make a plea online"),
-                _("To make your plea, you need to complete the paper form sent to you by the police.",
-                _("You must return the form within the time stated."))))
+                _("To make your plea, you need to complete the paper form sent to you by the police."),
+                _("You must return the form within the time stated.")))
             self.next_step = None
         else:
             self.set_next_step("your_case_continued")
@@ -273,13 +273,13 @@ class AuthenticationStage(SJPChoiceBase):
                     self.next_step = None
                     self.add_message(
                         messages.ERROR,
-                        _("""<h1>{}</h1>
+                        u"""<h1>{}</h1>
                              <p>{}</p>
                              <p>{}</p>""".format(
                             _("Check the details you've entered"),
                             _("The information you've entered does not match our records."),
                             _("Check the paper form sent by the police then enter the details exactly as shown on it.")
-                        )))
+                        ))
                 else:
                     self.all_data.update({"dx": False})
                     self.set_next_no_data(court)

@@ -205,10 +205,9 @@ def test_resulting_email(request):
 
     context = {"name": "Frank Marsh",
                "urn": "51AA000000015",
-               "court": "Manchester and Salford Magistrates' Court",
-               "fines": [{"label": "Fine - Fined", "amount": 440},
-                         {"label": "Victim surcharge - To pay victim surcharge of", "amount": 44},
-                         {"label": "To pay costs of", "amount": 85}],
+               "fines": ["Fine - &amp;440",
+                         "Victim surcharge - To pay victim surcharge of &amp;44",
+                         "To pay costs of &amp;4"],
                "total": 569,
                "pay_by": datetime.date(2016, 2, 13),
                "endorsements": ["Driving record endorsed with 6 points."],
@@ -217,6 +216,13 @@ def test_resulting_email(request):
 
     email_type = request.GET.get("template", "html")
     language = request.GET.get("language", "en")
+
+    context["court"] = {
+        "court_language": language,
+        "court_name": "Manchester and Salford Magistrates' Court",
+        "enforcement_email": "test@test.com",
+        "enforcement_telephone": "0800 FINES TEAM"
+    }
 
     template = templates[email_type]
 
