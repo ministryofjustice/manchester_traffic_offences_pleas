@@ -599,7 +599,7 @@ class OtherExpensesForm(BaseStageForm):
                                                                  "min_value": ERROR_MESSAGES["OTHER_CHILD_MAINTENANCE_MIN"]})
 
     other_not_listed = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                              choices=YESNO_CHOICES["Ydy/Nac ydy"],
+                                              choices=YESNO_CHOICES["Oes/Nac oes"],
                                               coerce=to_bool,
                                               label=_("Any other expenses that are not listed above?"),
                                               help_text=_("Other significant expenses you think the court should know about. For example, childcare"),
@@ -698,7 +698,7 @@ class ConfirmationForm(BaseStageForm):
     receive_email_updates = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                                    required=True,
                                                    coerce=to_bool,
-                                                   choices=YESNO_CHOICES["Ydw/Nac ydw"],
+                                                   choices=YESNO_CHOICES["Oes/Nac oes"],
                                                    label=_("Do you want to receive an email confirming your plea has been sent to the court?"),
                                                    error_messages={"required": ERROR_MESSAGES["RECEIVE_EMAIL_UPDATES_REQUIRED"]})
 
