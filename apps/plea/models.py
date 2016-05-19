@@ -483,6 +483,9 @@ class CourtManager(models.Manager):
 
         return self.get_by_urn(urn)
 
+    def get_court_by_ou_code(self, ou_code):
+        return self.select_related().get(oucode__ou_code=ou_code[:4])
+
     def get_court_dx(self, urn):
         """
         Get court whilst using DX data and ou-code matching where possible
@@ -584,8 +587,6 @@ class Court(models.Model):
         help_text="Display the updated plea page for cases that have offence data attached"
     )
 
-    ou_code = models.CharField(max_length=10, null=True, blank=True)
-
     enforcement_email = models.CharField(
         verbose_name="Email address of the enforcement team",
         max_length=255, null=True, blank=True,
@@ -602,6 +603,11 @@ class Court(models.Model):
                                      self.court_name)
 
     objects = CourtManager()
+
+
+class OUCode(models.Model):
+    court = models.ForeignKey(Court)
+    ou_code = models.CharField(max_length=5, unique=True, help_text="The first five digits of an OU code")
 
 
 class DataValidation(models.Model):
