@@ -477,8 +477,8 @@ class CourtManager(models.Manager):
 
         if ou_code:
             try:
-                return self.get(ou_code=ou_code, enabled=True)
-            except Court.DoesNotExist:
+                return OUCode.objects.get(ou_code=ou_code[:5]).court
+            except OUCode.DoesNotExist:
                 pass
 
         return self.get_by_urn(urn)

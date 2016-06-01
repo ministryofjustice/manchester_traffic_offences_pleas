@@ -3,7 +3,7 @@ import datetime as dt
 
 from django.test import TestCase
 
-from ..models import CourtEmailCount, UsageStats, Court, Case
+from ..models import CourtEmailCount, UsageStats, Court, Case, OUCode
 
 
 class TestStatsBase(TestCase):
@@ -264,7 +264,6 @@ class TestCourtModel(TestCase):
     def setUp(self):
         self.court = Court.objects.create(
             region_code="51",
-            ou_code="12345",
             court_name="Test Court",
             court_address="28 Court Street",
             court_telephone="0800 Court",
@@ -273,9 +272,10 @@ class TestCourtModel(TestCase):
             submission_email="test@court.com",
             enabled=True)
 
+        OUCode.objects.create(court=self.court, ou_code="B01CN")
+
         self.court2 = Court.objects.create(
             region_code="61",
-            ou_code="54321",
             court_name="Test Court 2",
             court_address="29 Court Street",
             court_telephone="0800 Court",
@@ -284,8 +284,10 @@ class TestCourtModel(TestCase):
             submission_email="test@court.com",
             enabled=True)
 
+        OUCode.objects.create(court=self.court2, ou_code="B01LY")
+
         self.case = Case.objects.create(
-            ou_code="54321",
+            ou_code="B01LY11",
             imported=True,
             urn="51XX0000000")
 
@@ -301,10 +303,10 @@ class TestCourtModel(TestCase):
 
     def test_get_by_court_with_ou_code(self):
 
-        self.assertEquals(self.court.id, Court.objects.get_court("99/xx/00000/00", ou_code="12345").id)
+        self.assertEquals(self.court.id, Court.objects.get_court("99/xx/00000/00", ou_code="B01CN11").id)
 
     def test_get_by_court_ou_code_no_match(self):
-        self.assertEquals(self.court.id, Court.objects.get_court("51/xx/00000/00", ou_code="99999").id)
+        self.assertEquals(self.court.id, Court.objects.get_court("51/xx/00000/00", ou_code="C01CN11").id)
 
     def test_get_by_court_ou_code_and_urn_no_match(self):
         with self.assertRaises(Court.DoesNotExist):
