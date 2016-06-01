@@ -9,7 +9,7 @@ from django.core import mail
 from apps.plea.attachment import TemplateAttachmentEmail
 
 from ..email import send_plea_email
-from ..models import Case, CourtEmailCount, Court
+from ..models import Case, CourtEmailCount, Court, OUCode
 from ..standardisers import format_for_region
 
 
@@ -27,9 +27,10 @@ class EmailGenerationTests(TestCase):
             court_email="court@example.org",
             submission_email="court@example.org",
             plp_email="plp@example.org",
-            ou_code="12345",
             enabled=True,
             test_mode=False)
+
+        OUCode.objects.create(court=self.court_obj, ou_code="B01CN")
 
         self.test_data_defendant = {"notice_type": {"sjp": False},
                                     "case": {"urn": "06XX0000000",
@@ -206,7 +207,7 @@ class EmailGenerationTests(TestCase):
             urn=self.test_data_defendant["case"]["urn"],
             case_number="xxxxxxx",
             imported=True,
-            ou_code="99999")
+            ou_code="B01LY06")
 
         self.test_data_defendant["dx"] = True
 
@@ -227,13 +228,14 @@ class EmailGenerationTests(TestCase):
             urn=self.test_data_defendant["case"]["urn"],
             case_number="xxxxxxx",
             imported=True,
-            ou_code="99999")
+            ou_code="B01LY01")
 
         court2 = Court.objects.get(pk=self.court_obj.id)
         court2.id = None
         court2.submission_email = "court2@court.com"
-        court2.ou_code = "99999"
         court2.save()
+
+        OUCode.objects.create(court=court2, ou_code="B01LY")
 
         self.test_data_defendant["dx"] = True
 
@@ -247,20 +249,21 @@ class EmailGenerationTests(TestCase):
     def test_ou_code_email_routing_with_no_case(self):
         """
         If we have an ou code for a case and that doesn't match any courts
-        then we need to fall back to maching on region code
+        then we fall back to matching on region code
         """
         Case.objects.create(
             urn="78xx0000000",
             case_number="xxxxxxx",
             imported=True,
-            ou_code="99999")
+            ou_code="B01LY02")
 
         court2 = Court.objects.get(pk=self.court_obj.id)
         court2.id = None
         court2.region_code = "01"
         court2.submission_email = "court2@court.com"
-        court2.ou_code = "99999"
         court2.save()
+
+        OUCode.objects.create(court=court2, ou_code="B01LY")
 
         self.test_data_defendant["dx"] = True
 
