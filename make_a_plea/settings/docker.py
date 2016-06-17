@@ -59,3 +59,5 @@ ENCRYPTED_COOKIE_KEYS = [
 STORE_USER_DATA = os.environ.get("STORE_USER_DATA", "") == "True"
 
 REDIRECT_START_PAGE = os.environ.get("REDIRECT_START_PAGE", "")
+
+EMAIL_USE_TLS = True
