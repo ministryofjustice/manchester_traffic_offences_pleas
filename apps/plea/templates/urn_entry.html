@@ -40,7 +40,7 @@
 
         {{ block.super }}
 
-        {% if urn_entry_failure_court > 3 %}
+        {% if urn_entry_failure_court >= 3 %}
             <h1>It looks like you're having problems</h1>
 
             <p>If you continue to have technical issues, then send off your form instead.</p>
