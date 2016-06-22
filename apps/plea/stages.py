@@ -187,7 +187,7 @@ class URNEntryStage(SJPChoiceBase):
 
             self.all_data["urn_entry_failure_count"] = 0
         else:
-            self.all_data["urn_entry_failure_court"] = self.all_data.get("urn_entry_failure_court", 0) + 1
+            self.all_data["urn_entry_failure_count"] = self.all_data.get("urn_entry_failure_count", 0) + 1
 
         return clean_data
 
