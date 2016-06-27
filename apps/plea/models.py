@@ -280,10 +280,14 @@ class Case(models.Model):
     imported = models.BooleanField(default=False)
 
     ou_code = models.CharField(max_length=10, null=True, blank=True)
-    initiation_type = models.CharField(max_length=2, null=False, blank=False, default="Q",
+    initiation_type = models.CharField(max_length=2,
+                                       null=False,
+                                       blank=False,
+                                       default="Q",
                                        choices=INITIATION_TYPE_CHOICES)
-    language = models.CharField(max_length=2, null=False, blank=False, default="en",
-                                choices=COURT_LANGUAGE_CHOICES)
+
+    language = models.CharField(max_length=2, null=False, blank=False,
+                                default="en", choices=COURT_LANGUAGE_CHOICES)
 
     sent = models.BooleanField(null=False, default=False)
     processed = models.BooleanField(null=False, default=False)
@@ -312,7 +316,8 @@ class Case(models.Model):
             return self.name
 
         if self.extra_data and "Forename1" in self.extra_data:
-            return "{} {}".format(self.extra_data["Forename1"], self.extra_data["Surname"])
+            return "{} {}".format(self.extra_data["Forename1"],
+                                  self.extra_data["Surname"])
 
         return ""
 
@@ -321,7 +326,8 @@ class Case(models.Model):
         Do we have the relevant data to authenticate the user?
         """
 
-        return self.extra_data and ("PostCode" in self.extra_data or "DOB" in self.extra_data)
+        return self.extra_data and \
+               ("PostCode" in self.extra_data or "DOB" in self.extra_data)
 
     def authenticate(self, num_charges, postcode, dob):
 
@@ -334,7 +340,8 @@ class Case(models.Model):
 
         if postcode and "PostCode" in self.extra_data:
             inputted_postcode = standardise_postcode(postcode)
-            stored_postcode = standardise_postcode(self.extra_data.get("PostCode"))
+            stored_postcode = standardise_postcode(
+                self.extra_data.get("PostCode"))
 
             postcode_match = inputted_postcode == stored_postcode
 
@@ -472,7 +479,8 @@ class CourtManager(models.Manager):
         """
         Attempt to return the court by URN or ou code.
 
-        Prioritise matching on ou code but if there is no match then attempt to match on URN 
+        Prioritise matching on ou code but if there is no match then
+        attempt to match on URN
         """
 
         if ou_code:
@@ -492,8 +500,13 @@ class CourtManager(models.Manager):
         """
 
         try:
-            ou_code = Case.objects.get(urn=standardise_urn(urn), imported=True, ou_code__isnull=False).ou_code
-        except (Case.DoesNotExist, Case.MultipleObjectsReturned, StandardiserNoOutputException):
+            ou_code = Case.objects.get(urn=standardise_urn(urn),
+                                       imported=True,
+                                       ou_code__isnull=False).ou_code
+
+        except (Case.DoesNotExist,
+                Case.MultipleObjectsReturned,
+                StandardiserNoOutputException):
             ou_code = None
 
         return self.get_court(urn, ou_code=ou_code)
@@ -540,7 +553,10 @@ class Court(models.Model):
         max_length=255,
         help_text="The email address for users to contact the court")
 
-    court_language = models.CharField(max_length=4, null=False, blank=False, default="en",
+    court_language = models.CharField(max_length=4,
+                                      null=False,
+                                      blank=False,
+                                      default="en",
                                       choices=COURT_LANGUAGE_CHOICES)
 
     submission_email = models.CharField(
@@ -607,7 +623,8 @@ class Court(models.Model):
 
 class OUCode(models.Model):
     court = models.ForeignKey(Court)
-    ou_code = models.CharField(max_length=5, unique=True, help_text="The first five digits of an OU code")
+    ou_code = models.CharField(max_length=5, unique=True,
+                               help_text="The first five digits of an OU code")
 
 
 class DataValidation(models.Model):
