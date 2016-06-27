@@ -44,11 +44,11 @@ def send_plea_email(context_data):
     context_data: dict populated by form fields
     """
 
-    try:
-        case = Case.objects.get(
-            urn__iexact=context_data["case"]["urn"].upper(), sent=False)
+    case = Case.objects.filter(
+        urn__iexact=context_data["case"]["urn"].upper(), sent=False,
+        imported=True).first()
 
-    except (Case.DoesNotExist, Case.MultipleObjectsReturned):
+    if not case:
         case = Case.objects.create(urn=context_data["case"]["urn"].upper(),
                                    sent=False,
                                    imported=False)
