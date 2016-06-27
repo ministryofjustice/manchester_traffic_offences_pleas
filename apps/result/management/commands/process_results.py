@@ -107,7 +107,7 @@ class Command(BaseCommand):
 
         # If we move to using OU codes in Case data this should be replaced by a lookup using the
         # Case OU code
-        data["court"] = Court.objects.get_by_standardised_urn(result.urn)
+        data["court"] = Court.objects.get_court(result.urn, ou_code=case.ou_code)
 
         if not data["court"]:
             self.log("URN failed to standardise: {}".format(result.urn))
