@@ -191,6 +191,7 @@ INSTALLED_APPS = [
     'axes',
     'djcelery',
     'waffle',
+    'apps.monitoring',
     'govuk_template',
     'make_a_plea',
     'apps.forms',
