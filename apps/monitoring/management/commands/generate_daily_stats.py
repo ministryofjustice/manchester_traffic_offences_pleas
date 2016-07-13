@@ -1,4 +1,3 @@
-
 # coding=utf-8
 import datetime as dt
 
@@ -15,8 +14,10 @@ class Command(BaseCommand):
     def _get_date_range(self, fld_name, date):
 
         return {
-            "{}__gte".format(fld_name): dt.datetime.combine(date, dt.time.min),
-            "{}__lte".format(fld_name): dt.datetime.combine(date, dt.time.max)
+            "{}__gte".format(fld_name):
+                dt.datetime.combine(date, dt.time.min),
+            "{}__lte".format(fld_name):
+                dt.datetime.combine(date, dt.time.max)
         }
 
     def handle(self, *args, **options):
@@ -37,27 +38,35 @@ class Command(BaseCommand):
 
     def _get_stats(self, court, date):
 
+        created_date_range = self._get_date_range("created", date)
+        completed_on_date_range = self._get_date_range("completed_on", date)
+
         # number of entries imported from the soap gateway
         imported_count = Case.objects.filter(
-            imported=True, **self._get_date_range("created", date)).count()
+            imported=True, **created_date_range).count()
 
         # number of completed submissions
         submission_count = Case.objects.filter(
-            **self._get_date_range("completed_on", date)).count()
+            **completed_on_date_range).count()
 
         # number of unvalidated submissions
         unvalidated_count = Case.objects.filter(
-            imported=False, **self._get_date_range("completed_on", date)).count()
+            imported=False, **completed_on_date_range).count()
 
         # number of failed email sending situations
         email_failure_count = Case.objects.filter(
-            sent=False, **self._get_date_range("completed_on", date)).count()
+            sent=False, **completed_on_date_range).count()
+
+        # number of sjp cases
+        sjp_count = Case.objects.fiter(initiation_type="J",
+                                       **created_date_range).count()
 
         return dict(
             imported=imported_count,
             submissions=submission_count,
             unvalidated_submissions=unvalidated_count,
-            email_failure=email_failure_count
+            email_failure=email_failure_count,
+            sjp_count=sjp_count
         )
 
         # soap gateway import metrics
