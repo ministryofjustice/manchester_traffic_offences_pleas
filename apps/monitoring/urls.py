@@ -1,9 +1,7 @@
 from django.conf.urls import url, include
-from django.views.generic import TemplateView
-
-from .views import HealthCheckView
+from .views import CourtDataView
 
 
 urlpatterns = (
-    url(r"healthcheck$", HealthCheckView.as_view()),
+    url(r"service-status/", CourtDataView.as_view()),
 )
