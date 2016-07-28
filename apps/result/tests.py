@@ -185,14 +185,14 @@ class ResultTestCase(TestCase):
             result_offence=self.offence1,
             result_code="FCOST",
             result_short_title="FINE",
-            result_wording=u"asdfsadf £75.00 asasdfadfs"
+            result_wording=u"asdfsadf 75.00 asasdfadfs"
         )
 
         self.adjourned_offence = ResultOffenceData.objects.create(
             result_offence=self.offence2,
             result_code="FVS",
             result_short_title="FINE",
-            result_wording=u"asdfsadf £25.00 asasdfadfs"
+            result_wording=u"asdfsadf 25.00 asasdfadfs"
         )
 
         _, _, total = self.test_result1.get_offence_totals()
