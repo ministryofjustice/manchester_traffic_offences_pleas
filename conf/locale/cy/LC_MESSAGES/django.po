@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Translators:
 # Fred Marecesche, 2015
@@ -10,28 +10,33 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-27 10:17+0000\n"
+"POT-Creation-Date: 2016-07-28 12:26+0100\n"
 "PO-Revision-Date: 2016-02-01 10:40+0000\n"
-"Last-Translator: Welsh Language Unit <welsh.language.unit.manager@hmcts.gsi.gov.uk>\n"
-"Language-Team: Welsh (http://www.transifex.com/make-a-plea-gds/make-a-plea/language/cy/)\n"
+"Last-Translator: Welsh Language Unit <welsh.language.unit.manager@hmcts.gsi."
+"gov.uk>\n"
+"Language-Team: Welsh (http://www.transifex.com/make-a-plea-gds/make-a-plea/"
+"language/cy/)\n"
+"Language: cy\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cy\n"
-"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3;\n"
+"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != "
+"11) ? 2 : 3;\n"
 
 #: apps/feedback/fields.py:4
 msgid "You must tell us if you used the call centre"
 msgstr "Rhaid i chi ddweud wrthym os gwnaethoch ddefnyddio'r ganolfan alwadau"
 
 #: apps/feedback/fields.py:5
-msgid ""
-"Select an option to tell us how satisfied you were with the call centre"
-msgstr "Dewiswch opsiwn i ddweud wrthym pa mor fodlon oeddech chi gyda'r ganolfan alwadau"
+msgid "Select an option to tell us how satisfied you were with the call centre"
+msgstr ""
+"Dewiswch opsiwn i ddweud wrthym pa mor fodlon oeddech chi gyda'r ganolfan "
+"alwadau"
 
 #: apps/feedback/fields.py:6
 msgid "Select an option to tell us how satisfied you were with the service"
-msgstr "Dewiswch opsiwn i ddweud wrthym pa mor fodlon oeddech chi gyda'r gwasanaeth"
+msgstr ""
+"Dewiswch opsiwn i ddweud wrthym pa mor fodlon oeddech chi gyda'r gwasanaeth"
 
 #: apps/feedback/forms.py:14
 msgid "very satisfied"
@@ -63,11 +68,14 @@ msgstr "Yn gyffredinol, pa mor fodlon oeddech chi gyda'r ganolfan alwadau?"
 
 #: apps/feedback/forms.py:45
 msgid "Did you use the call centre to help you make your plea?"
-msgstr "A wnaethoch ddefnyddio'r ganolfan alwadau i'ch helpu i gofnodi eich ple?"
+msgstr ""
+"A wnaethoch ddefnyddio'r ganolfan alwadau i'ch helpu i gofnodi eich ple?"
 
 #: apps/feedback/forms.py:62
 msgid "If you have any further comments about this service, tell us here:"
-msgstr "Os oes gennych unrhyw sylwadau pellach am y gwasanaeth hwn, dywedwch wrthym yma: "
+msgstr ""
+"Os oes gennych unrhyw sylwadau pellach am y gwasanaeth hwn, dywedwch wrthym "
+"yma: "
 
 #: apps/feedback/forms.py:68
 msgid "Email address"
@@ -77,7 +85,7 @@ msgstr "Cyfeiriad e-bost"
 msgid "If you'd like us to get back to you, tell us your email address below:"
 msgstr "Os hoffech inni ddod yn ôl atoch, rhowch eich cyfeiriad e-bost isod:"
 
-#: apps/feedback/stages.py:37 apps/plea/stages.py:815
+#: apps/feedback/stages.py:37 apps/plea/stages.py:965
 msgid "Submission Error"
 msgstr "Gwall wrth gyflwyno"
 
@@ -85,7 +93,9 @@ msgstr "Gwall wrth gyflwyno"
 msgid ""
 "There seems to have been a problem submitting your feedback. Please try "
 "again."
-msgstr "Mae’n ymddangos bod problem wrth gyflwyno eich adborth. Rhowch gynnig arall arni."
+msgstr ""
+"Mae’n ymddangos bod problem wrth gyflwyno eich adborth. Rhowch gynnig arall "
+"arni."
 
 #: apps/feedback/templates/comments.html:6
 #: apps/feedback/templates/comments.html:9
@@ -114,18 +124,23 @@ msgstr "Mae eich adborth wedi cael ei gyflwyno"
 msgid ""
 "This is your opportunity to tell us your views about using this online plea "
 "service."
-msgstr "Dyma eich cyfle chi i ddweud eich dweud ynglŷn â defnyddio'r gwasanaeth pledio ar-lein."
+msgstr ""
+"Dyma eich cyfle chi i ddweud eich dweud ynglŷn â defnyddio'r gwasanaeth "
+"pledio ar-lein."
 
 #: apps/feedback/templates/service.html:16
 #, python-format
 msgid ""
 "If you have questions about your case, you'll need to contact your court "
 "using our <a href=\"%(court_finder_url)s\">court finder service</a>."
-msgstr "Os oes gennych unrhyw gwestiynau mewn perthynas â'ch achos, bydd arnoch angen cysylltu â'ch llys drwy ddefnyddio ein <a href=\"%(court_finder_url)s\">gwasanaeth dod o hyd i lys</a>."
+msgstr ""
+"Os oes gennych unrhyw gwestiynau mewn perthynas â'ch achos, bydd arnoch "
+"angen cysylltu â'ch llys drwy ddefnyddio ein <a href=\"%(court_finder_url)s"
+"\">gwasanaeth dod o hyd i lys</a>."
 
 #: apps/feedback/templates/service.html:39
-#: apps/plea/templates/authenticate.html:23 apps/plea/templates/case.html:36
-#: apps/plea/templates/urn_entry.html:57
+#: apps/plea/templates/authenticate.html:29 apps/plea/templates/case.html:36
+#: apps/plea/templates/urn_entry.html:64
 #: make_a_plea/templates/base_form.html:40
 msgid "Continue"
 msgstr "Parhau"
@@ -231,12 +246,12 @@ msgstr[2] "Eich pledion"
 msgstr[3] "Eich pledion"
 
 #: apps/forms/templates/widgets/plea_radio_field.html:76
-#: apps/plea/forms.py:692 apps/plea/templates/partials/review_plea.html:31
+#: apps/plea/forms.py:718 apps/plea/templates/partials/review_plea.html:31
 msgid "Guilty"
 msgstr "Euog"
 
 #: apps/forms/templates/widgets/plea_radio_field.html:76
-#: apps/plea/forms.py:693 apps/plea/templates/partials/review_plea.html:33
+#: apps/plea/forms.py:719 apps/plea/templates/partials/review_plea.html:33
 msgid "Not guilty"
 msgstr "Dieuog"
 
@@ -244,15 +259,15 @@ msgstr "Dieuog"
 msgid "Change your plea for this charge"
 msgstr "Newid eich ple ar gyfer y cyhuddiad hwn "
 
-#: apps/plea/admin.py:22
+#: apps/plea/admin.py:19
 msgid "Region"
 msgstr "Rhanbarth"
 
-#: apps/plea/admin.py:39
+#: apps/plea/admin.py:36
 msgid "Match"
 msgstr "Tebyg"
 
-#: apps/plea/email.py:132
+#: apps/plea/email.py:149
 #: apps/plea/templates/emails/user_plea_confirmation.html:8
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.html:8
 msgid "Online plea submission confirmation"
@@ -260,7 +275,9 @@ msgstr "Cadarnhad o gofnodi ple ar-lein"
 
 #: apps/plea/fields.py:4
 msgid "Tell us what is written at the top of the notice we sent to you"
-msgstr "Dywedwch wrthym beth sydd wedi'i ysgrifennu ar frig yr hysbysiad a anfonwyd atoch"
+msgstr ""
+"Dywedwch wrthym beth sydd wedi'i ysgrifennu ar frig yr hysbysiad a anfonwyd "
+"atoch"
 
 #: apps/plea/fields.py:5
 msgid "Enter your Unique Reference Number (URN)"
@@ -270,9 +287,12 @@ msgstr "Rhowch eich cyfeirnod unigryw (URN)"
 msgid ""
 "The Unique Reference Number (URN) isn't valid. Enter the number exactly as "
 "it appears on page 1 of the notice"
-msgstr "Nid yw’r cyfeirnod unigryw (URN) yn ddilys. Rhowch y rhif yn union fel y mae’n ymddangos ar dudalen 1 o’r hysbysiad"
+msgstr ""
+"Nid yw’r cyfeirnod unigryw (URN) yn ddilys. Rhowch y rhif yn union fel y "
+"mae’n ymddangos ar dudalen 1 o’r hysbysiad"
 
-#: apps/plea/fields.py:7 apps/plea/templates/urn_entry.html:17
+#: apps/plea/fields.py:7 apps/plea/templates/company_details.html:16
+#: apps/plea/templates/urn_entry.html:18
 msgid "Enter the correct URN"
 msgstr "Rhowch yr URN cywir"
 
@@ -320,7 +340,9 @@ msgstr "Rhowch y nifer o gyhuddiadau sydd yn eich erbyn"
 msgid ""
 "You must tell us if you are the person named in the notice or pleading on "
 "behalf of a company"
-msgstr "Rhaid i chi ddweud wrthym ai chi yw'r unigolyn a enwir yn yr hysbysiad neu unigolyn sy'n pledio ar ran cwmni"
+msgstr ""
+"Rhaid i chi ddweud wrthym ai chi yw'r unigolyn a enwir yn yr hysbysiad neu "
+"unigolyn sy'n pledio ar ran cwmni"
 
 #: apps/plea/fields.py:19
 msgid "Enter your first name"
@@ -331,9 +353,10 @@ msgid "Enter your last name"
 msgstr "Rhowch eich cyfenw"
 
 #: apps/plea/fields.py:21
-msgid ""
-"You must tell us if the address on the notice we sent to you is correct"
-msgstr "Rhaid i chi ddweud wrthym a yw'r cyfeiriad ar yr hysbysiad a anfonwyd atoch yn gywir"
+msgid "You must tell us if the address on the notice we sent to you is correct"
+msgstr ""
+"Rhaid i chi ddweud wrthym a yw'r cyfeiriad ar yr hysbysiad a anfonwyd atoch "
+"yn gywir"
 
 #: apps/plea/fields.py:22
 msgid "Enter your correct address"
@@ -342,7 +365,9 @@ msgstr "Rhowch eich cyfeiriad cywir"
 #: apps/plea/fields.py:23
 msgid ""
 "Tell us if the company's address, as it's written on the notice, is correct"
-msgstr "Dywedwch wrthym a yw cyfeiriad y cwmni, fel y mae wedi'i ysgrifennu ar yr hysbysiad, yn gywir"
+msgstr ""
+"Dywedwch wrthym a yw cyfeiriad y cwmni, fel y mae wedi'i ysgrifennu ar yr "
+"hysbysiad, yn gywir"
 
 #: apps/plea/fields.py:24
 msgid "Enter the correct company address"
@@ -418,7 +443,9 @@ msgstr "Dywedwch wrthym pam rydych yn credu eich bod yn ddieuog"
 
 #: apps/plea/fields.py:42
 msgid "You must tell us if you need an interpreter in court"
-msgstr "Rhaid i chi ddweud wrthym os oes arnoch angen cyfieithydd/dehonglydd yn y llys"
+msgstr ""
+"Rhaid i chi ddweud wrthym os oes arnoch angen cyfieithydd/dehonglydd yn y "
+"llys"
 
 #: apps/plea/fields.py:43
 msgid "You must tell us which language"
@@ -426,11 +453,15 @@ msgstr "Rhaid i chi ddweud wrthym pa iaith"
 
 #: apps/plea/fields.py:44
 msgid "Tell us if you disagree with any of the evidence we sent to you"
-msgstr "Dywedwch wrthym os ydych yn anghytuno gydag unrhyw dystiolaeth a anfonwyd atoch"
+msgstr ""
+"Dywedwch wrthym os ydych yn anghytuno gydag unrhyw dystiolaeth a anfonwyd "
+"atoch"
 
 #: apps/plea/fields.py:45
 msgid "You need to tell us the name of the witness and what you disagree with"
-msgstr "Rhaid i chi ddweud wrthym beth yw enw'r tyst a'r hyn rydych chi'n anghytuno yn ei gylch"
+msgstr ""
+"Rhaid i chi ddweud wrthym beth yw enw'r tyst a'r hyn rydych chi'n anghytuno "
+"yn ei gylch"
 
 #: apps/plea/fields.py:46
 msgid "You must tell us if you want to call a defence witness"
@@ -438,15 +469,20 @@ msgstr "Rhaid i chi ddweud wrthym os hoffech alw ar dyst yr amddiffyniad"
 
 #: apps/plea/fields.py:47
 msgid "Tell us the name, address and date of birth of your defence witness"
-msgstr "Dywedwch wrthym beth yw enw, cyfeiriad a dyddiad geni tyst yr amddiffyniad"
+msgstr ""
+"Dywedwch wrthym beth yw enw, cyfeiriad a dyddiad geni tyst yr amddiffyniad"
 
 #: apps/plea/fields.py:48
 msgid "Tell us if your witness needs an interpreter in court"
-msgstr "Dywedwch wrthym os oes angen cyfieithydd/dehonglydd yn y llys ar gyfer eich tyst"
+msgstr ""
+"Dywedwch wrthym os oes angen cyfieithydd/dehonglydd yn y llys ar gyfer eich "
+"tyst"
 
 #: apps/plea/fields.py:49
 msgid "Your witness needs an interpreter in court - tell us which language"
-msgstr "Mae angen cyfieithydd/dehonglydd yn y llys ar gyfer eich tyst - dywedwch wrthym pa iaith"
+msgstr ""
+"Mae angen cyfieithydd/dehonglydd yn y llys ar gyfer eich tyst - dywedwch "
+"wrthym pa iaith"
 
 #: apps/plea/fields.py:50
 msgid "Select your employment status"
@@ -502,12 +538,15 @@ msgstr "Nodwch faint o Gredyd Pensiwn rydych chi'n ei gael"
 
 #: apps/plea/fields.py:63
 msgid "Tell us if paying a fine would cause you serious financial problems"
-msgstr "Dywedwch wrthym a fyddai talu dirwy yn achosi problemau ariannol difrifol i chi"
+msgstr ""
+"Dywedwch wrthym a fyddai talu dirwy yn achosi problemau ariannol difrifol i "
+"chi"
 
 #: apps/plea/fields.py:64
 msgid ""
 "You must confirm that you have read and understand the important information"
-msgstr "Rhaid i chi gadarnhau eich bod wedi darllen a deall yr wybodaeth bwysig"
+msgstr ""
+"Rhaid i chi gadarnhau eich bod wedi darllen a deall yr wybodaeth bwysig"
 
 #: apps/plea/fields.py:65
 msgid "Tell us how you earn your money"
@@ -517,11 +556,15 @@ msgstr "Dywedwch wrthym sut yr ydych yn ennill eich arian"
 msgid ""
 "You must tell us why you think you should be allowed to pay your fine in "
 "instalments"
-msgstr "Mae'n rhaid i chi ddweud wrthym pam rydych chi'n credu y dylech gael caniatâd i dalu eich dirwy mewn rhandaliadau"
+msgstr ""
+"Mae'n rhaid i chi ddweud wrthym pam rydych chi'n credu y dylech gael "
+"caniatâd i dalu eich dirwy mewn rhandaliadau"
 
 #: apps/plea/fields.py:67
 msgid "You must tell us if anyone else contributes to your household bills"
-msgstr "Rhaid i chi ddweud wrthym os yw unrhyw un arall yn cyfrannu at dalu biliau eich cartref"
+msgstr ""
+"Rhaid i chi ddweud wrthym os yw unrhyw un arall yn cyfrannu at dalu biliau "
+"eich cartref"
 
 #: apps/plea/fields.py:68
 msgid "Accommodation is a required field"
@@ -545,7 +588,8 @@ msgstr "Rhaid i’r costau biliau cyfleustodau fod yn rhif"
 
 #: apps/plea/fields.py:73
 msgid "Utility bills must be a number greater than, or equal to, 0"
-msgstr "Rhaid i’r costau biliau cyfleustodau fod yn rhif mwy na, neu’n hafal i, 0"
+msgstr ""
+"Rhaid i’r costau biliau cyfleustodau fod yn rhif mwy na, neu’n hafal i, 0"
 
 #: apps/plea/fields.py:74
 msgid "Insurance is a required field"
@@ -581,7 +625,8 @@ msgstr "Rhaid i’r tanysgrifiad teledu fod yn rhif"
 
 #: apps/plea/fields.py:82
 msgid "TV subscription must be a number greater than, or equal to, 0"
-msgstr "Rhaid i’r costau tanysgrifiad teledu fod yn rhif mwy na, neu’n hafal i, 0"
+msgstr ""
+"Rhaid i’r costau tanysgrifiad teledu fod yn rhif mwy na, neu’n hafal i, 0"
 
 #: apps/plea/fields.py:83
 msgid "Travel expenses is a required field"
@@ -617,7 +662,8 @@ msgstr "Rhaid i'r ad-daliadau benthyciadau fod yn rhif"
 
 #: apps/plea/fields.py:91
 msgid "Loan repayment must be a number greater than, or equal to, 0"
-msgstr "Rhaid i’r ad-daliadau benthyciadau fod yn rhif mwy na, neu’n hafal i, 0"
+msgstr ""
+"Rhaid i’r ad-daliadau benthyciadau fod yn rhif mwy na, neu’n hafal i, 0"
 
 #: apps/plea/fields.py:92
 msgid "Court payments is a required field"
@@ -666,7 +712,8 @@ msgstr "Rhaid i’r cyfanswm misol fod yn rhif mwy na, neu’n hafal i, 0"
 #: apps/plea/fields.py:103
 msgid ""
 "You must tell us if the company has been trading for more than 12 months"
-msgstr "Rhaid i chi ddweud wrthym os yw’r cwmni wedi bod yn masnachu am fwy na 12 mis"
+msgstr ""
+"Rhaid i chi ddweud wrthym os yw’r cwmni wedi bod yn masnachu am fwy na 12 mis"
 
 #: apps/plea/fields.py:104
 msgid "Enter the number of employees"
@@ -689,534 +736,579 @@ msgid "Enter the company's projected net turnover"
 msgstr "Rhowch drosiant net amcanol y cwmni"
 
 #: apps/plea/fields.py:109
-msgid ""
-"Tell us if you want to receive an email confirming your plea submission"
-msgstr "Dywedwch wrthym os ydych eisiau cadarnhad drwy e-bost eich bod wedi cyflwyno eich ple "
+msgid "Tell us if you want to receive an email confirming your plea submission"
+msgstr ""
+"Dywedwch wrthym os ydych eisiau cadarnhad drwy e-bost eich bod wedi cyflwyno "
+"eich ple "
 
 #: apps/plea/fields.py:110
 msgid ""
-"You must provide an email address if you want to receive email updates about"
-" this case"
-msgstr "Mae'n rhaid i chi roi cyfeiriad e-bost os ydych eisiau cael gwybod y diweddaraf am yr achos hwn drwy e-bost"
+"You must provide an email address if you want to receive email updates about "
+"this case"
+msgstr ""
+"Mae'n rhaid i chi roi cyfeiriad e-bost os ydych eisiau cael gwybod y "
+"diweddaraf am yr achos hwn drwy e-bost"
 
 #: apps/plea/fields.py:111
 msgid "Enter your postcode"
 msgstr "Rhowch eich cod post"
 
-#: apps/plea/forms.py:34
+#: apps/plea/forms.py:33
 msgid "What is your Unique Reference Number (URN)?"
 msgstr "Beth yw eich Cyfeirnod unigryw (URN)?"
 
-#: apps/plea/forms.py:37
+#: apps/plea/forms.py:36
 msgid "On page 1 of the notice, usually at the top."
 msgstr "Ar dudalen 1 yr hysbysiad, fel arfer ar y brig."
 
-#: apps/plea/forms.py:44 apps/plea/forms.py:77
+#: apps/plea/forms.py:54 apps/plea/forms.py:95
 #: apps/plea/templates/partials/review_case.html:19
 #: apps/plea/templates/partials/review_case.html:63
 msgid "Number of charges"
 msgstr "Nifer y cyhuddiadau"
 
-#: apps/plea/forms.py:45 apps/plea/forms.py:82
+#: apps/plea/forms.py:55 apps/plea/forms.py:100
 msgid "How many offences are listed on your notice?"
 msgstr "Faint o droseddau sy'n cael eu rhestru ar eich hysbysiad?"
 
-#: apps/plea/forms.py:54 apps/plea/templates/partials/review_case.html:22
+#: apps/plea/forms.py:64 apps/plea/templates/partials/review_case.html:22
 msgid "Postcode"
 msgstr "Cod post"
 
-#: apps/plea/forms.py:56
+#: apps/plea/forms.py:66
 msgid "As written on the notice we sent you"
 msgstr "Fel y mae wedi'i ysgrifennu ar yr hysbysiad a anfonwyd atoch"
 
-#: apps/plea/forms.py:61
+#: apps/plea/forms.py:72 apps/plea/forms.py:198
+#: apps/plea/templates/partials/review_details.html:22
+msgid "Date of birth"
+msgstr "Dyddiad geni"
+
+#: apps/plea/forms.py:79
 msgid "Single Justice Procedure Notice"
 msgstr "Hysbysiad Gweithdrefn Un Ynad"
 
-#: apps/plea/forms.py:62
+#: apps/plea/forms.py:80
 msgid "Something else"
 msgstr "Rhywbeth arall"
 
-#: apps/plea/forms.py:68
+#: apps/plea/forms.py:86
 msgid "What is the title at the very top of the page?"
 msgstr "Beth yw'r teitl ar frig y dudalen? "
 
-#: apps/plea/forms.py:74
+#: apps/plea/forms.py:92
 msgid "The person named in the notice"
 msgstr "Yr unigolyn sydd wedi'i enwi yn yr hysbysiad"
 
-#: apps/plea/forms.py:75 apps/plea/templates/partials/review_case.html:43
+#: apps/plea/forms.py:93 apps/plea/templates/partials/review_case.html:43
 #: apps/plea/templates/partials/review_case.html:67
 msgid "Pleading on behalf of a company"
 msgstr "Unigolyn yn pledio ar ran cwmni"
 
-#: apps/plea/forms.py:88
+#: apps/plea/forms.py:106
 msgid "Are you? (plea made by)"
 msgstr "Pwy ydych chi?"
 
-#: apps/plea/forms.py:89
+#: apps/plea/forms.py:107
 msgid "Choose one of the following options:"
 msgstr "Dewiswch un o'r opsiynau canlynol:"
 
-#: apps/plea/forms.py:97 apps/plea/templates/partials/review_case.html:38
+#: apps/plea/forms.py:115 apps/plea/templates/partials/review_case.html:38
 #: apps/plea/templates/partials/review_case.html:59
 msgid "Court hearing date"
 msgstr "Dyddiad y gwrandawiad llys"
 
-#: apps/plea/forms.py:98 apps/plea/forms.py:115
+#: apps/plea/forms.py:116 apps/plea/forms.py:133
 msgid "On page 1 of the notice, near the top. <br>For example, 30/07/2014"
-msgstr "Ar dudalen 1 yr hysbysiad, yn agos i'r brig. <br>Er enghraifft, 30/07/2014"
+msgstr ""
+"Ar dudalen 1 yr hysbysiad, yn agos i'r brig. <br>Er enghraifft, 30/07/2014"
 
-#: apps/plea/forms.py:114 apps/plea/templates/partials/review_case.html:35
+#: apps/plea/forms.py:132 apps/plea/templates/partials/review_case.html:35
 #: apps/plea/templates/partials/review_case.html:56
 msgid "Posting date"
 msgstr "Dyddiad postio"
 
-#: apps/plea/forms.py:146 apps/plea/templates/partials/review_details.html:10
-#: apps/plea/templates/partials/review_details.html:43
+#: apps/plea/forms.py:165 apps/plea/templates/partials/review_details.html:10
+#: apps/plea/templates/partials/review_details.html:47
 msgid "First name"
 msgstr "Enw cyntaf"
 
-#: apps/plea/forms.py:152 apps/plea/templates/partials/review_details.html:13
-#: apps/plea/templates/partials/review_details.html:47
+#: apps/plea/forms.py:171 apps/plea/templates/partials/review_details.html:13
+#: apps/plea/templates/partials/review_details.html:51
 msgid "Last name"
 msgstr "Cyfenw"
 
-#: apps/plea/forms.py:159
+#: apps/plea/forms.py:178
 msgid "Is your address correct on page 1 of the notice we sent to you?"
-msgstr "A yw eich cyfeiriad yn gywir ar dudalen 1 yr hysbysiad a anfonwyd atoch?"
+msgstr ""
+"A yw eich cyfeiriad yn gywir ar dudalen 1 yr hysbysiad a anfonwyd atoch?"
 
-#: apps/plea/forms.py:165
+#: apps/plea/forms.py:184
 msgid "If no, tell us your correct address here:"
 msgstr "Os nad yw, dywedwch wrthym yma beth yw eich cyfeiriad cywir: "
 
-#: apps/plea/forms.py:171 apps/plea/forms.py:261
+#: apps/plea/forms.py:190 apps/plea/forms.py:287
 #: apps/plea/templates/partials/review_details.html:19
-#: apps/plea/templates/partials/review_details.html:53
+#: apps/plea/templates/partials/review_details.html:57
 msgid "Contact number"
 msgstr "Rhif Cyswllt"
 
-#: apps/plea/forms.py:172
+#: apps/plea/forms.py:191
 msgid "Landline or mobile number."
 msgstr "Rhif llinell dir neu rif ffôn symudol."
 
-#: apps/plea/forms.py:179 apps/plea/templates/partials/review_details.html:22
-msgid "Date of birth"
-msgstr "Dyddiad geni"
-
-#: apps/plea/forms.py:188
+#: apps/plea/forms.py:207
 msgid "Do you have a National Insurance number?"
 msgstr "A oes gennych chi rif Yswiriant Gwladol?"
 
-#: apps/plea/forms.py:194
+#: apps/plea/forms.py:213
 msgid ""
 "If yes, enter it here. It can be found on your National Insurance card, "
 "benefit letter, payslip or P60 - for example, 'QQ 12 34 56 C'"
-msgstr "Os oes, nodwch y rhif yma. Gallwch ddod o hyd i'r rhif ar eich cerdyn Yswiriant Gwladol, llythyr budd-dal, slip cyflog neu P60 - er enghraifft, 'QQ 12 34 56 C'"
+msgstr ""
+"Os oes, nodwch y rhif yma. Gallwch ddod o hyd i'r rhif ar eich cerdyn "
+"Yswiriant Gwladol, llythyr budd-dal, slip cyflog neu P60 - er enghraifft, "
+"'QQ 12 34 56 C'"
 
-#: apps/plea/forms.py:201
+#: apps/plea/forms.py:220
 msgid "Do you have a UK driving licence?"
 msgstr "A oes gennych chi drwydded yrru y DU?"
 
-#: apps/plea/forms.py:202
+#: apps/plea/forms.py:221
 msgid ""
 "Entering your UK driving licence number means you don't have to send your "
 "licence to the court."
-msgstr "Mae rhoi eich rhif trwydded yrru y DU yn golygu nad oes rhaid i chi anfon eich trwydded i'r llys. "
+msgstr ""
+"Mae rhoi eich rhif trwydded yrru y DU yn golygu nad oes rhaid i chi anfon "
+"eich trwydded i'r llys. "
 
-#: apps/plea/forms.py:208
+#: apps/plea/forms.py:227
 msgid ""
 "If yes, enter it here. Your driving licence number is in section 5 of your "
 "driving licence photocard."
-msgstr "Os oes, nodwch y rhif yma. Mae rhif eich trwydded yrru yn adran 5 o'ch trwydded yrru cerdyn llun."
+msgstr ""
+"Os oes, nodwch y rhif yma. Mae rhif eich trwydded yrru yn adran 5 o'ch "
+"trwydded yrru cerdyn llun."
 
-#: apps/plea/forms.py:221
+#: apps/plea/forms.py:247
 msgid "director"
 msgstr "cyfarwyddwr"
 
-#: apps/plea/forms.py:222
+#: apps/plea/forms.py:248
 msgid "company secretary"
 msgstr "ysgrifennydd y cwmni"
 
-#: apps/plea/forms.py:223
+#: apps/plea/forms.py:249
 msgid "company solicitor"
 msgstr "cyfreithiwr y cwmni"
 
-#: apps/plea/forms.py:225 apps/plea/templates/partials/review_details.html:37
+#: apps/plea/forms.py:251 apps/plea/templates/partials/review_details.html:41
 msgid "Company name"
 msgstr "Enw’r cwmni"
 
-#: apps/plea/forms.py:229
+#: apps/plea/forms.py:255
 msgid "As written on page 1 of the notice we sent you."
-msgstr "Fel y mae wedi'i ysgrifennu ar dudalen 1 yr hysbysiad a anfonwyd atoch."
+msgstr ""
+"Fel y mae wedi'i ysgrifennu ar dudalen 1 yr hysbysiad a anfonwyd atoch."
 
-#: apps/plea/forms.py:236
+#: apps/plea/forms.py:262
 msgid ""
 "Is the company's address correct on page 1 of the notice we sent to you?"
-msgstr "A yw cyfeiriad y cwmni'n gywir ar dudalen 1 yr hysbysiad a anfonwyd atoch?"
+msgstr ""
+"A yw cyfeiriad y cwmni'n gywir ar dudalen 1 yr hysbysiad a anfonwyd atoch?"
 
-#: apps/plea/forms.py:242
+#: apps/plea/forms.py:268
 msgid "If no, tell us the correct company address here:"
 msgstr "Os nad yw, dywedwch wrthym yma beth yw cyfeiriad cywir y cwmni:"
 
-#: apps/plea/forms.py:245
+#: apps/plea/forms.py:271
 msgid "Your first name"
 msgstr "Eich enw cyntaf"
 
-#: apps/plea/forms.py:250
+#: apps/plea/forms.py:276
 msgid "Your last name"
 msgstr "Eich cyfenw"
 
-#: apps/plea/forms.py:255
+#: apps/plea/forms.py:281
 msgid "Your position in the company"
 msgstr "Eich swydd yn y cwmni"
 
-#: apps/plea/forms.py:266
+#: apps/plea/forms.py:292
 msgid "Office or mobile number."
 msgstr "Rhif ffôn swyddfa neu rif ffôn symudol."
 
-#: apps/plea/forms.py:272
+#: apps/plea/forms.py:298
 msgid "Employed"
 msgstr "Gyflogedig"
 
-#: apps/plea/forms.py:273
+#: apps/plea/forms.py:299
 msgid "Employed and also receiving benefits"
 msgstr "Yn gyflogedig a hefyd yn cael budd-daliadau"
 
-#: apps/plea/forms.py:274
+#: apps/plea/forms.py:300
 msgid "Self-employed"
 msgstr "Hunangyflogedig"
 
-#: apps/plea/forms.py:275
+#: apps/plea/forms.py:301
 msgid "Self-employed and also receiving benefits"
 msgstr "Hunangyflogedig a hefyd yn cael budd-daliadau"
 
-#: apps/plea/forms.py:276
+#: apps/plea/forms.py:302
 msgid "Receiving out of work benefits"
 msgstr "Derbyn budd-daliadau diweithdra"
 
-#: apps/plea/forms.py:277 apps/plea/forms.py:305 apps/plea/forms.py:323
-#: apps/plea/forms.py:328 apps/plea/forms.py:351 apps/plea/forms.py:381
+#: apps/plea/forms.py:303 apps/plea/forms.py:331 apps/plea/forms.py:349
+#: apps/plea/forms.py:354 apps/plea/forms.py:377 apps/plea/forms.py:407
 msgid "Other"
 msgstr "Arall"
 
-#: apps/plea/forms.py:279
+#: apps/plea/forms.py:305
 msgid "Are you? (employment status)"
 msgstr "Ydych chi’n?"
 
-#: apps/plea/forms.py:285 apps/plea/forms.py:302 apps/plea/forms.py:325
-#: apps/plea/forms.py:348 apps/plea/forms.py:383 apps/plea/forms.py:405
+#: apps/plea/forms.py:311 apps/plea/forms.py:328 apps/plea/forms.py:351
+#: apps/plea/forms.py:374 apps/plea/forms.py:409 apps/plea/forms.py:431
 msgid "Weekly"
 msgstr "Wythnosol"
 
-#: apps/plea/forms.py:286 apps/plea/forms.py:303 apps/plea/forms.py:326
-#: apps/plea/forms.py:349 apps/plea/forms.py:384 apps/plea/forms.py:406
+#: apps/plea/forms.py:312 apps/plea/forms.py:329 apps/plea/forms.py:352
+#: apps/plea/forms.py:375 apps/plea/forms.py:410 apps/plea/forms.py:432
 msgid "Fortnightly"
 msgstr "Pob pythefnos"
 
-#: apps/plea/forms.py:287 apps/plea/forms.py:304 apps/plea/forms.py:327
-#: apps/plea/forms.py:350 apps/plea/forms.py:385 apps/plea/forms.py:407
+#: apps/plea/forms.py:313 apps/plea/forms.py:330 apps/plea/forms.py:353
+#: apps/plea/forms.py:376 apps/plea/forms.py:411 apps/plea/forms.py:433
 msgid "Monthly"
 msgstr "Fisol"
 
-#: apps/plea/forms.py:291
+#: apps/plea/forms.py:317
 msgid "How often do you get paid from your employer?"
 msgstr "Pa mor aml rydych chi'n cael eich talu gan eich cyflogwr?"
 
-#: apps/plea/forms.py:294 apps/plea/forms.py:312
+#: apps/plea/forms.py:320 apps/plea/forms.py:338
 msgid "What is your take home pay (after tax)?"
 msgstr "Beth yw eich cyflog clir (ar ôl treth)?"
 
-#: apps/plea/forms.py:309
+#: apps/plea/forms.py:335
 msgid "How often do you get paid?"
 msgstr "Pa mor aml rydych chi’n cael eich talu?"
 
-#: apps/plea/forms.py:320
+#: apps/plea/forms.py:346
 msgid "Contributory Jobseeker's Allowance"
 msgstr "Lwfans Ceisio Gwaith Cyfrannol"
 
-#: apps/plea/forms.py:321
+#: apps/plea/forms.py:347
 msgid "Income-based Jobseekers Allowance"
 msgstr "Lwfans Ceisio Gwaith yn seiliedig ar Incwm"
 
-#: apps/plea/forms.py:322 apps/plea/forms.py:380
+#: apps/plea/forms.py:348 apps/plea/forms.py:406
 msgid "Universal Credit"
 msgstr "Credyd Cynhwysol"
 
-#: apps/plea/forms.py:332
+#: apps/plea/forms.py:358
 msgid "Which out of work benefit do you receive?"
 msgstr "Pa fudd-dal diweithdra rydych chi'n ei gael?"
 
-#: apps/plea/forms.py:337 apps/plea/forms.py:392
+#: apps/plea/forms.py:363 apps/plea/forms.py:418
 msgid "How often is your benefit paid?"
 msgstr "Pa mor aml y telir eich budd-dal i chi?"
 
-#: apps/plea/forms.py:340 apps/plea/forms.py:397
+#: apps/plea/forms.py:366 apps/plea/forms.py:423
 msgid "How much is your benefit payment?"
 msgstr "Faint yw eich taliad budd-dal?"
 
-#: apps/plea/forms.py:353
+#: apps/plea/forms.py:379
 msgid "What is the source of your main income?"
 msgstr "Beth yw ffynhonnell eich prif incwm?"
 
-#: apps/plea/forms.py:354
+#: apps/plea/forms.py:380
 msgid "For example, student loan, pension or investments."
 msgstr "Er enghraifft, benthyciad i fyfyrwyr, pensiwn neu fuddsoddiadau"
 
-#: apps/plea/forms.py:360
+#: apps/plea/forms.py:386
 msgid "How often is your main income paid?"
 msgstr "Pa mor aml y telir eich prif incwm i chi?"
 
-#: apps/plea/forms.py:363
+#: apps/plea/forms.py:389
 msgid "How much is your take home income (after tax)?"
 msgstr "Faint yw eich incwm clir (ar ôl treth)?"
 
-#: apps/plea/forms.py:369
+#: apps/plea/forms.py:395
 msgid "Do you receive Pension Credit?"
 msgstr "Ydych chi'n cael Credyd Pensiwn?"
 
-#: apps/plea/forms.py:377
+#: apps/plea/forms.py:403
 msgid "Contributory Employment and Support Allowance"
 msgstr "Lwfans Cyflogaeth a Chymorth Cyfrannol"
 
-#: apps/plea/forms.py:378
+#: apps/plea/forms.py:404
 msgid "Income-related Employment and Support Allowance"
 msgstr "Lwfans Cyflogaeth a Chymorth yn Seiliedig ar Incwm"
 
-#: apps/plea/forms.py:379
+#: apps/plea/forms.py:405
 msgid "Income Support"
 msgstr "Cymhorthdal Incwm"
 
-#: apps/plea/forms.py:387
+#: apps/plea/forms.py:413
 msgid "Which benefit do you receive?"
 msgstr "Pa fudd-dal rydych chi'n ei gael?"
 
-#: apps/plea/forms.py:409
+#: apps/plea/forms.py:435
 msgid "How often is your Pension Credit paid?"
 msgstr "Pa mor aml y telir eich Credyd Pensiwn i chi?"
 
-#: apps/plea/forms.py:414
+#: apps/plea/forms.py:440
 msgid "How much is your Pension Credit payment?"
 msgstr "Faint yw eich taliad Credyd Pensiwn?"
 
-#: apps/plea/forms.py:422
+#: apps/plea/forms.py:448
 msgid "Would paying a fine cause you serious financial problems?"
 msgstr "A fyddai talu dirwy yn achosi problemau ariannol difrifol i chi?"
 
-#: apps/plea/forms.py:423
+#: apps/plea/forms.py:449
 msgid "For example, you would become homeless."
 msgstr "Er enghraifft, byddech yn dod yn ddi-gartref."
 
-#: apps/plea/forms.py:431
+#: apps/plea/forms.py:457
 msgid "How would paying a fine cause you serious financial problems?"
 msgstr "Sut fyddai talu dirwy yn achosi problemau ariannol difrifol i chi?"
 
-#: apps/plea/forms.py:432
+#: apps/plea/forms.py:458
 msgid ""
 "Why you think the court should allow you to pay your fine in instalments:"
-msgstr "Pam rydych chi'n credu y dylai'r llys roi caniatâd i dalu eich dirwy mewn rhandaliadau:"
+msgstr ""
+"Pam rydych chi'n credu y dylai'r llys roi caniatâd i dalu eich dirwy mewn "
+"rhandaliadau:"
 
-#: apps/plea/forms.py:443
+#: apps/plea/forms.py:469
 msgid "Accommodation"
 msgstr "Llety"
 
-#: apps/plea/forms.py:444
+#: apps/plea/forms.py:470
 msgid "Rent, mortgage or lodgings"
 msgstr "Rhent, morgais neu lety"
 
-#: apps/plea/forms.py:455
+#: apps/plea/forms.py:481
 msgid "Utility bills"
 msgstr "Biliau Cyfleustodau"
 
-#: apps/plea/forms.py:456
+#: apps/plea/forms.py:482
 msgid "Gas, water, electricity etc"
 msgstr "Nwy, dŵr, trydan ac ati"
 
-#: apps/plea/forms.py:467
+#: apps/plea/forms.py:493
 msgid "Insurance"
 msgstr "Yswiriant"
 
-#: apps/plea/forms.py:468
+#: apps/plea/forms.py:494
 msgid "Home, life insurance etc"
 msgstr "Yswiriant cartref, bywyd ac ati"
 
-#: apps/plea/forms.py:479
+#: apps/plea/forms.py:505
 msgid "Council tax"
 msgstr "Y Dreth Gyngor"
 
-#: apps/plea/forms.py:487
+#: apps/plea/forms.py:513
 msgid "Does anyone else contribute to these bills?"
 msgstr "A oes unrhyw un arall yn cyfrannu at dalu’r biliau hyn?"
 
-#: apps/plea/forms.py:509
+#: apps/plea/forms.py:535
 msgid "Television subscription"
 msgstr "Tanysgrifiad teledu"
 
-#: apps/plea/forms.py:510
+#: apps/plea/forms.py:536
 msgid "TV licence, satellite etc"
 msgstr "Trwydded teledu, lloeren ac ati"
 
-#: apps/plea/forms.py:521
+#: apps/plea/forms.py:547
 msgid "Travel expenses"
 msgstr "Costau teithio"
 
-#: apps/plea/forms.py:522
+#: apps/plea/forms.py:548
 msgid "Fuel, car, public transport etc"
 msgstr "Tanwydd, car, trafnidiaeth gyhoeddus ac ati"
 
-#: apps/plea/forms.py:533
+#: apps/plea/forms.py:559
 msgid "Telephone"
 msgstr "Rhif ffôn"
 
-#: apps/plea/forms.py:534
+#: apps/plea/forms.py:560
 msgid "Landline and/or mobile"
 msgstr "Llinell dir a/neu ffôn symudol"
 
-#: apps/plea/forms.py:545
+#: apps/plea/forms.py:571
 msgid "Loan repayments"
 msgstr "Ad-daliadau Benthyciadau"
 
-#: apps/plea/forms.py:546
+#: apps/plea/forms.py:572
 msgid "Credit card, bank etc"
 msgstr "Cerdyn credyd, banc ac ati"
 
-#: apps/plea/forms.py:557
+#: apps/plea/forms.py:583
 msgid "County court orders"
 msgstr "Gorchmynion llys sirol"
 
-#: apps/plea/forms.py:568
+#: apps/plea/forms.py:594
 msgid "Child maintenance"
 msgstr "Cynhaliaeth Plant"
 
-#: apps/plea/forms.py:578
+#: apps/plea/forms.py:604
 msgid "Any other expenses that are not listed above?"
 msgstr "Unrhyw dreuliau eraill nad ydynt wedi'u rhestru uchod? "
 
-#: apps/plea/forms.py:579
+#: apps/plea/forms.py:605
 msgid ""
 "Other significant expenses you think the court should know about. For "
 "example, childcare"
-msgstr "Unrhyw dreuliau sylweddol y credwch dylai'r llys wybod amdanynt.  Er enghraifft, gofal plant "
+msgstr ""
+"Unrhyw dreuliau sylweddol y credwch dylai'r llys wybod amdanynt.  Er "
+"enghraifft, gofal plant "
 
-#: apps/plea/forms.py:583
+#: apps/plea/forms.py:609
 msgid "If yes, tell us here"
 msgstr "Os oes, dywedwch wrthym yma "
 
-#: apps/plea/forms.py:592
+#: apps/plea/forms.py:618
 msgid "Monthly total of your other significant expenses"
 msgstr "Cyfanswm misol eich treuliau sylweddol eraill "
 
-#: apps/plea/forms.py:621
+#: apps/plea/forms.py:647
 msgid "Has the company been trading for more than 12 months?"
 msgstr "A yw’r cwmni wedi bod yn masnachu am fwy na 12 mis?"
 
-#: apps/plea/forms.py:624
+#: apps/plea/forms.py:650
 #: apps/plea/templates/partials/review_company_finances.html:11
 msgid "Number of employees"
 msgstr "Nifer o gyflogeion"
 
-#: apps/plea/forms.py:639
+#: apps/plea/forms.py:665
 #: apps/plea/templates/partials/review_company_finances.html:22
 msgid "Gross turnover"
 msgstr "Trosiant gros"
 
-#: apps/plea/forms.py:640
+#: apps/plea/forms.py:666
 msgid "For example, 150000"
 msgstr "Er enghraifft, 150000"
 
-#: apps/plea/forms.py:646
+#: apps/plea/forms.py:672
 #: apps/plea/templates/partials/review_company_finances.html:25
 msgid "Net turnover"
 msgstr "Trosiant net"
 
-#: apps/plea/forms.py:647
+#: apps/plea/forms.py:673
 msgid "For example, 110000"
 msgstr "Er enghraifft, 110000"
 
-#: apps/plea/forms.py:676
+#: apps/plea/forms.py:702
 msgid ""
 "Do you want to receive an email confirming your plea has been sent to the "
 "court?"
-msgstr "Ydych chi eisiau cadarnhad drwy e-bost bod eich ple wedi cael ei anfon i'r llys? "
+msgstr ""
+"Ydych chi eisiau cadarnhad drwy e-bost bod eich ple wedi cael ei anfon i'r "
+"llys? "
 
-#: apps/plea/forms.py:682
+#: apps/plea/forms.py:708
 msgid "If yes, enter your email address here:"
 msgstr "Os oes, rhowch eich cyfeiriad e-bost yma: "
 
-#: apps/plea/forms.py:704 apps/plea/templates/partials/review_plea.html:38
+#: apps/plea/forms.py:730 apps/plea/templates/partials/review_plea.html:38
 msgid "Mitigation"
 msgstr "Lliniariad"
 
-#: apps/plea/forms.py:706
+#: apps/plea/forms.py:732
 msgid "Is there something you would like the court to consider?"
 msgstr "Oes rhywbeth yr hoffech i'r llys ei ystyried?"
 
-#: apps/plea/forms.py:710
+#: apps/plea/forms.py:736
 msgid "Not guilty because?"
 msgstr "Dieuog oherwydd?"
 
-#: apps/plea/forms.py:712
+#: apps/plea/forms.py:738
 msgid "Why do you believe you are not guilty?"
 msgstr "Pam ydych chi'n credu eich bod yn ddieuog?"
 
-#: apps/plea/forms.py:720 apps/plea/forms.py:812
+#: apps/plea/forms.py:746 apps/plea/forms.py:838
 msgid "Do you need an interpreter in court?"
 msgstr "Oes arnoch angen cyfieithydd/dehonglydd yn y llys?"
 
-#: apps/plea/forms.py:727 apps/plea/forms.py:768 apps/plea/forms.py:819
+#: apps/plea/forms.py:753 apps/plea/forms.py:794 apps/plea/forms.py:845
 msgid "If yes, tell us which language (include sign language):"
 msgstr "Os oes, dywedwch wrthym pa iaith (gan gynnwys iaith arwyddion):"
 
-#: apps/plea/forms.py:734
+#: apps/plea/forms.py:760
 msgid ""
 "Do you disagree with any evidence from a witness statement in the notice we "
 "sent to you?"
-msgstr "Ydych chi'n anghytuno gydag unrhyw dystiolaeth mewn datganiad tyst yn yr hysbysiad a anfonwyd atoch "
+msgstr ""
+"Ydych chi'n anghytuno gydag unrhyw dystiolaeth mewn datganiad tyst yn yr "
+"hysbysiad a anfonwyd atoch "
 
-#: apps/plea/forms.py:739
+#: apps/plea/forms.py:765
 msgid ""
 "If yes, tell us the name of the witness (on the top left of the statement) "
 "and what you disagree with:"
-msgstr "Os hoffech, dywedwch wrthym beth yw enw'r tyst (ar frig y datganiad ar yr ochr chwith) a beth ydych chi'n anghytuno yn ei gylch: "
+msgstr ""
+"Os hoffech, dywedwch wrthym beth yw enw'r tyst (ar frig y datganiad ar yr "
+"ochr chwith) a beth ydych chi'n anghytuno yn ei gylch: "
 
-#: apps/plea/forms.py:747
+#: apps/plea/forms.py:773
 msgid "Do you want to call a defence witness?"
 msgstr "Hoffech chi alw ar dyst yr amddiffyniad? "
 
-#: apps/plea/forms.py:748
+#: apps/plea/forms.py:774
 msgid "Someone who can give evidence in court supporting your case."
 msgstr "Rhywun sy'n gallu rhoi tystiolaeth yn y llys i gefnogi eich achos."
 
-#: apps/plea/forms.py:753
+#: apps/plea/forms.py:779
 msgid ""
 "If yes, tell us the name, address and date of birth of any witnesses you "
 "want to call  to support your case:"
-msgstr "Os hoffech, dywedwch wrthym beth yw enw, cyfeiriad a dyddiad geni unrhyw dystion yr hoffech alw arnynt i gefnogi eich achos: "
+msgstr ""
+"Os hoffech, dywedwch wrthym beth yw enw, cyfeiriad a dyddiad geni unrhyw "
+"dystion yr hoffech alw arnynt i gefnogi eich achos: "
 
-#: apps/plea/forms.py:761
+#: apps/plea/forms.py:787
 msgid "Does your witness need an interpreter in court?"
 msgstr "A oes angen cyfieithydd/dehonglydd yn y llys ar gyfer eich tyst?"
 
-#: apps/plea/forms.py:805
+#: apps/plea/forms.py:831
 msgid "Do you want to come to court to plead guilty?"
 msgstr "Hoffech chi ddod i'r llys i bledio'n euog? "
 
-#: apps/plea/forms.py:844
+#: apps/plea/forms.py:870
 msgid "Unique reference number (URN)"
 msgstr "Cyfeirnod unigryw (URN)"
 
-#: apps/plea/forms.py:847
+#: apps/plea/forms.py:873
 msgid "On page 1, usually at the top."
 msgstr "Ar dudalen 1, fel arfer ar y brig."
 
-#: apps/plea/stages.py:802
+#: apps/plea/stages.py:151
+msgid ""
+"<h1>You can't make a plea online</h1>\n"
+"                     <p>To make your plea, you need to complete the paper "
+"form sent to you by the police.<p>\n"
+"                     <p>You must return the form within the time stated.</p>"
+msgstr ""
+
+#: apps/plea/stages.py:277
+msgid ""
+"<h1>Check the details you've entered</h1>\n"
+"                             <p>The information you've entered does not "
+"match our records.</p>\n"
+"                             <p>Check the paper form sent by the police then "
+"enter the details exactly as shown on it.</p>"
+msgstr ""
+
+#: apps/plea/stages.py:950
 msgid "Your session has timed out"
 msgstr "Mae eich sesiwn wedi dod i ben"
 
-#: apps/plea/stages.py:816
+#: apps/plea/stages.py:966
 msgid ""
 "There seems to have been a problem submitting your plea. Please try again."
-msgstr "Mae’n ymddangos bod problem wrth gyflwyno eich ple. Rhowch gynnig arall arni."
+msgstr ""
+"Mae’n ymddangos bod problem wrth gyflwyno eich ple. Rhowch gynnig arall arni."
 
 #: apps/plea/templates/about_your_income.html:6
 #: apps/plea/templates/about_your_income.html:10
@@ -1244,7 +1336,9 @@ msgstr "rhaid i chi ddarparu manylion eich incwm"
 msgid ""
 "the court will decide your fine based on your finances and the seriousness "
 "of the offence"
-msgstr "bydd y llys yn penderfynu faint fydd eich dirwy ar sail eich sefyllfa ariannol a pha mor ddifrifol yw’r drosedd"
+msgstr ""
+"bydd y llys yn penderfynu faint fydd eich dirwy ar sail eich sefyllfa "
+"ariannol a pha mor ddifrifol yw’r drosedd"
 
 #: apps/plea/templates/about_your_income.html:17
 #: apps/plea/templates/your_employment.html:17
@@ -1296,30 +1390,96 @@ msgstr "Manylion yr achos"
 
 #: apps/plea/templates/case.html:16
 msgid "The location of the URN and Posting date on the notice we sent to you"
-msgstr "Lleoliad y cyfeirnod unigryw a'r dyddiad postio ar yr hysbysiad a anfonwyd atoch"
+msgstr ""
+"Lleoliad y cyfeirnod unigryw a'r dyddiad postio ar yr hysbysiad a anfonwyd "
+"atoch"
 
 #: apps/plea/templates/company_details.html:6
-#: apps/plea/templates/company_details.html:10
+#: apps/plea/templates/company_details.html:45
 #: apps/plea/templates/emails/attachments/plea_email.html:21
 #: apps/plea/templates/emails/attachments/plp_email.html:21
 #: apps/plea/templates/review.html:41 apps/plea/templates/your_details.html:7
-#: apps/plea/templates/your_details.html:11
+#: apps/plea/templates/your_details.html:42
 msgid "Your details"
 msgstr "Eich manylion"
 
-#: apps/plea/templates/company_details.html:12
-msgid "We need these in case we have to contact you about your plea."
-msgstr "Mae arnom angen y rhain rhag ofn y bydd angen i ni gysylltu â chi ynglŷn â’ch ple."
+#: apps/plea/templates/company_details.html:11
+#: apps/plea/templates/urn_entry.html:13
+#: apps/plea/templates/your_details.html:12
+msgid "The details you've entered have already been used to make a plea online"
+msgstr ""
+"Mae’r manylion a ddarparwyd gennych wedi cael eu defnyddio i gofnodi ple ar-"
+"lein yn barod"
 
-#: apps/plea/templates/company_details.html:15
+#: apps/plea/templates/company_details.html:13
+#: apps/plea/templates/urn_entry.html:15
+#: apps/plea/templates/your_details.html:14
+msgid "Check and try again."
+msgstr "Gwiriwch a rhowch gynnig arall arni."
+
+#: apps/plea/templates/company_details.html:19
+#: apps/plea/templates/urn_entry.html:21 apps/plea/templates/urn_used.html:14
+#: apps/plea/templates/your_details.html:16
+msgid ""
+"To make changes to a plea you’ve already made online, email or write to the "
+"court before your hearing with:"
+msgstr ""
+"I newid manylion ple yr ydych wedi'i gofnodi ar-lein eisoes, anfonwch e-bost "
+"neu lythyr i'r llys cyn dyddiad eich gwrandawiad sy’n nodi’r canlynol:"
+
+#: apps/plea/templates/company_details.html:22
+#: apps/plea/templates/urn_entry.html:24 apps/plea/templates/urn_used.html:17
+#: apps/plea/templates/your_details.html:19
+msgid "details of the changes you want to make"
+msgstr "Manylion unrhyw newidiadau yr hoffech eu gwneud"
+
+#: apps/plea/templates/company_details.html:23
+#: apps/plea/templates/urn_entry.html:25 apps/plea/templates/urn_used.html:18
+#: apps/plea/templates/your_details.html:20
+msgid "your unique reference number"
+msgstr "Eich cyfeirnod unigryw"
+
+#: apps/plea/templates/company_details.html:26
+#: apps/plea/templates/urn_entry.html:28
+#: apps/plea/templates/your_details.html:23
+msgid "Hide court contact details"
+msgstr "Cuddio manylion cysylltu y llys"
+
+#: apps/plea/templates/company_details.html:27
+#: apps/plea/templates/urn_entry.html:29
+#: apps/plea/templates/your_details.html:24
+msgid "View court contact details"
+msgstr "Gweld manylion cysylltu y llys"
+
+#: apps/plea/templates/company_details.html:29
+#: apps/plea/templates/urn_entry.html:31
+#: apps/plea/templates/your_details.html:26
+msgid "Send letters to:"
+msgstr "Anfonwch lythyrau i:"
+
+#: apps/plea/templates/company_details.html:32
+#: apps/plea/templates/urn_entry.html:34
+#: apps/plea/templates/your_details.html:29
+msgid "Send email to:"
+msgstr "Anfon neges e-bost at:"
+
+#: apps/plea/templates/company_details.html:47
+msgid "We need these in case we have to contact you about your plea."
+msgstr ""
+"Mae arnom angen y rhain rhag ofn y bydd angen i ni gysylltu â chi ynglŷn "
+"â’ch ple."
+
+#: apps/plea/templates/company_details.html:50
 msgid "Warning:"
 msgstr "Rhybudd:"
 
-#: apps/plea/templates/company_details.html:16
+#: apps/plea/templates/company_details.html:51
 msgid ""
 "You can only make a plea on behalf of a company if you are a director, the "
 "company secretary or the company's solicitor."
-msgstr "Ni chewch gofnodi ple ar ran cwmni oni bai eich bod yn gyfarwyddwr, ysgrifennydd neu'n gyfreithiwr y cwmni."
+msgstr ""
+"Ni chewch gofnodi ple ar ran cwmni oni bai eich bod yn gyfarwyddwr, "
+"ysgrifennydd neu'n gyfreithiwr y cwmni."
 
 #: apps/plea/templates/company_finances.html:10
 #: apps/plea/templates/company_finances.html:23
@@ -1335,17 +1495,22 @@ msgstr "Manylion y cwmni - parhad"
 msgid ""
 "The court will decide the company's fine based on its size and financial "
 "situation."
-msgstr "Bydd y llys y penderfynu ar ddirwy'r cwmni ar sail ei faint a'i sefyllfa ariannol."
+msgstr ""
+"Bydd y llys y penderfynu ar ddirwy'r cwmni ar sail ei faint a'i sefyllfa "
+"ariannol."
 
 #: apps/plea/templates/company_finances.html:60
 #: apps/plea/templates/company_finances.html:65
 msgid "From the most recent audited company accounts, tell us:"
-msgstr "Ar sail cyfrifon diweddaraf y cwmni sydd wedi cael eu harchwilio, dywedwch wrthym:"
+msgstr ""
+"Ar sail cyfrifon diweddaraf y cwmni sydd wedi cael eu harchwilio, dywedwch "
+"wrthym:"
 
 #: apps/plea/templates/company_finances.html:62
 #: apps/plea/templates/company_finances.html:83
 msgid "From the first 12 months' trading projections, tell us:"
-msgstr "Ar sail yr amcanestyniadau o'r 12 mis cyntaf o fasnachu, dywedwch wrthym:"
+msgstr ""
+"Ar sail yr amcanestyniadau o'r 12 mis cyntaf o fasnachu, dywedwch wrthym:"
 
 #: apps/plea/templates/complete.html:8 apps/plea/templates/complete.html:20
 #: apps/plea/templates/emails/user_plea_confirmation.html:20
@@ -1402,10 +1567,18 @@ msgid ""
 msgid_plural ""
 "we'll send you a letter with the court's decisions within 3 working days "
 "after your hearing date"
-msgstr[0] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniad y llys cyn pen 3 diwrnod gwaith ar ôl dyddiad eich gwrandawiad"
-msgstr[1] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r llys cyn pen 3 diwrnod gwaith ar ôl dyddiad eich gwrandawiad"
-msgstr[2] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r llys cyn pen 3 diwrnod gwaith ar ôl dyddiad eich gwrandawiad"
-msgstr[3] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r llys cyn pen 3 diwrnod gwaith ar ôl dyddiad eich gwrandawiad"
+msgstr[0] ""
+"byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniad y llys cyn pen 3 "
+"diwrnod gwaith ar ôl dyddiad eich gwrandawiad"
+msgstr[1] ""
+"byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r llys cyn pen "
+"3 diwrnod gwaith ar ôl dyddiad eich gwrandawiad"
+msgstr[2] ""
+"byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r llys cyn pen "
+"3 diwrnod gwaith ar ôl dyddiad eich gwrandawiad"
+msgstr[3] ""
+"byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r llys cyn pen "
+"3 diwrnod gwaith ar ôl dyddiad eich gwrandawiad"
 
 #: apps/plea/templates/complete.html:38
 #: apps/plea/templates/complete_sjp.html:38
@@ -1416,15 +1589,20 @@ msgstr[3] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r llys 
 msgid ""
 "we'll tell you if you need to attend a trial and what evidence you may need "
 "to send to the court to support your case"
-msgstr "byddwn yn dweud wrthych os bydd angen i chi fod yn bresennol mewn treial, a pha dystiolaeth y mae’n bosib y bydd angen i chi ei hanfon i'r llys i gefnogi eich achos."
+msgstr ""
+"byddwn yn dweud wrthych os bydd angen i chi fod yn bresennol mewn treial, a "
+"pha dystiolaeth y mae’n bosib y bydd angen i chi ei hanfon i'r llys i "
+"gefnogi eich achos."
 
 #: apps/plea/templates/complete.html:42
 #: apps/plea/templates/emails/user_plea_confirmation.html:46
 #: apps/plea/templates/emails/user_plea_confirmation.txt:15
 msgid ""
-"we'll send you a letter with a new hearing date for you to come to court for"
-" a trial"
-msgstr "byddwn yn anfon llythyr atoch yn rhoi dyddiad gwrandawiad newydd i chi ddod i'r llys ar gyfer treial"
+"we'll send you a letter with a new hearing date for you to come to court for "
+"a trial"
+msgstr ""
+"byddwn yn anfon llythyr atoch yn rhoi dyddiad gwrandawiad newydd i chi ddod "
+"i'r llys ar gyfer treial"
 
 #: apps/plea/templates/complete.html:50
 #: apps/plea/templates/emails/user_plea_confirmation.html:39
@@ -1435,10 +1613,18 @@ msgid ""
 msgid_plural ""
 "we'll send a letter with the court's decisions within 3 working days after "
 "the hearing date"
-msgstr[0] "byddwn yn anfon llythyr yn dweud beth yw penderfyniad y llys cyn pen 3 diwrnod gwaith ar ôl dyddiad y gwrandawiad"
-msgstr[1] "byddwn yn anfon llythyr yn dweud beth yw penderfyniadau'r llys cyn pen 3 diwrnod gwaith ar ôl dyddiad y gwrandawiad"
-msgstr[2] "byddwn yn anfon llythyr yn dweud beth yw penderfyniadau'r llys cyn pen 3 diwrnod gwaith ar ôl dyddiad y gwrandawiad"
-msgstr[3] "byddwn yn anfon llythyr yn dweud beth yw penderfyniadau'r llys cyn pen 3 diwrnod gwaith ar ôl dyddiad y gwrandawiad"
+msgstr[0] ""
+"byddwn yn anfon llythyr yn dweud beth yw penderfyniad y llys cyn pen 3 "
+"diwrnod gwaith ar ôl dyddiad y gwrandawiad"
+msgstr[1] ""
+"byddwn yn anfon llythyr yn dweud beth yw penderfyniadau'r llys cyn pen 3 "
+"diwrnod gwaith ar ôl dyddiad y gwrandawiad"
+msgstr[2] ""
+"byddwn yn anfon llythyr yn dweud beth yw penderfyniadau'r llys cyn pen 3 "
+"diwrnod gwaith ar ôl dyddiad y gwrandawiad"
+msgstr[3] ""
+"byddwn yn anfon llythyr yn dweud beth yw penderfyniadau'r llys cyn pen 3 "
+"diwrnod gwaith ar ôl dyddiad y gwrandawiad"
 
 #: apps/plea/templates/complete.html:51
 #: apps/plea/templates/complete_sjp.html:51
@@ -1449,22 +1635,29 @@ msgstr[3] "byddwn yn anfon llythyr yn dweud beth yw penderfyniadau'r llys cyn pe
 msgid ""
 "we'll tell you if a company representative needs to attend a trial and what "
 "evidence you may need to send to the court to support the case"
-msgstr "byddwn yn dweud wrthych os bydd angen i gynrychiolydd o'r cwmni fod yn bresennol mewn treial, a pha dystiolaeth y mae’n bosib y bydd angen i chi ei hanfon i'r llys i gefnogi'r achos."
+msgstr ""
+"byddwn yn dweud wrthych os bydd angen i gynrychiolydd o'r cwmni fod yn "
+"bresennol mewn treial, a pha dystiolaeth y mae’n bosib y bydd angen i chi ei "
+"hanfon i'r llys i gefnogi'r achos."
 
 #: apps/plea/templates/complete.html:55
 #: apps/plea/templates/emails/user_plea_confirmation.html:50
 #: apps/plea/templates/emails/user_plea_confirmation.txt:16
 msgid ""
-"we'll send you a letter with a new hearing date for a company representative"
-" to come to court"
-msgstr "byddwn yn anfon llythyr atoch yn rhoi dyddiad gwrandawiad newydd i gynrychiolydd o'r cwmni ddod i'r llys"
+"we'll send you a letter with a new hearing date for a company representative "
+"to come to court"
+msgstr ""
+"byddwn yn anfon llythyr atoch yn rhoi dyddiad gwrandawiad newydd i "
+"gynrychiolydd o'r cwmni ddod i'r llys"
 
 #: apps/plea/templates/complete.html:60
 #: apps/plea/templates/complete_sjp.html:60
 msgid ""
-"you can <a href=\"javascript:window.print();\">print a copy</a> of this plea"
-" confirmation for your records"
-msgstr "gallwch <a href=\"javascript:window.print();\">argraffu copi</a> o'r cadarnhad hwn o'ch ple ar gyfer eich cofnodion"
+"you can <a href=\"javascript:window.print();\">print a copy</a> of this plea "
+"confirmation for your records"
+msgstr ""
+"gallwch <a href=\"javascript:window.print();\">argraffu copi</a> o'r "
+"cadarnhad hwn o'ch ple ar gyfer eich cofnodion"
 
 #: apps/plea/templates/complete.html:65
 #: apps/plea/templates/emails/user_plea_confirmation.html:57
@@ -1478,7 +1671,9 @@ msgstr "Peidiwch â gwneud y canlynol:"
 msgid ""
 "come to court on the hearing date shown on page 1 of the requisition notice "
 "we sent to you"
-msgstr "dod i'r llys ar y dyddiad gwrandawiad a ddangosir ar dudalen 1 yr hysbysiad gwysio a anfonwyd atoch"
+msgstr ""
+"dod i'r llys ar y dyddiad gwrandawiad a ddangosir ar dudalen 1 yr hysbysiad "
+"gwysio a anfonwyd atoch"
 
 #: apps/plea/templates/complete.html:71
 #: apps/plea/templates/emails/user_plea_confirmation.html:62
@@ -1486,7 +1681,9 @@ msgstr "dod i'r llys ar y dyddiad gwrandawiad a ddangosir ar dudalen 1 yr hysbys
 msgid ""
 "send your driving licence to the court, the DVLA will contact you if they "
 "need you to send it to them"
-msgstr "anfon eich trwydded yrru i'r llys. Bydd y DVLA yn cysylltu â chi os oes angen i chi ei hanfon atynt"
+msgstr ""
+"anfon eich trwydded yrru i'r llys. Bydd y DVLA yn cysylltu â chi os oes "
+"angen i chi ei hanfon atynt"
 
 #: apps/plea/templates/complete.html:76
 #: apps/plea/templates/complete_sjp.html:68
@@ -1503,7 +1700,9 @@ msgstr "Angen newid ple?"
 msgid ""
 "Contact the court by post or email quoting your URN before "
 "%(contact_deadline)s."
-msgstr "Cysylltwch â'r llys drwy anfon llythyr neu e-bost gan ddyfynnu eich cyfeirnod unigryw cyn %(contact_deadline)s. "
+msgstr ""
+"Cysylltwch â'r llys drwy anfon llythyr neu e-bost gan ddyfynnu eich "
+"cyfeirnod unigryw cyn %(contact_deadline)s. "
 
 #: apps/plea/templates/complete.html:80
 #: apps/plea/templates/complete_sjp.html:72
@@ -1550,9 +1749,12 @@ msgstr[3] "Mae pledion eich cwmni wedi cael eu hanfon at yr ynad"
 msgid "we'll send you a letter with the magistrate's decision"
 msgid_plural "we'll send you a letter with the magistrate's decisions"
 msgstr[0] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniad yr ynad"
-msgstr[1] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r ynad"
-msgstr[2] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r ynad"
-msgstr[3] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r ynad"
+msgstr[1] ""
+"byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r ynad"
+msgstr[2] ""
+"byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r ynad"
+msgstr[3] ""
+"byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r ynad"
 
 #: apps/plea/templates/complete_sjp.html:42
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.html:34
@@ -1560,7 +1762,9 @@ msgstr[3] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r ynad"
 msgid ""
 "we'll send you a letter with a hearing date for you to come to court for a "
 "trial"
-msgstr "byddwn yn anfon llythyr atoch yn rhoi dyddiad gwrandawiad i chi ddod i'r llys ar gyfer treial"
+msgstr ""
+"byddwn yn anfon llythyr atoch yn rhoi dyddiad gwrandawiad i chi ddod i'r "
+"llys ar gyfer treial"
 
 #: apps/plea/templates/complete_sjp.html:50
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.html:42
@@ -1570,7 +1774,8 @@ msgid_plural "we'll send a letter with the magistrate's decisions"
 msgstr[0] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniad yr ynad"
 msgstr[1] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniad yr ynad"
 msgstr[2] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniad yr ynad"
-msgstr[3] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r ynad"
+msgstr[3] ""
+"byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r ynad"
 
 #: apps/plea/templates/complete_sjp.html:55
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.html:47
@@ -1578,17 +1783,21 @@ msgstr[3] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r ynad"
 msgid ""
 "we'll send you a letter with a hearing date for a company representative to "
 "attend a trial"
-msgstr "byddwn yn anfon llythyr atoch yn rhoi dyddiad gwrandawiad i gynrychiolydd o'r cwmni ddod i'r treial"
+msgstr ""
+"byddwn yn anfon llythyr atoch yn rhoi dyddiad gwrandawiad i gynrychiolydd "
+"o'r cwmni ddod i'r treial"
 
 #: apps/plea/templates/complete_sjp.html:65
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.html:56
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:18
-#: apps/plea/templates/emails/user_resulting.html:65
-#: apps/plea/templates/emails/user_resulting.txt:22
+#: apps/result/templates/emails/user_resulting.html:65
+#: apps/result/templates/emails/user_resulting.txt:22
 msgid ""
 "Do not send your driving licence to the court. The DVLA will contact you if "
 "they need you to send it to them."
-msgstr "Peidiwch ag anfon eich trwydded yrru i'r llys. Bydd y DVLA yn cysylltu â chi os oes angen i chi ei hanfon atynt.  "
+msgstr ""
+"Peidiwch ag anfon eich trwydded yrru i'r llys. Bydd y DVLA yn cysylltu â chi "
+"os oes angen i chi ei hanfon atynt.  "
 
 #: apps/plea/templates/court_finder.html:6
 #: apps/plea/templates/court_finder.html:13
@@ -1599,7 +1808,9 @@ msgstr "Eich llys"
 msgid ""
 "You can contact the court by post or email quoting your URN before the date "
 "of your hearing."
-msgstr "Gallwch gysylltu â’r llys drwy anfon llythyr neu e-bost gan ddyfynnu eich cyfeirnod unigryw cyn dyddiad eich gwrandawiad."
+msgstr ""
+"Gallwch gysylltu â’r llys drwy anfon llythyr neu e-bost gan ddyfynnu eich "
+"cyfeirnod unigryw cyn dyddiad eich gwrandawiad."
 
 #: apps/plea/templates/court_finder.html:41
 msgid "We can't find your court"
@@ -1609,7 +1820,9 @@ msgstr "Ni allwn ddod o hyd i'ch llys"
 msgid ""
 "You'll find contact details for the court considering your case in the "
 "notice we sent you."
-msgstr "Fe ddewch o hyd i fanylion cysylltu ar gyfer y llys sy'n ystyried eich achos yn yr hysbysiad a anfonwyd atoch."
+msgstr ""
+"Fe ddewch o hyd i fanylion cysylltu ar gyfer y llys sy'n ystyried eich achos "
+"yn yr hysbysiad a anfonwyd atoch."
 
 #: apps/plea/templates/court_finder.html:50
 msgid "We don’t recognise the URN you’ve entered"
@@ -1623,7 +1836,9 @@ msgstr "Nid yw'r cyfeirnod unigryw rydych wedi'i roi yn cyfateb i'n cofnodion."
 msgid ""
 "Check your URN (it’s on page 1 of the notice we sent you, usually at the "
 "top) then try again."
-msgstr "Gwiriwch eich cyfeirnod unigryw (mae ar dudalen 1 yr hysbysiad a anfonwyd atoch, fel arfer ar y brig) a rhowch gynnig arall arni."
+msgstr ""
+"Gwiriwch eich cyfeirnod unigryw (mae ar dudalen 1 yr hysbysiad a anfonwyd "
+"atoch, fel arfer ar y brig) a rhowch gynnig arall arni."
 
 #: apps/plea/templates/court_finder.html:58
 #: make_a_plea/templates/base_form.html:10
@@ -1632,7 +1847,9 @@ msgstr "Mae arnoch angen cywiro’r gwallau ar y dudalen hon cyn mynd ymlaen."
 
 #: apps/plea/templates/court_finder.html:60
 msgid "Enter your URN to find the contact details for your court."
-msgstr "Rhowch eich cyfeirnod unigryw i ddod o hyd i'r manylion cysylltu ar gyfer eich llys."
+msgstr ""
+"Rhowch eich cyfeirnod unigryw i ddod o hyd i'r manylion cysylltu ar gyfer "
+"eich llys."
 
 #: apps/plea/templates/court_finder.html:68
 msgid "Questions about your case"
@@ -1642,7 +1859,9 @@ msgstr "Cwestiynau ynglŷn â'ch achos"
 msgid ""
 "If you have questions about your case and want to contact the court "
 "considering your case, enter your unique reference number (URN)."
-msgstr "Os oes gennych gwestiynau ynglŷn â'ch achos, ac eisiau cysylltu â'r llys sy'n ystyried eich achos, rhowch eich cyfeirnod unigryw (URN)."
+msgstr ""
+"Os oes gennych gwestiynau ynglŷn â'ch achos, ac eisiau cysylltu â'r llys "
+"sy'n ystyried eich achos, rhowch eich cyfeirnod unigryw (URN)."
 
 #: apps/plea/templates/court_finder.html:75
 msgid "Find my court"
@@ -1687,7 +1906,8 @@ msgstr "Manylion ariannol y cwmni"
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.html:52
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:16
 msgid "you can print a copy of this plea confirmation for your records"
-msgstr "gallwch argraffu copi o'r cadarnhad hwn o'ch ple ar gyfer eich cofnodion"
+msgstr ""
+"gallwch argraffu copi o'r cadarnhad hwn o'ch ple ar gyfer eich cofnodion"
 
 #: apps/plea/templates/emails/user_plea_confirmation.html:68
 #: apps/plea/templates/emails/user_plea_confirmation.txt:26
@@ -1695,7 +1915,8 @@ msgstr "gallwch argraffu copi o'r cadarnhad hwn o'ch ple ar gyfer eich cofnodion
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:23
 #, python-format
 msgid "Email %(court)s quoting your URN."
-msgstr "Anfonwch neges e-bost i %(court)s gan ddyfynnu eich cyfeirnod unigryw. "
+msgstr ""
+"Anfonwch neges e-bost i %(court)s gan ddyfynnu eich cyfeirnod unigryw. "
 
 #: apps/plea/templates/emails/user_plea_confirmation.html:70
 #: apps/plea/templates/emails/user_plea_confirmation.txt:28
@@ -1737,28 +1958,30 @@ msgstr "Gofynnwn yn garedig ichi roi adborth inni fel y gallwn ei wella:"
 
 #: apps/plea/templates/emails/user_plea_confirmation.txt:42
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:39
-#: apps/plea/templates/emails/user_resulting.txt:84
+#: apps/result/templates/emails/user_resulting.txt:95
 #: make_a_plea/templates/base_user_email.html:225
 msgid "If you're unsure an email is from the Ministry of Justice:"
-msgstr "Os nad ydych yn siŵr fod neges e-bost wedi cael ei hanfon gan y Weinyddiaeth Cyfiawnder:"
+msgstr ""
+"Os nad ydych yn siŵr fod neges e-bost wedi cael ei hanfon gan y Weinyddiaeth "
+"Cyfiawnder:"
 
 #: apps/plea/templates/emails/user_plea_confirmation.txt:44
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:41
-#: apps/plea/templates/emails/user_resulting.txt:86
+#: apps/result/templates/emails/user_resulting.txt:97
 #: make_a_plea/templates/base_user_email.html:228
 msgid "do not reply to it or click any links"
 msgstr "peidiwch ag ateb y neges na chlicio ar unrhyw ddolenni"
 
 #: apps/plea/templates/emails/user_plea_confirmation.txt:45
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:42
-#: apps/plea/templates/emails/user_resulting.txt:87
+#: apps/result/templates/emails/user_resulting.txt:98
 #: make_a_plea/templates/base_user_email.html:229
 msgid "forward it to"
 msgstr "anfonwch y neges ymlaen i"
 
 #: apps/plea/templates/emails/user_plea_confirmation.txt:47
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:44
-#: apps/plea/templates/emails/user_resulting.txt:89
+#: apps/result/templates/emails/user_resulting.txt:100
 msgid "Terms and Conditions and Privacy Policy:"
 msgstr "Telerau ac Amodau a Pholisi Preifatrwydd:"
 
@@ -1771,223 +1994,6 @@ msgstr[1] "Mae eich ple ar-lein wedi cael ei gyflwyno"
 msgstr[2] "Mae eich ple ar-lein wedi cael ei gyflwyno"
 msgstr[3] "Mae eich pledion ar-lein wedi cael eu cyflwyno"
 
-#: apps/plea/templates/emails/user_resulting.html:8
-#: apps/plea/templates/emails/user_resulting.html:24
-#: apps/plea/templates/emails/user_resulting.txt:1
-msgid "Notice of fine and collection order"
-msgstr "Rhybudd o ddirwy a gorchymyn casglu "
-
-#: apps/plea/templates/emails/user_resulting.html:32
-#: apps/plea/templates/emails/user_resulting.txt:6
-msgid "URN:"
-msgstr "Cyfeirnod unigryw:"
-
-#: apps/plea/templates/emails/user_resulting.html:35
-#: apps/plea/templates/emails/user_resulting.txt:7
-msgid "Your court:"
-msgstr "Eich llys:"
-
-#: apps/plea/templates/emails/user_resulting.html:42
-#: apps/plea/templates/emails/user_resulting.txt:11
-msgid "Fines and penalties"
-msgstr "Dirwyon a chosbau "
-
-#: apps/plea/templates/emails/user_resulting.html:51
-#: apps/plea/templates/emails/user_resulting.txt:15
-msgid "Total to pay:"
-msgstr "Cyfanswm i'w dalu:"
-
-#: apps/plea/templates/emails/user_resulting.html:54
-#: apps/plea/templates/emails/user_resulting.txt:17
-msgid "Pay by:"
-msgstr "Talu erbyn:"
-
-#: apps/plea/templates/emails/user_resulting.html:58
-#: apps/plea/templates/emails/user_resulting.txt:19
-msgid "Endorsements:"
-msgstr "Ardystiadau: "
-
-#: apps/plea/templates/emails/user_resulting.html:71
-#: apps/plea/templates/emails/user_resulting.txt:26
-msgid "What happens next"
-msgstr "Beth fydd yn digwydd nesaf"
-
-#: apps/plea/templates/emails/user_resulting.html:73
-#: apps/plea/templates/emails/user_resulting.txt:28
-msgid "When paying your fine"
-msgstr "Pan fyddwch yn talu eich dirwy "
-
-#: apps/plea/templates/emails/user_resulting.html:74
-#: apps/plea/templates/emails/user_resulting.txt:29
-msgid "You will need to tell us:"
-msgstr "Bydd arnoch angen dweud wrthym: "
-
-#: apps/plea/templates/emails/user_resulting.html:75
-#: apps/plea/templates/emails/user_resulting.txt:30
-msgid "Division:"
-msgstr "Adran: "
-
-#: apps/plea/templates/emails/user_resulting.html:76
-#: apps/plea/templates/emails/user_resulting.txt:31
-msgid "Account number:"
-msgstr "Rhif y cyfrif:"
-
-#: apps/plea/templates/emails/user_resulting.html:78
-#: apps/plea/templates/emails/user_resulting.txt:33
-msgid ""
-"Payments can be made 24 hours a day using credit or debit card (Visa, Visa "
-"Electron, Mastercard, Maestro or Solo)."
-msgstr "Gallwch wneud taliadau 24 awr y dydd gyda cherdyn credyd neu gerdyn debyd (Visa, Visa Electron, Mastercard, Maestro neu Solo)."
-
-#: apps/plea/templates/emails/user_resulting.html:80
-#: apps/plea/templates/emails/user_resulting.txt:35
-msgid "Payments must be received on or before the date ordered."
-msgstr "Rhaid i'r taliad gyrraedd y llys cyn neu ar y dyddiad a nodir ar y gorchymyn. "
-
-#: apps/plea/templates/emails/user_resulting.html:81
-#: apps/plea/templates/emails/user_resulting.txt:36
-msgid "If you want more information about your account contact the court."
-msgstr "Cysylltwch â'r llys os hoffech ragor o wybodaeth am eich cyfrif. "
-
-#: apps/plea/templates/emails/user_resulting.html:83
-#: apps/plea/templates/emails/user_resulting.txt:40
-msgid "Ways to pay"
-msgstr "Ffyrdd i dalu"
-
-#: apps/plea/templates/emails/user_resulting.html:85
-#: apps/plea/templates/emails/user_resulting.txt:42
-msgid "Online:"
-msgstr "Ar-lein:"
-
-#: apps/plea/templates/emails/user_resulting.html:87
-#: apps/plea/templates/emails/user_resulting.txt:44
-msgid "Copy and paste this web address into a new browser window."
-msgstr "Copïwch a gludwch y cyfeiriad gwe hwn i mewn i ffenestr pori arall "
-
-#: apps/plea/templates/emails/user_resulting.html:89
-#: apps/plea/templates/emails/user_resulting.txt:46
-msgid "Phone:"
-msgstr "Ffôn:"
-
-#: apps/plea/templates/emails/user_resulting.html:92
-#: apps/plea/templates/emails/user_resulting.txt:49
-#: apps/plea/templates/your_income.html:64
-msgid "Note:"
-msgstr "Sylwch:"
-
-#: apps/plea/templates/emails/user_resulting.html:93
-#: apps/plea/templates/emails/user_resulting.txt:50
-msgid ""
-"When you pay you will be given an authorisation number. Keep this as proof "
-"of payment along with the date and amount paid:"
-msgstr "Pan fyddwch yn talu, cewch rif awdurdodi taliad.  Cadwch y rhif hwn fel prawf o'ch taliad, ynghyd â'r dyddiad a'r swm a dalwyd: "
-
-#: apps/plea/templates/emails/user_resulting.html:95
-#: apps/plea/templates/emails/user_resulting.txt:51
-msgid "the court will not issue a receipt unless you ask for it in writing"
-msgstr "Ni fydd y llys yn rhoi derbynneb oni bai eich bod yn gwneud cais ysgrifenedig i gael un."
-
-#: apps/plea/templates/emails/user_resulting.html:96
-#: apps/plea/templates/emails/user_resulting.txt:52
-msgid ""
-"any written request for a receipt needs to include a stamped addressed "
-"envelope"
-msgstr "Rhaid i chi anfon amlen barod â stamp gydag unrhyw gais ysgrifenedig am dderbynneb. "
-
-#: apps/plea/templates/emails/user_resulting.html:99
-#: apps/plea/templates/emails/user_resulting.txt:56
-msgid "If you're having difficulty paying"
-msgstr "Os ydych yn cael problemau wrth dalu"
-
-#: apps/plea/templates/emails/user_resulting.html:100
-#: apps/plea/templates/emails/user_resulting.txt:58
-msgid ""
-"You can apply for more time to pay by contacting the Fines Team at your "
-"court."
-msgstr "Gallwch wneud cais am ragor o amser i dalu drwy gysylltu â'r Tîm Dirwyon yn eich llys. "
-
-#: apps/plea/templates/emails/user_resulting.html:101
-#: apps/plea/templates/emails/user_resulting.txt:60
-msgid ""
-"If you cannot pay as instructed or can no longer pay as ordered due to a "
-"change in your financial circumstances, contact the Fines Team to discuss "
-"your options."
-msgstr "Os na allwch dalu yn unol â'r cyfarwyddyd, neu os na allwch dalu fel y gorchmynnwyd oherwydd bod eich sefyllfa ariannol wedi newid, cysylltwch â'r Tîm Dirwyon i drafod eich opsiynau. "
-
-#: apps/plea/templates/emails/user_resulting.html:102
-#: apps/plea/templates/emails/user_resulting.txt:62
-msgid ""
-"You can find the contact details for your court's Fines Team using the Find "
-"a court or tribunal service and searching for your court."
-msgstr "Gallwch ddod o hyd i fanylion cyswllt Tîm Dirwyon eich llys drwy ddefnyddio'r gwasanaeth Dod o hyd i lys neu dribiwnlys a chwilio am eich llys. "
-
-#: apps/plea/templates/emails/user_resulting.html:103
-#: apps/plea/templates/emails/user_resulting.txt:64
-msgid ""
-"You can get free, confidential and independent advice from Civil Legal "
-"Advice"
-msgstr "Gallwch gael cyngor annibynnol, cyfrinachol yn rhad ac am ddim gan Gyngor Cyfreithiol Sifil"
-
-#: apps/plea/templates/emails/user_resulting.html:105
-#: apps/plea/templates/emails/user_resulting.txt:68
-msgid "If you do not pay"
-msgstr "Os na fyddwch yn talu"
-
-#: apps/plea/templates/emails/user_resulting.html:106
-#: apps/plea/templates/emails/user_resulting.txt:70
-msgid ""
-"If you fail to pay this fine as ordered you will be liable for further "
-"penalties. This could include:"
-msgstr "Os na fyddwch yn talu'r ddirwy hon fel y gorchmynnwyd, byddwch yn agored i gael eich cosbi ymhellach.  Gall hyn gynnwys: "
-
-#: apps/plea/templates/emails/user_resulting.html:109
-#: apps/plea/templates/emails/user_resulting.txt:71
-msgid "Deductions from your earnings or benefits"
-msgstr "Didyniadau o'ch enillion neu fudd-daliadau "
-
-#: apps/plea/templates/emails/user_resulting.html:110
-#: apps/plea/templates/emails/user_resulting.txt:72
-#, python-format
-msgid "50%% increase in your fine"
-msgstr "Cynyddu eich dirwy 50%%"
-
-#: apps/plea/templates/emails/user_resulting.html:111
-#: apps/plea/templates/emails/user_resulting.txt:73
-msgid "Clamping, removal and sale of your vehicle"
-msgstr "Clampio, symud neu werthu eich cerbyd "
-
-#: apps/plea/templates/emails/user_resulting.html:112
-#: apps/plea/templates/emails/user_resulting.txt:74
-msgid ""
-"Registering the account in the Register of Judgments, Orders and Fines "
-"(making it harder for you to get credit)"
-msgstr "Cofrestru'r cyfrif ar y Gofrestr Dyfarniadau, Gorchmynion a Dirwyon (i'w gwneud yn anoddach i chi gael credyd) "
-
-#: apps/plea/templates/emails/user_resulting.html:113
-#: apps/plea/templates/emails/user_resulting.txt:75
-msgid ""
-"A distress warrant being issued to the Court Bailiffs to seize your goods "
-"(incurring additional costs)"
-msgstr "Gwarant atafaelu yn cael ei chodi i Feili'r Llys atafaelu eich nwyddau (sy'n arwain at gostau ychwanegol) "
-
-#: apps/plea/templates/emails/user_resulting.html:114
-#: apps/plea/templates/emails/user_resulting.txt:76
-msgid "Continued default - you may be sent to prison"
-msgstr "Parhau i beidio â thalu - efallai y cewch eich anfon i'r carchar"
-
-#: apps/plea/templates/emails/user_resulting.html:117
-#: apps/plea/templates/emails/user_resulting.txt:78
-msgid "What should I do if I change my name or address?"
-msgstr "Beth ddylwn ei wneud os byddaf yn newid fy enw neu gyfeiriad? "
-
-#: apps/plea/templates/emails/user_resulting.html:118
-#: apps/plea/templates/emails/user_resulting.txt:80
-msgid ""
-"If you change your name or address you must tell your court immediately. "
-"You'll find your court's contact details by using the Find a court or "
-"tribunal service and searching for your court."
-msgstr "Os byddwch yn newid eich enw neu gyfeiriad, rhaid i chi ddweud wrth y llys ar unwaith.  Gallwch ddod o hyd i fanylion cyswllt eich llys drwy ddefnyddio'r gwasanaeth Dod o hyd i lys neu dribiwnlys a chwilio am eich llys. "
-
 #: apps/plea/templates/hardship.html:7 apps/plea/templates/hardship.html:11
 #: apps/plea/templates/partials/review_expenses.html:9
 msgid "Information for the magistrate"
@@ -1996,9 +2002,11 @@ msgstr "Gwybodaeth i'r ynadon "
 #: apps/plea/templates/household_expenses.html:13
 #: apps/plea/templates/other_expenses.html:13
 msgid ""
-"To help the court make a decision about your payment terms, you must provide"
-" information about your expenses."
-msgstr "I helpu’r llys wneud penderfyniad ynglŷn â'ch telerau talu, mae’n rhaid i chi roi gwybodaeth am eich treuliau."
+"To help the court make a decision about your payment terms, you must provide "
+"information about your expenses."
+msgstr ""
+"I helpu’r llys wneud penderfyniad ynglŷn â'ch telerau talu, mae’n rhaid i "
+"chi roi gwybodaeth am eich treuliau."
 
 #: apps/plea/templates/household_expenses.html:19
 #: apps/plea/templates/partials/review_expenses.html:24
@@ -2018,7 +2026,9 @@ msgstr "Eich hysbysiad"
 msgid ""
 "The location of the words 'Single Justice Procedure Notice', if present, at "
 "the top of the notice we sent to you"
-msgstr "Mae'r geiriau 'Hysbysiad Gweithdrefn Un Ynad' i'w gweld ar frig yr hysbysiad a anfonwyd atoch, os ydynt yno"
+msgstr ""
+"Mae'r geiriau 'Hysbysiad Gweithdrefn Un Ynad' i'w gweld ar frig yr hysbysiad "
+"a anfonwyd atoch, os ydynt yno"
 
 #: apps/plea/templates/notice_type.html:18
 msgid "From page 1 of the notice we sent to you:"
@@ -2111,23 +2121,23 @@ msgid "Address"
 msgstr "Cyfeiriad"
 
 #: apps/plea/templates/partials/review_details.html:17
-#: apps/plea/templates/partials/review_details.html:41
+#: apps/plea/templates/partials/review_details.html:45
 msgid "As printed on the notice"
 msgstr "Fel y mae wedi'i argraffu ar yr hysbysiad"
 
-#: apps/plea/templates/partials/review_details.html:25
+#: apps/plea/templates/partials/review_details.html:29
 msgid "National Insurance number"
 msgstr "Rhif yswiriant gwladol"
 
-#: apps/plea/templates/partials/review_details.html:28
+#: apps/plea/templates/partials/review_details.html:32
 msgid "UK driving licence number"
 msgstr "Rhif trwydded yrru y DU"
 
-#: apps/plea/templates/partials/review_details.html:40
+#: apps/plea/templates/partials/review_details.html:44
 msgid "Company address"
 msgstr "Cyfeiriad y cwmni"
 
-#: apps/plea/templates/partials/review_details.html:50
+#: apps/plea/templates/partials/review_details.html:54
 msgid "Position held"
 msgstr "Eich swydd"
 
@@ -2340,16 +2350,21 @@ msgstr "Dyma eich cyfle chi i gyflwyno eich achos i’r llys."
 msgid ""
 "the charge details and witness statements are in the requisition pack we "
 "sent to you"
-msgstr "Mae manylion y cyhuddiad a datganiadau'r tystion yn y pecyn gwysio a anfonwyd atoch "
+msgstr ""
+"Mae manylion y cyhuddiad a datganiadau'r tystion yn y pecyn gwysio a "
+"anfonwyd atoch "
 
 #: apps/plea/templates/plea.html:20
 msgid "each offence may carry penalty points and a fine"
-msgstr "mae'n bosib y gellir rhoi pwyntiau cosb a dirwy am bob un o'r troseddau"
+msgstr ""
+"mae'n bosib y gellir rhoi pwyntiau cosb a dirwy am bob un o'r troseddau"
 
 #: apps/plea/templates/plea.html:21
 #, python-format
 msgid "if you plead guilty you may get a 33%% discount on any fine"
-msgstr "os byddwch yn pledio'n euog, mae'n bosib y cewch ddisgownt o 33%% oddi ar unrhyw ddirwy"
+msgstr ""
+"os byddwch yn pledio'n euog, mae'n bosib y cewch ddisgownt o 33%% oddi ar "
+"unrhyw ddirwy"
 
 #: apps/plea/templates/plea.html:26
 msgid "This is your opportunity to present the company's case to the court:"
@@ -2364,7 +2379,9 @@ msgstr "gall pob un o'r troseddau arwain at ddirwy"
 msgid ""
 "if you plead guilty on its behalf, the company may get a 33%% discount on "
 "any fine"
-msgstr "os byddwch yn pledio'n euog ar ei ran, mae'n bosib y caiff y cwmni ddisgownt o 33%% oddi ar unrhyw ddirwy"
+msgstr ""
+"os byddwch yn pledio'n euog ar ei ran, mae'n bosib y caiff y cwmni ddisgownt "
+"o 33%% oddi ar unrhyw ddirwy"
 
 #: apps/plea/templates/plea.html:45
 #, python-format
@@ -2381,38 +2398,52 @@ msgid ""
 "Pleading guilty to this charge means you do not need to come to court to "
 "respond to this charge - we'll send you details of the court's decision and "
 "what to do next."
-msgstr "Mae pledio'n euog i'r cyhuddiad hwn, yn golygu nad oes angen i chi ddod i'r llys i ymateb i'r cyhuddiad hwn - byddwn yn anfon manylion penderfyniad y llys a beth i'w wneud nesaf atoch"
+msgstr ""
+"Mae pledio'n euog i'r cyhuddiad hwn, yn golygu nad oes angen i chi ddod i'r "
+"llys i ymateb i'r cyhuddiad hwn - byddwn yn anfon manylion penderfyniad y "
+"llys a beth i'w wneud nesaf atoch"
 
 #: apps/plea/templates/plea.html:65
 msgid ""
 "Pleading guilty to this charge means a company representative does not need "
 "to come to court to respond to this charge - we'll send details of the "
 "court's decision and what happens next."
-msgstr "Mae pledio'n euog i'r cyhuddiad hwn yn golygu nad oes angen i gynrychiolydd o'r cwmni ddod i'r llys i ymateb i'r cyhuddiad hwn - byddwn yn anfon manylion penderfyniad y llys a beth sy'n digwydd nesaf."
+msgstr ""
+"Mae pledio'n euog i'r cyhuddiad hwn yn golygu nad oes angen i gynrychiolydd "
+"o'r cwmni ddod i'r llys i ymateb i'r cyhuddiad hwn - byddwn yn anfon "
+"manylion penderfyniad y llys a beth sy'n digwydd nesaf."
 
 #: apps/plea/templates/plea.html:68
 msgid ""
 "However, you do have the option to plead guilty in court if you want to."
-msgstr "Fodd bynnag, mae gennych y dewis i bledio'n euog yn y llys os ydych eisiau. "
+msgstr ""
+"Fodd bynnag, mae gennych y dewis i bledio'n euog yn y llys os ydych eisiau. "
 
 #: apps/plea/templates/plea.html:97
 msgid ""
 "Pleading not guilty to this charge means we'll send details of a date for "
 "you to come to court for a trial."
-msgstr "Os byddwch yn pledio'n ddieuog i'r cyhuddiad hwn, byddwn yn anfon manylion dyddiad i chi ddod i'r llys ar gyfer treial."
+msgstr ""
+"Os byddwch yn pledio'n ddieuog i'r cyhuddiad hwn, byddwn yn anfon manylion "
+"dyddiad i chi ddod i'r llys ar gyfer treial."
 
 #: apps/plea/templates/plea.html:99 apps/plea/templates/plea.html.py:113
 msgid ""
 "Pleading not guilty to this charge means you do not come to court on the "
 "hearing date in your requisition pack - we'll send details of a new hearing "
 "date."
-msgstr "Mae pledio'n ddieuog i'r cyhuddiad hwn yn golygu na fyddwch yn dod i'r llys ar y dyddiad gwrandawiad sydd yn eich pecyn gwysio - byddwn yn anfon manylion dyddiad gwrandawiad newydd. "
+msgstr ""
+"Mae pledio'n ddieuog i'r cyhuddiad hwn yn golygu na fyddwch yn dod i'r llys "
+"ar y dyddiad gwrandawiad sydd yn eich pecyn gwysio - byddwn yn anfon "
+"manylion dyddiad gwrandawiad newydd. "
 
 #: apps/plea/templates/plea.html:111
 msgid ""
 "Pleading not guilty to this charge means we'll send details of a date for a "
 "company representative to come to court for a trial."
-msgstr "Os byddwch yn pledio'n ddieuog i'r cyhuddiad hwn, byddwn yn anfon manylion dyddiad i gynrychiolydd o'r cwmni ddod i'r llys ar gyfer treial."
+msgstr ""
+"Os byddwch yn pledio'n ddieuog i'r cyhuddiad hwn, byddwn yn anfon manylion "
+"dyddiad i gynrychiolydd o'r cwmni ddod i'r llys ar gyfer treial."
 
 #: apps/plea/templates/plea.html:116
 msgid "Tell us why you believe the company is not guilty:"
@@ -2420,7 +2451,8 @@ msgstr "Dywedwch wrthym pam rydych yn credu bod y cwmni'n ddieuog:"
 
 #: apps/plea/templates/plea.html:119
 msgid "Does your company representative need an interpreter in court?"
-msgstr "Oes angen cyfieithydd/dehonglydd yn y llys ar gyfer cynrychiolydd eich cwmni?"
+msgstr ""
+"Oes angen cyfieithydd/dehonglydd yn y llys ar gyfer cynrychiolydd eich cwmni?"
 
 #: apps/plea/templates/plea.html:129
 msgid "Evidence and witness information"
@@ -2474,7 +2506,9 @@ msgstr "Pwysig"
 msgid ""
 "It is an offence to make a false statement or to deliberately fail to "
 "disclose any relevant facts."
-msgstr "Mae gwneud datganiad anwir neu fethu datgelu unrhyw ffeithiau perthnasol yn fwriadol yn drosedd."
+msgstr ""
+"Mae gwneud datganiad anwir neu fethu datgelu unrhyw ffeithiau perthnasol yn "
+"fwriadol yn drosedd."
 
 #: apps/plea/templates/review.html:129
 msgid ""
@@ -2483,10 +2517,18 @@ msgid ""
 msgid_plural ""
 "I confirm that I have read and understand the charges against me and that I "
 "am the person named in the Single Justice Procedure Notice."
-msgstr[0] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad yn fy erbyn ac mai fi yw'r unigolyn a enwir yn yr Hysbysiad Gweithdrefn Un Ynad."
-msgstr[1] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau yn fy erbyn ac mai fi yw'r unigolyn a enwir yn yr Hysbysiad Gweithdrefn Un Ynad."
-msgstr[2] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau yn fy erbyn ac mai fi yw'r unigolyn a enwir yn yr Hysbysiad Gweithdrefn Un Ynad."
-msgstr[3] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau yn fy erbyn ac mai fi yw'r unigolyn a enwir yn yr Hysbysiad Gweithdrefn Un Ynad."
+msgstr[0] ""
+"Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad yn fy erbyn ac mai "
+"fi yw'r unigolyn a enwir yn yr Hysbysiad Gweithdrefn Un Ynad."
+msgstr[1] ""
+"Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau yn fy erbyn ac mai "
+"fi yw'r unigolyn a enwir yn yr Hysbysiad Gweithdrefn Un Ynad."
+msgstr[2] ""
+"Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau yn fy erbyn ac mai "
+"fi yw'r unigolyn a enwir yn yr Hysbysiad Gweithdrefn Un Ynad."
+msgstr[3] ""
+"Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau yn fy erbyn ac mai "
+"fi yw'r unigolyn a enwir yn yr Hysbysiad Gweithdrefn Un Ynad."
 
 #: apps/plea/templates/review.html:131
 msgid ""
@@ -2495,10 +2537,18 @@ msgid ""
 msgid_plural ""
 "I confirm that I have read and understand the charges against me and that I "
 "am the person named in the Postal Requisition."
-msgstr[0] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad yn fy erbyn ac mai fi yw'r unigolyn a enwir yn y Wŷs drwy'r Post."
-msgstr[1] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad yn fy erbyn ac mai fi yw'r unigolyn a enwir yn y Wŷs drwy'r Post."
-msgstr[2] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad yn fy erbyn ac mai fi yw'r unigolyn a enwir yn y Wŷs drwy'r Post."
-msgstr[3] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau yn fy erbyn ac mai fi yw'r unigolyn a enwir yn y Wŷs drwy'r Post."
+msgstr[0] ""
+"Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad yn fy erbyn ac mai "
+"fi yw'r unigolyn a enwir yn y Wŷs drwy'r Post."
+msgstr[1] ""
+"Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad yn fy erbyn ac mai "
+"fi yw'r unigolyn a enwir yn y Wŷs drwy'r Post."
+msgstr[2] ""
+"Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad yn fy erbyn ac mai "
+"fi yw'r unigolyn a enwir yn y Wŷs drwy'r Post."
+msgstr[3] ""
+"Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau yn fy erbyn ac mai "
+"fi yw'r unigolyn a enwir yn y Wŷs drwy'r Post."
 
 #: apps/plea/templates/review.html:135
 msgid ""
@@ -2509,28 +2559,53 @@ msgid_plural ""
 "I confirm that I have read and understand the charges and that I am a "
 "representative of the company named in the Single Justice Procedure Notice "
 "and am legally entitled to enter a plea on its behalf."
-msgstr[0] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad ac mai fi yw cynrychiolydd y cwmni a enwir yn yr Hysbysiad Gweithdrefn Un Ynad. Mae gennyf hawl gyfreithiol i gofnodi ple ar ei ran."
-msgstr[1] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau ac mai fi yw cynrychiolydd y cwmni a enwir yn yr Hysbysiad Gweithdrefn Un Ynad. Mae gennyf hawl gyfreithiol i gofnodi ple ar ei ran."
-msgstr[2] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau ac mai fi yw cynrychiolydd y cwmni a enwir yn yr Hysbysiad Gweithdrefn Un Ynad. Mae gennyf hawl gyfreithiol i gofnodi ple ar ei ran."
-msgstr[3] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau ac mai fi yw cynrychiolydd y cwmni a enwir yn yr Hysbysiad Gweithdrefn Un Ynad. Mae gennyf hawl gyfreithiol i gofnodi ple ar ei ran."
+msgstr[0] ""
+"Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad ac mai fi yw "
+"cynrychiolydd y cwmni a enwir yn yr Hysbysiad Gweithdrefn Un Ynad. Mae "
+"gennyf hawl gyfreithiol i gofnodi ple ar ei ran."
+msgstr[1] ""
+"Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau ac mai fi yw "
+"cynrychiolydd y cwmni a enwir yn yr Hysbysiad Gweithdrefn Un Ynad. Mae "
+"gennyf hawl gyfreithiol i gofnodi ple ar ei ran."
+msgstr[2] ""
+"Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau ac mai fi yw "
+"cynrychiolydd y cwmni a enwir yn yr Hysbysiad Gweithdrefn Un Ynad. Mae "
+"gennyf hawl gyfreithiol i gofnodi ple ar ei ran."
+msgstr[3] ""
+"Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau ac mai fi yw "
+"cynrychiolydd y cwmni a enwir yn yr Hysbysiad Gweithdrefn Un Ynad. Mae "
+"gennyf hawl gyfreithiol i gofnodi ple ar ei ran."
 
 #: apps/plea/templates/review.html:137
 msgid ""
 "I confirm that I have read and understand the charge and that I am a "
-"representative of the company named in the Postal Requisition and am legally"
-" entitled to enter a plea on its behalf."
+"representative of the company named in the Postal Requisition and am legally "
+"entitled to enter a plea on its behalf."
 msgid_plural ""
 "I confirm that I have read and understand the charges and that I am a "
-"representative of the company named in the Postal Requisition and am legally"
-" entitled to enter a plea on its behalf."
-msgstr[0] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad ac mai fi yw'r unigolyn sy'n cynrychioli'r cwmni a enwir yn y Wŷs drwy'r Post.  Mae gennyf hawl gyfreithiol i gofnodi ple ar ei ran."
-msgstr[1] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau ac mai fi yw'r unigolyn sy'n cynrychioli'r cwmni a enwir yn y Wŷs drwy'r Post.  Mae gennyf hawl gyfreithiol i gofnodi ple ar ei ran."
-msgstr[2] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad ac mai fi yw'r unigolyn sy'n cynrychioli'r cwmni a enwir yn y Wŷs drwy'r Post.  Mae gennyf hawl gyfreithiol i gofnodi ple ar ei ran."
-msgstr[3] "Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau ac mai fi yw'r unigolyn sy'n cynrychioli'r cwmni a enwir yn y Wŷs drwy'r Post.  Mae gennyf hawl gyfreithiol i gofnodi ple ar ei ran."
+"representative of the company named in the Postal Requisition and am legally "
+"entitled to enter a plea on its behalf."
+msgstr[0] ""
+"Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad ac mai fi yw'r "
+"unigolyn sy'n cynrychioli'r cwmni a enwir yn y Wŷs drwy'r Post.  Mae gennyf "
+"hawl gyfreithiol i gofnodi ple ar ei ran."
+msgstr[1] ""
+"Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau ac mai fi yw'r "
+"unigolyn sy'n cynrychioli'r cwmni a enwir yn y Wŷs drwy'r Post.  Mae gennyf "
+"hawl gyfreithiol i gofnodi ple ar ei ran."
+msgstr[2] ""
+"Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiad ac mai fi yw'r "
+"unigolyn sy'n cynrychioli'r cwmni a enwir yn y Wŷs drwy'r Post.  Mae gennyf "
+"hawl gyfreithiol i gofnodi ple ar ei ran."
+msgstr[3] ""
+"Rwy’n cadarnhau fy mod wedi darllen a deall y cyhuddiadau ac mai fi yw'r "
+"unigolyn sy'n cynrychioli'r cwmni a enwir yn y Wŷs drwy'r Post.  Mae gennyf "
+"hawl gyfreithiol i gofnodi ple ar ei ran."
 
 #: apps/plea/templates/review.html:141
 msgid "The facts stated here are correct to the best of my knowledge."
-msgstr "Mae’r ffeithiau sydd wedi’u datgan yma yn gywir hyd eithaf fy ngwybodaeth."
+msgstr ""
+"Mae’r ffeithiau sydd wedi’u datgan yma yn gywir hyd eithaf fy ngwybodaeth."
 
 #: apps/plea/templates/review.html:151
 msgid "Make your plea"
@@ -2540,48 +2615,20 @@ msgstr[1] "Cofnodi eich ple"
 msgstr[2] "Cofnodi eich ple"
 msgstr[3] "Cofnodi eich pledion"
 
-#: apps/plea/templates/urn_entry.html:7 apps/plea/templates/urn_entry.html:46
+#: apps/plea/templates/urn_entry.html:7 apps/plea/templates/urn_entry.html:53
 msgid "Your case"
 msgstr "Eich achos"
 
-#: apps/plea/templates/urn_entry.html:12
+#: apps/plea/templates/urn_entry.html:44
+#| msgid "Make a plea online"
+msgid "Make a plea by post"
+msgstr "Pledio drwy'r post"
+
+#: apps/plea/templates/urn_entry.html:46
 msgid ""
-"The details you've entered have already been used to make a plea online"
-msgstr "Mae’r manylion a ddarparwyd gennych wedi cael eu defnyddio i gofnodi ple ar-lein yn barod"
-
-#: apps/plea/templates/urn_entry.html:14
-msgid "Check and try again."
-msgstr "Gwiriwch a rhowch gynnig arall arni."
-
-#: apps/plea/templates/urn_entry.html:20 apps/plea/templates/urn_used.html:14
-msgid ""
-"To make changes to a plea you’ve already made online, email or write to the "
-"court before your hearing with:"
-msgstr "I newid manylion ple yr ydych wedi'i gofnodi ar-lein eisoes, anfonwch e-bost neu lythyr i'r llys cyn dyddiad eich gwrandawiad sy’n nodi’r canlynol:"
-
-#: apps/plea/templates/urn_entry.html:23 apps/plea/templates/urn_used.html:17
-msgid "details of the changes you want to make"
-msgstr "Manylion unrhyw newidiadau yr hoffech eu gwneud"
-
-#: apps/plea/templates/urn_entry.html:24 apps/plea/templates/urn_used.html:18
-msgid "your unique reference number"
-msgstr "Eich cyfeirnod unigryw"
-
-#: apps/plea/templates/urn_entry.html:27
-msgid "Hide court contact details"
-msgstr "Cuddio manylion cysylltu y llys"
-
-#: apps/plea/templates/urn_entry.html:28
-msgid "View court contact details"
-msgstr "Gweld manylion cysylltu y llys"
-
-#: apps/plea/templates/urn_entry.html:30
-msgid "Send letters to:"
-msgstr "Anfonwch lythyrau i:"
-
-#: apps/plea/templates/urn_entry.html:33
-msgid "Send email to:"
-msgstr "Anfon neges e-bost at:"
+"Your reference number isn’t recognised. Please complete and send the form "
+"enclosed with your notice."
+msgstr "Nid ydym yn adnabod eich cyfeirnod.  Llenwch ac anfonwch y ffurflen sy'n amgaeedig ynghyd â'ch hysbysiad."
 
 #: apps/plea/templates/urn_used.html:5
 msgid "URN already used"
@@ -2589,13 +2636,17 @@ msgstr "Cyfeirnod unigryw wedi'i ddefnyddio eisoes"
 
 #: apps/plea/templates/urn_used.html:12
 msgid "This URN has already been used to make a plea online"
-msgstr "Mae’r cyfeirnod unigryw hwn wedi cael ei ddefnyddio i gofnodi ple ar-lein yn barod"
+msgstr ""
+"Mae’r cyfeirnod unigryw hwn wedi cael ei ddefnyddio i gofnodi ple ar-lein yn "
+"barod"
 
 #: apps/plea/templates/urn_used.html:13
 msgid ""
-"The unique reference number you entered is no longer valid. Please check and"
-" try again."
-msgstr "Nid yw’r cyfeirnod unigryw rydych wedi’i roi yn ddilys bellach. Gwiriwch a rhowch gynnig arall arni, os gwelwch yn dda?"
+"The unique reference number you entered is no longer valid. Please check and "
+"try again."
+msgstr ""
+"Nid yw’r cyfeirnod unigryw rydych wedi’i roi yn ddilys bellach. Gwiriwch a "
+"rhowch gynnig arall arni, os gwelwch yn dda?"
 
 #: apps/plea/templates/urn_used.html:25
 msgid "Create a new plea"
@@ -2624,20 +2675,23 @@ msgstr "Faint yw eich taliad budd-dal pob pythefnos?"
 msgid "How much is your monthly benefit payment?"
 msgstr "Faint yw eich taliad budd-dal misol?"
 
-#: apps/plea/templates/your_details.html:13
-msgid ""
-"We need these in case we have to get in touch with you about your plea."
-msgstr "Mae angen y rhain arnom rhag ofn y bydd rhaid inni gysylltu â chi ynghylch eich ple."
+#: apps/plea/templates/your_details.html:44
+msgid "We need these in case we have to get in touch with you about your plea."
+msgstr ""
+"Mae angen y rhain arnom rhag ofn y bydd rhaid inni gysylltu â chi ynghylch "
+"eich ple."
 
-#: apps/plea/templates/your_details.html:57
+#: apps/plea/templates/your_details.html:90
 msgid "Important:"
 msgstr "Pwysig:"
 
-#: apps/plea/templates/your_details.html:58
+#: apps/plea/templates/your_details.html:91
 msgid ""
 "If you have a UK driving licence and fail to tell us, your licence may be "
 "suspended."
-msgstr "Os oes gennych drwydded yrru y DU a'ch bod yn methu a dweud wrthym, mae'n bosib y caiff eich trwydded ei hatal."
+msgstr ""
+"Os oes gennych drwydded yrru y DU a'ch bod yn methu a dweud wrthym, mae'n "
+"bosib y caiff eich trwydded ei hatal."
 
 #: apps/plea/templates/your_employment.html:40
 #: apps/plea/templates/your_self_employment.html:40
@@ -2662,7 +2716,9 @@ msgstr "Cyfansymiau"
 msgid ""
 "Your fine will be based on what the court considers to be your weekly "
 "income, calculated from the information you've provided."
-msgstr "Bydd eich dirwy yn seiliedig ar beth mae'r llys yn ei ystyried yw eich incwm wythnosol, wedi'i gyfrifo o'r wybodaeth a ddarparwyd gennych chi. "
+msgstr ""
+"Bydd eich dirwy yn seiliedig ar beth mae'r llys yn ei ystyried yw eich incwm "
+"wythnosol, wedi'i gyfrifo o'r wybodaeth a ddarparwyd gennych chi. "
 
 #: apps/plea/templates/your_income.html:25
 msgid "Your income sources and your total weekly income"
@@ -2700,11 +2756,19 @@ msgstr "Credyd Pensiwn"
 msgid "Edit"
 msgstr "Golygu"
 
+#: apps/plea/templates/your_income.html:64
+#: apps/result/templates/emails/user_resulting.html:97
+#: apps/result/templates/emails/user_resulting.txt:54
+msgid "Note:"
+msgstr "Sylwch:"
+
 #: apps/plea/templates/your_income.html:65
 msgid ""
-"For the courts to consider allowing you to pay your fine in instalments, you"
-" must provide information about your expenses."
-msgstr "Er mwyn i’r llys ystyried caniatáu i chi dalu eich dirwy mewn rhandaliadau, mae’n rhaid i chi roi gwybodaeth am eich treuliau."
+"For the courts to consider allowing you to pay your fine in instalments, you "
+"must provide information about your expenses."
+msgstr ""
+"Er mwyn i’r llys ystyried caniatáu i chi dalu eich dirwy mewn rhandaliadau, "
+"mae’n rhaid i chi roi gwybodaeth am eich treuliau."
 
 #: apps/plea/templates/your_out_of_work_benefits.html:45
 msgid "How much is your average weekly benefit payment?"
@@ -2730,7 +2794,9 @@ msgstr "Beth yw eich cyflog clir wythnosol (ar ôl treth) ar gyfartaledd?"
 msgid ""
 "Because you've pleaded guilty to at least 1 charge you must now tell us "
 "about your employment status."
-msgstr "Oherwydd eich bod wedi pledio'n euog i o leiaf 1 cyhuddiad, mae'n rhaid i chi ddweud wrthym yn awr am eich statws cyflogaeth. "
+msgstr ""
+"Oherwydd eich bod wedi pledio'n euog i o leiaf 1 cyhuddiad, mae'n rhaid i "
+"chi ddweud wrthym yn awr am eich statws cyflogaeth. "
 
 #: apps/plea/templates/your_status.html:14
 msgid "This will:"
@@ -2744,15 +2810,267 @@ msgstr "sicrhau bod eich dirwy yn seiliedig ar eich amgylchiadau"
 msgid "help to speed up the processing of your case"
 msgstr "helpu i gyflymu'r broses o ran hwyluso eich achos"
 
-#: make_a_plea/context_processors.py:15
+#: apps/result/templates/emails/user_resulting.html:8
+#: apps/result/templates/emails/user_resulting.html:24
+#: apps/result/templates/emails/user_resulting.txt:1
+msgid "Notice of fine and collection order"
+msgstr "Rhybudd o ddirwy a gorchymyn casglu "
+
+#: apps/result/templates/emails/user_resulting.html:32
+#: apps/result/templates/emails/user_resulting.txt:6
+msgid "URN:"
+msgstr "Cyfeirnod unigryw:"
+
+#: apps/result/templates/emails/user_resulting.html:35
+#: apps/result/templates/emails/user_resulting.txt:7
+msgid "Your court:"
+msgstr "Eich llys:"
+
+#: apps/result/templates/emails/user_resulting.html:42
+#: apps/result/templates/emails/user_resulting.txt:11
+msgid "Fines and penalties"
+msgstr "Dirwyon a chosbau "
+
+#: apps/result/templates/emails/user_resulting.html:51
+#: apps/result/templates/emails/user_resulting.txt:15
+msgid "Total to pay:"
+msgstr "Cyfanswm i'w dalu:"
+
+#: apps/result/templates/emails/user_resulting.html:54
+#: apps/result/templates/emails/user_resulting.txt:17
+msgid "Pay by:"
+msgstr "Talu erbyn:"
+
+#: apps/result/templates/emails/user_resulting.html:58
+#: apps/result/templates/emails/user_resulting.txt:19
+msgid "Endorsements:"
+msgstr "Ardystiadau: "
+
+#: apps/result/templates/emails/user_resulting.html:71
+#: apps/result/templates/emails/user_resulting.txt:26
+msgid "What happens next"
+msgstr "Beth fydd yn digwydd nesaf"
+
+#: apps/result/templates/emails/user_resulting.html:73
+#: apps/result/templates/emails/user_resulting.txt:28
+msgid "When paying your fine"
+msgstr "Pan fyddwch yn talu eich dirwy "
+
+#: apps/result/templates/emails/user_resulting.html:74
+#: apps/result/templates/emails/user_resulting.txt:29
+msgid "You will need to tell us:"
+msgstr "Bydd arnoch angen dweud wrthym: "
+
+#: apps/result/templates/emails/user_resulting.html:75
+#: apps/result/templates/emails/user_resulting.txt:30
+msgid "Division:"
+msgstr "Adran: "
+
+#: apps/result/templates/emails/user_resulting.html:76
+#: apps/result/templates/emails/user_resulting.txt:31
+msgid "Account number:"
+msgstr "Rhif y cyfrif:"
+
+#: apps/result/templates/emails/user_resulting.html:78
+#: apps/result/templates/emails/user_resulting.txt:33
+#, fuzzy
+#| msgid ""
+#| "Payments can be made 24 hours a day using credit or debit card (Visa, "
+#| "Visa Electron, Mastercard, Maestro or Solo)."
+msgid ""
+"Payments can be made 24 hours a day using credit or debit card (Visa, "
+"Mastercard, Maestro)."
+msgstr ""
+"Gallwch wneud taliadau 24 awr y dydd gyda cherdyn credyd neu gerdyn debyd "
+"(Visa, Visa Electron, Mastercard, Maestro neu Solo)."
+
+#: apps/result/templates/emails/user_resulting.html:80
+#: apps/result/templates/emails/user_resulting.txt:35
+msgid "Payments must be received on or before the date ordered."
+msgstr ""
+"Rhaid i'r taliad gyrraedd y llys cyn neu ar y dyddiad a nodir ar y "
+"gorchymyn. "
+
+#: apps/result/templates/emails/user_resulting.html:81
+#: apps/result/templates/emails/user_resulting.txt:36
+msgid ""
+"Please allow 5 days to allow the payment to be credited to your account."
+msgstr ""
+
+#: apps/result/templates/emails/user_resulting.html:82
+#: apps/result/templates/emails/user_resulting.txt:37
+msgid "If you want more information about your account contact the court."
+msgstr "Cysylltwch â'r llys os hoffech ragor o wybodaeth am eich cyfrif. "
+
+#: apps/result/templates/emails/user_resulting.html:84
+#: apps/result/templates/emails/user_resulting.txt:41
+msgid "Ways to pay"
+msgstr "Ffyrdd i dalu"
+
+#: apps/result/templates/emails/user_resulting.html:86
+#: apps/result/templates/emails/user_resulting.txt:43
+msgid "Online:"
+msgstr "Ar-lein:"
+
+#: apps/result/templates/emails/user_resulting.html:88
+#: apps/result/templates/emails/user_resulting.txt:45
+msgid "Copy and paste this web address into a new browser window."
+msgstr "Copïwch a gludwch y cyfeiriad gwe hwn i mewn i ffenestr pori arall "
+
+#: apps/result/templates/emails/user_resulting.html:90
+#: apps/result/templates/emails/user_resulting.html:113
+#: apps/result/templates/emails/user_resulting.txt:47
+msgid "Phone:"
+msgstr "Ffôn:"
+
+#: apps/result/templates/emails/user_resulting.html:98
+#: apps/result/templates/emails/user_resulting.txt:55
+msgid ""
+"When you pay you will be given an authorisation number. Keep this as proof "
+"of payment along with the date and amount paid:"
+msgstr ""
+"Pan fyddwch yn talu, cewch rif awdurdodi taliad.  Cadwch y rhif hwn fel "
+"prawf o'ch taliad, ynghyd â'r dyddiad a'r swm a dalwyd: "
+
+#: apps/result/templates/emails/user_resulting.html:100
+#: apps/result/templates/emails/user_resulting.txt:56
+#, fuzzy
+#| msgid "the court will not issue a receipt unless you ask for it in writing"
+msgid "the court will not issue a receipt"
+msgstr ""
+"Ni fydd y llys yn rhoi derbynneb oni bai eich bod yn gwneud cais "
+"ysgrifenedig i gael un."
+
+#: apps/result/templates/emails/user_resulting.html:103
+#: apps/result/templates/emails/user_resulting.txt:60
+msgid "If you're having difficulty paying"
+msgstr "Os ydych yn cael problemau wrth dalu"
+
+#: apps/result/templates/emails/user_resulting.html:104
+#: apps/result/templates/emails/user_resulting.txt:62
+#, fuzzy
+#| msgid ""
+#| "You can apply for more time to pay by contacting the Fines Team at your "
+#| "court."
+msgid "You can apply for more time to pay by contacting the Fines Team."
+msgstr ""
+"Gallwch wneud cais am ragor o amser i dalu drwy gysylltu â'r Tîm Dirwyon yn "
+"eich llys. "
+
+#: apps/result/templates/emails/user_resulting.html:105
+#: apps/result/templates/emails/user_resulting.txt:64
+msgid ""
+"If you cannot pay as instructed or can no longer pay as ordered due to a "
+"change in your financial circumstances, contact the Fines Team to discuss "
+"your options."
+msgstr ""
+"Os na allwch dalu yn unol â'r cyfarwyddyd, neu os na allwch dalu fel y "
+"gorchmynnwyd oherwydd bod eich sefyllfa ariannol wedi newid, cysylltwch â'r "
+"Tîm Dirwyon i drafod eich opsiynau. "
+
+#: apps/result/templates/emails/user_resulting.html:107
+#: apps/result/templates/emails/user_resulting.txt:66
+#, fuzzy
+#| msgid "Hide court contact details"
+msgid "Fines Team contact details:"
+msgstr "Cuddio manylion cysylltu y llys"
+
+#: apps/result/templates/emails/user_resulting.html:109
+#: apps/result/templates/emails/user_resulting.txt:68
+#, fuzzy
+#| msgid "Email:"
+msgid "email:"
+msgstr "E-bost:"
+
+#: apps/result/templates/emails/user_resulting.html:116
+#: apps/result/templates/emails/user_resulting.txt:77
+msgid "If you do not pay"
+msgstr "Os na fyddwch yn talu"
+
+#: apps/result/templates/emails/user_resulting.html:117
+#: apps/result/templates/emails/user_resulting.txt:79
+msgid ""
+"If you fail to pay this fine as ordered you will be liable for further "
+"penalties. This could include:"
+msgstr ""
+"Os na fyddwch yn talu'r ddirwy hon fel y gorchmynnwyd, byddwch yn agored i "
+"gael eich cosbi ymhellach.  Gall hyn gynnwys: "
+
+#: apps/result/templates/emails/user_resulting.html:120
+#: apps/result/templates/emails/user_resulting.txt:80
+msgid "Deductions from your earnings or benefits"
+msgstr "Didyniadau o'ch enillion neu fudd-daliadau "
+
+#: apps/result/templates/emails/user_resulting.html:121
+#: apps/result/templates/emails/user_resulting.txt:81
+#, python-format
+msgid "50%% increase in your fine"
+msgstr "Cynyddu eich dirwy 50%%"
+
+#: apps/result/templates/emails/user_resulting.html:122
+#: apps/result/templates/emails/user_resulting.txt:82
+msgid "Clamping, removal and sale of your vehicle"
+msgstr "Clampio, symud neu werthu eich cerbyd "
+
+#: apps/result/templates/emails/user_resulting.html:123
+#: apps/result/templates/emails/user_resulting.txt:83
+msgid ""
+"Registering the account in the Register of Judgments, Orders and Fines "
+"(making it harder for you to get credit)"
+msgstr ""
+"Cofrestru'r cyfrif ar y Gofrestr Dyfarniadau, Gorchmynion a Dirwyon (i'w "
+"gwneud yn anoddach i chi gael credyd) "
+
+#: apps/result/templates/emails/user_resulting.html:124
+#: apps/result/templates/emails/user_resulting.txt:84
+#, fuzzy
+#| msgid ""
+#| "A distress warrant being issued to the Court Bailiffs to seize your goods "
+#| "(incurring additional costs)"
+msgid ""
+"A warrant of control being issued to the enforcement agents to take control "
+"of your goods (incurring additional costs)"
+msgstr ""
+"Gwarant atafaelu yn cael ei chodi i Feili'r Llys atafaelu eich nwyddau (sy'n "
+"arwain at gostau ychwanegol) "
+
+#: apps/result/templates/emails/user_resulting.html:125
+#: apps/result/templates/emails/user_resulting.txt:85
+msgid "Continued default - you may be sent to prison"
+msgstr "Parhau i beidio â thalu - efallai y cewch eich anfon i'r carchar"
+
+#: apps/result/templates/emails/user_resulting.html:128
+#: apps/result/templates/emails/user_resulting.txt:87
+msgid "What should I do if I change my name or address?"
+msgstr "Beth ddylwn ei wneud os byddaf yn newid fy enw neu gyfeiriad? "
+
+#: apps/result/templates/emails/user_resulting.html:129
+#: apps/result/templates/emails/user_resulting.txt:89
+msgid ""
+"If you change your name or address you must tell your Fines Team immediately."
+msgstr ""
+
+#: apps/result/templates/emails/user_resulting.txt:72
+#, fuzzy
+#| msgid "Telephone"
+msgid "telephone:"
+msgstr "Rhif ffôn"
+
+#: apps/result/templates/emails/user_resulting.txt:91
+msgid ""
+"A hard copy of your fine and collection notice will be posted to you by the "
+"court."
+msgstr ""
+
+#: make_a_plea/context_processors.py:16
 msgid "Skip to main content"
 msgstr "Neidio i'r prif gynnwys"
 
-#: make_a_plea/context_processors.py:17
+#: make_a_plea/context_processors.py:18
 msgid "Go to the GOV.UK homepage"
 msgstr "Ewch i hafan GOV.UK"
 
-#: make_a_plea/context_processors.py:19
+#: make_a_plea/context_processors.py:20
 msgid "&copy; Crown copyright"
 msgstr "&copy; Hawlfraint y Goron"
 
@@ -2770,13 +3088,16 @@ msgstr "Ni ddaethpwyd o hyd i'r dudalen"
 
 #: make_a_plea/templates/404.html:14
 msgid "If you entered a web address please check it was correct, or you can:"
-msgstr "Os ydych wedi rhoi cyfeiriad gwefan, gwiriwch ei fod yn gywir, neu gallwch:"
+msgstr ""
+"Os ydych wedi rhoi cyfeiriad gwefan, gwiriwch ei fod yn gywir, neu gallwch:"
 
 #: make_a_plea/templates/404.html:15
 msgid ""
-"<a href=\"/\">Start a new plea</a> or go to <a "
-"href=\"https://www.gov.uk/\">GOV.UK</a>"
-msgstr "<a href=\"/\">Ddechrau ple newydd</a> neu fynd i <a href=\"https://www.gov.uk/\">GOV.UK</a>."
+"<a href=\"/\">Start a new plea</a> or go to <a href=\"https://www.gov.uk/"
+"\">GOV.UK</a>"
+msgstr ""
+"<a href=\"/\">Ddechrau ple newydd</a> neu fynd i <a href=\"https://www.gov."
+"uk/\">GOV.UK</a>."
 
 #: make_a_plea/templates/500.html:5
 msgid "Service unavailable"
@@ -2790,7 +3111,9 @@ msgstr "Rydym yn cael problemau technegol ar hyn o bryd"
 msgid ""
 "The online plea service is not available right now, but we're working hard "
 "to get things up and running again. Try again later."
-msgstr "Nid yw’r gwasanaeth pledio ar-lein ar gael ar hyn o bryd, ond rydym yn gwneud ein gorau glas i ddatrys y broblem. Rhowch gynnig arall yn nes ymlaen."
+msgstr ""
+"Nid yw’r gwasanaeth pledio ar-lein ar gael ar hyn o bryd, ond rydym yn "
+"gwneud ein gorau glas i ddatrys y broblem. Rhowch gynnig arall yn nes ymlaen."
 
 #: make_a_plea/templates/base.html:7 make_a_plea/templates/base.html.py:27
 msgid "Make a Plea: Traffic offences"
@@ -2809,7 +3132,9 @@ msgstr "Mwy o wybodaeth am y cwcis"
 msgid ""
 "This is a new service - <a href=\"%(feedback_url)s\">your feedback</a> will "
 "help us to improve it."
-msgstr "Mae hwn yn wasanaeth newydd - <a href=\"%(feedback_url)s\">bydd eich adborth</a> yn ein helpu i'w wella."
+msgstr ""
+"Mae hwn yn wasanaeth newydd - <a href=\"%(feedback_url)s\">bydd eich "
+"adborth</a> yn ein helpu i'w wella."
 
 #: make_a_plea/templates/base.html:65
 #: make_a_plea/templates/session_timeout.html:5
@@ -2820,7 +3145,9 @@ msgstr "Terfyn amser sesiwn"
 #: make_a_plea/templates/base.html:66
 #: make_a_plea/templates/session_timeout.html:11
 msgid "Your session has expired, re-enter your details and try again."
-msgstr "Mae eich sesiwn wedi dod i ben, cyflwynwch eich manylion eto a rhowch gynnig arall arni."
+msgstr ""
+"Mae eich sesiwn wedi dod i ben, cyflwynwch eich manylion eto a rhowch gynnig "
+"arall arni."
 
 #: make_a_plea/templates/base.html:86
 msgid "Terms and Conditions and Privacy Policy"
@@ -2846,15 +3173,20 @@ msgstr "Cymraeg"
 msgid ""
 "Built by <a href=\"https://mojdigital.blog.gov.uk/\"><abbr title=\"Ministry "
 "of Justice\">MOJ</abbr> Digital</a>"
-msgstr "Adeiladwyd gan<a href=\"https://mojdigital.blog.gov.uk/\"><abbr title=\"Ministry of Justice\">MOJ</abbr> Digital</a>"
+msgstr ""
+"Adeiladwyd gan<a href=\"https://mojdigital.blog.gov.uk/\"><abbr title="
+"\"Ministry of Justice\">MOJ</abbr> Digital</a>"
 
 #: make_a_plea/templates/base.html:96
 msgid ""
-"All content is available under the <a "
-"href=\"https://www.nationalarchives.gov.uk/doc/open-government-"
-"licence/version/3/\" rel=\"license\">Open Government Licence v3.0</a>, "
-"except where otherwise stated"
-msgstr "Mae'r holl gynnwys ar gael o dan yr \n<a href=\"https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" rel=\"license\">\nOpen Government Licence v3.0</a>, ac eithro ble y nodir yn wahanol"
+"All content is available under the <a href=\"https://www.nationalarchives."
+"gov.uk/doc/open-government-licence/version/3/\" rel=\"license\">Open "
+"Government Licence v3.0</a>, except where otherwise stated"
+msgstr ""
+"Mae'r holl gynnwys ar gael o dan yr \n"
+"<a href=\"https://www.nationalarchives.gov.uk/doc/open-government-licence/"
+"version/3/\" rel=\"license\">\n"
+"Open Government Licence v3.0</a>, ac eithro ble y nodir yn wahanol"
 
 #: make_a_plea/templates/base.html:102
 msgid "You have entered some information"
@@ -2880,7 +3212,9 @@ msgstr "Cofnodi ple ar-lein"
 msgid ""
 "Use this service to plead guilty or not guilty to each offence you're "
 "charged with."
-msgstr "Defnyddiwch y gwasanaeth hwn i bledio'n euog neu'n ddieuog i bob trosedd rydych wedi cael eich cyhuddo ohono."
+msgstr ""
+"Defnyddiwch y gwasanaeth hwn i bledio'n euog neu'n ddieuog i bob trosedd "
+"rydych wedi cael eich cyhuddo ohono."
 
 #: make_a_plea/templates/start.html:20
 msgid "You'll need to:"
@@ -2890,18 +3224,24 @@ msgstr "Bydd angen i chi:"
 msgid ""
 "carefully read the notice, charge sheet and witness statements in the pack "
 "we sent to you"
-msgstr "ddarllen yn ofalus yr hysbysiad, y daflen gyhuddiadau a'r datganiadau tystion yn y pecyn a anfonwyd atoch"
+msgstr ""
+"ddarllen yn ofalus yr hysbysiad, y daflen gyhuddiadau a'r datganiadau "
+"tystion yn y pecyn a anfonwyd atoch"
 
 #: make_a_plea/templates/start.html:25
 msgid ""
 "enter information contained in the pack, so have it with you when you start"
-msgstr "cyflwyno gwybodaeth sydd wedi'i chynnwys yn y pecyn, felly gwnewch yn siŵr fod yr wybodaeth gennych pan fyddwch yn dechrau"
+msgstr ""
+"cyflwyno gwybodaeth sydd wedi'i chynnwys yn y pecyn, felly gwnewch yn siŵr "
+"fod yr wybodaeth gennych pan fyddwch yn dechrau"
 
 #: make_a_plea/templates/start.html:26
 msgid ""
 "be the person, or an official representative of the company, named in the "
 "notice"
-msgstr "fod yr unigolyn, neu'n gynrychiolydd swyddogol o'r cwmni, a enwir yn yr hysbysiad"
+msgstr ""
+"fod yr unigolyn, neu'n gynrychiolydd swyddogol o'r cwmni, a enwir yn yr "
+"hysbysiad"
 
 #: make_a_plea/templates/start.html:30
 msgid "You may:"
@@ -2910,18 +3250,22 @@ msgstr "Mae'n bosib:"
 #: make_a_plea/templates/start.html:34
 #, python-format
 msgid "get a 33%% discount on your fine if you plead guilty"
-msgstr "y cewch ddisgownt o 33%% oddi ar eich dirwy os byddwch yn pledio'n euog"
+msgstr ""
+"y cewch ddisgownt o 33%% oddi ar eich dirwy os byddwch yn pledio'n euog"
 
 #: make_a_plea/templates/start.html:35
 msgid ""
 "be asked to enter your National Insurance and UK driving licence numbers"
-msgstr "y gofynnir i chi roi eich rhif Yswiriant Gwladol a'ch rhif Trwydded Yrru y DU"
+msgstr ""
+"y gofynnir i chi roi eich rhif Yswiriant Gwladol a'ch rhif Trwydded Yrru y DU"
 
 #: make_a_plea/templates/start.html:36
 msgid ""
 "be asked about your income and outgoings (such as utility bills), or your "
 "company's finances, so the magistrate can work out your fine"
-msgstr "y gofynnir i chi am eich incwm a'ch gwariant (megis biliau cyfleustodau), neu gyllid eich cwmni, er mwyn i'r ynad allu cyfrifo'r ddirwy gywir"
+msgstr ""
+"y gofynnir i chi am eich incwm a'ch gwariant (megis biliau cyfleustodau), "
+"neu gyllid eich cwmni, er mwyn i'r ynad allu cyfrifo'r ddirwy gywir"
 
 #: make_a_plea/templates/start.html:48
 msgid "Support"
@@ -2938,6 +3282,38 @@ msgstr "Cwestiynau am eich pledion?"
 #: make_a_plea/templates/start.html:54
 msgid "Need help using this service?"
 msgstr "Angen help i ddefnyddio'r gwasanaeth hwn?"
+
+#~ msgid ""
+#~ "any written request for a receipt needs to include a stamped addressed "
+#~ "envelope"
+#~ msgstr ""
+#~ "Rhaid i chi anfon amlen barod â stamp gydag unrhyw gais ysgrifenedig am "
+#~ "dderbynneb. "
+
+#~ msgid ""
+#~ "You can find the contact details for your court's Fines Team using the "
+#~ "Find a court or tribunal service and searching for your court."
+#~ msgstr ""
+#~ "Gallwch ddod o hyd i fanylion cyswllt Tîm Dirwyon eich llys drwy "
+#~ "ddefnyddio'r gwasanaeth Dod o hyd i lys neu dribiwnlys a chwilio am eich "
+#~ "llys. "
+
+#~ msgid ""
+#~ "You can get free, confidential and independent advice from Civil Legal "
+#~ "Advice"
+#~ msgstr ""
+#~ "Gallwch gael cyngor annibynnol, cyfrinachol yn rhad ac am ddim gan Gyngor "
+#~ "Cyfreithiol Sifil"
+
+#~ msgid ""
+#~ "If you change your name or address you must tell your court immediately. "
+#~ "You'll find your court's contact details by using the Find a court or "
+#~ "tribunal service and searching for your court."
+#~ msgstr ""
+#~ "Os byddwch yn newid eich enw neu gyfeiriad, rhaid i chi ddweud wrth y "
+#~ "llys ar unwaith.  Gallwch ddod o hyd i fanylion cyswllt eich llys drwy "
+#~ "ddefnyddio'r gwasanaeth Dod o hyd i lys neu dribiwnlys a chwilio am eich "
+#~ "llys. "
 
 #~ msgid "Select how often you receive your benefit"
 #~ msgstr "Select how often you receive your benefit"
