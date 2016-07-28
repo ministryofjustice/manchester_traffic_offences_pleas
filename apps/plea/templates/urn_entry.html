@@ -41,9 +41,9 @@
         {{ block.super }}
 
         {% if urn_entry_failure_count >= 3 %}
-            <h1>It looks like you're having problems</h1>
+            <h1>{% blocktrans %}Make a plea by post{% endblocktrans %}</h1>
 
-            <p>If you continue to have technical issues, then send off your form instead.</p>
+            <p>{% blocktrans %}Your reference number isn’t recognised. Please complete and send the form enclosed with your notice.{% endblocktrans %}</p>
         {% endif %}
 
     {% endif %}
