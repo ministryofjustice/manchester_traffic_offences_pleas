@@ -109,7 +109,7 @@ class ResultTestCase(TestCase):
 
         self.withdrawn_offence = ResultOffenceData.objects.create(
             result_offence=self.offence1,
-            result_code="FVS",
+            result_code="WDRN",
             result_short_title="FINE VICTIM SURCHARGE!"
         )
 
@@ -130,14 +130,6 @@ class ResultTestCase(TestCase):
             result_code="WDRN",
             result_short_title="WITHDRAWN!"
         )
-
-
-    def test_can_result_with_no_F_codes_is_false(self):
-        self.f_code_offence.delete()
-
-        result, _ = self.test_result1.can_result()
-
-        self.assertFalse(result)
 
     def test_can_result_with_disqualified_code_is_false(self):
 
