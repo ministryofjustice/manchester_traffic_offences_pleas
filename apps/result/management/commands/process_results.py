@@ -155,8 +155,7 @@ class Command(BaseCommand):
             case = result.get_associated_case()
             if not case:
 
-                self.mark_done(result, dry_run=options["dry_run"],
-                               message="Skipping {} because no matching case".format(result.urn))
+                self.mark_done(result, dry_run=options["dry_run"])
 
                 not_resulted_count += 1
                 continue
