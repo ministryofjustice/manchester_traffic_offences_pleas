@@ -107,11 +107,7 @@ class Result(models.Model):
 
             for offence_data in result.offence_data.all():
 
-                if offence_data.result_code[0].upper() == "F":
-                    has_fine_codes = True
-                    offence_has_fine_codes = True
-
-                elif offence_data.result_code in DO_NOT_RESULT_CODES:
+                if offence_data.result_code in DO_NOT_RESULT_CODES:
                     return False, "out of scope result code: {}".format(offence_data.result_code)
 
                 elif offence_data.result_code in ADJOURNED_CODES:
@@ -120,13 +116,10 @@ class Result(models.Model):
                 elif offence_data.result_code in WITHDRAWN_CODES:
                     withdrawn = True
 
-            if adjourned and not (withdrawn or offence_has_fine_codes):
+            if adjourned and not withdrawn:
                 return False, "adjournment"
 
-        if not has_fine_codes:
-            return False, "no fine codes"
-        else:
-            return True, ""
+        return True, ""
 
     def get_associated_case(self):
         """
