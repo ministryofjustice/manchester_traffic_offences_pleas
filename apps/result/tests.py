@@ -34,7 +34,9 @@ class ResultTestCase(TestCase):
             case_number="12345678",
             date_of_hearing=dt.date.today(),
             sent=False,
-            processed=False
+            processed=False,
+            account_number="12345",
+            division="100"
         )
 
         self.offence1 = ResultOffence.objects.create(
@@ -149,6 +151,22 @@ class ResultTestCase(TestCase):
 
         self.assertFalse(result)
 
+    def test_can_result_missing_divcode_or_acc_number(self):
+        self.test_result1.account_number = ""
+        self.test_result1.save()
+
+        result, _ = self.test_result1.can_result()
+
+        self.assertFalse(result)
+
+        self.test_result1.account_number = "12345"
+        self.test_result1.division = ""
+        self.test_result1.save()
+
+        result, _ = self.test_result1.can_result()
+
+        self.assertFalse(result)
+
     def test_get_offence_totals_fines(self):
 
         self.adjourned_offence = ResultOffenceData.objects.create(
@@ -185,14 +203,14 @@ class ResultTestCase(TestCase):
             result_offence=self.offence1,
             result_code="FCOST",
             result_short_title="FINE",
-            result_wording=u"asdfsadf 75.00 asasdfadfs"
+            result_wording=u"asdfsadf £75.00 asasdfadfs"
         )
 
         self.adjourned_offence = ResultOffenceData.objects.create(
             result_offence=self.offence2,
             result_code="FVS",
             result_short_title="FINE",
-            result_wording=u"asdfsadf 25.00 asasdfadfs"
+            result_wording=u"asdfsadf £25.00 asasdfadfs"
         )
 
         _, _, total = self.test_result1.get_offence_totals()
@@ -208,7 +226,7 @@ class ProcessResultsTestCase(TestCase):
             court_code="1234",
             region_code="51",
             court_name="Test Court",
-            enabled=True
+            enabled=True,
         )
 
         self.test_case1 = Case.objects.create(
@@ -223,7 +241,9 @@ class ProcessResultsTestCase(TestCase):
             case_number="12345678",
             date_of_hearing=dt.date.today(),
             sent=False,
-            processed=False
+            processed=False,
+            account_number="12345",
+            division="100"
         )
 
         self.offence1 = ResultOffence.objects.create(
