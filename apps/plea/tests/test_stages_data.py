@@ -605,14 +605,14 @@ class TestURNSubmissionFailureMessage(TestCase):
         response = self.client.post('/plea/enter_urn/', data=dict(urn="06xx0000000"))
 
         self.assertContains(response, "You need to fix the errors on this page before continuing.")
-        self.assertNotContains(response, "It looks like you're having problems")
+        self.assertNotContains(response, "Your reference number has not been recognised")
 
     def test_message_appears_after_multiple_failures(self):
 
         for i in range(3):
             response = self.client.post('/plea/enter_urn/', data=dict(urn="06xx0000000"))
 
-        self.assertContains(response, "It looks like you're having problems")
+        self.assertContains(response, "Your reference number has not been recognised")
 
 
 
