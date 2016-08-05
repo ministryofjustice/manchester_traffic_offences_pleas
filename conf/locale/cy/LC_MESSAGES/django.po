@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-28 12:26+0100\n"
+"POT-Creation-Date: 2016-08-05 12:01+0100\n"
 "PO-Revision-Date: 2016-02-01 10:40+0000\n"
 "Last-Translator: Welsh Language Unit <welsh.language.unit.manager@hmcts.gsi."
 "gov.uk>\n"
@@ -85,7 +85,7 @@ msgstr "Cyfeiriad e-bost"
 msgid "If you'd like us to get back to you, tell us your email address below:"
 msgstr "Os hoffech inni ddod yn ôl atoch, rhowch eich cyfeiriad e-bost isod:"
 
-#: apps/feedback/stages.py:37 apps/plea/stages.py:965
+#: apps/feedback/stages.py:37 apps/plea/stages.py:967
 msgid "Submission Error"
 msgstr "Gwall wrth gyflwyno"
 
@@ -259,15 +259,15 @@ msgstr "Dieuog"
 msgid "Change your plea for this charge"
 msgstr "Newid eich ple ar gyfer y cyhuddiad hwn "
 
-#: apps/plea/admin.py:19
+#: apps/plea/admin.py:20
 msgid "Region"
 msgstr "Rhanbarth"
 
-#: apps/plea/admin.py:36
+#: apps/plea/admin.py:37
 msgid "Match"
 msgstr "Tebyg"
 
-#: apps/plea/email.py:149
+#: apps/plea/email.py:147
 #: apps/plea/templates/emails/user_plea_confirmation.html:8
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.html:8
 msgid "Online plea submission confirmation"
@@ -1283,7 +1283,7 @@ msgstr "Cyfeirnod unigryw (URN)"
 msgid "On page 1, usually at the top."
 msgstr "Ar dudalen 1, fel arfer ar y brig."
 
-#: apps/plea/stages.py:151
+#: apps/plea/stages.py:153
 msgid ""
 "<h1>You can't make a plea online</h1>\n"
 "                     <p>To make your plea, you need to complete the paper "
@@ -1291,7 +1291,7 @@ msgid ""
 "                     <p>You must return the form within the time stated.</p>"
 msgstr ""
 
-#: apps/plea/stages.py:277
+#: apps/plea/stages.py:279
 msgid ""
 "<h1>Check the details you've entered</h1>\n"
 "                             <p>The information you've entered does not "
@@ -1300,11 +1300,11 @@ msgid ""
 "enter the details exactly as shown on it.</p>"
 msgstr ""
 
-#: apps/plea/stages.py:950
+#: apps/plea/stages.py:952
 msgid "Your session has timed out"
 msgstr "Mae eich sesiwn wedi dod i ben"
 
-#: apps/plea/stages.py:966
+#: apps/plea/stages.py:968
 msgid ""
 "There seems to have been a problem submitting your plea. Please try again."
 msgstr ""
@@ -2620,15 +2620,14 @@ msgid "Your case"
 msgstr "Eich achos"
 
 #: apps/plea/templates/urn_entry.html:44
-#| msgid "Make a plea online"
 msgid "Make a plea by post"
 msgstr "Pledio drwy'r post"
 
 #: apps/plea/templates/urn_entry.html:46
 msgid ""
-"Your reference number isn’t recognised. Please complete and send the form "
-"enclosed with your notice."
-msgstr "Nid ydym yn adnabod eich cyfeirnod.  Llenwch ac anfonwch y ffurflen sy'n amgaeedig ynghyd â'ch hysbysiad."
+"Your reference number has not been recognised, please submit your plea by post using the forms enclosed."
+msgstr ""
+"Nid yw’r system wedi adnabod eich cyfeirnod, rhaid i chi gyflwyno eich ple drwy’r post gan ddefnyddio’r ffurflenni sydd ynghlwm."
 
 #: apps/plea/templates/urn_used.html:5
 msgid "URN already used"
