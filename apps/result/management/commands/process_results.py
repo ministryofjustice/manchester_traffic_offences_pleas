@@ -144,18 +144,18 @@ class Command(BaseCommand):
 
             can_result, reason = result.can_result()
 
-            if not can_result:
-
-                self.mark_done(result, dry_run=options["dry_run"],
-                               message="Skipping {} because {}".format(result.urn, reason))
-
-                not_resulted_count += 1
-                continue
-
             case = result.get_associated_case()
             if not case:
 
                 self.mark_done(result, dry_run=options["dry_run"])
+
+                not_resulted_count += 1
+                continue
+
+            if not can_result:
+
+                self.mark_done(result, dry_run=options["dry_run"],
+                               message="Skipping {} because {}".format(result.urn, reason))
 
                 not_resulted_count += 1
                 continue
