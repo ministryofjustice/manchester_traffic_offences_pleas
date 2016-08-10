@@ -1,13 +1,18 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.test import TestCase
 from django.test.utils import override_settings
 from django.test.client import RequestFactory
+from django.conf import settings
+
 from mock import Mock
 
 from make_a_plea.serializers import DateAwareSerializer
+from apps.plea.models import Case, Offence
+from apps.result.models import Result, ResultOffence, ResultOffenceData
+from .views import start
 
-from views import start
+from .management.commands.delete_old_data import Command
 
 
 class DateAwareSerializerTests(TestCase):
@@ -64,3 +69,55 @@ class TestStartRedirect(TestCase):
         response = start(fake_request)
 
         self.assertEquals(response.status_code, 200)
+
+
+class CullOldDataTestCase(TestCase):
+
+    def setUp(self):
+        self.command = Command()
+
+    def _make_case(self, created_date):
+        case = Case.objects.create(urn="51xx0000000")
+
+        Offence.objects.create(case=case)
+
+        case.created = created_date
+        case.save()
+
+    def _make_result(self, created_date):
+        result = Result.objects.create(urn="51xx0000000",
+                                       date_of_hearing="2016-08-08")
+
+        offence = ResultOffence.objects.create(result=result)
+
+        ResultOffenceData.objects.create(result_offence=offence)
+
+        result.created = created_date
+        result.save()
+
+    def test_old_records_are_deleted(self):
+
+        created_date = datetime.now() - timedelta(settings.DATA_RETENTION_PERIOD + 1)
+
+        self._make_case(created_date)
+        self._make_result(created_date)
+
+        self.command.handle()
+
+        self.assertEquals(Case.objects.count(), 0)
+        self.assertEquals(Offence.objects.count(), 0)
+        self.assertEquals(Result.objects.count(), 0)
+        self.assertEquals(ResultOffence.objects.count(), 0)
+        self.assertEquals(ResultOffenceData.objects.count(), 0)
+
+    def test_newer_records_are_retained(self):
+
+        created_date = datetime.now() - timedelta(settings.DATA_RETENTION_PERIOD - 1)
+
+        self._make_case(created_date)
+        self._make_result(created_date)
+
+        self.command.handle()
+
+        self.assertEquals(Case.objects.count(), 1)
+        self.assertEquals(Result.objects.count(), 1)
