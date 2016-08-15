@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>make-a-plea service status</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/picnicss/6.1.1/picnic.min.css">
+    <style type="text/css">
+        td.info {
+            background-color: #779ECB;
+        }
+
+        td.warn {
+            background-color: #FFB347;
+            color: #fff;
+        }
+
+        td.error {
+            background-color: #C23B22;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+
+{% block page_content %}
+<table border="1">
+    <tr>
+        <td></td>
+        <td></td>
+        {% for court in courts %}
+        <td>{{ court.court_name }}</td>
+        {% endfor %}
+    </tr>
+    {% for row in data %}
+
+    {% for item in row.data %}
+    <tr>
+        {% if forloop.first %}
+            <td>{{ row.date }}</td>
+        {% else %}
+            <td></td>
+        {% endif %}
+
+        {% for col in item %}
+            {% if forloop.first %}
+                <td>{{ col }}</td>
+            {% else %}
+                <td class="{{ col.status }}">{{ col.value }}</td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+
+    {% endfor %}
+</table>
+{% endblock %}
+
+</body>
+</html>
+

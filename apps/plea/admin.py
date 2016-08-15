@@ -12,7 +12,8 @@ from apps.plea.models import (UsageStats, Court,
                               CaseOffenceFilter,
                               CourtEmailCount,
                               Offence,
-                              DataValidation)
+                              DataValidation,
+                              OUCode)
 
 
 class RegionalFilter(admin.SimpleListFilter):
@@ -61,9 +62,20 @@ class UsageStatsAdmin(admin.ModelAdmin):
     list_editable = ('postal_requisitions', 'postal_responses')
 
 
+class InlineOUCode(admin.StackedInline):
+    model = OUCode
+    extra = 1
+
+
 class CourtAdmin(admin.ModelAdmin):
-    list_display = ('court_name', 'region_code', 'court_address', 'court_email', 'plp_email',
+    list_display = ('court_name', 'region_code', 'court_address', 'court_email', 'plp_email', 'ou_codes',
                     'enabled', 'test_mode', 'notice_types', 'validate_urn', 'display_case_data')
+
+    inlines = (InlineOUCode,)
+
+    def ou_codes(self, obj):
+
+        return ", ".join(x.ou_code for x in obj.oucode_set.all())
 
 
 class InlineCaseAction(admin.TabularInline):

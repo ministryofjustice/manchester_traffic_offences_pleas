@@ -1,98 +1,128 @@
-from contextlib import contextmanager
-from mock import patch
-import json
-import unittest
+import datetime as dt
 
-from django.test import Client
+from django.test import TestCase
 
-from requests.exceptions import RequestException
+from apps.plea.models import Court, Case, OUCode
+from .views import CourtDataView
 
 
-class HealthCheckTestCase(unittest.TestCase):
+class TestStatsLogic(TestCase):
 
     def setUp(self):
-        self.client = Client()
+        self.court = self._create_court()
 
-    @contextmanager
-    def _patch(self, response, exclude=None):
-        exclude = exclude or []
+        self.court_view = CourtDataView()
 
-        location = "apps.monitoring.views."
+    @staticmethod
+    def _create_court(**fields):
+        ou_codes = fields.pop("ou_codes", [])
 
-        check_methods = [
-            "check_mandrill",
-            "check_address",
-            "check_url",
-            "check_database"]
+        data = dict(
+            region_code="20",
+            court_name="TEST COURT 1",
+            enabled=True,
+            court_address="123 Court",
+            court_telephone="0800 COURT",
+            court_receipt_email="test@test.com",
+            submission_email="test@test.com",
+            test_mode=False
+        )
 
-        patches = []
+        data.update(fields)
 
-        for method in check_methods:
-            if method not in exclude:
-                patched = patch(location+method)
-                mock = patched.start()
-                mock.return_value = response
-                patches.append(patched)
+        court = Court.objects.create(**data)
 
-        try:
-            yield
+        for ou_code in ou_codes:
+            OUCode.objects.create(court=court, ou_code=ou_code)
 
-        finally:
-            for patched in patches:
-                patched.stop()
+        return court
 
-    def test_all_ok(self):
+    @staticmethod
+    def _create_case(**fields):
 
-        with self._patch(True):
-            response = self.client.get("/healthcheck")
+        data = dict(
+            imported=False,
+            ou_code=None,
+            completed_on=None
+        )
 
-        output = json.loads(response.content)
+        data.update(fields)
 
-        self.assertEquals(response.status_code, 200)
+        return Case.objects.create(**data)
 
-        self.assertTrue(output["api"]["ok"])
-        self.assertTrue(output["database"]["ok"])
-        self.assertTrue(output["dashboard"]["ok"])
-        self.assertTrue(output["mandrill"]["ok"])
+    def test_soap_gateway_imported_submissions_count(self):
 
-        self.assertTrue(output["ok"])
+        self._create_case(urn="20XX0000000",
+                          imported=True)
+        self._create_case(urn="20XX0000001",
+                          imported=False)
+        self._create_case(urn="22XX0000001",
+                          imported=False)
 
-    @patch("apps.monitoring.check_methods.os.system")
-    def test_ping_failure(self, sys_mock):
+        stats = self.court_view._get_stats(self.court, dt.date.today())
 
-        sys_mock.return_value = 1
+        self.assertEquals(stats["imported"]["value"], 1)
 
-        with self._patch(True, exclude=["check_address", "check_mandrill"]):
-            response = self.client.get("/healthcheck")
+    def test_completed_submission_count(self):
+        self._create_case(urn="20XX0000000",
+                          completed_on=dt.datetime.now())
+        self._create_case(urn="20XX0000001")
 
-        output = json.loads(response.content)
+        stats = self.court_view._get_stats(self.court, dt.date.today())
 
-        self.assertFalse(output["mandrill"]["ok"])
-        self.assertFalse(output["ok"])
+        self.assertEquals(stats["submissions"]["value"], 1)
 
-    @patch("apps.monitoring.check_methods.requests.get")
-    def test_url_failure(self, requests_mock):
+    def test_unvalidated_submission_count(self):
+        self._create_case(urn="20XX0000000",
+                          imported=True,
+                          completed_on=dt.datetime.now())
+        self._create_case(urn="20XX0000001",
+                          completed_on=dt.datetime.now())
 
-        requests_mock.side_effect = RequestException("broken")
+        stats = self.court_view._get_stats(self.court, dt.date.today())
 
-        with self._patch(True, exclude=["check_url"]):
-            response = self.client.get("/healthcheck")
+        self.assertEquals(stats["unvalidated_submissions"]["value"], 1)
 
-        output = json.loads(response.content)
+    def test_failed_email_sending_count(self):
+        self._create_case(urn="20XX0000000",
+                          sent=False,
+                          completed_on=dt.datetime.now())
+        self._create_case(urn="20XX0000001",
+                          sent=True,
+                          completed_on=dt.datetime.now())
 
-        self.assertFalse(output["api"]["ok"])
-        self.assertFalse(output["dashboard"]["ok"])
-        self.assertFalse(output["ok"])
+        stats = self.court_view._get_stats(self.court, dt.date.today())
 
-    @patch("apps.monitoring.check_methods.Case.objects.all")
-    def test_database_failure(self, model):
+        self.assertEquals(stats["email_failure"]["value"], 1)
 
-        model.side_effect = Exception("DB error")
+    def test_sjp_case_import_count(self):
+        self._create_case(urn="20XX0000000",
+                          initiation_type="J",
+                          completed_on=dt.datetime.now())
+        self._create_case(urn="20XX0000001",
+                          completed_on=dt.datetime.now())
 
-        with self._patch(True, exclude=["check_database"]):
-            response = self.client.get("/healthcheck")
+        stats = self.court_view._get_stats(self.court, dt.date.today())
 
-        output = json.loads(response.content)
+        self.assertEquals(stats["sjp_count"]["value"], 1)
 
-        self.assertFalse(output["database"]["ok"])
-        self.assertFalse(output["ok"])
+    def test_completed_on_with_oucode(self):
+        """
+        If a court specifies ou codes, then only match cases that have that OU code.
+        """
+
+        self._create_case(urn="20XX0000000",
+                          completed_on=dt.datetime.now(),
+                          ou_code="B01CY")
+        self._create_case(urn="20XX0000001",
+                          completed_on=dt.datetime.now(),
+                          ou_code="B01LY")
+
+        OUCode.objects.create(court=self.court, ou_code="B01CY")
+
+        stats = self.court_view._get_stats(self.court, dt.date.today())
+
+        self.assertEquals(stats["submissions"]["value"], 1)
+
+
+

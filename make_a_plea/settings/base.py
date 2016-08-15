@@ -191,6 +191,7 @@ INSTALLED_APPS = [
     'axes',
     'djcelery',
     'waffle',
+    'apps.monitoring',
     'govuk_template',
     'make_a_plea',
     'apps.forms',
@@ -326,6 +327,8 @@ ENV_BASE_URL = os.environ.get("ENV_BASE_URL", "")
 FTP_SERVER_IP = os.environ.get("FTP_SERVER_IP", "")
 
 AXES_COOLOFF_TIME = 1
+
+DATA_RETENTION_PERIOD = int(os.environ.get("DATA_RETENTION_PERIOD", "57"))
 
 RAVEN_CONFIG = {
     'dsn': os.environ.get("SENTRY_DSN", ""),
