@@ -40,7 +40,7 @@
 
             {% if notice_type.sjp %}
         <dt>{% blocktrans %}Plead guilty in court{% endblocktrans %}</dt>
-        <dd>{{ pleaform.come_to_court|yesno:_("Yes,No (v1)") }}</dd>
+        <dd>{{ pleaform.come_to_court|yesno:_("Yes,No (v6)") }}</dd>
 
                 {% if pleaform.come_to_court and pleaform.show_interpreter_question %}
         <dt>{% blocktrans %}Interpreter required{% endblocktrans %}</dt>
