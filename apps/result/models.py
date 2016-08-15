@@ -93,9 +93,6 @@ class Result(models.Model):
 
         case = self.get_associated_case()
 
-        if case and case.language == "cy":
-            return False, "Skipping Welsh cases for now"
-
         if not self.division or not self.account_number:
             return False, "Missing division code or account number"
 
