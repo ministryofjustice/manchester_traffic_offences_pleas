@@ -280,10 +280,14 @@ class Case(models.Model):
     imported = models.BooleanField(default=False)
 
     ou_code = models.CharField(max_length=10, null=True, blank=True)
-    initiation_type = models.CharField(max_length=2, null=False, blank=False, default="Q",
+    initiation_type = models.CharField(max_length=2,
+                                       null=False,
+                                       blank=False,
+                                       default="Q",
                                        choices=INITIATION_TYPE_CHOICES)
-    language = models.CharField(max_length=2, null=False, blank=False, default="en",
-                                choices=COURT_LANGUAGE_CHOICES)
+
+    language = models.CharField(max_length=2, null=False, blank=False,
+                                default="en", choices=COURT_LANGUAGE_CHOICES)
 
     sent = models.BooleanField(null=False, default=False)
     processed = models.BooleanField(null=False, default=False)
@@ -312,7 +316,8 @@ class Case(models.Model):
             return self.name
 
         if self.extra_data and "Forename1" in self.extra_data:
-            return "{} {}".format(self.extra_data["Forename1"], self.extra_data["Surname"])
+            return "{} {}".format(self.extra_data["Forename1"],
+                                  self.extra_data["Surname"])
 
         return ""
 
@@ -334,7 +339,8 @@ class Case(models.Model):
 
         if postcode and "PostCode" in self.extra_data:
             inputted_postcode = standardise_postcode(postcode)
-            stored_postcode = standardise_postcode(self.extra_data.get("PostCode"))
+            stored_postcode = standardise_postcode(
+                self.extra_data.get("PostCode"))
 
             postcode_match = inputted_postcode == stored_postcode
 
@@ -452,30 +458,64 @@ class CourtManager(models.Manager):
         """
         Take a URN and return True if the region_code is valid
         """
-
-        try:
-            self.get(region_code=urn[:2],
-                     enabled=True)
-
-            return True
-
-        except Court.DoesNotExist:
-            return False
+        return self.filter(region_code=urn[:2],
+                           enabled=True).exists()
 
     def get_by_urn(self, urn):
         """
         Retrieve court model by URN
         """
 
-        return self.get(region_code=urn[:2],
-                        enabled=True)
+        courts = self.filter(region_code=urn[:2],
+                             enabled=True).order_by("id")
+
+        if courts:
+            return courts[0]
+        else:
+            raise Court.DoesNotExist
+
+    def get_court(self, urn, ou_code=None):
+        """
+        Attempt to return the court by URN or ou code.
+
+        Prioritise matching on ou code but if there is no match then
+        attempt to match on URN
+        """
+
+        if ou_code:
+            try:
+                return OUCode.objects.get(ou_code=ou_code[:5]).court
+            except OUCode.DoesNotExist:
+                pass
+
+        return self.get_by_urn(urn)
+
+    def get_court_by_ou_code(self, ou_code):
+        return self.select_related().get(oucode__ou_code=ou_code[:4])
+
+    def get_court_dx(self, urn):
+        """
+        Get court whilst using DX data and ou-code matching where possible
+        """
+
+        try:
+            ou_code = Case.objects.get(urn=standardise_urn(urn),
+                                       imported=True,
+                                       ou_code__isnull=False).ou_code
+
+        except (Case.DoesNotExist,
+                Case.MultipleObjectsReturned,
+                StandardiserNoOutputException):
+            ou_code = None
+
+        return self.get_court(urn, ou_code=ou_code)
 
     def get_by_standardised_urn(self, urn):
         """
         Standardise the URN before matching it
         """
         try:
-            return Court.objects.get_by_urn(standardise_urn(urn))
+            return self.get_by_urn(standardise_urn(urn))
         except StandardiserNoOutputException:
             return False
 
@@ -498,8 +538,7 @@ class Court(models.Model):
     region_code = models.CharField(
         max_length=2,
         verbose_name="URN Region Code",
-        help_text="The initial two digit URN number, e.g. 06",
-        unique=True)
+        help_text="The initial two digit URN number, e.g. 06")
 
     court_name = models.CharField(
         max_length=255)
@@ -513,7 +552,10 @@ class Court(models.Model):
         max_length=255,
         help_text="The email address for users to contact the court")
 
-    court_language = models.CharField(max_length=4, null=False, blank=False, default="en",
+    court_language = models.CharField(max_length=4,
+                                      null=False,
+                                      blank=False,
+                                      default="en",
                                       choices=COURT_LANGUAGE_CHOICES)
 
     submission_email = models.CharField(
@@ -560,8 +602,6 @@ class Court(models.Model):
         help_text="Display the updated plea page for cases that have offence data attached"
     )
 
-    ou_code = models.CharField(max_length=10, null=True, blank=True)
-
     enforcement_email = models.CharField(
         verbose_name="Email address of the enforcement team",
         max_length=255, null=True, blank=True,
@@ -578,6 +618,12 @@ class Court(models.Model):
                                      self.court_name)
 
     objects = CourtManager()
+
+
+class OUCode(models.Model):
+    court = models.ForeignKey(Court)
+    ou_code = models.CharField(max_length=5, unique=True,
+                               help_text="The first five digits of an OU code")
 
 
 class DataValidation(models.Model):
