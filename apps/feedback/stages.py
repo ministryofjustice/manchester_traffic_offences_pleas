@@ -27,8 +27,13 @@ class CommentsStage(FormStage):
         if clean_data.get("complete", False):
             email_data = {k: v for k, v in self.all_data.items()}
             email_data.update({"comments": clean_data})
-            email_result = send_feedback_email(email_data)
-            if email_result:
+
+            if email_data["comments"]["comments"]:
+                complete = send_feedback_email(email_data)
+            else:
+                complete = True
+
+            if complete:
                 UserRating.objects.record(self.all_data["service"]["service_satisfaction"],
                                           self.all_data["service"].get("call_centre_satisfaction", ""))
                 self.set_next_step("complete")
