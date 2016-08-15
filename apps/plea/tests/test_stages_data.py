@@ -1,8 +1,10 @@
 from unittest import skip
 
 from collections import OrderedDict
-from django.test import TestCase
+
 from django.utils.translation import activate
+from django.test import TestCase, Client
+from apps.plea.views import PleaOnlineViews
 
 from ..stages import URNEntryStage, AuthenticationStage, PleaStage
 from ..models import Court, Case, Offence
@@ -618,3 +620,40 @@ class TestPleaAuthStage(TestURNStageDataBase):
 
         self.assertIn(offence.offence_short_title.encode("utf-8"), response.content)
         self.assertIn(offence.offence_wording.encode("utf-8"), response.content)
+
+class TestURNSubmissionFailureMessage(TestCase):
+    def setUp(self):
+        self.court = Court.objects.create(
+            court_code="0000",
+            region_code="06",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
+            enabled=True,
+            display_case_data=True,
+            validate_urn=True,
+            test_mode=False)
+
+        self.case = Case.objects.create(
+            urn="06YY0000000",
+            imported=True
+        )
+
+        self.client = Client()
+
+    def test_single_failure_no_message(self):
+        response = self.client.post('/plea/enter_urn/', data=dict(urn="06xx0000000"))
+
+        self.assertContains(response, "You need to fix the errors on this page before continuing.")
+        self.assertNotContains(response, "Your reference number has not been recognised")
+
+    def test_message_appears_after_multiple_failures(self):
+
+        for i in range(3):
+            response = self.client.post('/plea/enter_urn/', data=dict(urn="06xx0000000"))
+
+        self.assertContains(response, "Your reference number has not been recognised")
+
