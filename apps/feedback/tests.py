@@ -113,11 +113,28 @@ class FeedbackFormTestCase(TestCase):
 
     def test_email_is_sent(self):
         form = FeedbackForms(self.complete_session_data, "comments")
-        form.save({}, self.request_context)
+
+        save_data = {
+            "comments": "ra ra ra",
+            "email": "user@example.org"
+        }
+
+        form.save(save_data, self.request_context)
 
         form.render()
 
         self.assertEquals(len(mail.outbox), 1)
+
+    def test_email_is_not_sent_if_user_does_not_provide_a_comment(self):
+
+        self.complete_session_data["comments"]["comments"] = ""
+
+        form = FeedbackForms(self.complete_session_data, "comments")
+        form.save({}, self.request_context)
+
+        form.render()
+
+        self.assertEquals(len(mail.outbox), 0)
 
     def test_comments_stage_redirects_to_complete(self):
         session_data = {
@@ -222,7 +239,7 @@ class UserRatingTestCase(TestCase):
         self.assertEquals(aggregate.rating_5, 1)
         self.assertEquals(aggregate.total, 1)
 
-        # Inlude Call Centre rating
+        # Include Call Centre rating
         UserRating.objects.record(1, 3)
 
         self.assertEquals(UserRating.objects.all().count(), 2)
