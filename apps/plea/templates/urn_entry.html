@@ -40,6 +40,12 @@
 
         {{ block.super }}
 
+        {% if urn_entry_failure_count >= 3 %}
+            <h1>{% blocktrans %}Make a plea by post{% endblocktrans %}</h1>
+
+            <p>{% blocktrans %}Your reference number has not been recognised, please submit your plea by post using the forms enclosed.{% endblocktrans %}</p>
+        {% endif %}
+
     {% endif %}
 {% endblock errors_summary %}
 
