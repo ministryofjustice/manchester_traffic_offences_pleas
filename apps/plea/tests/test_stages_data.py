@@ -1,6 +1,8 @@
 from unittest import skip
 
 from collections import OrderedDict
+
+from django.utils.translation import activate
 from django.test import TestCase, Client
 from apps.plea.views import PleaOnlineViews
 
@@ -35,14 +37,18 @@ class TestURNStageDataBase(TestCase):
         self.case.offences.create(
             offence_code="RT12345",
             offence_short_title="Some Traffic problem",
+            offence_short_title_welsh="WELSH-SHORT-TITLE",
             offence_wording="On the 30th December 2015 ... blah blah",
+            offence_wording_welsh="WELSH-OFFENCE-WORDING",
             offence_seq_number="001"
         )
 
         self.case.offences.create(
             offence_code="RT12346",
             offence_short_title="Some Other Traffic problem",
+            offence_short_title_welsh="WELSH-SHORT-TITLE",
             offence_wording="On the 31st December 2015 ... blah blah",
+            offence_wording_welsh="WELSH-OFFENCE-WORDING",
             offence_seq_number="002"
         )
 
@@ -577,6 +583,43 @@ class TestPleaAuthStage(TestURNStageDataBase):
 
         self.assertFalse(getattr(stage.form, "case_data", False))
 
+    def test_offence_data_is_displayed_in_welsh(self):
+
+        activate("cy")
+
+        self.data["dx"] = True
+        self.data["plea"] = {}
+        self.data["case"]["urn"] = "06AA0000015"
+
+        stage = PleaStage(self.urls, self.data)
+        stage.load_forms({})
+        response = stage.render({})
+
+        offence = self.case.offences.all().first()
+
+        self.assertIn(offence.offence_short_title_welsh.encode("utf-8"), response.content)
+        self.assertIn(offence.offence_wording_welsh.encode("utf-8"), response.content)
+
+    def test_offence_data_falls_back_to_en_when_cy_data_is_not_available(self):
+
+        activate("cy")
+
+        offence = self.case.offences.all().first()
+
+        offence.offence_short_title_welsh = None
+        offence.offence_wording_welsh = None
+        offence.save()
+
+        self.data["dx"] = True
+        self.data["plea"] = {}
+        self.data["case"]["urn"] = "06AA0000015"
+
+        stage = PleaStage(self.urls, self.data)
+        stage.load_forms({})
+        response = stage.render({})
+
+        self.assertIn(offence.offence_short_title.encode("utf-8"), response.content)
+        self.assertIn(offence.offence_wording.encode("utf-8"), response.content)
 
 class TestURNSubmissionFailureMessage(TestCase):
     def setUp(self):
@@ -613,8 +656,4 @@ class TestURNSubmissionFailureMessage(TestCase):
             response = self.client.post('/plea/enter_urn/', data=dict(urn="06xx0000000"))
 
         self.assertContains(response, "Your reference number has not been recognised")
-
-
-
-
 

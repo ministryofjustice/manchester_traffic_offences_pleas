@@ -2011,6 +2011,9 @@ msgstr "Other contributors to household bills"
 msgid "Yes,No (v3)"
 msgstr "Yes,No"
 
+msgid "Yes,No (v6)"
+msgstr "Yes,No"
+
 #: apps/plea/templates/partials/review_expenses.html:35
 msgid "Total household expenses"
 msgstr "Total household expenses"
