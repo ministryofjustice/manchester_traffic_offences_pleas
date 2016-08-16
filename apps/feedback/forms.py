@@ -22,6 +22,7 @@ RATING_QUESTIONS = {
     "call-centre": _("Overall, how satisfied were you with the call centre?")
 }
 
+
 class ServiceForm(SplitStageForm):
     dependencies = {
         "call_centre_satisfaction": {
@@ -38,34 +39,39 @@ class ServiceForm(SplitStageForm):
         "nojs_only": True
     }
 
-    used_call_centre = forms.TypedChoiceField(widget=RadioSelect(renderer=DSRadioFieldRenderer),
-                                              required=True,
-                                              choices=YESNO_CHOICES["Do/Naddo"],
-                                              coerce=to_bool,
-                                              label=_("Did you use the call centre to help you make your plea?"),
-                                              error_messages={"required": ERROR_MESSAGES["USED_CALL_CENTRE_REQUIRED"]})
+    used_call_centre = forms.TypedChoiceField(
+        widget=RadioSelect(renderer=DSRadioFieldRenderer),
+        required=True,
+        choices=YESNO_CHOICES["Do/Naddo"],
+        coerce=to_bool,
+        label=_("Did you use the call centre to help you make your plea?"),
+        error_messages={"required": ERROR_MESSAGES["USED_CALL_CENTRE_REQUIRED"]})
 
-    call_centre_satisfaction = forms.ChoiceField(label=RATING_QUESTIONS["call-centre"],
-                                                 choices=SATISFACTION_CHOICES,
-                                                 required=True,
-                                                 error_messages={"required": ERROR_MESSAGES["CALL_CENTRE_SATISFACTION_REQUIRED"]},
-                                                 widget=RadioSelect(renderer=DSRadioFieldRenderer))
+    call_centre_satisfaction = forms.ChoiceField(
+        label=RATING_QUESTIONS["call-centre"],
+        choices=SATISFACTION_CHOICES,
+        required=True,
+        error_messages={"required": ERROR_MESSAGES["CALL_CENTRE_SATISFACTION_REQUIRED"]},
+        widget=RadioSelect(renderer=DSRadioFieldRenderer))
 
-    service_satisfaction = forms.ChoiceField(label=RATING_QUESTIONS["overall"],
-                                             choices=SATISFACTION_CHOICES,
-                                             required=True,
-                                             error_messages={"required": ERROR_MESSAGES["SERVICE_SATISFACTION_REQUIRED"]},
-                                             widget=RadioSelect(renderer=DSRadioFieldRenderer))
+    service_satisfaction = forms.ChoiceField(
+        label=RATING_QUESTIONS["overall"],
+        choices=SATISFACTION_CHOICES,
+        required=True,
+        error_messages={"required": ERROR_MESSAGES["SERVICE_SATISFACTION_REQUIRED"]},
+        widget=RadioSelect(renderer=DSRadioFieldRenderer))
 
 
 class CommentsForm(BaseStageForm):
-    comments = forms.CharField(label=_("If you have any further comments about this service, tell us here:"),
-                               required=False,
-                               widget=forms.Textarea(attrs={"rows": 4,
-                                                             "cols": 50,
-                                                             "class": "form-control"}))
+    comments = forms.CharField(
+        label=_("If you have any further comments about this service, tell us here:"),
+        required=False,
+        widget=forms.Textarea(attrs={"rows": 4,
+                                     "cols": 50,
+                                     "class": "form-control"}))
 
-    email = forms.EmailField(label=_("Email address"),
-                             required=False,
-                             help_text=_("If you'd like us to get back to you, tell us your email address below:"),
-                             widget=forms.TextInput(attrs={"class": "form-control"}))
+    email = forms.EmailField(
+        label=_("Email address"),
+        required=False,
+        help_text=_("If you'd like us to get back to you, tell us your email address below:"),
+        widget=forms.TextInput(attrs={"class": "form-control"}))
