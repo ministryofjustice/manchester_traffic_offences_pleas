@@ -1319,15 +1319,12 @@ msgstr ""
 "Gwiriwch y ffurflen bapur a anfonodd yr heddlu atoch, ac yna rhowch y "
 "manylion yn union fel y dangosir arni."
 
-#: apps/plea/stages.py:953
-msgid "Your session has timed out"
-msgstr "Mae eich sesiwn wedi dod i ben"
-
 #: apps/plea/stages.py:969
 msgid ""
 "There seems to have been a problem submitting your plea. Please try again."
 msgstr ""
 "Mae'n ymddangos bod problem wrth gyflwyno eich ple. Rhowch gynnig arall arni."
+
 #: apps/plea/stages.py:153
 msgid ""
 "<h1>You can't make a plea online</h1>\n"
@@ -1348,12 +1345,6 @@ msgstr ""
 #: apps/plea/stages.py:952
 msgid "Your session has timed out"
 msgstr "Mae eich sesiwn wedi dod i ben"
-
-#: apps/plea/stages.py:968
-msgid ""
-"There seems to have been a problem submitting your plea. Please try again."
-msgstr ""
-"Mae’n ymddangos bod problem wrth gyflwyno eich ple. Rhowch gynnig arall arni."
 
 #: apps/plea/templates/about_your_income.html:6
 #: apps/plea/templates/about_your_income.html:10
@@ -3113,12 +3104,6 @@ msgstr ""
 #| msgid "Telephone"
 msgid "telephone:"
 msgstr "Rhif ffôn"
-
-#: apps/result/templates/emails/user_resulting.txt:91
-msgid ""
-"A hard copy of your fine and collection notice will be posted to you by the "
-"court."
-msgstr ""
 
 #: make_a_plea/context_processors.py:16
 msgid "Skip to main content"
