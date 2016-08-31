@@ -43,6 +43,13 @@ class Command(BaseCommand):
                  "If not specified the script will default to today"
         )
 
+        parser.add_argument(
+            "--show-all",
+            action="store_true",
+            dest="show_all",
+            default=False,
+            help="Show all results including processed results")
+
     @staticmethod
     def get_result_data(case, result):
         data = OrderedDict()
@@ -53,8 +60,12 @@ class Command(BaseCommand):
         data["ou_code"] = case.ou_code
         data["court"] = Court.objects.get_court(result.urn, ou_code=case.ou_code).court_name
         data["fines"], data["endorsements"], data["total"] = result.get_offence_totals()
+
+        data["fines"] = " / ".join(data["fines"])
+        data["endorsements"] = " / ".join(data["endorsements"])
+
         data["pay_by"] = result.pay_by_date
-        data["division"] = result.division,
+        data["division"] = result.division[0],
         data["account_number"] = result.account_number
 
         return data
@@ -103,9 +114,13 @@ class Command(BaseCommand):
 
         self.csv_write_header()
 
-        for result in Result.objects.filter(processed=False,
-                                            sent=False,
-                                            created__range=filter_date_range):
+        results = Result.objects.filter(
+            processed=False, created__range=filter_date_range)
+
+        if not options["show_all"]:
+            results.filter(sent=False)
+
+        for result in results:
 
             can_result, _ = result.can_result()
 
