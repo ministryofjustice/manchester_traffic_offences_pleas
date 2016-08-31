@@ -45,7 +45,7 @@ class Command(BaseCommand):
 
         parser.add_argument(
             "--show-all",
-            action="store_false",
+            action="store_true",
             dest="show_all",
             default=False,
             help="Show all results including processed results")
