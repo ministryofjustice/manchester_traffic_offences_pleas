@@ -1,7 +1,7 @@
 # coding=utf-8
 import cStringIO as StringIO
 from collections import OrderedDict
-import csv
+import unicodecsv as csv
 import datetime as dt
 
 from django.conf import settings
@@ -65,7 +65,7 @@ class Command(BaseCommand):
         data["endorsements"] = " / ".join(data["endorsements"])
 
         data["pay_by"] = result.pay_by_date
-        data["division"] = result.division[0],
+        data["division"] = result.division
         data["account_number"] = result.account_number
 
         return data
@@ -85,8 +85,8 @@ class Command(BaseCommand):
             "account number"
         ])
 
-    def send_status_email(self, recipients):
-        date_str = dt.date.today().strftime("%Y-%m-%d")
+    def send_status_email(self, recipients, date):
+        date_str = date.strftime("%Y-%m-%d")
 
         message = EmailMessage(
             'Resulting CSV {}'.format(date_str),
@@ -114,11 +114,10 @@ class Command(BaseCommand):
 
         self.csv_write_header()
 
-        results = Result.objects.filter(
-            processed=False, created__range=filter_date_range)
+        results = Result.objects.filter(created__range=filter_date_range)
 
         if not options["show_all"]:
-            results.filter(sent=False)
+            results.filter(sent=False, processed=False)
 
         for result in results:
 
@@ -137,6 +136,6 @@ class Command(BaseCommand):
         self._data.reset()
 
         if recipients != ['']:
-            self.send_status_email(recipients)
+            self.send_status_email(recipients, filter_date)
         else:
             print self._data.read()

@@ -22,6 +22,7 @@ django-axes==1.6.0
 django-nested-admin==2.2.3
 
 requests==2.7.0
+unicodecsv==0.14.1
 
 # GOVUK Template
 git+https://github.com/froddd/govuk_template_django.git
