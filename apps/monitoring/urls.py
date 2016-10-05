@@ -1,8 +1,9 @@
 from django.conf.urls import url
-from django.contrib.admin.views.decorators import staff_member_required
+from django.views.decorators.cache import cache_page
+
 from .views import CourtDataView
 
 
 urlpatterns = (
-    url(r"service-status/", staff_member_required(CourtDataView.as_view())),
+    url(r"service-status/", cache_page(60*60*24)(CourtDataView.as_view())),
 )
