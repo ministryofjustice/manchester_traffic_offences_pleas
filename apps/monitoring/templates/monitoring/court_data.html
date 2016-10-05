@@ -18,6 +18,24 @@
             background-color: #C23B22;
             color: #fff;
         }
+
+        td.metric-heading {
+            font-size: 9px;
+            padding: 0.4pt;
+            text-align: center;
+        }
+
+        td.data-cell {
+            text-align: center;
+            padding: 0;
+        }
+
+        td.date-cell {
+            font-size: 11px;
+            text-align: center;
+            white-space: nowrap;
+            padding: 0 3px;
+        }
     </style>
 </head>
 <body>
@@ -27,32 +45,37 @@
 <table border="1">
     <tr>
         <td></td>
-        <td></td>
         {% for court in courts %}
-        <td>{{ court.court_name }}</td>
+        <td colspan="5">{{ court.court_name }}</td>
         {% endfor %}
     </tr>
-    {% for row in data %}
 
-    {% for item in row.data %}
     <tr>
-        {% if forloop.first %}
-            <td>{{ row.date }}</td>
-        {% else %}
-            <td></td>
-        {% endif %}
+        <td class="metric-heading"></td>
+        {% for court in courts %}
+        <td class="metric-heading">Libra cases imported</td>
+        <td class="metric-heading">user submissions</td>
+        <td class="metric-heading">unvalidated submissions</td>
+        <td class="metric-heading">submission emails failures</td>
+        <td class="metric-heading">SJP submissions</td>
+        {% endfor %}
+    </tr>
 
-        {% for col in item %}
-            {% if forloop.first %}
-                <td>{{ col }}</td>
-            {% else %}
-                <td class="{{ col.status }}">{{ col.value }}</td>
-            {% endif %}
+    {% for row in data %}
+    <tr>
+
+        <td class="date-cell">{{ row.date }}</td>
+
+        {% for court_data in row.data %}
+            <td class="data-cell">{{ court_data.imported.value }}</td>
+            <td class="data-cell">{{ court_data.submissions.value }}</td>
+            <td class="data-cell">{{ court_data.unvalidated_submissions.value }}</td>
+            <td class="data-cell">{{ court_data.email_failure.value }}</td>
+            <td class="data-cell">{{ court_data.sjp_count.value }}</td>
         {% endfor %}
     </tr>
     {% endfor %}
 
-    {% endfor %}
 </table>
 {% endblock %}
 
