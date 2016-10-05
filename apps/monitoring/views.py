@@ -1,10 +1,9 @@
 from collections import OrderedDict
 import datetime as dt
+import operator
 
 from django.views.generic.base import TemplateView
 from django.db.models import Q
-from django.contrib.admin.views.decorators import staff_member_required
-import operator
 
 from apps.plea.models import Case, Court
 
@@ -20,6 +19,9 @@ FIELD_NAMES = OrderedDict([
 class CourtDataView(TemplateView):
     template_name = "monitoring/court_data.html"
 
+    def dispatch(self, *args, **kwargs):
+        return super(CourtDataView, self).dispatch(*args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(CourtDataView, self).get_context_data(**kwargs)
 
@@ -33,27 +35,14 @@ class CourtDataView(TemplateView):
             date = today - dt.timedelta(i)
 
             data.append({
-                "date": date,
-                "data": self.reorder_for_display(
-                    [self._get_stats(court, date) for court in courts])
+                "date": date.strftime("%a %d %b %y"),
+                "data": [self._get_stats(court, date) for court in courts]
             })
 
         context["data"] = data
         context["courts"] = courts
 
         return context
-
-    def reorder_for_display(self, row):
-        """
-        reorder the data for html table display
-        """
-
-        row_data = []
-
-        for field in row[0].keys():
-            row_data.append([FIELD_NAMES[field]]+[data[field] for data in row])
-
-        return row_data
 
     @staticmethod
     def _get_date_range(fld_name, date):
