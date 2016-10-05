@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from moj_irat.views import PingJsonView
+from moj_irat.views import PingJsonView, HealthcheckView
 
 import views
 
@@ -34,6 +34,7 @@ urlpatterns = patterns(
     url(r"^test-template/$", views.test_template, name="test_template"),
     url(r"^test-email-attachment/$", views.test_email_attachment, name="test_email_attachment"),
     url(r"^test-resulting-email/$", views.test_resulting_email, name="test_resulting_email"),
+    url(r'^healthcheck$', HealthcheckView.as_view(), name='healthcheck'),
     url(r'^ping.json$', PingJsonView.as_view(build_date_key="APP_BUILD_DATE", commit_id_key="APP_GIT_COMMIT"), name='ping_json'),
     url(r'^500.html$', TemplateView.as_view(template_name="500.html"), name='500_page'),
 
