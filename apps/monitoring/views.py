@@ -4,6 +4,9 @@ import operator
 
 from django.views.generic.base import TemplateView
 from django.db.models import Q
+from django.contrib.admin.views.decorators import staff_member_required
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from apps.plea.models import Case, Court
 
@@ -19,6 +22,8 @@ FIELD_NAMES = OrderedDict([
 class CourtDataView(TemplateView):
     template_name = "monitoring/court_data.html"
 
+    @method_decorator(staff_member_required)
+    @method_decorator(cache_page(60*60*24))
     def dispatch(self, *args, **kwargs):
         return super(CourtDataView, self).dispatch(*args, **kwargs)
 
