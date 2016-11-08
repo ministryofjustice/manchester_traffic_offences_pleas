@@ -5,7 +5,7 @@
 {% load urn %}
 {% load humanize %}
 
-{% block subject %}{% blocktrans %}Notice of fine and collection order{% endblocktrans %}{% endblock subject %}
+{% block subject %}{% blocktrans %}Notice of Fine and How to Pay{% endblocktrans %}{% endblock subject %}
 
 {% block extra_css %}
     h1 {
@@ -21,13 +21,14 @@
 
 {% block content %}
 
-    <h1>{% blocktrans %}Notice of fine and collection order{% endblocktrans %}</h1>
+    <h1>{% blocktrans %}Notice of Fine and How to Pay{% endblocktrans %}</h1>
 
     <hr>
 
 
     {# Case information #}
-    <h3 class="name">{{ name }}</h3>
+    <h3 class="collapse">{% blocktrans %}Name:{% endblocktrans %}</h3>
+    <p class="collapse">{{ name }}</p>
 
     <h3 class="collapse">{% blocktrans %}URN:{% endblocktrans %}</h3>
     <p class="collapse">{{ urn|format_urn }}</p>
@@ -70,16 +71,13 @@
     {# What happens next #}
     <h2>{% blocktrans %}What happens next{% endblocktrans %}</h2>
 
-    <h3>{% blocktrans %}When paying your fine{% endblocktrans %}</h3>
+    <h3>{% blocktrans %}You need to pay your fine by the above date:{% endblocktrans %}</h3>
+
     <p>{% blocktrans %}You will need to tell us:{% endblocktrans %}<br>
         {% blocktrans %}Division:{% endblocktrans %} {{ payment_details.division }}<br>
         {% blocktrans %}Account number:{% endblocktrans %} {{ payment_details.account_number }}</p>
 
-    <p>{% blocktrans %}Payments can be made 24 hours a day using credit or debit card (Visa, Mastercard, Maestro).{% endblocktrans %}</p>
-
-    <p>{% blocktrans %}Payments must be received on or before the date ordered.{% endblocktrans %}<br>
-        {% blocktrans %}Please allow 5 days to allow the payment to be credited to your account.{% endblocktrans %}<br>
-        {% blocktrans %}If you want more information about your account contact the court.{% endblocktrans %}</p>
+    <p>{% blocktrans %}Payments can be made 24 hours a day using credit or debit card (Visa, Mastercard, Maestro). Please allow 5 days to allow the payment to be credited to your account.{% endblocktrans %}</p>
 
     <h2>{% blocktrans %}Ways to pay{% endblocktrans %}</h2>
 
@@ -87,7 +85,7 @@
     <p>www.gov.uk/pay-court-fine-online<br>
         {% blocktrans %}Copy and paste this web address into a new browser window.{% endblocktrans %}</p>
 
-    <h3>{% blocktrans %}Phone:{% endblocktrans %}</h3>
+    <h3>{% blocktrans %}Phone: (24hr payment line){% endblocktrans %}</h3>
     {% if court.court_language == "cy" %}
     <p>0300 790 9980</p>
     {% else %}
@@ -95,39 +93,13 @@
     {% endif %}
 
     <h3>{% blocktrans %}Note:{% endblocktrans %}</h3>
-    <p>{% blocktrans %}When you pay you will be given an authorisation number. Keep this as proof of payment along with the date and amount paid:{% endblocktrans %}</p>
-    <ul>
-        <li>{% blocktrans %}the court will not issue a receipt{% endblocktrans %}</li>
-    </ul>
+    <p>{% blocktrans %}When you pay you will be given an authorisation number. Keep this as proof of payment along with the date and amount paid. The court will not issue a receipt.{% endblocktrans %}</p>
 
     <h3>{% blocktrans %}If you're having difficulty paying{% endblocktrans %}</h3>
-    <p>{% blocktrans %}You can apply for more time to pay by contacting the Fines Team.{% endblocktrans %}</p>
-    <p>{% blocktrans %}If you cannot pay as instructed or can no longer pay as ordered due to a change in your financial circumstances, contact the Fines Team to discuss your options.{% endblocktrans %}</p>
+    <p>{% blocktrans %}If you can no longer pay as ordered, contact the Fines Team to discuss your options by email at:{% endblocktrans %} {{ court.enforcement_email }} </p>
 
-    <h3>{% blocktrans %}Fines Team contact details:{% endblocktrans %}</h3>
-    {% if court.enforcement_email %}
-    <p>{% blocktrans %}email:{% endblocktrans %} {{ court.enforcement_email }}</p>
-    {% endif %}
+    <p>{% blocktrans %}A hard copy of your fine and collection notice will be posted to you by the court. Do not wait for these documents before making payment.{% endblocktrans %}</p>
 
-    {% if court.enforcement_telephone %}
-    <p>{% blocktrans %}Phone:{% endblocktrans %} {{ court.enforcement_telephone }}</p>
-    {% endif %}
-
-    <h3>{% blocktrans %}If you do not pay{% endblocktrans %}</h3>
-    <p>{% blocktrans %}If you fail to pay this fine as ordered you will be liable for further penalties. This could include:{% endblocktrans %}</p>
-
-    <ul>
-        <li>{% blocktrans %}Deductions from your earnings or benefits{% endblocktrans %}</li>
-        <li>{% blocktrans %}50% increase in your fine{% endblocktrans %}</li>
-        <li>{% blocktrans %}Clamping, removal and sale of your vehicle{% endblocktrans %}</li>
-        <li>{% blocktrans %}Registering the account in the Register of Judgments, Orders and Fines (making it harder for you to get credit){% endblocktrans %}</li>
-        <li>{% blocktrans %}A warrant of control being issued to the enforcement agents to take control of your goods (incurring additional costs){% endblocktrans %}</li>
-        <li>{% blocktrans %}Continued default - you may be sent to prison{% endblocktrans %}</li>
-    </ul>
-
-    <h3>{% blocktrans %}What should I do if I change my name or address?{% endblocktrans %}</h3>
-    <p>{% blocktrans %}If you change your name or address you must tell your Fines Team immediately.{% endblocktrans %}</p>
-
-    <p>{% blocktrans %}A hard copy of your fine and collection notice will be posted to you by the court.{% endblocktrans %}</p>
+    <p>{% blocktrans %}If you fail to pay the fine as ordered, you may be liable for further penalties.{% endblocktrans %}</p>
 
 {% endblock content %}
