@@ -284,7 +284,8 @@ SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "")
 SMTP_ROUTES = {"GSI": {"HOST": os.environ.get("GSI_EMAIL_HOST", "localhost"),
                        "PORT": os.environ.get("GSI_EMAIL_PORT", 25)},
                "PNN": {"HOST": os.environ.get("PNN_EMAIL_HOST", "localhost"),
-                       "PORT": os.environ.get("PNN_EMAIL_PORT", 25),}}
+                       "PORT": os.environ.get("PNN_EMAIL_PORT", 25),
+                       "USE_TLS": False}}
 
 # Public email
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "localhost")
