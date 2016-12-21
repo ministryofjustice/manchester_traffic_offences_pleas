@@ -16,9 +16,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     config.vm.synced_folder ".", "/pleas/"
-    config.vm.synced_folder "../manchester_traffic_offences_ops", "/ops/"
-    config.vm.synced_folder "../makeaplea_dx", "/dx/"
-
 
     config.vm.provision :shell do |sh|
         sh.privileged = false
