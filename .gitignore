@@ -82,6 +82,7 @@ make_a_plea/assets-src/vendor/
 /reports
 coverage.xml
 /htmlcov
+/apps/**/features/behave-reports/*
 
 *.doc
 
