@@ -172,7 +172,10 @@ Make sure you have Python 2.7.
 
 Create a virtualenv.
 
-Install postgres locally (alternatively see [Environment Variables](#environment-variables):
+Postgres
+++++++++
+
+Install postgres 9.3+ locally (alternatively see [Environment Variables](#environment-variables) for remote PG:
 
 ```shell
 sudo apt install postgresql
@@ -199,10 +202,37 @@ Create a user capable of creating databases and installing database extensions:
 ```shell
 postgres@localhost$ createuser -sdW <username as per make_a_plea/settings/testing.py>
 Password: <password as per make_a_plea/settings/testing.py>
+
+postgres@localhost$ createdb test_manchester_traffic_offences_pleas -E UTF-8 -O <username as per make_a_plea/settings/testing.py>
 ```
+
+SMTP service
+++++++++++++
 
 Configure AWS keys for testing SMTP via AWS-SMTP gateway:
 
 ```shell
 # TODO
 ```
+
+TODO: consider mocking out email for tests
+
+BDD only
+++++++++
+
+Selenium:
+
+Installing the testing requirements will get you selenium but you will need
+either PhantomJS:
+
+```script
+npm install PhantomJS
+```
+
+or a compatible version of firefox or chrome. Later ones are generally better.
+
+Known good configurations:
+
+| Firefox | geckodriver | selenium |
+| 53.0a2  | 0.13        | 3.0.2    |
+

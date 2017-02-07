@@ -1,11 +1,26 @@
 from base import *
 
-ALLOWED_HOSTS = ["localhost", ]
-DEBUG = True
+import os
+
+ALLOWED_HOSTS = ["*", ]
+DEBUG = False
+TESTING = False
 
 ADMINS = (
     ('A Developer', 'dev@example.org'),
 )
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'makeaplea',
+        'USER': 'makeaplea',
+        'PASSWORD': 'password',
+        'HOST': 'db',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',                      # Set to empty string for default.
+    }
+}
 
 DATABASES = {
     'default': {
@@ -18,17 +33,113 @@ DATABASES = {
     }
 }
 
-#EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-#EMAIL_FILE_PATH = '/Users/ian/Mail'
+SECRET_KEY = "Trdfgjdrivgoemrtuigdlxugdilgvuedrs873w"
 
-SECRET_KEY = "THIS NEEDS TO CHANGE"
+CACHE_BACKEND = 'dummy:///'
+#TEST_RUNNER = 'apps.plea.runner.MAPTestRunner'
 
-PLEA_EMAIL_FROM = "dev@example.org"
-PLEA_EMAIL_TO = ["dev@example.org", ]
+BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+CELERY_ALWAYS_EAGER = True
+CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
+BROKER_BACKEND = 'memory'
+
+PLEA_EMAIL_FROM = "no-reply@makeaplea.justice.gov.uk"
+PLEA_EMAIL_ATTACHMENT_NAME = "plea.html"
+PLEA_EMAIL_TEMPLATE = "plea/plea_email_attachment.html"
+PLEA_EMAIL_TO = ["lyndon.garvey@digital.justice.gov.uk", ]
 PLEA_EMAIL_BODY = ""
 
-PLP_EMAIL_TO = ["dev@example.org", ]
+PLP_EMAIL_TO = ["lyndon.garvey@digital.justice.gov.uk", ]
+PLP_EMAIL_FROM = "ian.george@digital.justice.gov.uk"
 
-PLEA_CONFIRMATION_EMAIL_FROM = "dev@example.org"
+EMAIL_HOST = 'email-smtp.eu-west-1.amazonaws.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
-EMxAIL_REQUIRED = False
+
+PLEA_CONFIRMATION_EMAIL_FROM = "no-reply@makeaplea.justice.gov.uk"
+USER_SMTP_EMAIL_HOST = EMAIL_HOST
+USER_SMTP_EMAIL_PORT = EMAIL_PORT
+USER_SMTP_EMAIL_HOST_USERNAME = EMAIL_HOST_USER
+USER_SMTP_EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+
+# Feedback email
+FEEDBACK_EMAIL_FROM = "no-reply@makeaplea.justice.gov.uk"
+FEEDBACK_EMAIL_TO = ("lyndon.garvey@digital.justice.gov.uk", )
+
+GPG_TEST_KEY = ""
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: GnuPG v1
+
+mI0EVK1D1QEEAL6bi8YLMPid4eDaPnxB0SJExucB5mrTF13xU8UC8GoTpkltTlxy
+w3JL21COAsFCxVLPJE98PG2X3R1Mi7MohfXxAANrUpxavRgE68NWEaoAimnsw01R
++vXQTYk90u6xDW61FHFsSNDDvUPzToa9pIrud1JMSMCHwcHbsSbke6LlABEBAAG0
+GVRlc3QgVXNlciA8dGVzdEB0ZXN0LmNvbT6IuAQTAQIAIgUCVK1D1QIbAwYLCQgH
+AwIGFQgCCQoLBBYCAwECHgECF4AACgkQVAuHyYiqXRcwfQP+J/s4X3qtMKW4rmQG
+HHu8AzJ2PxWZIk1DCSy9HZ7VtsGFOSIPE+71/P2c278yzZQaZ54ALeSmT6Kv/xxj
+nNDUtamUr/42Dpa+Mn3V1U6SOe5G2wTXdkv+hztpooltt0X0TIUw86wclZAvx93e
+1Z4KSQ1tWuc/32YN3VdhrnmSiAO4jQRUrUPVAQQApow0RnvNCJ0YKOEeue6HML29
++leauU3W+jWuhqlmgQkTJdhPtD8UBI73DcAUGox427uqnnmeyLReiUCbImW1kCFq
++fSoXEePjNOudo5d4+bo5MiJYnY+5yHUftg71pq744DsolcoxlegM5PJMwgnnKUf
+mDoViGS9yP+ZEp7V0+cAEQEAAYifBBgBAgAJBQJUrUPVAhsMAAoJEFQLh8mIql0X
+ocID/0b1CbL8PvWV0rA3JGSPl3jR81YJk4yT/VMBjXGa0ohgleV7a3Hs/AyjYvnP
+P6/lTAvZ14AoniTzARsz8w67mKvbWLY84jSq9rqBzDipUJkbhJiGZN9jcx82Wr8z
+NkT+CFXufdUVzyb26FYtY0bMfY4io3X7tVTBODGMmpnmE4bM
+=PQK0
+-----END PGP PUBLIC KEY BLOCK-----
+-----BEGIN PGP PRIVATE KEY BLOCK-----
+Version: GnuPG v1
+
+lQHYBFStQ9UBBAC+m4vGCzD4neHg2j58QdEiRMbnAeZq0xdd8VPFAvBqE6ZJbU5c
+csNyS9tQjgLBQsVSzyRPfDxtl90dTIuzKIX18QADa1KcWr0YBOvDVhGqAIpp7MNN
+Ufr10E2JPdLusQ1utRRxbEjQw71D806GvaSK7ndSTEjAh8HB27Em5Hui5QARAQAB
+AAP+KbF9lA77oc5rS9OBao29ENlphrtwKvrMuDRjJgucCiANNi+OPgOug/Ba41aE
+/MA9yHzeDPL4huJ6r/9/6WsaTg6bcNJ/3La7nPsKfA2tM2d9ri3dhJtDJ65leNPJ
+7G3jzlQxjT5YvbXN1OKsLjEt1hMkR0LymlydspubFqa6OGsCAM+R3XoDAk1QBxWb
+KyIPRbdDRTNCriduilYepOexma00XENG4pF1GMZCMiMuSdqXvXP+klb99dLoZVQ9
+sKFFVPMCAOsUh8AsCMKNMD7jv/FXfdHFsIFmE6Ep/22OFCnvym7kYYunejsbgYOl
+OC4p605kfRna2CIwYjLqNxW6sSbdfscCAI5mK9Uooe0FHAXtLrtfQHK7b7LLrHPU
+2TWMTYIur5fUibFy2ySrXdxqf5Tta+bW3NoUSYVskhHDhk60v75E8w2g57QZVGVz
+dCBVc2VyIDx0ZXN0QHRlc3QuY29tPoi4BBMBAgAiBQJUrUPVAhsDBgsJCAcDAgYV
+CAIJCgsEFgIDAQIeAQIXgAAKCRBUC4fJiKpdFzB9A/4n+zhfeq0wpbiuZAYce7wD
+MnY/FZkiTUMJLL0dntW2wYU5Ig8T7vX8/ZzbvzLNlBpnngAt5KZPoq//HGOc0NS1
+qZSv/jYOlr4yfdXVTpI57kbbBNd2S/6HO2miiW23RfRMhTDzrByVkC/H3d7VngpJ
+DW1a5z/fZg3dV2GueZKIA50B2ARUrUPVAQQApow0RnvNCJ0YKOEeue6HML29+lea
+uU3W+jWuhqlmgQkTJdhPtD8UBI73DcAUGox427uqnnmeyLReiUCbImW1kCFq+fSo
+XEePjNOudo5d4+bo5MiJYnY+5yHUftg71pq744DsolcoxlegM5PJMwgnnKUfmDoV
+iGS9yP+ZEp7V0+cAEQEAAQAD/RY0+qFtT3z3CWol/kVXd0I6ApNXTAOqS+Bn+QHu
+o4LQFXQF4DbN9FrZPzrfoi6aDWFrKAhiehgT6MkPSsAu5KMAoG5HnaslWIrpH7fj
+vLQTk3QBPEIeLz4EXOEPa38gAhulwfWyI/tRolgGguGL5Sn5GBeB2IDv+cSy80Q3
+oBPtAgDHY8XDoJLqZFK70I6XqFOjMAbUFNVul+9yJyPN/rLWRi+iWPZoV9Ol0dIA
+B68M7ltTsu5Pou5RXOq5vmn5BKNTAgDV1V/tteXHwWsOV4qOS/zL9e5xXTxhco08
+yF5TteyiBBMsD4jzcJEIvHoSlFrImDiJVVOoF7utrCrnZC6p8G6dAf9nxH+16z1j
+ODNjLGVZ5EAa9lEZPWpbS4TAL7jsK0o023vyxnkTgNnU3zKQwWqfG7hk8+smpuAD
+otr717WkrDvWouuInwQYAQIACQUCVK1D1QIbDAAKCRBUC4fJiKpdF6HCA/9G9Qmy
+/D71ldKwNyRkj5d40fNWCZOMk/1TAY1xmtKIYJXle2tx7PwMo2L5zz+v5UwL2deA
+KJ4k8wEbM/MOu5ir21i2POI0qva6gcw4qVCZG4SYhmTfY3MfNlq/MzZE/ghV7n3V
+Fc8m9uhWLWNGzH2OIqN1+7VUwTgxjJqZ5hOGzA==
+=Nx2Y
+-----END PGP PRIVATE KEY BLOCK-----
+""
+
+ENV_BASE_URL = "dev.makeaplea.dsd.io"
+FTP_SERVER_IP = "54.77.134.121"
+
+ENCRYPTED_COOKIE_KEYS = [
+    '9evXbsR_1yZA5EW_blSI4O69MjGKwOu1-UwLK_PWyKw=',
+]
+
+#STORE_USER_DATA = True
+#STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
+
+#INSTALLED_APPS.append('debug_toolbar')
+
+# RAVEN_CONFIG = {
+#    'dsn': "https://1ac2eb47e2b549cdb87c244279123aa4:493bab629d9e4bcaa68fa668d97eb67d@sentry.service.dsd.io/44",
+#    'release': os.environ.get("APP_GIT_COMMIT", "no-git-commit-available")
+# }
+
+INTERNAL_IPS = ('10.0.2.2',)
+

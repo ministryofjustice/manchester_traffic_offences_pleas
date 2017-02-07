@@ -1,4 +1,3 @@
-import base64
 import json
 
 from django.contrib.auth.models import User
@@ -8,36 +7,7 @@ from rest_framework.test import (APITestCase, APIRequestFactory, force_authentic
 
 from apps.plea.models import Case, Court, CaseOffenceFilter
 from api.v0.views import CaseViewSet
-
-
-def create_api_user():
-    password = "apitest"
-
-    user = User.objects.create(username="apitest",
-                               email="user@example.org")
-
-    user.set_password(password)
-    user.save()
-
-    credentials = base64.b64encode('{}:{}'.format(user.username, password))
-
-    auth_header = {'HTTP_AUTHORIZATION': 'Basic {}'.format(credentials)}
-
-    return user, auth_header
-
-
-def create_court(region):
-    return Court.objects.create(
-        court_code="0000",
-        region_code=region,
-        court_name="test court",
-        court_address="test address",
-        court_telephone="0800 MAKEAPLEA",
-        court_email="court@example.org",
-        submission_email="court@example.org",
-        plp_email="plp@example.org",
-        enabled=True,
-        test_mode=False)
+from api.reusable import create_api_user, create_court
 
 
 def add_white_list(filter, desc):
@@ -193,7 +163,9 @@ class CaseAPICallTestCase(APITestCase):
         response = self._post_data(self.test_data)
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "Case 00AA0000000 contains offence codes [[u'DF09', u'SZ09']] not present in the whitelist")
+        self.assertEqual(
+            json.loads(response.content)["non_field_errors"][0],
+            "Case 00AA0000000 contains offence codes [[u'DF09', u'SZ09']] not present in the whitelist")
 
     def test_submission_with_second_non_listed_offence_code(self):
         self.test_data["offences"][1]["offence_code"] = "DF0987"
@@ -201,7 +173,9 @@ class CaseAPICallTestCase(APITestCase):
         response = self._post_data(self.test_data)
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "Case 00AA0000000 contains offence codes [[u'RT01', u'DF09']] not present in the whitelist")
+        self.assertEqual(
+            json.loads(response.content)["non_field_errors"][0],
+            "Case 00AA0000000 contains offence codes [[u'RT01', u'DF09']] not present in the whitelist")
 
     def test_submission_with_both_non_listed_offence_codes(self):
         self.test_data["offences"][0]["offence_code"] = "DF0987"
@@ -210,7 +184,9 @@ class CaseAPICallTestCase(APITestCase):
         response = self._post_data(self.test_data)
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "Case 00AA0000000 contains offence codes [[u'DF09', u'DF09']] not present in the whitelist")
+        self.assertEqual(
+            json.loads(response.content)["non_field_errors"][0],
+            "Case 00AA0000000 contains offence codes [[u'DF09', u'DF09']] not present in the whitelist")
 
     def test_valid_submissions_returns_dict(self):
         response = self._post_data(self.test_data)

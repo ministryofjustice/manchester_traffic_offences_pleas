@@ -75,6 +75,7 @@ make_a_plea/assets-src/vendor/
 
 # vim swp files
 *.swp
+.*.sw[a-p]
 
 # vagrant
 .vagrant
@@ -97,3 +98,6 @@ make_a_plea/test_user_data
 moj_template/
 
 /docker/local-env
+
+# BDD browser data
+features/browser-data/*

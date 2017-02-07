@@ -2,14 +2,14 @@ Feature: Audit events for invalid case imports are stored
 
     Scenario Outline: A case with a missing field fails to import 
 
-        Given the "case" from file "case name"
+        Given fixtures from "<case name>" are available
         When the "case" is posted to the api
         Then the response is "failure"
         And the "case" is not saved
         
         And the "audit event" is saved
         And the "audit event" field "event_type" has the value "import"
-        And the "audit event" field "reason_for_failure" has the value "reason for failure"
+        And the "audit event" field "event_subtype" has the value "reason for failure"
         And the "audit event" stack trace is present
         And the "audit event" field "datetime" has the value "just now"
         And the "audit event" contains a hash of the details of the case 
@@ -21,7 +21,7 @@ Feature: Audit events for invalid case imports are stored
 
     Scenario Outline: A case with an invalid field fails to import
 
-        Given the "case" from file "case name"
+        Given fixtures from "<case name>" are available
         When the "case" is posted to the api
         Then the response is "failure"
         And the "case" is not saved

@@ -1,19 +1,27 @@
 from __future__ import division
 
 from datetime import date, timedelta
+from functools import update_wrapper
+
+from django.core import urlresolvers
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from functools import update_wrapper
+from django.db.models import Q
 
-from apps.plea.models import (UsageStats, Court,
-                              Case, CaseAction,
-                              CaseOffenceFilter,
-                              CourtEmailCount,
-                              Offence,
-                              DataValidation,
-                              OUCode)
+from apps.plea.models import (
+    AuditEvent,
+    Court,
+    Case,
+    CaseAction,
+    CaseOffenceFilter,
+    CourtEmailCount,
+    DataValidation,
+    Offence,
+    OUCode,
+    UsageStats,
+)
 
 
 class RegionalFilter(admin.SimpleListFilter):
@@ -127,10 +135,13 @@ class DataValidationAdmin(admin.ModelAdmin):
 
         info = self.model._meta.app_label, self.model._meta.model_name
 
-        urls = patterns('',
-            url(r'^statistics/$',
+        urls = patterns(
+            '',
+            url(
+                r'^statistics/$',
                 wrap(self.statistics_view),
-                name='%s_%s_statistics' % info),
+                name='%s_%s_statistics' % info
+            ),
         )
 
         super_urls = super(DataValidationAdmin, self).get_urls()
@@ -193,9 +204,87 @@ class DataValidationAdmin(admin.ModelAdmin):
             'regions': regions
         }, context_instance=RequestContext(request))
 
+
+class UrnFilter(admin.SimpleListFilter):
+    """Allow filtering by URN from case or event_data"""
+
+    title = _('URN')
+    parameter_name = 'urn'
+
+    def lookups(self, request, model_admin):
+        """Build a list of all urns mentioned by auditevents"""
+
+        # TODO: consider factoring out this iteration
+        urns_by_case = {
+            a.case.urn
+            for a in AuditEvent.objects.all()
+            if hasattr(a, "case") and hasattr(a.case, "urn")
+        }
+        urns_by_event_data = {
+            a.event_data["urn"]
+            for a in AuditEvent.objects.all()
+            if hasattr(a, "event_data") and "urn" in a.event_data
+        }
+
+        # Unique urns for auditevents, with case urns being preferred
+        urns = urns_by_event_data
+        urns.update(urns_by_case)
+
+        # Return the urn to use as a filter parameter and the name
+        return [
+            (u, u)
+            for u in urns
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(
+                case__urn=self.value()
+            ) | queryset.filter(
+                event_data__contains={
+                    'urn': self.value()
+                }
+            )
+            #event_data__urn=self.value())
+        else:
+            return queryset
+
+
+class AuditEventAdmin(admin.ModelAdmin):
+    """Audit events in the admin page"""
+
+    list_display = (
+        'urn',
+        'event_datetime',
+        'event_type',
+        'event_subtype',
+        'case_link',
+    )
+    list_filter = (
+        "event_type",
+        "event_subtype",
+        UrnFilter,
+
+    )
+    search_fields = ("case__urn", "event_data__urn")
+
+    def case_link(self, obj):
+        """Display cases as links"""
+        if hasattr(obj, "case") and obj.case is not None:
+            link = urlresolvers.reverse(
+                "admin:plea_case_change",
+                args=[obj.case.id],
+            )
+            return u'<a href="%s">%s</a>' % (link, obj.case.id)
+        else:
+            return "No case"
+    case_link.allow_tags = True
+
+
 admin.site.register(UsageStats, UsageStatsAdmin)
 admin.site.register(Court, CourtAdmin)
 admin.site.register(CourtEmailCount, CourtEmailCountAdmin)
 admin.site.register(Case, CaseAdmin)
 admin.site.register(CaseOffenceFilter, OffenceFilterAdmin)
 admin.site.register(DataValidation, DataValidationAdmin)
+admin.site.register(AuditEvent, AuditEventAdmin)
