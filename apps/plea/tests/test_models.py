@@ -289,7 +289,7 @@ class TestCourtModel(TestCase):
         self.case = Case.objects.create(
             ou_code="B01LY11",
             imported=True,
-            urn="51XX0000000")
+            urn="61XX0000000")
 
     def test_manager_get_by_urn(self):
         self.assertEquals(self.court.id, Court.objects.get_by_urn("51/xx/00000/00").id)
@@ -301,19 +301,31 @@ class TestCourtModel(TestCase):
         with self.assertRaises(Court.DoesNotExist):
             Court.objects.get_by_urn("51/xx/00000/00")
 
-    def test_get_by_court_with_ou_code(self):
+    def test_get_court_with_matching_ou_code_and_invalid_region_code(self):
+        with self.assertRaises(Court.DoesNotExist):
+            Court.objects.get_court("99XX0000000", ou_code="B01CN")
 
-        self.assertEquals(self.court.id, Court.objects.get_court("99/xx/00000/00", ou_code="B01CN11").id)
+    def test_get_court_with_matching_ou_code_but_not_region_code(self):
+        court = Court.objects.get_court("61XX0000000", ou_code="B01LY")
 
-    def test_get_by_court_ou_code_no_match(self):
-        self.assertEquals(self.court.id, Court.objects.get_court("51/xx/00000/00", ou_code="C01CN11").id)
+        self.assertEqual(self.court2, court)
 
-    def test_get_by_court_ou_code_and_urn_no_match(self):
+    def test_get_court_with_ou_code(self):
+
+        self.assertEquals(
+            self.court.id,
+            Court.objects.get_court("51/xx/00000/00", ou_code="B01CN11").id)
+
+    def test_get_court_ou_code_no_match(self):
+        self.assertEquals(
+            self.court.id,
+            Court.objects.get_court("51/xx/00000/00", ou_code="C01CN11").id)
+
+    def test_get_court_ou_code_and_urn_no_match(self):
         with self.assertRaises(Court.DoesNotExist):
             Court.objects.get_court("99/xx/00000/00", ou_code="9999999")
 
     def test_get_court_dx_ou_code_different_court(self):
-
         court = Court.objects.get_court_dx(self.case.urn)
 
         self.assertEquals(self.court2.id, court.id)
@@ -333,10 +345,6 @@ class TestCourtModel(TestCase):
 
         self.case.id = None
         self.case.save()
-
         court = Court.objects.get_court_dx(self.case.urn)
 
-        self.assertEquals(court.id, self.court.id)
-
-
-
+        self.assertEquals(court.id, self.court2.id)
