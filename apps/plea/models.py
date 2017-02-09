@@ -495,8 +495,10 @@ class CourtManager(models.Manager):
 
         if ou_code:
             try:
-                return OUCode.objects.get(ou_code=ou_code[:5]).court
-            except OUCode.DoesNotExist:
+                return Court.objects.get(
+                    oucode__ou_code=ou_code[:5],
+                    region_code=urn[:2])
+            except Court.DoesNotExist:
                 pass
 
         return self.get_by_urn(urn)
