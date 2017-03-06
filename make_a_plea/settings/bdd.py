@@ -11,7 +11,7 @@ DEFAULT_FIXTURE_FILE = os.path.join(
         os.path.dirname(
             os.path.dirname(__file__))),
     "fixtures",
-    "bdd_fixtures.json",
+    "bdd_defaults.json",
 )
 
 INSTALLED_APPS.append('django_behave')

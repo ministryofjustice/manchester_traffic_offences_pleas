@@ -256,7 +256,6 @@ class AuditEventAdmin(admin.ModelAdmin):
     list_display = (
         'urn',
         'event_datetime',
-        'event_type',
         'event_subtype',
         'case_link',
     )
@@ -275,11 +274,13 @@ class AuditEventAdmin(admin.ModelAdmin):
                 "admin:plea_case_change",
                 args=[obj.case.id],
             )
-            return u'<a href="%s">%s</a>' % (link, obj.case.id)
+            return u'<a href="%s">%s</a>' % (link, obj.case.urn)
         else:
             return "No case"
     case_link.allow_tags = True
 
+    def has_add_permission(self, request):
+        return False
 
 admin.site.register(UsageStats, UsageStatsAdmin)
 admin.site.register(Court, CourtAdmin)

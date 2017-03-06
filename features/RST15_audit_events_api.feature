@@ -2,14 +2,16 @@ Feature: Creating Audit events is possible from outside the application
 
     Background:
 
-        Given fixtures from "auditevent_valid_exercise_api" are loaded
+        Given fixtures from "bdd_auth" are loaded
+        And fixtures from "bdd_auth" are available
+        And fixtures from "auditevent_valid_exercise_api" are loaded
 	And fixtures from "auditevent_create_api" are available
-        And I am logged into the api interface as "apiuser"
+        And I am logged into the api interface as "admin"
         And I am logged into the admin interface as "servicemanager"
 
     Scenario Outline: A pre-processing step reports failing to process a case
 
-        When an api call is made to create a "audit event" with pk "pk"
+        When an api call is made to create a "audit event"
 	Then the response is "success"
 
         And the "audit event" is saved

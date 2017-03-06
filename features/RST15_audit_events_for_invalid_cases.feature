@@ -1,5 +1,11 @@
 Feature: Audit events for invalid case imports are stored
 
+    Background:
+	
+	Given fixtures from "bdd_auth" are loaded
+	And fixtures from "bdd_auth" are available
+        And I am logged into the api interface as "admin"
+
     Scenario Outline: A case with a missing field fails to import 
 
         Given fixtures from "<case name>" are available

@@ -705,11 +705,24 @@ class AuditEvent(models.Model):
     """
 
     EVENT_TYPE_CHOICES = (
-        (0, "not_set"),  # programming error - caller did not set event_type
-        (1, "case_model"),  # save operations on the model
-        (2, "case_form"),  # form validation issues
-        (3, "case_api"),  # issue at the api
-        (4, "auditevent_api"),  # issue with an external component
+        ("not_set", "Not Set"),  # programming error - caller did not set event_type
+        ("case_model", "Case Save event"),  # save operations on the model
+        ("case_form", "Case Form event"),  # form validation issues
+        ("case_api", "Case API event"),  # issue at the api
+        ("auditevent_api", "AuditEvent API enevt"),  # issue with an external component
+    )
+    EVENT_SUBTYPE_CHOICES = (
+        ("not_set", "Not set"),
+        ("success", "Success"),
+        ("EXT1", "External failure 1"),
+        ("EXT2", "External failure 2"),
+        ("case_invalid_missing_name", "Invalid Case: Missing Name"),
+        ("case_invalid_missing_urn", "Invalid Case: Missing URN"),
+        ("case_invalid_name_too_long", "Invalid Case: Name too long"),
+        ("case_invalid_offencecode", "Invalid Case: Invalid offence code"),
+        ("case_invalid_courtcode", "Invalid Case: Invalid court code"),
+        ("case_invalid_not_in_whitelist", "Invalid Case: Not in whitelist"),
+        ("case_invalid_duplicate_offence", "Invalid Case: Duplicate offence"),
     )
 
     IGNORED_CASE_FIELDS = ["extra_data", "id"]
@@ -717,12 +730,38 @@ class AuditEvent(models.Model):
     IGNORED_FORM_FIELDS = ["id"]
     IGNORED_VALIDATOR_FIELDS = []
 
-    case = models.ForeignKey(Case, null=True, blank=True)
-    event_type = models.SmallIntegerField(choices=EVENT_TYPE_CHOICES, default=0)
-    event_subtype = models.CharField(max_length=32, default="")
-    event_data = HStoreField(null=True, blank=True)
-    extra_data_hash = models.CharField(max_length=32, default="")
-    event_datetime = models.DateTimeField(auto_now_add=True)
+    case = models.ForeignKey(
+        Case,
+        verbose_name="related case",
+        help_text="If there was a successful case loaded then it is related here",
+        null=True, blank=True)
+    event_type = models.CharField(
+        choices=EVENT_TYPE_CHOICES,
+        verbose_name="event type",
+        help_text="Identified the area of the application that the event happened in",
+        max_length=255, default="not_set")
+    event_subtype = models.CharField(
+        choices=EVENT_SUBTYPE_CHOICES,
+        verbose_name="reason for failure",
+        help_text="The specific reason for the event",
+        max_length=255, default="not_set")
+    event_trace = models.CharField(
+        max_length=4000,
+        verbose_name="error detail",
+        help_text="This detail about the reason for this event may be useful for developers to debug import issue",
+        blank=True, null=True)
+    event_data = HStoreField(
+        verbose_name="Event data",
+        help_text="If there was a failure and data fields were found, they are stored here to debug",
+        null=True, blank=True)
+    extra_data_hash = models.CharField(
+        verbose_name="extra data hash",
+        help_text="If the event caused a change to the extra_data then store the hash of it for debugging",
+        max_length=32, default="")
+    event_datetime = models.DateTimeField(
+        verbose_name="event date and time",
+        help_text="The time at which the event occurred",
+        auto_now_add=True)
 
     @property
     def urn(self):

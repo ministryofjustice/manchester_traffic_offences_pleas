@@ -1,5 +1,10 @@
 Feature: Admin interface non-functional requirements
 
+    Background:
+	
+	Given fixtures from "bdd_auth" are loaded
+	And fixtures from "bdd_auth" are available
+
     Scenario: Audit events are visible to service managers
 
         Given I am logged into the admin interface as "servicemanager"
@@ -16,4 +21,4 @@ Feature: Admin interface non-functional requirements
 
         Given I am logged into the admin interface as "courtstaff"
         When I visit "/admin/plea/auditevent/"
-        Then I see the admin login form
+        Then I see "403 Forbidden" in the page

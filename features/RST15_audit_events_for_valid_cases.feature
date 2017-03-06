@@ -1,5 +1,11 @@
 Feature: Audit events for valid case imports are stored
 
+    Background:
+	
+	Given fixtures from "bdd_auth" are loaded
+	And fixtures from "bdd_auth" are available
+        And I am logged into the api interface as "admin"
+
     Scenario Outline: A case with valid, minimal fields is imported
 
         Given fixtures from "case_valid_minimal" are available
@@ -17,7 +23,8 @@ Feature: Audit events for valid case imports are stored
 	And the "audit event" field "case" has the value "case_pk"
 
 	Examples:
-            |||
+		| case |
+		| 1    |
 
     Scenario Outline: A case with valid fields and optional ones is imported
 
@@ -32,4 +39,5 @@ Feature: Audit events for valid case imports are stored
         And the "audit event" field "case" has the value "case_pk"
 
 	Examples:
-	    |||
+		| case |
+		| 1    |

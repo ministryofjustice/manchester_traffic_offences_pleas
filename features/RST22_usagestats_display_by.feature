@@ -2,7 +2,9 @@ Feature: Usage stats help to direct support efforts
 
     Background:
 	
-        Given I am logged into the admin interface as "servicemanager"
+	Given fixtures from "bdd_auth" are loaded
+	And fixtures from "bdd_auth" are available
+        And I am logged into the admin interface as "servicemanager"
 
     Scenario: Usage stats can be displayed by court centre
 	
