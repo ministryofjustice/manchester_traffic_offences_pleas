@@ -366,10 +366,11 @@ class Case(models.Model):
 
     def save(self, *args, **kwargs):
         """After saving a case, create an AuditEvent"""
-        case = super(Case, self).save(*args, **kwargs)
+        super(Case, self).save(*args, **kwargs)
         AuditEvent().create(
-            event_type="internal",
+            event_type="case_model",
             method="save",
+            case=self,
         )
 
 
@@ -725,7 +726,11 @@ class AuditEvent(models.Model):
         ("case_invalid_duplicate_offence", "Invalid Case: Duplicate offence"),
     )
 
-    IGNORED_CASE_FIELDS = ["extra_data", "id"]
+    IGNORED_CASE_FIELDS = [
+        "id",  # Django id is irrelavent
+        "auditevent",  # Case is saved before the auditevent so ignore it
+        "datavalidation",  # DataValidation objects are defunct
+    ]
     IGNORED_RESULT_FIELDS = ["extra_data", "id"]
     IGNORED_FORM_FIELDS = ["id"]
     IGNORED_VALIDATOR_FIELDS = []
@@ -773,6 +778,28 @@ class AuditEvent(models.Model):
             if "urn" in self.event_data:
                 return self.event_data["urn"]
 
+    @property
+    def initiation_type(self):
+        """Used in the admin"""
+        itype_edata = itype_attr = None
+
+        if hasattr(self, "event_data"):
+            if "initiation_type" in self.event_data:
+                itype_edata = self.event_data["initiation_type"]
+
+        if hasattr(self, "case"):
+            if hasattr(self.case, "initiation_type"):
+                itype_attr = [
+                    i[1]
+                    for i in INITIATION_TYPE_CHOICES
+                    if self.case.initiation_type == i[0]
+                ][0]
+
+        if itype_attr != itype_edata:
+            return "CONFLICTED"
+        else:
+            return itype_attr or itype_edata
+
     def __unicode__(self):
         return "type:{0} subtype:{1} eventdata:{2} extradatahash:{3} eventdatetime:{4}".format(
             self.event_type, self.event_subtype, self.event_data,
@@ -790,7 +817,7 @@ class AuditEvent(models.Model):
         # I see no clear way to determine the event_type automatically right now
         try:
             if kwargs["event_type"] not in [
-                    i[1]
+                    i[0]
                     for i in cls.EVENT_TYPE_CHOICES]:
                 raise Exception("Invalid event_type")
         except KeyError:
@@ -799,13 +826,12 @@ class AuditEvent(models.Model):
             ae.event_type = [
                 i[0]
                 for i in cls.EVENT_TYPE_CHOICES
-                if i[1] == kwargs["event_type"]][0]
+                if i[0] == kwargs["event_type"]][0]
 
         # If there's a Case floating about, let's copy its details
         if "case" in kwargs:
-            print("auditing a case")
             case = kwargs["case"]
-            if not issubclass(case, Case):
+            if not issubclass(case.__class__, Case):
                 raise Exception("case kwarg is not a Case object")
             ae.case = case
 
@@ -813,17 +839,18 @@ class AuditEvent(models.Model):
 
             # Copy the fields we are interested in
             for fieldname in fieldnames:
-                field = getattr(case, fieldname)
-                if field.name not in cls.IGNORED_CASE_FIELDS:
-                    ae.event_data[field.name] = field.value
-                if field.name == "extra_data":
-                    h = hashlib.md5()
-                    h.update(field.value)
-                    ae.extra_data_hash = h.get_digest()
+                if fieldname not in cls.IGNORED_CASE_FIELDS:
+                    field = getattr(case, fieldname)
+                    if hasattr(field, 'name') and hasattr(field, "value"):
+                        if field.name == "extra_data":
+                            h = hashlib.md5()
+                            h.update(field.value)
+                            ae.extra_data_hash = h.get_digest()
+                        else:
+                            ae.event_data[field.name] = field.value
 
         # If there's a Result floating around, let's copy its details
         if "result" in kwargs:
-            print("auditing a result")
             result = kwargs["result"]
             if not issubclass(result, Result):
                 raise Exception("result kwarg is not a Result object")
@@ -841,7 +868,6 @@ class AuditEvent(models.Model):
 
         # If there's a form floating about, let's copy its fields
         elif "form" in kwargs:
-            print ("auditing a form")
             ae.event_subtype = "form"
             for k, v in kwarg.items():
                 if k not in cls.IGNORED_FORM_FIELDS:
@@ -849,13 +875,13 @@ class AuditEvent(models.Model):
 
         # If this was just a validator we might have useful kwargs
         elif "validator" in kwargs:
-            print("auditing a validator")
             ae.event_subtype = "validator"
             ae.event_data = {}
             for k, v in kwargs.items():
                 if k not in cls.IGNORED_VALIDATOR_FIELDS:
                     ae.event_data[k] = v
-
+        if ae.event_data is None:
+            ae.event_data = {}
         try:
             ae.save()
         except ProgrammingError:

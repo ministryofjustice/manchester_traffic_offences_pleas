@@ -18,6 +18,7 @@ from apps.plea.models import (
     CaseOffenceFilter,
     CourtEmailCount,
     DataValidation,
+    INITIATION_TYPE_CHOICES,
     Offence,
     OUCode,
     UsageStats,
@@ -97,9 +98,52 @@ class InlineOffence(admin.StackedInline):
     extra = 0
 
 
+class CaseInitiationTypeFilter(admin.SimpleListFilter):
+    """Allow filtering Cases by Initiation type including compound views"""
+
+    title = _('Initiation type')
+    parameter_name = 'initiation_type'
+
+    def lookups(self, request, model_admin):
+        """Build a list of all urns mentioned by auditevents"""
+
+        cases = Case.objects.all()
+
+        # Return the urn to use as a filter parameter and the name
+        return list(set([
+            (
+                case.initiation_type,
+                [
+                    i[1]
+                    for i in INITIATION_TYPE_CHOICES
+                    if i[0] == case.initiation_type
+                ][0]
+            )
+            for case in cases
+        ])) + [
+            (
+                "J|Q|S",
+                "SJPs, requisitions and summons",
+            )
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            # Compound queries (could be done programatically if needed)
+            if self.value() == "J|Q|S":
+                return queryset.filter(initiation_type="J") | \
+                    queryset.filter(initiation_type="Q") | \
+                    queryset.filter(initiation_type="S")
+            # Filter on  particular initiation_type
+            else:
+                return queryset.filter(initiation_type=self.value())
+        else:
+            return queryset
+
+
 class CaseAdmin(admin.ModelAdmin):
     list_display = ("urn", "sent", "processed", "charge_count", "initiation_type")
-    list_filter = ("sent", "processed", "initiation_type", "ou_code", "imported")
+    list_filter = ("sent", "processed", CaseInitiationTypeFilter, "ou_code", "imported")
     inlines = [InlineCaseAction, InlineOffence]
     search_fields = ["urn", "case_number"]
     readonly_fields = ('created',)
@@ -245,7 +289,76 @@ class UrnFilter(admin.SimpleListFilter):
                     'urn': self.value()
                 }
             )
-            #event_data__urn=self.value())
+        else:
+            return queryset
+
+
+class AuditEventInitiationTypeFilter(admin.SimpleListFilter):
+    """Allow filtering Audit events by Initiation type including compound views"""
+
+    title = _('Initiation type')
+    parameter_name = 'initiation_type'
+
+    def lookups(self, request, model_admin):
+        """Build a list of all initiation_types mentioned by auditevents"""
+
+        initiation_types_by_case = {
+            a.case.initiation_type
+            for a in AuditEvent.objects.all()
+            if hasattr(a, "case") and hasattr(a.case, "initiation_type")
+        }
+        initiation_types_by_event_data = {
+            a.event_data["initiation_type"]
+            for a in AuditEvent.objects.all()
+            if hasattr(a, "event_data") and "initiation_type" in a.event_data
+        }
+
+        # Unique initiation_types for auditevents, with case initiation_types being preferred
+        initiation_types = initiation_types_by_event_data
+        initiation_types.update(initiation_types_by_case)
+
+        # Return the urn to use as a filter parameter and the name
+        return [
+            (i, i)
+            for i in initiation_types
+        ]
+        #return [
+        #    (
+        #        case.initiation_type,
+        #        [
+        #            i[1]
+        #            for i in INITIATION_TYPE_CHOICES
+        #            if i[0] == case.initiation_type
+        #        ][0]
+        #    )
+        #    for case in cases
+        #] + [
+        #    (
+        #        "J|Q|S",
+        #        "SJPs, requisitions and summons",
+        #    )
+        #]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            # Compound queries (could be done programatically if needed)
+            if self.value() == "J|Q|S":
+                return queryset.filter(case__initiation_type="J") | \
+                    queryset.filter(case__initiation_type="Q") | \
+                    queryset.filter(case__initiation_type="S") | \
+                    queryset.filter(event_data__contains={'initiation_type': "J"}) | \
+                    queryset.filter(event_data__contains={'initiation_type': "Q"}) | \
+                    queryset.filter(event_data__contains={'initiation_type': "S"})
+
+            # Filter on  particular initiation_type
+            else:
+                return queryset.filter(
+                    case__initiation_type=self.value()
+                ) | queryset.filter(
+                    event_data__contains={
+                        'initiation_type': self.value()
+                    }
+                )
         else:
             return queryset
 
@@ -257,11 +370,13 @@ class AuditEventAdmin(admin.ModelAdmin):
         'urn',
         'event_datetime',
         'event_subtype',
+        'initiation_type',
         'case_link',
     )
     list_filter = (
         "event_type",
         "event_subtype",
+        AuditEventInitiationTypeFilter,
         UrnFilter,
 
     )
