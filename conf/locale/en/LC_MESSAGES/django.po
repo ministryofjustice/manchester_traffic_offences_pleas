@@ -1628,13 +1628,6 @@ msgstr "GOV.UK - Online plea submission confirmation"
 msgid "Please give us feedback so we can make it better:"
 msgstr "Please give us feedback so we can make it better:"
 
-#: apps/plea/templates/emails/user_plea_confirmation.txt:42
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:39
-#: apps/plea/templates/emails/user_resulting.txt:84
-#: make_a_plea/templates/base_user_email.html:225
-msgid "If you're unsure an email is from the Ministry of Justice:"
-msgstr "If you're unsure an email is from the Ministry of Justice:"
-
 #: apps/plea/templates/emails/user_plea_confirmation.txt:44
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:41
 #: apps/plea/templates/emails/user_resulting.txt:86
