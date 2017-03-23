@@ -1983,15 +1983,6 @@ msgstr "GOV.UK - Cadarnhad o gofnodi ple ar-lein"
 msgid "Please give us feedback so we can make it better:"
 msgstr "Gofynnwn yn garedig ichi roi adborth inni fel y gallwn ei wella:"
 
-#: apps/plea/templates/emails/user_plea_confirmation.txt:42
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:39
-#: apps/result/templates/emails/user_resulting.txt:67
-#: make_a_plea/templates/base_user_email.html:225
-msgid "If you're unsure an email is from the Ministry of Justice:"
-msgstr ""
-"Os nad ydych yn siŵr fod neges e-bost wedi cael ei hanfon gan y Weinyddiaeth "
-"Cyfiawnder:"
-
 #: apps/plea/templates/emails/user_plea_confirmation.txt:44
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:41
 #: apps/result/templates/emails/user_resulting.txt:69

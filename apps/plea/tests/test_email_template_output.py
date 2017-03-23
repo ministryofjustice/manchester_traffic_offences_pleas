@@ -829,6 +829,22 @@ class EmailTemplateTests(TestCase):
 
         send_plea_email(data)
 
+    def test_forward_email_section_removed_from_plea_confirmation(self):
+        context_data = self.get_context_data()
+
+        send_plea_email(context_data)
+
+        search_text = "If you're unsure an email is from the Ministry of Justice"
+        self.assertNotIn(search_text, mail.outbox[2].body)
+
+    def test_forward_email_section_removed_from_sjp_plea_confirmation(self):
+        context_data = self.get_context_data(notice_type_data={"sjp": True})
+
+        send_plea_email(context_data)
+
+        search_text = "If you're unsure an email is from the Ministry of Justice"
+        self.assertNotIn(search_text, mail.outbox[2].body)
+
 
 class TestCompanyFinancesEmailLogic(TestCase):
     def setUp(self):
