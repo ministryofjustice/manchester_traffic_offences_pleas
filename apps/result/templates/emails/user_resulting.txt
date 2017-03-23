@@ -64,11 +64,6 @@ www.gov.uk/pay-court-fine-online
 
 ------------------------------------------------------------------------
 
-{% blocktrans %}If you're unsure an email is from the Ministry of Justice:{% endblocktrans %}
-
-- {% blocktrans %}do not reply to it or click any links{% endblocktrans %}
-- {% blocktrans %}forward it to{% endblocktrans %} feedback@makeaplea.gov.uk
-
 {% blocktrans %}Terms and Conditions and Privacy Policy:{% endblocktrans %}
 https://www.makeaplea.service.gov.uk/terms-and-conditions-and-privacy-policy
 
