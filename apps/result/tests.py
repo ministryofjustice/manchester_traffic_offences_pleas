@@ -380,3 +380,11 @@ class ProcessResultsTestCase(TestCase):
         search_text = "If you're unsure an email is from the Ministry of Justice"
         self.assertNotIn(search_text, mail.outbox[0].alternatives[0][0])
 
+    def test_result_for_welsh_case_sent_in_welsh(self):
+        self.test_case1.language = "cy"
+        self.test_case1.save()
+
+        self.command.handle(**self.opts)
+
+        assert mail.outbox[0].subject == '[[Welsh translation needed]]'
+        assert 'Eich llys: Test Court' in mail.outbox[0].body
