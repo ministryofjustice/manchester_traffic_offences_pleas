@@ -368,4 +368,15 @@ class ProcessResultsTestCase(TestCase):
         self.assertFalse(result.sent)
         self.assertFalse(result.processed)
 
+    def test_forward_email_section_removed_from_plain_text_email(self):
+        self.command.handle(**self.opts)
+
+        search_text = "If you're unsure an email is from the Ministry of Justice"
+        self.assertNotIn(search_text, mail.outbox[0].body)
+
+    def test_forward_email_section_removed_from_html_email(self):
+        self.command.handle(**self.opts)
+
+        search_text = "If you're unsure an email is from the Ministry of Justice"
+        self.assertNotIn(search_text, mail.outbox[0].alternatives[0][0])
 
