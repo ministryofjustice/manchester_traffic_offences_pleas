@@ -62,6 +62,8 @@ www.gov.uk/pay-court-fine-online
 
 {% blocktrans %}If you fail to pay the fine as ordered, you may be liable for further penalties.{% endblocktrans %}
 
+{% blocktrans %}Please do not reply to this email as this email address is not monitored. Instead please send all queries directly to the court or fine email address shown in this email.{% endblocktrans %}
+
 ------------------------------------------------------------------------
 
 {% blocktrans %}Terms and Conditions and Privacy Policy:{% endblocktrans %}
