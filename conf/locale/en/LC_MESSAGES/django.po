@@ -1306,8 +1306,8 @@ msgstr "Check and try again."
 #: apps/plea/templates/company_details.html:19
 #: apps/plea/templates/urn_entry.html:21 apps/plea/templates/urn_used.html:14
 #: apps/plea/templates/your_details.html:16
-msgid "To make changes to a plea you’ve already made online, email or write to the court before your hearing with:"
-msgstr "To make changes to a plea you’ve already made online, email or write to the court before your hearing with:"
+msgid "To make changes to a plea you've already made online, email or write to the court before your hearing with:"
+msgstr "To make changes to a plea you've already made online, email or write to the court before your hearing with:"
 
 #: apps/plea/templates/company_details.html:22
 #: apps/plea/templates/urn_entry.html:24 apps/plea/templates/urn_used.html:17
@@ -1596,16 +1596,16 @@ msgid "You'll find contact details for the court considering your case in the no
 msgstr "You'll find contact details for the court considering your case in the notice we sent you."
 
 #: apps/plea/templates/court_finder.html:50
-msgid "We don’t recognise the URN you’ve entered"
-msgstr "We don’t recognise the URN you’ve entered"
+msgid "We don't recognise the URN you've entered"
+msgstr "We don't recognise the URN you've entered"
 
 #: apps/plea/templates/court_finder.html:51
-msgid "The unique reference number you entered doesn’t match our records."
-msgstr "The unique reference number you entered doesn’t match our records."
+msgid "The unique reference number you entered doesn't match our records."
+msgstr "The unique reference number you entered doesn't match our records."
 
 #: apps/plea/templates/court_finder.html:53
-msgid "Check your URN (it’s on page 1 of the notice we sent you, usually at the top) then try again."
-msgstr "Check your URN (it’s on page 1 of the notice we sent you, usually at the top) then try again."
+msgid "Check your URN (it's on page 1 of the notice we sent you, usually at the top) then try again."
+msgstr "Check your URN (it's on page 1 of the notice we sent you, usually at the top) then try again."
 
 #: apps/plea/templates/court_finder.html:58
 #: make_a_plea/templates/base_form.html:10
@@ -2169,10 +2169,10 @@ msgstr[0] "Confirm your plea"
 msgstr[1] "Confirm your pleas"
 
 #: apps/plea/templates/review.html:24
-msgid "Review the information you’ve given before making your plea."
-msgid_plural "Review the information you’ve given before making your pleas."
-msgstr[0] "Review the information you’ve given before making your plea."
-msgstr[1] "Review the information you’ve given before making your pleas."
+msgid "Review the information you've given before making your plea."
+msgid_plural "Review the information you've given before making your pleas."
+msgstr[0] "Review the information you've given before making your plea."
+msgstr[1] "Review the information you've given before making your pleas."
 
 #: apps/plea/templates/review.html:42 apps/plea/templates/review.html.py:47
 msgid "Change <span>your details</span>"
