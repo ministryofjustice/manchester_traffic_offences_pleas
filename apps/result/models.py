@@ -139,13 +139,13 @@ class Result(models.Model):
         for offence in self.result_offences.all():
             for r in offence.offence_data.all():
                 if r.result_code.startswith("F"):
-                    values = re.findall(r'\xa3([0-9]+\.*[0-9]{0,2})', r.result_wording)
+                    values = re.findall(r'\xa3([0-9]+\.*[0-9]{0,2})', r.result_wording_by_language)
                     value = sum(Decimal(v) for v in values)
                     total += value
-                    fines.append(r.result_wording)
+                    fines.append(r.result_wording_by_language)
 
                 elif r.result_code in ["LEP", ]:
-                    endorsements.append(r.result_wording)
+                    endorsements.append(r.result_wording_by_language)
 
         return fines, endorsements, total
 
@@ -166,4 +166,22 @@ class ResultOffenceData(models.Model):
     result_wording = models.TextField(max_length=4000)
     result_wording_welsh = models.TextField(max_length=4000, null=True, blank=True)
     result_seq_number = models.CharField(max_length=10, null=True, blank=True)
+
+    @property
+    def language(self):
+        return getattr(self.result_offence.result.case, 'language', 'en')
+
+    @property
+    def result_short_title_by_language(self):
+        if self.language == "cy" and self.result_short_title_welsh:
+            return self.result_short_title_welsh
+        else:
+            return self.result_short_title
+
+    @property
+    def result_wording_by_language(self):
+        if self.language == "cy" and self.result_wording_welsh:
+            return self.result_wording_welsh
+        else:
+            return self.result_wording
 
