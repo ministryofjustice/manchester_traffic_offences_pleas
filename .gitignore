@@ -96,3 +96,5 @@ make_a_plea/test_user_data
 moj_template/
 
 /docker/local-env
+
+*translation_files.zip
