@@ -14,13 +14,14 @@ sudo pip install virtualenvwrapper
 cd /home/vagrant/
 mkdir -p .envs
 
-sed -i '$a\
-\
-export WORKON_HOME=/home/vagrant/.envs\
-source /usr/local/bin/virtualenvwrapper.sh\
-workon manchester\
-echo -e "\\n\\n\\033[0;31mRun: ./manage.py runserver 0.0.0.0:8000\\033[0m\\n\\n"\
-' .bashrc
+
+grep -q '# make a plea startup' .bashrc || cat << EOF >> .bashrc
+# make a plea startup
+export WORKON_HOME=/home/vagrant/.envs
+source /usr/local/bin/virtualenvwrapper.sh
+workon manchester
+echo -e "\\n\\n\\033[0;31mRun: ./manage.py runserver 0.0.0.0:8000\\033[0m\\n\\n"
+EOF
 
 echo "Setting VE wrapper"
 WORKON_HOME=/home/vagrant/.envs
