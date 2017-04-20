@@ -8,6 +8,7 @@ from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
 from django.utils import translation
 from django.template.loader import get_template
+from django.utils.translation import ugettext as _
 
 from apps.result.models import Result
 from apps.plea.models import Court
@@ -92,7 +93,9 @@ class Command(BaseCommand):
                                     password=settings.EMAIL_HOST_PASSWORD,
                                     use_tls=settings.EMAIL_USE_TLS)
 
-        email = EmailMultiAlternatives("Make a plea result", t_output,
+        subject = _("Make a plea result")
+
+        email = EmailMultiAlternatives(subject, t_output,
                                        settings.PLEA_CONFIRMATION_EMAIL_FROM,
                                        recipients, connection=connection)
 
@@ -166,7 +169,7 @@ class Command(BaseCommand):
                 self.email_user(data, override_recipient)
 
             elif not options["dry_run"]:
-                self.email_user(data, [case.email])
+                self.email_user(data, [case.email], case.language)
 
             self.mark_done(result, sent=True, dry_run=options["dry_run"],
                            message="Completed case {} email sent to {}".format(case.urn, case.email))
