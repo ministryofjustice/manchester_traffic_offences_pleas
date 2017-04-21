@@ -27,7 +27,7 @@
 
 
 
-{% blocktrans %}You need to pay the fine by the above date:{% endblocktrans %}
+{% blocktrans %}You need to pay your fine by the above date:{% endblocktrans %}
 {% blocktrans %}You will need to tell us:{% endblocktrans %}
 {% blocktrans %}Division:{% endblocktrans %} {{ payment_details.division }}
 {% blocktrans %}Account number:{% endblocktrans %} {{ payment_details.account_number }}
