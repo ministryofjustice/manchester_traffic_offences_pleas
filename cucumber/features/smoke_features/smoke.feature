@@ -1,0 +1,1 @@
+# smoke feature files live here.
