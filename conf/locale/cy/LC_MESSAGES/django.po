@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-21 14:11+0100\n"
+"POT-Creation-Date: 2017-04-21 14:59+0100\n"
 "PO-Revision-Date: 2016-02-01 10:40+0000\n"
 "Last-Translator: Welsh Language Unit <welsh.language.unit.manager@hmcts.gsi.gov.uk>\n"
 "Language-Team: Welsh (http://www.transifex.com/make-a-plea-gds/make-a-plea/language/cy/)\n"
@@ -2431,10 +2431,9 @@ msgstr "sicrhau bod eich dirwy yn seiliedig ar eich amgylchiadau"
 msgid "help to speed up the processing of your case"
 msgstr "helpu i gyflymu'r broses o ran hwyluso eich achos"
 
-# TODO
 #: apps/result/management/commands/process_results.py:96
 msgid "Make a plea result"
-msgstr "[[Welsh translation needed]]"
+msgstr "Canlyniad Cofnodi Ple"
 
 #: apps/result/templates/emails/user_resulting.html:8
 #: apps/result/templates/emails/user_resulting.html:24
@@ -2482,6 +2481,7 @@ msgid "What happens next"
 msgstr "Beth fydd yn digwydd nesaf"
 
 #: apps/result/templates/emails/user_resulting.html:74
+#: apps/result/templates/emails/user_resulting.txt:30
 msgid "You need to pay your fine by the above date:"
 msgstr "Bydd arnoch angen talu eich dirwy erbyn y dyddiad a nodir uchod:"
 
@@ -2553,13 +2553,6 @@ msgstr "Os na fyddwch yn talu'r ddirwy hon fel y gorchmynnwyd i chi wneud, gallw
 #: apps/result/templates/emails/user_resulting.txt:1
 msgid "Notice of fine and How to Pay"
 msgstr "Hysbysiad o Ddirwy a Sut i Dalu"
-
-# TODO
-#: apps/result/templates/emails/user_resulting.txt:30
-#, fuzzy
-#| msgid "You will need to quote this if you contact the court"
-msgid "You need to pay the fine by the above date:"
-msgstr "Bydd arnoch angen dyfynnu hwn os byddwch yn cysylltu â'r llys"
 
 #: make_a_plea/context_processors.py:16
 msgid "Skip to main content"
