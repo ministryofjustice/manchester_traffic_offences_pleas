@@ -3,7 +3,13 @@ import json
 from django.core import exceptions
 from rest_framework import serializers
 
-from apps.plea.models import Case, UsageStats, Offence, CaseOffenceFilter
+from apps.plea.models import (
+    AuditEvent,
+    Case,
+    CaseOffenceFilter,
+    Offence,
+    UsageStats,
+)
 from apps.result.models import Result, ResultOffence, ResultOffenceData
 from apps.plea.standardisers import standardise_urn
 from apps.plea.validators import is_valid_urn_format
@@ -13,6 +19,30 @@ class OffenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Offence
         exclude = ("case",)
+
+
+class AuditEventSerializer(serializers.ModelSerializer):
+    event_subtype = serializers.CharField(required=True)
+    event_data = serializers.CharField(required=True)
+
+    def __init__(self, *args, **kwargs):
+        super(AuditEventSerializer, self).__init__(*args, **kwargs)
+        self.event_type = 3
+
+    class Meta:
+        model = AuditEvent
+        exclude = ("case", "event_datetime", "event_type")
+
+    def create(self, validated_data):
+        item = AuditEvent(validated_data)
+        item.create(validated_data)
+
+    def validate(self, data):
+        if "event_subtype" not in data or data["event_subtype" == ""]:
+            raise exceptions.ValidationError(
+                "Parameter event_subtype must be supplied")
+
+        return data
 
 
 class CaseSerializer(serializers.ModelSerializer):

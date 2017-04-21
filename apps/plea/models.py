@@ -1,3 +1,5 @@
+import hashlib
+
 from collections import Counter
 from dateutil.parser import parse as date_parse
 import datetime as dt
@@ -86,7 +88,7 @@ class CourtEmailCountManager(models.Manager):
         """
 
         if not start_date:
-            start_date = dt.date(2012,01,01)
+            start_date = dt.date(2012, 01, 01)
 
         results = CourtEmailCount.objects\
             .filter(sent=True,
@@ -361,6 +363,16 @@ class Case(models.Model):
                 return "PostCode"
 
         return None
+
+    def save(self, *args, **kwargs):
+        """After saving a case, create an AuditEvent"""
+        super(Case, self).save(*args, **kwargs)
+        AuditEvent().create(
+            event_type="case_model",
+            method="save",
+            case=self,
+        )
+
 
 class CaseAction(models.Model):
     case = models.ForeignKey(Case, related_name="actions", null=False, blank=False)
@@ -639,3 +651,241 @@ class DataValidation(models.Model):
     class Meta:
         ordering = ["-date_entered"]
 
+
+class AuditEvent(models.Model):
+    """
+    Keep track of events involving URNs to ensure data integrity throughout the
+    pipeline. This includes:
+
+     * Cases
+     * Form validation errors
+     * API validation, creation and updates
+     * Pre-processing steps
+
+    1. User actions (all occur during the user journey)
+
+     * User entered URN but not in system
+     * User entered URN but already submitted
+     * User entered URN but failed validation
+
+    2. Soap gateway/DX import actions (all occur at the REST endpoint which is managed by the main application)
+
+     * Urn imported successfully
+     * Urn invalid (often this is because of a lack of URN so there may not be a specific action to report)
+     * Case already in system - not importing
+     * Case offences fail white list
+
+    3. Resulting actions (all occur in the application but run via a cron'd django management command)
+
+     * Result received but already sent
+     * Partial result received - not resulting
+     * Result email sent to {email address}
+     * Result contains out of scope offence - not resulting
+
+    4. Search
+
+    I'd envisage an admin screen that allows Katie et al. to
+    enter a URL
+    and see an audit trail.  Here's my attempt a mockup:
+
+    ------------------------------------------------------------------------------
+
+    Search URN:  [ 41xx00011100 ]
+
+    {timestamp} :   App: User entered URN but not in system
+    {timestamp} :   DX: Case imported
+    {timestamp} :   DX: Duplicate case - not importing
+    {timestamp} :   App: User failed validation
+    {timestamp} :   App: User completed submission.
+    {timestamp} :   Resulting: Partial result received - not
+    resulting
+    {timestamp} :   Resulting: result email sent
+
+    5. Hash of hstore
+
+    """
+
+    EVENT_TYPE_CHOICES = (
+        ("not_set", "Not Set"),  # programming error - caller did not set event_type
+        ("case_model", "Case Save event"),  # save operations on the model
+        ("case_form", "Case Form event"),  # form validation issues
+        ("case_api", "Case API event"),  # issue at the api
+        ("auditevent_api", "AuditEvent API enevt"),  # issue with an external component
+    )
+    EVENT_SUBTYPE_CHOICES = (
+        ("not_set", "Not set"),
+        ("success", "Success"),
+        ("EXT1", "External failure 1"),
+        ("EXT2", "External failure 2"),
+        ("case_invalid_missing_name", "Invalid Case: Missing Name"),
+        ("case_invalid_missing_urn", "Invalid Case: Missing URN"),
+        ("case_invalid_name_too_long", "Invalid Case: Name too long"),
+        ("case_invalid_offencecode", "Invalid Case: Invalid offence code"),
+        ("case_invalid_courtcode", "Invalid Case: Invalid court code"),
+        ("case_invalid_not_in_whitelist", "Invalid Case: Not in whitelist"),
+        ("case_invalid_duplicate_offence", "Invalid Case: Duplicate offence"),
+    )
+
+    IGNORED_CASE_FIELDS = [
+        "id",  # Django id is irrelavent
+        "auditevent",  # Case is saved before the auditevent so ignore it
+        "datavalidation",  # DataValidation objects are defunct
+    ]
+    IGNORED_RESULT_FIELDS = ["extra_data", "id"]
+    IGNORED_FORM_FIELDS = ["id"]
+    IGNORED_VALIDATOR_FIELDS = []
+
+    case = models.ForeignKey(
+        Case,
+        verbose_name="related case",
+        help_text="If there was a successful case loaded then it is related here",
+        null=True, blank=True)
+    event_type = models.CharField(
+        choices=EVENT_TYPE_CHOICES,
+        verbose_name="event type",
+        help_text="Identified the area of the application that the event happened in",
+        max_length=255, default="not_set")
+    event_subtype = models.CharField(
+        choices=EVENT_SUBTYPE_CHOICES,
+        verbose_name="reason for failure",
+        help_text="The specific reason for the event",
+        max_length=255, default="not_set")
+    event_trace = models.CharField(
+        max_length=4000,
+        verbose_name="error detail",
+        help_text="This detail about the reason for this event may be useful for developers to debug import issue",
+        blank=True, null=True)
+    event_data = HStoreField(
+        verbose_name="Event data",
+        help_text="If there was a failure and data fields were found, they are stored here to debug",
+        null=True, blank=True)
+    extra_data_hash = models.CharField(
+        verbose_name="extra data hash",
+        help_text="If the event caused a change to the extra_data then store the hash of it for debugging",
+        max_length=32, default="")
+    event_datetime = models.DateTimeField(
+        verbose_name="event date and time",
+        help_text="The time at which the event occurred",
+        auto_now_add=True)
+
+    @property
+    def urn(self):
+        """Used in the admin"""
+        if hasattr(self, "case"):
+            if hasattr(self.case, "urn"):
+                return self.case.urn
+        if hasattr(self, "event_data"):
+            if "urn" in self.event_data:
+                return self.event_data["urn"]
+
+    @property
+    def initiation_type(self):
+        """Used in the admin"""
+        itype_edata = itype_attr = None
+
+        if hasattr(self, "event_data"):
+            if "initiation_type" in self.event_data:
+                itype_edata = self.event_data["initiation_type"]
+
+        if hasattr(self, "case"):
+            if hasattr(self.case, "initiation_type"):
+                itype_attr = [
+                    i[1]
+                    for i in INITIATION_TYPE_CHOICES
+                    if self.case.initiation_type == i[0]
+                ][0]
+
+        if itype_attr != itype_edata:
+            return "CONFLICTED"
+        else:
+            return itype_attr or itype_edata
+
+    def __unicode__(self):
+        return "type:{0} subtype:{1} eventdata:{2} extradatahash:{3} eventdatetime:{4}".format(
+            self.event_type, self.event_subtype, self.event_data,
+            self.extra_data_hash, self.event_datetime)
+
+    @classmethod
+    def create(cls, *args, **kwargs):
+        """
+        Use of _meta.get_all_field_names() needs changing for Django 1.9
+        http://stackoverflow.com/questions/2170228/iterate-over-model-instance-field-names-and-values-in-template
+        """
+
+        ae = cls()
+
+        # I see no clear way to determine the event_type automatically right now
+        try:
+            if kwargs["event_type"] not in [
+                    i[0]
+                    for i in cls.EVENT_TYPE_CHOICES]:
+                raise Exception("Invalid event_type")
+        except KeyError:
+            raise Exception("Missing event_type")
+        else:
+            ae.event_type = [
+                i[0]
+                for i in cls.EVENT_TYPE_CHOICES
+                if i[0] == kwargs["event_type"]][0]
+
+        # If there's a Case floating about, let's copy its details
+        if "case" in kwargs:
+            case = kwargs["case"]
+            if not issubclass(case.__class__, Case):
+                raise Exception("case kwarg is not a Case object")
+            ae.case = case
+
+            fieldnames = case._meta.get_all_field_names()
+
+            # Copy the fields we are interested in
+            for fieldname in fieldnames:
+                if fieldname not in cls.IGNORED_CASE_FIELDS:
+                    field = getattr(case, fieldname)
+                    if hasattr(field, 'name') and hasattr(field, "value"):
+                        if field.name == "extra_data":
+                            h = hashlib.md5()
+                            h.update(field.value)
+                            ae.extra_data_hash = h.get_digest()
+                        else:
+                            ae.event_data[field.name] = field.value
+
+        # If there's a Result floating around, let's copy its details
+        if "result" in kwargs:
+            result = kwargs["result"]
+            if not issubclass(result, Result):
+                raise Exception("result kwarg is not a Result object")
+
+            fieldnames = result._meta.get_all_filed_names()
+
+            for fieldname in fieldnames:
+                field = getattr(result, fieldname)
+                if field.name not in cls.IGNORED_RESULT_FIELDS:
+                    ae.event_data[field.name] = field.value
+                if field.name == "extra_data":
+                    h = hashlib.md5()
+                    h.update(field.value)
+                    ae.extra_data_hash = h.get_digest()
+
+        # If there's a form floating about, let's copy its fields
+        elif "form" in kwargs:
+            ae.event_subtype = "form"
+            for k, v in kwarg.items():
+                if k not in cls.IGNORED_FORM_FIELDS:
+                    ae.event_data[k] = v
+
+        # If this was just a validator we might have useful kwargs
+        elif "validator" in kwargs:
+            ae.event_subtype = "validator"
+            ae.event_data = {}
+            for k, v in kwargs.items():
+                if k not in cls.IGNORED_VALIDATOR_FIELDS:
+                    ae.event_data[k] = v
+        if ae.event_data is None:
+            ae.event_data = {}
+        try:
+            ae.save()
+        except ProgrammingError:
+            print "Failed to log item. Make sure hstore-able data is passed "
+            "to AuditEvent().create(). Data provided was: {0}".format(
+                str(kwargs))
+        return ae

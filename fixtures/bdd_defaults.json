@@ -1,0 +1,144 @@
+[
+    {
+	"model": "plea.auditevent",
+	"pk": 1,
+	"fields": {
+		"case": 1,
+		"event_subtype": "success",
+		"event_data": {
+			"urn": "123",
+			"use case": "Event associated with a successful api load"
+		},
+		"event_type": "case_model",
+		"event_datetime": "2017-01-25T00:45:08Z"
+	}
+    },
+    {
+	"model": "plea.case",
+	"pk": 1,
+	"fields": {
+		"urn": "some valid urn"
+	}
+    },
+    {
+	"model": "plea.auditevent",
+	"pk": 2,
+	"fields": {
+		"case": null,
+		"event_data": {
+			"urn": "123",
+			"use case": "failure EXT1 in pre-processing"
+		},
+		"event_type": "auditevent_api",
+		"event_subtype": "EXT1",
+		"event_datetime": "2017-01-25T00:45:08Z"
+	}
+    },
+    {
+	"model": "plea.auditevent",
+	"pk": 3,
+	"fields": {
+		"case": null,
+		"event_subtype": "EXT2",
+		"event_data": {
+			"urn": "150//",
+			"use case": "failure EXT2 in pre-processing"
+		},
+		"event_type": "auditevent_api",
+		"event_subtype": "EXT2",
+		"event_datetime": "2017-01-25T00:45:08Z"
+	}
+    },
+    {
+	"model": "plea.auditevent",
+	"pk": 4,
+	"fields": {
+		"case_id": null,
+		"event_subtype": "case_invalid_missing_name",
+		"event_data": {
+			"urn": "76ghgcsye72",
+			"use case": "represent an error saving the case"
+		},
+		"event_type": "case_model",
+		"event_datetime": "2017-01-25T00:45:08Z"
+	}
+    },
+    {
+	"model": "plea.auditevent",
+	"pk": 5,
+	"fields": {
+		"case_id": null,
+		"event_subtype": "case_invalid_missing_urn",
+		"event_data": {
+			"use case": "represent an error validating a form"
+		},
+		"event_type": "case_form",
+		"event_datetime": "2017-01-25T00:45:08Z"
+	}
+    },
+    {
+	"model": "plea.auditevent",
+	"pk": 6,
+	"fields": {
+		"case_id": null,
+		"event_subtype": "case_invalid_name_too_long",
+		"event_data": {
+			"use case": "represent an error receiving a case at the api"
+		},
+		"event_type": "case_api",
+		"event_datetime": "2017-01-25T00:45:08Z"
+	}
+    },
+    {
+	"model": "plea.auditevent",
+	"pk": 7,
+	"fields": {
+		"case_id": null,
+		"event_subtype": "case_invalid_offencecode",
+		"event_data": {
+			"use case": "represent an error receiving a case at the api"
+		},
+		"event_type": "case_api",
+		"event_datetime": "2017-01-25T00:45:08Z"
+	}
+    },
+    {
+	"model": "plea.auditevent",
+	"pk": 8,
+	"fields": {
+		"case_id": null,
+		"event_subtype": "case_invalid_courtcode",
+		"event_data": {
+			"use case": "represent an error receiving a case at the api"
+		},
+		"event_type": "case_api",
+		"event_datetime": "2017-01-25T00:45:08Z"
+	}
+    },
+    {
+	"model": "plea.auditevent",
+	"pk": 9,
+	"fields": {
+		"case_id": null,
+		"event_subtype": "case_invalid_not_in_whitelist",
+		"event_data": {
+			"use case": "represent an error receiving a case at the api"
+		},
+		"event_type": "case_api",
+		"event_datetime": "2017-01-25T00:45:08Z"
+	}
+    },
+    {
+	"model": "plea.auditevent",
+	"pk": 10,
+	"fields": {
+		"case_id": null,
+		"event_subtype": "case_invalid_duplicate_offence",
+		"event_data": {
+			"use case": "represent an error receiving a case at the api"
+		},
+		"event_type": "case_api",
+		"event_datetime": "2017-01-25T00:45:08Z"
+	}
+    }
+]

@@ -12,6 +12,8 @@ from apps.result.models import Result
 from apps.plea.models import Court
 from api.v0.views import ResultViewSet
 
+from api.reusable import create_api_user, create_court
+
 
 def create_api_user():
     password = "apitest"
@@ -179,6 +181,3 @@ class CaseAPICallTestCase(APITestCase):
         returned_data = json.loads(response.content)
 
         self.assertEqual(returned_data["urn"], self.test_data["urn"])
-
-
-

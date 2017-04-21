@@ -1,3 +1,5 @@
+import os
+
 from .base import *
 
 ADMINS = (
@@ -8,7 +10,7 @@ ADMINS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('POSTGRES_DB','manchester_traffic_offences'),
+        'NAME': os.environ.get('POSTGRES_DB', 'manchester_traffic_offences'),
         'USER': os.environ.get('POSTGRES_USER', 'jenkins'),
         'PASSWORD': os.environ.get('POSTGRES_PASS', 'moomoo'),
         'HOST': os.environ.get('POSTGRES_HOST', ''),
@@ -20,7 +22,7 @@ CELERY_ALWAYS_EAGER = True
 CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 BROKER_BACKEND = 'memory'
 
-DEBUG = False
+DEBUG = True
 
 SECRET_KEY = "fjsklfosufcilsft37dGDRR%^$%^^gfsdvf"
 

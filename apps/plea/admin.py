@@ -1,19 +1,28 @@
 from __future__ import division
 
 from datetime import date, timedelta
+from functools import update_wrapper
+
+from django.core import urlresolvers
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from functools import update_wrapper
+from django.db.models import Q
 
-from apps.plea.models import (UsageStats, Court,
-                              Case, CaseAction,
-                              CaseOffenceFilter,
-                              CourtEmailCount,
-                              Offence,
-                              DataValidation,
-                              OUCode)
+from apps.plea.models import (
+    AuditEvent,
+    Court,
+    Case,
+    CaseAction,
+    CaseOffenceFilter,
+    CourtEmailCount,
+    DataValidation,
+    INITIATION_TYPE_CHOICES,
+    Offence,
+    OUCode,
+    UsageStats,
+)
 
 
 class RegionalFilter(admin.SimpleListFilter):
@@ -89,9 +98,52 @@ class InlineOffence(admin.StackedInline):
     extra = 0
 
 
+class CaseInitiationTypeFilter(admin.SimpleListFilter):
+    """Allow filtering Cases by Initiation type including compound views"""
+
+    title = _('Initiation type')
+    parameter_name = 'initiation_type'
+
+    def lookups(self, request, model_admin):
+        """Build a list of all urns mentioned by auditevents"""
+
+        cases = Case.objects.all()
+
+        # Return the urn to use as a filter parameter and the name
+        return list(set([
+            (
+                case.initiation_type,
+                [
+                    i[1]
+                    for i in INITIATION_TYPE_CHOICES
+                    if i[0] == case.initiation_type
+                ][0]
+            )
+            for case in cases
+        ])) + [
+            (
+                "J|Q|S",
+                "SJPs, requisitions and summons",
+            )
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            # Compound queries (could be done programatically if needed)
+            if self.value() == "J|Q|S":
+                return queryset.filter(initiation_type="J") | \
+                    queryset.filter(initiation_type="Q") | \
+                    queryset.filter(initiation_type="S")
+            # Filter on  particular initiation_type
+            else:
+                return queryset.filter(initiation_type=self.value())
+        else:
+            return queryset
+
+
 class CaseAdmin(admin.ModelAdmin):
     list_display = ("urn", "sent", "processed", "charge_count", "initiation_type")
-    list_filter = ("sent", "processed", "initiation_type", "ou_code", "imported")
+    list_filter = ("sent", "processed", CaseInitiationTypeFilter, "ou_code", "imported")
     inlines = [InlineCaseAction, InlineOffence]
     search_fields = ["urn", "case_number"]
     readonly_fields = ('created',)
@@ -127,10 +179,13 @@ class DataValidationAdmin(admin.ModelAdmin):
 
         info = self.model._meta.app_label, self.model._meta.model_name
 
-        urls = patterns('',
-            url(r'^statistics/$',
+        urls = patterns(
+            '',
+            url(
+                r'^statistics/$',
                 wrap(self.statistics_view),
-                name='%s_%s_statistics' % info),
+                name='%s_%s_statistics' % info
+            ),
         )
 
         super_urls = super(DataValidationAdmin, self).get_urls()
@@ -193,9 +248,159 @@ class DataValidationAdmin(admin.ModelAdmin):
             'regions': regions
         }, context_instance=RequestContext(request))
 
+
+class UrnFilter(admin.SimpleListFilter):
+    """Allow filtering by URN from case or event_data"""
+
+    title = _('URN')
+    parameter_name = 'urn'
+
+    def lookups(self, request, model_admin):
+        """Build a list of all urns mentioned by auditevents"""
+
+        # TODO: consider factoring out this iteration
+        urns_by_case = {
+            a.case.urn
+            for a in AuditEvent.objects.all()
+            if hasattr(a, "case") and hasattr(a.case, "urn")
+        }
+        urns_by_event_data = {
+            a.event_data["urn"]
+            for a in AuditEvent.objects.all()
+            if hasattr(a, "event_data") and "urn" in a.event_data
+        }
+
+        # Unique urns for auditevents, with case urns being preferred
+        urns = urns_by_event_data
+        urns.update(urns_by_case)
+
+        # Return the urn to use as a filter parameter and the name
+        return [
+            (u, u)
+            for u in urns
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(
+                case__urn=self.value()
+            ) | queryset.filter(
+                event_data__contains={
+                    'urn': self.value()
+                }
+            )
+        else:
+            return queryset
+
+
+class AuditEventInitiationTypeFilter(admin.SimpleListFilter):
+    """Allow filtering Audit events by Initiation type including compound views"""
+
+    title = _('Initiation type')
+    parameter_name = 'initiation_type'
+
+    def lookups(self, request, model_admin):
+        """Build a list of all initiation_types mentioned by auditevents"""
+
+        initiation_types_by_case = {
+            a.case.initiation_type
+            for a in AuditEvent.objects.all()
+            if hasattr(a, "case") and hasattr(a.case, "initiation_type")
+        }
+        initiation_types_by_event_data = {
+            a.event_data["initiation_type"]
+            for a in AuditEvent.objects.all()
+            if hasattr(a, "event_data") and "initiation_type" in a.event_data
+        }
+
+        # Unique initiation_types for auditevents, with case initiation_types being preferred
+        initiation_types = initiation_types_by_event_data
+        initiation_types.update(initiation_types_by_case)
+
+        # Return the urn to use as a filter parameter and the name
+        return [
+            (i, i)
+            for i in initiation_types
+        ]
+        #return [
+        #    (
+        #        case.initiation_type,
+        #        [
+        #            i[1]
+        #            for i in INITIATION_TYPE_CHOICES
+        #            if i[0] == case.initiation_type
+        #        ][0]
+        #    )
+        #    for case in cases
+        #] + [
+        #    (
+        #        "J|Q|S",
+        #        "SJPs, requisitions and summons",
+        #    )
+        #]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            # Compound queries (could be done programatically if needed)
+            if self.value() == "J|Q|S":
+                return queryset.filter(case__initiation_type="J") | \
+                    queryset.filter(case__initiation_type="Q") | \
+                    queryset.filter(case__initiation_type="S") | \
+                    queryset.filter(event_data__contains={'initiation_type': "J"}) | \
+                    queryset.filter(event_data__contains={'initiation_type': "Q"}) | \
+                    queryset.filter(event_data__contains={'initiation_type': "S"})
+
+            # Filter on  particular initiation_type
+            else:
+                return queryset.filter(
+                    case__initiation_type=self.value()
+                ) | queryset.filter(
+                    event_data__contains={
+                        'initiation_type': self.value()
+                    }
+                )
+        else:
+            return queryset
+
+
+class AuditEventAdmin(admin.ModelAdmin):
+    """Audit events in the admin page"""
+
+    list_display = (
+        'urn',
+        'event_datetime',
+        'event_subtype',
+        'initiation_type',
+        'case_link',
+    )
+    list_filter = (
+        "event_type",
+        "event_subtype",
+        AuditEventInitiationTypeFilter,
+        UrnFilter,
+
+    )
+    search_fields = ("case__urn", "event_data__urn")
+
+    def case_link(self, obj):
+        """Display cases as links"""
+        if hasattr(obj, "case") and obj.case is not None:
+            link = urlresolvers.reverse(
+                "admin:plea_case_change",
+                args=[obj.case.id],
+            )
+            return u'<a href="%s">%s</a>' % (link, obj.case.urn)
+        else:
+            return "No case"
+    case_link.allow_tags = True
+
+    def has_add_permission(self, request):
+        return False
+
 admin.site.register(UsageStats, UsageStatsAdmin)
 admin.site.register(Court, CourtAdmin)
 admin.site.register(CourtEmailCount, CourtEmailCountAdmin)
 admin.site.register(Case, CaseAdmin)
 admin.site.register(CaseOffenceFilter, OffenceFilterAdmin)
 admin.site.register(DataValidation, DataValidationAdmin)
+admin.site.register(AuditEvent, AuditEventAdmin)
