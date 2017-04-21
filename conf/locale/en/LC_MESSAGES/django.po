@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-07 11:26+0100\n"
+"POT-Creation-Date: 2017-04-21 14:11+0100\n"
 "PO-Revision-Date: 2015-11-16 16:24+0000\n"
 "Last-Translator: Fred Marecesche\n"
 "Language-Team: English (http://www.transifex.com/make-a-plea-gds/make-a-plea/language/en/)\n"
@@ -1712,23 +1712,9 @@ msgstr "GOV.UK - Online plea submission confirmation"
 msgid "Please give us feedback so we can make it better:"
 msgstr "Please give us feedback so we can make it better:"
 
-#: apps/plea/templates/emails/user_plea_confirmation.txt:44
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:41
-#: apps/result/templates/emails/user_resulting.txt:69
-#: make_a_plea/templates/base_user_email.html:228
-msgid "do not reply to it or click any links"
-msgstr "do not reply to it or click any links"
-
-#: apps/plea/templates/emails/user_plea_confirmation.txt:45
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:42
-#: apps/result/templates/emails/user_resulting.txt:70
-#: make_a_plea/templates/base_user_email.html:229
-msgid "forward it to"
-msgstr "forward it to"
-
-#: apps/plea/templates/emails/user_plea_confirmation.txt:47
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:44
-#: apps/result/templates/emails/user_resulting.txt:72
+#: apps/plea/templates/emails/user_plea_confirmation.txt:42
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:39
+#: apps/result/templates/emails/user_resulting.txt:67
 msgid "Terms and Conditions and Privacy Policy:"
 msgstr "Terms and Conditions and Privacy Policy:"
 
@@ -2400,7 +2386,7 @@ msgstr "make sure your fine is based on your circumstances"
 msgid "help to speed up the processing of your case"
 msgstr "help to speed up the processing of your case"
 
-#: apps/result/management/commands/process_results.py:99
+#: apps/result/management/commands/process_results.py:96
 msgid "Make a plea result"
 msgstr "Make a plea result"
 
@@ -2634,7 +2620,7 @@ msgstr "You have entered some information"
 msgid "See highlighted errors below."
 msgstr "See highlighted errors below."
 
-#: make_a_plea/templates/base_user_email.html:232
+#: make_a_plea/templates/base_user_email.html:225
 msgid "Terms and Conditions and privacy policy"
 msgstr "Terms and Conditions and privacy policy"
 
