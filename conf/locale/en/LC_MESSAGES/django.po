@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-21 14:11+0100\n"
+"POT-Creation-Date: 2017-04-21 14:59+0100\n"
 "PO-Revision-Date: 2015-11-16 16:24+0000\n"
 "Last-Translator: Fred Marecesche\n"
 "Language-Team: English (http://www.transifex.com/make-a-plea-gds/make-a-plea/language/en/)\n"
@@ -2436,6 +2436,7 @@ msgid "What happens next"
 msgstr "What happens next"
 
 #: apps/result/templates/emails/user_resulting.html:74
+#: apps/result/templates/emails/user_resulting.txt:30
 msgid "You need to pay your fine by the above date:"
 msgstr "You need to pay your fine by the above date:"
 
@@ -2507,10 +2508,6 @@ msgstr "If you fail to pay the fine as ordered, you may be liable for further pe
 #: apps/result/templates/emails/user_resulting.txt:1
 msgid "Notice of fine and How to Pay"
 msgstr "Notice of fine and How to Pay"
-
-#: apps/result/templates/emails/user_resulting.txt:30
-msgid "You need to pay the fine by the above date:"
-msgstr "You need to pay the fine by the above date:"
 
 #: make_a_plea/context_processors.py:16
 msgid "Skip to main content"
