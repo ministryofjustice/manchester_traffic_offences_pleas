@@ -217,6 +217,26 @@ class ResultTestCase(TestCase):
 
         self.assertEquals(fines[0], u"english words £75.00 more english")
 
+    def test_get_offence_totals_fines_wording_welsh_but_whitespace_welsh_text(self):
+
+        self.test_case1.language = "cy"
+        self.test_case1.save()
+
+        self.adjourned_offence = ResultOffenceData.objects.create(
+            result_offence=self.offence1,
+            result_code="FCOST",
+            result_short_title="FINE",
+            result_wording=u"english words £75.00 more english",
+            result_short_title_welsh="dirwy",
+            result_wording_welsh=u"  "
+
+        )
+
+        fines, _, _ = self.test_result1.get_offence_totals()
+
+        self.assertEquals(fines[0], u"english words £75.00 more english")
+
+
     def test_get_offence_totals_endorsements(self):
 
         self.adjourned_offence = ResultOffenceData.objects.create(
