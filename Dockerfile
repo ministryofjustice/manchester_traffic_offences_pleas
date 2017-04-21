@@ -9,7 +9,9 @@ ENV APP_HOME=/makeaplea/
 ENV DJANGO_SETTINGS_MODULE=make_a_plea.settings.docker
 WORKDIR $APP_HOME
 
-RUN apt-get -y update && apt-get -y install python-psycopg2 gettext gnupg
+ADD apt/ $APP_HOME/apt
+
+RUN apt-get -y update && $APT_HOME/apt/production.sh
 
 COPY requirements.txt $APP_HOME
 ADD requirements/ $APP_HOME/requirements/
