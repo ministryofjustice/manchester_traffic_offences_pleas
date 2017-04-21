@@ -139,7 +139,7 @@ class Result(models.Model):
         for offence in self.result_offences.all():
             for r in offence.offence_data.all():
                 if r.result_code.startswith("F"):
-                    values = re.findall(r'\xa3([0-9]+\.*[0-9]{0,2})', r.result_wording_by_language)
+                    values = re.findall(r'\xa3([0-9]+\.*[0-9]{0,2})', r.result_wording)
                     value = sum(Decimal(v) for v in values)
                     total += value
                     fines.append(r.result_wording_by_language)
@@ -173,14 +173,14 @@ class ResultOffenceData(models.Model):
 
     @property
     def result_short_title_by_language(self):
-        if self.language == "cy" and self.result_short_title_welsh:
+        if self.language == "cy" and self.result_short_title_welsh and self.result_short_title_welsh.strip():
             return self.result_short_title_welsh
         else:
             return self.result_short_title
 
     @property
     def result_wording_by_language(self):
-        if self.language == "cy" and self.result_wording_welsh:
+        if self.language == "cy" and self.result_wording_welsh and self.result_wording_welsh.strip():
             return self.result_wording_welsh
         else:
             return self.result_wording
