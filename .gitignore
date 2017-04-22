@@ -96,3 +96,6 @@ make_a_plea/test_user_data
 moj_template/
 
 /docker/local-env
+
+# Ignore screenshots
+/screenshot_*
