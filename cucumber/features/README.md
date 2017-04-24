@@ -22,6 +22,11 @@ $ cucumber features #to run all
 $ cucumber features/landing_page.feature #to run all scenarios in a particular feature file
 $ cucumber features/landing_page.feature:10 #to run a particular scenario
 
+###Screenshots and html
+
+To open screenshot or html:
+$ open ./screenshot_cucumber_Start-now_2017-04-24-11-40-28.186.png
+$ open ./screenshot_cucumber_Start-now_2017-04-24-11-40-28.186.html
 
 
 
