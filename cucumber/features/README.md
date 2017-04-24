@@ -17,10 +17,20 @@ $ rubocop
 
 For integration and UI testing, we use [Cucumber](http://cukes.info/),
 [Capybara](https://github.com/jnicklas/capybara)
+
 To run the standard Cucumber test suite, use:
-$ cucumber features #to run all
-$ cucumber features/landing_page.feature #to run all scenarios in a particular feature file
-$ cucumber features/landing_page.feature:10 #to run a particular scenario
+$ cucumber features 
+
+To run the all scenarios in a particular feature file:
+$ cucumber features/landing_page.feature  
+
+To run a particular scenario:
+$ cucumber features/landing_page.feature:10 
+
+To run in a browser:
+$ DRIVER=chrome cucumber
+$ DRIVER=firefox cucumber
+
 
 ###Screenshots and html
 
