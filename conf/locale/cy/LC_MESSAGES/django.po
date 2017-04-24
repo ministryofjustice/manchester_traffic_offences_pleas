@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-21 14:59+0100\n"
+"POT-Creation-Date: 2017-04-24 11:03+0100\n"
 "PO-Revision-Date: 2016-02-01 10:40+0000\n"
 "Last-Translator: Welsh Language Unit <welsh.language.unit.manager@hmcts.gsi.gov.uk>\n"
 "Language-Team: Welsh (http://www.transifex.com/make-a-plea-gds/make-a-plea/language/cy/)\n"
@@ -1430,7 +1430,7 @@ msgstr "Bydd arnoch angen dyfynnu hwn os byddwch yn cysylltu â'r llys"
 #: apps/plea/templates/emails/user_plea_confirmation.txt:10
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.html:23
 msgid "What happens next:"
-msgstr "Beth fydd yn digwydd nesaf:"
+msgstr "Beth sy'n digwydd nesaf"
 
 #: apps/plea/templates/complete.html:37
 #: apps/plea/templates/emails/user_plea_confirmation.html:34
@@ -1597,7 +1597,7 @@ msgstr "byddwn yn anfon llythyr atoch yn rhoi dyddiad gwrandawiad i gynrychiolyd
 #: apps/result/templates/emails/user_resulting.html:66
 #: apps/result/templates/emails/user_resulting.txt:22
 msgid "Do not send your driving licence to the court. The DVLA will contact you if they need you to send it to them."
-msgstr "Peidiwch ag anfon eich trwydded yrru i'r llys. Bydd y DVLA yn cysylltu â chi os bydd angen i chi ei hanfon atynt."
+msgstr "Peidiwch ag anfon eich trwydded yrru i'r llys. Bydd y DVLA yn cysylltu â chi os oes angen i chi ei hanfon atynt."
 
 #: apps/plea/templates/court_finder.html:6
 #: apps/plea/templates/court_finder.html:13
@@ -2389,7 +2389,7 @@ msgstr "Golygu"
 #: apps/result/templates/emails/user_resulting.html:95
 #: apps/result/templates/emails/user_resulting.txt:52
 msgid "Note:"
-msgstr "Dalier sylw:"
+msgstr "Sylwch:"
 
 #: apps/plea/templates/your_income.html:65
 msgid "For the courts to consider allowing you to pay your fine in instalments, you must provide information about your expenses."
@@ -2448,7 +2448,7 @@ msgstr "Enw:"
 #: apps/result/templates/emails/user_resulting.html:33
 #: apps/result/templates/emails/user_resulting.txt:6
 msgid "URN:"
-msgstr "Cyfeirnod unigryw:"
+msgstr "Cyfeirnod Unigryw:"
 
 #: apps/result/templates/emails/user_resulting.html:36
 #: apps/result/templates/emails/user_resulting.txt:7
@@ -2473,27 +2473,27 @@ msgstr "I'w dalu erbyn:"
 #: apps/result/templates/emails/user_resulting.html:59
 #: apps/result/templates/emails/user_resulting.txt:19
 msgid "Endorsements:"
-msgstr "Ardystiadau: "
+msgstr "Ardystiadau:"
 
 #: apps/result/templates/emails/user_resulting.html:72
 #: apps/result/templates/emails/user_resulting.txt:26
 msgid "What happens next"
-msgstr "Beth fydd yn digwydd nesaf"
+msgstr "Beth sy'n digwydd nesaf"
 
 #: apps/result/templates/emails/user_resulting.html:74
 #: apps/result/templates/emails/user_resulting.txt:30
 msgid "You need to pay your fine by the above date:"
-msgstr "Bydd arnoch angen talu eich dirwy erbyn y dyddiad a nodir uchod:"
+msgstr "Bydd angen i chi dalu'r ddirwy erbyn y dyddiad a nodir uchod:"
 
 #: apps/result/templates/emails/user_resulting.html:76
 #: apps/result/templates/emails/user_resulting.txt:31
 msgid "You will need to tell us:"
-msgstr "Bydd arnoch angen dweud wrthym: "
+msgstr "Bydd angen i chi ddweud wrthym:"
 
 #: apps/result/templates/emails/user_resulting.html:77
 #: apps/result/templates/emails/user_resulting.txt:32
 msgid "Division:"
-msgstr "Adran: "
+msgstr "Adran:"
 
 #: apps/result/templates/emails/user_resulting.html:78
 #: apps/result/templates/emails/user_resulting.txt:33
@@ -2503,12 +2503,12 @@ msgstr "Rhif y cyfrif:"
 #: apps/result/templates/emails/user_resulting.html:80
 #: apps/result/templates/emails/user_resulting.txt:35
 msgid "Payments can be made 24 hours a day using credit or debit card (Visa, Mastercard, Maestro). Please allow 5 days to allow the payment to be credited to your account."
-msgstr "Gellir gwneud taliadau 24 awr y dydd gan ddefnyddio cerdyn credyd neu gerdyn debyd (Visa, Mastercard, Maestro). Caniatewch 5 diwrnod i&#39;r taliad gael ei ychwanegu i'ch cyfrif."
+msgstr "Gellir gwneud taliadau 24 awr y dydd gan ddefnyddio cerdyn credyd neu gerdyn debyd (Visa, Mastercard, Maestro).  Caniatewch 5 diwrnod i'r taliad gyrraedd eich cyfrif."
 
 #: apps/result/templates/emails/user_resulting.html:82
 #: apps/result/templates/emails/user_resulting.txt:39
 msgid "Ways to pay"
-msgstr "Dulliau talu"
+msgstr "Ffyrdd i dalu"
 
 #: apps/result/templates/emails/user_resulting.html:84
 #: apps/result/templates/emails/user_resulting.txt:41
@@ -2538,17 +2538,17 @@ msgstr "Os ydych yn cael problemau gyda thalu"
 #: apps/result/templates/emails/user_resulting.html:99
 #: apps/result/templates/emails/user_resulting.txt:59
 msgid "If you can no longer pay as ordered, contact the Fines Team to discuss your options by email at:"
-msgstr "Os na allwch dalu un unol âʼr gorchymyn ddim mwy, cysylltwch âʼr Tîm Dirwyon i drafod eich opsiynau drwy e-bost yn:"
+msgstr "Os na allwch dalu yn unol â'r gorchymyn, cysylltwch â'r Tîm Dirwyon i drafod eich opsiynau, drwy anfon e-bost i:"
 
 #: apps/result/templates/emails/user_resulting.html:101
 #: apps/result/templates/emails/user_resulting.txt:61
 msgid "A hard copy of your fine and collection notice will be posted to you by the court. Do not wait for these documents before making payment."
-msgstr "Bydd y llys yn postio copi caled oʼch hysbysiad o ddirwy a gorchymyn casglu atoch. Peidiwch â disgwyl am y dogfennau hyn cyn gwneud taliad."
+msgstr "Bydd y llys yn postio copi caled o’ch hysbysiad o ddirwy a gorchymyn casglu atoch. Peidiwch â disgwyl am y dogfennau hyn cyn gwneud taliad."
 
 #: apps/result/templates/emails/user_resulting.html:103
 #: apps/result/templates/emails/user_resulting.txt:63
 msgid "If you fail to pay the fine as ordered, you may be liable for further penalties."
-msgstr "Os na fyddwch yn talu'r ddirwy hon fel y gorchmynnwyd i chi wneud, gallwch fod yn agored i gael cosbau pellach."
+msgstr "Os na fyddwch yn talu'r ddirwy fel y gorchmynnwyd i chi wneud, gallwch fod yn agored i gael cosbau pellach."
 
 #: apps/result/templates/emails/user_resulting.txt:1
 msgid "Notice of fine and How to Pay"
