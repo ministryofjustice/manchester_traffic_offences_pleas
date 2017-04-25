@@ -1,5 +1,6 @@
 Capybara.configure do |config|
-  config.default_driver = (ENV['DRIVER'].to_sym if ENV['DRIVER']) || :poltergeist
+  driver = (ENV['DRIVER'].to_sym if ENV['DRIVER']) || :poltergeist
+  config.default_driver = driver
   config.default_max_wait_time = 30
   config.match = :prefer_exact
   config.ignore_hidden_elements = false
@@ -22,7 +23,9 @@ Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
 end
 
-Capybara.save_and_open_page_path = ENV['CIRCLE_ARTIFACTS'] if ENV.key?('CIRCLE_ARTIFACTS')
+if ENV.key?('CIRCLE_ARTIFACTS')
+  Capybara.save_and_open_page_path = ENV['CIRCLE_ARTIFACTS']
+end
 
 Capybara::Screenshot.register_driver(:chrome) do |driver, path|
   driver.browser.save_screenshot(path)
@@ -33,11 +36,12 @@ Capybara.register_driver :safari do |app|
 end
 
 Capybara::Screenshot.register_filename_prefix_formatter(:cucumber) do |scenario|
-  "screenshot_cucumber_#{scenario.title.tr(' ', '-').gsub(%r{/^.*\/cucumber\//}, '')}"
+  title = scenario.title.tr(' ', '-').gsub(%r{/^.*\/cucumber\//}, '')
+  "screenshot_cucumber_#{title}"
 end
 
 Capybara.javascript_driver = Capybara.default_driver
 Capybara.current_driver = Capybara.default_driver
-#Capybara.app_host = ENV['HOST'] if ENV['HOST']
+# Capybara.app_host = ENV['HOST'] if ENV['HOST']
 # TODO: get this running locally http://127.0.0.1:
 Capybara.app_host = "https://www.makeaplea.service.gov.uk#{Capybara.server_port}"

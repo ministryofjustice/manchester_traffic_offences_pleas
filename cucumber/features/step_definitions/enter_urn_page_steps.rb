@@ -1,5 +1,5 @@
 Given(/^I visit the enter urn page$/) do
-  enter_urn_page.load_page()
+  enter_urn_page.load_page
 end
 
 When(/^I enter an invalid URN$/) do
@@ -25,5 +25,6 @@ Then(/^I should see error message$/) do
 end
 
 Then(/^I should see link to return to the input field$/) do
-  expect(current_path.enter_urn_page.error_summary.link['href']).to end_with('#section_urn')
+  expect(current_path.enter_urn_page.error_summary.link['href'])
+    .to end_with('#section_urn')
 end
