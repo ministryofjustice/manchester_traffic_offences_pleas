@@ -21,16 +21,16 @@ def wait_for_dropdown_change(dropdown, expected_value)
 end
 
 def scroll_down
-  Capybara.execute_script("window.scrollBy(0,1000)")
+  Capybara.execute_script('window.scrollBy(0,1000)')
 end
 
 def scroll_to_bottom
-  WaitUntil.wait_until(3, "Failed as browser hasn't reached bottom of window") do
-    page.execute_script "window.scrollTo(0,$(document).height())"
-    y_position=page.evaluate_script "window.scrollY"
-    browser_height=page.evaluate_script "$(window).height();"
-    doc_height=page.evaluate_script "$(document).height();"
-    (y_position+browser_height).eql?(doc_height)
+  WaitUntil.wait_until(3, 'Failed as browser hasnt reached bottom of window') do
+    page.execute_script 'window.scrollTo(0,$(document).height())'
+    y_position = page.evaluate_script 'window.scrollY'
+    browser_height = page.evaluate_script '$(window).height();'
+    doc_height = page.evaluate_script '$(document).height();'
+    (y_position + browser_height).eql?(doc_height)
   end
 end
 
