@@ -19,5 +19,3 @@ class EnterUrnPage < BasePage
     load(v: page_version)
   end
 end
-
-
