@@ -25,5 +25,5 @@ Then(/^I should see error message$/) do
 end
 
 Then(/^I should see link to return to the input field$/) do
-  expect(enter_urn_page.error_summary).to have_link
+  expect(current_path.enter_urn_page.error_summary.link['href']).to end_with('#section_urn')
 end
