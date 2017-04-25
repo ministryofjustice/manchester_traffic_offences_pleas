@@ -9,7 +9,9 @@ import os
 import shutil
 import tempfile 
 import zipfile
+from subprocess import call
 
+from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.template import TemplateDoesNotExist
 from django.template.loader import get_template
@@ -64,6 +66,11 @@ MESSAGE_PREFIXES = [
 ]
 
 LANGUAGES = os.listdir(os.path.join(ROOT_DIR, "conf", "locale"))
+
+
+# Make sure to use the latest messages
+call([os.path.join(ROOT_DIR, "makemessages.sh")])
+call_command("compilemessages")
 
 
 def zipdir(path, ziph):
