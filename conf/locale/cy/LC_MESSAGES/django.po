@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-24 11:03+0100\n"
+"POT-Creation-Date: 2017-04-25 10:42+0100\n"
 "PO-Revision-Date: 2016-02-01 10:40+0000\n"
 "Last-Translator: Welsh Language Unit <welsh.language.unit.manager@hmcts.gsi.gov.uk>\n"
 "Language-Team: Welsh (http://www.transifex.com/make-a-plea-gds/make-a-plea/language/cy/)\n"
@@ -2543,7 +2543,7 @@ msgstr "Os na allwch dalu yn unol â'r gorchymyn, cysylltwch â'r Tîm Dirwyon i
 #: apps/result/templates/emails/user_resulting.html:101
 #: apps/result/templates/emails/user_resulting.txt:61
 msgid "A hard copy of your fine and collection notice will be posted to you by the court. Do not wait for these documents before making payment."
-msgstr "Bydd y llys yn postio copi caled o’ch hysbysiad o ddirwy a gorchymyn casglu atoch. Peidiwch â disgwyl am y dogfennau hyn cyn gwneud taliad."
+msgstr "Bydd y llys yn postio copi caled o'ch hysbysiad o ddirwy a gorchymyn casglu atoch. Peidiwch â disgwyl am y dogfennau hyn cyn gwneud taliad."
 
 #: apps/result/templates/emails/user_resulting.html:103
 #: apps/result/templates/emails/user_resulting.txt:63
