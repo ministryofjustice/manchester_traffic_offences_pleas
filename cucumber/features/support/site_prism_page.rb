@@ -14,7 +14,7 @@ module SitePrism
         @page = Capybara.string(expansion_or_html)
       else
         expanded_url = url(expansion_or_html)
-        fail SitePrism::NoUrlForPage if expanded_url.nil?
+        raise SitePrism::NoUrlForPage if expanded_url.nil?
         visit expanded_url
       end
       wait_for_document_ready
