@@ -2,6 +2,8 @@ language: python
 dist: trusty
 python:
   - "2.7"
+notifications:
+  email: false
 services:
   - postrgresql
 before_install:
