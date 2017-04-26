@@ -97,4 +97,8 @@ moj_template/
 
 /docker/local-env
 
+# Ignore screenshots
+/screenshot_*
+
 *translation_files.zip
+
