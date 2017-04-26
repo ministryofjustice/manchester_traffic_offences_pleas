@@ -1,3 +1,4 @@
+require_relative 'boot'
 require 'require_all'
 require File.dirname(__FILE__) + '/site_prism_page'
 require File.dirname(__FILE__) + '/site_prism_sub'
