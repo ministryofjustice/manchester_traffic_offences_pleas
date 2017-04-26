@@ -11,7 +11,7 @@ WORKDIR $APP_HOME
 
 ADD apt/ $APP_HOME/apt
 
-RUN apt-get -y update && $APT_HOME/apt/production.sh
+RUN apt-get -y update && $APP_HOME/apt/production.sh
 
 COPY requirements.txt $APP_HOME
 ADD requirements/ $APP_HOME/requirements/
