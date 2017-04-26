@@ -461,5 +461,5 @@ class ProcessResultsTestCase(TestCase):
 
         self.command.handle(**self.opts)
 
-        assert mail.outbox[0].subject == '[[Welsh translation needed]]'
+        assert mail.outbox[0].subject == 'Canlyniad Cofnodi Ple'
         assert 'Eich llys: Test Court' in mail.outbox[0].body
