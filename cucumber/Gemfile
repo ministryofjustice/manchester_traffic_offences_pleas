@@ -1,25 +1,19 @@
 source 'https://rubygems.org'
 
-gem 'rails'
-gem 'cucumber-rails', require: false
-gem 'parallel_tests'
+gem 'activesupport'
 gem 'timecop'
 gem 'webmock'
 gem 'site_prism'
-gem 'rspec-rails'
+gem 'rspec'
 gem 'rspec-its'
-gem 'database_cleaner'
 gem 'spring'
 gem 'spring-commands-rspec'
 gem 'spring-commands-cucumber'
-gem 'pry-rails'
-gem 'pry-byebug'
+gem 'pry'
 gem 'rubocop', require: false
-gem 'rubocop-junit-formatter', require: false
 gem 'selenium-webdriver'
 gem 'poltergeist', '1.10.0'
 gem 'chromedriver-helper'
-gem 'capybara-firebug'
 gem 'capybara-screenshot'
 gem 'launchy'
 gem 'require_all'

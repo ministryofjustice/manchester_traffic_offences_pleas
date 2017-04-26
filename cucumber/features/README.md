@@ -1,10 +1,18 @@
 ##Automated testing
 
-##Setup
+##Dependances
 
-You need to install ruby and [Bundler](http://bundler.io/)
+You need to install:
+
+Ruby
+
+[Bundler](http://bundler.io/)
+
 To install all of the required gems:
 $ bundle install
+
+[PhantomJS](https://github.com/teampoltergeist/poltergeist#installing-phantomjs)
+
 
 ###Rubocop
 
