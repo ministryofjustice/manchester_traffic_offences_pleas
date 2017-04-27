@@ -5,6 +5,8 @@
 {% blocktrans %}Your URN:{% endblocktrans %} {{ urn|format_urn }}
 {% blocktrans %}You will need to quote this if you contact the court{% endblocktrans %}
 
+{% blocktrans %}Please do not reply to this email as this email address is not monitored. Instead please send all queries directly to the court shown in this email.{% endblocktrans %}
+
 ------
 {% if plea_made_by == "Defendant" %}{% if plea_type == "guilty" or plea_type == "mixed" %}
 - {% blocktrans count charges=number_of_charges %}we'll send you a letter with the magistrate's decision{% plural %}we'll send you a letter with the magistrate's decisions{% endblocktrans %}
