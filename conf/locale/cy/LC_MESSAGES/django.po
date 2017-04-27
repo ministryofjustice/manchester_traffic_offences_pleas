@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-25 10:42+0100\n"
+"POT-Creation-Date: 2017-04-26 11:48+0100\n"
 "PO-Revision-Date: 2016-02-01 10:40+0000\n"
 "Last-Translator: Welsh Language Unit <welsh.language.unit.manager@hmcts.gsi.gov.uk>\n"
 "Language-Team: Welsh (http://www.transifex.com/make-a-plea-gds/make-a-plea/language/cy/)\n"
@@ -1426,15 +1426,15 @@ msgstr "Bydd arnoch angen dyfynnu hwn os byddwch yn cysylltu â'r llys"
 
 #: apps/plea/templates/complete.html:31
 #: apps/plea/templates/complete_sjp.html:31
-#: apps/plea/templates/emails/user_plea_confirmation.html:29
-#: apps/plea/templates/emails/user_plea_confirmation.txt:10
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:23
+#: apps/plea/templates/emails/user_plea_confirmation.html:31
+#: apps/plea/templates/emails/user_plea_confirmation.txt:12
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:25
 msgid "What happens next:"
 msgstr "Beth sy'n digwydd nesaf"
 
 #: apps/plea/templates/complete.html:37
-#: apps/plea/templates/emails/user_plea_confirmation.html:34
-#: apps/plea/templates/emails/user_plea_confirmation.txt:11
+#: apps/plea/templates/emails/user_plea_confirmation.html:36
+#: apps/plea/templates/emails/user_plea_confirmation.txt:13
 msgid "we'll send you a letter with the court's decision within 3 working days after your hearing date"
 msgid_plural "we'll send you a letter with the court's decisions within 3 working days after your hearing date"
 msgstr[0] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniad y llys cyn pen 3 diwrnod gwaith ar ôl dyddiad eich gwrandawiad"
@@ -1444,22 +1444,22 @@ msgstr[3] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r llys 
 
 #: apps/plea/templates/complete.html:38
 #: apps/plea/templates/complete_sjp.html:38
-#: apps/plea/templates/emails/user_plea_confirmation.html:35
-#: apps/plea/templates/emails/user_plea_confirmation.txt:12
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:30
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:11
+#: apps/plea/templates/emails/user_plea_confirmation.html:37
+#: apps/plea/templates/emails/user_plea_confirmation.txt:14
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:32
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:13
 msgid "we'll tell you if you need to attend a trial and what evidence you may need to send to the court to support your case"
 msgstr "byddwn yn dweud wrthych os bydd angen i chi fod yn bresennol mewn treial, a pha dystiolaeth y mae'n bosib y bydd angen i chi ei hanfon i'r llys i gefnogi eich achos."
 
 #: apps/plea/templates/complete.html:42
-#: apps/plea/templates/emails/user_plea_confirmation.html:46
-#: apps/plea/templates/emails/user_plea_confirmation.txt:15
+#: apps/plea/templates/emails/user_plea_confirmation.html:48
+#: apps/plea/templates/emails/user_plea_confirmation.txt:17
 msgid "we'll send you a letter with a new hearing date for you to come to court for a trial"
 msgstr "byddwn yn anfon llythyr atoch yn rhoi dyddiad gwrandawiad newydd i chi ddod i'r llys ar gyfer treial"
 
 #: apps/plea/templates/complete.html:50
-#: apps/plea/templates/emails/user_plea_confirmation.html:39
-#: apps/plea/templates/emails/user_plea_confirmation.txt:13
+#: apps/plea/templates/emails/user_plea_confirmation.html:41
+#: apps/plea/templates/emails/user_plea_confirmation.txt:15
 msgid "we'll send a letter with the court's decision within 3 working days after the hearing date"
 msgid_plural "we'll send a letter with the court's decisions within 3 working days after the hearing date"
 msgstr[0] "byddwn yn anfon llythyr yn dweud beth yw penderfyniad y llys cyn pen 3 diwrnod gwaith ar ôl dyddiad y gwrandawiad"
@@ -1469,16 +1469,16 @@ msgstr[3] "byddwn yn anfon llythyr yn dweud beth yw penderfyniadau'r llys cyn pe
 
 #: apps/plea/templates/complete.html:51
 #: apps/plea/templates/complete_sjp.html:51
-#: apps/plea/templates/emails/user_plea_confirmation.html:40
-#: apps/plea/templates/emails/user_plea_confirmation.txt:14
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:43
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:14
+#: apps/plea/templates/emails/user_plea_confirmation.html:42
+#: apps/plea/templates/emails/user_plea_confirmation.txt:16
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:45
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:16
 msgid "we'll tell you if a company representative needs to attend a trial and what evidence you may need to send to the court to support the case"
 msgstr "byddwn yn dweud wrthych os bydd angen i gynrychiolydd o'r cwmni fod yn bresennol mewn treial, a pha dystiolaeth y mae'n bosib y bydd angen i chi ei hanfon i'r llys i gefnogi'r achos."
 
 #: apps/plea/templates/complete.html:55
-#: apps/plea/templates/emails/user_plea_confirmation.html:50
-#: apps/plea/templates/emails/user_plea_confirmation.txt:16
+#: apps/plea/templates/emails/user_plea_confirmation.html:52
+#: apps/plea/templates/emails/user_plea_confirmation.txt:18
 msgid "we'll send you a letter with a new hearing date for a company representative to come to court"
 msgstr "byddwn yn anfon llythyr atoch yn rhoi dyddiad gwrandawiad newydd i gynrychiolydd o'r cwmni ddod i'r llys"
 
@@ -1488,29 +1488,29 @@ msgid "you can <a href=\"javascript:window.print();\">print a copy</a> of this p
 msgstr "gallwch <a href=\"javascript:window.print();\">argraffu copi</a> o'r cadarnhad hwn o'ch ple ar gyfer eich cofnodion"
 
 #: apps/plea/templates/complete.html:65
-#: apps/plea/templates/emails/user_plea_confirmation.html:57
-#: apps/plea/templates/emails/user_plea_confirmation.txt:19
+#: apps/plea/templates/emails/user_plea_confirmation.html:59
+#: apps/plea/templates/emails/user_plea_confirmation.txt:21
 msgid "Do not:"
 msgstr "Peidiwch â gwneud y canlynol:"
 
 #: apps/plea/templates/complete.html:68
-#: apps/plea/templates/emails/user_plea_confirmation.html:59
-#: apps/plea/templates/emails/user_plea_confirmation.txt:20
+#: apps/plea/templates/emails/user_plea_confirmation.html:61
+#: apps/plea/templates/emails/user_plea_confirmation.txt:22
 msgid "come to court on the hearing date shown on page 1 of the requisition notice we sent to you"
 msgstr "dod i'r llys ar y dyddiad gwrandawiad a ddangosir ar dudalen 1 yr hysbysiad gwysio a anfonwyd atoch"
 
 #: apps/plea/templates/complete.html:71
-#: apps/plea/templates/emails/user_plea_confirmation.html:62
-#: apps/plea/templates/emails/user_plea_confirmation.txt:21
+#: apps/plea/templates/emails/user_plea_confirmation.html:64
+#: apps/plea/templates/emails/user_plea_confirmation.txt:23
 msgid "send your driving licence to the court, the DVLA will contact you if they need you to send it to them"
 msgstr "anfon eich trwydded yrru i'r llys. Bydd y DVLA yn cysylltu â chi os oes angen i chi ei hanfon atynt"
 
 #: apps/plea/templates/complete.html:76
 #: apps/plea/templates/complete_sjp.html:68
-#: apps/plea/templates/emails/user_plea_confirmation.html:66
-#: apps/plea/templates/emails/user_plea_confirmation.txt:25
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:59
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:22
+#: apps/plea/templates/emails/user_plea_confirmation.html:68
+#: apps/plea/templates/emails/user_plea_confirmation.txt:27
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:61
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:24
 msgid "Need to change a plea?"
 msgstr "Angen newid ple?"
 
@@ -1560,8 +1560,8 @@ msgstr[2] "Mae pledion eich cwmni wedi cael eu hanfon at yr ynad"
 msgstr[3] "Mae pledion eich cwmni wedi cael eu hanfon at yr ynad"
 
 #: apps/plea/templates/complete_sjp.html:37
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:29
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:10
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:31
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:12
 msgid "we'll send you a letter with the magistrate's decision"
 msgid_plural "we'll send you a letter with the magistrate's decisions"
 msgstr[0] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniad yr ynad"
@@ -1570,14 +1570,14 @@ msgstr[2] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r ynad"
 msgstr[3] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r ynad"
 
 #: apps/plea/templates/complete_sjp.html:42
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:34
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:12
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:36
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:14
 msgid "we'll send you a letter with a hearing date for you to come to court for a trial"
 msgstr "byddwn yn anfon llythyr atoch yn rhoi dyddiad gwrandawiad i chi ddod i'r llys ar gyfer treial"
 
 #: apps/plea/templates/complete_sjp.html:50
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:42
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:13
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:44
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:15
 msgid "we'll send a letter with the magistrate's decision"
 msgid_plural "we'll send a letter with the magistrate's decisions"
 msgstr[0] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniad yr ynad"
@@ -1586,14 +1586,14 @@ msgstr[2] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniad yr ynad"
 msgstr[3] "byddwn yn anfon llythyr atoch yn dweud beth yw penderfyniadau'r ynad"
 
 #: apps/plea/templates/complete_sjp.html:55
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:47
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:15
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:49
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:17
 msgid "we'll send you a letter with a hearing date for a company representative to attend a trial"
 msgstr "byddwn yn anfon llythyr atoch yn rhoi dyddiad gwrandawiad i gynrychiolydd o'r cwmni ddod i'r treial"
 
 #: apps/plea/templates/complete_sjp.html:65
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:56
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:18
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:58
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:20
 #: apps/result/templates/emails/user_resulting.html:66
 #: apps/result/templates/emails/user_resulting.txt:22
 msgid "Do not send your driving licence to the court. The DVLA will contact you if they need you to send it to them."
@@ -1683,45 +1683,52 @@ msgstr "Eich treuliau"
 msgid "Company financial details"
 msgstr "Manylion ariannol y cwmni"
 
-#: apps/plea/templates/emails/user_plea_confirmation.html:54
-#: apps/plea/templates/emails/user_plea_confirmation.txt:17
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:52
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:16
+#: apps/plea/templates/emails/user_plea_confirmation.html:29
+#: apps/plea/templates/emails/user_plea_confirmation.txt:8
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:23
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:8
+msgid "Please do not reply to this email as this email address is not monitored. Instead please send all queries directly to the court shown in this email."
+msgstr "Peidiwch ag ymateb i'r e-bost hwn oherwydd nid yw'r cyfeiriad e-bost hwn yn cael ei fonitro. Yn hytrach, anfonwch bob ymholiad yn uniongyrchol i'r llys a nodir yn yr e-bost hwn."
+
+#: apps/plea/templates/emails/user_plea_confirmation.html:56
+#: apps/plea/templates/emails/user_plea_confirmation.txt:19
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:54
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:18
 msgid "you can print a copy of this plea confirmation for your records"
 msgstr "gallwch argraffu copi o'r cadarnhad hwn o'ch ple ar gyfer eich cofnodion"
-
-#: apps/plea/templates/emails/user_plea_confirmation.html:68
-#: apps/plea/templates/emails/user_plea_confirmation.txt:26
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:61
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:23
-#, python-format
-msgid "Email %(court)s quoting your URN."
-msgstr "Anfonwch neges e-bost i %(court)s gan ddyfynnu eich cyfeirnod unigryw. "
 
 #: apps/plea/templates/emails/user_plea_confirmation.html:70
 #: apps/plea/templates/emails/user_plea_confirmation.txt:28
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.html:63
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:25
 #, python-format
-msgid "Your email must arrive before %(date)s."
-msgstr "Rhaid i'ch neges e-bost gyrraedd cyn %(date)s."
+msgid "Email %(court)s quoting your URN."
+msgstr "Anfonwch neges e-bost i %(court)s gan ddyfynnu eich cyfeirnod unigryw. "
 
 #: apps/plea/templates/emails/user_plea_confirmation.html:72
 #: apps/plea/templates/emails/user_plea_confirmation.txt:30
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.html:65
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:27
+#, python-format
+msgid "Your email must arrive before %(date)s."
+msgstr "Rhaid i'ch neges e-bost gyrraedd cyn %(date)s."
+
+#: apps/plea/templates/emails/user_plea_confirmation.html:74
+#: apps/plea/templates/emails/user_plea_confirmation.txt:32
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:67
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:29
 msgid "Email:"
 msgstr "E-bost:"
 
-#: apps/plea/templates/emails/user_plea_confirmation.html:75
-#: apps/plea/templates/emails/user_plea_confirmation.txt:35
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:68
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:32
+#: apps/plea/templates/emails/user_plea_confirmation.html:77
+#: apps/plea/templates/emails/user_plea_confirmation.txt:37
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:70
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:34
 msgid "We're constantly working to improve this service."
 msgstr "Rydym yn gweithio'n barhaus i wella'r gwasanaeth hwn."
 
-#: apps/plea/templates/emails/user_plea_confirmation.html:77
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:70
+#: apps/plea/templates/emails/user_plea_confirmation.html:79
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.html:72
 msgid "Please give us <a href=\"/feedback/\">feedback</a> so we can make it better."
 msgstr "Rhowch <a href=\"/feedback/\">adborth</a> i ni fel y gallwn ei wella."
 
@@ -1730,14 +1737,14 @@ msgstr "Rhowch <a href=\"/feedback/\">adborth</a> i ni fel y gallwn ei wella."
 msgid "GOV.UK - Online plea submission confirmation"
 msgstr "GOV.UK - Cadarnhad o gofnodi ple ar-lein"
 
-#: apps/plea/templates/emails/user_plea_confirmation.txt:37
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:34
+#: apps/plea/templates/emails/user_plea_confirmation.txt:39
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:36
 msgid "Please give us feedback so we can make it better:"
 msgstr "Gofynnwn yn garedig ichi roi adborth inni fel y gallwn ei wella:"
 
-#: apps/plea/templates/emails/user_plea_confirmation.txt:42
-#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:39
-#: apps/result/templates/emails/user_resulting.txt:67
+#: apps/plea/templates/emails/user_plea_confirmation.txt:44
+#: apps/plea/templates/emails/user_plea_confirmation_sjp.txt:41
+#: apps/result/templates/emails/user_resulting.txt:69
 msgid "Terms and Conditions and Privacy Policy:"
 msgstr "Telerau ac Amodau a Pholisi Preifatrwydd:"
 
@@ -2549,6 +2556,11 @@ msgstr "Bydd y llys yn postio copi caled o'ch hysbysiad o ddirwy a gorchymyn cas
 #: apps/result/templates/emails/user_resulting.txt:63
 msgid "If you fail to pay the fine as ordered, you may be liable for further penalties."
 msgstr "Os na fyddwch yn talu'r ddirwy fel y gorchmynnwyd i chi wneud, gallwch fod yn agored i gael cosbau pellach."
+
+#: apps/result/templates/emails/user_resulting.html:105
+#: apps/result/templates/emails/user_resulting.txt:65
+msgid "Please do not reply to this email as this email address is not monitored. Instead please send all queries directly to the court or fine email address shown in this email."
+msgstr "Peidiwch ag ymateb i'r e-bost hwn oherwydd nid yw'r cyfeiriad e-bost hwn yn cael ei fonitro. Yn hytrach, anfonwch bob ymholiad yn uniongyrchol i'r llys a nodir yn yr e-bost hwn."
 
 #: apps/result/templates/emails/user_resulting.txt:1
 msgid "Notice of fine and How to Pay"
