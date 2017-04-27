@@ -60,6 +60,13 @@ INSTALLED_APPS = INSTALLED_APPS + PROJECT_APPS
 
 del TEMPLATE_CONTEXT_PROCESSORS[TEMPLATE_CONTEXT_PROCESSORS.index('apps.feedback.context_processors.feedback')]
 
+# Options for Premailer, which inlines the CSS on the fly in email templates and
+# makes all URLs absolute
+PREMAILER_OPTIONS = {"base_url": os.environ.get("PREMAILER_BASE_URL", "https://www.makeaplea.service.gov.uk"),
+                     "remove_classes": False,
+                     "keep_style_tags": True,
+                     "cssutils_logging_level": logging.ERROR}
+
 # .local.py overrides all the common settings.
 try:
     from .local import *
