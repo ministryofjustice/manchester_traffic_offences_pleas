@@ -16,11 +16,6 @@ DATABASES = {
     }
 }
 
-PREMAILER_OPTIONS = {"base_url": "http://dev.makeaplea.dsd.io",
-                     "remove_classes": False,
-                     "keep_style_tags": True,
-                     "cssutils_logging_level": logging.ERROR}
-
 SMTP_ROUTES["GSI"]["USERNAME"] = os.environ.get("GSI_EMAIL_USERNAME", "")
 SMTP_ROUTES["GSI"]["PASSWORD"] = os.environ.get("GSI_EMAIL_PASSWORD", "")
 SMTP_ROUTES["PNN"]["USERNAME"] = os.environ.get("PNN_EMAIL_USERNAME", "")
