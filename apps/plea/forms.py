@@ -51,7 +51,7 @@ class AuthForm(BaseStageForm):
         elif self.auth_field == "PostCode":
             del self.fields["date_of_birth"]
 
-    number_of_charges = forms.IntegerField(label=_("Number of charges"),
+    number_of_charges = forms.IntegerField(label=_("Number of offences"),
                                            help_text=_("How many offences are listed on your notice?"),
                                            widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                          "maxlength": "2",
@@ -92,7 +92,7 @@ class BaseCaseForm(BaseStageForm):
         ("Defendant", _("The person named in the notice")),
         ("Company representative", _("Pleading on behalf of a company")))
 
-    number_of_charges = forms.IntegerField(label=_("Number of charges"),
+    number_of_charges = forms.IntegerField(label=_("Number of offences"),
                                            widget=forms.TextInput(attrs={"pattern": "[0-9]*",
                                                                          "maxlength": "2",
                                                                          "class": "form-control-inline",
