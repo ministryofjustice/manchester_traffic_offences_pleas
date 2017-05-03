@@ -16,7 +16,7 @@
 {% if case.postcode %}
     <div class="dl-wrap">
         <dl>
-            <dt>{% blocktrans %}Number of charges{% endblocktrans %}</dt>
+            <dt>{% blocktrans %}Number of offences{% endblocktrans %}</dt>
             <dd>{{ case.number_of_charges }}</dd>
 
             <dt>{% blocktrans %}Postcode{% endblocktrans %}</dt>
@@ -60,7 +60,7 @@
                 <dd>{{ case.date_of_hearing|parse_date|date:"d/m/Y" }}</dd>
             {% endif %}
 
-            <dt>{% blocktrans %}Number of charges{% endblocktrans %}</dt>
+            <dt>{% blocktrans %}Number of offences{% endblocktrans %}</dt>
             <dd>{{ case.number_of_charges }}</dd>
 
             <dt>{% blocktrans %}You are{% endblocktrans %}</dt>
