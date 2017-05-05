@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-03 16:44+0100\n"
+"POT-Creation-Date: 2017-05-05 11:11+0100\n"
 "PO-Revision-Date: 2016-02-01 10:40+0000\n"
 "Last-Translator: Welsh Language Unit <welsh.language.unit.manager@hmcts.gsi.gov.uk>\n"
 "Language-Team: Welsh (http://www.transifex.com/make-a-plea-gds/make-a-plea/language/cy/)\n"
@@ -228,12 +228,12 @@ msgstr[2] "Eich pledion"
 msgstr[3] "Eich pledion"
 
 #: apps/forms/templates/widgets/plea_radio_field.html:87
-#: apps/plea/forms.py:718 apps/plea/templates/partials/review_plea.html:31
+#: apps/plea/forms.py:717 apps/plea/templates/partials/review_plea.html:31
 msgid "Guilty"
 msgstr "Euog"
 
 #: apps/forms/templates/widgets/plea_radio_field.html:87
-#: apps/plea/forms.py:719 apps/plea/templates/partials/review_plea.html:33
+#: apps/plea/forms.py:718 apps/plea/templates/partials/review_plea.html:33
 msgid "Not guilty"
 msgstr "Dieuog"
 
@@ -982,194 +982,194 @@ msgstr "Faint yw eich taliad Credyd Pensiwn?"
 msgid "Would paying a fine cause you financial problems?"
 msgstr "A fyddai talu dirwy yn achosi problemau ariannol i chi?"
 
-#: apps/plea/forms.py:457
+#: apps/plea/forms.py:456
 msgid "How would paying a fine cause you serious financial problems?"
 msgstr "Sut fyddai talu dirwy yn achosi problemau ariannol difrifol i chi?"
 
-#: apps/plea/forms.py:458
+#: apps/plea/forms.py:457
 msgid "Why you think the court should allow you to pay your fine in instalments:"
 msgstr "Pam rydych chi'n credu y dylai'r llys roi caniatâd i dalu eich dirwy mewn rhandaliadau:"
 
-#: apps/plea/forms.py:469
+#: apps/plea/forms.py:468
 msgid "Accommodation"
 msgstr "Llety"
 
-#: apps/plea/forms.py:470
+#: apps/plea/forms.py:469
 msgid "Rent, mortgage or lodgings"
 msgstr "Rhent, morgais neu lety"
 
-#: apps/plea/forms.py:481
+#: apps/plea/forms.py:480
 msgid "Utility bills"
 msgstr "Biliau Cyfleustodau"
 
-#: apps/plea/forms.py:482
+#: apps/plea/forms.py:481
 msgid "Gas, water, electricity etc"
 msgstr "Nwy, dŵr, trydan ac ati"
 
-#: apps/plea/forms.py:493
+#: apps/plea/forms.py:492
 msgid "Insurance"
 msgstr "Yswiriant"
 
-#: apps/plea/forms.py:494
+#: apps/plea/forms.py:493
 msgid "Home, life insurance etc"
 msgstr "Yswiriant cartref, bywyd ac ati"
 
-#: apps/plea/forms.py:505
+#: apps/plea/forms.py:504
 msgid "Council tax"
 msgstr "Y Dreth Gyngor"
 
-#: apps/plea/forms.py:513
+#: apps/plea/forms.py:512
 msgid "Does anyone else contribute to these bills?"
 msgstr "A oes unrhyw un arall yn cyfrannu at dalu'r biliau hyn?"
 
-#: apps/plea/forms.py:535
+#: apps/plea/forms.py:534
 msgid "Television subscription"
 msgstr "Tanysgrifiad teledu"
 
-#: apps/plea/forms.py:536
+#: apps/plea/forms.py:535
 msgid "TV licence, satellite etc"
 msgstr "Trwydded teledu, lloeren ac ati"
 
-#: apps/plea/forms.py:547
+#: apps/plea/forms.py:546
 msgid "Travel expenses"
 msgstr "Costau teithio"
 
-#: apps/plea/forms.py:548
+#: apps/plea/forms.py:547
 msgid "Fuel, car, public transport etc"
 msgstr "Tanwydd, car, trafnidiaeth gyhoeddus ac ati"
 
-#: apps/plea/forms.py:559
+#: apps/plea/forms.py:558
 msgid "Telephone"
 msgstr "Rhif ffôn"
 
-#: apps/plea/forms.py:560
+#: apps/plea/forms.py:559
 msgid "Landline and/or mobile"
 msgstr "Llinell dir a/neu ffôn symudol"
 
-#: apps/plea/forms.py:571
+#: apps/plea/forms.py:570
 msgid "Loan repayments"
 msgstr "Ad-daliadau Benthyciadau"
 
-#: apps/plea/forms.py:572
+#: apps/plea/forms.py:571
 msgid "Credit card, bank etc"
 msgstr "Cerdyn credyd, banc ac ati"
 
-#: apps/plea/forms.py:583
+#: apps/plea/forms.py:582
 msgid "County court orders"
 msgstr "Gorchmynion llys sirol"
 
-#: apps/plea/forms.py:594
+#: apps/plea/forms.py:593
 msgid "Child maintenance"
 msgstr "Cynhaliaeth Plant"
 
-#: apps/plea/forms.py:604
+#: apps/plea/forms.py:603
 msgid "Any other expenses that are not listed above?"
 msgstr "Unrhyw dreuliau eraill nad ydynt wedi'u rhestru uchod? "
 
-#: apps/plea/forms.py:605
+#: apps/plea/forms.py:604
 msgid "Other significant expenses you think the court should know about. For example, childcare"
 msgstr "Unrhyw dreuliau sylweddol y credwch dylai'r llys wybod amdanynt.  Er enghraifft, gofal plant "
 
-#: apps/plea/forms.py:609
+#: apps/plea/forms.py:608
 msgid "If yes, tell us here"
 msgstr "Os oes, dywedwch wrthym yma "
 
-#: apps/plea/forms.py:618
+#: apps/plea/forms.py:617
 msgid "Monthly total of your other significant expenses"
 msgstr "Cyfanswm misol eich treuliau sylweddol eraill "
 
-#: apps/plea/forms.py:647
+#: apps/plea/forms.py:646
 msgid "Has the company been trading for more than 12 months?"
 msgstr "A yw'r cwmni wedi bod yn masnachu am fwy na 12 mis?"
 
-#: apps/plea/forms.py:650
+#: apps/plea/forms.py:649
 #: apps/plea/templates/partials/review_company_finances.html:11
 msgid "Number of employees"
 msgstr "Nifer o gyflogeion"
 
-#: apps/plea/forms.py:665
+#: apps/plea/forms.py:664
 #: apps/plea/templates/partials/review_company_finances.html:22
 msgid "Gross turnover"
 msgstr "Trosiant gros"
 
-#: apps/plea/forms.py:666
+#: apps/plea/forms.py:665
 msgid "For example, 150000"
 msgstr "Er enghraifft, 150000"
 
-#: apps/plea/forms.py:672
+#: apps/plea/forms.py:671
 #: apps/plea/templates/partials/review_company_finances.html:25
 msgid "Net turnover"
 msgstr "Trosiant net"
 
-#: apps/plea/forms.py:673
+#: apps/plea/forms.py:672
 msgid "For example, 110000"
 msgstr "Er enghraifft, 110000"
 
-#: apps/plea/forms.py:702
+#: apps/plea/forms.py:701
 msgid "Do you want to receive an email confirming your plea has been sent to the court?"
 msgstr "Ydych chi eisiau cadarnhad drwy e-bost bod eich ple wedi cael ei anfon i'r llys? "
 
-#: apps/plea/forms.py:708
+#: apps/plea/forms.py:707
 msgid "If yes, enter your email address here:"
 msgstr "Os oes, rhowch eich cyfeiriad e-bost yma: "
 
-#: apps/plea/forms.py:730 apps/plea/templates/partials/review_plea.html:38
+#: apps/plea/forms.py:729 apps/plea/templates/partials/review_plea.html:38
 msgid "Mitigation"
 msgstr "Lliniariad"
 
-#: apps/plea/forms.py:732
+#: apps/plea/forms.py:731
 msgid "Is there something you would like the court to consider?"
 msgstr "Oes rhywbeth yr hoffech i'r llys ei ystyried?"
 
-#: apps/plea/forms.py:736
+#: apps/plea/forms.py:735
 msgid "Not guilty because?"
 msgstr "Dieuog oherwydd?"
 
-#: apps/plea/forms.py:738
+#: apps/plea/forms.py:737
 msgid "Why do you believe you are not guilty?"
 msgstr "Pam ydych chi'n credu eich bod yn ddieuog?"
 
-#: apps/plea/forms.py:746 apps/plea/forms.py:838
+#: apps/plea/forms.py:745 apps/plea/forms.py:837
 msgid "Do you need an interpreter in court?"
 msgstr "Oes arnoch angen cyfieithydd/dehonglydd yn y llys?"
 
-#: apps/plea/forms.py:753 apps/plea/forms.py:794 apps/plea/forms.py:845
+#: apps/plea/forms.py:752 apps/plea/forms.py:793 apps/plea/forms.py:844
 msgid "If yes, tell us which language (include sign language):"
 msgstr "Os oes, dywedwch wrthym pa iaith (gan gynnwys iaith arwyddion):"
 
-#: apps/plea/forms.py:760
+#: apps/plea/forms.py:759
 msgid "Do you disagree with any evidence from a witness statement in the notice we sent to you?"
 msgstr "Ydych chi'n anghytuno gydag unrhyw dystiolaeth mewn datganiad tyst yn yr hysbysiad a anfonwyd atoch "
 
-#: apps/plea/forms.py:765
+#: apps/plea/forms.py:764
 msgid "If yes, tell us the name of the witness (on the top left of the statement) and what you disagree with:"
 msgstr "Os hoffech, dywedwch wrthym beth yw enw'r tyst (ar frig y datganiad ar yr ochr chwith) a beth ydych chi'n anghytuno yn ei gylch: "
 
-#: apps/plea/forms.py:773
+#: apps/plea/forms.py:772
 msgid "Do you want to call a defence witness?"
 msgstr "Hoffech chi alw ar dyst yr amddiffyniad? "
 
-#: apps/plea/forms.py:774
+#: apps/plea/forms.py:773
 msgid "Someone who can give evidence in court supporting your case."
 msgstr "Rhywun sy'n gallu rhoi tystiolaeth yn y llys i gefnogi eich achos."
 
-#: apps/plea/forms.py:779
+#: apps/plea/forms.py:778
 msgid "If yes, tell us the name, address and date of birth of any witnesses you want to call  to support your case:"
 msgstr "Os hoffech, dywedwch wrthym beth yw enw, cyfeiriad a dyddiad geni unrhyw dystion yr hoffech alw arnynt i gefnogi eich achos: "
 
-#: apps/plea/forms.py:787
+#: apps/plea/forms.py:786
 msgid "Does your witness need an interpreter in court?"
 msgstr "A oes angen cyfieithydd/dehonglydd yn y llys ar gyfer eich tyst?"
 
-#: apps/plea/forms.py:831
+#: apps/plea/forms.py:830
 msgid "Do you want to come to court to plead guilty?"
 msgstr "Hoffech chi ddod i'r llys i bledio'n euog? "
 
-#: apps/plea/forms.py:870
+#: apps/plea/forms.py:869
 msgid "Unique reference number (URN)"
 msgstr "Cyfeirnod unigryw (URN)"
 
-#: apps/plea/forms.py:873
+#: apps/plea/forms.py:872
 msgid "On page 1, usually at the top."
 msgstr "Ar dudalen 1, fel arfer ar y brig."
 
