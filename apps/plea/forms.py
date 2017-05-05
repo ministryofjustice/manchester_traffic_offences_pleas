@@ -445,8 +445,7 @@ class YourPensionCreditForm(BaseStageForm):
 
 
 class YourIncomeForm(BaseStageForm):
-    hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you serious financial problems?"),
-                                      help_text=_("For example, you would become homeless."),
+    hardship = forms.TypedChoiceField(label=_("Would paying a fine cause you financial problems?"),
                                       widget=RadioSelect(renderer=DSRadioFieldRenderer),
                                       choices=YESNO_CHOICES["Byddai/Na fyddai"],
                                       coerce=to_bool,

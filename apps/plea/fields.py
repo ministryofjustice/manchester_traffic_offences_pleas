@@ -60,7 +60,7 @@ ERROR_MESSAGES = {
     "PENSION_CREDIT_REQUIRED": _("Tell us if you receive Pension Credit"),
     "PENSION_CREDIT_PERIOD_REQUIRED": _("Select how often your Pension Credit is paid"),
     "PENSION_CREDIT_AMOUNT_REQUIRED": _("Enter how much Pension Credit you receive"),
-    "HARDSHIP_REQUIRED": _("Tell us if paying a fine would cause you serious financial problems"),
+    "HARDSHIP_REQUIRED": _("Tell us if paying a fine would cause you financial problems"),
     "UNDERSTAND_REQUIRED": _("You must confirm that you have read and understand the important information"),
     "OTHER_INFO_REQUIRED": _("Tell us how you earn your money"),
     "HARDSHIP_DETAILS_REQUIRED": _("You must tell us why you think you should be allowed to pay your fine in instalments"),
