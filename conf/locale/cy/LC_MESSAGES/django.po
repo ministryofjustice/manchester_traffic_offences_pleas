@@ -493,8 +493,8 @@ msgid "Enter how much Pension Credit you receive"
 msgstr "Nodwch faint o Gredyd Pensiwn rydych chi'n ei gael"
 
 #: apps/plea/fields.py:63
-msgid "Tell us if paying a fine would cause you serious financial problems"
-msgstr "Dywedwch wrthym a fyddai talu dirwy yn achosi problemau ariannol difrifol i chi"
+msgid "Tell us if paying a fine would cause you financial problems"
+msgstr "Dywedwch wrthym a fyddai talu dirwy yn achosi problemau ariannol i chi"
 
 #: apps/plea/fields.py:64
 msgid "You must confirm that you have read and understand the important information"
@@ -979,12 +979,8 @@ msgid "How much is your Pension Credit payment?"
 msgstr "Faint yw eich taliad Credyd Pensiwn?"
 
 #: apps/plea/forms.py:448
-msgid "Would paying a fine cause you serious financial problems?"
-msgstr "A fyddai talu dirwy yn achosi problemau ariannol difrifol i chi?"
-
-#: apps/plea/forms.py:449
-msgid "For example, you would become homeless."
-msgstr "Er enghraifft, byddech yn dod yn ddi-gartref."
+msgid "Would paying a fine cause you financial problems?"
+msgstr "A fyddai talu dirwy yn achosi problemau ariannol i chi?"
 
 #: apps/plea/forms.py:457
 msgid "How would paying a fine cause you serious financial problems?"

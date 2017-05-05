@@ -488,8 +488,8 @@ msgid "Enter how much Pension Credit you receive"
 msgstr "Enter how much Pension Credit you receive"
 
 #: apps/plea/fields.py:63
-msgid "Tell us if paying a fine would cause you serious financial problems"
-msgstr "Tell us if paying a fine would cause you serious financial problems"
+msgid "Tell us if paying a fine would cause you financial problems"
+msgstr "Tell us if paying a fine would cause you financial problems"
 
 #: apps/plea/fields.py:64
 msgid "You must confirm that you have read and understand the important information"
@@ -974,12 +974,8 @@ msgid "How much is your Pension Credit payment?"
 msgstr "How much is your Pension Credit payment?"
 
 #: apps/plea/forms.py:448
-msgid "Would paying a fine cause you serious financial problems?"
-msgstr "Would paying a fine cause you serious financial problems?"
-
-#: apps/plea/forms.py:449
-msgid "For example, you would become homeless."
-msgstr "For example, you would become homeless."
+msgid "Would paying a fine cause you financial problems?"
+msgstr "Would paying a fine cause you financial problems?"
 
 #: apps/plea/forms.py:457
 msgid "How would paying a fine cause you serious financial problems?"
