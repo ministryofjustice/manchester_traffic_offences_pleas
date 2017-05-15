@@ -74,7 +74,8 @@ make_a_plea/assets-src/vendor/
 .sass-cache/
 
 # vim swp files
-*.swp
+*.sw[a-p]
+.*.sw[a-p]
 
 # vagrant
 .vagrant
@@ -101,4 +102,7 @@ moj_template/
 /screenshot_*
 
 *translation_files.zip
+
+cucumber/features/bdd_generated_fixtures.yaml
+
 
