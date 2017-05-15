@@ -1,9 +1,11 @@
 from __future__ import absolute_import, unicode_literals
+
+import json
 import datetime as dt
 
 from django.test import TestCase
 
-from ..models import CourtEmailCount, UsageStats, Court, Case, OUCode
+from ..models import AuditEvent, CourtEmailCount, UsageStats, Court, Case, OUCode
 
 
 class TestStatsBase(TestCase):
@@ -348,3 +350,48 @@ class TestCourtModel(TestCase):
         court = Court.objects.get_court_dx(self.case.urn)
 
         self.assertEquals(court.id, self.court2.id)
+
+
+class TestAuditEventModel(TestCase):
+
+    def setUp(self):
+        cases = [
+            {
+                "urn": "00AA123456700",
+                "initiation_type": "J",
+                "extra_data": {
+                    "urn": "00/AA/7654321/00",
+                    "initiation_type": "S",
+                }
+            }
+        ]
+        for case in cases:
+            Case(**case).save()
+
+        audit_events = [
+            {
+                "event_type": "case_api",
+                "event_subtype": "success",
+                "case": Case.objects.get(urn="00AA123456700"),
+            }
+        ]
+        for audit_event in audit_events:
+            AuditEvent().populate(**audit_event)
+
+    def tearDown(self):
+        Case.objects.all().delete()
+
+    def test_conflicted_urn(self):
+        ae = AuditEvent.objects.get(case__urn="00AA123456700")
+        self.assertEqual(ae.urn, "CONFLICTED")
+
+    def test_conflicted_initiation_type(self):
+        ae = AuditEvent.objects.get(case__urn="00AA123456700")
+        self.assertEqual(ae.initiation_type, "CONFLICTED")
+
+    def test_event_data_hash(self):
+        ae = AuditEvent.objects.get(case__urn="00AA123456700")
+        self.assertEqual(
+            ae.extra_data_hash,
+            "5e767f10e63b8a6c6a7467b7547e8544",
+        )
