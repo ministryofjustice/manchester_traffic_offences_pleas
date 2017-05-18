@@ -453,7 +453,7 @@ class YourIncomeForm(BaseStageForm):
 
 
 class HardshipForm(BaseStageForm):
-    hardship_details = forms.CharField(label=_("How would paying a fine cause you serious financial problems?"),
+    hardship_details = forms.CharField(label=_("How would paying a fine cause you financial problems?"),
                                        help_text=_("Why you think the court should allow you to pay your fine in instalments:"),
                                        widget=forms.Textarea(attrs={"cols": 45, "rows": 5, "class": "form-control"}),
                                        required=True,
