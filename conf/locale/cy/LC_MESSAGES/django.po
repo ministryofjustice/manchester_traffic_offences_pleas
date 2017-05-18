@@ -983,8 +983,8 @@ msgid "Would paying a fine cause you financial problems?"
 msgstr "A fyddai talu dirwy yn achosi problemau ariannol i chi?"
 
 #: apps/plea/forms.py:456
-msgid "How would paying a fine cause you serious financial problems?"
-msgstr "Sut fyddai talu dirwy yn achosi problemau ariannol difrifol i chi?"
+msgid "How would paying a fine cause you financial problems?"
+msgstr "Sut fyddai talu dirwy yn achosi problemau ariannol i chi?"
 
 #: apps/plea/forms.py:457
 msgid "Why you think the court should allow you to pay your fine in instalments:"
