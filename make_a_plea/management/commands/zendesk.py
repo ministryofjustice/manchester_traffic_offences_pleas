@@ -116,11 +116,8 @@ class Command(BaseCommand):
         with open(os.path.expanduser("~/.hmcts-zendesk"), "r") as config_file:
             self.settings = yaml.load(config_file.read())
 
-    def init_csv(self, f, dialect=csv.excel, encoding="utf-8", **kwds):
-        self.queue = cStringIO.StringIO()
-        self.writer = csv.writer(self.queue, dialect=dialect, **kwds)
-        self.stream = f
-        self.encoder = codecs.getincrementalencoder(encoding)()
+    def init_csv(self, f, dialect=csv.excel):
+        self.writer = csv.writer(f, dialect=dialect)
 
     def init_zen(self):
         self.zendesk = Zendesk(
@@ -135,10 +132,7 @@ class Command(BaseCommand):
             STRUCTURED_FIELDS
 
     def to_csv(self):
-
-        self.outfile = self.settings["outfile"] \
-            if "outfile" in self.settings \
-            else "zendump.csv"
+        self.outfile = self.settings.get('outfile', 'zendump.csv')
         self.batch_size = 100
         with open(self.outfile, "wb") as f:
 
@@ -150,12 +144,9 @@ class Command(BaseCommand):
                     self.writerow(self.ticket_to_row(ticket))
 
     def writerow(self, row):
-        self.writer.writerow([s.encode("utf-8") for s in row])
-        data = self.queue.getvalue()
-        data = data.decode("utf-8")
-        data = self.encoder.encode(data)
-        self.stream.write(data)
-        self.queue.truncate(0)
+        self.writer.writerow([
+            cell.encode("utf-8")
+            for cell in row])
 
     def ticket_to_row(self, ticket):
         return \
@@ -179,20 +170,7 @@ class Command(BaseCommand):
         return fields
 
     def parse_newline_field(self, field):
-        """Newlines make for a messy csv so coerce them to \n"""
-        rep = {
-            "\\u000A".decode('unicode-escape'): "/n",
-            r"/r": "/n",
-            r"/r/n": "/n",
-            r"/n": "/n",
-        }
-        rep = dict((re.escape(k), v) for k, v in rep.iteritems())
-        pattern = re.compile("|".join(rep.keys()))
-        try:
-            return pattern.sub(
-                lambda m: rep[re.escape(m.group(0))], field, re.UNICODE)
-        except TypeError:
-            return ""
+        return field or ""
 
     def get_newline_fields(self, ticket):
         fields = []
