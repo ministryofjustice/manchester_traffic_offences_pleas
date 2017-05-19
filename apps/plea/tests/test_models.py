@@ -1,6 +1,5 @@
 from __future__ import absolute_import, unicode_literals
 
-import json
 import datetime as dt
 
 from django.test import TestCase
@@ -388,10 +387,3 @@ class TestAuditEventModel(TestCase):
     def test_conflicted_initiation_type(self):
         ae = AuditEvent.objects.get(case__urn="00AA123456700")
         self.assertEqual(ae.initiation_type, "CONFLICTED")
-
-    def test_event_data_hash(self):
-        ae = AuditEvent.objects.get(case__urn="00AA123456700")
-        self.assertEqual(
-            ae.extra_data_hash,
-            "5e767f10e63b8a6c6a7467b7547e8544",
-        )

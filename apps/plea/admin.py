@@ -109,23 +109,17 @@ class CaseInitiationTypeFilter(admin.SimpleListFilter):
 
         cases = Case.objects.all()
 
-        # Return the urn to use as a filter parameter and the name
+        # Return the initiation_type to use as a filter parameter and the name
         return list(set([
             (
                 case.initiation_type,
-                [
-                    i[1]
-                    for i in INITIATION_TYPE_CHOICES
-                    if i[0] == case.initiation_type
-                ][0]
+                model_admin.model._get_initiation_type_choice(case)[1],
             )
-            for case in cases
-        ])) + [  # Special case; compound filter
-            (
+            for case in cases])) + [(
+                # Special case; compound filter
                 "J|Q|S",
                 "SJPs, requisitions and summons",
-            )
-        ]
+            )]
 
     def queryset(self, request, queryset):
         if self.value():
@@ -250,6 +244,22 @@ class DataValidationAdmin(admin.ModelAdmin):
         }, context_instance=RequestContext(request))
 
 
+def x_by_y_from_z(x, y, z):
+    """Return list of keys or attrs x from the y attr of each item in z"""
+    retval = []
+    for i in z:
+        value = None
+        if hasattr(i, y):
+            iy = getattr(i, y)
+            if iy is not None:
+                if hasattr(iy, x):
+                    value = getattr(iy, x)
+                elif x in iy:
+                    value = iy[x]
+                retval.append(value)
+    return set(retval)
+
+
 class UrnFilter(admin.SimpleListFilter):
     """Allow filtering by URN from case or event_data"""
 
@@ -260,16 +270,9 @@ class UrnFilter(admin.SimpleListFilter):
         """Build a list of all urns mentioned by auditevents"""
 
         # TODO: consider factoring out this iteration
-        urns_by_case = {
-            a.case.urn
-            for a in AuditEvent.objects.all()
-            if hasattr(a, "case") and hasattr(a.case, "urn")
-        }
-        urns_by_event_data = {
-            a.event_data["urn"]
-            for a in AuditEvent.objects.all()
-            if hasattr(a, "event_data") and "urn" in a.event_data
-        }
+        audit_events = AuditEvent.objects.all()
+        urns_by_event_data = x_by_y_from_z("urn", "event_data", audit_events)
+        urns_by_case = x_by_y_from_z("urn", "case", audit_events)
 
         # Unique urns for auditevents, with case urns being preferred
         urns = urns_by_event_data
@@ -302,17 +305,11 @@ class AuditEventInitiationTypeFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         """Build a list of all initiation_types mentioned by auditevents"""
-
-        initiation_types_by_case = {
-            a.case.initiation_type
-            for a in AuditEvent.objects.all()
-            if hasattr(a, "case") and hasattr(a.case, "initiation_type")
-        }
-        initiation_types_by_event_data = {
-            a.event_data["initiation_type"]
-            for a in AuditEvent.objects.all()
-            if hasattr(a, "event_data") and "initiation_type" in a.event_data
-        }
+        audit_events = AuditEvent.objects.all()
+        initiation_types_by_event_data = x_by_y_from_z(
+            "initiation_type", "event_data", audit_events)
+        initiation_types_by_case = x_by_y_from_z(
+            "initiation_type", "case", audit_events)
 
         # Unique initiation_types for auditevents, with case initiation_types being preferred
         initiation_types = initiation_types_by_event_data
@@ -321,20 +318,15 @@ class AuditEventInitiationTypeFilter(admin.SimpleListFilter):
         # Return the initiation_type to use as a filter parameter and the name
         return list(set([
             (
-                initiation_type,
-                [
-                    i[1]
-                    for i in INITIATION_TYPE_CHOICES
-                    if i[0] == initiation_type
-                ][0]
+                ae.case.initiation_type,
+                ae._get_initiation_type_choice()[1],
             )
-            for initiation_type in initiation_types
-        ])) + [  # Special case; compound filter
-            (
+            for ae in audit_events
+            if ae.case is not None])) + [(
+                # Special case; compound filter
                 "J|Q|S",
                 "SJPs, requisitions and summons",
-            )
-        ]
+            )]
 
     def queryset(self, request, queryset):
         if self.value():
@@ -378,24 +370,20 @@ class AuditEventAdmin(admin.ModelAdmin):
     )
     search_fields = ("case__urn", "event_data__urn")
 
-    def initiation_type(self, obj):
+    def initiation_type(self, auditevent):
         """Required for the admin_order_field"""
-        result = [
-            i[1]
-            for i in INITIATION_TYPE_CHOICES
-            if obj.case and obj.case.initiation_type == i[0]
-        ]
-        if result:
-            return result[0]
+        itype = auditevent._get_initiation_type_choice()
+        if itype is not None:
+            return itype[1]
 
-    def case_link(self, obj):
+    def case_link(self, auditevent):
         """Display cases as links where possible"""
-        if hasattr(obj, "case") and obj.case is not None:
+        if hasattr(auditevent, "case") and auditevent.case is not None:
             link = urlresolvers.reverse(
                 "admin:plea_case_change",
-                args=[obj.case.id],
+                args=[auditevent.case.id],
             )
-            return u'<a href="%s">%s</a>' % (link, obj.case.urn)
+            return u'<a href="%s">%s</a>' % (link, auditevent.case.urn)
         else:
             return "No case"
     case_link.allow_tags = True

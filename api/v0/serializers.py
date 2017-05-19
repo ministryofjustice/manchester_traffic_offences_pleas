@@ -1,7 +1,3 @@
-import json
-
-# FIXME: serializers.ValidationError not exceptions.ValidationError
-from django.core import exceptions
 from rest_framework import serializers
 
 from apps.plea.models import (
@@ -39,35 +35,6 @@ class AuditEventSerializer(serializers.ModelSerializer):
         exclude = ('case', 'event_data')
         required_fields = ("event_type", "event_subtype")
 
-    #def validate_event_type(self, data):
-    #    if data is None:
-    #        raise serializers.ValidationError(
-    #            "Missing event_type creating audit event via API")
-    #    if data == "":
-    #        raise serializers.ValidationError(
-    #            "Parameter, event_type, may not be blank.")
-    #    return data
-
-    #def validate_event_subtype(self, data):
-    #    if data is None:
-    #        raise serializers.ValidationError(
-    #            "Missing event_subtype creating audit event via API")
-    #    if data == "":
-    #        raise serializers.ValidationError(
-    #            "Parameter, event_subtype, may not be blank.")
-    #    return data
-
-    #def validate_event_data(self, data):
-    #    if data is not None:
-    #        try:
-    #            data = json.loads(data)
-    #        except json.ParseError:
-    #            raise serializers.ValidationError(
-    #                "Unable to parse event_data as json")
-    #    else:
-    #        data = {}
-    #    return data
-
     def post_validate(self):
         if self.errors:
             raise AuditedValidationError(
@@ -96,7 +63,7 @@ class CaseSerializer(serializers.ModelSerializer):
                 event_type="case_api",
                 event_subtype="invalid_case_missing_dateofhearing",
                 **data)
-            raise exceptions.ValidationError(
+            raise serializers.ValidationError(
                 "date_of_hearing is a required field")
 
         if len(data.get("offences", [])) == 0:
@@ -104,7 +71,7 @@ class CaseSerializer(serializers.ModelSerializer):
                 event_type="case_api",
                 event_subtype="case_invalid_no_offences",
                 **data)
-            raise exceptions.ValidationError("case has no offences")
+            raise serializers.ValidationError("case has no offences")
 
         offence_codes = [
             offence["offence_code"][:4]
@@ -120,7 +87,7 @@ class CaseSerializer(serializers.ModelSerializer):
                 event_type="case_api",
                 event_subtype="case_invalid_not_in_whitelist",
                 **data)
-            raise exceptions.ValidationError(
+            raise serializers.ValidationError(
                 ("Case {} contains offence codes [{}] not present "
                  "in the whitelist").format(
                     data.get("urn"),
@@ -141,7 +108,7 @@ class CaseSerializer(serializers.ModelSerializer):
                 event_type="case_api",
                 event_subtype="case_invalid_duplicate_urn_used",
                 **data)
-            raise exceptions.ValidationError(
+            raise serializers.ValidationError(
                 "URN / Case number already exists and has been used")
 
         return data
@@ -230,7 +197,7 @@ class ResultSerializer(serializers.ModelSerializer):
             AuditEvent().populate(
                 event_type="result_api",
                 event_subtype="result_invalid_duplicate_urn_used")
-            raise exceptions.ValidationError(
+            raise serializers.ValidationError(
                 "URN / Result number already exists and has been used")
 
         return data

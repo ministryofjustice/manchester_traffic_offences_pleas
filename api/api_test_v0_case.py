@@ -29,7 +29,7 @@ class GeneralAPITestCase(APITestCase):
 
         self.assertEqual(response.status_code, 401)
 
-    def test__pi_with_auth_succeeds(self):
+    def test_api_with_auth_succeeds(self):
 
         response = self.client.post(
             self.endpoint,
@@ -38,6 +38,17 @@ class GeneralAPITestCase(APITestCase):
             **self.auth_header)
 
         self.assertEqual(response.status_code, 400)
+
+    def test_unsupported_methods_fail(self):
+
+        for method in ["put", "get", "patch", "head", "delete"]:
+            client_method = getattr(self.client, method)
+            response = client_method(
+                self.endpoint,
+                {},
+                format='json',
+                **self.auth_header)
+            self.assertEqual(response.status_code, 405)
 
 
 class CaseAPICallTestCase(APITestCase):

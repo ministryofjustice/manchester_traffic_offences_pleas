@@ -161,7 +161,6 @@ class AuditEventAPICallTestCase(APITestCase):
                 'event_trace': None,
                 'event_type': 'auditevent_api',
                 'event_subtype': 'EXT1',
-                'extra_data_hash': u'',
                 'id': saved_item.id,
                 'event_datetime': saved_item.event_datetime.isoformat(),
             }

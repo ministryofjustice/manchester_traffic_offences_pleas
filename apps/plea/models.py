@@ -1,5 +1,3 @@
-import hashlib
-
 from collections import Counter
 from dateutil.parser import parse as date_parse
 import datetime as dt
@@ -815,11 +813,6 @@ class AuditEvent(models.Model):
         help_text="If there was a failure and data fields were found, they are stored here to debug",
         null=True, blank=True)
 
-    extra_data_hash = models.CharField(
-        verbose_name="extra data hash",
-        help_text="If the event caused a change to the extra_data then store the hash of it for debugging",
-        max_length=32, default="")
-
     event_datetime = models.DateTimeField(
         verbose_name="event date and time",
         help_text="The time at which the event occurred",
@@ -865,56 +858,59 @@ class AuditEvent(models.Model):
         else:
             return itype_attr or itype_edata
 
-    @classmethod
-    def populate(cls, *args, **kwargs):
+    def _get_initiation_type_choice(self):
+        for initiation_type in INITIATION_TYPE_CHOICES:
+            try:
+                if initiation_type[0] == self.case.initiation_type:
+                    return initiation_type
+            except AttributeError:
+                pass
+
+    def populate(self, *args, **kwargs):
         """
         Use of _meta.get_all_field_names() needs changing for Django 1.9
         http://stackoverflow.com/questions/2170228/iterate-over-model-instance-field-names-and-values-in-template
 
         TODO: Visitor pattern made sense when I started this work, not as much anymore
         """
-        ae = cls()
 
         # TODO: move validation into validators, share them between API, form and admin
         # TODO: refactor clunky field checks
         try:
             if kwargs["event_type"] not in [
                     i[0]
-                    for i in cls.EVENT_TYPE_CHOICES]:
+                    for i in self.EVENT_TYPE_CHOICES]:
                 raise AuditEventException("Invalid event_type when saving audit event")
         except KeyError:
             raise AuditEventException("Missing event_type when saving audit event")
         else:
-            ae.event_type = [
+            self.event_type = [
                 i[0]
-                for i in cls.EVENT_TYPE_CHOICES
+                for i in self.EVENT_TYPE_CHOICES
                 if i[0] == kwargs["event_type"]][0]
 
         try:
             if kwargs["event_subtype"] not in [
                     i[0]
-                    for i in cls.EVENT_SUBTYPE_CHOICES]:
+                    for i in self.EVENT_SUBTYPE_CHOICES]:
                 raise AuditEventException("Invalid event_subtype when saving audit event")
         except KeyError:
             raise AuditEventException("Missing event_subtype when saving audit event")
         else:
-            ae.event_subtype = [
+            self.event_subtype = [
                 i[0]
-                for i in cls.EVENT_SUBTYPE_CHOICES
+                for i in self.EVENT_SUBTYPE_CHOICES
                 if i[0] == kwargs["event_subtype"]][0]
 
-        ae.event_data = kwargs["event_data"] \
+        self.event_data = kwargs["event_data"] \
                 if "event_data" in kwargs \
                 else ""
-        ae.event_trace = kwargs["event_trace"] \
+        self.event_trace = kwargs["event_trace"] \
             if "event_trace" in kwargs \
             else ""
-        ae.event_data_hash = kwargs["event_data_hash"] \
-            if "event_data_hash" in kwargs \
-            else ""
-        ae.event_datetime = kwargs["event_datetime"] \
+        self.event_datetime = kwargs["event_datetime"] \
             if "event_datetime" in kwargs \
-            else ae.event_datetime
+            else self.event_datetime
 
         # If there's a Case floating about, let's copy its details
         if "case" in kwargs:
@@ -922,16 +918,16 @@ class AuditEvent(models.Model):
             if not issubclass(case.__class__, Case):
                 raise AuditEventException(
                     "The case kwarg is not a Case object when saving audit event")
-            ae.case = case
+            self.case = case
 
             # Copy the fields of interest
             fieldnames = case._meta.get_all_field_names()
             for fieldname in fieldnames:
-                if fieldname not in cls.IGNORED_CASE_FIELDS:
+                if fieldname not in self.IGNORED_CASE_FIELDS:
                     field = getattr(case, fieldname)
                     if hasattr(field, 'name') and hasattr(field, "value"):
                         if field.name != "extra_data":
-                            ae.event_data[field.name] = field.value
+                            self.event_data[field.name] = field.value
 
         # If there's a Result floating around, let's copy its details
         if "result" in kwargs:
@@ -944,39 +940,30 @@ class AuditEvent(models.Model):
             fieldnames = result._meta.get_all_filed_names()
             for fieldname in fieldnames:
                 field = getattr(result, fieldname)
-                if field.name not in cls.IGNORED_RESULT_FIELDS:
-                    ae.event_data[field.name] = field.value
+                if field.name not in self.IGNORED_RESULT_FIELDS:
+                    self.event_data[field.name] = field.value
 
         # If there's a form floating about, let's copy its fields
         elif "form" in kwargs:
-            ae.event_subtype = "form"
+            self.event_subtype = "form"
             for k, v in kwarg.items():
-                if k not in cls.IGNORED_FORM_FIELDS:
-                    ae.event_data[k] = v
+                if k not in self.IGNORED_FORM_FIELDS:
+                    self.event_data[k] = v
 
         # If this was just a validator we might have useful kwargs
         elif "validator" in kwargs:
-            ae.event_subtype = "validator"
-            ae.event_data = {}
+            self.event_subtype = "validator"
+            self.event_data = {}
             for k, v in kwargs.items():
-                if k not in cls.IGNORED_VALIDATOR_FIELDS:
-                    ae.event_data[k] = v
+                if k not in self.IGNORED_VALIDATOR_FIELDS:
+                    self.event_data[k] = v
 
-        # Update the hash
-        hash_msg = ae.case.extra_data
-        h = hashlib.md5()
-        h.update(str(hash_msg))
-        ae.extra_data_hash = h.hexdigest()
-
-        #if ae.event_data is None:
-        #    ae.event_data = {}
         try:
-            ae.save()
+            self.save()
         except ProgrammingError as e:
-            # TODO: Check e is actually related to hstore extension
             print "Failed to log item. Make sure hstore-able data is passed "
             "to AuditEvent().populate(). Data provided was: {0}".format(
                 str(kwargs))
             raise e
 
-        return ae
+        return self

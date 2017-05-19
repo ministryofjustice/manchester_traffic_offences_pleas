@@ -23,6 +23,7 @@ class AuditEventViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     """
     queryset = AuditEvent.objects.all()
     serializer_class = AuditEventSerializer
+    http_method_names = ['post']
 
 
 class CaseViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
