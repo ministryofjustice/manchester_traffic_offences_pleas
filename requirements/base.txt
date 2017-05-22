@@ -2,6 +2,10 @@
 # After the first "pip install -r", just run "pip freeze" and add the version
 # to each package in each requirements/*.txt.
 
+# Deps of current cffi (must be missing from ustream reqs)
+appdirs
+pyparsing
+
 Django==1.8
 lxml==3.4.4
 Pillow==2.8.1
