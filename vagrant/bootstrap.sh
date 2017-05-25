@@ -2,9 +2,10 @@
 rm -f /home/vagrant/.ssh/known_hosts
 ssh-keyscan -t rsa,dsa -H github.com >> /home/vagrant/.ssh/known_hosts
 
-sudo add-apt-repository ppa:chris-lea/node.js
+sudo apt-get clean
 sudo apt-get update
-sudo apt-get upgrade
+sudo apt-get upgrade -y
+cd /pleas/
 sudo ./apt/production.sh
 sudo ./apt/development.sh
 sudo ./apt/testing.sh
@@ -44,6 +45,7 @@ sudo -u postgres createdb manchester_traffic_offences
 ./manage.py migrate --noinput
 ./manage.py compilemessages
 
-sudo npm install -g npm
+set -x
+sudo ln -s /usr/bin/nodejs /usr/bin/node
 npm install
 sudo npm install -g gulp-cli
