@@ -225,9 +225,11 @@ class CaseAPICallTestCase(APITestCase):
         data['urn'] = '00/aa/8877887/00'
         count_before = AuditEvent.objects.count()
         response = self._post_data(data)
-        ae = AuditEvent.objects.get(case__urn='00AA887788700')
+        ae = AuditEvent.objects.filter(
+            case__urn='00AA887788700').order_by(
+                "-event_datetime")[0]
 
-        self.assertEqual(AuditEvent.objects.count(), count_before + 1)
+        self.assertEqual(AuditEvent.objects.count(), count_before + 2)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(ae.event_type, "case_api")
         self.assertEqual(ae.event_subtype, "success")
@@ -237,9 +239,11 @@ class CaseAPICallTestCase(APITestCase):
         data['urn'] = '00/ab/BROKEN/00'
         count_before = AuditEvent.objects.count()
         response = self._post_data(data)
-        ae = AuditEvent.objects.order_by("-event_datetime")[0]  # Not parallelisable
+        aes = AuditEvent.objects.filter(
+            case=None).order_by(
+                "-event_datetime")
 
-        self.assertEqual(AuditEvent.objects.count(), count_before + 1)
+        self.assertEqual(len(aes), count_before + 1)
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(ae.event_type, "case_api")
-        self.assertEqual(ae.event_subtype, "case_invalid_invalid_urn")
+        self.assertEqual(aes[0].event_type, "case_api")
+        self.assertEqual(aes[0].event_subtype, "case_invalid_invalid_urn")

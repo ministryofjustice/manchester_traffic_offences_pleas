@@ -371,6 +371,22 @@ class Case(models.Model):
             self.case_number,
         )
 
+    def _get_initiation_type_choice(self):
+        for initiation_type in INITIATION_TYPE_CHOICES:
+            try:
+                if initiation_type[0] == self.initiation_type:
+                    return initiation_type
+            except AttributeError:
+                pass
+
+    def save(self, *args, **kwargs):
+        super(Case, self).save(*args, **kwargs)
+        AuditEvent().populate(
+            case=self,
+            event_type="case_model",
+            event_subtype="success",
+            **kwargs)
+
 
 class CaseAction(models.Model):
     case = models.ForeignKey(Case, related_name="actions", null=False, blank=False)

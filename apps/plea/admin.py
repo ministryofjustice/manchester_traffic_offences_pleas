@@ -115,11 +115,13 @@ class CaseInitiationTypeFilter(admin.SimpleListFilter):
                 case.initiation_type,
                 model_admin.model._get_initiation_type_choice(case)[1],
             )
-            for case in cases])) + [(
-                # Special case; compound filter
-                "J|Q|S",
-                "SJPs, requisitions and summons",
-            )]
+            for case in cases
+            if hasattr(case, "initiation_type")
+        ])) + [(
+            # Special case; compound filter
+            "J|Q|S",
+            "SJPs, requisitions and summons",
+        )]
 
     def queryset(self, request, queryset):
         if self.value():
@@ -322,11 +324,12 @@ class AuditEventInitiationTypeFilter(admin.SimpleListFilter):
                 ae._get_initiation_type_choice()[1],
             )
             for ae in audit_events
-            if ae.case is not None])) + [(
-                # Special case; compound filter
-                "J|Q|S",
-                "SJPs, requisitions and summons",
-            )]
+            if ae.case is not None and hasattr(ae.case, "initiation_type")
+        ])) + [(
+            # Special case; compound filter
+            "J|Q|S",
+            "SJPs, requisitions and summons",
+        )]
 
     def queryset(self, request, queryset):
         if self.value():
