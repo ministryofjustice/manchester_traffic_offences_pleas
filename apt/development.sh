@@ -10,6 +10,7 @@ apt-get install --fix-missing -y \
   libxml2-dev \
   libxslt-dev \
   python-setuptools \
+  npm \
   nodejs \
   ruby-sass \
   libfontconfig \
