@@ -1,5 +1,7 @@
 from .base import *
+
 from make_a_plea.settings.testing import GPG_TEST_KEY
+
 
 ADMINS = (
     ('Lyndon Garvey', 'lyndon.garvey@digital.justice.gov.uk'),
@@ -8,7 +10,7 @@ ADMINS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('POSTGRES_DB','manchester_traffic_offences'),
+        'NAME': os.environ.get('POSTGRES_DB', 'manchester_traffic_offences'),
         'USER': os.environ.get('POSTGRES_USER', 'jenkins'),
         'PASSWORD': os.environ.get('POSTGRES_PASS', 'moomoo'),
         'HOST': os.environ.get('POSTGRES_HOST', ''),

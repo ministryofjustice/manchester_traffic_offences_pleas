@@ -6,6 +6,7 @@ from . import views
 
 
 router = DefaultRouter()
+router.register(r'auditevent', views.AuditEventViewSet)
 router.register(r'case', views.CaseViewSet)
 router.register(r'result', views.ResultViewSet)
 router.register(r'stats', views.PublicStatsViewSet, base_name="stats")
