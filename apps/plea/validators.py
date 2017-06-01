@@ -4,7 +4,7 @@ import re
 from dateutil.relativedelta import relativedelta
 from django.core import exceptions
 
-from .models import Case, Court
+from .models import AuditEvent, Case, Court
 from .standardisers import standardise_urn, StandardiserNoOutputException
 
 
@@ -40,14 +40,18 @@ def is_date_in_future(date):
 
 def is_date_in_last_28_days(date):
     if date < datetime.datetime.today().date() + relativedelta(days=-28):
-        raise exceptions.ValidationError("The date must be within the last 28 days", code="is_date_in_last_28_days")
+        raise exceptions.ValidationError(
+            "The date must be within the last 28 days",
+            code="is_date_in_last_28_days")
 
     return True
 
 
 def is_date_in_next_6_months(date):
     if date > datetime.datetime.today().date() + relativedelta(months=+6):
-        raise exceptions.ValidationError("The date must be within the next 6 months", code="is_date_in_next_6_months")
+        raise exceptions.ValidationError(
+            "The date must be within the next 6 months",
+            code="is_date_in_next_6_months")
 
     return True
 
@@ -56,7 +60,14 @@ def is_urn_valid(urn):
     try:
         urn = standardise_urn(urn)
     except StandardiserNoOutputException:
-        raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
+        AuditEvent().populate(
+            event_type="case_api",
+            event_subtype="case_invalid_invalid_urn",
+            urn=urn,
+        )
+        raise exceptions.ValidationError(
+            "The URN is not valid",
+            code="is_urn_valid")
     pattern = get_pattern(urn)
 
     """
@@ -67,11 +78,23 @@ def is_urn_valid(urn):
     This should be reviewed when DX data comes into play.
     """
     if not re.match(pattern, urn) or not Court.objects.has_court(urn):
-        raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
+        AuditEvent().populate(
+            event_type="case_api",
+            event_subtype="case_invalid_invalid_urn",
+            urn=urn,
+        )
+        raise exceptions.ValidationError(
+            "The URN is not valid",
+            code="is_urn_valid")
 
     court = Court.objects.get_by_urn(urn)
     if court.validate_urn:
         if not Case.objects.filter(urn__iexact=urn, sent=False).exists():
+            AuditEvent().populate(
+                event_type="case_api",
+                event_subtype="case_invalid_invalid_urn",
+                urn=urn,
+            )
             raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
 
     return True
@@ -82,7 +105,13 @@ def is_valid_urn_format(urn):
     pattern = get_pattern(urn)
 
     if not re.match(pattern, urn):
-        raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
+        AuditEvent().populate(
+            event_type="case_api",
+            event_subtype="case_invalid_invalid_urn",
+            urn=urn,
+        )
+        raise exceptions.ValidationError(
+            "The URN is not valid", code="is_urn_valid")
 
     return True
 

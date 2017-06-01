@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
 
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.test.utils import override_settings
 from django.test.client import RequestFactory
 from django.conf import settings
+from django.contrib.auth.models import User
 
 from mock import Mock
 
@@ -121,3 +122,39 @@ class CullOldDataTestCase(TestCase):
 
         self.assertEquals(Case.objects.count(), 1)
         self.assertEquals(Result.objects.count(), 1)
+
+
+class TestAdminPanel(TestCase):
+    """From https://tommorris.org/posts/9389"""
+
+    def create_user(self):
+        self.username = "test_admin"
+        self.password = User.objects.make_random_password()
+        user, created = User.objects.get_or_create(username=self.username)
+        user.set_password(self.password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.is_active = True
+        user.save()
+        self.user = user
+
+    def test_spider_admin(self):
+        self.create_user()
+        client = Client()
+        client.login(username=self.username, password=self.password)
+        admin_pages = [
+            "/admin/",
+            "/admin/auth/",
+            "/admin/auth/group/",
+            "/admin/auth/group/add/",
+            "/admin/auth/user/",
+            "/admin/auth/user/add/",
+            "/admin/password_change/",
+            "/admin/plea/auditevent/",
+            "/admin/plea/case/",
+            "/admin/result/result/",
+        ]
+        for page in admin_pages:
+            resp = client.get(page)
+            self.assertEqual(resp.status_code, 200)
+            assert "<!DOCTYPE html" in resp.content
