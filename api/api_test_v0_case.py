@@ -1,4 +1,4 @@
-import base64
+from copy import deepcopy
 import json
 
 from django.contrib.auth.models import User
@@ -6,38 +6,9 @@ from django.contrib.auth.models import User
 from rest_framework.reverse import reverse
 from rest_framework.test import (APITestCase, APIRequestFactory, force_authenticate)
 
-from apps.plea.models import Case, Court, CaseOffenceFilter
+from apps.plea.models import AuditEvent, Case, Court, CaseOffenceFilter
 from api.v0.views import CaseViewSet
-
-
-def create_api_user():
-    password = "apitest"
-
-    user = User.objects.create(username="apitest",
-                               email="user@example.org")
-
-    user.set_password(password)
-    user.save()
-
-    credentials = base64.b64encode('{}:{}'.format(user.username, password))
-
-    auth_header = {'HTTP_AUTHORIZATION': 'Basic {}'.format(credentials)}
-
-    return user, auth_header
-
-
-def create_court(region):
-    return Court.objects.create(
-        court_code="0000",
-        region_code=region,
-        court_name="test court",
-        court_address="test address",
-        court_telephone="0800 MAKEAPLEA",
-        court_email="court@example.org",
-        submission_email="court@example.org",
-        plp_email="plp@example.org",
-        enabled=True,
-        test_mode=False)
+from api.reusable import create_api_user, create_court
 
 
 def add_white_list(filter, desc):
@@ -45,35 +16,47 @@ def add_white_list(filter, desc):
 
 
 class GeneralAPITestCase(APITestCase):
+
     def setUp(self):
         self.user, self.auth_header = create_api_user()
-
         self.endpoint = reverse('api-v0:case-list', format="json")
 
-    def test_api_requires_auth(self):
-
-        response = self.client.post('/v0/case/', {}, format='json')
+    def test_api_no_auth_fails(self):
+        response = self.client.post(
+            self.endpoint,
+            {},
+            format='json')
 
         self.assertEqual(response.status_code, 401)
 
-    def test_every_request_requires_auth(self):
+    def test_api_with_auth_succeeds(self):
 
         response = self.client.post(
-            '/v0/case/', {}, format='json', **self.auth_header)
+            self.endpoint,
+            {},
+            format='json',
+            **self.auth_header)
 
         self.assertEqual(response.status_code, 400)
 
-        response = self.client.post(
-            '/v0/case/', {}, format='json')
+    def test_unsupported_methods_fail(self):
 
-        self.assertEqual(response.status_code, 401)
+        for method in ["put", "get", "patch", "head", "delete"]:
+            client_method = getattr(self.client, method)
+            response = client_method(
+                self.endpoint,
+                {},
+                format='json',
+                **self.auth_header)
+            self.assertEqual(response.status_code, 405)
 
 
 class CaseAPICallTestCase(APITestCase):
+
     def setUp(self):
+        self.factory = APIRequestFactory()
         create_court("00")
         self.user, self.auth_header = create_api_user()
-
         self.endpoint = reverse('api-v0:case-list', format="json")
 
         add_white_list("RT01", "Test RT filter")
@@ -115,12 +98,16 @@ class CaseAPICallTestCase(APITestCase):
             ]
         }
 
-    def _post_data(self, data):
-        factory = APIRequestFactory()
+    def _post_data(self, data, force_auth=True):
 
-        request = factory.post("/v0/case/", self.test_data,
-                               format="json")
-        force_authenticate(request, self.user)
+        request = self.factory.post(
+            self.endpoint,
+            data=data,
+            format="json",
+        )
+
+        if force_auth:
+            force_authenticate(request, self.user)
 
         case_view = CaseViewSet.as_view({"post": "create"})
         response = case_view(request)
@@ -128,97 +115,135 @@ class CaseAPICallTestCase(APITestCase):
         return response
 
     def test_duplicate_submission_validation(self):
-        self.test_data['urn'] = '00/aa/0000000/00'
-        response = self._post_data(self.test_data)
-        self.assertEqual(response.status_code, 201)
+        data = deepcopy(self.test_data)
+        data['urn'] = '00/aa/0000000/00'
+        response1 = self._post_data(data)
+        response2 = self._post_data(data)
 
-        self.test_data['urn'] = '00/aa/0000000/00'
-        response = self._post_data(self.test_data)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response1.status_code, 201)
+        self.assertEqual(response2.status_code, 201)
 
     def test_duplicate_submission_with_sent_case(self):
-        self.test_data['urn'] = '00/aa/0000000/00'
-        response = self._post_data(self.test_data)
-        self.assertEqual(response.status_code, 201)
-        c = Case.objects.get(urn="00AA000000000")
+        data = deepcopy(self.test_data)
+        data['urn'] = '00/aa/0000001/00'
+        response1 = self._post_data(data)
+        c = Case.objects.get(urn="00AA000000100")
         c.sent = True
         c.save()
+        response2 = self._post_data(data)
 
-        self.test_data['urn'] = '00/aa/0000000/00'
-        response = self._post_data(self.test_data)
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response1.status_code, 201)
+        self.assertEqual(response2.status_code, 400)
 
     def test_urn_blank_urn_validation(self):
-        self.test_data['urn'] = ""
-
-        response = self._post_data(self.test_data)
+        data = deepcopy(self.test_data)
+        data['urn'] = ""
+        response = self._post_data(data)
 
         self.assertEqual(response.status_code, 400)
 
     def test_empty_urn_validation(self):
-        del self.test_data['urn']
-
-        response = self._post_data(self.test_data)
+        data = deepcopy(self.test_data)
+        del data['urn']
+        response = self._post_data(data)
 
         self.assertEqual(response.status_code, 400)
 
     def test_urn_invalid_format_validation(self):
-        self.test_data['urn'] = "aa/00/43224234/aa/25"
-
-        response = self._post_data(self.test_data)
+        data = deepcopy(self.test_data)
+        data['urn'] = "aa/00/43224234/aa/25"
+        response = self._post_data(data)
 
         self.assertEqual(response.status_code, 400)
 
     def test_valid_submission(self):
-        response = self._post_data(self.test_data)
-
-        case = Case.objects.all()[0]
-
-        self.assertEqual(Case.objects.all().count(), 1)
-        self.assertEqual(case.offences.all().count(), 2)
-        self.assertEqual(case.urn, self.test_data["urn"])
-
-    def test_submission_without_offence_data(self):
-        self.test_data["offences"] = []
-
-        response = self._post_data(self.test_data)
-
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "case has no offences")
-        self.assertEquals(Case.objects.count(), 0)
-
-    def test_submission_with_first_non_listed_offence_code(self):
-        self.test_data["offences"][0]["offence_code"] = "DF0987"
-
-        response = self._post_data(self.test_data)
-
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "Case 00AA0000000 contains offence codes [[u'DF09', u'SZ09']] not present in the whitelist")
-
-    def test_submission_with_second_non_listed_offence_code(self):
-        self.test_data["offences"][1]["offence_code"] = "DF0987"
-
-        response = self._post_data(self.test_data)
-
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "Case 00AA0000000 contains offence codes [[u'RT01', u'DF09']] not present in the whitelist")
-
-    def test_submission_with_both_non_listed_offence_codes(self):
-        self.test_data["offences"][0]["offence_code"] = "DF0987"
-        self.test_data["offences"][1]["offence_code"] = "DF0988"
-
-        response = self._post_data(self.test_data)
-
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.content)["non_field_errors"][0], "Case 00AA0000000 contains offence codes [[u'DF09', u'DF09']] not present in the whitelist")
-
-    def test_valid_submissions_returns_dict(self):
-        response = self._post_data(self.test_data)
-
+        data = deepcopy(self.test_data)
+        response = self._post_data(data)
         case = Case.objects.all()[0]
 
         self.assertEqual(response.status_code, 201)
+        self.assertEqual(Case.objects.all().count(), 1)
+        self.assertEqual(case.offences.all().count(), 2)
+        self.assertEqual(case.urn, data["urn"])
 
-        returned_data = json.loads(response.content)
+    def test_submission_without_offence_data(self):
+        data = deepcopy(self.test_data)
+        data["offences"] = []
+        response = self._post_data(data)
 
-        self.assertEqual(returned_data['urn'], self.test_data['urn'])
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            json.loads(response.content)["non_field_errors"][0],
+            "case has no offences")
+        self.assertEquals(Case.objects.count(), 0)
+
+    def test_submission_with_first_non_listed_offence_code_fails(self):
+        data = deepcopy(self.test_data)
+        data["offences"][0]["offence_code"] = "DF0987"
+        response = self._post_data(data)
+
+        self.assertEqual(
+            response.data["non_field_errors"][0],
+            ("Case 00AA0000000 contains offence codes [[u'DF09', u'SZ09']] "
+             "not present in the whitelist"))
+        self.assertEqual(response.status_code, 400)
+
+    def test_submission_with_second_non_listed_offence_code_fails(self):
+        data = deepcopy(self.test_data)
+        data["offences"][1]["offence_code"] = "DF0987"
+        response = self._post_data(data)
+
+        self.assertEqual(
+            json.loads(response.content)["non_field_errors"][0],
+            ("Case 00AA0000000 contains offence codes [[u'RT01', u'DF09']] not "
+             "present in the whitelist"))
+        self.assertEqual(response.status_code, 400)
+
+    def test_submission_with_both_non_listed_offence_codes(self):
+        data = deepcopy(self.test_data)
+        data["offences"][0]["offence_code"] = "DF0987"
+        data["offences"][1]["offence_code"] = "DF0988"
+        response = self._post_data(data)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            json.loads(response.content)["non_field_errors"][0],
+            ("Case 00AA0000000 contains offence codes [[u'DF09', u'DF09']] "
+             "not present in the whitelist"))
+
+    def test_valid_submissions_returns_dict_and_correct_urn(self):
+        data = deepcopy(self.test_data)
+        response = self._post_data(data)
+        response_json = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(type(response_json), dict)
+        self.assertEqual(response_json['urn'], data['urn'])
+
+    def test_post_valid_case_creates_auditevent(self):
+        data = deepcopy(self.test_data)
+        data['urn'] = '00/aa/8877887/00'
+        count_before = AuditEvent.objects.count()
+        response = self._post_data(data)
+        ae = AuditEvent.objects.filter(
+            case__urn='00AA887788700').order_by(
+                "-event_datetime")[0]
+
+        self.assertEqual(AuditEvent.objects.count(), count_before + 2)
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(ae.event_type, "case_api")
+        self.assertEqual(ae.event_subtype, "success")
+
+    def test_case_invalid_urn_creates_auditevent(self):
+        data = deepcopy(self.test_data)
+        data['urn'] = '00/ab/BROKEN/00'
+        count_before = AuditEvent.objects.count()
+        response = self._post_data(data)
+        aes = AuditEvent.objects.filter(
+            case=None).order_by(
+                "-event_datetime")
+
+        self.assertEqual(len(aes), count_before + 1)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(aes[0].event_type, "case_api")
+        self.assertEqual(aes[0].event_subtype, "case_invalid_invalid_urn")
