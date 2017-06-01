@@ -1,12 +1,24 @@
-import json
-
-from django.core import exceptions
 from rest_framework import serializers
 
-from apps.plea.models import Case, UsageStats, Offence, CaseOffenceFilter
+from apps.plea.models import (
+    AuditEvent,
+    Case,
+    CaseOffenceFilter,
+    Offence,
+    UsageStats,
+)
 from apps.result.models import Result, ResultOffence, ResultOffenceData
 from apps.plea.standardisers import standardise_urn
 from apps.plea.validators import is_valid_urn_format
+
+
+class AuditedValidationError(serializers.ValidationError):
+    """A subclass of ValidationErrors that also creates audit events"""
+
+    def __init__(self, *args, **kwargs):
+        event_data = kwargs.pop("event_data")
+        super(AuditedValidationError, self).__init__(*args, **kwargs)
+        AuditEvent().populate(**event_data)
 
 
 class OffenceSerializer(serializers.ModelSerializer):
@@ -15,9 +27,25 @@ class OffenceSerializer(serializers.ModelSerializer):
         exclude = ("case",)
 
 
+class AuditEventSerializer(serializers.ModelSerializer):
+    """"""
+
+    class Meta:
+        model = AuditEvent
+        exclude = ('case', 'event_data')
+        required_fields = ("event_type", "event_subtype")
+
+    def post_validate(self):
+        if self.errors:
+            raise AuditedValidationError(
+                "Error validating audit event via API",
+                event_data=self.data)
+
+
 class CaseSerializer(serializers.ModelSerializer):
+    # FIXME: using modelserialiser would suggest not defining fields directly:w
     case_number = serializers.CharField(required=True)
-    urn = serializers.CharField(required=True, validators=[is_valid_urn_format, ])
+    urn = serializers.CharField(required=True, validators=[is_valid_urn_format])
     offences = OffenceSerializer(many=True)
     ou_code = serializers.CharField(required=True)
 
@@ -31,35 +59,57 @@ class CaseSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         if "date_of_hearing" not in data:
-            raise exceptions.ValidationError("date_of_hearing is a required field")
+            AuditEvent().populate(
+                event_type="case_api",
+                event_subtype="invalid_case_missing_dateofhearing",
+                **data)
+            raise serializers.ValidationError(
+                "date_of_hearing is a required field")
 
         if len(data.get("offences", [])) == 0:
-            raise exceptions.ValidationError("case has no offences")
+            AuditEvent().populate(
+                event_type="case_api",
+                event_subtype="case_invalid_no_offences",
+                **data)
+            raise serializers.ValidationError("case has no offences")
 
-        offence_codes = [offence["offence_code"][:4] for offence in data["offences"]]
-        match = False
-        for offence_code in offence_codes:
-            if CaseOffenceFilter.objects.filter(filter_match__startswith=offence_code).exists():
-                match = True
-            else:
-                match = False
-                break
+        offence_codes = [
+            offence["offence_code"][:4]
+            for offence in data["offences"]]
+
+        match = all([
+            CaseOffenceFilter.objects.filter(
+                filter_match__startswith=offence_code).exists()
+            for offence_code in offence_codes])
 
         if not match:
-            raise exceptions.ValidationError("Case {} contains offence codes [{}] not present in the whitelist".format(data.get("urn"),
-                                                                                                                       offence_codes))
+            AuditEvent().populate(
+                event_type="case_api",
+                event_subtype="case_invalid_not_in_whitelist",
+                **data)
+            raise serializers.ValidationError(
+                ("Case {} contains offence codes [{}] not present "
+                 "in the whitelist").format(
+                    data.get("urn"),
+                    offence_codes))
 
         urn = data.pop("urn")
         std_urn = standardise_urn(urn)
         data["urn"] = std_urn
 
         # Has this URN been used already?
-        sent_case = Case.objects.filter(urn=std_urn,
-                                        case_number=data["case_number"],
-                                        sent=True).exists()
+        sent_case = Case.objects.filter(
+            urn=std_urn,
+            case_number=data["case_number"],
+            sent=True).exists()
 
         if sent_case:
-            raise exceptions.ValidationError("URN / Case number already exists and has been used")
+            AuditEvent().populate(
+                event_type="case_api",
+                event_subtype="case_invalid_duplicate_urn_used",
+                **data)
+            raise serializers.ValidationError(
+                "URN / Case number already exists and has been used")
 
         return data
 
@@ -68,9 +118,10 @@ class CaseSerializer(serializers.ModelSerializer):
         offences = validated_data.pop("offences", [])
 
         # Update or create?
-        open_cases = Case.objects.filter(urn=validated_data["urn"],
-                                         case_number=validated_data["case_number"],
-                                         sent=False)
+        open_cases = Case.objects.filter(
+            urn=validated_data["urn"],
+            case_number=validated_data["case_number"],
+            sent=False)
 
         if open_cases:
             case = open_cases[0]
@@ -92,6 +143,12 @@ class CaseSerializer(serializers.ModelSerializer):
             offence = Offence(**item)
             offence.case = case
             offence.save()
+
+        AuditEvent().populate(
+            event_type="case_api",
+            event_subtype="success",
+            case=case,
+        )
 
         return case
 
@@ -131,12 +188,17 @@ class ResultSerializer(serializers.ModelSerializer):
         data["urn"] = std_urn
 
         # Has this URN been used already?
-        sent_results = Result.objects.filter(urn=urn,
-                                             case_number=data["case_number"],
-                                             sent=True).exists()
+        sent_results = Result.objects.filter(
+            urn=urn,
+            case_number=data["case_number"],
+            sent=True).exists()
 
         if sent_results:
-            raise exceptions.ValidationError("URN / Result number already exists and has been used")
+            AuditEvent().populate(
+                event_type="result_api",
+                event_subtype="result_invalid_duplicate_urn_used")
+            raise serializers.ValidationError(
+                "URN / Result number already exists and has been used")
 
         return data
 
@@ -145,9 +207,10 @@ class ResultSerializer(serializers.ModelSerializer):
         offences = validated_data.pop("result_offences", [])
 
         # Update or create?
-        open_results = Result.objects.filter(urn=validated_data["urn"],
-                                             case_number=validated_data["case_number"],
-                                             sent=False)
+        open_results = Result.objects.filter(
+            urn=validated_data["urn"],
+            case_number=validated_data["case_number"],
+            sent=False)
 
         if open_results:
             result = open_results[0]

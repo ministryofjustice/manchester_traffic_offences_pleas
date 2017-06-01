@@ -1,9 +1,10 @@
 from __future__ import absolute_import, unicode_literals
+
 import datetime as dt
 
 from django.test import TestCase
 
-from ..models import CourtEmailCount, UsageStats, Court, Case, OUCode
+from ..models import AuditEvent, CourtEmailCount, UsageStats, Court, Case, OUCode
 
 
 class TestStatsBase(TestCase):
@@ -348,3 +349,71 @@ class TestCourtModel(TestCase):
         court = Court.objects.get_court_dx(self.case.urn)
 
         self.assertEquals(court.id, self.court2.id)
+
+
+class TestAuditEventModel(TestCase):
+
+    def setUp(self):
+        cases = [
+            {
+                "urn": "00AA123456700",
+                "initiation_type": "J",
+                "extra_data": {
+                    "urn": "00/AA/7654321/00",
+                    "initiation_type": "S",
+                }
+            }
+        ]
+        for case in cases:
+            Case(**case).save()
+
+    def tearDown(self):
+        Case.objects.all().delete()
+        AuditEvent.objects.all().delete()
+
+    def test_conflicted_urn(self):
+        ae = AuditEvent.objects.get(case__urn="00AA123456700")
+        self.assertEqual(ae.urn, "CONFLICTED")
+
+    def test_conflicted_initiation_type(self):
+        ae = AuditEvent.objects.get(case__urn="00AA123456700")
+        self.assertEqual(ae.initiation_type, "CONFLICTED")
+
+
+class TestCaseModel(TestCase):
+
+    def setUp(self):
+        cases = [
+            {
+                "urn": "00AA123456700",
+            }
+        ]
+        for case in cases:
+            Case(**case).save()
+
+    def tearDown(self):
+        Case.objects.all().delete()
+        AuditEvent.objects.all().delete()
+
+    def test_case_change_creates_auditevent(self):
+        cases = Case.objects.all()
+        case = cases[0]
+        case.name = \
+            case.name + "test change field" \
+            if case.name is not None \
+            else "test_change_field"
+        case.save()
+        auditevents = AuditEvent.objects.order_by("-event_datetime")
+        auditevent_0 = auditevents[0]
+        auditevent_1 = auditevents[1]
+
+        self.assertEqual(len(cases), 1)
+        self.assertEqual(len(auditevents), 2)  # create case, change case
+        self.assertEqual(auditevent_0.case, case)
+        self.assertEqual(auditevent_0.event_type, "case_model")
+        self.assertEqual(auditevent_0.event_subtype, "success")
+        self.assertEqual(auditevent_1.case, case)
+        self.assertEqual(auditevent_1.event_type, "case_model")
+        self.assertEqual(auditevent_1.event_subtype, "success")
+
+
