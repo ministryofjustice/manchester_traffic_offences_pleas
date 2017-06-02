@@ -18,9 +18,6 @@ DATABASES = {
     }
 }
 
-#EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-#EMAIL_FILE_PATH = '/Users/ian/Mail'
-
 SECRET_KEY = "THIS NEEDS TO CHANGE"
 
 PLEA_EMAIL_FROM = "dev@example.org"
@@ -30,5 +27,3 @@ PLEA_EMAIL_BODY = ""
 PLP_EMAIL_TO = ["dev@example.org", ]
 
 PLEA_CONFIRMATION_EMAIL_FROM = "dev@example.org"
-
-EMxAIL_REQUIRED = False

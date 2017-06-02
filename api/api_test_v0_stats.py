@@ -4,41 +4,54 @@ from rest_framework.test import APITestCase
 
 from apps.plea.models import Court, CourtEmailCount, UsageStats
 
+
 class TestStatsAPI(APITestCase):
 
+    def tearDown(self):
+        Court.objects.all().delete()
+        CourtEmailCount.objects.all().delete()
+        UsageStats.objects.all().delete()
+
     def setUp(self):
-        self.court = Court.objects.create(court_code="0000",
-                                          region_code="06",
-                                          court_name="test court",
-                                          court_address="test address",
-                                          court_telephone="0800 MAKEAPLEA",
-                                          court_email="court@example.org",
-                                          submission_email="court@example.org",
-                                          enabled=True,
-                                          test_mode=False)
+        self.endpoint = "/v0/stats/"
+        self.court = Court.objects.create(
+            court_code="0000",
+            region_code="06",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            enabled=True,
+            test_mode=False)
 
         self.today = datetime.date.today()
         self.last_monday = self.today - datetime.timedelta(days=self.today.weekday())
         self.next_monday = self.last_monday + datetime.timedelta(weeks=1)
 
-        CourtEmailCount.objects.create(court=self.court,
-                                       total_pleas=1,
-                                       total_guilty=1,
-                                       total_not_guilty=0,
-                                       date_sent=self.last_monday,
-                                       hearing_date=self.next_monday,
-                                       sent=True)
+        CourtEmailCount.objects.create(
+            court=self.court,
+            total_pleas=1,
+            total_guilty=1,
+            total_not_guilty=0,
+            date_sent=self.last_monday,
+            hearing_date=self.next_monday,
+            sent=True)
 
-        UsageStats.objects.create(start_date=self.last_monday,
-                                  online_submissions=10,
-                                  online_guilty_pleas=9,
-                                  online_not_guilty_pleas=3,
-                                  postal_requisitions=5,
-                                  postal_responses=2)
+        UsageStats.objects.create(
+            start_date=self.last_monday,
+            online_submissions=10,
+            online_guilty_pleas=9,
+            online_not_guilty_pleas=3,
+            postal_requisitions=5,
+            postal_responses=2)
 
     def test_stats(self):
 
-        response = self.client.get("/v0/stats/", {}, format="json")
+        response = self.client.get(
+            self.endpoint,
+            {},
+            format="json")
 
         self.assertEqual(response.status_code, 200)
         self.assertIn("submissions", response.data)
@@ -48,7 +61,10 @@ class TestStatsAPI(APITestCase):
 
     def test_stats_valid_start_date(self):
 
-        response = self.client.get("/v0/stats/", {"start": "2015-01-01"}, format="json")
+        response = self.client.get(
+            self.endpoint,
+            {"start": "2015-01-01"},
+            format="json")
 
         self.assertEqual(response.status_code, 200)
         self.assertIn("submissions", response.data)
@@ -58,23 +74,38 @@ class TestStatsAPI(APITestCase):
 
     def test_stats_incorrect_start_date(self):
 
-        response = self.client.get("/v0/stats/", {"start": "not_a_date"}, format="json")
+        response = self.client.get(
+            self.endpoint,
+            {"start": "not_a_date"},
+            format="json")
 
         self.assertEqual(response.status_code, 400)
         self.assertIn("error", response.data)
-        self.assertEqual("'not_a_date' value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format.", response.data["error"])
+        self.assertEqual(
+            ("'not_a_date' value has an invalid format. It must be in "
+             "YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format."),
+            response.data["error"])
 
     def test_stats_invalid_start_date(self):
 
-        response = self.client.get("/v0/stats/", {"start": "2015-01-32"}, format="json")
+        response = self.client.get(
+            self.endpoint,
+            {"start": "2015-01-32"},
+            format="json")
 
         self.assertEqual(response.status_code, 400)
         self.assertIn("error", response.data)
-        self.assertEqual("\'2015-01-32\' value has the correct format (YYYY-MM-DD) but it is an invalid date.", response.data["error"])
+        self.assertEqual(
+            ("\'2015-01-32\' value has the correct format (YYYY-MM-DD) but it "
+             "is an invalid date."),
+            response.data["error"])
 
     def test_stats_valid_end_date(self):
 
-        response = self.client.get("/v0/stats/", {"end": "2015-01-01"}, format="json")
+        response = self.client.get(
+            self.endpoint,
+            {"end": "2015-01-01"},
+            format="json")
 
         self.assertEqual(response.status_code, 200)
         self.assertIn("submissions", response.data)
@@ -84,15 +115,20 @@ class TestStatsAPI(APITestCase):
 
     def test_stats_incorrect_end_date(self):
 
-        response = self.client.get("/v0/stats/", {"end": "not_a_date"}, format="json")
+        response = self.client.get(
+            self.endpoint,
+            {"end": "not_a_date"},
+            format="json")
 
         self.assertEqual(response.status_code, 400)
         self.assertIn("error", response.data)
-        self.assertEqual("'not_a_date' value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format.", response.data["error"])
+        self.assertEqual(
+            ("'not_a_date' value has an invalid format. It must be in "
+             "YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format."), response.data["error"])
 
     def test_stats_invalid_end_date(self):
 
-        response = self.client.get("/v0/stats/", {"end": "2015-30-32"}, format="json")
+        response = self.client.get(self.endpoint, {"end": "2015-30-32"}, format="json")
 
         self.assertEqual(response.status_code, 400)
         self.assertIn("error", response.data)
