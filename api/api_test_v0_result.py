@@ -1,78 +1,50 @@
 # coding=utf-8
+from copy import deepcopy
 from datetime import date, timedelta
-import base64
 import json
 
-from django.contrib.auth.models import User
-
 from rest_framework.reverse import reverse
-from rest_framework.test import (APITestCase, APIRequestFactory, force_authenticate)
+from rest_framework.test import (
+    APITestCase,
+    APIRequestFactory,
+    force_authenticate)
 
-from apps.result.models import Result
-from apps.plea.models import Court
+from api.reusable import create_api_user, create_court
 from api.v0.views import ResultViewSet
-
-
-def create_api_user():
-    password = "apitest"
-
-    user = User.objects.create(username="apitest",
-                               email="user@example.org")
-
-    user.set_password(password)
-    user.save()
-
-    credentials = base64.b64encode("{}:{}".format(user.username, password))
-
-    auth_header = {"HTTP_AUTHORIZATION": "Basic {}".format(credentials)}
-
-    return user, auth_header
-
-
-def create_court(region):
-    return Court.objects.create(
-        court_code="0000",
-        region_code=region,
-        court_name="test court",
-        court_address="test address",
-        court_telephone="0800 MAKEAPLEA",
-        court_email="court@example.org",
-        submission_email="court@example.org",
-        plp_email="plp@example.org",
-        enabled=True,
-        test_mode=False)
+from apps.plea.models import AuditEvent, Court
+from apps.result.models import Result
 
 
 class GeneralAPITestCase(APITestCase):
+
     def setUp(self):
         self.user, self.auth_header = create_api_user()
-
         self.endpoint = reverse("api-v0:result-list", format="json")
 
-    def test_api_requires_auth(self):
-        response = self.client.post("/v0/result/", {}, format="json")
-
-        self.assertEqual(response.status_code, 401)
-
-    def test_every_request_requires_auth(self):
+    def test_auth_succeeds(self):
         response = self.client.post(
-            "/v0/result/", {}, format="json", **self.auth_header)
-
+            self.endpoint,
+            {},
+            format="json",
+            **self.auth_header)
         self.assertEqual(response.status_code, 400)
 
+    def test_no_auth_fails(self):
         response = self.client.post(
-            "/v0/result/", {}, format="json")
-
+            self.endpoint,
+            {},
+            format="json")
         self.assertEqual(response.status_code, 401)
 
 
 class CaseAPICallTestCase(APITestCase):
+
     def setUp(self):
-        create_court("51")
         self.user, self.auth_header = create_api_user()
-
         self.endpoint = reverse("api-v0:result-list", format="json")
+        self.request_factory = APIRequestFactory()
 
+        create_court("51")
         self.test_data = {
             u"urn": u"51AA0000000",
             u"case_number": u"16273482",
@@ -96,89 +68,82 @@ class CaseAPICallTestCase(APITestCase):
             ]
         }
 
+    def tearDown(self):
+        AuditEvent.objects.all().delete()
+        Court.objects.all().delete()
+        Result.objects.all().delete()
+
     def _post_data(self, data):
-        factory = APIRequestFactory()
-
-        request = factory.post("/v0/case/", self.test_data,
-                               format="json")
+        request = self.request_factory.post(
+            self.endpoint,
+            data=data,
+            format="json")
         force_authenticate(request, self.user)
-
         result_view = ResultViewSet.as_view({"post": "create"})
         response = result_view(request)
         response.render()
         return response
 
     def test_urn_blank_urn_validation(self):
-        self.test_data["urn"] = ""
+        data = deepcopy(self.test_data)
+        data["urn"] = ""
+        response = self._post_data(data)
 
-        response = self.client.post(self.endpoint, self.test_data,
-                                    **self.auth_header)
         self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.data,
+            {"urn": ["This field may not be blank."]})
 
-    def test_duplicate_submission_validation(self):
-        response = self._post_data(self.test_data)
-        self.assertEqual(response.status_code, 201)
+    def test_duplicate_submissions_succeeds(self):
+        response1 = self._post_data(self.test_data)
+        response2 = self._post_data(self.test_data)
 
-        response = self._post_data(self.test_data)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response1.status_code, 201)
+        self.assertEqual(response2.status_code, 201)
 
-    def test_empty_urn_validation(self):
-        del self.test_data["urn"]
+    def test_missing_urn_validation(self):
+        data = deepcopy(self.test_data)
+        del data["urn"]
+        response = self._post_data(data)
 
-        response = self.client.post(self.endpoint, self.test_data,
-                                    **self.auth_header)
         self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.data,
+            {"urn": ["This field is required."]})
 
     def test_urn_invalid_format_validation(self):
-        self.test_data["urn"] = "aa/00/43224234/aa/25"
+        data = deepcopy(self.test_data)
+        data["urn"] = "aa/00/43224234/aa/25"
+        response = self._post_data(data)
 
-        response = self.client.post(self.endpoint, self.test_data,
-                                    **self.auth_header)
         self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.data,
+            {'urn': [u'The URN is not valid']})
 
     def test_valid_submission(self):
-        factory = APIRequestFactory()
-        request = factory.post("/v0/result/", json.dumps(self.test_data),
-                               content_type="application/json")
-        force_authenticate(request, self.user)
-
-        result_view = ResultViewSet.as_view({"post": "create"})
-
-        response = result_view(request)
-
+        data = deepcopy(self.test_data)
+        response = self._post_data(data)
         result = Result.objects.all()[0]
 
+        self.assertEqual(response.status_code, 201)
         self.assertEqual(Result.objects.all().count(), 1)
         self.assertEqual(result.result_offences.all().count(), 2)
         self.assertEqual(result.urn, self.test_data["urn"])
 
-        self.assertEquals(result.urn, self.test_data["urn"])
-
-    def test_submission_without_offence_data(self):
-        self.test_data["result_offences"] = []
-
-        factory = APIRequestFactory()
-
-        request = factory.post("/v0/result/", json.dumps(self.test_data),
-                               content_type="application/json")
-        force_authenticate(request, self.user)
-
-        result_view = ResultViewSet.as_view({"post": "create"})
-
-        result_view(request)
-
+    def test_submission_without_offence_data_succeeds(self):
+        data = deepcopy(self.test_data)
+        data["result_offences"] = []
+        response = self._post_data(data)
         result = Result.objects.all()[0]
 
-        self.assertEquals(result.result_offences.all().count(), 0)
-
-    def test_valid_submissions_returns_dict(self):
-        response = self.client.post(self.endpoint, self.test_data,
-                                    **self.auth_header)
         self.assertEqual(response.status_code, 201)
+        self.assertEqual(result.result_offences.all().count(), 0)
 
+    def test_valid_submissions_returns_dict_with_correct_urn(self):
+        response = self._post_data(self.test_data)
         returned_data = json.loads(response.content)
 
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(type(returned_data), dict)
         self.assertEqual(returned_data["urn"], self.test_data["urn"])
-
-
-
