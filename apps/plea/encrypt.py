@@ -1,7 +1,6 @@
 import gnupg
 import json
 import os
-import sh
 import time
 
 from django.conf import settings
@@ -21,12 +20,8 @@ def clear_user_data():
     Empty the user data directory
     """
 
-    path = os.path.join(settings.USER_DATA_DIRECTORY, "*")
-    try:
-        sh.rm(sh.glob(path))
-    except sh.ErrorReturnCode_1:
-        # directory already empty
-        pass
+    for path in os.listdir(settings.USER_DATA_DIRECTORY):
+        os.unlink(os.path.join(settings.USER_DATA_DIRECTORY, path))
 
 
 def encrypt_and_store_user_data(urn, case_id, data, user_data_directory=None):
