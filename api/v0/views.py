@@ -1,17 +1,29 @@
+"""
+views
+=====
+
+"""
 import datetime as dt
 
 from django.core.exceptions import ValidationError
 
-from rest_framework.decorators import list_route
+from rest_framework.decorators import detail_route, list_route
 from rest_framework import viewsets, mixins, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-
-from .serializers import CaseSerializer, UsageStatsSerializer, ResultSerializer
-
-from apps.plea.models import Case, CourtEmailCount, UsageStats
+from .serializers import AuditEventSerializer, CaseSerializer, UsageStatsSerializer, ResultSerializer
+from apps.plea.models import AuditEvent, Case, CourtEmailCount, UsageStats
 from apps.result.models import Result
+
+
+class AuditEventViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    """
+    Create new audit events
+    """
+    queryset = AuditEvent.objects.all()
+    serializer_class = AuditEventSerializer
+    http_method_names = ['post']
 
 
 class CaseViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
