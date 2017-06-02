@@ -7,4 +7,4 @@ export DJANGO_SETTINGS_MODULE
 pip install -r requirements/testing.txt
 python ./manage.py compilemessages
 python ./manage.py test
-python ./manage.py test --settings=api.settings.testing -p api_test_*.py
+python ./manage.py test --settings=api.settings.base -p api_test_*.py
