@@ -3,8 +3,8 @@
 # to each package in each requirements/*.txt.
 
 # Deps of current cffi (must be missing from ustream reqs)
-appdirs
-pyparsing
+appdirs==1.4.3
+pyparsing==2.2.0
 
 Django==1.8
 lxml==3.4.4
