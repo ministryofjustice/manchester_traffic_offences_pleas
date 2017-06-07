@@ -33,9 +33,6 @@ ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOSTS", "localhost:8000"), ]
 # Enable CachedStaticFilesStorage for cache-busting assets
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
-
 CELERY_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
 BROKER_URL = os.environ.get("CELERY_BROKER_URL", "SQS://")
 
