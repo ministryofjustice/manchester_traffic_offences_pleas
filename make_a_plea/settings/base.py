@@ -147,6 +147,7 @@ ROOT_URLCONF = 'make_a_plea.urls'
 SESSION_SERIALIZER = 'make_a_plea.serializers.DateAwareSerializer'
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 3600
 
