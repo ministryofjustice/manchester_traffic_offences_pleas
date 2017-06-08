@@ -245,5 +245,5 @@ class CaseAPICallTestCase(APITestCase):
 
         self.assertEqual(len(aes), count_before + 1)
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(aes[0].event_type, "case_api")
+        self.assertEqual(aes[0].event_type, "urn_validator")
         self.assertEqual(aes[0].event_subtype, "case_invalid_invalid_urn")
