@@ -974,12 +974,6 @@ class AuditEvent(models.Model):
                 if k not in self.IGNORED_VALIDATOR_FIELDS:
                     self.event_data[k] = v
 
-        try:
-            self.save()
-        except ProgrammingError as e:
-            print "Failed to log item. Make sure hstore-able data is passed "
-            "to AuditEvent().populate(). Data provided was: {0}".format(
-                str(kwargs))
-            raise e
+        self.save()
 
         return self
