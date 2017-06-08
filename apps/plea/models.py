@@ -6,7 +6,6 @@ from django.db import models
 from django.db.models import Sum, Count, F
 from django.utils.translation import get_language
 from django.contrib.postgres.fields import HStoreField
-from psycopg2 import ProgrammingError
 
 from .exceptions import *
 from standardisers import (
@@ -981,12 +980,6 @@ class AuditEvent(models.Model):
             if "event_trace" in kwargs \
             else ""
 
-        try:
-            self.save()
-        except ProgrammingError as e:
-            print "Failed to log item. Make sure hstore-able data is passed "
-            "to AuditEvent().populate(). Data provided was: {0}".format(
-                str(kwargs))
-            raise e
+        self.save()
 
         return self
