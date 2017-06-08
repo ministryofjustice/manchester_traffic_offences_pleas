@@ -1,16 +1,25 @@
+import datetime
+import json
+
+from brake.decorators import ratelimit
 from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import redirect
 from django.views.generic import FormView
 from django.template import RequestContext
 
-from brake.decorators import ratelimit
+from django.contrib.admin.views.decorators import staff_member_required
 
 from apps.forms.stages import MultiStageForm
 from apps.forms.views import StorageView
-
+from make_a_plea.helpers import (
+    filter_cases_by_month,
+    get_supported_language_from_request,
+    parse_date_or_400,
+    staff_or_404,
+)
 from .models import Case, Court
 from .forms import CourtFinderForm
 from .stages import (URNEntryStage,
@@ -35,6 +44,8 @@ from .stages import (URNEntryStage,
                      ReviewStage,
                      CompleteStage)
 from .fields import ERROR_MESSAGES
+
+
 
 
 class PleaOnlineForms(MultiStageForm):
@@ -178,4 +189,71 @@ class CourtFinderView(FormView):
         return self.render_to_response(
             self.get_context_data(form=form,
                                   urn_is_invalid=urn_is_invalid))
+
+
+@staff_or_404
+def stats(request):
+    """
+    Generate usage statistics (optionally by language) and send via email
+    """
+
+    filter_params = {
+        "sent": True,
+        "language": get_supported_language_from_request(request),
+    }
+    if "end_date" in request.GET:
+        end_date = parse_date_or_400(request.GET["end_date"])
+    else:
+        now = datetime.datetime.utcnow()
+        last_day_of_last_month = now - datetime.timedelta(days=now.day)
+        end_date = datetime.datetime(
+            last_day_of_last_month.year,
+            last_day_of_last_month.month,
+            last_day_of_last_month.day,
+            23, 59, 59)
+    filter_params["completed_on__lte"] = end_date
+
+    if "start_date" in request.GET:
+        start_date = parse_date_or_400(request.GET["start_date"])
+    else:
+        start_date = datetime.datetime(1970, 1, 1)
+    filter_params["completed_on__gte"] = start_date
+
+    journies = Case.objects.filter(**filter_params).order_by("completed_on")
+    count = journies.count()
+    journies_by_month = filter_cases_by_month(journies)
+
+    earliest_journey = journies[0] if journies else None
+    latest_journey = journies.reverse()[0] if journies else None
+
+    response = {
+        "summary": {
+            "language": filter_params["language"],
+            "total": count,
+            "start_date": start_date.isoformat(),
+            "end_date": end_date.isoformat(),
+            "earliest_journey": earliest_journey.completed_on.isoformat() if earliest_journey else None,
+            "latest_journey": latest_journey.completed_on.isoformat() if latest_journey else None,
+            "by_month": journies_by_month,
+        },
+        "latest_example": {
+            "urn": latest_journey.urn,
+            "name": latest_journey.name,
+            "extra_data": {
+                k: v
+                for k, v in latest_journey.extra_data.items()
+                if k in [
+                    "Forename1",
+                    "Forename2",
+                    "Surname",
+                    "DOB",
+                ]
+            },
+        }
+    } if count else {}
+
+    return HttpResponse(
+        json.dumps(response, indent=4),
+        content_type="application/json",
+    )
 
