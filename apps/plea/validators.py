@@ -61,9 +61,9 @@ def is_urn_valid(urn):
         urn = standardise_urn(urn)
     except StandardiserNoOutputException:
         AuditEvent().populate(
-            event_type="case_api",
+            event_type="urn_validator",
             event_subtype="case_invalid_invalid_urn",
-            urn=urn,
+            event_trace="'is_urn_valid' raised StandardiserNoOutputException with URN {0}.format(urn)",
         )
         raise exceptions.ValidationError(
             "The URN is not valid",
@@ -79,9 +79,9 @@ def is_urn_valid(urn):
     """
     if not re.match(pattern, urn) or not Court.objects.has_court(urn):
         AuditEvent().populate(
-            event_type="case_api",
+            event_type="urn_validator",
             event_subtype="case_invalid_invalid_urn",
-            urn=urn,
+            event_trace="'is_urn_valid' found either no matching urn pattern or no matching court with URN {0}.format(urn)",
         )
         raise exceptions.ValidationError(
             "The URN is not valid",
@@ -91,11 +91,13 @@ def is_urn_valid(urn):
     if court.validate_urn:
         if not Case.objects.filter(urn__iexact=urn, sent=False).exists():
             AuditEvent().populate(
-                event_type="case_api",
+                event_type="urn_validator",
                 event_subtype="case_invalid_invalid_urn",
-                urn=urn,
+                event_trace="'is_urn_valid' found no unsent case matching a strictly validating court with URN {0}.format(urn)",
             )
-            raise exceptions.ValidationError("The URN is not valid", code="is_urn_valid")
+            raise exceptions.ValidationError(
+                "The URN is not valid",
+                code="is_urn_valid")
 
     return True
 
@@ -106,12 +108,12 @@ def is_valid_urn_format(urn):
 
     if not re.match(pattern, urn):
         AuditEvent().populate(
-            event_type="case_api",
+            event_type="urn_validator",
             event_subtype="case_invalid_invalid_urn",
-            urn=urn,
+            event_trace="'is_valid_urn_format' found no matching urn pattern with URN {0}.format(urn)",
         )
         raise exceptions.ValidationError(
-            "The URN is not valid", code="is_urn_valid")
+            "The URN is not valid",
+            code="is_urn_valid")
 
     return True
-
