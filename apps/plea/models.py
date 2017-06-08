@@ -385,6 +385,7 @@ class Case(models.Model):
             case=self,
             event_type="case_model",
             event_subtype="success",
+            event_trace="Case {0} was updated".format(self.urn),
             **kwargs)
 
 
@@ -764,6 +765,7 @@ class AuditEvent(models.Model):
         ("case_model", "Case Save event"),  # save operations on the model
         ("case_form", "Case Form event"),  # form validation issues
         ("case_api", "Case API event"),  # issue at the Case api
+        ("urn_validator", "URN validation event"),  # issue vaidating a URN
         ("result_api", "Result API event"),  # issue at the Result api
         ("auditevent_api", "AuditEvent API event"),  # issue with an external component
     )
@@ -919,8 +921,8 @@ class AuditEvent(models.Model):
                 if i[0] == kwargs["event_subtype"]][0]
 
         self.event_data = kwargs["event_data"] \
-                if "event_data" in kwargs \
-                else ""
+            if "event_data" in kwargs \
+            else ""
         self.event_trace = kwargs["event_trace"] \
             if "event_trace" in kwargs \
             else ""
@@ -973,6 +975,10 @@ class AuditEvent(models.Model):
             for k, v in kwargs.items():
                 if k not in self.IGNORED_VALIDATOR_FIELDS:
                     self.event_data[k] = v
+
+        self.event_trace = kwargs["event_trace"] \
+            if "event_trace" in kwargs \
+            else ""
 
         self.save()
 
