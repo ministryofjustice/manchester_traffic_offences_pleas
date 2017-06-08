@@ -62,7 +62,8 @@ class CaseSerializer(serializers.ModelSerializer):
             AuditEvent().populate(
                 event_type="case_api",
                 event_subtype="invalid_case_missing_dateofhearing",
-                **data)
+                event_trace=str(data),
+            )
             raise serializers.ValidationError(
                 "date_of_hearing is a required field")
 
@@ -70,7 +71,8 @@ class CaseSerializer(serializers.ModelSerializer):
             AuditEvent().populate(
                 event_type="case_api",
                 event_subtype="case_invalid_no_offences",
-                **data)
+                event_trace=str(data),
+            )
             raise serializers.ValidationError("case has no offences")
 
         offence_codes = [
@@ -86,7 +88,8 @@ class CaseSerializer(serializers.ModelSerializer):
             AuditEvent().populate(
                 event_type="case_api",
                 event_subtype="case_invalid_not_in_whitelist",
-                **data)
+                event_trace=str(data),
+            )
             raise serializers.ValidationError(
                 ("Case {} contains offence codes [{}] not present "
                  "in the whitelist").format(
@@ -107,7 +110,8 @@ class CaseSerializer(serializers.ModelSerializer):
             AuditEvent().populate(
                 event_type="case_api",
                 event_subtype="case_invalid_duplicate_urn_used",
-                **data)
+                event_trace=str(data),
+            )
             raise serializers.ValidationError(
                 "URN / Case number already exists and has been used")
 
@@ -147,6 +151,7 @@ class CaseSerializer(serializers.ModelSerializer):
         AuditEvent().populate(
             event_type="case_api",
             event_subtype="success",
+            event_trace=str(case),
             case=case,
         )
 
@@ -196,7 +201,9 @@ class ResultSerializer(serializers.ModelSerializer):
         if sent_results:
             AuditEvent().populate(
                 event_type="result_api",
-                event_subtype="result_invalid_duplicate_urn_used")
+                event_subtype="result_invalid_duplicate_urn_used",
+                event_trace="URN: {0}".format(urn),
+            )
             raise serializers.ValidationError(
                 "URN / Result number already exists and has been used")
 
