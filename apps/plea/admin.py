@@ -140,7 +140,7 @@ class CaseInitiationTypeFilter(admin.SimpleListFilter):
 
 class CaseAdmin(admin.ModelAdmin):
     list_display = ("urn", "sent", "processed", "charge_count", "initiation_type")
-    list_filter = ("sent", "processed", CaseInitiationTypeFilter, "ou_code", "imported")
+    list_filter = ("sent", "processed", "ou_code", "imported")
     inlines = [InlineCaseAction, InlineOffence]
     search_fields = ["urn", "case_number"]
     readonly_fields = ('created',)
@@ -368,8 +368,6 @@ class AuditEventAdmin(admin.ModelAdmin):
     list_filter = (
         "event_type",
         "event_subtype",
-        AuditEventInitiationTypeFilter,
-        UrnFilter,
     )
     search_fields = ("case__urn", "event_data__urn")
 
