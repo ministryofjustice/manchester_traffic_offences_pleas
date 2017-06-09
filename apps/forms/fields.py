@@ -66,11 +66,13 @@ class DateWidget(MultiWidget):
         super(DateWidget, self).__init__(widgets, attrs)
 
     def decompress(self, value):
-        if value:
+        if not value:
+            return ["", "", ""]
+        elif isinstance(value, datetime.date):
+            return [value.day, value.month, value.year]
+        else:
             year, month, day = value.split("-")
             return [day, month, year]
-        else:
-            return ["", "", ""]
 
     def value_from_datadict(self, data, files, name):
         day, month, year = [widget.value_from_datadict(data, files, name + '_%s' % i) for i, widget in enumerate(self.widgets)]
