@@ -192,7 +192,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'django_extensions',
     'axes',
-    'djcelery',
+    'django_celery_results',
     'waffle',
     'apps.monitoring',
     'govuk_template',
@@ -276,10 +276,9 @@ LOGGING = {
 INTERNAL_IPS = ['127.0.0.1']
 
 # EMAILS
-BROKER_URL = "SQS://"
-BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1'}
-CELERY_SEND_TASK_ERROR_EMAILS = True
-CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+CELERY_BROKER_URL = "SQS://"
+CELERY_BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1'}
+CELERY_RESULT_BACKEND='django-db'
 
 SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "")
 
