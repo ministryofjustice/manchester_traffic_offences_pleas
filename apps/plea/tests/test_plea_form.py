@@ -331,6 +331,37 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
 
         self.assertEqual(response.status_code, 302)
 
+    def test_case_date_of_hearing_stored_as_datetime(self):
+        fake_request = self.get_request_mock("/plea/case/")
+        request_context = RequestContext(fake_request)
+
+        self.session = {
+            "notice_type": {
+                "complete": True,
+                "sjp": False
+            },
+            "case": {
+                "complete": True,
+                "date_of_hearing": datetime.datetime(2015, 1, 1),
+                "urn": "06AA000000015",
+                "number_of_charges": 3,
+                "plea_made_by": "Defendant"
+            }
+        }
+
+        case = Case()
+        case.urn = "06AA000000015"
+        case.name = "frank marsh"
+        case.sent = True
+        case.save()
+
+        form = PleaOnlineForms(self.session, "case")
+        form.load(request_context)
+
+        response = form.render()
+
+        self.assertEqual(response.status_code, 200)
+
     def test_case_stage_redirects_to_company_stage(self):
         form = PleaOnlineForms(self.session, "case")
 
