@@ -15,15 +15,13 @@ An alternative approach could be:
 
 import datetime
 import os
+import random
+import string
 import yaml
-from subprocess import call
 
-from django.core.management import call_command
 from django.core.management.base import BaseCommand
-from django.template import TemplateDoesNotExist
-from django.template.loader import get_template
-from django.utils import translation
-from django.utils.translation import ugettext
+
+from apps.plea.models import AuditEvent, Case, INITIATION_TYPE_CHOICES, Offence
 
 
 ROOT_DIR = os.path.dirname(
@@ -34,13 +32,101 @@ ROOT_DIR = os.path.dirname(
 
 class Command(BaseCommand):
 
-    help = """
-This management command will produce various dynamic fixture files that can be
-loaded to support BDD and other tests.
-"""
+    help = """Generate or install fixtures."""
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--generate_dynamic',
+            action='store_true',
+            dest="dynamic",
+            default=False)
+        parser.add_argument(
+            '--install_performance',
+            action='store_true',
+            dest="performance",
+            default=False)
+        parser.add_argument(
+            '--fixture_count',
+            action='store',
+            dest="fixture_count",
+            default=10000)
 
     def handle(self, *args, **options):
 
+        if "performance" in options:
+            self._install_performance(
+                fixture_count=int(options["fixture_count"]))
+
+        if "dynamic" in options:
+            self._generate_dynamic()
+
+    def _save_fixturefile(self, filepath, data):
+
+        with open(
+            os.path.join(
+                ROOT_DIR,
+                "cucumber",
+                "features",
+                filepath,
+            ),
+            "w"
+        ) as f:
+            f.write(
+                yaml.dump(
+                    data,
+                    indent=4,
+                    default_flow_style=False))
+
+    def _install_performance(self, fixture_count):
+        """Insert large quantities of data for performance testing"""
+        for x in range(fixture_count):
+            params = {
+                "urn": "{0}{1}{2}".format(
+                    "".join(
+                        random.choice(string.ascii_uppercase)
+                        for _ in range(2)),
+                    random.choice(["00", "50", "51", "99"]),
+                    random.randrange(1000000, 9999999),
+                ),
+                "initiation_type": random.choice(INITIATION_TYPE_CHOICES)[0],
+                "email": "root@localhost",
+                "imported": False,
+                "name": ''.join(
+                    random.choice(string.ascii_lowercase)
+                    for _ in range(15)),
+                "extra_data": {},
+            }
+            case = Case(**params)
+            case.save()
+            for x in range(1, random.randint(1, 10)):
+                Offence(**{
+                    "case_id": case.id,
+                    "offence_wording": "Test offence ${0}".format(random.randint(1, 200)),
+                }).save()
+
+            # Extra items to create sometimes
+            if x % 10 == 0:
+                AuditEvent().populate(
+                    event_type="case_model",
+                    event_subtype="success",
+                    event_trace="test common extra event for a case",
+                    case=case,
+                )
+                AuditEvent().populate(
+                    event_type="case_form",
+                    event_subtype="case_invalid_invalid_urn",
+                    event_trace="Test event with no case",
+                )
+
+            if x % 100 == 0:
+                AuditEvent().populate(
+                    event_type="case_model",
+                    event_subtype="case_invalid_missing_urn",
+                    event_trace="test rare extra event for a case",
+                    case=case,
+                )
+
+    def _generate_dynamic(self):
         NOW = datetime.datetime.utcnow()
         ONE_DAY = datetime.timedelta(days=1)
 
@@ -157,18 +243,7 @@ loaded to support BDD and other tests.
 
         ]
 
-        with open(
-            os.path.join(
-                ROOT_DIR,
-                "cucumber",
-                "features",
-                "bdd_generated_fixtures.yaml",
-            ),
-            "w"
-        ) as f:
-            f.write(
-                yaml.dump(
-                    FIXTURES_SRC,
-                    indent=4,
-                    default_flow_style=False))
-
+        self._save_fixturefile(
+            "bdd_generated_fixtures.yaml",
+            FIXTURES_SRC,
+        )
