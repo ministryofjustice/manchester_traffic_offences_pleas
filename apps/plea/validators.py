@@ -63,7 +63,7 @@ def is_urn_valid(urn):
         AuditEvent().populate(
             event_type="urn_validator",
             event_subtype="case_invalid_invalid_urn",
-            event_trace="'is_urn_valid' raised StandardiserNoOutputException with URN {0}.format(urn)",
+            event_trace="'is_urn_valid' raised StandardiserNoOutputException with URN {0}".format(urn)
         )
         raise exceptions.ValidationError(
             "The URN is not valid",
@@ -81,7 +81,7 @@ def is_urn_valid(urn):
         AuditEvent().populate(
             event_type="urn_validator",
             event_subtype="case_invalid_invalid_urn",
-            event_trace="'is_urn_valid' found either no matching urn pattern or no matching court with URN {0}.format(urn)",
+            event_trace="'is_urn_valid' found either no matching urn pattern or no matching court with URN {0}".format(urn)
         )
         raise exceptions.ValidationError(
             "The URN is not valid",
@@ -93,7 +93,7 @@ def is_urn_valid(urn):
             AuditEvent().populate(
                 event_type="urn_validator",
                 event_subtype="case_invalid_invalid_urn",
-                event_trace="'is_urn_valid' found no unsent case matching a strictly validating court with URN {0}.format(urn)",
+                event_trace="'is_urn_valid' found no unsent case matching a strictly validating court with URN {0}".format(urn),
             )
             raise exceptions.ValidationError(
                 "The URN is not valid",
@@ -110,7 +110,7 @@ def is_valid_urn_format(urn):
         AuditEvent().populate(
             event_type="urn_validator",
             event_subtype="case_invalid_invalid_urn",
-            event_trace="'is_valid_urn_format' found no matching urn pattern with URN {0}.format(urn)",
+            event_trace="'is_valid_urn_format' found no matching urn pattern with URN {0}".format(urn),
         )
         raise exceptions.ValidationError(
             "The URN is not valid",
