@@ -31,6 +31,7 @@ source /usr/local/bin/virtualenvwrapper.sh
 echo "Setting up postgres"
 sudo cp /pleas/vagrant/pg_hba.conf /etc/postgresql/9.3/main/pg_hba.conf
 sudo service postgresql restart
+sudo -u postgres bash -c "psql postgres -tAc 'SELECT 1 FROM pg_roles WHERE rolname='\''jenkins'\' | grep -q 1 || createuser --superuser jenkins"
 
 echo "Making the VE"
 mkvirtualenv manchester
