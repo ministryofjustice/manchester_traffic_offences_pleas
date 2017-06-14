@@ -1,3 +1,4 @@
+from datetime import datetime, date
 from dateutil import parser
 from django import template
 
@@ -7,8 +8,9 @@ register = template.Library()
 
 @register.filter(name='parse_date')
 def parse_date(value):
-    if isinstance(value, basestring):
-        dt = parser.parse(value)
-    else:
-        dt = value
-    return dt
+    try:
+        return parser.parse(value)
+    except ValueError:
+        return "Unknown"
+    except TypeError:
+        return value
