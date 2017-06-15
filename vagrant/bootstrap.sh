@@ -42,7 +42,6 @@ pip install -r requirements/dev.txt
 pip install -r requirements/testing.txt
 
 sudo -u postgres createdb manchester_traffic_offences
-./manage.py syncdb --noinput
 ./manage.py migrate --noinput
 ./manage.py compilemessages
 
