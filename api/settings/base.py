@@ -58,7 +58,7 @@ REST_FRAMEWORK = {
 
 INSTALLED_APPS = INSTALLED_APPS + PROJECT_APPS
 
-del TEMPLATE_CONTEXT_PROCESSORS[TEMPLATE_CONTEXT_PROCESSORS.index('apps.feedback.context_processors.feedback')]
+TEMPLATES[0]['OPTIONS']['context_processors'].remove('apps.feedback.context_processors.feedback')
 
 # Options for Premailer, which inlines the CSS on the fly in email templates and
 # makes all URLs absolute

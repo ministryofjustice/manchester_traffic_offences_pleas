@@ -118,11 +118,30 @@ PREMAILER_OPTIONS = {"base_url": os.environ.get("PREMAILER_BASE_URL", "https://w
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.app_directories.Loader',
-    'django.template.loaders.filesystem.Loader',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            "templates",
+            root('templates'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.static",
+                'django.template.context_processors.request',
+                "django.template.context_processors.tz",
+                "django.contrib.messages.context_processors.messages",
+                "django.contrib.auth.context_processors.auth",
+                "make_a_plea.context_processors.globals",
+                "apps.feedback.context_processors.feedback",
+            ]
+        }
+    }
+]
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.cache.UpdateCacheMiddleware',
@@ -161,24 +180,6 @@ WAFFLE_CACHE_PREFIX = "MaP_waffle"
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'make_a_plea.wsgi.application'
-
-TEMPLATE_DIRS = (
-    "templates",
-    root('templates'),
-)
-
-TEMPLATE_CONTEXT_PROCESSORS = [
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.static",
-    'django.core.context_processors.request',
-    "django.core.context_processors.tz",
-    "django.contrib.messages.context_processors.messages",
-    "django.contrib.auth.context_processors.auth",
-    "make_a_plea.context_processors.globals",
-    "apps.feedback.context_processors.feedback",
-]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
