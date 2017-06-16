@@ -2,8 +2,9 @@ from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
-from django.shortcuts import RequestContext, redirect
+from django.shortcuts import redirect
 from django.views.generic import FormView
+from django.template import RequestContext
 
 from brake.decorators import ratelimit
 
