@@ -165,7 +165,7 @@ class DataValidationAdmin(admin.ModelAdmin):
     change_list_template = "admin/datavalidation_change_list.html"
 
     def get_urls(self):
-        from django.conf.urls import patterns, url
+        from django.conf.urls import url
 
         def wrap(view):
             def wrapper(*args, **kwargs):
@@ -174,14 +174,13 @@ class DataValidationAdmin(admin.ModelAdmin):
 
         info = self.model._meta.app_label, self.model._meta.model_name
 
-        urls = patterns(
-            '',
+        urls = [
             url(
                 r'^statistics/$',
                 wrap(self.statistics_view),
                 name='%s_%s_statistics' % info
             ),
-        )
+        ]
 
         super_urls = super(DataValidationAdmin, self).get_urls()
 

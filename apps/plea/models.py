@@ -886,9 +886,6 @@ class AuditEvent(models.Model):
 
     def populate(self, *args, **kwargs):
         """
-        Use of _meta.get_all_field_names() needs changing for Django 1.9
-        http://stackoverflow.com/questions/2170228/iterate-over-model-instance-field-names-and-values-in-template
-
         TODO: Visitor pattern made sense when I started this work, not as much anymore
         """
 
@@ -939,10 +936,8 @@ class AuditEvent(models.Model):
             self.case = case
 
             # Copy the fields of interest
-            fieldnames = case._meta.get_all_field_names()
-            for fieldname in fieldnames:
-                if fieldname not in self.IGNORED_CASE_FIELDS:
-                    field = getattr(case, fieldname)
+            for field in case._meta.get_fields():
+                if field.name not in self.IGNORED_CASE_FIELDS:
                     if hasattr(field, 'name') and hasattr(field, "value"):
                         if field.name != "extra_data":
                             self.event_data[field.name] = field.value
