@@ -11,7 +11,8 @@ from django.utils import translation
 
 from apps.plea.attachment import TemplateAttachmentEmail
 
-from make_a_plea.celery import app
+from celery import shared_task
+
 from apps.plea.models import Case, CourtEmailCount, Court
 from apps.plea.standardisers import format_for_region
 
@@ -37,7 +38,7 @@ def get_court(urn, ou_code):
     return court_obj
 
 
-@app.task(bind=True, max_retries=10, default_retry_delay=900)
+@shared_task(bind=True, max_retries=10, default_retry_delay=900)
 def email_send_court(self, case_id, count_id, email_data):
     smtp_route = "GSI"
 
@@ -94,7 +95,7 @@ def email_send_court(self, case_id, count_id, email_data):
     return True
 
 
-@app.task(bind=True, max_retries=10, default_retry_delay=1800)
+@shared_task(bind=True, max_retries=10, default_retry_delay=1800)
 def email_send_prosecutor(self, case_id, email_data):
     smtp_route = "PNN"
 
@@ -136,7 +137,7 @@ def email_send_prosecutor(self, case_id, email_data):
     return True
 
 
-@app.task(bind=True, max_retries=10, default_retry_delay=1800)
+@shared_task(bind=True, max_retries=10, default_retry_delay=1800)
 def email_send_user(self, case_id, email_address, subject, html_body, txt_body):
     """
     Dispatch an email to the user to confirm that their plea submission
