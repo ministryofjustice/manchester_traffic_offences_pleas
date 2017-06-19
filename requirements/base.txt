@@ -4,6 +4,7 @@
 
 Django==1.9
 psycopg2==2.7.1
+pycurl==7.43.0
 python-dateutil==2.6.0
 python-gnupg==0.4.0
 git+https://github.com/ministryofjustice/django-moj-irat

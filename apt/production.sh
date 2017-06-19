@@ -3,4 +3,5 @@
 apt-get install --fix-missing -y \
   python-psycopg2 \
   gettext \
-  gnupg
+  gnupg \
+  libcurl4-openssl-dev
