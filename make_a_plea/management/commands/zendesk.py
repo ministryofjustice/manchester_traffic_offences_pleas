@@ -139,9 +139,8 @@ class Command(BaseCommand):
             self.init_csv(f)
             self.writerow(self.get_all_fieldnames())  # CSV Header
 
-            for batch in self.yield_ticket_batches():
-                for ticket in batch:
-                    self.writerow(self.ticket_to_row(ticket))
+            for ticket in self.yield_tickets():
+                self.writerow(self.ticket_to_row(ticket))
 
     def writerow(self, row):
         self.writer.writerow([
@@ -155,58 +154,57 @@ class Command(BaseCommand):
             self.get_structured_fields(ticket)
 
     def parse_simple_field(self, field):
-        try:
-            return field.encode("utf-8")
-        except AttributeError:  # ints
-            return str(field).encode("utf-8")
+        if field is None:
+            return ""
+        else:
+            try:
+                return field.encode("utf-8")
+            except AttributeError:  # ints
+                return str(field).encode("utf-8")
 
     def get_simple_fields(self, ticket):
-        fields = []
-        for field in SIMPLE_FIELDS:
-            if field in ticket:
-                fields.append(self.parse_simple_field(ticket[field]))
-            else:
-                fields.append("")
-        return fields
+        return [
+            self.parse_simple_field(ticket.get(field))
+            for field in SIMPLE_FIELDS]
 
     def parse_newline_field(self, field):
         return field or ""
 
     def get_newline_fields(self, ticket):
-        fields = []
-        for field in NEWLINE_FIELDS:
-            if field in ticket and field is not None:
-                fields.append(self.parse_newline_field(ticket[field]))
-            else:
-                fields.append("")
-        return fields
+        return [
+            self.parse_newline_field(ticket.get(field))
+            for field in NEWLINE_FIELDS]
 
     def parse_structured_field(self, field):
-        return str(field)
+        if field is None:
+            return ""
+        else:
+            try:
+                return field.encode("utf-8")
+            except AttributeError:  # ints
+                return str(field).encode("utf-8")
 
     def get_structured_fields(self, ticket):
-        fields = []
-        for field in STRUCTURED_FIELDS:
-            if field in ticket:
-                fields.append(self.parse_structured_field(ticket[field]))
-            else:
-                fields.append("")
-        return fields
+        return [
+            self.parse_structured_field(ticket.get(field))
+            for field in STRUCTURED_FIELDS]
 
-    def yield_ticket_batches(self):
+    def yield_tickets(self):
         """Generates batches of tickets"""
 
         for raw_query in self.settings["raw_queries"]:
 
             first_page = self.zendesk.search(raw_query=raw_query)
-            yield first_page["results"]
-
+            for item in first_page["results"]:
+                yield item
             count = first_page["count"]
             print "{} tickets from ZenDesk match filter.".format(count)
+
             page_count, remainder = divmod(count, self.batch_size)
             page_count = page_count + 1 if remainder else page_count
 
-            for page_id in range(1, page_count):
+            for page_id in range(2, page_count):
                 qpage = " page:{}".format(page_id)
                 page = self.zendesk.search(raw_query=raw_query + qpage)
-                yield page["results"]
+                for item in page["results"]:
+                    yield item
