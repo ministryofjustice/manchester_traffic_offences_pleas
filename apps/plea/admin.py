@@ -6,7 +6,7 @@ from functools import update_wrapper
 from django.core import urlresolvers
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from django.db.models import Count
 
@@ -236,12 +236,12 @@ class DataValidationAdmin(admin.ModelAdmin):
                        "change_percentage": change_percentage}
                 regions.append(reg)
 
-        return render_to_response(self.statistics_template, {
+        return render(request, self.statistics_template, {
             'title': 'Data Validation Statistics',
             'opts': self.model._meta,
             'recent_days': recent_days,
             'regions': regions
-        }, context_instance=RequestContext(request))
+        })
 
 
 class UrnFilter(admin.SimpleListFilter):
