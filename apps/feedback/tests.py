@@ -14,7 +14,8 @@ class FeedbackFormTestCase(TestCase):
 
         mail.outbox = []
 
-        self.request_context = {}
+        self.request_context = Mock()
+        self.request_context.request = self.get_request_mock('/dummy')
 
         self.empty_session_data = {}
         self.complete_session_data = {
