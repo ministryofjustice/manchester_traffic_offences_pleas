@@ -11,12 +11,8 @@ Then(/^I should see your case page header$/) do
   expect(enter_urn_page.page_header.text).to eq 'Your case'
 end
 
-Then(/^I should be asked to provide my URN number$/) do
+Then(/^I should see provide URN hint$/) do
   expect(enter_urn_page.section_urn).to have_text
-  expect(enter_urn_page.section_urn).to have_hint
-end
-
-Then(/^I should see a hint$/) do
   expect(enter_urn_page.section_urn).to have_hint
 end
 
