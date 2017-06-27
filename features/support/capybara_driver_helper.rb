@@ -42,6 +42,4 @@ end
 
 Capybara.javascript_driver = Capybara.default_driver
 Capybara.current_driver = Capybara.default_driver
-# Capybara.app_host = ENV['HOST'] if ENV['HOST']
-# TODO: get this running locally http://127.0.0.1:
-Capybara.app_host = "http://127.0.0.1:3000"
+Capybara.app_host = "http://0.0.0.0:8000"
