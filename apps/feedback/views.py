@@ -49,7 +49,8 @@ class FeedbackViews(StorageView):
                 except KeyError:
                     pass
             else:
-                if nxt == "plea_form_step": nxt = "plea_form"
+                if nxt == "plea_form_step":
+                    nxt = "plea_form"
                 redirect_url = reverse(nxt)
 
             self.storage["feedback_redirect"] = redirect_url
@@ -71,7 +72,7 @@ class FeedbackViews(StorageView):
         if stage == "complete":
             self.clear_storage(request, "feedback_data")
 
-        return form.render()
+        return form.render(request)
 
     @method_decorator(ratelimit(block=True, rate=settings.RATE_LIMIT))
     def post(self, request, stage):
@@ -82,4 +83,4 @@ class FeedbackViews(StorageView):
         form.process_messages(request)
         request.session.modified = True
 
-        return form.render()
+        return form.render(request)

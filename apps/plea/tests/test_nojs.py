@@ -28,7 +28,7 @@ class TestNoJS(TestCase):
         self.request_context = Mock()
         self.request_context.request = self.get_request_mock("/dummy")
 
-    def get_request_mock(self, url, url_name="", url_kwargs=None):
+    def get_request_mock(self, url="/", url_name="", url_kwargs=None):
         request_factory = RequestFactory()
 
         if not url_kwargs:
@@ -45,7 +45,7 @@ class TestNoJS(TestCase):
         form.save({"split_form": "guilty"},
                   self.request_context)
 
-        response = form.render()
+        response = form.render(self.get_request_mock())
 
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "<<NOJSTRIGGERSUMMARY>>")
@@ -57,7 +57,7 @@ class TestNoJS(TestCase):
                    "guilty": "guilty"},
                   self.request_context)
 
-        response = form.render()
+        response = form.render(self.get_request_mock())
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "<<NOJSTRIGGERSUMMARY>>")
 
@@ -68,7 +68,7 @@ class TestNoJS(TestCase):
                    "guilty": "not_guilty"},
                   self.request_context)
 
-        response = form.render()
+        response = form.render(self.get_request_mock())
 
         self.assertEqual(response.status_code, 200)
 
@@ -84,7 +84,7 @@ class TestNoJS(TestCase):
 
         form = PleaOnlineForms(self.plea_session, "plea", 1)
         form.load(request_context)
-        response = form.render()
+        response = form.render(self.get_request_mock())
 
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "<<NOJSTRIGGERSUMMARY>>")
@@ -101,7 +101,7 @@ class TestNoJS(TestCase):
                    "witness_needed": False},
                   self.request_context)
 
-        response = form.render()
+        response = form.render(self.get_request_mock())
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, '/plea/review/')
@@ -117,7 +117,7 @@ class TestNoJS(TestCase):
                    "form-0-interpreter_needed": True},
                   self.request_context)
 
-        response = form.render()
+        response = form.render(self.get_request_mock())
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(form.current_stage.form.errors), 1)
@@ -128,7 +128,7 @@ class TestNoJS(TestCase):
         form.save({"split_form": "trading_period"},
                   self.request_context)
 
-        response = form.render()
+        response = form.render(self.get_request_mock())
 
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "<<NOJSTRIGGERSUMMARY>>")
@@ -140,7 +140,7 @@ class TestNoJS(TestCase):
                    "trading_period": True},
                   self.request_context)
 
-        response = form.render()
+        response = form.render(self.get_request_mock())
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "<<NOJSTRIGGERSUMMARY>>")
@@ -152,7 +152,7 @@ class TestNoJS(TestCase):
                    "trading_period": True},
                   self.request_context)
 
-        response = form.render()
+        response = form.render(self.get_request_mock())
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "<<NOJSTRIGGERSUMMARY>>")
@@ -168,7 +168,7 @@ class TestNoJS(TestCase):
         form = PleaOnlineForms(self.company_finances_session, "company_finances")
 
         form.load(request_context)
-        response = form.render()
+        response = form.render(self.get_request_mock())
 
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "<<NOJSTRIGGERSUMMARY>>")
@@ -183,7 +183,7 @@ class TestNoJS(TestCase):
                    "net_turnover": "12000"},
                   self.request_context)
 
-        response = form.render()
+        response = form.render(self.get_request_mock())
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, '/plea/review/')

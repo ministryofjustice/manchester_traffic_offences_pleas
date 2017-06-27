@@ -103,6 +103,4 @@ moj_template/
 
 *translation_files.zip
 zendump.csv
-cucumber/features/bdd_generated_fixtures.yaml
-
-
+cucumber/features/*.json
