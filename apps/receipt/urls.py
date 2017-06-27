@@ -1,7 +1,6 @@
-from django.conf.urls import url
+from django.conf.urls import patterns, include, url
 
 from . import views
 
-urlpatterns = [
-    url(r'^webhook/$', views.ReceiptWebhook.as_view(), name="receipt_webhook")
-]
+urlpatterns = patterns('',
+    url(r'^webhook/$', views.ReceiptWebhook.as_view(), name="receipt_webhook"))

@@ -4,9 +4,7 @@ from collections import OrderedDict
 
 from django.utils.translation import activate
 from django.test import TestCase, Client
-from django.test.client import RequestFactory
 from apps.plea.views import PleaOnlineViews
-from collections import namedtuple
 
 from ..stages import URNEntryStage, AuthenticationStage, PleaStage
 from ..models import Court, Case, Offence
@@ -138,8 +136,6 @@ class TestURNStageDataBase(TestCase):
                                  ("company_finances", "company_finances"),
                                  ("case", "case"),
                                  ("complete", "complete")))
-        
-        self.request_context = namedtuple('C', 'request')(RequestFactory().get('/dummy'))
 
 
 class TestURNStageNoData(TestURNStageDataBase):
@@ -204,7 +200,7 @@ class TestURNStageDuplicateCases(TestURNStageDataBase):
         stage = URNEntryStage(self.urls, self.data)
         stage.save({"urn": "06AA0000015"})
 
-        response = stage.render(self.request_context)
+        response = stage.render({})
         self.assertEqual(response.status_code, 302)
         self.assertEqual(stage.next_step, "your_case_continued")
 
@@ -214,7 +210,7 @@ class TestURNStageDuplicateCases(TestURNStageDataBase):
         stage = URNEntryStage(self.urls, self.data)
         stage.save({"urn": self.case.urn})
 
-        response = stage.render(self.request_context)
+        response = stage.render({})
         self.assertEqual(response.status_code, 302)
         self.assertEqual(stage.next_step, "notice_type")
 
@@ -597,7 +593,7 @@ class TestPleaAuthStage(TestURNStageDataBase):
 
         stage = PleaStage(self.urls, self.data)
         stage.load_forms({})
-        response = stage.render(self.request_context)
+        response = stage.render({})
 
         offence = self.case.offences.all().first()
 
@@ -620,7 +616,7 @@ class TestPleaAuthStage(TestURNStageDataBase):
 
         stage = PleaStage(self.urls, self.data)
         stage.load_forms({})
-        response = stage.render(self.request_context)
+        response = stage.render({})
 
         self.assertIn(offence.offence_short_title.encode("utf-8"), response.content)
         self.assertIn(offence.offence_wording.encode("utf-8"), response.content)

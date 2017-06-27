@@ -44,8 +44,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
             test_mode=False)
 
         self.session = {}
-        self.request_context = Mock()
-        self.request_context.request = self.get_request_mock("/dummy")
+        self.request_context = {}
 
         self.plea_stage_pre_data_1_charge = {"notice_type": {"complete": True,
                                                              "sjp": False},
