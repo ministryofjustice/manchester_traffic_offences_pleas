@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta
+import random
+import string
 
 from django.test import TestCase, Client
 from django.test.utils import override_settings
@@ -14,6 +16,31 @@ from apps.result.models import Result, ResultOffence, ResultOffenceData
 from .views import start
 
 from .management.commands.delete_old_data import Command
+
+
+def yield_waffle(chars=7, words=1, lines=1):
+    """Produce lorem ipsum text in an iterable form."""
+
+    for line, lindex in enumerate(range(lines)):
+        for word, windex in enumerate(range(words)):
+            for char, cindex in enumerate(range(chars)):
+
+                if not cindex:  # Capitalise first character
+                    yield random.choice(string.uppercase)
+                else:
+                    yield random.choice(string.lowercase)
+
+            if all([
+                words > 1,  # No space after if only one word
+                windex + 1 < words,  # No space after last word
+            ]):
+                yield " "
+
+        if all([
+            lines > 1,  # No newline if only one line
+            lindex + 1 < lines,  # No newline after last line
+        ]):
+            yield r"\r\n"
 
 
 class DateAwareSerializerTests(TestCase):
@@ -44,7 +71,7 @@ class DateAwareSerializerTests(TestCase):
 
 class TestStartRedirect(TestCase):
 
-    def get_request_mock(self, url, url_name="", url_kwargs=None):
+    def get_request_mock(self, url="/", url_name="", url_kwargs=None):
         request_factory = RequestFactory()
 
         if not url_kwargs:
