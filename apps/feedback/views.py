@@ -4,7 +4,7 @@ from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
-from django.template import RequestContext
+from django.shortcuts import RequestContext
 
 from apps.forms.stages import MultiStageForm
 from apps.forms.views import StorageView

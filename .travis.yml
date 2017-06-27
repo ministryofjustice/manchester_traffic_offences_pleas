@@ -15,7 +15,7 @@ install:
   - "pip install -r requirements/testing.txt"
 before_script:
   - "psql -c 'CREATE DATABASE manchester_traffic_offences;' -U postgres"
-  - "python manage.py migrate --noinput"
+  - "python manage.py syncdb --noinput"
   - "python manage.py compilemessages"
 env:
   - POSTGRES_USER=postgres DJANGO_SETTINGS_MODULE=make_a_plea.settings.testing

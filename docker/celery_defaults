@@ -11,7 +11,7 @@ CELERY_BIN="/usr/local/bin/celery"
 
 # App instance to use
 # comment out this line if you don't use an app
-CELERY_APP="make_a_plea.celery:app"
+CELERY_APP="apps.plea.tasks:app"
 
 # Where to chdir at start.
 CELERYD_CHDIR="/makeaplea/"

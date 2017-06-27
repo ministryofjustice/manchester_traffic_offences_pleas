@@ -5,7 +5,7 @@ from moj_irat.views import PingJsonView, HealthcheckView
 import views
 
 from django.conf import settings
-from django.conf.urls import include, url
+from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
@@ -16,7 +16,8 @@ admin.autodiscover()
 
 handler500 = "make_a_plea.views.server_error"
 
-urlpatterns = [
+urlpatterns = patterns(
+    "",
     url(r"^$", views.start, name="home"),
     url(r"^helping-you-plead-online/$", views.TranslatedView.as_view(template_name="ad_support.html"), name="ad_support"),
     url(r"^terms-and-conditions-and-privacy-policy/$", views.TranslatedView.as_view(template_name="terms.html"), name="terms"),
@@ -37,4 +38,4 @@ urlpatterns = [
     url(r'^ping.json$', PingJsonView.as_view(build_date_key="APP_BUILD_DATE", commit_id_key="APP_GIT_COMMIT"), name='ping_json'),
     url(r'^500.html$', TemplateView.as_view(template_name="500.html"), name='500_page'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

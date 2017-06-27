@@ -25,8 +25,7 @@ class TestNoJS(TestCase):
                                                   "data": [{"guilty": "guilty",
                                                             "complete": True}]}}
 
-        self.request_context = Mock()
-        self.request_context.request = self.get_request_mock("/dummy")
+        self.request_context = {}
 
     def get_request_mock(self, url, url_name="", url_kwargs=None):
         request_factory = RequestFactory()

@@ -254,4 +254,3 @@ class UsageStatsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UsageStats
-        fields = '__all__'

@@ -3,7 +3,7 @@ from collections import OrderedDict, namedtuple
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.http import Http404, HttpResponseRedirect, QueryDict
-from django.shortcuts import render
+from django.shortcuts import render_to_response
 
 
 StageMessage = namedtuple("StageMessage", ["importance", "message", "tags"])
@@ -127,8 +127,7 @@ class FormStage(object):
             context = self.context
             context.update({k: v for (k, v) in self.all_data.items()})
             context["form"] = self.form
-            # TODO: refactor API to accept a request object rather than request context
-            return render(request_context.request, self.template, context)
+            return render_to_response(self.template, context, request_context)
 
 
 class IndexedStage(FormStage):

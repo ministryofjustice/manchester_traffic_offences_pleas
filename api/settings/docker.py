@@ -21,6 +21,11 @@ SMTP_ROUTES["GSI"]["PASSWORD"] = os.environ.get("GSI_EMAIL_PASSWORD", "")
 SMTP_ROUTES["PNN"]["USERNAME"] = os.environ.get("PNN_EMAIL_USERNAME", "")
 SMTP_ROUTES["PNN"]["PASSWORD"] = os.environ.get("PNN_EMAIL_PASSWORD", "")
 
+BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1',
+                            'queue_name_prefix': os.environ.get("CELERY_QUEUE_POLLING_PREFIX", "dev-"),
+                            'polling_interval': 1,
+                            'visibility_timeout': 3600}
+
 ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOSTS", "localhost:8000"), ]
 
 # Enable CachedStaticFilesStorage for cache-busting assets
@@ -29,15 +34,8 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStora
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
-CELERY_TASK_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "SQS://")
-CELERY_BROKER_TRANSPORT_OPTIONS = {
-    'region': 'eu-west-1',
-    'queue_name_prefix': os.environ.get("CELERY_QUEUE_POLLING_PREFIX", "dev-"),
-    'polling_interval': 1,
-    'visibility_timeout': 3600
-}
-
+CELERY_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
+BROKER_URL = os.environ.get("CELERY_BROKER_URL", "SQS://")
 
 #
 # Temporary keys to run collectstatic on docker image build.

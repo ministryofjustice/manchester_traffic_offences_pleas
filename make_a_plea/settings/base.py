@@ -118,30 +118,11 @@ PREMAILER_OPTIONS = {"base_url": os.environ.get("PREMAILER_BASE_URL", "https://w
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            "templates",
-            root('templates'),
-        ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.i18n",
-                "django.template.context_processors.media",
-                "django.template.context_processors.static",
-                'django.template.context_processors.request',
-                "django.template.context_processors.tz",
-                "django.contrib.messages.context_processors.messages",
-                "django.contrib.auth.context_processors.auth",
-                "make_a_plea.context_processors.globals",
-                "apps.feedback.context_processors.feedback",
-            ]
-        }
-    }
-]
+# List of callables that know how to import templates from various sources.
+TEMPLATE_LOADERS = (
+    'django.template.loaders.app_directories.Loader',
+    'django.template.loaders.filesystem.Loader',
+)
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.cache.UpdateCacheMiddleware',
@@ -181,6 +162,24 @@ WAFFLE_CACHE_PREFIX = "MaP_waffle"
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'make_a_plea.wsgi.application'
 
+TEMPLATE_DIRS = (
+    "templates",
+    root('templates'),
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = [
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    'django.core.context_processors.request',
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages",
+    "django.contrib.auth.context_processors.auth",
+    "make_a_plea.context_processors.globals",
+    "apps.feedback.context_processors.feedback",
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -193,7 +192,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'django_extensions',
     'axes',
-    'django_celery_results',
+    'djcelery',
     'waffle',
     'apps.monitoring',
     'govuk_template',
@@ -277,9 +276,10 @@ LOGGING = {
 INTERNAL_IPS = ['127.0.0.1']
 
 # EMAILS
-CELERY_BROKER_URL = "SQS://"
-CELERY_BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1'}
-CELERY_RESULT_BACKEND='django-db'
+BROKER_URL = "SQS://"
+BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1'}
+CELERY_SEND_TASK_ERROR_EMAILS = True
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 
 SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "")
 
