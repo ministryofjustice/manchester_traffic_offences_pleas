@@ -1,4 +1,4 @@
-from mock import patch, Mock
+from mock import Mock, patch
 
 from django import forms
 from django.contrib import messages
@@ -98,7 +98,7 @@ class Stage4(FormStage):
     def save(self, form_data, next_step=None):
         clean_data = super(Stage4, self).save(form_data, next_step)
 
-        if "skip_stage_5" in clean_data and clean_data["skip_stage_5"] == True:
+        if "skip_stage_5" in clean_data and clean_data["skip_stage_5"] is True:
             self.set_next_step("review", skip=["stage_5"])
         else:
             self.set_next_step("stage_5")
@@ -135,7 +135,21 @@ class Review(FormStage):
     dependencies = ["stage_2", "stage_3", "stage_4", "stage_5", "stage_6"]
 
 
-class MultiStageFormTest(MultiStageForm):
+class TestCaseBase(TestCase):
+    """"""
+    def get_request_mock(self, url="/", url_name="", url_kwargs=None):
+        request_factory = RequestFactory()
+
+        if not url_kwargs:
+            url_kwargs = {}
+        request = request_factory.get(url)
+        request.resolver_match = Mock()
+        request.resolver_match.url_name = url_name
+        request.resolver_match.kwargs = url_kwargs
+        return request
+
+
+class MultiStageFormTest(MultiStageForm, TestCaseBase):
     url_name = "msf-url"
     stage_classes = [Intro, Stage2, Stage3, Stage4, Stage45, Stage5, Stage6, Review]
 
@@ -154,7 +168,7 @@ class TestMultiStageForm(TestCase):
     def test_form_intro_loads(self):
         msf = MultiStageFormTest({}, "intro")
         msf.load(self.request_context)
-        response = msf.render()
+        response = msf.render(msf.get_request_mock())
 
         self.assertContains(response, "<h1>Test intro page</h1>")
 
@@ -162,7 +176,7 @@ class TestMultiStageForm(TestCase):
     def test_form_stage2_loads(self):
         msf = MultiStageFormTest({}, "stage_2")
         msf.load(self.request_context)
-        response = msf.render()
+        response = msf.render(msf.get_request_mock())
 
         self.assertContains(response, "id_field1")
         self.assertContains(response, "id_field2")
@@ -174,7 +188,7 @@ class TestMultiStageForm(TestCase):
         msf.save({"field1": "Joe",
                   "field2": 10},
                  self.request_context)
-        response = msf.render()
+        response = msf.render(msf.get_request_mock())
 
         self.assertEqual(msf.all_data["stage_2"]["field1"], "Joe")
         self.assertEqual(msf.all_data["stage_2"]["field2"], 10)
@@ -197,7 +211,7 @@ class TestMultiStageForm(TestCase):
                                     "field2": 2}}
         msf = MultiStageFormTest(session_data, "stage_3")
         msf.load(self.request_context)
-        response = msf.render()
+        response = msf.render(msf.get_request_mock())
 
         self.assertContains(response, "id_form-0-field3")
         self.assertContains(response, "id_form-0-field4")
@@ -218,7 +232,7 @@ class TestMultiStageForm(TestCase):
                      "form-1-field4": "jill.smith@example.org"}
         form_data.update(mgmt_data)
         msf.save(form_data, self.request_context)
-        response = msf.render()
+        response = msf.render(msf.get_request_mock())
 
         self.assertEqual(msf.all_data["stage_3"]["Factory"][0]["field3"], "Jim Smith")
         self.assertEqual(msf.all_data["stage_3"]["Factory"][0]["field4"], "jim.smith@example.org")
@@ -253,7 +267,7 @@ class TestMultiStageForm(TestCase):
                                     "field1": "Stage 45 field 1 data"}}
         msf = MultiStageFormTest(session_data, "stage_45")
         msf.load(self.request_context)
-        response = msf.render()
+        response = msf.render(msf.get_request_mock())
 
         self.assertContains(response, 'value="Stage 45 field 1 data"')
 
@@ -264,7 +278,6 @@ class TestMultiStageForm(TestCase):
         msf.save({"field1": "Stage 4",
                   "field2": 4},
                  self.request_context)
-        # msf.render()
 
         self.assertEqual(msf.all_data["stage_4"]["field1"], "Stage 4")
         self.assertEqual(msf.all_data["stage_4"]["field2"], 4)
@@ -287,7 +300,7 @@ class TestMultiStageForm(TestCase):
                                                  "field4": "jim.smith@example.org"}]}}
         msf = MultiStageFormTest(session_data, "stage_4")
         msf.load(self.request_context)
-        response = msf.render()
+        response = msf.render(msf.get_request_mock())
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "id_skip_stage_5")
@@ -377,7 +390,7 @@ class TestMultiStageForm(TestCase):
                         "stage_5": {"complete": True, "skipped": True}}
         msf = MultiStageFormTest(session_data, "review")
         msf.load(self.request_context)
-        response = msf.render()
+        response = msf.render(msf.get_request_mock())
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "<h1>Review</h1>")
@@ -390,7 +403,7 @@ class TestMultiStageForm(TestCase):
                         "stage_5": {"complete": True}}
         msf = MultiStageFormTest(session_data, "review")
         msf.load(self.request_context)
-        response = msf.render()
+        response = msf.render(msf.get_request_mock())
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "<h1>Review</h1>")
@@ -452,7 +465,7 @@ class TestMultiStageForm(TestCase):
         msf.save({"field1": "",
                   "field2": "This is not an integer"},
                  self.request_context)
-        response = msf.render()
+        response = msf.render(msf.get_request_mock())
 
         # check it doesn't redirect
         self.assertEqual(response.status_code, 200)

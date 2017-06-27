@@ -51,30 +51,19 @@ def get_case(urn):
         # data to the user so the safest thing to do is return None so it looks as if
         # there is no data for the case.
 
-        cases = Case.objects.filter(urn__iexact=urn, sent=False)
-        fields = ["Surname", "Forename1", "DOB"]
-        last_match = None
-        for case in cases:
-            if case.extra_data:
-                # If we don't have all the data to match on then drop out
-                for field in fields:
-                    if case.extra_data.get(field) is None:
-                        return None
-                matching = []
-                for field in fields:
-                    if field in case.extra_data and case.extra_data[field]:
-                        matching.append(case.extra_data[field])
-
-                # if any of the fields differ then we need to drop out
-                if last_match is not None and matching != last_match:
-                    return None
-                else:
-                    last_match = matching
-                    continue
-            else:
-                continue
-
-        return cases[0]
+        cases = Case.objects.filter(
+            urn__iexact=urn,
+            extra_data__isnull=False,
+            extra_data__Surname__isnull=False,
+            extra_data__Forename1__isnull=False,
+            extra_data__DOB__isnull=False,
+        ).exclude(
+            extra_data__Surname="",
+            extra_data__Forename1="",
+            extra_data__DOB="",
+            sent=False,
+        )
+        return cases[0] if cases else None
 
 
 def get_offences(case_data):
@@ -153,9 +142,10 @@ class URNEntryStage(SJPChoiceBase):
                 u"""<h1>{}</h1>
                    <p>{}</p>
                    <p>{}</p>""".format(
-                _("You can't make a plea online"),
-                _("To make your plea, you need to complete the paper form sent to you by the police."),
-                _("You must return the form within the time stated.")))
+                        _("You can't make a plea online"),
+                        _("To make your plea, you need to complete the "
+                          "paper form sent to you by the police."),
+                        _("You must return the form within the time stated.")))
             self.next_step = None
         else:
             self.set_next_step("your_case_continued")
@@ -299,14 +289,14 @@ class NoticeTypeStage(FormStage):
     form_class = NoticeTypeForm
     dependencies = []
 
-    def render(self, request_context):
+    def render(self, request, request_context):
         try:
             if self.all_data["notice_type"]["auto_set"]:
                 return HttpResponseRedirect(self.all_urls["case"])
         except KeyError:
             pass
 
-        return super(NoticeTypeStage, self).render(request_context)
+        return super(NoticeTypeStage, self).render(request, request_context)
 
 
 class CaseStage(FormStage):
@@ -381,7 +371,7 @@ class CompanyDetailsStage(FormStage):
 
             return clean_data
 
-    def render(self, request_context):
+    def render(self, request, request_context):
         if NON_FIELD_ERRORS in self.form.errors and ERROR_MESSAGES["URN_ALREADY_USED"] in self.form.errors[NON_FIELD_ERRORS]:
             self.context["urn_already_used"] = True
 
@@ -390,7 +380,7 @@ class CompanyDetailsStage(FormStage):
             except Court.DoesNotExist:
                 pass
 
-        return super(CompanyDetailsStage, self).render(request_context)
+        return super(CompanyDetailsStage, self).render(request, request_context)
 
 
 class YourDetailsStage(FormStage):
@@ -420,7 +410,7 @@ class YourDetailsStage(FormStage):
 
             return clean_data
 
-    def render(self, request_context):
+    def render(self, request, request_context):
         if NON_FIELD_ERRORS in self.form.errors and ERROR_MESSAGES["URN_ALREADY_USED"] in self.form.errors[NON_FIELD_ERRORS]:
             self.context["urn_already_used"] = True
 
@@ -429,7 +419,7 @@ class YourDetailsStage(FormStage):
             except Court.DoesNotExist:
                 pass
 
-        return super(YourDetailsStage, self).render(request_context)
+        return super(YourDetailsStage, self).render(request, request_context)
 
     def load_forms(self, data=None, initial=False):
 
@@ -524,7 +514,7 @@ class PleaStage(IndexedStage):
             except KeyError:
                 pass
 
-        if clean_data.get("guilty") == "not_guilty" or clean_data.get("come_to_court") == False:
+        if clean_data.get("guilty") == "not_guilty" or clean_data.get("come_to_court") is False:
             try:
                 del clean_data["sjp_interpreter_needed"]
                 del clean_data["sjp_interpreter_language"]
@@ -576,9 +566,9 @@ class PleaStage(IndexedStage):
 
         return stage_data
 
-    def render(self, request_context):
+    def render(self, request, request_context):
         self.context["index"] = self.index
-        return super(PleaStage, self).render(request_context)
+        return super(PleaStage, self).render(request, request_context)
 
 
 class CompanyFinancesStage(FormStage):
@@ -748,7 +738,7 @@ class AboutYourIncomeStage(IncomeBaseStage):
         clean_data = super(AboutYourIncomeStage, self).save(form_data, next_step)
 
         if "complete" in clean_data:
-            if clean_data["pension_credit"] == False:
+            if clean_data["pension_credit"] is False:
                 self.remove_income_sources(["pension_credit"])
                 self.set_next_step("your_income", skip=["your_pension_credit"])
             else:
@@ -813,7 +803,7 @@ class YourIncomeStage(IncomeBaseStage):
 
         return clean_data
 
-    def render(self, request_context):
+    def render(self, request, request_context):
         sources = self.all_data["your_income"]["sources"]
         sources_order = ["your_employment",
                          "your_self_employment",
@@ -824,7 +814,8 @@ class YourIncomeStage(IncomeBaseStage):
 
         self.context["income_sources"] = OrderedDict([(k, sources[k]) for k in sources_order if k in sources])
 
-        return super(YourIncomeStage, self).render(request_context)
+        return super(YourIncomeStage, self).render(request, request_context)
+
 
 class HardshipStage(FormStage):
     name = "hardship"
@@ -920,7 +911,7 @@ class OtherExpensesStage(FormStage):
             total_expenses = total_household + total_other
 
             self.all_data["your_expenses"].update({"total_other_expenses": total_other,
-                                                   "total_expenses": total_expenses })
+                                                   "total_expenses": total_expenses})
 
         return clean_data
 
@@ -1009,7 +1000,7 @@ class CompleteStage(FormStage):
         except KeyError:
             pass
 
-    def render(self, request_context):
+    def render(self, request, request_context):
 
         self.context["plea_type"] = get_plea_type(self.all_data)
 
@@ -1034,4 +1025,4 @@ class CompleteStage(FormStage):
                                                      {"action": "Driving licence number",
                                                       "label": is_entered("driving_licence_number")}])
 
-        return super(CompleteStage, self).render(request_context)
+        return super(CompleteStage, self).render(request, request_context)

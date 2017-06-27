@@ -5,7 +5,7 @@
 git+https://github.com/celery/kombu@09bd23bbd83344b09cbf38b7257107e560db9f25
 boto3==1.4.4
 
-Django==1.10
+Django==1.11.2
 psycopg2==2.7.1
 pycurl==7.43.0
 python-dateutil==2.6.0

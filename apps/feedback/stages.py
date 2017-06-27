@@ -51,8 +51,8 @@ class CompleteStage(FormStage):
     form_class = None
     dependencies = ["service", "comments"]
 
-    def render(self, request_context):
+    def render(self, request, request_context):
 
         self.context["feedback_redirect"] = self.all_data.get("feedback_redirect", "/")
 
-        return super(CompleteStage, self).render(request_context)
+        return super(CompleteStage, self).render(request, request_context)

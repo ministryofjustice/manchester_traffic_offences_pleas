@@ -81,11 +81,11 @@ class PleaOnlineForms(MultiStageForm):
 
         return super(PleaOnlineForms, self).save(*args, **kwargs)
 
-    def render(self):
+    def render(self, request, request_context=dict):
         if self._urn_invalid:
             return redirect("urn_already_used")
 
-        return super(PleaOnlineForms, self).render()
+        return super(PleaOnlineForms, self).render(request)
 
 
 class PleaOnlineViews(StorageView):
@@ -129,7 +129,7 @@ class PleaOnlineViews(StorageView):
         if stage == "complete":
             self.clear_storage(request, "plea_data")
 
-        return form.render()
+        return form.render(request)
 
     @method_decorator(ratelimit(block=True, rate=settings.RATE_LIMIT))
     def post(self, request, stage):
@@ -142,7 +142,10 @@ class PleaOnlineViews(StorageView):
             form.process_messages(request)
 
         request.session.modified = True
-        return form.render()
+        return form.render(request)
+
+    def render(self, request, request_context=dict):
+        return super(PleaOnlineViews, self).render(request)
 
 
 class UrnAlreadyUsedView(StorageView):
@@ -178,4 +181,3 @@ class CourtFinderView(FormView):
         return self.render_to_response(
             self.get_context_data(form=form,
                                   urn_is_invalid=urn_is_invalid))
-
