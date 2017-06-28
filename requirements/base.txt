@@ -2,6 +2,8 @@
 # After the first "pip install -r", just run "pip freeze" and add the version
 # to each package in each requirements/*.txt.
 
+git+https://github.com/celery/kombu@09bd23bbd83344b09cbf38b7257107e560db9f25
+
 Django==1.10
 psycopg2==2.7.1
 pycurl==7.43.0
