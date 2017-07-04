@@ -185,11 +185,3 @@ class TestStats(TestCase):
         self.assertEqual(
             json.loads(resp.content),
             {"error": "No language given"})
-
-"""
-
-        "earliest_journey": "2017-03-16T17:54:37", 
-        "latest_journey": "2017-03-16T17:54:09"
-    }
-}
-"""
