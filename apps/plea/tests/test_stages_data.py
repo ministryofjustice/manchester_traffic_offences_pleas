@@ -1,3 +1,4 @@
+from mock import Mock
 from unittest import skip
 
 from collections import OrderedDict
@@ -5,14 +6,27 @@ from collections import OrderedDict
 from django.utils.translation import activate
 from django.test import TestCase, Client
 from django.test.client import RequestFactory
-from apps.plea.views import PleaOnlineViews
 from collections import namedtuple
 
 from ..stages import URNEntryStage, AuthenticationStage, PleaStage
 from ..models import Court, Case, Offence
 
 
-class TestURNStageDataBase(TestCase):
+class TestCaseBase(TestCase):
+    def get_request_mock(self, url="/", url_name="", url_kwargs=None):
+        request_factory = RequestFactory()
+
+        if not url_kwargs:
+            url_kwargs = {}
+        request = request_factory.get(url)
+        request.resolver_match = Mock()
+        request.resolver_match.url_name = url_name
+        request.resolver_match.kwargs = url_kwargs
+        return request
+
+
+class TestURNStageDataBase(TestCaseBase):
+
     def setUp(self):
         self.court = Court.objects.create(
             court_code="0000",
@@ -138,7 +152,7 @@ class TestURNStageDataBase(TestCase):
                                  ("company_finances", "company_finances"),
                                  ("case", "case"),
                                  ("complete", "complete")))
-        
+
         self.request_context = namedtuple('C', 'request')(RequestFactory().get('/dummy'))
 
 
@@ -198,13 +212,12 @@ class TestURNStageDuplicateCases(TestURNStageDataBase):
         self.case.save()
 
     @skip("Not sure why this test exists - or why we'd have duplicate cases"
-         "with the same name? Leaving in place in case it does become"
-         "relevant")
+          "with the same name? Leaving in place in case it becomes relevant")
     def test_duplicate_cases_same_name_continues(self):
         stage = URNEntryStage(self.urls, self.data)
         stage.save({"urn": "06AA0000015"})
 
-        response = stage.render(self.request_context)
+        response = stage.render(self.get_request_mock(), self.request_context)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(stage.next_step, "your_case_continued")
 
@@ -214,7 +227,8 @@ class TestURNStageDuplicateCases(TestURNStageDataBase):
         stage = URNEntryStage(self.urls, self.data)
         stage.save({"urn": self.case.urn})
 
-        response = stage.render(self.request_context)
+        response = stage.render(self.get_request_mock(), self.request_context)
+
         self.assertEqual(response.status_code, 302)
         self.assertEqual(stage.next_step, "notice_type")
 
@@ -597,7 +611,7 @@ class TestPleaAuthStage(TestURNStageDataBase):
 
         stage = PleaStage(self.urls, self.data)
         stage.load_forms({})
-        response = stage.render(self.request_context)
+        response = stage.render(self.get_request_mock(), self.request_context)
 
         offence = self.case.offences.all().first()
 
@@ -620,10 +634,11 @@ class TestPleaAuthStage(TestURNStageDataBase):
 
         stage = PleaStage(self.urls, self.data)
         stage.load_forms({})
-        response = stage.render(self.request_context)
+        response = stage.render(self.get_request_mock(), self.request_context)
 
         self.assertIn(offence.offence_short_title.encode("utf-8"), response.content)
         self.assertIn(offence.offence_wording.encode("utf-8"), response.content)
+
 
 class TestURNSubmissionFailureMessage(TestCase):
     def setUp(self):
@@ -660,4 +675,3 @@ class TestURNSubmissionFailureMessage(TestCase):
             response = self.client.post('/plea/enter_urn/', data=dict(urn="06xx0000000"))
 
         self.assertContains(response, "Your reference number has not been recognised")
-

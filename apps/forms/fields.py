@@ -1,22 +1,35 @@
 import datetime
 
 from django import forms
-from django.forms.widgets import MultiWidget, RadioFieldRenderer
+from django.forms.widgets import MultiWidget, RadioSelect
 from django.template.loader import render_to_string
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy as _
 
-class DSRadioFieldRenderer(RadioFieldRenderer):
-    def render(self):
+
+class DSRadioSelect(RadioSelect):
+    """RadioSelect does not accept a renderer since Django 1.11"""
+
+    def render(self, name, value, attrs=None, *args, **kwargs):
         """
         Outputs a GOV.UK-styled <fieldset> for this set of choice fields.
         Radio buttons line up alongside each other.
         """
-        id_ = self.attrs.get('id', None)
-
-        context = {"id": id_, "renderer": self, "inputs": [force_text(widget) for widget in self]}
-
-        return render_to_string("widgets/partials/DSRadioSelect.html", context)
+        elements = []
+        for option in self.choices:
+            element = """
+            <label for="id_{0}_{1}" class="block-label">
+                <input id="id_{0}_{1}"
+                       type="radio"
+                       name="{0}"
+                       value="{1}">{2}
+            </label>""".format(
+                name,
+                option[0],
+                option[1],
+            )
+            elements.append(element)
+        return "".join(elements)
 
 
 class DSTemplateWidgetBase(forms.TextInput):
@@ -98,7 +111,7 @@ class DateWidget(MultiWidget):
         except (ValueError, TypeError):
             year = None
 
-        if day == month == year == None:
+        if day == month == year is None:
             return ""
 
         try:
