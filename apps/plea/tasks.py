@@ -3,6 +3,8 @@ from __future__ import absolute_import
 import logging
 import smtplib
 import socket
+from datetime import datetime, date
+from dateutil.relativedelta import relativedelta
 
 from django.core.mail import EmailMultiAlternatives
 from django.core.mail import get_connection
@@ -36,6 +38,15 @@ def get_court(urn, ou_code):
         logger.warning("URN does not have a matching Court entry: {}".format(urn))
         raise
     return court_obj
+
+
+def is_18_or_under(date_of_birth):
+    if not isinstance(date_of_birth, date):
+        return False
+
+    target_date = (datetime.today() - relativedelta(years=18)).date()
+
+    return date_of_birth >= target_date
 
 
 @shared_task(bind=True, max_retries=10, default_retry_delay=900)
@@ -110,6 +121,9 @@ def email_send_prosecutor(self, case_id, email_data):
 
     email_subject = "POLICE " + get_email_subject(email_data)
     email_body = ""
+
+    email_data["your_details"]["18_or_under"] = is_18_or_under(
+        email_data["your_details"].get("date_of_birth"))
 
     plp_email = TemplateAttachmentEmail(settings.PLP_EMAIL_FROM,
                                         settings.PLEA_EMAIL_ATTACHMENT_NAME,
