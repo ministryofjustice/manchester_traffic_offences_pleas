@@ -2,13 +2,14 @@ from django import forms
 from django.forms.widgets import RadioSelect
 from django.utils.translation import ugettext_lazy as _
 
-from apps.forms.fields import DSRadioFieldRenderer
-from apps.forms.forms import (YESNO_CHOICES,
-                              to_bool,
-                              BaseStageForm,
-                              SplitStageForm)
-
+from apps.forms.forms import (
+    YESNO_CHOICES,
+    to_bool,
+    BaseStageForm,
+    SplitStageForm,
+)
 from .fields import ERROR_MESSAGES
+
 
 SATISFACTION_CHOICES = (
     (5, _("very satisfied")),
@@ -40,7 +41,7 @@ class ServiceForm(SplitStageForm):
     }
 
     used_call_centre = forms.TypedChoiceField(
-        widget=RadioSelect(renderer=DSRadioFieldRenderer),
+        widget=RadioSelect(),
         required=True,
         choices=YESNO_CHOICES["Do/Naddo"],
         coerce=to_bool,
@@ -52,14 +53,14 @@ class ServiceForm(SplitStageForm):
         choices=SATISFACTION_CHOICES,
         required=True,
         error_messages={"required": ERROR_MESSAGES["CALL_CENTRE_SATISFACTION_REQUIRED"]},
-        widget=RadioSelect(renderer=DSRadioFieldRenderer))
+        widget=RadioSelect())
 
     service_satisfaction = forms.ChoiceField(
         label=RATING_QUESTIONS["overall"],
         choices=SATISFACTION_CHOICES,
         required=True,
         error_messages={"required": ERROR_MESSAGES["SERVICE_SATISFACTION_REQUIRED"]},
-        widget=RadioSelect(renderer=DSRadioFieldRenderer))
+        widget=RadioSelect())
 
 
 class CommentsForm(BaseStageForm):
