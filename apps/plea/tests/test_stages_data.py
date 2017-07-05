@@ -13,7 +13,6 @@ from ..models import Court, Case, Offence
 
 
 class TestCaseBase(TestCase):
-    """Common functionality for many TestCases"""
     def get_request_mock(self, url="/", url_name="", url_kwargs=None):
         request_factory = RequestFactory()
 

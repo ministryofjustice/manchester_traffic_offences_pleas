@@ -6,7 +6,7 @@ from django import forms
 from django.forms.widgets import Textarea
 from django.utils.translation import ugettext_lazy as _
 
-from apps.forms.fields import DateWidget, DefaultRadioSelect
+from apps.forms.fields import DateWidget, DSRadioSelect
 from apps.forms.forms import (
     YESNO_CHOICES,
     to_bool,
@@ -24,24 +24,11 @@ from .validators import (
 
 def reorder_fields(fields, order):
     """Convert dict to OrderedDictionary, sorted and filtered by order"""
-    for k, v in fields.items():
-        print k, v 
     for key, v in fields.items():
         if key not in order:
             del fields[key]
 
     return OrderedDict(sorted(fields.items(), key=lambda k: order.index(k[0])))
-
-    #return OrderedDict(
-    #    sorted(
-    #        [
-    #            {
-    #                k: v
-    #                for k, v in fields.items()
-    #                if k in order
-    #            }
-    #        ],
-    #        key=lambda k: order.index(k[0])))
 
 
 class URNEntryForm(BaseStageForm):
@@ -108,7 +95,7 @@ class NoticeTypeForm(BaseStageForm):
                    (False, _("Something else")))
 
     sjp = forms.TypedChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         required=True,
         coerce=to_bool,
         choices=SJP_CHOICES,
@@ -138,7 +125,7 @@ class BaseCaseForm(BaseStageForm):
 
     plea_made_by = forms.TypedChoiceField(
         required=True,
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         choices=PLEA_MADE_BY_CHOICES,
         label=_("Are you? (plea made by)"),
         help_text=_("Choose one of the following options:"),
@@ -223,7 +210,7 @@ class YourDetailsForm(BaseStageForm):
             "required": ERROR_MESSAGES["LAST_NAME_REQUIRED"]})
 
     correct_address = forms.TypedChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         required=True,
         coerce=to_bool,
         choices=YESNO_CHOICES["Ydy/Nac ydy"],
@@ -263,7 +250,7 @@ class YourDetailsForm(BaseStageForm):
             "is_date_in_past": ERROR_MESSAGES["DATE_OF_BIRTH_IN_FUTURE"]})
 
     have_ni_number = forms.TypedChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         required=True,
         coerce=to_bool,
         choices=YESNO_CHOICES["Oes/Nac oes"],
@@ -283,7 +270,7 @@ class YourDetailsForm(BaseStageForm):
             "required": ERROR_MESSAGES["NI_NUMBER_REQUIRED"]})
 
     have_driving_licence_number = forms.TypedChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         required=True,
         coerce=to_bool,
         choices=YESNO_CHOICES["Oes/Nac oes"],
@@ -338,7 +325,7 @@ class CompanyDetailsForm(BaseStageForm):
             "required": ERROR_MESSAGES["COMPANY_NAME_REQUIRED"]})
 
     correct_address = forms.TypedChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         coerce=to_bool,
         choices=YESNO_CHOICES["Ydy/Nac ydy"],
         required=True,
@@ -376,7 +363,7 @@ class CompanyDetailsForm(BaseStageForm):
     position_in_company = forms.ChoiceField(
         label=_("Your position in the company"),
         choices=COMPANY_POSITION_CHOICES,
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         required=True,
         error_messages={
             "required": ERROR_MESSAGES["POSITION_REQUIRED"]})
@@ -407,7 +394,7 @@ class YourStatusForm(BaseStageForm):
     you_are = forms.ChoiceField(
         label=_("Are you? (employment status)"),
         choices=YOU_ARE_CHOICES,
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         error_messages={
             "required": ERROR_MESSAGES["EMPLOYMENT_STATUS_REQUIRED"]})
 
@@ -420,7 +407,7 @@ class YourEmploymentForm(BaseStageForm):
         ("Monthly", _("Monthly")),)
 
     pay_period = forms.ChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         choices=PERIOD_CHOICES,
         label=_("How often do you get paid from your employer?"),
         error_messages={
@@ -445,7 +432,7 @@ class YourSelfEmploymentForm(BaseStageForm):
         ("Other", _("Other")),)
 
     pay_period = forms.ChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         choices=PERIOD_CHOICES,
         label=_("How often do you get paid?"),
         error_messages={
@@ -476,14 +463,14 @@ class YourOutOfWorkBenefitsForm(BaseStageForm):
         ("Other", _("Other")),)
 
     benefit_type = forms.ChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         choices=BENEFIT_TYPE_CHOICES,
         label=_("Which out of work benefit do you receive?"),
         error_messages={
             "required": ERROR_MESSAGES["BENEFIT_TYPE_REQUIRED"]})
 
     pay_period = forms.ChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         choices=PERIOD_CHOICES,
         label=_("How often is your benefit paid?"),
         error_messages={
@@ -516,7 +503,7 @@ class AboutYourIncomeForm(BaseStageForm):
             "required": ERROR_MESSAGES["INCOME_SOURCE_REQUIRED"]})
 
     pay_period = forms.ChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         choices=PERIOD_CHOICES,
         label=_("How often is your main income paid?"),
         error_messages={
@@ -533,7 +520,7 @@ class AboutYourIncomeForm(BaseStageForm):
 
     pension_credit = forms.TypedChoiceField(
         label=_("Do you receive Pension Credit?"),
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         choices=YESNO_CHOICES["Ydw/Nac ydw"],
         coerce=to_bool,
         error_messages={
@@ -566,14 +553,14 @@ class YourBenefitsForm(BaseStageForm):
 
     benefit_type = forms.ChoiceField(
         label=_("Which benefit do you receive?"),
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         choices=BENEFIT_TYPE_CHOICES,
         error_messages={
             "required": ERROR_MESSAGES["BENEFITS_TYPE_REQUIRED"]})
 
     pay_period = forms.ChoiceField(
         label=_("How often is your benefit paid?"),
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         choices=PERIOD_CHOICES,
         error_messages={
             "required": ERROR_MESSAGES["BENEFIT_PAY_PERIOD_REQUIRED"]})
@@ -597,7 +584,7 @@ class YourPensionCreditForm(BaseStageForm):
 
     pay_period = forms.ChoiceField(
         label=_("How often is your Pension Credit paid?"),
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         choices=PERIOD_CHOICES,
         error_messages={
             "required": ERROR_MESSAGES["PENSION_CREDIT_PERIOD_REQUIRED"]})
@@ -616,7 +603,7 @@ class YourIncomeForm(BaseStageForm):
     """Your income form"""
     hardship = forms.TypedChoiceField(
         label=_("Would paying a fine cause you financial problems?"),
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         choices=YESNO_CHOICES["Byddai/Na fyddai"],
         coerce=to_bool,
         error_messages={
@@ -699,7 +686,7 @@ class HouseholdExpensesForm(BaseStageForm):
             "min_value": ERROR_MESSAGES["HOUSEHOLD_COUNCIL_TAX_MIN"]})
 
     other_bill_payers = forms.TypedChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         label=_("Does anyone else contribute to these bills?"),
         choices=YESNO_CHOICES["Oes/Nac oes"],
         coerce=to_bool,
@@ -809,7 +796,7 @@ class OtherExpensesForm(BaseStageForm):
             "min_value": ERROR_MESSAGES["OTHER_CHILD_MAINTENANCE_MIN"]})
 
     other_not_listed = forms.TypedChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         choices=YESNO_CHOICES["Oes/Nac oes"],
         coerce=to_bool,
         label=_("Any other expenses that are not listed above?"),
@@ -866,7 +853,7 @@ class CompanyFinancesForm(SplitStageForm):
 
     trading_period = forms.TypedChoiceField(
         required=True,
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         choices=YESNO_CHOICES["Ydy/Nac ydy"],
         coerce=to_bool,
         label=_("Has the company been trading for more than 12 months?"),
@@ -936,7 +923,7 @@ class ConfirmationForm(BaseStageForm):
     }
 
     receive_email_updates = forms.TypedChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         required=True,
         coerce=to_bool,
         choices=YESNO_CHOICES["Oes/Nac oes"],
@@ -977,7 +964,7 @@ class BasePleaForm(SplitStageForm):
 
     guilty = forms.ChoiceField(
         choices=PLEA_CHOICES,
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         required=True,
         error_messages={
             "required": ERROR_MESSAGES["PLEA_REQUIRED"]})
@@ -1002,7 +989,7 @@ class BasePleaForm(SplitStageForm):
             "required": ERROR_MESSAGES["NOT_GUILTY_REQUIRED"]})
 
     interpreter_needed = forms.TypedChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         required=True,
         choices=YESNO_CHOICES["Oes/Nac oes"],
         coerce=to_bool,
@@ -1021,7 +1008,7 @@ class BasePleaForm(SplitStageForm):
             "required": ERROR_MESSAGES["INTERPRETER_LANGUAGE_REQUIRED"]})
 
     disagree_with_evidence = forms.TypedChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         required=True,
         choices=YESNO_CHOICES["Ydw/Nac ydw"],
         coerce=to_bool,
@@ -1044,7 +1031,7 @@ class BasePleaForm(SplitStageForm):
             "required": ERROR_MESSAGES["DISAGREE_WITH_EVIDENCE_DETAILS_REQUIRED"]})
 
     witness_needed = forms.TypedChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         required=True,
         choices=YESNO_CHOICES["Hoffwn/Na hoffwn"],
         coerce=to_bool,
@@ -1066,7 +1053,7 @@ class BasePleaForm(SplitStageForm):
             "required": ERROR_MESSAGES["WITNESS_DETAILS_REQUIRED"]})
 
     witness_interpreter_needed = forms.TypedChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         required=True,
         choices=YESNO_CHOICES["Oes/Nac oes"],
         coerce=to_bool,
@@ -1118,7 +1105,7 @@ class SJPPleaForm(BasePleaForm):
     ])
 
     come_to_court = forms.TypedChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         required=True,
         choices=YESNO_CHOICES["Hoffwn/Na hoffwn"],
         coerce=to_bool,
@@ -1127,7 +1114,7 @@ class SJPPleaForm(BasePleaForm):
             "required": ERROR_MESSAGES["COME_TO_COURT_REQUIRED"]})
 
     sjp_interpreter_needed = forms.TypedChoiceField(
-        widget=DefaultRadioSelect,
+        widget=DSRadioSelect,
         required=True,
         choices=YESNO_CHOICES["Oes/Nac oes"],
         coerce=to_bool,
