@@ -1,16 +1,25 @@
+import datetime
+import json
+
+from brake.decorators import ratelimit
 from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import redirect
 from django.views.generic import FormView
 from django.template import RequestContext
 
-from brake.decorators import ratelimit
+from django.contrib.admin.views.decorators import staff_member_required
 
 from apps.forms.stages import MultiStageForm
 from apps.forms.views import StorageView
-
+from make_a_plea.helpers import (
+    filter_cases_by_month,
+    get_supported_language_from_request,
+    parse_date_or_400,
+    staff_or_404,
+)
 from .models import Case, Court
 from .forms import CourtFinderForm
 from .stages import (URNEntryStage,
@@ -35,6 +44,8 @@ from .stages import (URNEntryStage,
                      ReviewStage,
                      CompleteStage)
 from .fields import ERROR_MESSAGES
+
+
 
 
 class PleaOnlineForms(MultiStageForm):
@@ -81,7 +92,8 @@ class PleaOnlineForms(MultiStageForm):
 
         return super(PleaOnlineForms, self).save(*args, **kwargs)
 
-    def render(self, request, request_context=dict):
+    def render(self, request, request_context=None):
+        request_context = request_context if request_context else {}
         if self._urn_invalid:
             return redirect("urn_already_used")
 
@@ -144,7 +156,8 @@ class PleaOnlineViews(StorageView):
         request.session.modified = True
         return form.render(request)
 
-    def render(self, request, request_context=dict):
+    def render(self, request, request_context=None):
+        request_context = request_context if request_context else {}
         return super(PleaOnlineViews, self).render(request)
 
 
