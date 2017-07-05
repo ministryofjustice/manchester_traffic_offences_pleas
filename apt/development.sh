@@ -16,4 +16,5 @@ apt-get install --fix-missing -y \
   libfontconfig \
   redis-server \
   libssl-dev \
+  libcurl4-openssl-dev \
   libffi-dev

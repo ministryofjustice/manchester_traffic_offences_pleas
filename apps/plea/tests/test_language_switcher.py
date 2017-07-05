@@ -28,7 +28,7 @@ class TestMultiPleaFormBase(TestCase):
             enabled=True,
             test_mode=False)
 
-    def get_request_mock(self, url, url_name="", url_kwargs=None):
+    def get_request_mock(self, url="/", url_name="", url_kwargs=None):
         request_factory = RequestFactory()
 
         if not url_kwargs:
@@ -167,7 +167,7 @@ class TestLanguage(TestMultiPleaFormBase):
                    "email": "user@example.org",
                    "understand": True},
                   request_context)
-        response = form.render()
+        response = form.render(self.get_request_mock())
         self.assertEqual(response.status_code, 302)
 
         c = list(CourtEmailCount.objects.all())
@@ -184,7 +184,7 @@ class TestLanguage(TestMultiPleaFormBase):
                    "email": "user@example.org",
                    "understand": True},
                   request_context)
-        response = form.render()
+        response = form.render(self.get_request_mock())
         self.assertEqual(response.status_code, 302)
 
         c = list(CourtEmailCount.objects.all())
