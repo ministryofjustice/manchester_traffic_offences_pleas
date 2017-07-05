@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta
+import random
+import string
 
 from django.test import TestCase, Client
 from django.test.utils import override_settings
@@ -44,7 +46,7 @@ class DateAwareSerializerTests(TestCase):
 
 class TestStartRedirect(TestCase):
 
-    def get_request_mock(self, url, url_name="", url_kwargs=None):
+    def get_request_mock(self, url="/", url_name="", url_kwargs=None):
         request_factory = RequestFactory()
 
         if not url_kwargs:

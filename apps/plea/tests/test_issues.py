@@ -1,14 +1,29 @@
+from mock import Mock, patch
+
 from django.core.exceptions import NON_FIELD_ERRORS
 from django.http.response import HttpResponseRedirect
+from django.test import TestCase
+from django.test.client import RequestFactory
 
 from ..views import PleaOnlineForms
 from ..models import Case, Court
 from ..standardisers import standardise_name
 
-from test_plea_form import TestMultiPleaFormBase
+
+class TestCaseBase(TestCase):
+    def get_request_mock(self, url="/", url_name="", url_kwargs=None):
+        request_factory = RequestFactory()
+
+        if not url_kwargs:
+            url_kwargs = {}
+        request = request_factory.get(url)
+        request.resolver_match = Mock()
+        request.resolver_match.url_name = url_name
+        request.resolver_match.kwargs = url_kwargs
+        return request
 
 
-class TestPleaFormIssues(TestMultiPleaFormBase):
+class TestPleaFormIssues(TestCaseBase):
     def setUp(self):
         self.session = {}
         self.request_context = {}
@@ -39,11 +54,11 @@ class TestPleaFormIssues(TestMultiPleaFormBase):
         form = PleaOnlineForms(self.session, "case")
         form.save(save_data, self.request_context)
 
-        result = form.render()
+        result = form.render(self.get_request_mock())
         self.assertIsInstance(result, HttpResponseRedirect)
 
 
-class TestDuplicateCaseIssues(TestMultiPleaFormBase):
+class TestDuplicateCaseIssues(TestCaseBase):
 
     def setUp(self):
         Court.objects.create(region_code="51",
