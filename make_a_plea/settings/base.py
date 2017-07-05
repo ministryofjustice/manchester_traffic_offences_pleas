@@ -154,6 +154,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'make_a_plea.middleware.AdminLocaleURLMiddleware',
     'make_a_plea.middleware.TimeoutRedirectMiddleware',
+    'make_a_plea.middleware.BadRequestExceptionMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
     'axes.middleware.FailedLoginMiddleware',
     'django.middleware.common.BrokenLinkEmailsMiddleware'

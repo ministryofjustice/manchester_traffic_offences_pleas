@@ -15,7 +15,6 @@ from ..standardisers import format_for_region
 
 
 class TestCaseBase(TestCase):
-    """"""
     def get_request_mock(self, url="/", url_name="", url_kwargs=None):
         request_factory = RequestFactory()
 
@@ -28,12 +27,7 @@ class TestCaseBase(TestCase):
         return request
 
 
-class TestMultiPleaFormBase(TestCaseBase):
-    """TODO: remove before committing"""
-    pass
-
-
-class TestMultiPleaForms(TestMultiPleaFormBase):
+class TestMultiPleaForms(TestCaseBase):
     def setUp(self):
 
         self.court = Court.objects.create(
@@ -1755,7 +1749,7 @@ class TestMultiPleaForms(TestMultiPleaFormBase):
         self.assertNotContains(response, "<<SHOWINGEXPENSES>>")
 
 
-class TestYourIncomeStages(TestMultiPleaFormBase):
+class TestYourIncomeStages(TestCaseBase):
 
     def setUp(self):
 
@@ -1949,7 +1943,7 @@ class TestYourIncomeStages(TestMultiPleaFormBase):
         self.assertEqual(response.url, "/plea/review/")
 
 
-class TestYourExpensesStage(TestMultiPleaFormBase):
+class TestYourExpensesStage(TestCaseBase):
 
     def setUp(self):
 
