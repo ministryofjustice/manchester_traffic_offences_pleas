@@ -39,7 +39,7 @@ class TestPleaFormIssues(TestMultiPleaFormBase):
         form = PleaOnlineForms(self.session, "case")
         form.save(save_data, self.request_context)
 
-        result = form.render()
+        result = form.render(self.get_request_mock())
         self.assertIsInstance(result, HttpResponseRedirect)
 
 
