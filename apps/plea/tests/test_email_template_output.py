@@ -22,18 +22,19 @@ from ..forms import (URNEntryForm,
                      HouseholdExpensesForm,
                      OtherExpensesForm,
                      ConfirmationForm)
-from ..stages import calculate_weekly_amount
 
 
 class BaseEmailTemplateTests(TestCase):
     def assertContainsDefinition(self, content, label, value, count=None):
-        pair_regex = re.compile(r"<dt[^>]*>{0}</dt>\s*<dd[^>]*>{1}</dd>".format(re.escape(label), re.escape(value)))
-        matches = pair_regex.findall(content)
+        pair_regex_tpl = r"<dt[^>]*>{0}</dt>\s*<dd[^>]*>{1}</dd>"
+        pair_regex = pair_regex_tpl.format(re.escape(label), re.escape(value))
+        matches = re.findall(pair_regex, content)
         if not matches:
             raise AssertionError("Definition pair \"" + label + "\"/\"" + value + "\" not found")
 
         if count is not None and len(matches) != count:
-            raise AssertionError("Definition pair \"" + label + "\"/\"" + value + "\" found {0} times (expected {1})".format(len(matches), count))
+            error_tpl = 'Definition pair "{}"/"{}" found {} times (expected {})'
+            raise AssertionError(error_tpl.format(label, value, len(matches), count))
 
     def setUp(self):
         self.court = Court.objects.create(
@@ -62,6 +63,7 @@ class BaseEmailTemplateTests(TestCase):
                          review_data=None):
 
         self.hearing_date = datetime.today() + timedelta(30)
+        self.hearing_date_formatted = self.hearing_date.strftime("%d/%m/%Y")
 
         if not urn_entry_data:
             urn_entry_data = {"urn": "06AA0000000"}
@@ -152,37 +154,38 @@ class BaseEmailTemplateTests(TestCase):
                                 "other_child_maintenance",
                                 "other_not_listed_amount"]
 
-        if all([uf.is_valid(), ntf.is_valid(), cf.is_valid(), df.is_valid(), pf.is_valid(), sf.is_valid(), yif.is_valid(), hf.is_valid(), hef.is_valid(), oef.is_valid(), rf.is_valid()]):
-            data = {"notice_type": ntf.cleaned_data,
-                    "case": cf.cleaned_data,
-                    "your_details": df.cleaned_data,
-                    "plea": {"data": [pf.cleaned_data]},
-                    "your_status": sf.cleaned_data,
-                    "your_income": income_data,
-                    "hardship": hf.cleaned_data,
-                    "household_expenses": hef.cleaned_data,
-                    "other_expenses": oef.cleaned_data,
-                    "review": rf.cleaned_data}
+        all_forms = [uf, ntf, cf, df, pf, sf, yif, hf, hef, oef, rf]
 
-            data["case"].update(uf.cleaned_data)
+        if not all([form.is_valid() for form in all_forms]):
+            raise Exception(*[form.errors for form in all_forms])
+        data = {"notice_type": ntf.cleaned_data,
+                "case": cf.cleaned_data,
+                "your_details": df.cleaned_data,
+                "plea": {"data": [pf.cleaned_data]},
+                "your_status": sf.cleaned_data,
+                "your_income": income_data,
+                "hardship": hf.cleaned_data,
+                "household_expenses": hef.cleaned_data,
+                "other_expenses": oef.cleaned_data,
+                "review": rf.cleaned_data}
 
-            if "date_of_hearing" in data["case"]:
-                data["case"]["contact_deadline"] = data["case"]["date_of_hearing"]
+        data["case"].update(uf.cleaned_data)
 
-            if "posting_date" in data["case"]:
-                data["case"]["contact_deadline"] = data["case"]["posting_date"] + relativedelta(days=+28)
+        if "date_of_hearing" in data["case"]:
+            data["case"]["contact_deadline"] = data["case"]["date_of_hearing"]
 
-            total_household = sum(int(hef.cleaned_data[field] or 0) for field in household_expense_fields)
-            total_other = sum(int(oef.cleaned_data[field] or 0) for field in other_expense_fields)
-            total_expenses = total_household + total_other
+        if "posting_date" in data["case"]:
+            data["case"]["contact_deadline"] = data["case"]["posting_date"] + relativedelta(days=+28)
 
-            data["your_expenses"] = {"total_household_expenses": total_household,
-                                     "total_other_expenses": total_other,
-                                     "total_expenses": total_expenses}
+        total_household = sum(int(hef.cleaned_data[field] or 0) for field in household_expense_fields)
+        total_other = sum(int(oef.cleaned_data[field] or 0) for field in other_expense_fields)
+        total_expenses = total_household + total_other
 
-            return data
-        else:
-            raise Exception(ntf.errors, cf.errors, df.errors, pf.errors, sf.errors, yif.errors, hf.errors, hef.errors, oef.errors, rf.errors)
+        data["your_expenses"] = {"total_household_expenses": total_household,
+                                 "total_other_expenses": total_other,
+                                 "total_expenses": total_expenses}
+
+        return data
 
     def get_mock_response(self, html):
         response = Mock()
@@ -242,7 +245,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
         self.assertContainsDefinition(response.content, "Unique reference number", "06/AA/0000000/00", count=1)
-        self.assertContainsDefinition(response.content, "Court hearing date", self.hearing_date.strftime("%d/%m/%Y"), count=1)
+        self.assertContainsDefinition(response.content, "Court hearing date", self.hearing_date_formatted, count=1)
 
     def test_case_details_output_is_english(self):
         translation.activate("cy")
@@ -256,7 +259,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
         translation.deactivate()
 
         self.assertContainsDefinition(response.content, "Unique reference number", "06/AA/0000000/00", count=1)
-        self.assertContainsDefinition(response.content, "Court hearing date", self.hearing_date.strftime("%d/%m/%Y"), count=1)
+        self.assertContainsDefinition(response.content, "Court hearing date", self.hearing_date_formatted, count=1)
 
     def test_welsh_journey_adds_welsh_flag(self):
         translation.activate("cy")
@@ -382,12 +385,16 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         self.assertContainsDefinition(response.content, "Your plea", "Not guilty", count=1)
         self.assertContainsDefinition(response.content, "Not guilty because", "dsa", count=1)
-        self.assertContainsDefinition(response.content, "Interpreter required", "Yes", count=2) # One for the defendant, one for the witness
+        # One for the defendant, one for the witness
+        self.assertContainsDefinition(response.content, "Interpreter required", "Yes", count=2)
         self.assertContainsDefinition(response.content, "Language", "French", count=1)
-        self.assertContainsDefinition(response.content, "Disagree with any evidence from a witness statement?", "Yes", count=1)
-        self.assertContainsDefinition(response.content, "Name of the witness and what you disagree with", "Disagreement", count=1)
+        self.assertContainsDefinition(response.content,
+                                      "Disagree with any evidence from a witness statement?", "Yes", count=1)
+        self.assertContainsDefinition(response.content,
+                                      "Name of the witness and what you disagree with", "Disagreement", count=1)
         self.assertContainsDefinition(response.content, "Wants to call a witness?", "Yes", count=1)
-        self.assertContainsDefinition(response.content, "Name, date of birth and address of the witness", "Witness details", count=1)
+        self.assertContainsDefinition(response.content,
+                                      "Name, date of birth and address of the witness", "Witness details", count=1)
         self.assertContainsDefinition(response.content, "Language", "German", count=1)
 
     def test_multiple_not_guilty_plea_email_plea_output(self):
@@ -558,7 +565,10 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
-        self.assertContainsDefinition(response.content, "Paying a fine would cause me financial problems because", "Lorem<br />Ipsum", count=1)
+        self.assertContainsDefinition(
+            response.content,
+            "Paying a fine would cause me financial problems because", "Lorem<br />Ipsum",
+            count=1)
         self.assertContainsDefinition(response.content, "Other contributors to household bills", "No", count=1)
         self.assertContainsDefinition(response.content, "Total household expenses", "£46.00", count=1)
         self.assertContainsDefinition(response.content, "Total other expenses", "£109.00", count=1)
@@ -580,7 +590,10 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
                                "other_child_maintenance": 19,
                                "other_not_listed": False}
 
-        context_data = self.get_context_data(income_data=context_data_income, household_expenses_data=household_expenses_data, other_expenses_data=other_expenses_data)
+        context_data = self.get_context_data(
+            income_data=context_data_income,
+            household_expenses_data=household_expenses_data,
+            other_expenses_data=other_expenses_data)
 
         send_plea_email(context_data)
 
@@ -605,7 +618,10 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
                                "other_not_listed_details": "Extra expenses.",
                                "other_not_listed_amount": 10}
 
-        context_data = self.get_context_data(income_data=context_data_income, household_expenses_data=household_expenses_data, other_expenses_data=other_expenses_data)
+        context_data = self.get_context_data(
+            income_data=context_data_income,
+            household_expenses_data=household_expenses_data,
+            other_expenses_data=other_expenses_data)
 
         send_plea_email(context_data)
 
@@ -619,7 +635,10 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
-        self.assertContainsDefinition(response.content, "Status", "<i>Not completed/provided Financial details must be collected at hearing</i>", count=1)
+        self.assertContainsDefinition(
+            response.content,
+            "Status", "<i>Not completed/provided Financial details must be collected at hearing</i>",
+            count=1)
 
     def test_receive_email_updates_output(self):
         context_data = self.get_context_data()
