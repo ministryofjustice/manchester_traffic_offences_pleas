@@ -136,7 +136,6 @@ class Review(FormStage):
 
 
 class TestCaseBase(TestCase):
-    """"""
     def get_request_mock(self, url="/", url_name="", url_kwargs=None):
         request_factory = RequestFactory()
 

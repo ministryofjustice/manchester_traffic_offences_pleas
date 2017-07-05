@@ -7,27 +7,13 @@ from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy as _
 
 
-class DefaultRadioSelect(RadioSelect):
+class DSRadioSelect(RadioSelect):
     """RadioSelect does not accept a renderer since Django 1.11"""
-    # TODO: rename to DSRadioSelect
 
     def render(self, name, value, attrs=None, *args, **kwargs):
         """
         Outputs a GOV.UK-styled <fieldset> for this set of choice fields.
         Radio buttons line up alongside each other.
-        """
-        """
-        id_ = self.attrs.get('id', None)
-        context = {
-            "id": id_,
-            "renderer": self,
-            "inputs": [
-                force_text(widget)
-                for widget in self
-            ]
-        }
-
-        return render_to_string("widgets/partials/DSRadioSelect.html", context)
         """
         elements = []
         for option in self.choices:
