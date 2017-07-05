@@ -33,7 +33,7 @@ class FeedbackFormTestCase(TestCase):
             }
         }
 
-    def get_request_mock(self, url, url_name="", url_kwargs=None):
+    def get_request_mock(self, url="/", url_name="", url_kwargs=None):
         request_factory = RequestFactory()
 
         if not url_kwargs:
@@ -62,7 +62,7 @@ class FeedbackFormTestCase(TestCase):
         }
         form.save(save_data, self.request_context)
 
-        response = form.render()
+        response = form.render(self.get_request_mock())
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(form.current_stage.form.errors), 2)
@@ -76,7 +76,7 @@ class FeedbackFormTestCase(TestCase):
         }
         form.save(save_data, self.request_context)
 
-        response = form.render()
+        response = form.render(self.get_request_mock())
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(form.current_stage.form.errors), 1)
@@ -91,7 +91,7 @@ class FeedbackFormTestCase(TestCase):
         }
         form.save(save_data, self.request_context)
 
-        response = form.render()
+        response = form.render(self.get_request_mock())
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/feedback/comments/")
@@ -108,7 +108,7 @@ class FeedbackFormTestCase(TestCase):
         form = FeedbackForms(session_data, "comments")
         form.load(self.request_context)
 
-        response = form.render()
+        response = form.render(self.get_request_mock())
         self.assertIn('id="id_comments"', response.content)
         self.assertIn('id="id_email"', response.content)
 
@@ -122,7 +122,7 @@ class FeedbackFormTestCase(TestCase):
 
         form.save(save_data, self.request_context)
 
-        form.render()
+        form.render(self.get_request_mock())
 
         self.assertEquals(len(mail.outbox), 1)
 
@@ -133,7 +133,7 @@ class FeedbackFormTestCase(TestCase):
         form = FeedbackForms(self.complete_session_data, "comments")
         form.save({}, self.request_context)
 
-        form.render()
+        form.render(self.get_request_mock())
 
         self.assertEquals(len(mail.outbox), 0)
 
@@ -155,7 +155,7 @@ class FeedbackFormTestCase(TestCase):
         }
         form.save(save_data, self.request_context)
 
-        response = form.render()
+        response = form.render(self.get_request_mock())
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/feedback/complete/")
@@ -185,7 +185,7 @@ class FeedbackFormTestCase(TestCase):
         form = FeedbackForms(self.complete_session_data, "complete")
         form.load(self.request_context)
 
-        response = form.render()
+        response = form.render(self.get_request_mock())
 
         self.assertContains(response, 'href="/court-finder/"')
 
