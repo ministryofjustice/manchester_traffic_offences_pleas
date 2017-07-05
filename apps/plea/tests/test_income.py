@@ -7,6 +7,7 @@ from django.template.context import RequestContext
 from ..views import PleaOnlineForms
 from ..stages import calculate_weekly_amount, YourBenefitsStage
 
+
 class TestCalculations(TestCase):
     def test_calculate_weekly_amount(self):
         amount = calculate_weekly_amount(130, "Weekly")
@@ -48,7 +49,7 @@ class TestIncomeBaseStage(TestCase):
 
 
 class TestYourIncomeStages(TestCase):
-    def get_request_mock(self, url, url_name="", url_kwargs=None):
+    def get_request_mock(self, url="/", url_name="", url_kwargs=None):
         request_factory = RequestFactory()
 
         if not url_kwargs:
@@ -255,4 +256,3 @@ class TestYourIncomeStages(TestCase):
         self.assertEqual(self.fake_session["your_income"]["sources"]["your_pension_credit"]["pay_period"], "Weekly")
         self.assertEqual(self.fake_session["your_income"]["sources"]["your_pension_credit"]["pay_amount"], 130)
         self.assertEqual(self.fake_session["your_income"]["weekly_total"], 130)
-

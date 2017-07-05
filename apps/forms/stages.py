@@ -120,15 +120,15 @@ class FormStage(object):
 
         return clean_data
 
-    def render(self, request_context):
+    def render(self, request, request_context):
         if self.next_step:
             return HttpResponseRedirect(self.next_step)
         else:
             context = self.context
             context.update({k: v for (k, v) in self.all_data.items()})
             context["form"] = self.form
-            # TODO: refactor API to accept a request object rather than request context
-            return render(request_context.request, self.template, context)
+
+            return render(request, self.template, context)
 
 
 class IndexedStage(FormStage):
@@ -230,5 +230,7 @@ class MultiStageForm(object):
         for msg in self.current_stage.messages:
             messages.add_message(request, msg.importance, msg.message, extra_tags=msg.tags)
 
-    def render(self):
-        return self.current_stage.render(self.request_context)
+    def render(self, request, request_context=None):
+        if request_context is None:
+            request_context = self.request_context
+        return self.current_stage.render(request, request_context)
