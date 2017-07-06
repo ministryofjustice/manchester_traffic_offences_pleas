@@ -25,12 +25,10 @@
         </header>
 
         {% if your_details.18_or_under %}
-          <p>
-            <strong>
-              The defendant is 18 years old or under –
-              please review this case and advise HMCTS as to whether you will be continuing with this prosecution
-            </strong>
-          </p>
+          <div class="warning-banner">
+            <strong>The defendant is 18 years old or under</strong><br>
+            Please review this case and advise HMCTS as to whether you will be continuing with this prosecution
+          </div>
         {% endif %}
 
         {% include "partials/review_details.html" %}
