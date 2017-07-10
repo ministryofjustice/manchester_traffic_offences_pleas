@@ -85,20 +85,6 @@
     </section>
     {% endif %}
 
-    <section id="confirmation">
-        <header>
-            <h2>Confirmation</h2>
-        </header>
-
-        <dl>
-            <dt>Email updates</dt>
-            <dd>{{ review.receive_email_updates|yesno:"Yes,No" }}</dd>
-
-            <dt>Email address</dt>
-            <dd>{{ review.email|default:"-" }}</dd>
-        </dl>
-    </section>
-
     {% if welsh_language %}
     <section id="welsh_language">
         <header>
