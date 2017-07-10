@@ -249,6 +249,18 @@ class YourDetailsForm(BaseStageForm):
             "invalid": ERROR_MESSAGES["DATE_OF_BIRTH_INVALID"],
             "is_date_in_past": ERROR_MESSAGES["DATE_OF_BIRTH_IN_FUTURE"]})
 
+    email = forms.EmailField(
+        widget=forms.TextInput(attrs={
+            "type": "email",
+            "class": "form-control"}),
+        required=True,
+        label=_("Email address"),
+        help_text=_(
+            "We'll automatically email you a copy of your plea"),
+        error_messages={
+            "required": ERROR_MESSAGES["UPDATES_EMAIL_REQUIRED"],
+            "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
+
     have_ni_number = forms.TypedChoiceField(
         widget=DSRadioSelect,
         required=True,
@@ -379,6 +391,18 @@ class CompanyDetailsForm(BaseStageForm):
         error_messages={
            "required": ERROR_MESSAGES["COMPANY_CONTACT_NUMBER_REQUIRED"],
            "invalid": ERROR_MESSAGES["CONTACT_NUMBER_INVALID"]})
+
+    email = forms.EmailField(
+        widget=forms.TextInput(attrs={
+            "type": "email",
+            "class": "form-control"}),
+        required=True,
+        label=_("Work email address"),
+        help_text=_(
+            "We'll automatically email you a copy of your plea"),
+        error_messages={
+            "required": ERROR_MESSAGES["UPDATES_EMAIL_REQUIRED"],
+            "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
 
 
 class YourStatusForm(BaseStageForm):
@@ -915,35 +939,6 @@ class CompanyFinancesForm(SplitStageForm):
 
 class ConfirmationForm(BaseStageForm):
     """Confirmation stage form"""
-    dependencies = {
-        "email": {
-            "field": "receive_email_updates",
-            "value": "True"
-        }
-    }
-
-    receive_email_updates = forms.TypedChoiceField(
-        widget=DSRadioSelect,
-        required=True,
-        coerce=to_bool,
-        choices=YESNO_CHOICES["Oes/Nac oes"],
-        label=_(
-            "Do you want to receive an email confirming your plea has been "
-            "sent to the court?"),
-        error_messages={
-            "required": ERROR_MESSAGES["RECEIVE_EMAIL_UPDATES_REQUIRED"]})
-
-    email = forms.EmailField(
-        widget=forms.TextInput(attrs={
-            "type": "email",
-            "class": "form-control"}),
-        required=False,
-        label="",
-        help_text=_("If yes, enter your email address here:"),
-        error_messages={
-            "required": ERROR_MESSAGES["UPDATES_EMAIL_REQUIRED"],
-            "invalid": ERROR_MESSAGES["EMAIL_ADDRESS_INVALID"]})
-
     understand = forms.BooleanField(
         required=True,
         error_messages={
