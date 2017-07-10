@@ -26,6 +26,9 @@
             <dd>{{ case.date_of_birth|parse_date|date:"d/m/Y" }}</dd>
         {% endif %}
 
+    <dt>{% blocktrans %}Email address{% endblocktrans %}</dt>
+    <dd>{{ your_details.email|default:"-" }}</dd>
+
     <dt>{% blocktrans %}National Insurance number{% endblocktrans %}</dt>
     <dd>{{ your_details.ni_number|default:"-" }}</dd>
 
@@ -56,6 +59,9 @@
 
     <dt>{% blocktrans %}Contact number{% endblocktrans %}</dt>
     <dd>{{ company_details.contact_number }}</dd>
+
+    <dt>{% blocktrans %}Work email address{% endblocktrans %}</dt>
+    <dd>{{ company_details.email|default:"-" }}</dd>
 
 {% endif %}
 </dl>

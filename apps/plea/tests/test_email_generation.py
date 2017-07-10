@@ -42,12 +42,11 @@ class EmailGenerationTests(TestCase):
                                                      "first_name": "v",
                                                      "last_name": "cx",
                                                      "contact_number": "07000000000",
-                                                     "date_of_birth": "1970-01-01"},
+                                                     "date_of_birth": "1970-01-01",
+                                                     "email": "user@example.org"},
                                     "plea": {"data": [{"guilty": "guilty", "guilty_extra": "test1"},
                                                        {"guilty": "guilty", "guilty_extra": "test2"}]},
-                                    "review": {"receive_email_updates": True,
-                                               "email": "user@example.org",
-                                               "understand": True}}
+                                    "review": {"understand": True}}
 
         self.test_data_company = {"notice_type": {"sjp": False},
                                   "case": {"urn": "06xcvx89",
@@ -62,12 +61,11 @@ class EmailGenerationTests(TestCase):
                                                       "first_name": "John",
                                                       "last_name": "Smith",
                                                       "position_in_company": "a director",
-                                                      "contact_number": "0800 SOMECOMPANY"},
+                                                      "contact_number": "0800 SOMECOMPANY",
+                                                      "email": "company@example.org"},
                                   "plea": {"data": [{"guilty": "guilty", "guilty_extra": "test1"},
                                                      {"guilty": "guilty", "guilty_extra": "test2"}]},
-                                  "review": {"receive_email_updates": True,
-                                             "email": "user@example.org",
-                                             "understand": True}}
+                                  "review": {"understand": True}}
 
     def test_template_attachment_sends_email(self):
         email_context = {"case": {"urn": "062B3C4D5E"}}
@@ -138,12 +136,11 @@ class EmailGenerationTests(TestCase):
         self.assertEqual(len(mail.outbox), 3)
         self.assertIn(format_for_region(self.test_data_defendant['case']['urn']), mail.outbox[-1].body)
         self.assertIn(format_for_region(self.test_data_defendant['case']['urn']), mail.outbox[-1].alternatives[0][0])
-        self.assertIn(self.test_data_defendant['review']['email'], mail.outbox[-1].to)
+        self.assertIn(self.test_data_defendant['your_details']['email'], mail.outbox[-1].to)
 
     def test_user_confirmation_sends_no_email(self):
-        self.test_data_defendant.update({"review": {"receive_email_updates": False,
-                                                    "email": "user@example.org",
-                                                    "understand": True}})
+        self.test_data_defendant['your_details']['email'] = ''
+
         send_plea_email(self.test_data_defendant)
 
         self.assertEqual(len(mail.outbox), 2)
@@ -154,7 +151,7 @@ class EmailGenerationTests(TestCase):
         self.assertEqual(len(mail.outbox), 3)
         self.assertIn(format_for_region(self.test_data_company['case']['urn']), mail.outbox[-1].body)
         self.assertIn(format_for_region(self.test_data_company['case']['urn']), mail.outbox[-1].alternatives[0][0])
-        self.assertIn(self.test_data_company['review']['email'], mail.outbox[-1].to)
+        self.assertIn(self.test_data_company['company_details']['email'], mail.outbox[-1].to)
 
     def test_user_confirmation_displays_court_details(self):
         send_plea_email(self.test_data_defendant)
