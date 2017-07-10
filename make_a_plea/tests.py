@@ -1,6 +1,4 @@
 from datetime import datetime, timedelta
-import random
-import string
 
 from django.test import TestCase, Client
 from django.test.utils import override_settings
