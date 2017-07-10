@@ -96,6 +96,7 @@ class TestDuplicateCaseIssues(TestCaseBase):
                 "date_of_birth_0": "01",
                 "date_of_birth_1": "01",
                 "date_of_birth_2": "1970",
+                "email": "user@example.org",
                 "have_ni_number": "False",
                 "have_driving_licence_number": "False"}
 
@@ -105,7 +106,8 @@ class TestDuplicateCaseIssues(TestCaseBase):
                 "first_name": first_name,
                 "last_name": last_name,
                 "position_in_company": "Director",
-                "contact_number": "0236578493"}
+                "contact_number": "0236578493",
+                "email": "user@example.org"}
 
     def test_dup_person_same_name(self):
         self.create_person_case("51aa0000015", "Frank", "Marsh")

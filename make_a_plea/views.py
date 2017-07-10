@@ -164,7 +164,8 @@ def test_email_attachment(request):
                                 "first_name": "John",
                                 "last_name": "Smith",
                                 "contact_number": "07000000000",
-                                "date_of_birth": "1970-01-01"},
+                                "date_of_birth": "1970-01-01",
+                                "email": "user@example.org"},
                "company_details": {"company_name": "Some company Plc",
                                    "updated_address": "Some place plc\nNew Street\nNew Town\nTE57ER",
                                    "first_name": "John",
@@ -181,9 +182,7 @@ def test_email_attachment(request):
                                     "number_of_employees": "9000",
                                     "gross_turnover": "120000",
                                     "net_turnover": "9999"},
-               "review": {"receive_email_updates": True,
-                          "email": "user@example.org",
-                          "understand": True},
+               "review": {"understand": True},
                "welsh_language": True}
 
     response = render(request, template, context)

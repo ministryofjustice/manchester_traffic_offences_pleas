@@ -100,18 +100,6 @@
 
     <hr>
 
-    <section class="email-confirmation">
-
-        {% radio_field form.receive_email_updates inline=True wide=True %}
-
-        <div class="panel-indent move-up" data-conditional="receive_email_updates" data-conditional-value="True">
-            {% std_field form.email hide_optional=True wide=True %}
-        </div>
-
-    </section>
-
-    <hr>
-
     <section id="section_understand">
 
         <div class="form-group-wide{% if form.understand.errors %} with-error{% endif %}">

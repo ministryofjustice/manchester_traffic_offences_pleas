@@ -55,8 +55,10 @@ def send_plea_email(context_data):
 
     court_obj = Court.objects.get_court(context_data["case"]["urn"], ou_code=case.ou_code)
 
-    send_user_email = context_data.get("review", {}).get("receive_email_updates", False)
-    email_address = context_data.get("review", {}).get("email", False)
+    email_address = context_data.get("your_details", {}).get("email", False)
+    email_address = email_address or context_data.get("company_details", {}).get("email", False)
+
+    context_data["email"] = email_address
 
     # add DOH / name to the email subject for compliance with the current format
     if not context_data["notice_type"]["sjp"]:
@@ -96,7 +98,7 @@ def send_plea_email(context_data):
         else:
             case.extra_data = {"OrganisationName": context_data.get("company_details", {}).get("company_name")}
 
-    if send_user_email and email_address:
+    if email_address:
         case.email = email_address
         case.send_user_email = True
 
@@ -122,7 +124,7 @@ def send_plea_email(context_data):
     if court_obj.plp_email:
         email_send_prosecutor.delay(case.id, context_data)
 
-    if send_user_email and email_address:
+    if email_address:
         data = {
             "urn": format_for_region(context_data["case"]["urn"]),
             "plea_made_by": context_data["case"]["plea_made_by"],
