@@ -2114,8 +2114,8 @@ msgstr "mae'n bosib y gellir rhoi pwyntiau cosb a dirwy am bob un o'r troseddau"
 
 #: apps/plea/templates/plea.html:21
 #, python-format
-msgid "if you plead guilty you may get a 33%% discount on any fine"
-msgstr "os byddwch yn pledio'n euog, mae'n bosib y cewch ddisgownt o 33%% oddi ar unrhyw ddirwy"
+msgid "if you plead guilty you may get a 33%% reduction on any fine"
+msgstr "os byddwch yn pledio'n euog, mae'n bosib y cewch ostyngiad o 33%% ar unrhyw ddirwy"
 
 #: apps/plea/templates/plea.html:26
 msgid "This is your opportunity to present the company's case to the court:"
@@ -2127,8 +2127,8 @@ msgstr "gall pob un o'r troseddau arwain at ddirwy"
 
 #: apps/plea/templates/plea.html:30
 #, python-format
-msgid "if you plead guilty on its behalf, the company may get a 33%% discount on any fine"
-msgstr "os byddwch yn pledio'n euog ar ei ran, mae'n bosib y caiff y cwmni ddisgownt o 33%% oddi ar unrhyw ddirwy"
+msgid "if you plead guilty on its behalf, the company may get a 33%% reduction on any fine"
+msgstr "os byddwch yn pledio'n euog ar ei ran, mae'n bosib y caiff y cwmni ostyngiad o 33%% ar unrhyw ddirwy"
 
 #: apps/plea/templates/plea.html:45
 #, python-format
@@ -2711,8 +2711,8 @@ msgstr "Mae'n bosib:"
 
 #: make_a_plea/templates/start.html:34
 #, python-format
-msgid "get a 33%% discount on your fine if you plead guilty"
-msgstr "y cewch ddisgownt o 33%% oddi ar eich dirwy os byddwch yn pledio'n euog"
+msgid "get a 33%% reduction on your fine if you plead guilty"
+msgstr "y cewch ostyngiad o 33%% ar eich dirwy os byddwch yn pledio'n euog"
 
 #: make_a_plea/templates/start.html:35
 msgid "be asked to enter your National Insurance and UK driving licence numbers"
