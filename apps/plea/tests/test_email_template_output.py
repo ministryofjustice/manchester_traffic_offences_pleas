@@ -86,6 +86,7 @@ class BaseEmailTemplateTests(TestCase):
                             "date_of_birth_0": "12",
                             "date_of_birth_1": "03",
                             "date_of_birth_2": "1980",
+                            "email": "user@example.org",
                             "have_ni_number": False,
                             "have_driving_licence_number": False}
 
@@ -125,9 +126,7 @@ class BaseEmailTemplateTests(TestCase):
                                    "other_not_listed_amount": 10}
 
         if not review_data:
-            review_data = {"receive_email_updates": True,
-                           "email": "user@example.org",
-                           "understand": True}
+            review_data = {"understand": True}
 
         uf = URNEntryForm(urn_entry_data)
         ntf = NoticeTypeForm(notice_type_data)
@@ -309,6 +308,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
                                 "date_of_birth_0": "12",
                                 "date_of_birth_1": "03",
                                 "date_of_birth_2": "1980",
+                                "email": "user@example.org",
                                 "have_ni_number": True,
                                 "ni_number": "QQ 12 34 56 Q",
                                 "have_driving_licence_number": True,
@@ -647,18 +647,27 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
-        self.assertContainsDefinition(response.content, "Email updates", "Yes", count=1)
         self.assertContainsDefinition(response.content, "Email address", "user@example.org", count=1)
 
-    def test_receive_email_no_updates_output(self):
-        context_data = self.get_context_data(review_data={"receive_email_updates": False, "understand": True})
+    def test_receive_company_email_updates_output(self):
+        context_data = self.get_context_data()
+        context_data['case']['plea_made_by'] = 'Company representative'
+        context_data['your_details'] = {'complete': True, 'skipped': True}
+        context_data['company_details'] = {
+            'company_name': 'example company',
+            'correct_address': True,
+            'first_name': 'Example',
+            'last_name': 'Example',
+            'position_in_company': 'a director',
+            'contact_number': '00000000',
+            'email': 'company@example.org',
+        }
 
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
-        self.assertContainsDefinition(response.content, "Email updates", "No", count=1)
-        self.assertContainsDefinition(response.content, "Email address", "-", count=1)
+        self.assertContainsDefinition(response.content, 'Work email address', 'company@example.org', count=1)
 
     def test_plea_email_no_hardship(self):
         context_data = self.get_context_data()
@@ -772,48 +781,37 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
     def test_under_18_message_is_shown_when_user_is_18(self):
         context_data = self.get_context_data()
         context_data["your_details"]["date_of_birth"] = (datetime.today() - relativedelta(years=18)).date()
-
         send_plea_email(context_data)
-
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
         assert "The defendant is 18 years old or under" in response.content
 
     def test_under_18_message_is_shown_when_user_is_under_18(self):
         context_data = self.get_context_data()
         context_data["your_details"]["date_of_birth"] = (datetime.today() - relativedelta(years=17)).date()
-
         send_plea_email(context_data)
-
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
         assert "The defendant is 18 years old or under" in response.content
 
     def test_under_18_message_is_not_shown_when_user_over_18(self):
         context_data = self.get_context_data()
         context_data["your_details"]["date_of_birth"] = (datetime.today() - relativedelta(years=19)).date()
-
         send_plea_email(context_data)
-
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
         assert "The defendant is 18 years old or under" not in response.content
 
     def test_under_18_message_is_not_shown_when_no_date_of_birth_present(self):
         context_data = self.get_context_data()
         del context_data["your_details"]["date_of_birth"]
-
         send_plea_email(context_data)
-
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
         assert "The defendant is 18 years old or under" not in response.content
 
     def test_under_18_message_is_not_shown_when_bad_date_of_birth_present(self):
         context_data = self.get_context_data()
         context_data["your_details"]["date_of_birth"] = "not a date"
-
         send_plea_email(context_data)
-
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
         assert "The defendant is 18 years old or under" not in response.content
-
 
 class DefendantEmailTemplateTests(BaseEmailTemplateTests):
     def test_plea_email_guilty_pleas(self):
@@ -938,7 +936,8 @@ class TestCompanyFinancesEmailLogic(TestCase):
                 "date_of_hearing": "2015-01-01",
                 "urn": "06AA000000000",
                 "number_of_charges": 1,
-                "plea_made_by": "Company representative"
+                "plea_made_by": "Company representative",
+                "contact_deadline": ""
             },
             "your_details": {
                 "complete": True,
@@ -950,7 +949,8 @@ class TestCompanyFinancesEmailLogic(TestCase):
                 "first_name": "John",
                 "last_name": "Smith",
                 "position_in_company": "a director",
-                "contact_number": "0800 SOMECOMPANY"
+                "contact_number": "0800 SOMECOMPANY",
+                "email": "user@example.org"
             },
             "plea": {
                 "complete": True,

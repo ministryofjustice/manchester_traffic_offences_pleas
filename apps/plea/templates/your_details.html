@@ -62,6 +62,8 @@
         {% multi_field form.date_of_birth %}
     {% endif %}
 
+    {% std_field form.email %}
+
     {% radio_field form.have_ni_number inline=True %}
 
     <div class="panel-indent move-up" data-conditional="have_ni_number" data-conditional-value="True">
