@@ -2083,8 +2083,8 @@ msgstr "each offence may carry penalty points and a fine"
 
 #: apps/plea/templates/plea.html:21
 #, python-format
-msgid "if you plead guilty you may get a 33%% discount on any fine"
-msgstr "if you plead guilty you may get a 33%% discount on any fine"
+msgid "if you plead guilty you may get a 33%% reduction on any fine"
+msgstr "if you plead guilty you may get a 33%% reduction on any fine"
 
 #: apps/plea/templates/plea.html:26
 msgid "This is your opportunity to present the company's case to the court:"
@@ -2096,8 +2096,8 @@ msgstr "each offence may result in a fine"
 
 #: apps/plea/templates/plea.html:30
 #, python-format
-msgid "if you plead guilty on its behalf, the company may get a 33%% discount on any fine"
-msgstr "if you plead guilty on its behalf, the company may get a 33%% discount on any fine"
+msgid "if you plead guilty on its behalf, the company may get a 33%% reduction on any fine"
+msgstr "if you plead guilty on its behalf, the company may get a 33%% reduction on any fine"
 
 #: apps/plea/templates/plea.html:45
 #, python-format
@@ -2663,8 +2663,8 @@ msgstr "You may:"
 
 #: make_a_plea/templates/start.html:34
 #, python-format
-msgid "get a 33%% discount on your fine if you plead guilty"
-msgstr "get a 33%% discount on your fine if you plead guilty"
+msgid "get a 33%% reduction on your fine if you plead guilty"
+msgstr "get a 33%% reduction on your fine if you plead guilty"
 
 #: make_a_plea/templates/start.html:35
 msgid "be asked to enter your National Insurance and UK driving licence numbers"
