@@ -1,4 +1,6 @@
-<div class="form-group{% if field.wide %}-wide{% endif %}{% if field.errors %} with-error{% endif %}" id="section_{{ field.name }}{% if field.counter %}_{{ field.counter }}{% endif %}">
+<div class="form-group{% if field.wide %}-wide{% endif %}{% if field.errors %} with-error{% endif %}"
+     id="section_{{ field.name }}{% if field.counter %}_{{ field.counter }}{% endif %}">
+    
     <label for="{{ field.id_for_label }}">
         {% include "widgets/partials/label_text.html" %}
     </label>
