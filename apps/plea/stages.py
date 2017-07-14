@@ -393,12 +393,14 @@ class YourDetailsStage(FormStage):
         super(YourDetailsStage, self).__init__(*args, **kwargs)
 
     def save(self, form_data, next_step=None):
-        clean_data = super(YourDetailsStage,
-                           self).save(form_data, next_step)
+        clean_data = super(
+            YourDetailsStage,
+            self).save(form_data, next_step)
 
-        urn, first_name, last_name = (self.all_data.get("case", {}).get("urn"),
-                                      clean_data.get("first_name"),
-                                      clean_data.get("last_name"))
+        urn, first_name, last_name = (
+            self.all_data.get("case", {}).get("urn"),
+            clean_data.get("first_name"),
+            clean_data.get("last_name"))
 
         if not Case.objects.can_use_urn(urn, first_name, last_name):
             self.form.errors[NON_FIELD_ERRORS] = [ERROR_MESSAGES["URN_ALREADY_USED"]]
@@ -407,7 +409,6 @@ class YourDetailsStage(FormStage):
         else:
             if "complete" in clean_data:
                 self.set_next_step("plea")
-
             return clean_data
 
     def render(self, request, request_context):
@@ -423,14 +424,18 @@ class YourDetailsStage(FormStage):
 
     def load_forms(self, data=None, initial=False):
 
-        initial_data = None
-
         exclude_dob = "date_of_birth" in self.all_data["case"]
 
         if initial:
-            self.form = self.form_class(initial=initial_data, exclude_dob=exclude_dob, label_suffix="")
+            self.form = self.form_class(
+                initial=self.all_data[self.name],
+                exclude_dob=exclude_dob,
+                label_suffix="")
         else:
-            self.form = self.form_class(data, exclude_dob=exclude_dob, label_suffix="")
+            self.form = self.form_class(
+                data,
+                exclude_dob=exclude_dob,
+                label_suffix="")
 
 
 class PleaStage(IndexedStage):
@@ -460,7 +465,7 @@ class PleaStage(IndexedStage):
         if initial:
             data = self.all_data.get(self.name, {}).get("data", [])
             try:
-                initial_data = data[self.index-1]
+                initial_data = data[self.index - 1]
             except IndexError:
                 pass
 
@@ -472,14 +477,14 @@ class PleaStage(IndexedStage):
 
         if offences:
             try:
-                self.form.case_data = offences[self.index-1]
+                self.form.case_data = offences[self.index - 1]
             except IndexError:
                 pass
 
         self.show_interpreter_question = True
 
         previous_charges = self.all_data["plea"].get("data", [])
-        previous_charges = previous_charges[:self.index-1]
+        previous_charges = previous_charges[:self.index - 1]
 
         for charge in previous_charges:
             if charge.get("interpreter_needed", None) is not None or charge.get("sjp_interpreter_needed", None) is not None:
@@ -523,7 +528,7 @@ class PleaStage(IndexedStage):
 
         clean_data["show_interpreter_question"] = self.show_interpreter_question
 
-        stage_data["data"][self.index-1] = clean_data
+        stage_data["data"][self.index - 1] = clean_data
 
         for plea in stage_data["data"]:
             if plea.get("guilty") == "guilty":
@@ -531,11 +536,11 @@ class PleaStage(IndexedStage):
                 break
 
         try:
-            stage_data["data"][self.index-1]["title"] = offences[self.index-1].offence_short_title
+            stage_data["data"][self.index - 1]["title"] = offences[self.index - 1].offence_short_title
         except IndexError:
             pass
 
-        if "guilty" not in stage_data["data"][self.index-1]:
+        if "guilty" not in stage_data["data"][self.index - 1]:
             return clean_data
 
         if self.split_form is None or self.split_form == "split_form_last_step":
