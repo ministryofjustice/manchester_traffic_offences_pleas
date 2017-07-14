@@ -1,6 +1,14 @@
-{% for choice in renderer %}
-<label for="id_{{ choice.name }}_{{ choice.choice_value|slugify }}" class="block-label">
-    <input id="id_{{ choice.name }}_{{ choice.choice_value|slugify }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}"{% if choice.is_checked %} checked="checked"{% endif %}>
-    {{ choice.choice_label }}
+{% load filters %}
+{% load form_widgets %} 
+
+{% for choice_name, choice_value in self.choices %}
+<label for="id_{{ name }}_{{ choice_name|slugify }}"
+       class="block-label">
+	<input id="id_{{ name }}_{{ choice_name|slugify }}"
+           type="radio" name="{{ name }}"
+	       value="{{ choice_name }}"
+        {% if choice_name|equal_coerced:value %} checked="checked"{% endif %}>
+    {{ choice_value }}
+
 </label>
 {% endfor %}

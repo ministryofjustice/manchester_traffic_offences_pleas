@@ -52,9 +52,14 @@
     <section class="section-plea">
         {% include "widgets/plea_radio_field.html" %}
 
-            <div{% if form.split_form.value != "split_form_last_step" %} class="panel-indent"{% endif %} data-conditional="guilty" data-conditional-value="^(guilty|not_guilty)$">
-                <section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.value != "guilty" %} nojs-hidden{% endif %}" data-conditional="guilty" data-conditional-value="^guilty$">
+            <div {% if form.split_form.value != "split_form_last_step" %} 
+                 class="panel-indent"{% endif %}
+                 data-conditional="guilty"
+                 data-conditional-value="^(guilty|not_guilty)$">
 
+                <section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.value != "guilty" %} nojs-hidden{% endif %}"
+                    data-conditional="guilty"
+                    data-conditional-value="^guilty$">
 
                     <p>{% spaceless %}
                         {% if case.plea_made_by == "Defendant" %}
@@ -69,6 +74,7 @@
                     {% endspaceless %}</p>
 
                     {% if notice_type.sjp %}
+
                         {% radio_field form.come_to_court wide=True hide_optional=True inline=True %}
 
                         {% if form.sjp_interpreter_needed %}

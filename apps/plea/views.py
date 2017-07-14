@@ -85,12 +85,15 @@ class PleaOnlineForms(MultiStageForm):
         saved_first_name = self.all_data.get("your_details", {}).get("first_name")
         saved_last_name = self.all_data.get("your_details", {}).get("last_name")
 
-        if saved_urn and saved_first_name and saved_last_name and not Case.objects.can_use_urn(saved_urn, saved_first_name, saved_last_name):
+        if all([
+                saved_urn,
+                saved_first_name,
+                saved_last_name,
+                not Case.objects.can_use_urn(saved_urn, saved_first_name, saved_last_name)
+        ]):
             self._urn_invalid = True
-
-            return
-
-        return super(PleaOnlineForms, self).save(*args, **kwargs)
+        else:
+            return super(PleaOnlineForms, self).save(*args, **kwargs)
 
     def render(self, request, request_context=None):
         request_context = request_context if request_context else {}
@@ -110,7 +113,10 @@ class PleaOnlineViews(StorageView):
 
     def dispatch(self, request, *args, **kwargs):
         # If the session has timed out, redirect to start page
-        if not request.session.get("plea_data") and kwargs.get("stage", self.start) != self.start:
+        if all([
+                not request.session.get("plea_data"),
+                kwargs.get("stage", self.start) != self.start,
+        ]):
             # messages.add_message(request, messages.ERROR, _("Your session has timed out"), extra_tags="session_timeout")
             return HttpResponseRedirect("/")
 
@@ -181,19 +187,25 @@ class CourtFinderView(FormView):
         except Court.DoesNotExist:
             court = False
 
-        return self.render_to_response(self.get_context_data(form=form,
-                                                             court=court,
-                                                             submitted=True))
+        return self.render_to_response(
+            self.get_context_data(
+                form=form,
+                court=court,
+                submitted=True,
+            )
+        )
 
     def form_invalid(self, form):
-
         urn_is_invalid = False
         if "urn" in form.errors and ERROR_MESSAGES["URN_INCORRECT"] in form.errors["urn"]:
             urn_is_invalid = True
 
         return self.render_to_response(
-            self.get_context_data(form=form,
-                                  urn_is_invalid=urn_is_invalid))
+            self.get_context_data(
+                form=form,
+                urn_is_invalid=urn_is_invalid
+            )
+        )
 
 
 @staff_or_404
