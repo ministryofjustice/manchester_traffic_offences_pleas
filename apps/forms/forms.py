@@ -2,6 +2,7 @@ from django import forms
 from django.forms.formsets import BaseFormSet
 from django.utils.translation import ugettext_lazy as _
 
+
 YESNO_CHOICES = {
     "Ydy/Nac ydy": ((True, _("Yes (v1)")),
                     (False, _("No (v1)"))),

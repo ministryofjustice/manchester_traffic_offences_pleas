@@ -5,90 +5,131 @@
 {% load debug %}
 
 {% with plea_data=plea.data|index:index %}
-
 {% get_current_language as LANGUAGE_CODE %}
 
-<div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}" id="section_guilty">
+<div class="form-group-wide{% if form.guilty.errors %} with-error{% endif %}"
+     id="section_guilty">
 
     <fieldset role="radiogroup" aria-labelledby="label_charge">
 
         <legend>
+
             <div class="header-line" id="label_charge">
-                <span class="label-text">{% spaceless %}
-                {% if form.case_data %}
-                    {% if LANGUAGE_CODE == "cy" and form.case_data.offence_short_title_welsh %}
-                        {{ form.case_data.offence_short_title_welsh }}
-                    {% else %}
-                        {{ form.case_data.offence_short_title }}
-                    {% endif %}
-                {% else %}
-                    {% if plea_data.split_form == "split_form_last_step" %}
-                        {% blocktrans with counter=index %}Charge {{ counter }}{% endblocktrans %}
-                    {% else %}
-                        {% if case.plea_made_by == "Defendant" %}
-                            {% blocktrans with counter=index %}Your plea for charge {{ counter }}{% endblocktrans %}
+                <span class="label-text">
+
+                    {% if form.case_data %}
+                        {% if LANGUAGE_CODE == "cy" and form.case_data.offence_short_title_welsh %}
+                            {{ form.case_data.offence_short_title_welsh }}
                         {% else %}
-                            {% blocktrans with counter=index %}Plea for charge {{ counter }}{% endblocktrans %}
+                            {{ form.case_data.offence_short_title }}
+                        {% endif %}
+                    {% else %}
+                        {% if plea_data.split_form == "split_form_last_step" %}
+                            {% blocktrans with counter=index %}Charge {{ counter }}{% endblocktrans %}
+                        {% else %}
+                            {% if case.plea_made_by == "Defendant" %}
+                                {% blocktrans with counter=index %}Your plea for charge {{ counter }}{% endblocktrans %}
+                            {% else %}
+                                {% blocktrans with counter=index %}Plea for charge {{ counter }}{% endblocktrans %}
+                            {% endif %}
                         {% endif %}
                     {% endif %}
-                {% endif %}
-                {% endspaceless %}</span>
+
+                </span>
             </div>
 
             {% if form.case_data %}
-            <div class="charge-details js-Details open" data-summary-open="{% blocktrans %}Hide charge information{% endblocktrans %}">
-                <a class="details-trigger" href="#charge-details"><span class="summary">{% blocktrans %}View charge information{% endblocktrans %}</span></a>
-                <div class="details-content" id="charge-details">
-                    {% if LANGUAGE_CODE == "cy" and form.case_data.offence_wording_welsh %}
-                        {{ form.case_data.offence_wording_welsh|linebreaks }}
-                    {% else %}
-                        {{ form.case_data.offence_wording|linebreaks }}
-                    {% endif %}
+                
+                <div data-summary-open="{% blocktrans %}Hide charge information{% endblocktrans %}"
+                     class="charge-details js-Details open">
+
+                    <a class="details-trigger" href="#charge-details">
+                        <span class="summary">
+                            {% blocktrans %}View charge information{% endblocktrans %}
+                        </span>
+                    </a>
+
+                    <div class="details-content" id="charge-details">
+                        {% if LANGUAGE_CODE == "cy" and form.case_data.offence_wording_welsh %}
+                            {{ form.case_data.offence_wording_welsh|linebreaks }}
+                        {% else %}
+                            {{ form.case_data.offence_wording|linebreaks }}
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
 
                 {% if plea_data.split_form != "split_form_last_step" %}
-            <h3 class="heading-small">{% blocktrans %}Your plea for this charge{% endblocktrans %}</h3>
+                    <h3 class="heading-small">
+                        {% blocktrans %}Your plea for this charge{% endblocktrans %}
+                    </h3>
                 {% endif %}
+
             {% endif %}
 
             {% if form.guilty.errors %}
-            <ul class="errorlist">
-                {% for error in form.guilty.errors %}
-                <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
+                <ul class="errorlist">
+                    {% for error in form.guilty.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
             {% endif %}
+
         </legend>
 
         {% if plea_data.split_form != "split_form_last_step" %}
-        <div class="form-field">
-            <div class="inline">
 
-                {% for choice in form.guilty %}
-                <label for="id_{{ choice.name }}_{{ choice.choice_value }}" class="block-label">
-                    <input id="id_{{ choice.name }}_{{ choice.choice_value }}" type="radio" name="{{ choice.name }}" value="{{ choice.choice_value }}" {% if choice.is_checked %}checked="checked"{% endif %}>
-                    {{ choice.choice_label }}
-                </label>
-                {% endfor %}
+            <div class="form-field">
+                <div class="inline">
 
+                    {% for choice in form.guilty %}
+                        <label for="id_{{ choice.data.name }}_{{ choice.data.value }}"
+                               class="block-label">
+                            <input id="id_{{ choice.data.name }}_{{ choice.data.value }}"
+                                   type="radio"
+                                   name="{{ choice.data.name }}"
+                                   value="{{ choice.data.value }}"
+                                   {% if choice.data.selected %}checked="checked"{% endif %}>
+                            {{ choice.choice_label }}
+                        </label>
+                    {% endfor %}
+
+                </div>
             </div>
-        </div>
+
         {% endif %}
 
         {% if plea_data.split_form == "split_form_last_step" %}
-        {% add_test_tag "<<NOJSTRIGGERSUMMARY>>" %}
-        <div class="form-header-pleas">
-            {% for choice in form.guilty %}
-                {% if choice.is_checked %}
-                    <input type="hidden" name="{{ choice.name }}" value="{{ choice.choice_value }}">
-                {% endif %}
-            {% endfor %}
-            <p class="form-selected">{% blocktrans count charges=1 %}Your plea{% plural %}Your pleas{% endblocktrans %} - <strong>{% if form.guilty.value == "guilty" %}{% blocktrans %}Guilty{% endblocktrans %}{% else %}{% blocktrans %}Not guilty{% endblocktrans %}{% endif %}</strong></p>
-            <a href="{{ request.path }}?reset">{% blocktrans %}Change your plea for this charge{% endblocktrans %}</a>
-        </div>
-        {% endif %}
 
+            {% add_test_tag "<<NOJSTRIGGERSUMMARY>>" %}
+
+            <div class="form-header-pleas">
+
+                {% for choice in form.guilty %}
+                    {% if choice.selected %}
+                        <input type="hidden"
+                               name="{{ choice.name }}"
+                               value="{{ choice.choice_value }}">
+                    {% endif %}
+                {% endfor %}
+
+                <p class="form-selected">
+                    {% blocktrans count charges=1 %}Your plea{% plural %}Your pleas{% endblocktrans %} - 
+                    <strong>
+                        {% if form.guilty.value == "guilty" %}
+                            {% blocktrans %}Guilty{% endblocktrans %}
+                        {% else %}
+                            {% blocktrans %}Not guilty{% endblocktrans %}
+                        {% endif %}
+                    </strong>
+                </p>
+
+                <a href="{{ request.path }}?reset">
+                    {% blocktrans %}Change your plea for this charge{% endblocktrans %}
+                </a>
+
+            </div>
+        {% endif %}
+	
     </fieldset>
 </div>
 
