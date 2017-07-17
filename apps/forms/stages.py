@@ -55,7 +55,7 @@ class FormStage(object):
                 self.all_data[stage]['complete'] = True
                 self.all_data[stage]['skipped'] = True
 
-    def check_dependencies(self):
+    def check_dependencies_are_complete(self):
         for dependency in self.dependencies:
             if "data" in self.all_data[dependency]:
                 for data in self.all_data[dependency]["data"]:
@@ -89,7 +89,7 @@ class FormStage(object):
         if hasattr(request_context, "request") and ("reset" in request_context.request.GET):
 
             try:
-                self.all_data[self.storage_key].get("data")[self.index-1].pop("split_form", None)
+                self.all_data[self.storage_key].get("data")[self.index - 1].pop("split_form", None)
             except AttributeError:
                 self.all_data[self.storage_key].pop("split_form", None)
 
@@ -194,7 +194,7 @@ class MultiStageForm(object):
         else:
             self.current_stage = self.current_stage_class(self.urls, self.all_data)
 
-        if not self.current_stage.check_dependencies():
+        if not self.current_stage.check_dependencies_are_complete():
             if self.current_stage.name == "complete":
                 redirect = "/"
             else:
