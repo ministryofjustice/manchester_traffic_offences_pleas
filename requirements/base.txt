@@ -2,7 +2,6 @@
 # After the first "pip install -r", just run "pip freeze" and add the version
 # to each package in each requirements/*.txt.
 
-git+https://github.com/celery/kombu@09bd23bbd83344b09cbf38b7257107e560db9f25
 boto3==1.4.4
 
 Django==1.11.3
@@ -28,3 +27,11 @@ unicodecsv==0.14.1
 
 # GOVUK Template
 git+https://github.com/froddd/govuk_template_django.git
+
+# Kombu is a library that celery uses under the hood.
+# Kombu v4.0.2 (which ships with celery v4.0.2) doesn't work with SQS due to problems with their use of boto2, so
+# Kombu migrated to boto3 - We're waiting for that to get a release version, and then to get a new version of celery
+# that pulls that in. Until that point, we should override the kombu version to get these SQS fixes.
+# Additionally, kombu master also includes a fix for the main process taking 100% CPU and not distributing tasks (!)
+# See https://github.com/celery/kombu/pull/693 and https://github.com/celery/kombu/pull/760
+https://github.com/celery/kombu/zipball/b2f21289284496efd89acea003ff9c24105b970e
