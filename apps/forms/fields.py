@@ -8,28 +8,20 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class DSRadioSelect(RadioSelect):
-    """RadioSelect does not accept a renderer since Django 1.11"""
+    template_name = "widgets/partials/DSRadioSelect.html"
 
     def render(self, name, value, attrs=None, *args, **kwargs):
         """
         Outputs a GOV.UK-styled <fieldset> for this set of choice fields.
         Radio buttons line up alongside each other.
         """
-        elements = []
-        for option in self.choices:
-            element = """
-            <label for="id_{0}_{1}" class="block-label">
-                <input id="id_{0}_{1}"
-                       type="radio"
-                       name="{0}"
-                       value="{1}">{2}
-            </label>""".format(
-                name,
-                option[0],
-                option[1],
-            )
-            elements.append(element)
-        return "".join(elements)
+        context = {
+            "id": self.attrs.get('id', None),
+            "self": self,
+            "name": name,
+            "value": value,
+        }
+        return render_to_string(self.template_name, context)
 
 
 class DSTemplateWidgetBase(forms.TextInput):
@@ -88,7 +80,10 @@ class DateWidget(MultiWidget):
             return [day, month, year]
 
     def value_from_datadict(self, data, files, name):
-        day, month, year = [widget.value_from_datadict(data, files, name + '_%s' % i) for i, widget in enumerate(self.widgets)]
+        day, month, year = [
+            widget.value_from_datadict(data, files, name + '_%s' % i)
+            for i, widget in enumerate(self.widgets)
+        ]
 
         try:
             day = int(day)
