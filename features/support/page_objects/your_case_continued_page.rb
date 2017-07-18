@@ -5,6 +5,8 @@ class YourCaseContinuedPage < BasePage
   element :number_of_charges, '#id_number_of_charges'
   elements :label_text, '.label-text'
   elements :form_hint, '.form-hint'
+  element :id_postcode, '#id_postcode'
+  element :section_date_of_birth, '#section_date_of_birth'
   element :day, '#id_date_of_birth_0'
   element :month, '#id_date_of_birth_1'
   element :year, '#id_date_of_birth_2'
