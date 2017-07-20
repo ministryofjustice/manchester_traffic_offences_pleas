@@ -1,21 +1,16 @@
 FROM python:2.7
 
-COPY /docker/rds-combined-ca-bundle.pem /usr/local/share/ca-certificates/rds-combined-ca-bundle.pem
-
-RUN chown root:root /usr/local/share/ca-certificates/rds-combined-ca-bundle.pem && \
-    chmod 600 /usr/local/share/ca-certificates/rds-combined-ca-bundle.pem
-
 ENV APP_HOME=/makeaplea/
 ENV DJANGO_SETTINGS_MODULE=make_a_plea.settings.docker
 WORKDIR $APP_HOME
 
-ADD apt/ $APP_HOME/apt
-
+# Debian dependencies
+COPY apt/ $APP_HOME/apt
 RUN apt-get -y update && $APP_HOME/apt/production.sh
 
+# Python dependencies
 COPY requirements.txt $APP_HOME
-ADD requirements/ $APP_HOME/requirements/
-
+COPY requirements/ $APP_HOME/requirements/
 RUN pip install -r requirements.txt
 
 RUN mkdir /user_data
