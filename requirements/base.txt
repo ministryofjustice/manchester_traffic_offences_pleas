@@ -27,4 +27,4 @@ django-nested-admin==2.2.3
 unicodecsv==0.14.1
 
 # GOVUK Template
-https://github.com/alphagov/govuk_template/releases/download/v0.22.3/django_govuk_template-0.22.3.tgz
+git+https://github.com/froddd/govuk_template_django.git
