@@ -337,9 +337,37 @@ class AuditEventAdmin(admin.ModelAdmin):
         AuditEventInitiationTypeFilter,
         UrnFilter,
     )
-    search_fields = ("case__urn", "event_data__urn")
+    search_fields = ("case__name", "case__urn", "case__extra_data__urn")
     raw_id_fields = ("case",)
-    readonly_fields = ("case", "event_type", "event_subtype", "event_trace", "event_data")
+    readonly_fields = ("case", "event_type", "event_subtype", "event_trace", "event_data", "event_datetime")
+
+    def get_search_results(self, request, queryset, search_term):
+        """
+        Perform a less intensive search on some fields (e.g. hstore types). By default a
+        filter with 'icontains' is added for each field.
+        """
+
+        # Separate fields into the good and the bad
+        included_fields = []
+        excluded_fields = []
+        for field in self.search_fields:
+            if field.startswith('case__extra_data__') or field.endswith('__urn'):
+                excluded_fields.append(field)
+            else:
+                included_fields.append(field)
+
+        # Most fields can benefit from the full, substring search
+        self.search_fields = tuple(included_fields)
+        queryset, use_distinct = super(
+            AuditEventAdmin, self).get_search_results(
+                request, queryset, search_term)
+
+        # Simple equality test for some intensive fields
+        self.search_fields = tuple(included_fields + excluded_fields)
+        for field in excluded_fields:
+            queryset |= self.model.objects.filter(**{field: search_term})
+
+        return queryset, use_distinct
 
     def initiation_type(self, auditevent):
         """Required for the admin_order_field"""
