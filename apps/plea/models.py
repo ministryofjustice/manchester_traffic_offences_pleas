@@ -756,8 +756,6 @@ class AuditEvent(models.Model):
         Audiit events should be sortable
         Audit events should be filterable
         Audit events should be linked to the case where possible
-
-
     """
 
     EVENT_TYPE_CHOICES = (
