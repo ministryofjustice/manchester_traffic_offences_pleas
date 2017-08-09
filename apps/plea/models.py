@@ -786,6 +786,7 @@ class AuditEvent(models.Model):
         ("case_invalid_duplicate_urn_used", "Invalid Case: Duplicate URN already used (sent)"),
         ("case_invalid_no_offences", "Invalid Case: No offences"),
         ("result_invalid_duplicate_urn_used", "Invalid Result: Duplicate URN already used (sent)"),
+        ("case_invalid_invalid_date", "Invalid Case: Invalid date field")
     )
     IGNORED_CASE_FIELDS = [
         "id",  # Django id is irrelavent
