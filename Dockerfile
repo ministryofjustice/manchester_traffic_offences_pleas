@@ -21,7 +21,6 @@ VOLUME ["/user_data"]
 
 COPY . $APP_HOME
 
-RUN gpg --import /makeaplea/docker/user_data.gpg
 RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
 
 RUN python manage.py collectstatic --noinput
