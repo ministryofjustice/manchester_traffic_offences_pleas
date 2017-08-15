@@ -1,23 +1,20 @@
+sudo: required
+
 language: python
-dist: trusty
-python:
-  - "2.7"
-notifications:
-  email: false
+
 services:
-  - postrgresql
-before_install:
-  - sudo ./apt/production.sh
-  - sudo ./apt/testing.sh
-install:
-  - "pip install setuptools==32"
-  - "pip install -r requirements.txt"
-  - "pip install -r requirements/testing.txt"
-before_script:
-  - "psql -c 'CREATE DATABASE manchester_traffic_offences;' -U postgres"
-  - "python manage.py migrate --noinput"
-  - "python manage.py compilemessages"
+  - docker
+
 env:
-  - POSTGRES_USER=postgres DJANGO_SETTINGS_MODULE=make_a_plea.settings.testing
+  - DOCKER_COMPOSE_VERSION=1.14.0
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+install: []
+
 script:
-  - "python manage.py test"
+  - make test

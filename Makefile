@@ -4,9 +4,14 @@ define container-id-for
 	$(shell docker ps -f 'label=com.docker.compose.project=$(1)' -f 'label=com.docker.compose.service=$(2)' -q)
 endef
 
+test: test-unit test-cucumber ## Run all tests
+
 test-unit: ## Run unit tests
 	docker-compose -p test build test-unit
 	docker-compose -p test run test-unit
+
+test-cucumber:
+	echo "NO CUCUMBER TESTS"
 
 test-psql: ## Run psql against the test database
 	docker exec -ti -u postgres $(call container-id-for,test,postgres) psql makeaplea
