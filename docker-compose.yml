@@ -1,25 +1,67 @@
-# local dev env
+version: "3.1"
+services:
+  makeaplea:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PYTHON_REQUIREMENTS: ./requirements/dev.txt
+    environment:
+      DJANGO_SETTINGS_MODULE: "make_a_plea.settings.dev"
+      DB_HOST:     "postgres"
+      DB_USERNAME: "${POSTGRES_USER}"
+      DB_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB:
+    command: ./run_compose.sh
+    links:
+      - postgres
+    volumes:
+      - .:/makeaplea
 
-django:
-  build: .
-  ports:
-    - "8111:8111"
-    - "8000:8000"
-  links:
-    - postgres:db
-  # local dev env variables which are kept out of version control
-  environment:
-    - POSTGRES_HOST=db
-    - POSTGRES_USER=makeaplea
-    - POSTGRES_PASS=password
-    - POSTGRES_PORT=5432
-    - POSTGRES_DB=makeaplea
-    - DJANGO_SETTINGS_MODULE=make_a_plea.settings.local
-  command: ./manage.py runserver 0.0.0.0:8000 
-  volumes:
-    - .:/makeaplea
-postgres:
-  image: postgres:9.4
-  environment:
-    - POSTGRES_USER=makeaplea
-    - POSTGRES_PASSWORD=password
+  makeaplea_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PYTHON_REQUIREMENTS: ./requirements/dev.txt
+    environment:
+      DJANGO_SETTINGS_MODULE: "api.settings.dev"
+      DB_HOST:     "postgres"
+      DB_USERNAME: "${POSTGRES_USER}"
+      DB_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB:
+    command: ./run_compose.sh
+    links:
+      - postgres
+    volumes:
+      - .:/makeaplea
+
+  postgres:
+    image: postgres:9.4
+    environment:
+      POSTGRES_DB:
+      POSTGRES_USER:
+      POSTGRES_PASSWORD:
+
+  test-unit:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      DJANGO_SETTINGS_MODULE: "make_a_plea.settings.testing"
+      DB_HOST:     "postgres"
+      DB_USERNAME: "${POSTGRES_USER}"
+      DB_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB:
+    command: ./test_unit.sh
+    links:
+      - postgres
+    volumes:
+      - .:/makeaplea
+
+  test-cucumber:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    links:
+      - makeaplea

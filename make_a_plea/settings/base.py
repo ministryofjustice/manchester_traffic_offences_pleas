@@ -121,8 +121,9 @@ PREMAILER_OPTIONS = {"base_url": os.environ.get("PREMAILER_BASE_URL", "https://w
 # Override in your environment.
 #
 SECRET_KEY = os.environ.get("SECRET_KEY", "46c4b7f21d407686230bbe39ebd8da2834fe2bf2")
+# Provide an invalid cookie key to fail fast
 ENCRYPTED_COOKIE_KEYS = [
-    os.environ.get("ENCRYPTED_COOKIE_KEY", "12fcb4f3db7032b8260fff87074dd29a71128277")
+    os.environ.get("ENCRYPTED_COOKIE_KEY", "invalid")
 ]
 
 TEMPLATES = [

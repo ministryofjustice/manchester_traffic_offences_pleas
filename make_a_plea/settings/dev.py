@@ -9,6 +9,11 @@ TEST_RUNNER = 'make_a_plea.runner.MAPTestRunner'
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
+# Provide a working cookie key
+ENCRYPTED_COOKIE_KEYS = [
+    os.environ.get("ENCRYPTED_COOKIE_KEY", "dJa1JYaaddz5OafOXfqEj7wRVcmZ7Iz5xTI0hVI0Iwo=")
+]
+
 # Emails
 EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend'
 CELERY_TASK_ALWAYS_EAGER = True

@@ -1,76 +1,48 @@
-Make a Plea
-===========
+# Make a Plea
 
 A simple, user-friendly online service for citizens to submit pleas for summary motoring offences.
 
-Dependencies
-------------
+## Dependencies
+- [docker-compose](https://docs.docker.com/compose/) for local development and testing
 
-- VirtualBox
-- Vagrant
-- Docker & Docker-compose
+## Usage
 
-NOTE: Vagrant or docker can be used to set up a local dev environment
+#### `make dev-makeaplea`
+Run the makeaplea frontend app. Also just `make dev`
 
-Installation
-------------
+If you need to run the app on a port other than `8000` you can set the exposed
+port with the `PORT` environment variable.
 
-Clone the repository:
+`PORT=8002 make dev`
 
-    git clone git@github.com:ministryofjustice/manchester_traffic_offences_pleas.git
+#### `make dev-api`
+Run the makeaplea api app
 
+The `PORT` environment variable can be used to override the default port of `8001`
 
-### To run a dev environment with vagrant:
+#### `make dev-psql`
+Open a psql client against the dev database.
 
-Create your own local.py:
+#### `make dev-exec`
+Get a docker exec prefix to run arbitrary commands against the dev makeaplea container.
 
-    cp manchester_traffic_offences/settings/local.py.example make_a_plea/settings/local.py
+For example:
 
-    vagrant up
-    vagrant ssh
+#### `$(make dev-exec) python manage.py createsuperuser`
+Create a Django superuser.
 
-The vagrant bootstrap script will install everything you need to run the application server. All you need to do is override the relevant email settings in your local.py.
+#### `$(make dev-exec) bash`
+Open a bash shell
 
-Once you're ssh'd in run:
+#### `make stop`
+Stop all dev and test containers
 
-    ./manage.py runserver 0.0.0.0:8000
+### `make rm`
+Remove all dev and test containers
 
-to run the development web server, and browse to http://localhost:8000 to see the server.
-
-
-### To run a dev environment using docker:
-
-copy `docker/sample-local-env` to `docker/local-env`
-
-run:
-
-    docker-compose up
-
-This will install dependencies from requirements.txt but initial migrations will need to be run manually - see below.
-
-Navigate to:
-
-    {ip of docker machine}:8000
-
-To get an interactive prompt (needed to run migrations, etc.), run:
-
-    docker-compose run django /bin/bash
-
-You can also run commands directly, e.g:
-
-    docker-compose run django ./manage.py migrate
-
-
-Front-end development
----------------------
-
+## Front-end development
 Front-end development uses the [gulp](http://gulpjs.com/) task runner.
-
-### Install dependencies
-
-Make sure you have nodejs installed, then run:
-
-    npm install
+These should be run against the dev container with `$(make dev-exec) gulp ...`
 
 ### Gulp tasks
 
@@ -84,11 +56,13 @@ Creates `/make_a_plea/assets/healthcheck.txt` used for uptime stats.
 
 #### `gulp sass`
 
-Compiles all SASS source files to CSS stylesheets and sourcemaps into the `/make_a_plea/assets/stylesheets` and `/make_a_plea/assets/maps` directories.
+Compiles all SASS source files to CSS stylesheets and sourcemaps into the `/make_a_plea/assets/stylesheets` and 
+`/make_a_plea/assets/maps` directories.
 
 #### `gulp js`
 
-Compiles all JavaScript modules and scripts to the `/make_a_plea/assets/javascripts` directories and copies over the vendor dependencies.
+Compiles all JavaScript modules and scripts to the `/make_a_plea/assets/javascripts` directories and copies over
+the vendor dependencies.
 
 #### `gulp lint`
 
@@ -104,7 +78,8 @@ Optimises all image assets into `/make_a_plea/assets/images`.
 
 #### `gulp watch`
 
-Sets up a watch on a number of directories. When a file has been changed, the relevant tasks are then automatically run:
+Sets up a watch on a number of directories. When a file has been changed, the relevant tasks are then automatically
+run:
 - For files in `/make_a_plea/assets-src/stylesheets`: `sass` task
 - For files in `/make_a_plea/assets-src/javascripts`: `lint`, then `js` tasks
 - For files in `/make_a_plea/assets-src/images`: `images` task
@@ -120,18 +95,40 @@ This is the default task, which can be run by simply using `gulp`. It runs the f
 - `sass`
 
 
-
-Translations
-------------
+## Translations
 
 Translations for the Welsh language are currently achieved using gettext and .po language files.
 
-When content requiring translation has been added, the [source English language .po file](https://github.com/ministryofjustice/manchester_traffic_offences_pleas/blob/master/conf/locale/en/LC_MESSAGES/django.po) should be updated. To do so, run the makemessages script, which will update the .po file to include the latest source strings:
+When content requiring translation has been added, the
+[source English language .po file](https://github.com/ministryofjustice/manchester_traffic_offences_pleas/blob/master/conf/locale/en/LC_MESSAGES/django.po)
+should be updated. To do so, run the makemessages script, which will update the .po file to include the latest
+source strings:
 
-    ./makemessages.sh
+```
+./makemessages.sh
+```
 
-It may then be necessary to manually find strings marked as fuzzy, and check the source string matches the translation string in all cases.
+It may then be necessary to manually find strings marked as fuzzy, and check the source string matches the
+translation string in all cases.
 
-Once the file has been updated, it needs to be submitted to the relevant translation team, who should then provide an updated Welsh language .po file. Replace the existing `/conf/locale/cy/LC_MESSAGES/django.po` with this file, then compile the messages:
+Once the file has been updated, it needs to be submitted to the relevant translation team, who should then provide
+an updated Welsh language .po file. Replace the existing
+`/conf/locale/cy/LC_MESSAGES/django.po` with this file, then compile the messages:
 
-    ./manage.py compilemessages
+```
+./manage.py compilemessages
+```
+
+## Testing
+
+#### `make test`
+Run all tests
+
+#### `make test-unit`
+Run the unit tests
+
+#### `make test-cucumber`
+Run the cucumber tests
+
+#### `make test-psql`
+Open a psql client against the test database
