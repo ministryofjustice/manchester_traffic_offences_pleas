@@ -1,4 +1,4 @@
-import redgreenunittest as unittest
+import unittest
 
 from ..forms import CompanyFinancesForm
 

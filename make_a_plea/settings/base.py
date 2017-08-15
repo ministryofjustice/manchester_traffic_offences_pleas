@@ -12,8 +12,8 @@ here = lambda *x: join(abspath(dirname(__file__)), *x)
 PROJECT_ROOT = here("..")
 root = lambda *x: join(abspath(PROJECT_ROOT), *x)
 
-DEBUG = True
-template_DEBUG = DEBUG
+DEBUG = os.environ.get("DJANGO_DEBUG", "") == "True"
+TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     ('Ian George', 'ian.george@digital.justice.gov.uk'),
@@ -25,18 +25,18 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'manchester_traffic_offences',
-        'USER': 'postgres',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'NAME': os.environ.get('POSTGRES_DB', ''),
+        'USER': os.environ.get('DB_USERNAME', ''),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', ''),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOSTS", "localhost:8000"), ]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -115,8 +115,15 @@ PREMAILER_OPTIONS = {"base_url": os.environ.get("PREMAILER_BASE_URL", "https://w
                      "keep_style_tags": True,
                      "cssutils_logging_level": logging.ERROR}
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = os.environ.get("SECRET_KEY", "")
+#
+# Temporary keys to run collectstatic on docker image build.
+#
+# Override in your environment.
+#
+SECRET_KEY = os.environ.get("SECRET_KEY", "46c4b7f21d407686230bbe39ebd8da2834fe2bf2")
+ENCRYPTED_COOKIE_KEYS = [
+    os.environ.get("ENCRYPTED_COOKIE_KEY", "12fcb4f3db7032b8260fff87074dd29a71128277")
+]
 
 TEMPLATES = [
     {
@@ -175,7 +182,7 @@ COMPRESS_ENCRYPTED_COOKIE=True
 
 CSRF_COOKIE_HTTPONLY = True
 
-RATE_LIMIT = "120/m"
+RATE_LIMIT = os.environ.get("RATE_LIMIT", "120/m")
 
 WAFFLE_CACHE_PREFIX = "MaP_waffle"
 
@@ -278,18 +285,34 @@ LOGGING = {
 INTERNAL_IPS = ['127.0.0.1']
 
 # EMAILS
-CELERY_BROKER_URL = "SQS://"
-CELERY_BROKER_TRANSPORT_OPTIONS = {'region': 'eu-west-1'}
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "SQS://")
+CELERY_BROKER_TRANSPORT_OPTIONS = {
+    'region': 'eu-west-1',
+    'queue_name_prefix': os.environ.get("CELERY_QUEUE_POLLING_PREFIX", "dev-"),
+    'polling_interval': 1,
+    'visibility_timeout': 3600
+}
 CELERY_RESULT_BACKEND='django-db'
+CELERY_TASK_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
 
 SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "")
 
 # Secure mail
-SMTP_ROUTES = {"GSI": {"HOST": os.environ.get("GSI_EMAIL_HOST", "localhost"),
-                       "PORT": os.environ.get("GSI_EMAIL_PORT", 25)},
-               "PNN": {"HOST": os.environ.get("PNN_EMAIL_HOST", "localhost"),
-                       "PORT": os.environ.get("PNN_EMAIL_PORT", 25),
-                       "USE_TLS": False}}
+SMTP_ROUTES = {
+    "GSI": {
+        "HOST": os.environ.get("GSI_EMAIL_HOST", "localhost"),
+        "PORT": os.environ.get("GSI_EMAIL_PORT", 25),
+        "USERNAME": os.environ.get("GSI_EMAIL_USERNAME", ""),
+        "PASSWORD": os.environ.get("GSI_EMAIL_PASSWORD", ""),
+    },
+    "PNN": {
+        "HOST": os.environ.get("PNN_EMAIL_HOST", "localhost"),
+        "PORT": os.environ.get("PNN_EMAIL_PORT", 25),
+        "USERNAME": os.environ.get("PNN_EMAIL_USERNAME", ""),
+        "PASSWORD": os.environ.get("PNN_EMAIL_PASSWORD", ""),
+        "USE_TLS": False
+    }
+}
 
 # Public email
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "localhost")
@@ -340,8 +363,6 @@ RAVEN_CONFIG = {
     'release': os.environ.get("APP_GIT_COMMIT", "no-git-commit-available")
 }
 
-# .local.py overrides all the common settings.
-try:
-    from .local import *
-except ImportError:
-    pass
+GOOGLE_ANALYTICS_ID = os.environ.get("GOOGLE_ANALYTICS_ID", None)
+REDIRECT_START_PAGE = os.environ.get("REDIRECT_START_PAGE", "")
+STORE_USER_DATA = os.environ.get("STORE_USER_DATA", "") == "True"

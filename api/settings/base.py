@@ -37,7 +37,6 @@ PROJECT_APPS = [
 ]
 
 # Django-rest-framework throttling config
-
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': (
         'rest_framework.throttling.AnonRateThrottle',
@@ -66,9 +65,3 @@ PREMAILER_OPTIONS = {"base_url": os.environ.get("PREMAILER_BASE_URL", "https://w
                      "remove_classes": False,
                      "keep_style_tags": True,
                      "cssutils_logging_level": logging.ERROR}
-
-# .local.py overrides all the common settings.
-try:
-    from .local import *
-except ImportError:
-    pass

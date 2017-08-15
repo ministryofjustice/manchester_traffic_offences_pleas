@@ -6,7 +6,7 @@ from django.utils.safestring import mark_safe
 def globals(request):
     return {
         # Google Analytics ID (Tracking ID for the service)
-        'google_analytics_id': getattr(settings, "GOOGLE_ANALYTICS_ID", None),
+        'google_analytics_id': settings.GOOGLE_ANALYTICS_ID,
 
         # Version number
         'version': settings.VERSION,
