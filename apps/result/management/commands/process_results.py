@@ -1,6 +1,7 @@
 # coding=utf-8
 import cStringIO as StringIO
 import datetime as dt
+import os
 
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, get_connection
@@ -181,7 +182,9 @@ class Command(BaseCommand):
         if options["status_email_recipients"]:
             recipients = options["status_email_recipients"].split(",")
 
-            send_mail('make-a-plea resulting status email',
+            env = os.environ.get('ENV', '<ENV>')
+
+            send_mail('[{}] make-a-plea resulting status email'.format(env),
                       self._log_output.getvalue(),
                       settings.PLEA_EMAIL_FROM,
                       recipients, fail_silently=False)
