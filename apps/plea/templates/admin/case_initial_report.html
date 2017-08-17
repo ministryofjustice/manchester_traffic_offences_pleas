@@ -1,0 +1,52 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls admin_static admin_list admin_report_templatetags %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-list{% endblock %}
+
+{% if not is_popup %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label="plea" %}">Plea</a>
+    &rsaquo; <a href="{% url opts|admin_urlname:'changelist' %}">Cases</a>
+    &rsaquo; Initial Report
+</div>
+{% endblock %}
+{% endif %}
+
+{% block content %}
+<div class="actions">
+    {% if case_month_data %}
+	Case Data Before {{cutoff_date}}
+	<table>
+		<tr>
+			<th>Month</th>
+			<th>Year</th>
+			<th>Number of Welsh Cases</th>
+			<th>Total Number of Cases</th>
+			<th>Welsh Case Percentage</th>
+			<th>Number of Welsh Cases With English Postcode</th>
+			<th>Percentage of Welsh Cases With English Postcodes</th>
+		</tr>
+		{% for month in case_month_data %}
+			<tr>
+				<td>{% with int_month=month.month|add:"0" %}
+					{{ int_month|month_name}} {% endwith %}</td>
+				<td>
+					{{month.year|floatformat:"0"|slugify}}
+				</td>
+				<td>{{month.total_welsh_cases}}</td>
+				<td>{{month.total_cases}}</td>
+				<td>{% percentage month.total_welsh_cases month.total_cases %}</td>
+				<td>{{month.total_welsh_with_english_postcodes}}</td>
+				<td>{% percentage month.total_welsh_with_english_postcodes month.total_cases %}</td>
+			</tr>
+		{% endfor %}
+    </table>
+	* Only months with completed cases are shown
+	{% else %}
+	No Welsh Case Data Before 31/05/2017
+	{% endif %}
+</div>
+
+{% endblock %}
