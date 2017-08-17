@@ -8,8 +8,8 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render
 from django.template import RequestContext
-from django.db.models import Count
-
+from django.db.models import Count, When, IntegerField, Q
+from django.db.models import Case as case2
 from apps.plea.models import (
     AuditEvent,
     Court,
@@ -131,10 +131,13 @@ class CaseInitiationTypeFilter(admin.SimpleListFilter):
 
 class CaseAdmin(admin.ModelAdmin):
     list_display = ("urn", "sent", "processed", "charge_count", "initiation_type")
-    list_filter = ("sent", "processed", "ou_code", "imported", CaseInitiationTypeFilter)
+    list_filter = ("sent", "processed", "ou_code", "imported", "language", "completed_on", CaseInitiationTypeFilter)
     inlines = [InlineCaseAction, InlineOffence]
     search_fields = ["urn", "case_number"]
     readonly_fields = ('created',)
+    initial_report_template = "admin/case_initial_report.html"
+    ongoing_report_template = "admin/case_ongoing_report.html"
+    change_list_template = "admin/case_change_list.html"
 
     def charge_count(self, obj):
         return obj.offences.count()
@@ -143,6 +146,84 @@ class CaseAdmin(admin.ModelAdmin):
         case_model = super(CaseAdmin, self).get_queryset(request)
         case_model = case_model.prefetch_related('offences')
         return case_model
+
+    def get_urls(self):
+        from django.conf.urls import url
+
+        def wrap(view):
+            def wrapper(*args, **kwargs):
+                return self.admin_site.admin_view(view)(*args, **kwargs)
+            return update_wrapper(wrapper, view)
+
+        info = self.model._meta.app_label, self.model._meta.model_name
+
+        urls = [
+            url(
+                r'^initial_report/$',
+                wrap(self.initial_report_view),
+                name='%s_%s_initial_report' % info
+            ),
+            url(
+                r'^ongoing_report/$',
+                wrap(self.ongoing_report_view),
+                name='%s_%s_ongoing_report' % info
+            ),
+        ]
+
+        super_urls = super(CaseAdmin, self).get_urls()
+
+        return urls + super_urls
+
+    def initial_report_view(self, request):
+        cutoff_date = date(2017,7,31)
+        case_month_data = Case.objects.filter(completed_on__isnull=False).filter(completed_on__lte=cutoff_date)\
+            .extra(select={'month': "EXTRACT(month FROM completed_on)",'year': "EXTRACT(year FROM completed_on)", })\
+            .values('month', 'year')\
+            .annotate(total_welsh_cases=Count(case2(When(language='cy', then=1,))), total_cases=Count('completed_on'),
+                      total_welsh_with_english_postcodes=Count(case2(When(Q(language='cy')
+                                                                           & Q(extra_data__has_key='PostCode')
+                                                                           & ~Q(extra_data__PostCode__istartswith='cf')
+                                                                           & ~Q(extra_data__PostCode__istartswith='ch')
+                                                                           & ~Q(extra_data__PostCode__istartswith='hr')
+                                                                           & ~Q(extra_data__PostCode__istartswith='np')
+                                                                           & ~Q(extra_data__PostCode__istartswith='gl')
+                                                                           & ~Q(extra_data__PostCode__istartswith='ld')
+                                                                           & ~Q(extra_data__PostCode__istartswith='ll')
+                                                                           & ~Q(extra_data__PostCode__istartswith='sa')
+                                                                           & ~Q(extra_data__PostCode__istartswith='sy')
+                                                                          , then=1))))
+        return render(request, self.initial_report_template, {
+            'title': 'Case Initial Report',
+            'opts': self.model._meta,
+            'case_month_data': case_month_data,
+            'cutoff_date': cutoff_date,
+        })
+
+    def ongoing_report_view(self, request):
+        cutoff_date = date(2017,7,31)
+        case_month_data = Case.objects.filter(completed_on__isnull=False).filter(completed_on__gte=cutoff_date)\
+            .extra(select={'month': "EXTRACT(month FROM completed_on)",'year': "EXTRACT(year FROM completed_on)",})\
+            .values('month', 'year')\
+            .annotate(total_welsh_cases=Count(case2(When(language='cy', then=1,))), total_cases=Count('completed_on'),
+                      total_welsh_with_english_postcodes=Count(case2(When(Q(language='cy')
+                                                                           & Q(extra_data__has_key='PostCode')
+                                                                           & ~Q(extra_data__PostCode__istartswith='cf')
+                                                                           & ~Q(extra_data__PostCode__istartswith='ch')
+                                                                           & ~Q(extra_data__PostCode__istartswith='hr')
+                                                                           & ~Q(extra_data__PostCode__istartswith='np')
+                                                                           & ~Q(extra_data__PostCode__istartswith='gl')
+                                                                           & ~Q(extra_data__PostCode__istartswith='ld')
+                                                                           & ~Q(extra_data__PostCode__istartswith='ll')
+                                                                           & ~Q(extra_data__PostCode__istartswith='sa')
+                                                                           & ~Q(extra_data__PostCode__istartswith='sy')
+                                                                          , then=1))))
+        return render(request, self.ongoing_report_template, {
+            'title': 'Case Ongoing Report',
+            'opts': self.model._meta,
+            'case_month_data': case_month_data,
+            'cutoff_date': cutoff_date,
+        })
+
 
 
 class OffenceFilterAdmin(admin.ModelAdmin):
