@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import datetime as dt
+import os
+
+from mock import patch
 from decimal import Decimal
 from cStringIO import StringIO
 
@@ -372,6 +375,15 @@ class ProcessResultsTestCase(TestCase):
 
         self.assertEquals(len(mail.outbox), 1)
         self.assertEquals(mail.outbox[0].to, ["statusemail@testxyz.com"])
+
+    @patch('os.environ.get')
+    def test_subject_includes_env(self, mock_env):
+        self.opts["dry_run"] = True
+        self.opts["status_email_recipients"] = "statusemail@testxyz.com"
+
+        mock_env.return_value = 'unit_test'
+        self.command.handle(**self.opts)
+        self.assertEquals(mail.outbox[0].subject, "[unit_test] make-a-plea resulting status email")
 
     def test_no_supplied_email_no_result(self):
 
