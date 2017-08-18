@@ -1,0 +1,19 @@
+# Note that this config duplicates the base urls in makeaplea-deploy
+# Note also that some required fixtures will not be installed on prod so it will
+# never be possible to run all these tests on prod.
+---
+
+local:
+    app_endpoint: http://127.0.0.1:9000/
+    api_endpoint: http://127.0.0.1:9001/v0/
+development:
+    app_endpoint: https://dev.makeaplea.dsd.io/
+    api_endpoint: https://dev.makeaplea.dsd.io/v0/
+staging:
+    app_endpoint: https://makeaplea.dsd.io/
+    api_endpoint: https://makeaplea.dsd.io/v0/
+production:
+    app_endpoint: https://www.makeaplea.service.gov.uk
+    api_endpoint: https://www.makeaplea.service.gov.uk/v0/
+
+

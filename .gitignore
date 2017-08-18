@@ -59,7 +59,7 @@ make_a_plea/settings/local.py
 api/settings/local.py
 
 # collect static output directory
-#make_a_plea/assets/
+make_a_plea/assets/
 make_a_plea/static/
 
 .DS_Store
@@ -96,8 +96,9 @@ moj_template/
 
 /docker/local-env
 
-# Ignore screenshots
+# Ignore capybara output
 /screenshot_*
+index.html*
 
 *translation_files.zip
 zendump.csv

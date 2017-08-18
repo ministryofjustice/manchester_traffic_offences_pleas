@@ -21,8 +21,10 @@ import datetime
 import random
 import string
 
+from django.contrib.auth.models import User
 from make_a_plea.tests import yield_waffle
 from apps.plea.models import INITIATION_TYPE_CHOICES, NOTICE_TYPES_CHOICES
+from apps.plea.models import AuditEvent, Case, Court, Offence, OUCode
 
 
 NOW = datetime.datetime.utcnow()
@@ -50,14 +52,17 @@ class FixtureCategories(object):
         """Initialise category-related concerns."""
 
         self.category = getattr(self, self.options["category"])
+        self.modelmap = {
+            "plea.case": Case,
+            "plea.auditevent": AuditEvent,
+            "plea.offence": Offence,
+            "plea.court": Court,
+            "plea.oucode": OUCode,
+            "auth.user": User,
+        }
         self.pk_offsets = {  # Starting pks for this category of fixtures
             k: self.PK_OFFSETS[self.options["category"]]
-            for k in [
-                "plea.auditevent",
-                "plea.case",
-                "plea.court",
-                "plea.offence",
-            ]
+            for k in self.modelmap
         }
 
     def yield_batches(self):
@@ -80,12 +85,226 @@ class FixtureCategories(object):
 
     def cucumber(self, count):
         """
-        Return fixture data for cucumber tests. Ignores count parameter.
+        Return fixture data for all cucumber tests. Ignores count parameter.
 
         This method demonstrates using relative pk offsets while creating the
         data and updating the offsets based on the size of the data created.
         """
+        data = {}
+        for meth in dir(self):
+            if meth.startswith("cucumber_"):
+                meth_data = getattr(self, meth)(count)
+                for key in meth_data:
+                    if key not in data:
+                        data[key] = []
+                    for item in meth_data[key]:
+                        data[key].append(item)
+        return data
 
+    def cucumber_users(self, count):
+        """Define an admin user for the cucmber tests to use the admin interface"""
+
+        return {
+            "auth.user": [
+                {
+                    "username": "admin",
+                    "password": "admin",
+                    "email": "root@localhost",
+                    "is_superuser": True,
+                    "is_staff": True,
+                    "is_active": True,
+                }
+            ]
+        }
+
+    def cucumber_duplicate_urns(self, count):
+        """Fixtures with duplicate URNs"""
+
+        data = {
+            "plea.oucode": [
+                {
+                    "id": self.pk_offsets["plea.oucode"] + 1,
+                    "court": self.pk_offsets["plea.court"] + 1,
+                    "ou_code": "11AA1",
+                },
+                {
+                    "id": self.pk_offsets["plea.oucode"] + 2,
+                    "court": self.pk_offsets["plea.court"] + 2,
+                    "ou_code": "11BB1",
+                },
+            ],
+            "plea.court": [
+                # A court that uses strict validation
+                {
+                    "id": self.pk_offsets["plea.court"] + 1,
+                    "court_code": "1234",
+                    "region_code": 11,
+                    "court_name": 'enforcing test court for duplicate urns',
+                    "court_address": ''.join(yield_waffle(words=3, lines=4)),
+                    "court_telephone": "1234",
+                    "court_email": "nobody@localhost",
+                    "court_language": "en",
+                    "submission_email": "nobody@localhost",
+                    "court_receipt_email": "nobody@localhost",
+                    "local_receipt_email": "nobody@localhost",
+                    "plp_email": "nobody@localhost",
+                    "enabled": True,
+                    "test_mode": False,
+                    "notice_types": "both",
+                    "validate_urn": True,
+                    "display_case_data": True,
+                    "enforcement_email": "nobody@localhost",
+                    "enforcement_telephone": "1234",
+                },
+
+                # A court that does not use strict validation
+                {
+                    "id": self.pk_offsets["plea.court"] + 2,
+                    "court_code": "1235",
+                    "region_code": 11,
+                    "court_name": 'non-enforcing test court for duplicate urns',
+                    "court_address": ''.join(yield_waffle(words=3, lines=4)),
+                    "court_telephone": "1234",
+                    "court_email": "nobody@localhost",
+                    "court_language": "en",
+                    "submission_email": "nobody@localhost",
+                    "court_receipt_email": "nobody@localhost",
+                    "local_receipt_email": "nobody@localhost",
+                    "plp_email": "nobody@localhost",
+                    "enabled": True,
+                    "test_mode": False,
+                    "notice_types": "both",
+                    "validate_urn": False,
+                    "display_case_data": True,
+                    "enforcement_email": "nobody@localhost",
+                    "enforcement_telephone": "1234",
+                }
+            ],
+            "plea.auditevent": [],
+            "plea.offence": [],
+            "plea.case": []
+        }
+
+        # A case for each combination of parameter options
+        for init_type in ["J", "R", "O"]:
+            for OU_null in [True, False]:
+                for sent in [True, False]:
+                    for name_match in [True, False]:
+                        for postcode_match in [True, False]:
+                            for dob_match in [True, False]:
+                                for strict in [True, False]:
+                                    for OU_match in [True, False]:
+                                        for personal in [True, False]:
+                                            init_type_weighting = \
+                                                int("J" in init_type) * 1 + \
+                                                int("R" in init_type) * 2 + \
+                                                int("O" in init_type) * 4
+                                            urn_part = sum([
+                                                init_type_weighting * 256,
+                                                OU_null * 128,
+                                                sent * 64,
+                                                name_match * 32,
+                                                postcode_match * 16,
+                                                dob_match * 8,
+                                                strict * 4,
+                                                OU_match * 2,
+                                                personal * 1,
+                                            ])
+                                            urn = "11{court}{urn_part:05d}17".format(
+                                                urn_part=urn_part,
+                                                court="AA" if strict else "BB",
+                                            )
+
+                                            # The case the user is trying to plea
+                                            data["plea.case"].append({
+                                                "id": self.pk_offsets["plea.case"] + urn_part,
+                                                "name": "Case Name",
+                                                "urn": urn,
+                                                "case_number": 123456,
+                                                "email": "root@localhost",
+                                                "email_permission": True,
+                                                "date_of_hearing": None,
+                                                "imported": True,
+                                                "ou_code": None if OU_null else "11AA1",
+                                                "initiation_type": "O",
+                                                "language": "en",
+                                                "sent": False,
+                                                "processed": False,
+                                                "created": NOW - 10 * ONE_DAY,
+                                                "completed_on": None,
+                                                "extra_data": {
+                                                        "Surname": "Name",
+                                                        "Forename1": "Case",
+                                                        "Forename2": "",
+                                                        "DOB": "1950-01-29T22:21:21",
+                                                        "Gender": "N",
+                                                        "Address2": "Triumph Boulevard",
+                                                        "PostCode": "H8 3X",
+                                                        "Address1": "319 Harley St",
+                                                        "DateOfHearing": "2017-03-29T20:18:28"
+                                                    },
+                                            })
+
+                                            # A case with the same URN that may cause issues when pleading
+                                            data["plea.case"].append({
+                                                "id": self.pk_offsets["plea.case"] + urn_part,
+                                                "urn": urn,
+                                                "name": "Case Name" if name_match else "Different Name",
+                                                "case_number": 123456,
+                                                "email": "root@localhost",
+                                                "email_permission": True,
+                                                "date_of_hearing": None,
+                                                "imported": True,
+                                                "ou_code": None if OU_null else "11AA1" if OU_match else "11BB1",
+                                                "initiation_type": "O",
+                                                "language": "en",
+                                                "sent": sent,
+                                                "processed": False,
+                                                "created": NOW - 10 * ONE_DAY,
+                                                "completed_on": None,
+                                                "extra_data": {
+                                                        "Surname": "Name",
+                                                        "Forename1": "Case" if name_match else "Different",
+                                                        "Forename2": "",
+                                                        "DOB": "1950-01-29T22:21:21" if dob_match else "1951-01-29T22:21:21",
+                                                        "Gender": "N",
+                                                        "Address2": "Triumph Boulevard",
+                                                        "PostCode": "H8 3X" if postcode_match else "H8 4X",
+                                                        "Address1": "319 Harley St",
+                                                        "DateOfHearing": "2017-03-29T20:18:28"
+                                                    },
+                                            })
+
+                                            if not personal:
+                                                data["plea.case"][-1]["extra_data"]["OrganisationName"] = "Some Org"
+                                                data["plea.case"][-2]["extra_data"]["OrganisationName"] = "Some Org"
+
+        # Deal with the fact the two cases currently have the same id
+        case_count = len(data["plea.case"])
+        updated_cases = []
+        for index, case in enumerate(data["plea.case"]):
+            if index % 2 == 0:
+                case["id"] += case_count
+            updated_cases.append(case)
+        data["plea.case"] = updated_cases
+
+        # Add an offence for each case
+        for index, case in enumerate(data["plea.case"]):
+            data["plea.offence"].append({
+                "id": self.pk_offsets["plea.offence"] + index,
+                "case_id": case["id"],
+                "offence_code": "ZP97",
+                "offence_short_title": "Charge of failing to write cucumber tests, fine ${}".format(
+                    random.randint(33, 99)),
+            })
+
+        # Increment the pk counter for the items we've created
+        for model in data:
+            self.pk_offsets[model] += len(data[model])
+
+        return data
+
+    def disabled_cucumber_misc(self, count):
         data = {
             "plea.court": [],
             "plea.auditevent": [],
@@ -169,17 +388,17 @@ class FixtureCategories(object):
                     "created": NOW - 10 * ONE_DAY,
                     "completed_on": NOW - 5 * ONE_DAY,
                     "extra_data": {
-                            "Surname": "User Completed",
-                            "Forename1": "Some",
-                            "Forename2": "Valid",
-                            "DOB": "1950-01-29T22:21:21",
-                            "Gender": "N",
-                            "Address2": "Triumph Boulevard",
-                            "PostCode": "H8 3X",
-                            "Address1": "12 Harley St",
-                            "DateOfHearing": (NOW + 14 * ONE_DAY).strftime("%Y-%m-%d")
+                        "Surname": "User Completed",
+                        "Forename1": "Some",
+                        "Forename2": "Valid",
+                        "DOB": "1950-01-29T22:21:21",
+                        "Gender": "N",
+                        "Address2": "Triumph Boulevard",
+                        "PostCode": "H8 3X",
+                        "Address1": "12 Harley St",
+                        "DateOfHearing": (NOW + 14 * ONE_DAY).strftime("%Y-%m-%d")
                     },
-                },
+                }
 
                 # TODO: A Case that is too old to plea
                 # TODO: A Case that required extended validation to complete
@@ -188,11 +407,6 @@ class FixtureCategories(object):
             ]
         }
 
-        # Increment the pk counter for the items we've created
-        for model in data:
-            self.pk_offsets[model] += len(data[model])
-
-        return data
 
     def performance(self, count):
         """

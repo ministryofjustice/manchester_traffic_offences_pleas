@@ -24,7 +24,9 @@ import datetime
 import os
 import json
 
-from apps.plea.models import AuditEvent, Case, Court, Offence
+from django.db.utils import IntegrityError
+
+from apps.plea.models import Case, Court
 
 
 ROOT_DIR = os.path.dirname(
@@ -47,7 +49,6 @@ class FixtureLoader(object):
 
     def get_dependency_list(self, data):
         """Use topological sorting to determine dependency list of objects"""
-
         relationships = {}
         for lkey in data:
             relationships[lkey] = []
@@ -101,15 +102,8 @@ class FixtureLoader(object):
     def load(self):
         """Loads data directly, by batch"""
 
-        modelmap = {
-            "plea.case": Case,
-            "plea.auditevent": AuditEvent,
-            "plea.offence": Offence,
-            "plea.court": Court,
-        }
-
         for batch in self.yield_batches():
-            self.process(batch, modelmap)
+            self.process(batch, self.modelmap)
 
 
 class FixtureGenerator(object):
@@ -150,11 +144,14 @@ class FixtureMethods(FixtureLoader, FixtureGenerator):
 
     def get_item_from_data(self, data, model, pk):
         """Find an instance of a model in the data"""
-        return [
-            i
-            for i in data[model]
-            if i["id"] == pk
-        ][0]
+        filtered = []
+        for i in data[model]:
+            try:
+                if i["id"] == pk:
+                    filtered.append(i)
+            except KeyError as e:
+                raise e
+        return filtered[0]
 
     def process(self, data, mapping=None):
         """
@@ -215,15 +212,15 @@ class FixtureMethods(FixtureLoader, FixtureGenerator):
                         del item["id"]
 
                     # Handle a case
-                    if mapping[model] == Case:
+                    if model == "plea.case":
                         pass
 
                     # Handle a court
-                    if mapping[model] == Court:
+                    if model == "plea.court":
                         pass
 
                     # Handle an audit event
-                    if mapping[model] == AuditEvent:
+                    if model == "plea.auditevent":
                         if "case" in item:
                             if item["case"]:  # Find the actual case (already loaded)
                                 item["case"] = Case.objects.get(
@@ -235,17 +232,36 @@ class FixtureMethods(FixtureLoader, FixtureGenerator):
                                 )
 
                     # Handle an offence
-                    if mapping[model] == Offence:
-                        if item["case_id"]:  # Find the actual case (already loaded)
+                    if model == "plea.offence":
+                        if item["case_id"]:  # Find the case id (already loaded)
                             item["case_id"] = self.get_item_from_data(
                                 data,
                                 "plea.case",
                                 item["case_id"],
                             )["pk"]
 
+                    # Handle an OUCode
+                    if model == "plea.oucode":
+                        if item["court"]:  # Find the actual court (already loaded)
+                            item["court"] = Court.objects.get(
+                                pk=self.get_item_from_data(
+                                    data,
+                                    "plea.court",
+                                    item["court"],
+                                )["pk"]
+                            )
+
                     # Create the object and update the item's id
                     obj = mapping[model](**item)
-                    obj.save()
+                    if model == "auth.user":  # Handle user password hashing
+                        obj.set_password(item["password"])
+                        try:
+                            obj.save()
+                        except IntegrityError:
+                            pass
+                    else:
+                        obj.save()
+
                     item["pk"] = obj.id
 
                     try:  # Put the id back so that other references to this object may be processed

@@ -2,6 +2,11 @@ Given(/^I visit the enter urn page$/) do
   enter_urn_page.load_page
 end
 
+When(/^I enter the URN (.*)$/) do |urn|
+  enter_urn_page.section_urn.urn_field.set(urn)
+  enter_urn_page.continue_button.click
+end
+
 When(/^I enter an invalid URN$/) do
   enter_urn_page.section_urn.urn_field.set('faoan')
   enter_urn_page.continue_button.click
@@ -16,6 +21,27 @@ When(/^I enter an invalid URN three times$/) do
   3.times do
     enter_urn_page.section_urn.urn_field.set('faoan')
     enter_urn_page.continue_button.click
+  end
+end
+
+Then(/^I expect the result (.*)$/) do |result|
+  if result == "success"
+    header = your_case_continued_page.page_header.text
+    expect(['Your case continued', 'Your case']).to include(header)
+    if header == "Your case"
+      puts "Your case"
+    elsif header == "Your case continued"
+      puts "Your case continued"
+    end
+
+  elsif result == "errors"
+    puts "Errors"
+    error = enter_urn_page.error_summary
+    expect(error.h1[0].text).to eq 'You need to fix the errors on this page before continuing.'
+  elsif result == "cannot"
+    puts "Cannot plea"
+    error = enter_urn_page.error_summary
+    expect(error.h1[0].text).to eq "You can't make a plea online"
   end
 end
 
