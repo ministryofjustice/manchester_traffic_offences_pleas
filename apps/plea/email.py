@@ -102,7 +102,7 @@ def send_plea_email(context_data):
 
     case.save()
 
-    if getattr(settings, "STORE_USER_DATA", False):
+    if settings.STORE_USER_DATA:
         encrypt_and_store_user_data(case.urn, case.id, context_data)
 
     if not court_obj.test_mode:

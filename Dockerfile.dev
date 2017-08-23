@@ -8,9 +8,8 @@ COPY apt/ ./apt
 RUN apt-get -y update && ./apt/production.sh
 
 # Python dependencies
-COPY requirements.txt ./requirements.txt
 COPY requirements/ ./requirements
-RUN pip install -r ./requirements.txt
+RUN pip install -r ./requirements/dev.txt
 
 RUN mkdir -p /user_data/.gnupg ./make_a_plea/assets
 

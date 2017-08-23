@@ -1,10 +1,7 @@
 -r base.txt
 
-django-jenkins==0.110.0
 coverage==4.3.4
 mock==1.0.1
-
-redgreenunittest==0.1.1
 
 # Fixture loading
 PyYAML==3.12

@@ -1,14 +1,14 @@
 import os
 
-from redgreenunittest.django.runner import RedGreenDiscoverRunner
+from django.test.runner import DiscoverRunner
 from django.conf import settings
 
 from apps.plea.encrypt import clear_user_data, gpg
 
 
-class MAPTestRunner(RedGreenDiscoverRunner):
+class MAPTestRunner(DiscoverRunner):
     def __init__(self, *args, **kwargs):
-        settings.TESTING = True
+        settings.TEST = True
 
         super(MAPTestRunner, self).__init__(*args, **kwargs)
 

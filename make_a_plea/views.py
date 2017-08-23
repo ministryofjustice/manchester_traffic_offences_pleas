@@ -11,7 +11,7 @@ from waffle.decorators import waffle_switch
 
 
 def start(request):
-    if getattr(settings, "REDIRECT_START_PAGE", ""):
+    if settings.REDIRECT_START_PAGE:
         return http.HttpResponseRedirect(settings.REDIRECT_START_PAGE)
 
     return render(request, "start.html")
