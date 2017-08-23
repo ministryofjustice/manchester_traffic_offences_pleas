@@ -3,9 +3,7 @@ services:
   makeaplea:
     build:
       context: .
-      dockerfile: Dockerfile
-      args:
-        PYTHON_REQUIREMENTS: ./requirements/dev.txt
+      dockerfile: Dockerfile.dev
     environment:
       DJANGO_SETTINGS_MODULE: "make_a_plea.settings.dev"
       DB_HOST:     "postgres"
@@ -21,9 +19,7 @@ services:
   makeaplea_api:
     build:
       context: .
-      dockerfile: Dockerfile
-      args:
-        PYTHON_REQUIREMENTS: ./requirements/dev.txt
+      dockerfile: Dockerfile.dev
     environment:
       DJANGO_SETTINGS_MODULE: "api.settings.dev"
       DB_HOST:     "postgres"
