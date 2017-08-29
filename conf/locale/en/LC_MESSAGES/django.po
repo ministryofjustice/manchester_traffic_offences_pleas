@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-11 09:29+0100\n"
+"POT-Creation-Date: 2017-08-29 12:07+0100\n"
 "PO-Revision-Date: 2015-11-16 16:24+0000\n"
 "Last-Translator: Fred Marecesche\n"
 "Language-Team: English (http://www.transifex.com/make-a-plea-gds/make-a-plea/language/en/)\n"
@@ -73,7 +73,7 @@ msgstr "Email address"
 msgid "If you'd like us to get back to you, tell us your email address below:"
 msgstr "If you'd like us to get back to you, tell us your email address below:"
 
-#: apps/feedback/stages.py:42 apps/plea/stages.py:965
+#: apps/feedback/stages.py:42 apps/plea/stages.py:970
 msgid "Submission Error"
 msgstr "Submission Error"
 
@@ -120,100 +120,100 @@ msgstr "If you have questions about your case, you'll need to contact your court
 msgid "Continue"
 msgstr "Continue"
 
-#: apps/forms/fields.py:67
+#: apps/forms/fields.py:59
 msgid "Day"
 msgstr "Day"
 
-#: apps/forms/fields.py:72
+#: apps/forms/fields.py:64
 msgid "Month"
 msgstr "Month"
 
-#: apps/forms/fields.py:77
+#: apps/forms/fields.py:69
 msgid "Year"
 msgstr "Year"
 
-#: apps/forms/forms.py:6
+#: apps/forms/forms.py:7
 msgid "Yes (v1)"
 msgstr "Yes"
 
-#: apps/forms/forms.py:7
+#: apps/forms/forms.py:8
 msgid "No (v1)"
 msgstr "No"
 
-#: apps/forms/forms.py:8
+#: apps/forms/forms.py:9
 msgid "Yes (v2)"
 msgstr "Yes"
 
-#: apps/forms/forms.py:9
+#: apps/forms/forms.py:10
 msgid "No (v2)"
 msgstr "No"
 
-#: apps/forms/forms.py:10
+#: apps/forms/forms.py:11
 msgid "Yes (v3)"
 msgstr "Yes"
 
-#: apps/forms/forms.py:11
+#: apps/forms/forms.py:12
 msgid "No (v3)"
 msgstr "No"
 
-#: apps/forms/forms.py:12
+#: apps/forms/forms.py:13
 msgid "Yes (v4)"
 msgstr "Yes"
 
-#: apps/forms/forms.py:13
+#: apps/forms/forms.py:14
 msgid "No (v4)"
 msgstr "No"
 
-#: apps/forms/forms.py:14
+#: apps/forms/forms.py:15
 msgid "Yes (v5)"
 msgstr "Yes"
 
-#: apps/forms/forms.py:15
+#: apps/forms/forms.py:16
 msgid "No (v5)"
 msgstr "No"
 
-#: apps/forms/forms.py:16
+#: apps/forms/forms.py:17
 msgid "Yes (v6)"
 msgstr "Yes"
 
-#: apps/forms/forms.py:17
+#: apps/forms/forms.py:18
 msgid "No (v6)"
 msgstr "No"
 
-#: apps/forms/templates/widgets/partials/label_text.html:7
+#: apps/forms/templates/widgets/partials/label_text.html:9
 msgid "(optional)"
 msgstr "(optional)"
 
-#: apps/forms/templates/widgets/plea_radio_field.html:26
+#: apps/forms/templates/widgets/plea_radio_field.html:28
 #, python-format
 msgid "Charge %(counter)s"
 msgstr "Charge %(counter)s"
 
-#: apps/forms/templates/widgets/plea_radio_field.html:29
+#: apps/forms/templates/widgets/plea_radio_field.html:31
 #, python-format
 msgid "Your plea for charge %(counter)s"
 msgstr "Your plea for charge %(counter)s"
 
-#: apps/forms/templates/widgets/plea_radio_field.html:31
+#: apps/forms/templates/widgets/plea_radio_field.html:33
 #, python-format
 msgid "Plea for charge %(counter)s"
 msgstr "Plea for charge %(counter)s"
 
-#: apps/forms/templates/widgets/plea_radio_field.html:39
+#: apps/forms/templates/widgets/plea_radio_field.html:43
 msgid "Hide charge information"
 msgstr "Hide charge information"
 
-#: apps/forms/templates/widgets/plea_radio_field.html:40
+#: apps/forms/templates/widgets/plea_radio_field.html:48
 msgid "View charge information"
 msgstr "View charge information"
 
-#: apps/forms/templates/widgets/plea_radio_field.html:51
+#: apps/forms/templates/widgets/plea_radio_field.html:63
 msgid "Your plea for this charge"
 msgstr "Your plea for this charge"
 
-#: apps/forms/templates/widgets/plea_radio_field.html:87
+#: apps/forms/templates/widgets/plea_radio_field.html:116
 #: apps/plea/templates/emails/attachments/plea_email.html:33
-#: apps/plea/templates/emails/attachments/plp_email.html:33
+#: apps/plea/templates/emails/attachments/plp_email.html:40
 #: apps/plea/templates/partials/page_title_plea.html:8
 #: apps/plea/templates/partials/review_plea.html:22
 #: apps/plea/templates/review.html:57
@@ -222,17 +222,17 @@ msgid_plural "Your pleas"
 msgstr[0] "Your plea"
 msgstr[1] "Your pleas"
 
-#: apps/forms/templates/widgets/plea_radio_field.html:87
+#: apps/forms/templates/widgets/plea_radio_field.html:119
 #: apps/plea/forms.py:956 apps/plea/templates/partials/review_plea.html:31
 msgid "Guilty"
 msgstr "Guilty"
 
-#: apps/forms/templates/widgets/plea_radio_field.html:87
+#: apps/forms/templates/widgets/plea_radio_field.html:121
 #: apps/plea/forms.py:957 apps/plea/templates/partials/review_plea.html:33
 msgid "Not guilty"
 msgstr "Not guilty"
 
-#: apps/forms/templates/widgets/plea_radio_field.html:88
+#: apps/forms/templates/widgets/plea_radio_field.html:127
 msgid "Change your plea for this charge"
 msgstr "Change your plea for this charge"
 
@@ -1192,11 +1192,11 @@ msgstr "The information you've entered does not match our records."
 msgid "Check the paper form sent by the police then enter the details exactly as shown on it."
 msgstr "Check the paper form sent by the police then enter the details exactly as shown on it."
 
-#: apps/plea/stages.py:950
+#: apps/plea/stages.py:955
 msgid "Your session has timed out"
 msgstr "Your session has timed out"
 
-#: apps/plea/stages.py:966
+#: apps/plea/stages.py:971
 msgid "There seems to have been a problem submitting your plea. Please try again."
 msgstr "There seems to have been a problem submitting your plea. Please try again."
 
@@ -1631,7 +1631,7 @@ msgid "Company representative details"
 msgstr "Company representative details"
 
 #: apps/plea/templates/emails/attachments/plea_email.html:35
-#: apps/plea/templates/emails/attachments/plp_email.html:35
+#: apps/plea/templates/emails/attachments/plp_email.html:42
 #: apps/plea/templates/review.html:61
 msgid "Company's plea"
 msgid_plural "Company's pleas"
@@ -2109,39 +2109,39 @@ msgstr "Charge %(charge_number)s of %(total)s"
 msgid "Charge %(charge_number)s of %(total)s continued"
 msgstr "Charge %(charge_number)s of %(total)s continued"
 
-#: apps/plea/templates/plea.html:61
+#: apps/plea/templates/plea.html:66
 msgid "Pleading guilty to this charge means you do not need to come to court to respond to this charge - we'll send you details of the court's decision and what to do next."
 msgstr "Pleading guilty to this charge means you do not need to come to court to respond to this charge - we'll send you details of the court's decision and what to do next."
 
-#: apps/plea/templates/plea.html:65
+#: apps/plea/templates/plea.html:70
 msgid "Pleading guilty to this charge means a company representative does not need to come to court to respond to this charge - we'll send details of the court's decision and what happens next."
 msgstr "Pleading guilty to this charge means a company representative does not need to come to court to respond to this charge - we'll send details of the court's decision and what happens next."
 
-#: apps/plea/templates/plea.html:68
+#: apps/plea/templates/plea.html:73
 msgid "However, you do have the option to plead guilty in court if you want to."
 msgstr "However, you do have the option to plead guilty in court if you want to."
 
-#: apps/plea/templates/plea.html:97
+#: apps/plea/templates/plea.html:103
 msgid "Pleading not guilty to this charge means we'll send details of a date for you to come to court for a trial."
 msgstr "Pleading not guilty to this charge means we'll send details of a date for you to come to court for a trial."
 
-#: apps/plea/templates/plea.html:99 apps/plea/templates/plea.html:113
+#: apps/plea/templates/plea.html:105 apps/plea/templates/plea.html:119
 msgid "Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date."
 msgstr "Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date."
 
-#: apps/plea/templates/plea.html:111
+#: apps/plea/templates/plea.html:117
 msgid "Pleading not guilty to this charge means we'll send details of a date for a company representative to come to court for a trial."
 msgstr "Pleading not guilty to this charge means we'll send details of a date for a company representative to come to court for a trial."
 
-#: apps/plea/templates/plea.html:116
+#: apps/plea/templates/plea.html:122
 msgid "Tell us why you believe the company is not guilty:"
 msgstr "Tell us why you believe the company is not guilty:"
 
-#: apps/plea/templates/plea.html:119
+#: apps/plea/templates/plea.html:125
 msgid "Does your company representative need an interpreter in court?"
 msgstr "Does your company representative need an interpreter in court?"
 
-#: apps/plea/templates/plea.html:129
+#: apps/plea/templates/plea.html:135
 msgid "Evidence and witness information"
 msgstr "Evidence and witness information"
 
@@ -2373,23 +2373,23 @@ msgstr "How much is your monthly Pension Credit payment?"
 msgid "What is your average weekly take home pay (after tax)?"
 msgstr "What is your average weekly take home pay (after tax)?"
 
-#: apps/plea/templates/your_status.html:13
+#: apps/plea/templates/your_status.html:12
 msgid "Because you've pleaded guilty to at least 1 charge you must now tell us about your employment status."
 msgstr "Because you've pleaded guilty to at least 1 charge you must now tell us about your employment status."
 
-#: apps/plea/templates/your_status.html:14
+#: apps/plea/templates/your_status.html:13
 msgid "This will:"
 msgstr "This will:"
 
-#: apps/plea/templates/your_status.html:16
+#: apps/plea/templates/your_status.html:15
 msgid "make sure your fine is based on your circumstances"
 msgstr "make sure your fine is based on your circumstances"
 
-#: apps/plea/templates/your_status.html:17
+#: apps/plea/templates/your_status.html:16
 msgid "help to speed up the processing of your case"
 msgstr "help to speed up the processing of your case"
 
-#: apps/result/management/commands/process_results.py:96
+#: apps/result/management/commands/process_results.py:97
 msgid "Make a plea result"
 msgstr "Make a plea result"
 
