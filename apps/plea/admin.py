@@ -103,7 +103,7 @@ class InlineOffence(admin.StackedInline):
 class CaseInitiationTypeFilter(admin.SimpleListFilter):
     """Allow filtering Cases by Initiation type including compound views"""
 
-    title = _('Initiation type')
+    title = 'Initiation type'
     parameter_name = 'initiation_type'
 
     def lookups(self, request, model_admin):
@@ -248,7 +248,7 @@ class UrnFilter(admin.SimpleListFilter):
     """Allow filtering by URN from case or event_data"""
 
     TOP_URN_LIMIT = 20  # Display this many URNs in the filter
-    title = _('Top {0} URNs'.format(TOP_URN_LIMIT))
+    title = 'Top {0} URNs'.format(TOP_URN_LIMIT)
     parameter_name = 'urn'
 
     def lookups(self, request, model_admin):
@@ -286,7 +286,7 @@ class UrnFilter(admin.SimpleListFilter):
 class AuditEventInitiationTypeFilter(admin.SimpleListFilter):
     """Allow filtering Audit events by Initiation type including compound views"""
 
-    title = _('Initiation type')
+    title = 'Initiation type'
     parameter_name = 'initiation_type'
 
     def lookups(self, request, model_admin):
