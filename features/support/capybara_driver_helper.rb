@@ -13,7 +13,6 @@ end
 
 Capybara.register_driver :firefox do |app|
   profile = Selenium::WebDriver::Firefox::Profile.new
-  profile.enable_firebug
   profile['browser.cache.disk.enable'] = false
   profile['browser.cache.memory.enable'] = false
   Capybara::Selenium::Driver.new(app, browser: :firefox, profile: profile)
@@ -42,6 +41,4 @@ end
 
 Capybara.javascript_driver = Capybara.default_driver
 Capybara.current_driver = Capybara.default_driver
-# Capybara.app_host = ENV['HOST'] if ENV['HOST']
-# TODO: get this running locally http://127.0.0.1:
 Capybara.app_host = "https://www.makeaplea.service.gov.uk#{Capybara.server_port}"

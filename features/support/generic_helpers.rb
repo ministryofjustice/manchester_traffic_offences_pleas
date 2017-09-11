@@ -40,3 +40,15 @@ module WaitUntil
     wait.until(&block)
   end
 end
+
+def base_page
+  @base_page ||= BasePage.new
+end
+
+def common_page
+  @common_page ||= CommonPage.new
+end
+
+def enter_urn_page
+  @enter_urn_page ||= EnterUrnPage.new
+end
