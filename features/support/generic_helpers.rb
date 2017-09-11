@@ -52,3 +52,8 @@ end
 def enter_urn_page
   @enter_urn_page ||= EnterUrnPage.new
 end
+
+def your_case_page
+  @your_case_page ||= YourCasePage.new
+end
+    

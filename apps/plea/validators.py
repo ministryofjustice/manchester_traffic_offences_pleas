@@ -16,6 +16,7 @@ UNFORMATTED_URN_PATTERNS = {
     "20": r"^[0-9]{2}[A-Z]{1}[A-Z0-9]{1}(?:[0-9]{5}|[0-9]{7})[0-9]{2}$",
     "32": r"^[0-9]{2}[A-Z]{1}[0-9]{6}[0-9]{2}$",
     "41": r"^[0-9]{2}[A-Z]{1}[0-9]{6}[0-9]{2}$",
+    "48": r"^[0-9]{2}[A-Z]{1}[0-9]{6}[0-9]{2}$",
     "*": r"^[0-9]{2}[A-Z]{2}(?:[0-9]{5}|[0-9]{7})[0-9]{2}$"
 }
 
@@ -26,20 +27,39 @@ def get_pattern(urn):
 
 def is_date_in_past(date):
     if date >= datetime.datetime.today().date():
-        raise exceptions.ValidationError("The date must be in the past", code="is_date_in_past")
+        AuditEvent().populate(
+            event_type="case_form",
+            event_subtype="case_invalid_invalid_date",
+            event_trace="'is_date_in_past' found date in the future: {0}".format(date),
+        )
+        raise exceptions.ValidationError(
+            "The date must be in the past",
+            code="is_date_in_past")
 
     return True
 
 
 def is_date_in_future(date):
     if date <= datetime.datetime.today().date():
-        raise exceptions.ValidationError("The date must be in the future", code="is_date_in_future")
+        AuditEvent().populate(
+            event_type="case_form",
+            event_subtype="case_invalid_invalid_date",
+            event_trace="'is_date_in_future' found date in the past: {0}".format(date),
+        )
+        raise exceptions.ValidationError(
+            "The date must be in the future",
+            code="is_date_in_future")
 
     return True
 
 
 def is_date_in_last_28_days(date):
     if date < datetime.datetime.today().date() + relativedelta(days=-28):
+        AuditEvent().populate(
+            event_type="case_form",
+            event_subtype="case_invalid_invalid_date",
+            event_trace="'is_date_in_last_28_days' found date more than 28 days ago: {0}".format(date),
+        )
         raise exceptions.ValidationError(
             "The date must be within the last 28 days",
             code="is_date_in_last_28_days")
@@ -49,6 +69,11 @@ def is_date_in_last_28_days(date):
 
 def is_date_in_next_6_months(date):
     if date > datetime.datetime.today().date() + relativedelta(months=+6):
+        AuditEvent().populate(
+            event_type="case_form",
+            event_subtype="case_invalid_invalid_date",
+            event_trace="'is_date_in_next_6_months' found date more than 6 moths in the future: {0}".format(date),
+        )
         raise exceptions.ValidationError(
             "The date must be within the next 6 months",
             code="is_date_in_next_6_months")
