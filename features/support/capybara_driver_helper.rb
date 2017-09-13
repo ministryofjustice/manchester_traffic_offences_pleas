@@ -41,4 +41,4 @@ end
 
 Capybara.javascript_driver = Capybara.default_driver
 Capybara.current_driver = Capybara.default_driver
-Capybara.app_host = "https://www.makeaplea.service.gov.uk#{Capybara.server_port}"
+Capybara.app_host = 'https://makeaplea.dsd.io'

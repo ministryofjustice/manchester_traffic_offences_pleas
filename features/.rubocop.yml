@@ -1,0 +1,10 @@
+Metrics/LineLength:
+  Max: 120
+  Exclude:
+    - 'features/**/*'
+    - 'Gemfile'
+
+# Prefer sensible naming to comments everywhere.
+Documentation:
+  Description: Document classes and non-namespace modules.
+  Enabled: false

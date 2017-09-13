@@ -10,15 +10,23 @@ Feature: Your case, enter urn
   Scenario: Displays URN hint
     Then I should see provide URN hint
 
+  Scenario: Valid URN
+    When I enter a valid URN
+    Then I am taken to notice_type/  
+
+  Scenario: Date of birth and postcode are known
+    When my date of birth and postcode are known
+    Then I am taken to your_case_continued/  
+
   Scenario: Invalid URN returns error message
     When I enter an invalid URN
-    Then I should see error message 'The Unique Reference Number (URN) isn't valid.'
-    And I should see error link '#section_urn'
+    Then I should see error message 'The Unique Reference Number (URN) isn't valid.' with link section_urn
 
-  Scenario: Displays make a plea by post error message
+  Scenario: Entering invalid URN multiple times
     When I enter an invalid URN three times
     Then I should see make a plea by post error message
 
-  Scenario: Entering a valid URN
-    When I enter a valid URN
-    Then I am taken to /plea/notice_type/
+  Scenario: Date of birth and postcode are known
+    When my date of birth and postcode are known
+    Then I am taken to your_case_continued/
+    

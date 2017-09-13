@@ -2,13 +2,13 @@ Given(/^I visit the your case continued page$/) do
   step 'I visit the enter urn page'
 end
 
-And(/^my date of birth is not known$/) do
-  enter_urn_page.section_urn.urn_field.set('51GH6735265')
+And(/^my date of birth is unknown$/) do
+  enter_urn_page.section_urn.urn_field.set URN[:dob_unknown]
   enter_urn_page.continue_button.click
 end
 
 When(/^my date of birth is known$/) do
-  enter_urn_page.section_urn.urn_field.set('51GH6735264')
+  enter_urn_page.section_urn.urn_field.set URN[:dob_known]
   enter_urn_page.continue_button.click
 end
 
@@ -58,7 +58,6 @@ end
 
 Then(/^I should see check the details you've entered error message$/) do
   error_summary = your_case_continued_page.error_summary
-
   expect(error_summary.h1.text).to eq 'Check the details you\'ve entered'
   expect(error_summary.p.text).to eq 'The information you\'ve entered does not match our records.'
 end
