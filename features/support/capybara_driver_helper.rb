@@ -12,11 +12,7 @@ Capybara.register_driver :poltergeist do |app|
 end
 
 Capybara.register_driver :firefox do |app|
-  profile = Selenium::WebDriver::Firefox::Profile.new
-  profile.enable_firebug
-  profile['browser.cache.disk.enable'] = false
-  profile['browser.cache.memory.enable'] = false
-  Capybara::Selenium::Driver.new(app, browser: :firefox, profile: profile)
+  Capybara::Selenium::Driver.new(app, browser: :firefox)
 end
 
 Capybara.register_driver :chrome do |app|
@@ -43,4 +39,3 @@ end
 Capybara.javascript_driver = Capybara.default_driver
 Capybara.current_driver = Capybara.default_driver
 Capybara.app_host = 'https://makeaplea.dsd.io'
-# "http://0.0.0.0:8000"

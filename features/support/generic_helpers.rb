@@ -1,3 +1,13 @@
+URN = {
+  valid: '98FF1234583', # your notice page loads
+  valid_2: '98FF1234583', # your notice page loads
+  invalid: '020124567', # urn is not valid
+  dob_postcode_unknown: '97FF1234585', # you cannot make a plea online
+  dob_postcode_known: '98BB1234587', # your case continued
+  dob_known: '98BB1234588', # enter dob, not postcode
+  dob_unknown: '98BB1234587' # enter postcode
+}.freeze
+
 def wait_for
   Timeout.timeout(Capybara.default_max_wait_time) do
     begin
@@ -8,37 +18,12 @@ def wait_for
   end
 end
 
-def wait_for_ajax
-  wait_for { page.evaluate_script('jQuery.active').zero? }
-end
-
 def wait_for_document_ready
   wait_for { page.evaluate_script('document.readyState').eql? 'complete' }
 end
 
 def wait_for_dropdown_change(dropdown, expected_value)
   wait_for { dropdown.value == expected_value }
-end
-
-def scroll_down
-  Capybara.execute_script('window.scrollBy(0,1000)')
-end
-
-def scroll_to_bottom
-  WaitUntil.wait_until(3, 'Failed as browser hasnt reached bottom of window') do
-    page.execute_script 'window.scrollTo(0,$(document).height())'
-    y_position = page.evaluate_script 'window.scrollY'
-    browser_height = page.evaluate_script '$(window).height();'
-    doc_height = page.evaluate_script '$(document).height();'
-    (y_position + browser_height).eql?(doc_height)
-  end
-end
-
-module WaitUntil
-  def self.wait_until(timeout = 10, message = nil, &block)
-    wait = Selenium::WebDriver::Wait.new(timeout: timeout, message: message)
-    wait.until(&block)
-  end
 end
 
 def common_page
@@ -49,6 +34,6 @@ def enter_urn_page
   @enter_urn_page ||= EnterUrnPage.new
 end
 
-def your_case_page
-  @your_case_page ||= YourCasePage.new
+def your_case_continued_page
+  @your_case_continued_page ||= YourCaseContinuedPage.new
 end
