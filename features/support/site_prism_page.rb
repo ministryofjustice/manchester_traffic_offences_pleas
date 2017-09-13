@@ -1,9 +1,5 @@
 module SitePrism
   class Page
-    def self.inherited(subclass)
-      SitePrismSubclass << subclass
-    end
-
     def load(expansion_or_html = {})
       if expansion_or_html.is_a? String
         @page = Capybara.string(expansion_or_html)

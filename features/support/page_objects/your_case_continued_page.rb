@@ -1,6 +1,4 @@
 class YourCaseContinuedPage < SitePrism::Page
-  set_url '/plea/your_case_continued'
-
   element :page_header, 'h1'
   element :number_of_charges, '#id_number_of_charges'
   elements :label_text, '.label-text'

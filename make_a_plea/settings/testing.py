@@ -2,6 +2,7 @@ import os
 
 from .base import *
 
+logging.disable(logging.CRITICAL)
 
 ADMINS = (
     ('Lyndon Garvey', 'lyndon.garvey@digital.justice.gov.uk'),

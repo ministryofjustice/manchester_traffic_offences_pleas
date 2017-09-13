@@ -12,7 +12,7 @@ When(/^my date of birth is known$/) do
   enter_urn_page.continue_button.click
 end
 
-When(/^I enter ([^\"]*) into the number of offences input field$/) do |offences|
+When(/^I enter '([^\"]*)' into the number of offences input field$/) do |offences|
   your_case_continued_page.number_of_charges.set(offences)
 end
 

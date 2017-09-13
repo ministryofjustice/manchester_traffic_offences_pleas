@@ -27,3 +27,11 @@ PLEA_EMAIL_BODY = ""
 PLP_EMAIL_TO = ["dev@example.org", ]
 
 PLEA_CONFIRMATION_EMAIL_FROM = "dev@example.org"
+
+GPG_HOME_DIRECTORY = os.environ.get('GPG_HOME_DIRECTORY', '~/.gnupg-map/')
+
+EMAIL_REQUIRED = False
+
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+ENCRYPTED_COOKIE_KEYS = ["9evXbsR_1yZA5EW_blSI4O69MjGKwOu1-UwLK_PWyKw="]
