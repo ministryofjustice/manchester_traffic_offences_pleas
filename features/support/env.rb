@@ -1,7 +1,7 @@
 require 'pry'
+require 'rspec'
 require 'site_prism'
 require 'capybara'
-require 'capybara/dsl'
 require 'capybara/cucumber'
 require 'capybara/poltergeist'
 require 'capybara-screenshot/cucumber'
