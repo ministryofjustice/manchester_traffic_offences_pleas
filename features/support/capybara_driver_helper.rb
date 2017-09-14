@@ -2,7 +2,6 @@ Capybara.configure do |config|
   driver = (ENV['DRIVER'].to_sym if ENV['DRIVER']) || :poltergeist
   config.default_driver = driver
   config.default_max_wait_time = 30
-  config.match = :prefer_exact
   config.ignore_hidden_elements = false
   config.visible_text_only = true
 end
@@ -12,11 +11,7 @@ Capybara.register_driver :poltergeist do |app|
 end
 
 Capybara.register_driver :firefox do |app|
-  profile = Selenium::WebDriver::Firefox::Profile.new
-  profile.enable_firebug
-  profile['browser.cache.disk.enable'] = false
-  profile['browser.cache.memory.enable'] = false
-  Capybara::Selenium::Driver.new(app, browser: :firefox, profile: profile)
+  Capybara::Selenium::Driver.new(app, browser: :firefox)
 end
 
 Capybara.register_driver :chrome do |app|
@@ -42,6 +37,4 @@ end
 
 Capybara.javascript_driver = Capybara.default_driver
 Capybara.current_driver = Capybara.default_driver
-# Capybara.app_host = ENV['HOST'] if ENV['HOST']
-# TODO: get this running locally http://127.0.0.1:
-Capybara.app_host = "https://www.makeaplea.service.gov.uk#{Capybara.server_port}"
+Capybara.app_host = 'https://makeaplea.dsd.io'
