@@ -8,7 +8,6 @@ module SitePrism
         raise SitePrism::NoUrlForPage if expanded_url.nil?
         visit expanded_url
       end
-      wait_for_document_ready
     end
   end
 end

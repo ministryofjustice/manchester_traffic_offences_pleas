@@ -18,10 +18,6 @@ def wait_for
   end
 end
 
-def wait_for_document_ready
-  wait_for { page.evaluate_script('document.readyState').eql? 'complete' }
-end
-
 def wait_for_dropdown_change(dropdown, expected_value)
   wait_for { dropdown.value == expected_value }
 end
