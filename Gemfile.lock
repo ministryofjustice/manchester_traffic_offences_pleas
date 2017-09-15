@@ -125,19 +125,19 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  capybara (~> 2.15, >= 2.15.1)
-  capybara-screenshot
+  capybara (~> 2.15)
+  capybara-screenshot (~> 1.0)
   chromedriver-helper (~> 1.1)
-  codeclimate-test-reporter
+  codeclimate-test-reporter (~> 1.0)
   cucumber (~> 2.4)
   poltergeist (= 1.15.0)
-  pry
+  pry (~> 0.10.4)
   rspec (~> 3.6)
   rubocop (~> 0.49.1)
   selenium-webdriver (~> 3.4)
   site_prism (~> 2.9)
-  timecop
-  webmock
+  timecop (~> 0.9.1)
+  webmock (~> 3.0)
 
 BUNDLED WITH
    1.14.6
