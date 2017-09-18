@@ -20,4 +20,7 @@ before_script:
 env:
   - POSTGRES_USER=postgres DJANGO_SETTINGS_MODULE=make_a_plea.settings.testing
 script:
-  - "python manage.py test"
+  - python manage.py test
+  - coverage run --source='.' manage.py test
+  - coverage report
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then codeclimate-test-reporter; fi
