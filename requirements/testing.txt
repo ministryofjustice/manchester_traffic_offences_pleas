@@ -2,6 +2,7 @@
 
 django-jenkins==0.110.0
 coverage==4.3.4
+codeclimate-test-reporter==0.2.3
 mock==1.0.1
 
 redgreenunittest==0.1.1
