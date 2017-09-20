@@ -62,7 +62,6 @@ Feature: Your details
     Then I should see error message 'Tell us your driving licence number' with link section_driving_licence_number
 
   Scenario: Displays the date of birth must be before today
-    When I fill out my details with a date of birth that's not before today
+    When I fill out the form with a date of birth that is not before today
     Then I should see error message 'The date of birth must be before today' with link section_date_of_birth
-   
-    
+  

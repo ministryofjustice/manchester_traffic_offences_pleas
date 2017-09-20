@@ -4,15 +4,17 @@ def full_name
 end
 
 def valid_date_of_birth
-  your_details_page.section_date_of_birth.id_date_of_birth_0.set '07'
-  your_details_page.section_date_of_birth.id_date_of_birth_1.set '03'
-  your_details_page.section_date_of_birth.id_date_of_birth_2.set '1987'
+  dob = your_details_page.section_date_of_birth
+  dob.id_date_of_birth_0.set '07'
+  dob.id_date_of_birth_1.set '03'
+  dob.id_date_of_birth_2.set '1987'
 end
 
 def invalid_date_of_birth
-  your_details_page.section_date_of_birth.id_date_of_birth_0.set Date.today.day
-  your_details_page.section_date_of_birth.id_date_of_birth_1.set Date.today.month
-  your_details_page.section_date_of_birth.id_date_of_birth_2.set Date.today.year
+  dob = your_details_page.section_date_of_birth
+  dob.id_date_of_birth_0.set Date.today.day
+  dob.id_date_of_birth_1.set Date.today.month
+  dob.id_date_of_birth_2.set Date.today.year
 end
 
 Given(/^I visit your details page$/) do
@@ -75,7 +77,7 @@ When(/^I fill out the form I click no my address is not correct$/) do
   your_details_page.id_have_driving_licence_number_false.click
 end
 
-When(/^I fill out my details with a date of birth that's not before today$/) do
+When(/^I fill out the form with a date of birth that is not before today$/) do
   full_name
   your_details_page.id_correct_address_true.click
   your_details_page.section_contact_number.id_contact_number.set '0207514445'
