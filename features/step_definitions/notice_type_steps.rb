@@ -16,3 +16,7 @@ When(/^I select Something else$/) do
   notice_type_page.block_label[1].sjp_false.click
   common_page.button.click
 end
+
+Then(/^I should see what is the title label$/) do
+  expect(notice_type_page.label_sjp.text).to start_with 'What is the title'
+end

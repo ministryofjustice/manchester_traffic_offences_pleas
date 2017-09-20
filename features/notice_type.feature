@@ -9,8 +9,8 @@ Feature: Notice type
   Scenario: Displays second header 
     Then I should see second header 'From page 1 of the notice we sent to you:'
 
-  Scenario: Displays label
-    Then I should see label 'What is the title at the very top of the page?'
+  Scenario: Displays what is the title label
+    Then I should see what is the title label
 
   Scenario: Displays help image
     Then I should see the help image
