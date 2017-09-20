@@ -3,10 +3,16 @@ def full_name
   your_details_page.section_last_name.id_last_name.set 'Smith'
 end
 
-def date_of_birth
+def valid_date_of_birth
   your_details_page.section_date_of_birth.id_date_of_birth_0.set '07'
   your_details_page.section_date_of_birth.id_date_of_birth_1.set '03'
   your_details_page.section_date_of_birth.id_date_of_birth_2.set '1987'
+end
+
+def invalid_date_of_birth
+  your_details_page.section_date_of_birth.id_date_of_birth_0.set Date.today.day
+  your_details_page.section_date_of_birth.id_date_of_birth_1.set Date.today.month
+  your_details_page.section_date_of_birth.id_date_of_birth_2.set Date.today.year
 end
 
 Given(/^I visit your details page$/) do
@@ -19,7 +25,7 @@ end
 When(/^I successfully submit my details$/) do
   full_name
   your_details_page.id_correct_address_true.click
-  date_of_birth
+  valid_date_of_birth
   your_details_page.section_contact_number.id_contact_number.set '0207514445'
   your_details_page.id_have_ni_number_false.click
   your_details_page.id_have_driving_licence_number_false.click
@@ -29,7 +35,7 @@ end
 When(/^I click yes I have a National Insurance number$/) do
   full_name
   your_details_page.id_correct_address_true.click
-  date_of_birth
+  valid_date_of_birth
   your_details_page.section_contact_number.id_contact_number.set '0207514445'
   your_details_page.id_have_ni_number_true.click
   your_details_page.id_have_driving_licence_number_false.click
@@ -44,7 +50,7 @@ end
 When(/^I click yes I have a UK driving license$/) do
   full_name
   your_details_page.id_correct_address_true.click
-  date_of_birth
+  valid_date_of_birth
   your_details_page.section_contact_number.id_contact_number.set '0207514445'
   your_details_page.id_have_ni_number_false.click
   your_details_page.id_have_driving_licence_number_true.click
@@ -63,10 +69,20 @@ end
 When(/^I fill out the form I click no my address is not correct$/) do
   full_name
   your_details_page.id_correct_address_false.click
-  date_of_birth
+  valid_date_of_birth
   your_details_page.section_contact_number.id_contact_number.set '0207514445'
   your_details_page.id_have_ni_number_false.click
   your_details_page.id_have_driving_licence_number_false.click
+end
+
+When(/^I fill out my details with a date of birth that's not before today$/) do
+  full_name
+  your_details_page.id_correct_address_true.click
+  your_details_page.section_contact_number.id_contact_number.set '0207514445'
+  invalid_date_of_birth
+  your_details_page.id_have_ni_number_false.click
+  your_details_page.id_have_driving_licence_number_false.click
+  common_page.button.click
 end
 
 When(/^I enter my correct address$/) do

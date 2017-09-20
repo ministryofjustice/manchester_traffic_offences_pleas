@@ -57,6 +57,12 @@ Feature: Your details
     Then I should see error message 'Tell us your National Insurance number' with link section_ni_number
 
   Scenario: Displays tell us your driving licence number error message
-    And I click yes I have a UK driving license
+    When I click yes I have a UK driving license
     And I click on continue
     Then I should see error message 'Tell us your driving licence number' with link section_driving_licence_number
+
+  Scenario: Displays the date of birth must be before today
+    When I fill out my details with a date of birth that's not before today
+    Then I should see error message 'The date of birth must be before today' with link section_date_of_birth
+   
+    
