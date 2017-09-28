@@ -26,6 +26,15 @@ When(/^I fill out my case details without selecting plea made by option$/) do
   common_page.button.click
 end
 
+When(/^I successfully fill out the form with three charges against me$/) do
+  case_details_page.id_number_of_charges.set '3'
+  case_details_page.day.set('11')
+  case_details_page.month.set('09')
+  case_details_page.year.set('2017')
+  case_details_page.plea_made_by_defendant.click
+  common_page.button.click
+end
+
 Then(/^I should see posting date label$/) do
   expect(case_details_page.posting_date.label_text.text).to eq 'Posting date'
 end

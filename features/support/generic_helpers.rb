@@ -46,3 +46,15 @@ end
 def your_details_page
   @your_details_page ||= YourDetailsPage.new
 end
+
+def your_plea_page
+  @your_plea_page ||= YourPleaPage.new
+end
+
+def your_plea_guilty_page
+  @your_plea_guilty_page ||= YourPleaGuiltyPage.new
+end
+
+def your_plea_not_guilty_page
+  @your_plea_not_guilty_page ||= YourPleaNotGuiltyPage.new
+end

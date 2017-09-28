@@ -45,11 +45,11 @@ Feature: Your details
     | message                                         | link               |
     | Enter your first name                           | section_first_name |
     | Enter your last name                            | section_last_name  |
-    | You must tell us if the address on the notice   | section_last_name  |
-    | You must provide a contact number               | section_last_name  |
-    | Tell us your date of birth                      | section_last_name  |
-    | Tell us if you have a National Insurance number | section_last_name  |
-    | Tell us if you have a UK driving licence        | section_last_name  |
+    | You must tell us if the address on the notice   | section_correct_address |
+    | You must provide a contact number               | section_contact_number  |
+    | Tell us your date of birth                      | section_date_of_birth  |
+    | Tell us if you have a National Insurance number | section_have_ni_number |
+    | Tell us if you have a UK driving licence        | have_driving_licence_number |
 
   Scenario: Displays tell us your National Insurance number error message
     When I click yes I have a National Insurance number
