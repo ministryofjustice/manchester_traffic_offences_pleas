@@ -1,4 +1,5 @@
 URN = {
+  # All have posting date: 11/09/2017
   valid: '98FF1234583', # your notice page loads
   valid_2: '98FF1234583', # your notice page loads
   invalid: '020124567', # urn is not valid
@@ -36,4 +37,24 @@ end
 
 def notice_type_page
   @notice_type_page ||= NoticeTypePage.new
+end
+
+def case_details_page
+  @case_details_page ||= CaseDetailsPage.new
+end
+
+def your_details_page
+  @your_details_page ||= YourDetailsPage.new
+end
+
+def your_plea_page
+  @your_plea_page ||= YourPleaPage.new
+end
+
+def your_plea_guilty_page
+  @your_plea_guilty_page ||= YourPleaGuiltyPage.new
+end
+
+def your_plea_not_guilty_page
+  @your_plea_not_guilty_page ||= YourPleaNotGuiltyPage.new
 end
