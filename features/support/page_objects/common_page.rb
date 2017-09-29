@@ -1,7 +1,11 @@
 class CommonPage < SitePrism::Page
-  element :h1, 'h1'
+  section :content_header, '.content-header' do
+    element :h1, 'h1'
+    element :p, 'p'
+  end
   element :h2, 'h2'
-  element :label, '.label-text'
+  elements :label_text, '.label-text'
+  elements :form_hint, '.form-hint'
   section :error_summary, '.error-summary' do
     elements :h1, 'h1'
     elements :p, 'p'
