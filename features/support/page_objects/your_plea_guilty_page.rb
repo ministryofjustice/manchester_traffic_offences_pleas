@@ -7,7 +7,7 @@ class YourPleaGuiltyPage < SitePrism::Page
     element :label_come_to_court, '#label_come_to_court'
   end
 
-  section :guilty_interpreter_needed, '#label_sjp_interpreter_needed' do
+  section :label_sjp_interpreter_needed, '#label_sjp_interpreter_needed' do
     element :label_text, '.label-text'
   end
 

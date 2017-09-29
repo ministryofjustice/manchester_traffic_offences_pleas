@@ -19,7 +19,7 @@ Then(/^I should see error message '([^\"]*)' with link ([^\"]*)$/) do |error_mes
 end
 
 Then(/^I should see second error message '([^\"]*)' with link ([^\"]*)$/) do |error_message, error_link|
-  expect(common_page.error_summary.link[1].text).to end_with error_message
+  expect(common_page.error_summary.link[1].text).to have_content error_message
   expect(common_page.error_summary.link[1]['href']).to end_with error_link
 end
 

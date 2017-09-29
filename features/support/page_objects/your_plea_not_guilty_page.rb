@@ -9,7 +9,7 @@ class YourPleaNotGuiltyPage < SitePrism::Page
     element :label_come_to_court, '#label_come_to_court'
   end
 
-  section :not_guilty_interpreter_needed, '#label_interpreter_needed' do
+  section :label_interpreter_needed, '#label_interpreter_needed' do
     element :label_text, '.label-text'
   end
 
