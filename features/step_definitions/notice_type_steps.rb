@@ -10,7 +10,7 @@ When(/^I select Single Justice Procedure Notice$/) do
   common_page.button.click
 end
 
-When(/^I select Something else$/) do
+When(/^I select something else$/) do
   expect(notice_type_page.block_label[1].sjp_false['type']).to eq 'radio'
   expect(notice_type_page.block_label[1].text).to eq 'Something else'
   notice_type_page.block_label[1].sjp_false.click

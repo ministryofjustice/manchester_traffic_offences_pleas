@@ -19,6 +19,6 @@ Feature: Notice type
     When I select Single Justice Procedure Notice
     Then I am taken to case/
 
-  Scenario: Selecting Something else
-    When I select Something else
+  Scenario: Selecting something else
+    When I select something else
     Then I am taken to case/

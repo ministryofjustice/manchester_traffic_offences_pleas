@@ -6,27 +6,27 @@ Feature: Case details
   Scenario: Displays header
     Then I should see 'Case details' header
 
-  Scenario: Displays Posting date
+  Scenario: Displays posting date
     Then I should see posting date label
     And I should see posting date hint
 
-  Scenario: Displays Number of offences
+  Scenario: Displays number of offences
     Then I should see offences label
     And I should see offences hint
 
-  Scenario: Displays Are you?
+  Scenario: Displays are you?
     Then I should see are you label
     And I should see are you hint
 
   Scenario: Displays help image
     Then I should see the help image
 
-  Scenario: Displays Provide a posting date error message
+  Scenario: Displays provide a posting date error message
     When I fill out my case details without providing a date
     Then I should see error message 'Provide a posting date' with link section_posting_date
     But I should not see other error messages
 
-  Scenario: Displays Enter the number of charges error message
+  Scenario: Displays enter the number of charges error message
     When I fill out my case details without providing the number of charges
     Then I should see error message 'Enter the number of charges' with link section_number_of_charges
     But I should not see other error messages
