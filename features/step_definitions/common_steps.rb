@@ -55,3 +55,11 @@ Then(/^I should see error <message> with <link>$/) do |error_messages|
     expect(error_group.link[index]['href']).to end_with error[1]
   end
 end
+
+When(/^I select not guilty$/) do
+  common_page.not_guilty.click
+end
+
+When(/^I select guilty$/) do
+  common_page.guilty.click
+end

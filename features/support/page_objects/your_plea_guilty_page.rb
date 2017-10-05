@@ -1,5 +1,4 @@
 class YourPleaGuiltyPage < SitePrism::Page
-  element :guilty, '#id_guilty_guilty'
   section :panel_indent, '.panel-indent' do
     elements :p, 'p'
     element :come_to_court_true, '#id_come_to_court_true'

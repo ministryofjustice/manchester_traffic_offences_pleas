@@ -51,6 +51,10 @@ def your_plea_page
   @your_plea_page ||= YourPleaPage.new
 end
 
+def company_plea_page
+  @company_plea_page ||= CompanyPleaPage.new
+end
+
 def your_plea_guilty_page
   @your_plea_guilty_page ||= YourPleaGuiltyPage.new
 end
