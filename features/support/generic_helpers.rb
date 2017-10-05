@@ -58,3 +58,7 @@ end
 def your_plea_not_guilty_page
   @your_plea_not_guilty_page ||= YourPleaNotGuiltyPage.new
 end
+
+def company_details_page
+  @company_details_page ||= CompanyDetailsPage.new
+end
