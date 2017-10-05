@@ -1,6 +1,6 @@
 Feature: Company details
 
-  Background: Navigating to your details page
+  Background: Navigating to your company details page
     Given I visit your company details page
 
    Scenario: Displays header
