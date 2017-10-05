@@ -1,7 +1,7 @@
 When(/^I select guilty to one charge$/) do
   step 'I successfully fill out the form as the person named in the notice'
   step 'I successfully submit my details'
-  your_plea_guilty_page.guilty.click
+  common_page.guilty.click
   panel_group = your_plea_guilty_page.panel_indent
   expect(panel_group.p[0].text).to have_content 'we\'ll send you details of the court\'s decision'
 end
@@ -9,7 +9,7 @@ end
 When(/^I select guilty to three charges$/) do
   step 'I successfully fill out the form with three charges against me'
   step 'I successfully submit my details'
-  your_plea_guilty_page.guilty.click
+  common_page.guilty.click
   panel_group = your_plea_guilty_page.panel_indent
   expect(panel_group.p[0].text).to have_content 'we\'ll send you details of the court\'s decision'
 end
@@ -17,7 +17,7 @@ end
 When(/^I select yes to the guilty questions$/) do
   step 'I successfully fill out the form as the person named in the notice'
   step 'I successfully submit my details'
-  your_plea_guilty_page.guilty.click
+  common_page.guilty.click
   your_plea_guilty_page.panel_indent.come_to_court_true.click
   your_plea_guilty_page.block_label[4].id_sjp_interpreter_needed_true.click
 end
