@@ -35,3 +35,14 @@ EMAIL_REQUIRED = False
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 ENCRYPTED_COOKIE_KEYS = ["9evXbsR_1yZA5EW_blSI4O69MjGKwOu1-UwLK_PWyKw="]
+
+# for local email testing, start celery and use https://www.npmjs.com/package/maildev
+
+CELERY_BROKER_URL = "amqp://localhost"
+
+EMAIL_PORT = 1025
+EMAIL_HOST = "127.0.0.1"
+EMAIL_USE_TLS = False
+
+SMTP_ROUTES = {"GSI": {"HOST": "127.0.0.1", "PORT": 1025, "USE_TLS": False},
+               "PNN": {"HOST": "127.0.0.1", "PORT": 1025, "USE_TLS": False}}
