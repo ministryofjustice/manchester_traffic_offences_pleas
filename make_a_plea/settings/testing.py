@@ -5,8 +5,7 @@ from .base import *
 logging.disable(logging.CRITICAL)
 
 ADMINS = (
-    ('Lyndon Garvey', 'lyndon.garvey@digital.justice.gov.uk'),
-    ('Ian George', 'ian.george@digital.justice.gov.uk'),
+    ('[DEV] HMCTS Reform Sustaining Support', 'sustainingteamdev@hmcts.net'),
 )
 
 DATABASES = {
