@@ -4,7 +4,7 @@ from make_a_plea.settings.testing import GPG_TEST_KEY
 
 
 ADMINS = (
-    ('Lyndon Garvey', 'lyndon.garvey@digital.justice.gov.uk'),
+    ('[DEV] HMCTS Reform Sustaining Support', 'sustainingteamdev@hmcts.net'),
 )
 
 DATABASES = {

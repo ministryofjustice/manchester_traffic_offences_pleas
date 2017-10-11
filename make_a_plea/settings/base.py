@@ -16,8 +16,7 @@ DEBUG = True
 template_DEBUG = DEBUG
 
 ADMINS = (
-    ('Ian George', 'ian.george@digital.justice.gov.uk'),
-    ('Lyndon Garvey', 'lyndon.garvey@digital.justice.gov.uk')
+    ('[DEV] HMCTS Reform Sustaining Support', 'sustainingteamdev@hmcts.net'),
 )
 
 MANAGERS = ADMINS
