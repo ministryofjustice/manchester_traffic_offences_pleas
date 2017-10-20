@@ -1,17 +1,11 @@
 When(/^I select not guilty to one charge$/) do
-  step 'I successfully fill out the form as the person named in the notice'
-  step 'I successfully submit my details'
   common_page.not_guilty.click
   panel_group = your_plea_not_guilty_page.panel_indent
-  expect(panel_group.p[1].text).to have_content 'we\'ll send details of a date for you to come to court'
+  expect(panel_group.p[1].text).to start_with 'Pleading not guilty to this charge means'
 end
 
 When(/^I select not guilty to three charges$/) do
-  step 'I successfully fill out the form with three charges against me'
-  step 'I successfully submit my details'
   common_page.not_guilty.click
-  panel_group = your_plea_not_guilty_page.panel_indent
-  expect(panel_group.p[1].text).to have_content 'we\'ll send details of a date for you to come to court'
 end
 
 When(/^I successfully fill out the not guilty form$/) do
@@ -53,8 +47,6 @@ And(/^yes should display tell us which language$/) do
 end
 
 And(/^I select yes to the not guilty questions$/) do
-  step 'I successfully fill out the form as the person named in the notice'
-  step 'I successfully submit my details'
   common_page.not_guilty.click
   your_plea_not_guilty_page.block_label[6].id_interpreter_needed_true.click
   your_plea_not_guilty_page.block_label[8].id_disagree_with_evidence_true.click

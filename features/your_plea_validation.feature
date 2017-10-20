@@ -1,10 +1,9 @@
 Feature: Your plea - validation
 
   Background: Navigating to your details page
-    Given I visit your plea page
+    Given I visit your plea page with one charge against me
 
   Scenario: Displays you must select a plea for this charge error messages
-    And I have one charge against me
     When I click on continue
     Then I should see error message 'You must select a plea for this charge' with link section_guilty
 
@@ -19,7 +18,7 @@ Feature: Your plea - validation
     Then I should see error message 'You must tell us which language' with link section_sjp_interpreter_language
   
   Scenario: Displays all not guilty error messages
-    When I select not guilty to one charge
+    When  I select not guilty to one charge
     And I click on continue
     Then I should see error <message> with <link>
     | message                            | link                           |

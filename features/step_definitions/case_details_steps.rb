@@ -1,3 +1,9 @@
+def posting_date
+  case_details_page.day.set Time.now.day.to_i - 10
+  case_details_page.month.set(Time.now.month)
+  case_details_page.year.set(Time.now.year)
+end
+
 Given(/^I visit the case details page$/) do
   step 'I visit the enter urn page'
   step 'I enter a valid URN'
@@ -11,26 +17,20 @@ When(/^I fill out my case details without providing a date$/) do
 end
 
 When(/^I fill out my case details without providing the number of charges$/) do
-  case_details_page.day.set('11')
-  case_details_page.month.set('09')
-  case_details_page.year.set('2017')
+  posting_date
   case_details_page.plea_made_by_defendant.click
   common_page.button.click
 end
 
 When(/^I fill out my case details without selecting plea made by option$/) do
   case_details_page.id_number_of_charges.set '1'
-  case_details_page.day.set('11')
-  case_details_page.month.set('09')
-  case_details_page.year.set('2017')
+  posting_date
   common_page.button.click
 end
 
 When(/^I successfully fill out the form with three charges against me$/) do
   case_details_page.id_number_of_charges.set '3'
-  case_details_page.day.set('11')
-  case_details_page.month.set('09')
-  case_details_page.year.set('2017')
+  posting_date
   case_details_page.plea_made_by_defendant.click
   common_page.button.click
 end
@@ -61,9 +61,7 @@ end
 
 When(/^I successfully fill out the form as the person named in the notice$/) do
   case_details_page.id_number_of_charges.set '1'
-  case_details_page.day.set('11')
-  case_details_page.month.set('09')
-  case_details_page.year.set('2017')
+  posting_date
   expect(case_details_page.plea_made_by_defendant['type']).to eq 'radio'
   case_details_page.plea_made_by_defendant.click
   common_page.button.click
@@ -71,9 +69,7 @@ end
 
 When(/^I successfully fill out the form on the behalf of a company$/) do
   case_details_page.id_number_of_charges.set '1'
-  case_details_page.day.set('11')
-  case_details_page.month.set('09')
-  case_details_page.year.set('2017')
+  posting_date
   expect(case_details_page.plea_made_by_company_rep['type']).to eq 'radio'
   case_details_page.plea_made_by_company_rep.click
   common_page.button.click

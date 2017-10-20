@@ -49,17 +49,8 @@ Then(/^I should see error <message> with <link>$/) do |error_messages|
   error_group = common_page.error_summary
   expect(error_group.h1[0].text).to eq 'You need to fix the errors on this page before continuing.'
   expect(error_group.p[0].text).to eq 'See highlighted errors below.'
-
   error_messages.rows.each_with_index do |error, index|
     expect(error_group.link[index].text).to have_content error[0]
     expect(error_group.link[index]['href']).to end_with error[1]
   end
-end
-
-When(/^I select not guilty$/) do
-  common_page.not_guilty.click
-end
-
-When(/^I select guilty$/) do
-  common_page.guilty.click
 end
