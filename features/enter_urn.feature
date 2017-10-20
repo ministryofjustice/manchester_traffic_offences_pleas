@@ -11,7 +11,7 @@ Feature: Your case, enter urn
 
   Scenario: Valid URN
     When I enter a valid URN
-    Then I am taken to notice_type/  
+    Then I am taken to notice_type/
 
   Scenario: Date of birth and postcode are known
     When my date of birth and postcode are known

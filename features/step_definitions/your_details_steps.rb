@@ -1,8 +1,13 @@
-def valid_data
+def valid_name
   your_details_page.section_first_name.id_first_name.set 'John'
   your_details_page.section_last_name.id_last_name.set 'Smith'
+end
+
+def valid_data
+  valid_name
   your_details_page.section_contact_number.id_contact_number.set '0207514445'
   valid_date_of_birth
+  your_details_page.section_email.id_email.set 'test@hmcts.net'
 end
 
 def valid_date_of_birth
@@ -113,4 +118,9 @@ end
 
 Then(/^I should be asked for my date of birth$/) do
   expect(your_details_page.section_date_of_birth.label_date_of_birth.text).to eq 'Date of birth'
+end
+
+Then(/^I should be asked for my email address$/) do
+  expect(company_details_page.section_email.label_text.text).to eq 'Email address'
+  expect(company_details_page.section_email.form_hint.text).to eq 'We\'ll automatically email you a copy of your plea'
 end

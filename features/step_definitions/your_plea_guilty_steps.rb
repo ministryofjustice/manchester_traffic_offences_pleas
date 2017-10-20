@@ -1,28 +1,21 @@
 When(/^I select guilty to one charge$/) do
-  step 'I successfully fill out the form as the person named in the notice'
-  step 'I successfully submit my details'
   common_page.guilty.click
   panel_group = your_plea_guilty_page.panel_indent
-  expect(panel_group.p[0].text).to have_content 'we\'ll send you details of the court\'s decision'
+  expect(panel_group.p[0].text).to start_with 'Pleading guilty to this charge means'
 end
 
 When(/^I select guilty to three charges$/) do
-  step 'I successfully fill out the form with three charges against me'
-  step 'I successfully submit my details'
   common_page.guilty.click
-  panel_group = your_plea_guilty_page.panel_indent
-  expect(panel_group.p[0].text).to have_content 'we\'ll send you details of the court\'s decision'
 end
 
 When(/^I select yes to the guilty questions$/) do
-  step 'I successfully fill out the form as the person named in the notice'
-  step 'I successfully submit my details'
   common_page.guilty.click
   your_plea_guilty_page.panel_indent.come_to_court_true.click
   your_plea_guilty_page.block_label[4].id_sjp_interpreter_needed_true.click
 end
 
 And(/^I successfully fill out the guilty form$/) do
+  common_page.guilty.click
   your_plea_guilty_page.panel_indent.come_to_court_true.click
   your_plea_guilty_page.block_label[4].id_sjp_interpreter_needed_true.click
   language_group = your_plea_guilty_page.section_sjp_interpreter_language
@@ -31,6 +24,7 @@ And(/^I successfully fill out the guilty form$/) do
 end
 
 Then(/^I should see do you want to come to court to plead guilty$/) do
+  common_page.guilty.click
   plea = your_plea_guilty_page.panel_indent
   expect(plea.label_come_to_court.text).to eq 'Do you want to come to court to plead guilty?'
   expect(your_plea_guilty_page.block_label[2].text).to eq 'Yes'
@@ -39,8 +33,9 @@ Then(/^I should see do you want to come to court to plead guilty$/) do
 end
 
 Then(/^I should see do you need an interpreter in court$/) do
-  label_group = your_plea_guilty_page.label_sjp_interpreter_needed.label_text
+  common_page.guilty.click
   your_plea_guilty_page.panel_indent.come_to_court_true.click
+  label_group = your_plea_guilty_page.label_sjp_interpreter_needed.label_text
   expect(label_group.text).to eq 'Do you need an interpreter in court?'
   expect(your_plea_guilty_page.block_label[4].text).to eq 'Yes'
   expect(your_plea_guilty_page.block_label[4].id_sjp_interpreter_needed_true['type']).to eq 'radio'
@@ -49,13 +44,15 @@ Then(/^I should see do you need an interpreter in court$/) do
 end
 
 Then(/^I should see tell us which language copy$/) do
-  language_group = your_plea_guilty_page.section_sjp_interpreter_language
+  common_page.guilty.click
   your_plea_guilty_page.panel_indent.come_to_court_true.click
   your_plea_guilty_page.block_label[4].id_sjp_interpreter_needed_true.click
+  language_group = your_plea_guilty_page.section_sjp_interpreter_language
   expect(language_group.form_hint.text).to eq 'If yes, tell us which language (include sign language):'
 end
 
 Then(/^I should see mitigation for guilty$/) do
+  common_page.guilty.click
   your_plea_guilty_page.panel_indent.come_to_court_true.click
   your_plea_guilty_page.block_label[4].id_sjp_interpreter_needed_true.click
   guilty_extra = your_plea_guilty_page.section_guilty_extra
