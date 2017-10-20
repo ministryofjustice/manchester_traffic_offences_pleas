@@ -16,12 +16,16 @@ class YourDetailsPage < SitePrism::Page
     element :form_hint, '.form-hint'
     element :id_updated_address, '#id_updated_address'
   end
-
   section :section_contact_number, '#section_contact_number' do
     element :label_text, '.label-text'
     element :id_contact_number, '#id_contact_number'
     element :form_hint, '.form-hint'
     element :id_updated_address, '#id_updated_address'
+  end
+  section :section_email, '#section_email' do
+    element :label_text, '.label-text'
+    element :form_hint, '.form-hint'
+    element :id_email, '#id_email'
   end
   section :section_date_of_birth, '#section_date_of_birth' do
     element :label_date_of_birth, '#label_date_of_birth'
