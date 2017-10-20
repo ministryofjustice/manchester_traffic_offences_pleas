@@ -38,4 +38,9 @@ class CompanyDetailsPage < SitePrism::Page
     element :form_hint, '.form-hint'
     element :id_contact_number, '#id_contact_number'
   end
+  section :section_email, '#section_email' do
+    element :label_text, '.label-text'
+    element :form_hint, '.form-hint'
+    element :id_email, '#id_email'
+  end
 end

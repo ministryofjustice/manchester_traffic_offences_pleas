@@ -43,3 +43,4 @@ Feature: Case details
   Scenario: Pleading on the behalf of a company
     When I successfully fill out the form on the behalf of a company
     Then I am taken to company_details/
+    

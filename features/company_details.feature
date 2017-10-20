@@ -31,6 +31,9 @@ Feature: Company details
   Scenario: Displays contact number
     Then I should be asked for a contact number
 
+  Scenario: Displays email address
+    Then I should be asked for my work email address
+
   Scenario: Successfully submits company details form
     When I successfully submit the company details
     And I click on continue

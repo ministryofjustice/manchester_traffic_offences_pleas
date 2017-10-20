@@ -70,10 +70,16 @@ When(/^I successfully submit the company details$/) do
   company_details_page.section_last_name.id_last_name.set 'Smith'
   company_details_page.section_position_in_company.id_position_director.click
   company_details_page.section_contact_number.id_contact_number.set '07555118077'
+  company_details_page.section_email.id_email.set 'j.smith@test.com'
 end
 
 Then(/^I should be asked for a contact number$/) do
   expect(company_details_page.form_group[5].label_text.text).to eq 'Contact number'
   expect(company_details_page.form_group[5].form_hint.text).to eq 'Office or mobile number.'
   expect(company_details_page.section_contact_number.id_contact_number['type']).to eq 'tel'
+end
+
+Then(/^I should be asked for my work email address$/) do
+  expect(company_details_page.section_email.label_text.text).to eq 'Work email address'
+  expect(company_details_page.section_email.form_hint.text).to eq 'We\'ll automatically email you a copy of your plea'
 end

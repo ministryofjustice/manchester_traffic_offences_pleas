@@ -1,15 +1,15 @@
-Given(/^I visit your plea page$/) do
+Given(/^I visit your plea page with one charge against me$/) do
   step 'I visit the enter urn page'
   step 'I enter a valid URN'
   step 'I select Single Justice Procedure Notice'
-end
-
-When(/^I have one charge against me$/) do
   step 'I successfully fill out the form as the person named in the notice'
   step 'I successfully submit my details'
 end
 
-When(/^I have three charges against me$/) do
+Given(/^I visit your plea page with three charges against me$/) do
+  step 'I visit the enter urn page'
+  step 'I enter a valid URN'
+  step 'I select Single Justice Procedure Notice'
   step 'I successfully fill out the form with three charges against me'
   step 'I successfully submit my details'
 end

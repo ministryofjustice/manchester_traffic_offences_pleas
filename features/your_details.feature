@@ -20,6 +20,9 @@ Feature: Your details
   Scenario: Displays date of birth
     Then I should be asked for my date of birth
 
+  Scenario: Displays email address
+    Then I should be asked for my email address
+
   Scenario: My address is not correct
     When I fill out the form I click no my address is not correct
     And I enter my correct address
@@ -42,13 +45,14 @@ Feature: Your details
   Scenario: Displays error messages
     And I click on continue
     Then I should see error <message> with <link>
-    | message                                         | link               |
-    | Enter your first name                           | section_first_name |
-    | Enter your last name                            | section_last_name  |
-    | You must tell us if the address on the notice   | section_correct_address |
-    | You must provide a contact number               | section_contact_number  |
-    | Tell us your date of birth                      | section_date_of_birth  |
-    | Tell us if you have a National Insurance number | section_have_ni_number |
+    | message                                         | link                        |
+    | Enter your first name                           | section_first_name          |
+    | Enter your last name                            | section_last_name           |
+    | You must tell us if the address on the notice   | section_correct_address     |
+    | You must provide a contact number               | section_contact_number      |
+    | Tell us your date of birth                      | section_date_of_birth       |
+    | You must provide an email address               | section_email               |
+    | Tell us if you have a National Insurance number | section_have_ni_number      |
     | Tell us if you have a UK driving licence        | have_driving_licence_number |
 
   Scenario: Displays tell us your National Insurance number error message

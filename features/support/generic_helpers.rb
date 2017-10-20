@@ -1,7 +1,6 @@
 URN = {
-  # All have posting date: 11/09/2017
-  valid: '98FF1234583', # your notice page loads
-  valid_2: '98FF1234583', # your notice page loads
+  valid: '98FF1234584', # your notice page loads
+  valid_2: '98FF1234583', # your notice page loads, application complete
   invalid: '020124567', # urn is not valid
   dob_postcode_unknown: '97FF1234585', # you cannot make a plea online
   dob_postcode_known: '98BB1234587', # your case continued
