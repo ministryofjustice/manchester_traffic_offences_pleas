@@ -48,6 +48,8 @@
 {% block stage_form %}
     {% std_field form.first_name %}
 
+    {% std_field form.middle_name hide_optional=True %}
+
     {% std_field form.last_name %}
 
     {% radio_field form.correct_address inline=True wide=True %}

@@ -768,6 +768,10 @@ msgstr "Dyddiad postio"
 msgid "First name"
 msgstr "Enw cyntaf"
 
+#: apps/plea/forms.py:208 apps/plea/templates/partials/review_details.html:14
+msgid "Middle name"
+msgstr "Enw canol"
+
 #: apps/plea/forms.py:208 apps/plea/templates/partials/review_details.html:13
 #: apps/plea/templates/partials/review_details.html:54
 msgid "Last name"

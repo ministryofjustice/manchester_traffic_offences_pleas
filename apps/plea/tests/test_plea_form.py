@@ -1341,6 +1341,7 @@ class TestMultiPleaForms(TestCaseBase):
         form = PleaOnlineForms(fake_session, "your_details")
         form.load(request_context)
         form.save({"first_name": "Charlie",
+                   "middle_name": "Bob",
                    "last_name": "Brown",
                    "contact_number": "07802639892",
                    "correct_address": True,
@@ -1379,6 +1380,7 @@ class TestMultiPleaForms(TestCaseBase):
         self.assertEqual(fake_session["case"]["urn"], "06AA0000000")
         self.assertEqual(fake_session["case"]["number_of_charges"], 1)
         self.assertEqual(fake_session["your_details"]["first_name"], "Charlie")
+        self.assertEqual(fake_session["your_details"]["middle_name"], "Bob")
         self.assertEqual(fake_session["your_details"]["last_name"], "Brown")
         self.assertEqual(fake_session["your_details"]["contact_number"], "07802639892")
         self.assertEqual(fake_session["your_details"]["email"], "user@example.org")

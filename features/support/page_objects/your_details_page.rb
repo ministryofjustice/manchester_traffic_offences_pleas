@@ -3,6 +3,10 @@ class YourDetailsPage < SitePrism::Page
     element :label_text, '.label-text'
     element :id_first_name, '#id_first_name'
   end
+  section :section_middle_name, '#section_middle_name' do
+    element :label_text, '.label-text'
+    element :id_middle_name, '#id_middle_name'
+  end
   section :section_last_name, '#section_last_name' do
     element :label_text, '.label-text'
     element :id_last_name, '#id_last_name'

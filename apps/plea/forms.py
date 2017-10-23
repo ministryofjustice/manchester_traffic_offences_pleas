@@ -200,6 +200,13 @@ class YourDetailsForm(BaseStageForm):
         error_messages={
             "required": ERROR_MESSAGES["FIRST_NAME_REQUIRED"]})
 
+    middle_name = forms.CharField(
+        widget=forms.TextInput(attrs={
+            "class": "form-control"}),
+        max_length=100,
+        required=False,
+        label=_("Middle name"))
+
     last_name = forms.CharField(
         widget=forms.TextInput(attrs={
             "class": "form-control"}),
