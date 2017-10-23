@@ -1,5 +1,6 @@
 def valid_name
   your_details_page.section_first_name.id_first_name.set 'John'
+  your_details_page.section_middle_name.id_middle_name.set 'George'
   your_details_page.section_last_name.id_last_name.set 'Smith'
 end
 
@@ -95,6 +96,10 @@ end
 
 Then(/^I should be asked for my first name$/) do
   expect(your_details_page.section_first_name.label_text.text).to eq 'First name'
+end
+
+Then(/^I should be asked for my middle name$/) do
+  expect(your_details_page.section_middle_name.label_text.text).to eq 'Middle name'
 end
 
 Then(/^I should be asked for my last name$/) do

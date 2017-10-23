@@ -10,6 +10,11 @@
     <dt>{% blocktrans %}First name{% endblocktrans %}</dt>
     <dd>{{ your_details.first_name }}</dd>
 
+    {% if your_details.middle_name %}
+    <dt>{% blocktrans %}Middle name{% endblocktrans %}</dt>
+    <dd>{{ your_details.middle_name }}</dd>
+    {% endif %}
+
     <dt>{% blocktrans %}Last name{% endblocktrans %}</dt>
     <dd>{{ your_details.last_name }}</dd>
 

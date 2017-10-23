@@ -40,6 +40,7 @@ class CaseCreationTests(TestCase):
                      u'plea_made_by': "Defendant"},
             'your_details': {
                 u'first_name': u'maverick',
+                u'middle_name': u'',
                 u'last_name': u'cobain',
                 u"national_insurance_number": u"test ni number",
                 u"driving_licence_number": u"test driving license number",

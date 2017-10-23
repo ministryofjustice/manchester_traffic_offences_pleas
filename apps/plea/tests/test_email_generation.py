@@ -40,6 +40,7 @@ class EmailGenerationTests(TestCase):
                                              "plea_made_by": "Defendant"},
                                     "your_details": {"updated_address": "Some place",
                                                      "first_name": "v",
+                                                     "middle_name": "",
                                                      "last_name": "cx",
                                                      "contact_number": "07000000000",
                                                      "date_of_birth": "1970-01-01",
