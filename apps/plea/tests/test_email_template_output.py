@@ -208,6 +208,15 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
             mail.outbox[0].subject,
             "ONLINE PLEA: 06/AA/0000000/00 DOH: {} PUBLIC Joe".format(self.hearing_date.strftime("%Y-%m-%d")))
 
+    def test_subject_output_has_optional_middle_name(self):
+        context_data = self.get_context_data()
+        context_data['your_details']['middle_name'] = 'Bob'
+        send_plea_email(context_data)
+
+        self.assertEqual(
+            mail.outbox[0].subject,
+            "ONLINE PLEA: 06/AA/0000000/00 DOH: {} PUBLIC Joe Bob".format(self.hearing_date.strftime("%Y-%m-%d")))
+
     def test_sjp_subject_output(self):
         context_data = self.get_context_data(notice_type_data={"sjp": True})
 
@@ -301,6 +310,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
     def test_full_case_details_output(self):
         context_data_details = {"first_name": "Joe",
+                                "middle_name": "Bob",
                                 "last_name": "Public",
                                 "correct_address": False,
                                 "updated_address": "Test address, Somewhere, TE57ER",
@@ -322,6 +332,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         self.assertContainsDefinition(response.content, "First name", "Joe", count=1)
         self.assertContainsDefinition(response.content, "Last name", "Public", count=1)
+        self.assertContainsDefinition(response.content, "Middle name", "Bob", count=1)
         self.assertContainsDefinition(response.content, "Address", "Test address, Somewhere, TE57ER", count=1)
         self.assertContainsDefinition(response.content, "Contact number", "0161 123 2345", count=1)
         self.assertContainsDefinition(response.content, "Date of birth", "12/03/1980", count=1)

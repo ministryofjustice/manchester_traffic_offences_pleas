@@ -9,6 +9,7 @@ Feature: Your details
 
   Scenario: Displays name
     Then I should be asked for my first name
+    And I should be asked for my middle name
     And I should be asked for my last name
 
   Scenario: Displays address

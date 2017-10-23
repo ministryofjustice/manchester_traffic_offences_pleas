@@ -763,6 +763,10 @@ msgstr "Posting date"
 msgid "First name"
 msgstr "First name"
 
+#: apps/plea/forms.py:208 apps/plea/templates/partials/review_details.html:14
+msgid "Middle name"
+msgstr "Middle name"
+
 #: apps/plea/forms.py:208 apps/plea/templates/partials/review_details.html:13
 #: apps/plea/templates/partials/review_details.html:54
 msgid "Last name"
