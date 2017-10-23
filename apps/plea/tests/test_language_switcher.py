@@ -110,6 +110,7 @@ class TestLanguage(TestMultiPleaFormBase):
             "your_details": {
                 "complete": True,
                 "first_name": "Charlie",
+                "middle_name": "",
                 "last_name": "Brown",
                 "contact_number": "07802639892"
             },
