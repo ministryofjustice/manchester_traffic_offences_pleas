@@ -25,7 +25,7 @@ Feature: Your details
 
   Scenario: My address is not correct
     When I fill out the form I click no my address is not correct
-    And I enter my correct address
+    And I enter my correct address 
     Then I am taken to /plea/plea/1  
 
   Scenario: I have a National Insurance number
