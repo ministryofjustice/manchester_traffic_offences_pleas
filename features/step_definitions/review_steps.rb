@@ -20,7 +20,7 @@ end
 
 Then(/^the ([^\"]*) section should have <title> <information> with link <change>$/) do |section, your_plea_details|
   your_plea_details.rows.each_with_index do |row, index|
-    row[1] = (Time.now - 10 * 24 * 60 * 60).strftime('%d/%m/%Y') if row[1] == 'review_posting_date'
+    row[1] = (Date.today - 10).strftime('%d/%m/%Y') if row[1] == 'review_posting_date'
     expect(review_page.send(section.to_sym).dt[index].text).to start_with row[0]
     expect(review_page.send(section.to_sym).dd[index].text).to eq row[1]
     expect(review_page.send(section.to_sym).change_link_dl[index]['href']).to end_with row[2] unless row[2].empty?
