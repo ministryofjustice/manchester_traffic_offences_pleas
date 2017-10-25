@@ -65,3 +65,7 @@ end
 def company_details_page
   @company_details_page ||= CompanyDetailsPage.new
 end
+
+def review_page
+  @review_page ||= ReviewPage.new
+end
