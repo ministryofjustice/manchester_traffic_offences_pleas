@@ -51,18 +51,6 @@ class TestLanguageSwitcher(TestCase):
         self.session = store
         self.client.cookies[settings.SESSION_COOKIE_NAME] = store.session_key
 
-    def test_language_switcher_waffle_switch_off(self):
-        response = self.client.get("/")
-
-        self.assertNotContains(response, '<nav class="language-switcher">')
-
-    def test_language_switcher_waffle_switch_on(self):
-        Switch.objects.create(name="show_language_switcher", active=True)
-
-        response = self.client.get("/")
-
-        self.assertContains(response, '<nav class="language-switcher">')
-
     def test_language_switcher_lang_cy(self):
         Switch.objects.create(name="show_language_switcher", active=True)
 
