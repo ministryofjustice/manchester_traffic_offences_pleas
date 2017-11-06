@@ -1,17 +1,22 @@
 language: python
 dist: trusty
+addons:
+  chrome: stable
 python:
   - "2.7"
 notifications:
   email: false
 services:
-  - postrgresql
+  - postgresql
+  - rabbitmq
 before_install:
   - sudo ./apt/production.sh
   - sudo ./apt/testing.sh
+  - wget -N https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip -P ~/
+  - unzip ~/chromedriver_linux64.zip -d ~/
+  - sudo mv ~/chromedriver /usr/local/bin/chromedriver
 install:
   - "pip install setuptools==32"
-  - "pip install -r requirements.txt"
   - "pip install -r requirements/testing.txt"
 before_script:
   - "psql -c 'CREATE DATABASE manchester_traffic_offences;' -U postgres"
@@ -20,8 +25,13 @@ before_script:
 env:
   - POSTGRES_USER=postgres DJANGO_SETTINGS_MODULE=make_a_plea.settings.testing
 script:
-  - python manage.py test
   - coverage run --source='.' manage.py test
   - coverage report
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then codeclimate-test-reporter; fi
   - python manage.py test --settings=api.settings.testing -p "api_test_*.py"
+  - python manage.py loaddata features/fixtures.json
+  - python manage.py runserver &
+  - mailmock -p 1025 -o /tmp/mailmock -n &
+  - celery worker -A make_a_plea -D
+  - sleep 2
+  - behave --format progress3 -Dconfig=local

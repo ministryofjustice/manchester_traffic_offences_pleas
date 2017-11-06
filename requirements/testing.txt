@@ -9,3 +9,5 @@ redgreenunittest==0.1.1
 
 # Fixture loading
 PyYAML==3.12
+
+behaving==1.5.6

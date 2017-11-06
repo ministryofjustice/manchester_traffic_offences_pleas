@@ -1,0 +1,105 @@
+from behaving import environment as benv
+from behaving.web.steps import *
+from behaving.mail.steps import *
+from behaving.personas.steps import *
+from selenium import webdriver
+import os
+
+PERSONAS = {
+    'John': dict(
+        first_name='John',
+        middle_name='Bob',
+        last_name='Smith',
+        email='test@example.com',
+        contact_number='0212345678',
+        ni_number='XXX',
+        driving_licence_number='YYY',
+        company_name='MoJ',
+        position_in_company='Director',
+        pay_period='Monthly',
+        pay_amount='4000',
+        benefit_amount='2000',
+        urn='00/FF/12345/60'
+    ),
+}
+URNs = {
+    'valid': '00FF1234560', # 2 offences
+    'no_dob_no_postcode': '00FF1234561',
+    'only_dob': '00FF1234562',
+    'only_postcode': '00FF1234563',
+    'company': '00FF1234564',
+    'invalid': '1234',
+    'inexistent': '00FF0000000',
+}
+
+config = {
+    'base_url': 'http://127.0.0.1:8000',
+    'headless': False,
+    'remote': False,
+}
+
+# usage: -Dconfig=xxx
+local = {
+    'headless': True
+}
+
+# usage: -Dconfig=dev
+dev = {
+    'base_url': 'https://dev.makeaplea.dsd.io/',
+    'remote': True
+}
+stage = {
+    'base_url': 'https://makeaplea.dsd.io/',
+    'remote': True
+}
+
+
+def before_all(context):
+    context.mail_path = '/tmp/mailmock'
+
+    if 'config' in context.config.userdata:
+        config.update(globals()[context.config.userdata['config']])
+
+    if config['remote']:
+        context.remote_webdriver = True
+        s_username = os.environ['SAUCELABS_USER']
+        s_apikey = os.environ['SAUCELABS_KEY']
+        saucelabs_url = 'http://%s:%s@ondemand.saucelabs.com:80/wd/hub' % (s_username, s_apikey)
+        context.browser_args = {'url': saucelabs_url}
+    else:
+        context.default_browser = 'chrome'
+        context.single_browser = True
+        if config['headless']:
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_argument("--headless")
+            context.browser_args = {'options': chrome_options}
+
+    context.base_url = config['base_url']
+
+    context.URNs = URNs
+
+    benv.before_all(context)
+
+
+def after_all(context):
+    benv.after_all(context)
+
+
+def before_feature(context, feature):
+    benv.before_feature(context, feature)
+
+
+def after_feature(context, feature):
+    benv.after_feature(context, feature)
+
+
+def before_scenario(context, scenario):
+    benv.before_scenario(context, scenario)
+    context.personas = PERSONAS
+    context.execute_steps(u'''
+        Given a browser
+        And "John" as the persona
+    ''')
+
+def after_scenario(context, scenario):
+    benv.after_scenario(context, scenario)
