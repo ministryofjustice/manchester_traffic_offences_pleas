@@ -22,6 +22,10 @@ class MAPTestRunner(RedGreenDiscoverRunner):
 
         gpg.import_keys(settings.GPG_TEST_KEY)
 
+        settings.EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+        settings.CELERY_TASK_ALWAYS_EAGER = True
+        settings.CELERY_BROKER_URL = 'memory://'
+
         super(MAPTestRunner, self).setup_test_environment(**kwargs)
 
     def teardown_test_environment(self, **kwargs):

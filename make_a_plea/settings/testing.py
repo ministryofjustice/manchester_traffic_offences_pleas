@@ -2,6 +2,8 @@ import os
 
 from .base import *
 
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+
 logging.disable(logging.CRITICAL)
 
 ADMINS = (
@@ -19,12 +21,16 @@ DATABASES = {
     }
 }
 
-EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend'
-CELERY_TASK_ALWAYS_EAGER = True
-CELERY_TASK_EAGER_PROPAGATES = True
-CELERY_BROKER_URL = 'memory://'
+CELERY_BROKER_URL = "amqp://localhost"
 
-DEBUG = False
+EMAIL_PORT = 1025
+EMAIL_HOST = "127.0.0.1"
+EMAIL_USE_TLS = False
+
+SMTP_ROUTES = {"GSI": {"HOST": "127.0.0.1", "PORT": 1025, "USE_TLS": False},
+               "PNN": {"HOST": "127.0.0.1", "PORT": 1025, "USE_TLS": False}}
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 
 SECRET_KEY = "fjsklfosufcilsft37dGDRR%^$%^^gfsdvf"
 
