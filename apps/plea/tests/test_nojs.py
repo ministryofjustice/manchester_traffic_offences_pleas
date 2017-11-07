@@ -22,7 +22,7 @@ class TestNoJS(TestCase):
                                                   "plea_made_by": "Company representative"},
                                          "company_details": {"complete": True},
                                          "plea": {"complete": True,
-                                                  "data": [{"guilty": "guilty",
+                                                  "data": [{"guilty": "guilty_no_court",
                                                             "complete": True}]}}
 
         self.request_context = Mock()
@@ -54,7 +54,7 @@ class TestNoJS(TestCase):
         form = PleaOnlineForms(self.plea_session, "plea", 1)
 
         form.save({"split_form": "guilty",
-                   "guilty": "guilty"},
+                   "guilty": "guilty_no_court"},
                   self.request_context)
 
         response = form.render(self.get_request_mock())
@@ -77,7 +77,7 @@ class TestNoJS(TestCase):
 
     def test_split_form_plea_stage_change_link_no_summary(self):
         self.plea_session.update({"plea": {"split_form": "split_form_last_step",
-                                           "data": [{"guilty": "guilty"}]}})
+                                           "data": [{"guilty": "guilty_no_court"}]}})
 
         fake_request = self.get_request_mock("/plea/plea/?reset")
         request_context = RequestContext(fake_request)

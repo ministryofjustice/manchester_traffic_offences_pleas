@@ -6,7 +6,7 @@ from django import forms
 from django.forms.widgets import Textarea
 from django.utils.translation import ugettext_lazy as _
 
-from apps.forms.fields import DateWidget, DSRadioSelect
+from apps.forms.fields import DateWidget, DSRadioSelect, DSStackedRadioSelect
 from apps.forms.forms import (
     YESNO_CHOICES,
     to_bool,
@@ -954,22 +954,12 @@ class ConfirmationForm(BaseStageForm):
 
 class BasePleaForm(SplitStageForm):
     """Base form for pleas"""
-    PLEA_CHOICES = (
-        ('guilty', _('Guilty')),
-        ('not_guilty', _('Not guilty')),
-    )
+
 
     split_form_options = {
         "trigger": "guilty",
         "nojs_only": True
     }
-
-    guilty = forms.ChoiceField(
-        choices=PLEA_CHOICES,
-        widget=DSRadioSelect,
-        required=True,
-        error_messages={
-            "required": ERROR_MESSAGES["PLEA_REQUIRED"]})
 
     guilty_extra = forms.CharField(
         label=_("Mitigation"),
@@ -1076,6 +1066,11 @@ class BasePleaForm(SplitStageForm):
 
 class PleaForm(BasePleaForm):
     """Plea form"""
+    PLEA_CHOICES = (
+        ('guilty_no_court', _('Guilty - I want the case to be dealt with in my absence')), ('guilty_court', _('Guilty - I want to attend court in person')),
+        ('not_guilty', _("Not guilty - Pleading not guilty to this charge means we'll send details of a date for you to come to court for a trial.")),
+    )
+
     dependencies = OrderedDict([
         ("not_guilty_extra", {"field": "guilty", "value": "not_guilty"}),
         ("interpreter_needed", {"field": "guilty", "value": "not_guilty"}),
@@ -1089,11 +1084,24 @@ class PleaForm(BasePleaForm):
     ])
 
 
+    guilty = forms.ChoiceField(
+        choices=PLEA_CHOICES,
+        widget=DSStackedRadioSelect,
+        required=True,
+        error_messages={
+            "required": ERROR_MESSAGES["PLEA_REQUIRED"]})
+
+
 class SJPPleaForm(BasePleaForm):
     """SJP form"""
+
+    PLEA_CHOICES = (
+        ('guilty_no_court', _('Guilty - I want the case to be dealt with in my absence')), ('guilty_court', _('Guilty - I want to attend court in person')),
+        ('not_guilty', _("Not guilty - Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date.")),
+    )
+
     dependencies = OrderedDict([
-        ("come_to_court", {"field": "guilty", "value": "guilty"}),
-        ("sjp_interpreter_needed", {"field": "come_to_court", "value": "True"}),
+        ("sjp_interpreter_needed", {"field": "guilty", "value": "guilty_court"}),
         ("sjp_interpreter_language", {"field": "sjp_interpreter_needed", "value": "True"}),
         ("not_guilty_extra", {"field": "guilty", "value": "not_guilty"}),
         ("interpreter_needed", {"field": "guilty", "value": "not_guilty"}),
@@ -1106,9 +1114,16 @@ class SJPPleaForm(BasePleaForm):
         ("witness_interpreter_language", {"field": "witness_interpreter_needed", "value": "True"})
     ])
 
+    guilty = forms.ChoiceField(
+        choices=PLEA_CHOICES,
+        widget=DSStackedRadioSelect,
+        required=True,
+        error_messages={
+            "required": ERROR_MESSAGES["PLEA_REQUIRED"]})
+
     come_to_court = forms.TypedChoiceField(
         widget=DSRadioSelect,
-        required=True,
+        required=False,
         choices=YESNO_CHOICES["Hoffwn/Na hoffwn"],
         coerce=to_bool,
         label=_("Do you want to come to court to plead guilty?"),

@@ -1,6 +1,6 @@
 class CompanyPleaPage < SitePrism::Page
   section :panel_indent, '.panel-indent' do
-    elements :p, 'p'
+    element :p, 'p'
   end
   section :section_not_guilty_extra, '#section_not_guilty_extra' do
     element :form_hint, '.form-hint'

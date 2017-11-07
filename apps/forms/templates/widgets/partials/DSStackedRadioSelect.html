@@ -1,0 +1,17 @@
+{% load filters %}
+{% load form_widgets %} 
+<div class = "form-group">
+{% for choice_name, choice_value in self.choices %}
+<div class="row">
+<label for="id_{{ name }}_{{ choice_name|slugify }}"
+       class="block-label">
+	<input id="id_{{ name }}_{{ choice_name|slugify }}"
+           type="radio" name="{{ name }}"
+	       value="{{ choice_name }}"
+        {% if choice_name|equal_coerced:value %} checked="checked"{% endif %}>
+    {{ choice_value }}
+
+</label>
+</div>
+{% endfor %}
+</div>
