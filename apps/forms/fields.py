@@ -24,6 +24,10 @@ class DSRadioSelect(RadioSelect):
         return render_to_string(self.template_name, context)
 
 
+class DSStackedRadioSelect(DSRadioSelect):
+    template_name = "widgets/partials/DSStackedRadioSelect.html"
+
+
 class DSTemplateWidgetBase(forms.TextInput):
     template = ""
 

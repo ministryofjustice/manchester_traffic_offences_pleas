@@ -15,13 +15,8 @@ Then(/^I should see present the company's case copy$/) do
   expect(plea_group.li[2].text).to have_content 'the company may get a 33% reduction'
 end
 
-Then(/^I should see pleading guilty to this charge means copy$/) do
-  guilty_group = company_plea_page.panel_indent.p[0]
-  expect(guilty_group.text).to have_content 'means a company representative does not need to come to court'
-end
-
 Then(/^I should see pleading not guilty to this charge means copy$/) do
-  not_guilty_group = company_plea_page.panel_indent.p[1]
+  not_guilty_group = company_plea_page.panel_indent.p
   expect(not_guilty_group.text).to have_content 'means we\'ll send details of a date for a company representative'
 end
 

@@ -20,6 +20,7 @@ Feature: Review - Confirm your plea
     Then the your_details section should have <title> <information> without change links
     | title                     | information              |
     | First name                | John                     |
+    | Middle name               | George                   |
     | Last name                 | Smith                    |
     | Address                   | As printed on the notice |
     | Contact number            | 0207514445               |          

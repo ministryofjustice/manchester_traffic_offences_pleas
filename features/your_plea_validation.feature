@@ -7,11 +7,6 @@ Feature: Your plea - validation
     When I click on continue
     Then I should see error message 'You must select a plea for this charge' with link section_guilty
 
-  Scenario: Displays you must tell us if you want to come to court error messages
-    When I select guilty to one charge
-    And I click on continue
-    Then I should see error message 'You must tell us if you want to come to court' with link section_come_to_court
-
   Scenario: Displays you must tell us which language error messages  
     When I select yes to the guilty questions
     And I click on continue

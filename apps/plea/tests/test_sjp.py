@@ -61,17 +61,17 @@ class TestSJP(TestMultiPleaFormBase):
             "plea": {
                 "data": [
                     {
-                        "guilty": "guilty",
+                        "guilty": "guilty_no_court",
                         "guilty_extra": "something",
                         "complete": True,
                     },
                     {
-                        "guilty": "guilty",
+                        "guilty": "guilty_no_court",
                         "guilty_extra": "something",
                         "complete": True,
                     },
                     {
-                        "guilty": "guilty",
+                        "guilty": "guilty_no_court",
                         "guilty_extra": "something",
                         "complete": True,
                     }
