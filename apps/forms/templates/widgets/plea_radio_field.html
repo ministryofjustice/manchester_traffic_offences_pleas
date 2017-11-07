@@ -79,7 +79,7 @@
         {% if plea_data.split_form != "split_form_last_step" %}
 
             <div class="form-field">
-                <div class="inline">
+                <div >
 
                     {% for choice in form.guilty %}
                         <label for="id_{{ choice.data.name }}_{{ choice.data.value }}"
@@ -115,7 +115,7 @@
                 <p class="form-selected">
                     {% blocktrans count charges=1 %}Your plea{% plural %}Your pleas{% endblocktrans %} - 
                     <strong>
-                        {% if form.guilty.value == "guilty" %}
+                        {% if form.guilty.value == "guilty_court" or form.guilty.value == "guilty_no_court" %}
                             {% blocktrans %}Guilty{% endblocktrans %}
                         {% else %}
                             {% blocktrans %}Not guilty{% endblocktrans %}

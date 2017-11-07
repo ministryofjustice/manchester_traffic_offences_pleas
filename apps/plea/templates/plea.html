@@ -55,30 +55,20 @@
             <div {% if form.split_form.value != "split_form_last_step" %} 
                  class="panel-indent"{% endif %}
                  data-conditional="guilty"
-                 data-conditional-value="^(guilty|not_guilty)$">
+                 data-conditional-value="^(guilty_court|guilty_no_court|not_guilty)$">
 
-                <section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.value != "guilty" %} nojs-hidden{% endif %}"
+                <section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.value != "guilty_court" %} nojs-hidden{% endif %}"
                     data-conditional="guilty"
-                    data-conditional-value="^guilty$">
+                    data-conditional-value="^guilty_court$">
 
-                    <p>{% spaceless %}
-                        {% if case.plea_made_by == "Defendant" %}
-                            {% blocktrans %}Pleading guilty to this charge means you do not need to come to court to respond to this charge - we'll send you details of the court's decision and what to do next.{% endblocktrans %}
-                        {% endif %}
-
-                        {% if case.plea_made_by == "Company representative" %}
-                            {% blocktrans %}Pleading guilty to this charge means a company representative does not need to come to court to respond to this charge - we'll send details of the court's decision and what happens next.{% endblocktrans %}
-                        {% endif %}
-
-                        {% if notice_type.sjp %} {% blocktrans %}However, you do have the option to plead guilty in court if you want to.{% endblocktrans %}{% endif %}
-                    {% endspaceless %}</p>
+                    <div id="guilty_extra_conditional">
+                        {% std_field form.guilty_extra wide=True %}
+                    </div>
 
                     {% if notice_type.sjp %}
 
-                        {% radio_field form.come_to_court wide=True hide_optional=True inline=True %}
-
                         {% if form.sjp_interpreter_needed %}
-                        <div data-conditional="come_to_court" data-conditional-value="True">
+                        <div data-conditional="guilty" data-conditional-value="guilty_court">
                             {% radio_field form.sjp_interpreter_needed wide=True hide_optional=True inline=True %}
 
                             <div class="move-up" data-conditional="sjp_interpreter_needed" data-conditional-value="True">
@@ -87,9 +77,38 @@
                         </div>
                         {% endif %}
 
+                    {% else %}
+
+                        {% if case.plea_made_by == "Defendant" %}
+                            {% if form.interpreter_needed %}
+                                {% radio_field form.interpreter_needed wide=True hide_optional=True inline=True %}
+                            {% endif %}
+                        {% endif %}
+
+                    {% if case.plea_made_by == "Company representative" %}
+                            {% if form.interpreter_needed %}
+                                {% radio_field form.interpreter_needed wide=True hide_optional=True inline=True label=_("Does your company representative need an interpreter in court?") %}
+                            {% endif %}
+                    {% endif %}
+
+                        {% if form.interpreter_needed %}
+                        <div class="move-up" data-conditional="interpreter_needed" data-conditional-value="True">
+                            {% std_field form.interpreter_language wide=True hide_optional=True %}
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                </section>
+
+				<section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.value != "guilty_no_court" %} nojs-hidden{% endif %}"
+                    data-conditional="guilty"
+                    data-conditional-value="^guilty_no_court$">
+
+                    {% if notice_type.sjp %}
+
                         <div id="guilty_extra_conditional">
                             {% std_field form.guilty_extra wide=True %}
                         </div>
+
 
                     {% else %}
                         {% std_field form.guilty_extra wide=True %}
@@ -99,11 +118,6 @@
                 <section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.value != "not_guilty" %} nojs-hidden{% endif %}" data-conditional="guilty" data-conditional-value="^not_guilty$">
 
                 {% if case.plea_made_by == "Defendant" %}
-                    {% if notice_type.sjp %}
-                        <p>{% blocktrans %}Pleading not guilty to this charge means we'll send details of a date for you to come to court for a trial.{% endblocktrans %}</p>
-                    {% else %}
-                        <p>{% blocktrans %}Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date.{% endblocktrans %}</p>
-                    {% endif %}
 
                     {% std_field form.not_guilty_extra wide=True hide_optional=True %}
 
@@ -171,11 +185,11 @@
         conditional = new moj.Modules._Conditional($mitigations);
 
         {% if form.sjp_interpreter_needed %}
-        $('[name=come_to_court]').on('change', function(){
-            if($(this).val() === "True") {
+        $('[name=guilty]').on('change', function(){
+            if($(this).val() === "guilty_court") {
                 $mitigations.data('conditional', 'sjp_interpreter_needed');
             }
-            else {
+            else if ($(this).val() === "guilty_no_court") {
                 $mitigations.data('conditional', 'come_to_court');
             }
             conditional.refresh();

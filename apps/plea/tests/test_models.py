@@ -108,7 +108,7 @@ class CourtEmailCountModelTestCase(TestStatsBase):
                 "data": [
                     {
                         "guilty_extra": "13 chars long",
-                        "guilty": "guilty"
+                        "guilty": "guilty_no_court"
                     },
                     {
                         "not_guilty_extra": "16 chars long xx",

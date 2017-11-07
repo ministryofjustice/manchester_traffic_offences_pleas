@@ -1,6 +1,6 @@
 class YourPleaNotGuiltyPage < SitePrism::Page
   element :h3, 'h3'
-
+  element :id_guilty_not_guilty, '#id_guilty_not_guilty'
   section :panel_indent, '.panel-indent' do
     elements :p, 'p'
     element :come_to_court_true, '#id_come_to_court_true'

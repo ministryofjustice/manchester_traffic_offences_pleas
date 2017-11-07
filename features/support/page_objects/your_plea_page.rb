@@ -1,4 +1,6 @@
 class YourPleaPage < SitePrism::Page
+  elements :block_label, '.block-label'
+
   section :panel_grey, '.panel-grey' do
     element :p, 'p'
     elements :li, 'li'

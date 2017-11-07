@@ -102,17 +102,17 @@ class TestMultiPleaForms(TestCaseBase):
             "plea": {
                 "data": [
                     {
-                        "guilty": "guilty",
+                        "guilty": "guilty_no_court",
                         "guilty_extra": "something",
                         "complete": True,
                     },
                     {
-                        "guilty": "guilty",
+                        "guilty": "guilty_no_court",
                         "guilty_extra": "something",
                         "complete": True,
                     },
                     {
-                        "guilty": "guilty",
+                        "guilty": "guilty_no_court",
                         "guilty_extra": "something",
                         "complete": True,
                     }
@@ -540,20 +540,6 @@ class TestMultiPleaForms(TestCaseBase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(form.current_stage.form.errors), 1)
 
-    def test_plea_SJP_single_charge_guilty_missing_data(self):
-        self.session.update(self.plea_stage_pre_data_1_charge)
-        self.session["notice_type"]["sjp"] = True
-
-        form = PleaOnlineForms(self.session, "plea", 1)
-
-        form.load(self.request_context)
-        form.save({"guilty": "guilty"},
-                  self.request_context)
-        response = form.render(self.get_request_mock())
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(form.current_stage.form.errors), 1)
-
     def test_plea_SJP_single_charge_guilty_missing_extra_data(self):
         self.session.update(self.plea_stage_pre_data_1_charge)
         self.session["notice_type"]["sjp"] = True
@@ -561,7 +547,7 @@ class TestMultiPleaForms(TestCaseBase):
         form = PleaOnlineForms(self.session, "plea", 1)
 
         form.load(self.request_context)
-        form.save({"guilty": "guilty",
+        form.save({"guilty": "guilty_court",
                    "come_to_court": True},
                   self.request_context)
         response = form.render(self.get_request_mock())
@@ -625,7 +611,7 @@ class TestMultiPleaForms(TestCaseBase):
         # plea 1
         form = PleaOnlineForms(self.session, "plea", 1)
 
-        plea_1 = {"guilty": "guilty",
+        plea_1 = {"guilty": "guilty_no_court",
                   "guilty_extra": "lorem ipsum 1"}
 
         form.load(self.request_context)
@@ -680,7 +666,7 @@ class TestMultiPleaForms(TestCaseBase):
         form = PleaOnlineForms(test_data, "plea", 1)
         form.load(request_context)
 
-        plea_data = {"guilty": "guilty",
+        plea_data = {"guilty": "guilty_no_court",
                      "guilty_extra": "lorem ipsum 1"}
 
         form.save(plea_data, request_context)
@@ -742,7 +728,7 @@ class TestMultiPleaForms(TestCaseBase):
     def test_plea_stage_charge_2_shows_interpreter_fields(self):
         self.session.update(self.plea_stage_pre_data_3_charges)
         self.session.update({"plea": {"data": [{"complete": True,
-                                                "guilty": "guilty"}]}})
+                                                "guilty": "guilty_no_court"}]}})
         form = PleaOnlineForms(self.session, "plea", 2)
 
         form.load(self.request_context)
@@ -754,7 +740,7 @@ class TestMultiPleaForms(TestCaseBase):
     def test_plea_stage_charge_3_doesnt_show_interpreter_fields(self):
         self.session.update(self.plea_stage_pre_data_3_charges)
         self.session.update({"plea": {"data": [{"complete": True,
-                                                "guilty": "guilty"},
+                                                "guilty": "guilty_no_court"},
                                                {"complete": True,
                                                 "guilty": "not_guilty",
                                                 "interpreter_needed": False}]}})
@@ -769,12 +755,12 @@ class TestMultiPleaForms(TestCaseBase):
     def test_plea_stage_charge_3_shows_interpreter_fields_after_charge_2_change(self):
         self.session.update(self.plea_stage_pre_data_3_charges)
         self.session.update({"plea": {"data": [{"complete": True,
-                                                "guilty": "guilty"},
+                                                "guilty": "guilty_no_court"},
                                                {"complete": True,
                                                 "guilty": "not_guilty",
                                                 "interpreter_needed": False}]}})
         form = PleaOnlineForms(self.session, "plea", 2)
-        form.save({"guilty": "guilty"}, self.request_context)
+        form.save({"guilty": "guilty_no_court"}, self.request_context)
 
         form = PleaOnlineForms(self.session, "plea", 3)
 
@@ -1080,7 +1066,7 @@ class TestMultiPleaForms(TestCaseBase):
             "plea": {
                 "data": [
                     {
-                        "guilty": "guilty",
+                        "guilty": "guilty_no_court",
                         "guilty_extra": "",
                         "complete": True
                     }
@@ -1250,15 +1236,15 @@ class TestMultiPleaForms(TestCaseBase):
                 "complete": True,
                 "data": [
                     {
-                        "guilty": "guilty",
+                        "guilty": "guilty_no_court",
                         "guilty_extra": "something"
                     },
                     {
-                        "guilty": "guilty",
+                        "guilty": "guilty_no_court",
                         "guilty_extra": "something"
                     },
                     {
-                        "guilty": "guilty",
+                        "guilty": "guilty_no_court",
                         "guilty_extra": "something"
                     }
                 ]
@@ -1358,7 +1344,7 @@ class TestMultiPleaForms(TestCaseBase):
         form = PleaOnlineForms(fake_session, "plea", 1)
         form.load(request_context)
 
-        plea_data = {"guilty": "guilty",
+        plea_data = {"guilty": "guilty_no_court",
                      "guilty_extra": "lorem ipsum 1"}
 
         form.save(plea_data, request_context)
@@ -1384,7 +1370,7 @@ class TestMultiPleaForms(TestCaseBase):
         self.assertEqual(fake_session["your_details"]["last_name"], "Brown")
         self.assertEqual(fake_session["your_details"]["contact_number"], "07802639892")
         self.assertEqual(fake_session["your_details"]["email"], "user@example.org")
-        self.assertEqual(fake_session["plea"]["data"][0]["guilty"], "guilty")
+        self.assertEqual(fake_session["plea"]["data"][0]["guilty"], "guilty_no_court")
         self.assertEqual(fake_session["plea"]["data"][0]["guilty_extra"], "lorem ipsum 1")
         self.assertEqual(fake_session["review"]["understand"], True)
 
@@ -1439,7 +1425,7 @@ class TestMultiPleaForms(TestCaseBase):
         form = PleaOnlineForms(fake_session, "plea", 1)
         form.load(request_context)
 
-        plea_data = {"guilty": "guilty",
+        plea_data = {"guilty": "guilty_no_court",
                      "guilty_extra": "lorem ipsum 1"}
 
         form.save(plea_data, request_context)
@@ -1451,7 +1437,7 @@ class TestMultiPleaForms(TestCaseBase):
         form = PleaOnlineForms(fake_session, "plea", 2)
         form.load(request_context)
 
-        plea_data = {"guilty": "guilty",
+        plea_data = {"guilty": "guilty_no_court",
                      "guilty_extra": "lorem ipsum 2"}
 
         form.save(plea_data, request_context)
@@ -1477,9 +1463,9 @@ class TestMultiPleaForms(TestCaseBase):
         self.assertEqual(fake_session["your_details"]["last_name"], "Brown")
         self.assertEqual(fake_session["your_details"]["contact_number"], "07802639892")
         self.assertEqual(fake_session["your_details"]["email"], "user@example.org")
-        self.assertEqual(fake_session["plea"]["data"][0]["guilty"], "guilty")
+        self.assertEqual(fake_session["plea"]["data"][0]["guilty"], "guilty_no_court")
         self.assertEqual(fake_session["plea"]["data"][0]["guilty_extra"], "lorem ipsum 1")
-        self.assertEqual(fake_session["plea"]["data"][1]["guilty"], "guilty")
+        self.assertEqual(fake_session["plea"]["data"][1]["guilty"], "guilty_no_court")
         self.assertEqual(fake_session["plea"]["data"][1]["guilty_extra"], "lorem ipsum 2")
         self.assertEqual(fake_session["review"]["understand"], True)
 
@@ -2016,15 +2002,15 @@ class TestYourExpensesStage(TestCaseBase):
                 "complete": True,
                 "data": [
                     {
-                        "guilty": "guilty",
+                        "guilty": "guilty_no_court",
                         "guilty_extra": "something"
                     },
                     {
-                        "guilty": "guilty",
+                        "guilty": "guilty_no_court",
                         "guilty_extra": "something"
                     },
                     {
-                        "guilty": "guilty",
+                        "guilty": "guilty_no_court",
                         "guilty_extra": "something"
                     }
                 ]

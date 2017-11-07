@@ -84,7 +84,6 @@ class PleaOnlineForms(MultiStageForm):
         saved_urn = self.all_data.get("case", {}).get("urn")
         saved_first_name = self.all_data.get("your_details", {}).get("first_name")
         saved_last_name = self.all_data.get("your_details", {}).get("last_name")
-
         if all([
                 saved_urn,
                 saved_first_name,
