@@ -26,7 +26,7 @@ def get_plea_type(context_data):
     """
 
     guilty_count = len([plea for plea in context_data["plea"]["data"]
-                        if plea["guilty"] == "guilty"])
+                        if plea["guilty"] == "guilty_court" or plea["guilty"] == "guilty_no_court"])
 
     if guilty_count == 0:
         return "not_guilty"

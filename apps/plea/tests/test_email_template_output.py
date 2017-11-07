@@ -91,7 +91,7 @@ class BaseEmailTemplateTests(TestCase):
                             "have_driving_licence_number": False}
 
         if not plea_data:
-            plea_data = {"guilty": "guilty",
+            plea_data = {"guilty": "guilty_no_court",
                          "guilty_extra": "IT wasn't me driving!"}
 
         if not status_data:
@@ -351,7 +351,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
     def test_SJP_single_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
         context_data["notice_type"]["sjp"] = True
-        context_data["plea"]["data"][0]["guilty"] = "guilty"
+        context_data["plea"]["data"][0]["guilty"] = "guilty_court"
         context_data["plea"]["data"][0]["come_to_court"] = True
         context_data["plea"]["data"][0]["show_interpreter_question"] = True
         context_data["plea"]["data"][0]["sjp_interpreter_needed"] = True
@@ -368,7 +368,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
     def test_multiple_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
 
-        context_data["plea"]["data"].append({"guilty_extra": "test2", "guilty": "guilty"})
+        context_data["plea"]["data"].append({"guilty_extra": "test2", "guilty": "guilty_no_court"})
 
         send_plea_email(context_data)
 
@@ -753,7 +753,7 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
     def test_PLP_multiple_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
 
-        context_data["plea"]["data"].append({"guilty_extra": "test2", "guilty": "guilty"})
+        context_data["plea"]["data"].append({"guilty_extra": "test2", "guilty": "guilty_no_court"})
 
         send_plea_email(context_data)
 
@@ -830,15 +830,15 @@ class DefendantEmailTemplateTests(BaseEmailTemplateTests):
         context_data["case"]["number_of_pleas"] = 3
         context_data["plea"]["data"] = [
             {
-                "guilty": "guilty",
+                "guilty": "guilty_no_court",
                 "guilty_extra": "asdf"
             },
             {
-                "guilty": "guilty",
+                "guilty": "guilty_no_court",
                 "guilty_extra": "asdf"
             },
             {
-                "guilty": "guilty",
+                "guilty": "guilty_no_court",
                 "guilty_extra": "asdf"
             }
         ]
@@ -882,11 +882,11 @@ class DefendantEmailTemplateTests(BaseEmailTemplateTests):
                 "not_guilty_extra": "asdf"
             },
             {
-                "guilty": "guilty",
+                "guilty": "guilty_no_court",
                 "guilty_extra": "asdf"
             },
             {
-                "guilty": "guilty",
+                "guilty": "guilty_court",
                 "guilty_extra": "asdf"
             }
         ]
@@ -1006,7 +1006,7 @@ class TestCompanyFinancesEmailLogic(TestCase):
 
     def test_company_details_with_company_finances(self):
 
-        self.test_session_data["plea"]["data"][0]["guilty"] = "guilty"
+        self.test_session_data["plea"]["data"][0]["guilty"] = "guilty_no_court"
         del self.test_session_data["company_finances"]["skipped"]
 
         send_plea_email(self.test_session_data)

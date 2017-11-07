@@ -9,10 +9,6 @@ Feature: Company plea
   Scenario: Displays present the company's case copy
     Then I should see present the company's case copy
 
-  Scenario: Displays pleading guilty to this charge means copy
-    When I select guilty to one charge
-    Then I should see pleading guilty to this charge means copy
-
   Scenario: Dispalys not guilty to this charge means copy
     When  I select not guilty to one charge
     Then I should see pleading not guilty to this charge means copy
