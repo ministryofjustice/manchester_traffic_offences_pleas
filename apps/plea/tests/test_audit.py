@@ -51,7 +51,7 @@ class CaseCreationTests(TestCase):
                        u'email': u'user@example.org'},
             'send_error': {},
             'plea': {u'data': [{u'guilty_extra': u'fdsfdsff\r\nds\r\nf',
-                                 u'guilty': u'guilty'},
+                                 u'guilty': u'guilty_no_court'},
                                 {u'not_guilty_extra': u'fdsfd\r\nsf\r\n\r\n',
                                  u'guilty': u'not_guilty'}], u'understand': True}}
 

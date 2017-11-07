@@ -512,17 +512,29 @@ class PleaStage(IndexedStage):
         if len(stage_data["data"]) < self.index:
             stage_data["data"].append({})
 
-        if clean_data.get("guilty") == "guilty":
+        if clean_data.get("guilty") == "guilty_no_court" or clean_data.get("guilty") == "guilty_court":
             try:
                 del clean_data["interpreter_needed"]
                 del clean_data["interpreter_language"]
             except KeyError:
                 pass
 
-        if clean_data.get("guilty") == "not_guilty" or clean_data.get("come_to_court") is False:
+        if clean_data.get("guilty") == "not_guilty" or clean_data.get("guilty") == "guilty_no_court":
             try:
                 del clean_data["sjp_interpreter_needed"]
                 del clean_data["sjp_interpreter_language"]
+            except KeyError:
+                pass
+
+        #Converts the new come to court options to the same format within the form data as before
+        if clean_data.get("guilty") == "guilty_court":
+            try:
+                clean_data["come_to_court"] = True
+            except KeyError:
+                pass
+        else:
+            try:
+                clean_data["come_to_court"] = False
             except KeyError:
                 pass
 
@@ -531,7 +543,7 @@ class PleaStage(IndexedStage):
         stage_data["data"][self.index - 1] = clean_data
 
         for plea in stage_data["data"]:
-            if plea.get("guilty") == "guilty":
+            if plea.get("guilty") == "guilty_court" or plea.get("guilty") == "guilty_no_court":
                 stage_data["none_guilty"] = False
                 break
 

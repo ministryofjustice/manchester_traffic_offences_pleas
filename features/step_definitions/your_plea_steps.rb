@@ -16,10 +16,12 @@ end
 
 Then(/^I should see plea options$/) do
   expect(your_plea_page.label_charge.label_text.text).to eq 'Your plea for charge 1'
-  expect(your_plea_page.block_label[0].text).to eq 'Guilty'
-  expect(your_plea_page.block_label[1].text).to eq 'Not guilty'
-  expect(your_plea_page.guilty['type']).to eq 'radio'
-  expect(your_plea_page.not_guilty['type']).to eq 'radio'
+  expect(your_plea_page.block_label[0].text).to eq 'Guilty - I want the case to be dealt with in my absence'
+  expect(your_plea_page.block_label[1].text).to eq 'Guilty - I want to attend court in person'
+  expect(your_plea_page.block_label[2].text).to start_with 'Not guilty - Pleading not guilty to this charge means'
+  expect(common_page.id_guilty_guilty_no_court['type']).to eq 'radio'
+  expect(common_page.id_guilty_guilty_court['type']).to eq 'radio'
+  expect(common_page.id_guilty_not_guilty['type']).to eq 'radio'
 end
 
 Then(/^I should see present your case copy$/) do

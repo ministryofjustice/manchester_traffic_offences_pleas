@@ -212,7 +212,7 @@ class CourtEmailCount(models.Model):
         for plea_data in context["plea"]["data"]:
             self.total_pleas += 1
 
-            if plea_data["guilty"] == "guilty":
+            if plea_data["guilty"] == "guilty" or plea_data["guilty"] == "guilty_court" or plea_data["guilty"] == "guilty_no_court":
                 self.total_guilty += 1
 
             if plea_data["guilty"] == "not_guilty":
@@ -222,7 +222,7 @@ class CourtEmailCount(models.Model):
         self.sc_guilty_char_count, self.sc_not_guilty_char_count = 0, 0
 
         for plea in context["plea"]["data"]:
-            if plea["guilty"] == "guilty":
+            if plea["guilty"] == "guilty_court" or plea["guilty"] == "guilty_no_court":
                 self.sc_guilty_char_count += len(plea.get("guilty_extra", ""))
             else:
                 self.sc_not_guilty_char_count += len(plea.get("not_guilty_extra", ""))

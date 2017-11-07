@@ -45,8 +45,8 @@ class EmailGenerationTests(TestCase):
                                                      "contact_number": "07000000000",
                                                      "date_of_birth": "1970-01-01",
                                                      "email": "user@example.org"},
-                                    "plea": {"data": [{"guilty": "guilty", "guilty_extra": "test1"},
-                                                       {"guilty": "guilty", "guilty_extra": "test2"}]},
+                                    "plea": {"data": [{"guilty": "guilty_no_court", "guilty_extra": "test1"},
+                                                       {"guilty": "guilty_no_court", "guilty_extra": "test2"}]},
                                     "review": {"understand": True}}
 
         self.test_data_company = {"notice_type": {"sjp": False},
@@ -64,8 +64,8 @@ class EmailGenerationTests(TestCase):
                                                       "position_in_company": "a director",
                                                       "contact_number": "0800 SOMECOMPANY",
                                                       "email": "company@example.org"},
-                                  "plea": {"data": [{"guilty": "guilty", "guilty_extra": "test1"},
-                                                     {"guilty": "guilty", "guilty_extra": "test2"}]},
+                                  "plea": {"data": [{"guilty": "guilty_no_court", "guilty_extra": "test1"},
+                                                     {"guilty": "guilty_no_court", "guilty_extra": "test2"}]},
                                   "review": {"understand": True}}
 
     def test_template_attachment_sends_email(self):
