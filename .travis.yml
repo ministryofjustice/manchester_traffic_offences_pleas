@@ -24,3 +24,4 @@ script:
   - coverage run --source='.' manage.py test
   - coverage report
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then codeclimate-test-reporter; fi
+  - python manage.py test --settings=api.settings.testing -p "api_test_*.py"
