@@ -220,3 +220,18 @@ class TestValidators(TestCase):
 
         with self.assertRaises(forms.ValidationError):
             is_date_in_next_6_months(more_than_6_months_from_now)
+
+    def test_contact_number_contains_non_numeric(self):
+        non_numeric = "abcdef"
+
+        with self.assertRaises(forms.ValidationError):
+            is_valid_contact_number(non_numeric)
+
+    def test_contact_number_only_contains_numerics(self):
+        numeric = "1234567"
+
+        self.assertTrue(is_valid_contact_number(numeric))
+
+    def test_contact_number_with_symbols(self):
+        symbol_contact = "+44(208)-777-7777"
+        self.assertTrue(is_valid_contact_number(symbol_contact))

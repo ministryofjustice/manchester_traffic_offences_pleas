@@ -37,7 +37,7 @@ from .forms import (URNEntryForm,
 from .fields import ERROR_MESSAGES
 from .models import Court, Case, Offence, DataValidation
 from .standardisers import standardise_urn, format_for_region
-
+import re
 
 def get_case(urn):
     try:
@@ -350,7 +350,20 @@ class CaseStage(FormStage):
         return clean_data
 
 
-class CompanyDetailsStage(FormStage):
+class DetailsStage(FormStage):
+    def save(self, form_data, next_step=None):
+
+        contact_number= form_data.get("contact_number")
+        if contact_number:
+            contact_number = re.sub('\W', '', contact_number.replace('+', '00'))
+        new_form_data = form_data.copy()
+        new_form_data.update({"contact_number": contact_number})
+        clean_data = super(DetailsStage,
+                           self).save(new_form_data, next_step)
+        return clean_data
+
+
+class CompanyDetailsStage(DetailsStage):
     name = "company_details"
     template = "company_details.html"
     form_class = CompanyDetailsForm
@@ -383,7 +396,7 @@ class CompanyDetailsStage(FormStage):
         return super(CompanyDetailsStage, self).render(request, request_context)
 
 
-class YourDetailsStage(FormStage):
+class YourDetailsStage(DetailsStage):
     name = "your_details"
     template = "your_details.html"
     form_class = YourDetailsForm

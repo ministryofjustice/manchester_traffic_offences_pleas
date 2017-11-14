@@ -42,7 +42,7 @@ class BaseEmailTemplateTests(TestCase):
             region_code="06",
             court_name="test court",
             court_address="test address",
-            court_telephone="0800 MAKEAPLEA",
+            court_telephone="0800 12345678",
             court_email="court@example.org",
             submission_email="court@example.org",
             plp_email="plp@example.org",
@@ -930,7 +930,7 @@ class TestCompanyFinancesEmailLogic(TestCase):
             region_code="06",
             court_name="test court",
             court_address="test address",
-            court_telephone="0800 MAKEAPLEA",
+            court_telephone="0800 12345678",
             court_email="court@example.org",
             submission_email="court@example.org",
             plp_email="plp@example.org",
@@ -960,7 +960,7 @@ class TestCompanyFinancesEmailLogic(TestCase):
                 "first_name": "John",
                 "last_name": "Smith",
                 "position_in_company": "a director",
-                "contact_number": "0800 SOMECOMPANY",
+                "contact_number": "0800 12345678",
                 "email": "user@example.org"
             },
             "plea": {
