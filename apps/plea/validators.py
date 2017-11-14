@@ -142,3 +142,14 @@ def is_valid_urn_format(urn):
             code="is_urn_valid")
 
     return True
+
+
+def is_valid_contact_number(contact_number):
+    if contact_number:
+        contact_number = re.sub('\W', '', contact_number.replace('+', '00'))
+    if not contact_number.isdigit():
+        raise exceptions.ValidationError(
+            "The contact number can only contain digits 0-9",
+            code="invalid"
+        )
+    return True
