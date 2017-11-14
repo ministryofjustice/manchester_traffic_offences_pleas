@@ -19,7 +19,8 @@ from .validators import (
     is_date_in_future,
     is_date_in_last_28_days,
     is_date_in_next_6_months,
-    is_urn_valid)
+    is_urn_valid,
+    is_valid_contact_number)
 
 
 def reorder_fields(fields, order):
@@ -240,6 +241,7 @@ class YourDetailsForm(BaseStageForm):
         widget=forms.TextInput(attrs={"type": "tel", "class": "form-control"}),
         required=True,
         max_length=30,
+        validators=[is_valid_contact_number],
         label=_("Contact number"),
         help_text=_("Landline or mobile number."),
         error_messages={
@@ -393,6 +395,7 @@ class CompanyDetailsForm(BaseStageForm):
             "type": "tel",
             "class": "form-control"}),
         max_length=30,
+        validators=[is_valid_contact_number],
         required=True,
         help_text=_("Office or mobile number."),
         error_messages={
