@@ -429,6 +429,23 @@ class TestMultiPleaForms(TestCaseBase):
         response = form.render(self.get_request_mock())
         self.assertEqual(response.status_code, 302)
 
+    def test_your_details_stage_bad_contact_number(self):
+        form = PleaOnlineForms(self.session, "your_details")
+        form.load(self.request_context)
+        form.save({"first_name": "Test",
+                   "last_name": "Man",
+                   "contact_number": "abcdefg",
+                   "correct_address": True,
+                   "date_of_birth_0": "12",
+                   "date_of_birth_1": "03",
+                   "date_of_birth_2": "1980",
+                   "email": "user@example.org",
+                   "have_ni_number": False,
+                   "have_driving_licence_number": False},
+                  self.request_context)
+
+        self.assertEqual(len(form.current_stage.form.errors), 1)
+
     def test_your_details_stage_optional_data_required(self):
         form = PleaOnlineForms(self.session, "your_details")
         form.load(self.request_context)
@@ -526,6 +543,20 @@ class TestMultiPleaForms(TestCaseBase):
         response = form.render(self.get_request_mock())
 
         self.assertEqual(response.status_code, 302)
+
+    def test_company_details_with_bad_contact_number(self):
+        form = PleaOnlineForms(self.session, "company_details")
+        form.load(self.request_context)
+
+        form_data = {"company_name": "Test Company",
+                     "correct_address": True,
+                     "first_name": "John",
+                     "last_name": "Smith",
+                     "position_in_company": "Director",
+                     "contact_number": "abcd345",
+                     "email": "business@example.org"}
+        form.save(form_data, self.request_context)
+        self.assertEqual(len(form.current_stage.form.errors), 1)
 
     def test_plea_single_charge_missing_data(self):
         self.session.update(self.plea_stage_pre_data_1_charge)
