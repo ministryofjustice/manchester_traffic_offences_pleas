@@ -4,7 +4,8 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.http import Http404, HttpResponseRedirect, QueryDict
 from django.shortcuts import render
-
+import logging
+logger = logging.getLogger(__name__)
 
 StageMessage = namedtuple("StageMessage", ["importance", "message", "tags"])
 
@@ -97,7 +98,6 @@ class FormStage(object):
 
     def save(self, form_data, next_step=None):
         clean_data = {}
-
         if isinstance(form_data, QueryDict):
             form_data = {k: v for (k, v) in form_data.items()}
 
@@ -196,6 +196,11 @@ class MultiStageForm(object):
 
         if not self.current_stage.check_dependencies_are_complete():
             if self.current_stage.name == "complete":
+                logger.error('User redirected from complete to start page due to lack of data', exc_info=False, extra={
+                    # Optionally pass a request and we'll grab any information we can
+                    'request_context': request_context,
+                    'form': self,
+                })
                 redirect = "/"
             else:
                 redirect = self.urls[self.stage_classes[0].name]

@@ -9,7 +9,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import redirect
 from django.views.generic import FormView
 from django.template import RequestContext
-
+import logging
+logger = logging.getLogger(__name__)
 from django.contrib.admin.views.decorators import staff_member_required
 
 from apps.forms.stages import MultiStageForm
@@ -117,6 +118,11 @@ class PleaOnlineViews(StorageView):
                 kwargs.get("stage", self.start) != self.start,
         ]):
             # messages.add_message(request, messages.ERROR, _("Your session has timed out"), extra_tags="session_timeout")
+            logger.error('User redirected to start page due to lack of session plea data', exc_info=False, extra={
+                    # Optionally pass a request and we'll grab any information we can
+                    'request': request,
+                    'stage': kwargs.get("stage"),
+                })
             return HttpResponseRedirect("/")
 
         # Store the index if we've got one
@@ -135,7 +141,6 @@ class PleaOnlineViews(StorageView):
         if not stage:
             stage = PleaOnlineForms.stage_classes[0].name
             return HttpResponseRedirect(reverse_lazy("plea_form_step", args=(stage,)))
-
         form = PleaOnlineForms(self.storage, stage, self.index)
         case_redirect = form.load(RequestContext(request))
         if case_redirect:
