@@ -244,11 +244,12 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
-        #'sentry': {
-        #    'level': 'ERROR',
-        #    'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
-        #    'tags': {'custom-tag': 'x'},
-        #}
+        'sentry': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            'tags': {'custom-tag': 'x'}
+        },
     },
     'loggers': {
         '': {
@@ -261,6 +262,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+        'apps.plea.views': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
         'apps.plea.email': {
             'handlers': ['console'],
             'level': 'INFO',
@@ -270,9 +276,15 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'INFO',
             'propagate': True,
-        }
+        },
+        'apps.forms.stages': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
     }
 }
+
 
 INTERNAL_IPS = ['127.0.0.1']
 
