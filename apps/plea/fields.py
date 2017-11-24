@@ -31,6 +31,7 @@ ERROR_MESSAGES = {
     "DATE_OF_BIRTH_IN_FUTURE": _("The date of birth must be before today"),
     "HAVE_NI_NUMBER_REQUIRED": _("Tell us if you have a National Insurance number"),
     "NI_NUMBER_REQUIRED": _("Tell us your National Insurance number"),
+    "NI_NUMBER_REASON": _("You must provide a reason for not providing a National Insurance number"),
     "HAVE_DRIVING_LICENCE_NUMBER_REQUIRED": _("Tell us if you have a UK driving licence"),
     "DRIVING_LICENCE_NUMBER_REQUIRED": _("Tell us your driving licence number"),
     "COMPANY_NAME_REQUIRED": _("Enter the company name"),

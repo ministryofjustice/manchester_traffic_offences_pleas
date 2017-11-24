@@ -88,6 +88,7 @@ class BaseEmailTemplateTests(TestCase):
                             "date_of_birth_2": "1980",
                             "email": "user@example.org",
                             "have_ni_number": False,
+                            "no_ni_number_reason": "Lost my NI card",
                             "have_driving_licence_number": False}
 
         if not plea_data:
@@ -305,7 +306,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
         self.assertContainsDefinition(response.content, "Address", "As printed on the notice", count=1)
         self.assertContainsDefinition(response.content, "Contact number", "0161 123 2345", count=1)
         self.assertContainsDefinition(response.content, "Date of birth", "12/03/1980", count=1)
-        self.assertContainsDefinition(response.content, "National Insurance number", "-", count=1)
+        self.assertContainsDefinition(response.content, "National Insurance number", "Lost my NI card", count=1)
         self.assertContainsDefinition(response.content, "UK driving licence number", "-", count=1)
 
     def test_full_case_details_output(self):

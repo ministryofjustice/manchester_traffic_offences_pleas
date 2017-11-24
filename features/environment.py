@@ -13,6 +13,7 @@ PERSONAS = {
         email='test@example.com',
         contact_number='0212345678',
         ni_number='XXX',
+        no_ni_number_reason='Lost my NI card',
         driving_licence_number='YYY',
         company_name='MoJ',
         position_in_company='Director',
