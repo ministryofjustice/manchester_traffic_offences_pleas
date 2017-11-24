@@ -24,6 +24,7 @@ def step_impl(context):
         When I enter my name and contact details
         And I confirm my address as correct
         And I don't provide National Insurance number
+        And I provide a reason for not having a National Insurance number
         And I don't provide UK driving licence number
         And I press "Continue"
     ''')

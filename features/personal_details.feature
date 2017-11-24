@@ -7,13 +7,14 @@ Feature: Personal details
     When I enter my name and contact details
     And I confirm my address as correct
     And I don't provide National Insurance number
+    And I provide a reason for not having a National Insurance number
     And I don't provide UK driving licence number
     And I press "Continue"
     Then I should be given a chance to plea to the first charge
 
   Scenario: Ask for additional information and correct address
     When I choose to provide National Insurance number
-    Then I should see "If yes, enter it here. It can be found on your National Insurance card, benefit letter"
+    Then I should see "If yes, enter it here."
     When I choose to provide UK driving licence
     Then I should see "If yes, enter it here. Your driving licence number is in section 5"
     When I chose my address is incorrect

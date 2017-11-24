@@ -182,6 +182,10 @@ class YourDetailsForm(BaseStageForm):
             "field": "correct_address",
             "value": "False"
         },
+        "no_ni_number_reason": {
+            "field": "have_ni_number",
+            "value": "False"
+        },
         "ni_number": {
             "field": "have_ni_number",
             "value": "True"
@@ -276,6 +280,9 @@ class YourDetailsForm(BaseStageForm):
         coerce=to_bool,
         choices=YESNO_CHOICES["Oes/Nac oes"],
         label=_("Do you have a National Insurance number?"),
+        help_text=_(
+            "It's on your National Insurance card, benefit letter, payslip or P60 - for example, 'QQ 12 34 56 C'"
+        ),
         error_messages={
             "required": ERROR_MESSAGES["HAVE_NI_NUMBER_REQUIRED"]})
 
@@ -284,11 +291,21 @@ class YourDetailsForm(BaseStageForm):
         required=True,
         label="",
         help_text=_(
-            "If yes, enter it here. It can be found on your National "
-            "Insurance card, benefit letter, payslip or P60 - for "
-            "example, 'QQ 12 34 56 C'"),
+            "If yes, enter it here."),
         error_messages={
             "required": ERROR_MESSAGES["NI_NUMBER_REQUIRED"]})
+
+    no_ni_number_reason = forms.CharField(
+        widget=forms.Textarea(attrs={
+            "rows": "4",
+            "class": "form-control"}),
+        required=False,
+        label="",
+        help_text=_(
+            "If no, please provide a valid reason"),
+        error_messages={
+            "required": ERROR_MESSAGES["NI_NUMBER_REASON"]}
+    )
 
     have_driving_licence_number = forms.TypedChoiceField(
         widget=DSRadioSelect,
