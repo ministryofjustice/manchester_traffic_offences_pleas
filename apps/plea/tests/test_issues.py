@@ -98,6 +98,7 @@ class TestDuplicateCaseIssues(TestCaseBase):
                 "date_of_birth_2": "1970",
                 "email": "user@example.org",
                 "have_ni_number": "False",
+                "no_ni_number_reason": "Lost my NI card",
                 "have_driving_licence_number": "False"}
 
     def get_company_details_save_data(self, company_name, first_name, last_name):

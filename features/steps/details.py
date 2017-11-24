@@ -17,6 +17,9 @@ def step_impl(context):
 def step_impl(context):
     context.execute_steps(u'When I choose "False" from "have_ni_number"')
 
+@when(u'I provide a reason for not having a National Insurance number')
+def step_impl(context):
+    context.execute_steps(u'When I fill in "no_ni_number_reason" with "$no_ni_number_reason"')
 
 @when(u'I don\'t provide UK driving licence number')
 def step_impl(context):

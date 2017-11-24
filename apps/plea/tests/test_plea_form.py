@@ -302,6 +302,7 @@ class TestMultiPleaForms(TestCaseBase):
                    "date_of_birth_2": "1970",
                    "email": "user@example.org",
                    "have_ni_number": False,
+                   "no_ni_number_reason": "Lost my NI card",
                    "have_driving_licence_number": False},
                   request_context)
 
@@ -423,6 +424,7 @@ class TestMultiPleaForms(TestCaseBase):
                    "date_of_birth_2": "1980",
                    "email": "user@example.org",
                    "have_ni_number": False,
+                   "no_ni_number_reason": "Lost my NI card",
                    "have_driving_licence_number": False},
                   self.request_context)
 
@@ -441,9 +443,27 @@ class TestMultiPleaForms(TestCaseBase):
                    "date_of_birth_2": "1980",
                    "email": "user@example.org",
                    "have_ni_number": False,
+                   "no_ni_number_reason": "Lost my NI card",
                    "have_driving_licence_number": False},
                   self.request_context)
 
+        self.assertEqual(len(form.current_stage.form.errors), 1)
+
+    def test_your_details_stage_no_valid_nino_reason(self):
+        form = PleaOnlineForms(self.session, "your_details")
+        form.load(self.request_context)
+        form.save({"first_name": "Test",
+                   "last_name": "Man",
+                   "contact_number": "012345678",
+                   "correct_address": True,
+                   "date_of_birth_0": "12",
+                   "date_of_birth_1": "03",
+                   "date_of_birth_2": "1980",
+                   "email": "user@example.org",
+                   "have_ni_number": False,
+                   "no_ni_number_reason": "",
+                   "have_driving_licence_number": False},
+                  self.request_context)
         self.assertEqual(len(form.current_stage.form.errors), 1)
 
     def test_your_details_stage_optional_data_required(self):
@@ -492,6 +512,7 @@ class TestMultiPleaForms(TestCaseBase):
                    "date_of_birth_2": "1980",
                    "email": "user@example.org",
                    "have_ni_number": False,
+                   "no_ni_number_reason": "Lost my NI card",
                    "have_driving_licence_number": False},
                   self.request_context)
 
@@ -1367,6 +1388,7 @@ class TestMultiPleaForms(TestCaseBase):
                    "date_of_birth_2": "1980",
                    "email": "user@example.org",
                    "have_ni_number": False,
+                   "no_ni_number_reason": "Lost my NI card",
                    "have_driving_licence_number": False},
                   request_context)
         response = form.render(self.get_request_mock())
@@ -1449,6 +1471,7 @@ class TestMultiPleaForms(TestCaseBase):
                    "date_of_birth_2": "1980",
                    "email": "user@example.org",
                    "have_ni_number": False,
+                   "no_ni_number_reason": "Lost my NI card",
                    "have_driving_licence_number": False},
                   request_context)
 
