@@ -35,7 +35,7 @@
     <dd>{{ your_details.email|default:"-" }}</dd>
 
     <dt>{% blocktrans %}National Insurance number{% endblocktrans %}</dt>
-    <dd>{{ your_details.ni_number|default:"-" }}</dd>
+    <dd>{% if your_details.have_ni_number %}{{ your_details.ni_number|default:"-" }}{% else %}{{your_details.no_ni_number_reason|default:"-" }}{% endif %}</dd>
 
     <dt>{% blocktrans %}UK driving licence number{% endblocktrans %}</dt>
     <dd>{{ your_details.driving_licence_number|default:"-" }}</dd>

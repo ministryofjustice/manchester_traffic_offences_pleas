@@ -72,6 +72,10 @@
         {% std_field form.ni_number hide_optional=True %}
     </div>
 
+    <div class="panel-indent move-up" data-conditional="have_ni_number" data-conditional-value="False">
+        {% std_field form.no_ni_number_reason hide_optional=True %}
+    </div>
+
     {% radio_field form.have_driving_licence_number inline=True %}
 
     <div class="panel-indent move-up" data-conditional="have_driving_licence_number" data-conditional-value="True">
