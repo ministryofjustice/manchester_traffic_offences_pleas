@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
 apt-get install --fix-missing -y \
-  git \
   postgresql \
   postgresql-contrib \
-  postgresql-server-dev-9.3 \
   build-essential \
   python-dev \
   libxml2-dev \
@@ -14,7 +12,9 @@ apt-get install --fix-missing -y \
   nodejs \
   ruby-sass \
   libfontconfig \
-  redis-server \
   libssl-dev \
   libcurl4-openssl-dev \
-  libffi-dev
+  libffi-dev \
+  rabbitmq-server \
+  gettext \
+  vim
