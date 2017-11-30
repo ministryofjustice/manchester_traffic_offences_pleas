@@ -34,4 +34,4 @@ script:
   - mailmock -p 1025 -o /tmp/mailmock -n &
   - celery worker -A make_a_plea -D
   - sleep 2
-  - behave --format progress3 -Dconfig=local
+  - behave --format progress3 -Dheadless
