@@ -3,15 +3,6 @@ Make a Plea
 
 A simple, user-friendly online service for citizens to submit pleas for summary motoring offences.
 
-Dependencies
-------------
-
-- VirtualBox
-- Vagrant
-- Docker & Docker-compose
-
-NOTE: Vagrant or docker can be used to set up a local dev environment
-
 Installation
 ------------
 
@@ -20,45 +11,50 @@ Clone the repository:
     git clone git@github.com:ministryofjustice/manchester_traffic_offences_pleas.git
 
 
-### To run a dev environment with vagrant:
+### To run a dev environment locally:
 
-Create your own local.py:
+You'll need:
+ - python 2.7
+ - postgres database with hstore
+ - rabbit-mq for celery tasks
+
+`apt/development.sh` should have all the dependencies you need. Python packages are in `requirements/`. You can set up virtualenv and do pip install.
+
+Few steps you may also need:
 
     cp manchester_traffic_offences/settings/local.py.example make_a_plea/settings/local.py
+    psql -c 'CREATE DATABASE manchester_traffic_offences;' -U postgres
+    ./manage.py migrate --noinput
+    ./manage.py compilemessages
 
-    vagrant up
-    vagrant ssh
+Start server with:
 
-The vagrant bootstrap script will install everything you need to run the application server. All you need to do is override the relevant email settings in your local.py.
+    ./manage.py runserver
 
-Once you're ssh'd in run:
+Start celery workers (if you need to test sending emails) with:
 
-    ./manage.py runserver 0.0.0.0:8000
-
-to run the development web server, and browse to http://localhost:8000 to see the server.
+    celery worker -A make_a_plea
 
 
 ### To run a dev environment using docker:
 
-copy `docker/sample-local-env` to `docker/local-env`
+There's a dev container that can be used to quickly spin up a working site, useful to run tests against without having to go through a local setup.
 
-run:
+    docker build -t makeaplea:dev -f Dockerfile.dev .
+    docker run makeaplea:dev
 
-    docker-compose up
 
-This will install dependencies from requirements.txt but initial migrations will need to be run manually - see below.
+### Run Browser tests
 
-Navigate to:
+To run locally, you will need Python behaving package installed with Selenium and Chrome/driver working.
 
-    {ip of docker machine}:8000
+Run on default host (127.0.0.1:8000)
 
-To get an interactive prompt (needed to run migrations, etc.), run:
+	behave
 
-    docker-compose run django /bin/bash
+Run in headless mode against another host (like docker). Omit @local as the mailmock needs local file access.
 
-You can also run commands directly, e.g:
-
-    docker-compose run django ./manage.py migrate
+	behave -Dheadless -Dbase_url=http://172.17.0.2 -tags=-local
 
 
 Front-end development
