@@ -11,5 +11,9 @@ Feature: Review and submit a plea
     Then my details should match
     When I confirm and submit my plea
     Then I should see the confirmation page
-    And I should receive the confirmation email
+
+  @local
+  Scenario: Confirmation and court emails sent
+    When I confirm and submit my plea
+    Then I should receive the confirmation email
     And the court should receive my plea email with attached details

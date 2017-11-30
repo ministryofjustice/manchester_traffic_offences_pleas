@@ -32,33 +32,17 @@ URNs = {
     'inexistent': '00FF0000000',
 }
 
+# override with -Dkey=value
 config = {
     'base_url': 'http://127.0.0.1:8000',
     'headless': False,
     'remote': False,
 }
 
-# usage: -Dconfig=xxx
-local = {
-    'headless': True
-}
-
-# usage: -Dconfig=dev
-dev = {
-    'base_url': 'https://dev.makeaplea.dsd.io/',
-    'remote': True
-}
-stage = {
-    'base_url': 'https://makeaplea.dsd.io/',
-    'remote': True
-}
-
-
 def before_all(context):
     context.mail_path = '/tmp/mailmock'
 
-    if 'config' in context.config.userdata:
-        config.update(globals()[context.config.userdata['config']])
+    config.update(context.config.userdata)
 
     if config['remote']:
         context.remote_webdriver = True
