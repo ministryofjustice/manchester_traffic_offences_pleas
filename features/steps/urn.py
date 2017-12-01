@@ -5,10 +5,20 @@ def submit_urn(context, urn):
     ''' % context.URNs[urn])
 
 
+def submit_urn_in_welsh(context, urn):
+    context.execute_steps(u'''
+        when I fill in "urn" with "%s"
+        and I press "Parhau"
+    ''' % context.URNs[urn])
+
+
 @when(u'I submit a valid URN')
 def step_impl(context):
     submit_urn(context, 'valid')
 
+@when(u'I submit a valid english URN in welsh')
+def step_impl(context):
+    submit_urn_in_welsh(context, 'valid')
 
 @when(u'I submit a valid URN as company')
 def step_impl(context):
@@ -18,6 +28,11 @@ def step_impl(context):
 @when(u'I submit an invalid URN')
 def step_impl(context):
     submit_urn(context, 'invalid')
+
+
+@when(u'I submit a valid welsh URN in welsh')
+def step_impl(context):
+    submit_urn_in_welsh(context, 'valid_welsh')
 
 
 @when(u'I submit an inexistent URN')
@@ -38,6 +53,13 @@ def step_impl(context):
 @when(u'I submit a valid URN where date of birth and postcode are not known')
 def step_impl(context):
     submit_urn(context, 'no_dob_no_postcode')
+
+
+@then(u'I should remain on the enter urn page')
+def step_impl(context):
+    context.execute_steps(u'''
+        Then the browser's URL should be "plea/enter_urn/"
+    ''')
 
 
 @then(u'I should be asked to validate my date of birth')

@@ -6,6 +6,7 @@ ERROR_MESSAGES = {
     "URN_INVALID": _("The Unique Reference Number (URN) isn't valid. Enter the number exactly as it appears on page 1 of the notice"),
     "URN_ALREADY_USED": _("Enter the correct URN"),
     "URN_INCORRECT": _("You've entered incorrect details"),
+    "URN_NOT_WELSH": _("Unfortunately, the unique reference number is not valid, and the system does not know it."),
     "HEARING_DATE_REQUIRED": _("Provide a court hearing date"),
     "HEARING_DATE_INVALID": _("The court hearing date isn't a valid format"),
     "HEARING_DATE_PASSED": _("The court hearing date must be after today"),

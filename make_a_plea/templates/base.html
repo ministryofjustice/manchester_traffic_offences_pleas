@@ -31,7 +31,8 @@
 
 {% block content %}
     <div class="phase-banner">
-        <nav class="language-switcher">
+        {% if not disable_language %}
+        <nav id="language-switcher" class="language-switcher">
             <ul>
                 {% ifequal LANGUAGE_CODE "en" %}
                 <li><a rel="alternate" href="{% url 'set_language' %}?lang=cy" hreflang="cy" lang="cy">Cymraeg</a></li>
@@ -40,6 +41,7 @@
                 {% endifequal %}
             </ul>
         </nav>
+        {% endif %}
         <p>{% blocktrans with feedback_url=feedback_url %}This is a new service - <a href="{{ feedback_url }}">your feedback</a> will help us to improve it.{% endblocktrans %}</p>
 
     </div>
