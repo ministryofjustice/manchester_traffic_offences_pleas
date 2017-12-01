@@ -4,7 +4,7 @@ from django.conf import settings
 from django.test import TestCase
 from django.test.client import Client, RequestFactory
 from django.template.context import RequestContext
-from django.utils.translation import activate
+from django.utils.translation import activate, deactivate
 
 from mock import Mock
 from waffle.models import Switch
@@ -147,7 +147,6 @@ class TestLanguage(TestMultiPleaFormBase):
 
     def test_cy_stored_in_stats(self):
         activate("cy-GB")
-
         fake_request = self.get_request_mock("/plea/review")
         request_context = RequestContext(fake_request)
 
@@ -161,10 +160,10 @@ class TestLanguage(TestMultiPleaFormBase):
 
         c = list(CourtEmailCount.objects.all())
         self.assertEqual(c[0].language, "cy")
+        deactivate()
 
     def test_en_stored_in_stats(self):
         activate("en-GB")
-
         fake_request = self.get_request_mock("/plea/review")
         request_context = RequestContext(fake_request)
 
@@ -178,3 +177,4 @@ class TestLanguage(TestMultiPleaFormBase):
 
         c = list(CourtEmailCount.objects.all())
         self.assertEqual(c[0].language, "en")
+        deactivate()
