@@ -1,9 +1,9 @@
-from mock import Mock
+from mock import Mock, patch
 from unittest import skip
 
 from collections import OrderedDict
+from django.utils import translation
 
-from django.utils.translation import activate
 from django.test import TestCase, Client
 from django.test.client import RequestFactory
 from collections import namedtuple
@@ -206,7 +206,9 @@ class TestURNStageNoData(TestURNStageDataBase):
 
 
 class TestURNStageDuplicateCases(TestURNStageDataBase):
+
     def setUp(self):
+        translation.activate('en')
         super(TestURNStageDuplicateCases, self).setUp()
         self.case.pk = None
         self.case.save()
@@ -228,7 +230,6 @@ class TestURNStageDuplicateCases(TestURNStageDataBase):
         stage.save({"urn": self.case.urn})
 
         response = stage.render(self.get_request_mock(), self.request_context)
-
         self.assertEqual(response.status_code, 302)
         self.assertEqual(stage.next_step, "notice_type")
 
@@ -601,9 +602,8 @@ class TestPleaAuthStage(TestURNStageDataBase):
 
         self.assertFalse(getattr(stage.form, "case_data", False))
 
-    def test_offence_data_is_displayed_in_welsh(self):
-
-        activate("cy")
+    @patch("django.utils.translation.get_language", return_value='cy')
+    def test_offence_data_is_displayed_in_welsh(self, get_language):
 
         self.data["dx"] = True
         self.data["plea"] = {}
@@ -618,9 +618,8 @@ class TestPleaAuthStage(TestURNStageDataBase):
         self.assertIn(offence.offence_short_title_welsh.encode("utf-8"), response.content)
         self.assertIn(offence.offence_wording_welsh.encode("utf-8"), response.content)
 
-    def test_offence_data_falls_back_to_en_when_cy_data_is_not_available(self):
-
-        activate("cy")
+    @patch("django.utils.translation.get_language", return_value='cy')
+    def test_offence_data_falls_back_to_en_when_cy_data_is_not_available(self, get_language):
 
         offence = self.case.offences.all().first()
 
@@ -675,3 +674,5 @@ class TestURNSubmissionFailureMessage(TestCase):
             response = self.client.post('/plea/enter_urn/', data=dict(urn="06xx0000000"))
 
         self.assertContains(response, "Your reference number has not been recognised")
+
+

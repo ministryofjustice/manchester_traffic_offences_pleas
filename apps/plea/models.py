@@ -35,7 +35,6 @@ NOTICE_TYPES_CHOICES = (("both", "Both"),
                         ("sjp", "SJP"),
                         ("non-sjp", "Non-SJP"))
 
-
 def get_totals(qs):
     totals = qs.aggregate(Sum('total_pleas'),
                           Sum('total_guilty'),
@@ -648,6 +647,13 @@ class Court(models.Model):
 
     objects = CourtManager()
 
+    def supports_language(self, lang_code):
+        if self.court_language.lower() == "cy":
+            return True
+        elif self.court_language == lang_code[:2]:
+            return True
+        else:
+            return False
 
 class OUCode(models.Model):
     court = models.ForeignKey(Court)

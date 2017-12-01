@@ -66,3 +66,7 @@ Feature: Validate case with URN, offences, postcode and date of birth
     And I fill in "postcode" with "C1 1XX"
     And I press "Continue"
     Then I should see "The information you've entered does not match our records."
+
+  Scenario: Valid URN, language switcher should not show
+    When I submit a valid URN
+    Then I should not see an element with id "language-switcher"
