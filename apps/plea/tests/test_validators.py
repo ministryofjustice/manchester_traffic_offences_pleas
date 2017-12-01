@@ -109,6 +109,19 @@ class TestValidators(TestCase):
             enabled=True,
             test_mode=False)
 
+        self.court60 = Court.objects.create(
+            court_code="0000",
+            region_code="60",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_language="cy",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
+            enabled=True,
+            test_mode=False)
+
     def test_urn_valid_database(self):
         self.court06.validate_urn = True
         self.court06.save()

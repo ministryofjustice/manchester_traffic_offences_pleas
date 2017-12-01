@@ -113,6 +113,8 @@ def is_urn_valid(urn):
             code="is_urn_valid")
 
     court = Court.objects.get_by_urn(urn)
+
+
     if court.validate_urn:
         if not Case.objects.filter(urn__iexact=urn, sent=False).exists():
             AuditEvent().populate(
@@ -124,6 +126,20 @@ def is_urn_valid(urn):
                 "The URN is not valid",
                 code="is_urn_valid")
 
+    return True
+
+
+def is_urn_welsh(urn):
+    from django.utils.translation import get_language
+    try:
+        court = Court.objects.get_by_urn(urn)
+    except Court.DoesNotExist:
+        return False
+    if get_language() == "cy":
+        if not court.supports_language("cy"):
+            raise exceptions.ValidationError(
+                "The URN is not welsh",
+                code="is_urn_welsh")
     return True
 
 
