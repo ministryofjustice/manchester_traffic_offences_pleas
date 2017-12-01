@@ -6,7 +6,7 @@ from django.forms.formsets import formset_factory
 from django.http import Http404
 from django.test import TestCase
 from django.test.client import RequestFactory
-
+from django.utils import translation
 from .forms import to_bool, BaseStageForm
 from .stages import MultiStageForm, FormStage
 

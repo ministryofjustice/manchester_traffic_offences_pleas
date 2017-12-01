@@ -3,12 +3,11 @@ import re
 
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from mock import Mock
+from mock import Mock, patch
 
 from django.core import mail
 from django.test import TestCase
 from django.utils import translation
-
 from ..email import send_plea_email
 from ..models import Court, Case
 from ..forms import (URNEntryForm,
@@ -256,35 +255,9 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
         self.assertContainsDefinition(response.content, "Unique reference number", "06/AA/0000000/00", count=1)
         self.assertContainsDefinition(response.content, "Court hearing date", self.hearing_date_formatted, count=1)
 
-    def test_case_details_output_is_english(self):
-        translation.activate("cy")
 
-        context_data = self.get_context_data()
-
-        send_plea_email(context_data)
-
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
-
-        translation.deactivate()
-
-        self.assertContainsDefinition(response.content, "Unique reference number", "06/AA/0000000/00", count=1)
-        self.assertContainsDefinition(response.content, "Court hearing date", self.hearing_date_formatted, count=1)
-
-    def test_welsh_journey_adds_welsh_flag(self):
-        translation.activate("cy")
-
-        context_data = self.get_context_data()
-
-        send_plea_email(context_data)
-
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
-
-        translation.deactivate()
-
-        self.assertContainsDefinition(response.content, "Welsh language", "Yes", count=1)
-
-    def test_english_journey_adds_no_welsh_flag(self):
-        translation.activate("en")
+    @patch("django.utils.translation.get_language", return_value='en')
+    def test_english_journey_adds_no_welsh_flag(self, get_language):
 
         context_data = self.get_context_data()
 
@@ -729,19 +702,7 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
         self.assertContainsDefinition(response.content, "First name", "Joe", count=1)
         self.assertContainsDefinition(response.content, "Last name", "Public", count=1)
 
-    def test_PLP_case_details_output_is_english(self):
-        translation.activate("cy")
 
-        context_data = self.get_context_data()
-
-        send_plea_email(context_data)
-
-        response = self.get_mock_response(mail.outbox[1].attachments[0][1])
-
-        translation.deactivate()
-
-        self.assertContainsDefinition(response.content, "First name", "Joe", count=1)
-        self.assertContainsDefinition(response.content, "Last name", "Public", count=1)
 
     def test_PLP_single_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()

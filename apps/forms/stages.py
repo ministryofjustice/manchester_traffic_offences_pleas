@@ -100,11 +100,8 @@ class FormStage(object):
         clean_data = {}
         if isinstance(form_data, QueryDict):
             form_data = {k: v for (k, v) in form_data.items()}
-
         self.load_forms(form_data)
-
         self.split_form = form_data.get("split_form", None)
-
         clean_data["split_form"] = self.split_form
 
         if self.form and self.form.is_valid():
@@ -189,10 +186,14 @@ class MultiStageForm(object):
 
     def load(self, request_context):
         self.request_context = request_context
+
         if issubclass(self.current_stage_class, IndexedStage):
             self.current_stage = self.current_stage_class(self.urls, self.all_data, self.index)
         else:
             self.current_stage = self.current_stage_class(self.urls, self.all_data)
+        if not self.current_stage.name == "enter_urn":
+            if not self.all_data.get("welsh_court", False):
+                self.all_data["disable_language"] = True
 
         if not self.current_stage.check_dependencies_are_complete():
             if self.current_stage.name == "complete":
@@ -206,7 +207,6 @@ class MultiStageForm(object):
                 redirect = self.urls[self.stage_classes[0].name]
 
             return HttpResponseRedirect(redirect)
-
         return self.current_stage.load(request_context)
 
     def save(self, form_data, request_context, next_step=None):

@@ -3,6 +3,7 @@ import json
 
 from brake.decorators import ratelimit
 from django.utils.decorators import method_decorator
+from django.utils.translation import get_language
 from django.conf import settings
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect, HttpResponse
@@ -125,6 +126,7 @@ class PleaOnlineViews(StorageView):
                 })
             return HttpResponseRedirect("/")
 
+
         # Store the index if we've got one
         idx = kwargs.pop("index", None)
         try:
@@ -134,13 +136,13 @@ class PleaOnlineViews(StorageView):
 
         # Load storage
         self.storage = self.get_storage(request, "plea_data")
-
         return super(PleaOnlineViews, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, stage=None):
         if not stage:
             stage = PleaOnlineForms.stage_classes[0].name
             return HttpResponseRedirect(reverse_lazy("plea_form_step", args=(stage,)))
+
         form = PleaOnlineForms(self.storage, stage, self.index)
         case_redirect = form.load(RequestContext(request))
         if case_redirect:

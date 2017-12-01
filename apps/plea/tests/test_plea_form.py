@@ -229,6 +229,15 @@ class TestMultiPleaForms(TestCaseBase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/plea/notice_type/")
 
+    def test_english_urn_entry_detected(self):
+        form = PleaOnlineForms(self.session, "enter_urn")
+        form.load(self.request_context)
+        form.save({"urn": "06/AA/00000/00"}, self.request_context)
+
+        response = form.render(self.get_request_mock())
+
+        self.assertEqual(form.all_data.get("welsh_court", False), False)
+
     def test_auto_set_notice_type_prevents_notice_type_stage_access(self):
         self.session.update({"case": {"urn": "99/AA/00000/00"},
                              "notice_type": {"auto_set": True}})
@@ -2136,3 +2145,43 @@ class TestYourExpensesStage(TestCaseBase):
         self.assertEquals(len(form.current_stage.form.errors), 2)
         self.assertIn("other_not_listed_details", form.current_stage.form.errors)
         self.assertIn("other_not_listed_amount", form.current_stage.form.errors)
+
+
+class TestWelshMultiPleaForm(TestCaseBase):
+    def setUp(self):
+
+        self.court = Court.objects.create(
+            court_code="0000",
+            region_code="60",
+            court_name="test court",
+            court_address="test address",
+            court_telephone="0800 MAKEAPLEA",
+            court_language="cy",
+            court_email="court@example.org",
+            submission_email="court@example.org",
+            plp_email="plp@example.org",
+            enabled=True,
+            test_mode=False)
+
+        self.session = {}
+        self.request_context = Mock()
+        self.request_context.request = self.get_request_mock("/dummy")
+
+    def test_welsh_urn_entry_detected_in_english(self):
+        form = PleaOnlineForms(self.session, "enter_urn")
+        form.load(self.request_context)
+        form.save({"urn": "60/AA/00000/00"}, self.request_context)
+
+        response = form.render(self.get_request_mock())
+
+        self.assertEqual(form.all_data.get("welsh_court", False), True)
+
+    @patch("django.utils.translation.get_language", return_value='cy')
+    def test_welsh_urn_entry_detected_in_welsh(self, get_language):
+        form = PleaOnlineForms(self.session, "enter_urn")
+        form.load(self.request_context)
+        form.save({"urn": "60/AA/00000/00"}, self.request_context)
+
+        response = form.render(self.get_request_mock())
+
+        self.assertEqual(form.all_data.get("welsh_court", False), True)

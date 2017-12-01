@@ -166,10 +166,15 @@ class URNEntryStage(SJPChoiceBase):
     def save(self, form_data, next_step=None):
 
         clean_data = super(URNEntryStage, self).save(form_data, next_step)
-
         if "urn" in clean_data:
             std_urn = standardise_urn(clean_data["urn"])
             court = Court.objects.get_by_urn(std_urn)
+            if court:
+                #If urn corresponds to a court with court_language set to cy then
+                if court.supports_language("cy"):
+                    self.all_data["welsh_court"] = True
+                else:
+                    self.all_data["welsh_court"] = False
 
             self._create_data_validation(clean_data["urn"], std_urn)
 
@@ -183,7 +188,6 @@ class URNEntryStage(SJPChoiceBase):
             self.all_data["urn_entry_failure_count"] = 0
         else:
             self.all_data["urn_entry_failure_count"] = self.all_data.get("urn_entry_failure_count", 0) + 1
-
         return clean_data
 
 
@@ -199,7 +203,6 @@ class AuthenticationStage(SJPChoiceBase):
         initial_data = None
 
         court = Court.objects.get_by_urn(self.all_data["case"]["urn"])
-
         if court.validate_urn:
             case = Case.objects.get_case_for_urn(self.all_data["case"]["urn"])
         else:
