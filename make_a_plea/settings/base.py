@@ -253,7 +253,7 @@ LOGGING = {
     },
     'loggers': {
         '': {
-            'handlers': ['console'],
+            'handlers': ['console', 'sentry'],
             'level': 'INFO',
             'propagate': True,
         },
@@ -275,11 +275,6 @@ LOGGING = {
         'apps.plea.tasks': {
             'handlers': ['console'],
             'level': 'INFO',
-            'propagate': True,
-        },
-        'apps.forms.stages': {
-            'handlers': ['console'],
-            'level': 'ERROR',
             'propagate': True,
         },
     }
