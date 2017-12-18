@@ -58,7 +58,12 @@ REST_FRAMEWORK = {
 
 INSTALLED_APPS = INSTALLED_APPS + PROJECT_APPS
 
-TEMPLATES[0]['OPTIONS']['context_processors'].remove('apps.feedback.context_processors.feedback')
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+    }
+]
 
 # Options for Premailer, which inlines the CSS on the fly in email templates and
 # makes all URLs absolute
