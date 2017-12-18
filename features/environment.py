@@ -40,7 +40,10 @@ config = {
 }
 
 def before_all(context):
+    mail_dir = '/tmp/mailmock'
     context.mail_path = '/tmp/mailmock'
+    if not os.path.exists(mail_dir):
+        os.makedirs(mail_dir)
 
     config.update(context.config.userdata)
 
