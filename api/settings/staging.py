@@ -4,7 +4,7 @@ from .docker import *
 INSTALLED_APPS.append('raven.contrib.django.raven_compat')
 
 ADMINS = (
-    ('[STAGING] HMCTS Reform Sustaining Support', 'sustainingteamsupport@HMCTS.NET'),
+    ('[STAGING] HMCTS Reform Sustaining Support', 'sustainingteamdev@hmcts.net'),
 )
 
 RAVEN_CONFIG = {
