@@ -45,8 +45,5 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {
 # Override in your environment.
 #
 SECRET_KEY = os.environ.get("SECRET_KEY", "***REMOVED***")
-ENCRYPTED_COOKIE_KEYS = [
-    os.environ.get("ENCRYPTED_COOKIE_KEY", "***REMOVED***")
-]
 
 STORE_USER_DATA = os.environ.get("STORE_USER_DATA", "") == "True"
