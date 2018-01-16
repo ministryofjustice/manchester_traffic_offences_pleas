@@ -34,7 +34,6 @@ EMAIL_REQUIRED = False
 
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
-ENCRYPTED_COOKIE_KEYS = ["9evXbsR_1yZA5EW_blSI4O69MjGKwOu1-UwLK_PWyKw="]
 
 # for local email testing, start celery and use https://www.npmjs.com/package/maildev
 
