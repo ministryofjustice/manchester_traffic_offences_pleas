@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-22 11:59+0000\n"
+"POT-Creation-Date: 2018-01-25 17:07+0000\n"
 "PO-Revision-Date: 2015-11-16 16:24+0000\n"
 "Last-Translator: Fred Marecesche\n"
 "Language-Team: English (http://www.transifex.com/make-a-plea-gds/make-a-plea/language/en/)\n"
@@ -180,6 +180,23 @@ msgstr "Yes"
 #: apps/forms/forms.py:18
 msgid "No (v6)"
 msgstr "No"
+
+#: make_a_plea/settings/base.py:51
+msgctxt "English in english"
+msgid "English"
+msgstr "English"
+
+#: apps/forms/forms.py:19 apps/plea/templates/partials/review_plea.html:98
+#: apps/plea/templates/partials/review_plea.html:101
+msgctxt "English in welsh"
+msgid "English"
+msgstr "English"
+
+#: apps/forms/forms.py:20 apps/plea/templates/partials/review_plea.html:98
+#: apps/plea/templates/partials/review_plea.html:101
+#: make_a_plea/settings/base.py:52
+msgid "Welsh"
+msgstr "Welsh"
 
 #: apps/forms/templates/widgets/partials/label_text.html:9
 msgid "(optional)"
@@ -421,274 +438,282 @@ msgid "You must tell us which language"
 msgstr "You must tell us which language"
 
 #: apps/plea/fields.py:46
+msgid "You must tell us which language you would like for your hearing"
+msgstr "You must tell us which language you would like for your hearing"
+
+#: apps/plea/fields.py:47
+msgid "You must tell us which language you would like for your documentation"
+msgstr "You must tell us which language you would like for your documentation"
+
+#: apps/plea/fields.py:48
 msgid "Tell us if you disagree with any of the evidence we sent to you"
 msgstr "Tell us if you disagree with any of the evidence we sent to you"
 
-#: apps/plea/fields.py:47
+#: apps/plea/fields.py:49
 msgid "You need to tell us the name of the witness and what you disagree with"
 msgstr "You need to tell us the name of the witness and what you disagree with"
 
-#: apps/plea/fields.py:48
+#: apps/plea/fields.py:50
 msgid "You must tell us if you want to call a defence witness"
 msgstr "You must tell us if you want to call a defence witness"
 
-#: apps/plea/fields.py:49
+#: apps/plea/fields.py:51
 msgid "Tell us the name, address and date of birth of your defence witness"
 msgstr "Tell us the name, address and date of birth of your defence witness"
 
-#: apps/plea/fields.py:50
+#: apps/plea/fields.py:52
 msgid "Tell us if your witness needs an interpreter in court"
 msgstr "Tell us if your witness needs an interpreter in court"
 
-#: apps/plea/fields.py:51
+#: apps/plea/fields.py:53
 msgid "Your witness needs an interpreter in court - tell us which language"
 msgstr "Your witness needs an interpreter in court - tell us which language"
 
-#: apps/plea/fields.py:52
+#: apps/plea/fields.py:54
 msgid "Select your employment status"
 msgstr "Select your employment status"
 
-#: apps/plea/fields.py:53
+#: apps/plea/fields.py:55
 msgid "Tell us how often you get paid"
 msgstr "Tell us how often you get paid"
 
-#: apps/plea/fields.py:54
+#: apps/plea/fields.py:56
 msgid "Enter your take home pay"
 msgstr "Enter your take home pay"
 
-#: apps/plea/fields.py:55
+#: apps/plea/fields.py:57
 msgid "Select the out of work benefit you receive"
 msgstr "Select the out of work benefit you receive"
 
-#: apps/plea/fields.py:56
+#: apps/plea/fields.py:58
 msgid "Select how often your benefit is paid"
 msgstr "Select how often your benefit is paid"
 
-#: apps/plea/fields.py:57
+#: apps/plea/fields.py:59
 msgid "Enter the amount of your benefit payment"
 msgstr "Enter the amount of your benefit payment"
 
-#: apps/plea/fields.py:58
+#: apps/plea/fields.py:60
 msgid "Tell us the source of your main income"
 msgstr "Tell us the source of your main income"
 
-#: apps/plea/fields.py:59
+#: apps/plea/fields.py:61
 msgid "Select how often your main income is paid"
 msgstr "Select how often your main income is paid"
 
-#: apps/plea/fields.py:60
+#: apps/plea/fields.py:62
 msgid "Enter your take home income"
 msgstr "Enter your take home income"
 
-#: apps/plea/fields.py:61
+#: apps/plea/fields.py:63
 msgid "Select which benefit you receive"
 msgstr "Select which benefit you receive"
 
-#: apps/plea/fields.py:62
+#: apps/plea/fields.py:64
 msgid "Tell us if you receive Pension Credit"
 msgstr "Tell us if you receive Pension Credit"
 
-#: apps/plea/fields.py:63
+#: apps/plea/fields.py:65
 msgid "Select how often your Pension Credit is paid"
 msgstr "Select how often your Pension Credit is paid"
 
-#: apps/plea/fields.py:64
+#: apps/plea/fields.py:66
 msgid "Enter how much Pension Credit you receive"
 msgstr "Enter how much Pension Credit you receive"
 
-#: apps/plea/fields.py:65
+#: apps/plea/fields.py:67
 msgid "Tell us if paying a fine would cause you financial problems"
 msgstr "Tell us if paying a fine would cause you financial problems"
 
-#: apps/plea/fields.py:66
+#: apps/plea/fields.py:68
 msgid "You must confirm that you have read and understand the important information"
 msgstr "You must confirm that you have read and understand the important information"
 
-#: apps/plea/fields.py:67
+#: apps/plea/fields.py:69
 msgid "Tell us how you earn your money"
 msgstr "Tell us how you earn your money"
 
-#: apps/plea/fields.py:68
+#: apps/plea/fields.py:70
 msgid "You must tell us why you think you should be allowed to pay your fine in instalments"
 msgstr "You must tell us why you think you should be allowed to pay your fine in instalments"
 
-#: apps/plea/fields.py:69
+#: apps/plea/fields.py:71
 msgid "You must tell us if anyone else contributes to your household bills"
 msgstr "You must tell us if anyone else contributes to your household bills"
 
-#: apps/plea/fields.py:70
+#: apps/plea/fields.py:72
 msgid "Accommodation is a required field"
 msgstr "Accommodation is a required field"
 
-#: apps/plea/fields.py:71
+#: apps/plea/fields.py:73
 msgid "Accommodation must be a number"
 msgstr "Accommodation must be a number"
 
-#: apps/plea/fields.py:72
+#: apps/plea/fields.py:74
 msgid "Accommodation must be a number greater than, or equal to, 0"
 msgstr "Accommodation must be a number greater than, or equal to, 0"
 
-#: apps/plea/fields.py:73
+#: apps/plea/fields.py:75
 msgid "Utility bills is a required field"
 msgstr "Utility bills is a required field"
 
-#: apps/plea/fields.py:74
+#: apps/plea/fields.py:76
 msgid "Utility bills must be a number"
 msgstr "Utility bills must be a number"
 
-#: apps/plea/fields.py:75
+#: apps/plea/fields.py:77
 msgid "Utility bills must be a number greater than, or equal to, 0"
 msgstr "Utility bills must be a number greater than, or equal to, 0"
 
-#: apps/plea/fields.py:76
+#: apps/plea/fields.py:78
 msgid "Insurance is a required field"
 msgstr "Insurance is a required field"
 
-#: apps/plea/fields.py:77
+#: apps/plea/fields.py:79
 msgid "Insurance must be a number"
 msgstr "Insurance must be a number"
 
-#: apps/plea/fields.py:78
+#: apps/plea/fields.py:80
 msgid "Insurance must be a number greater than, or equal to, 0"
 msgstr "Insurance must be a number greater than, or equal to, 0"
 
-#: apps/plea/fields.py:79
+#: apps/plea/fields.py:81
 msgid "Council tax is a required field"
 msgstr "Council tax is a required field"
 
-#: apps/plea/fields.py:80
+#: apps/plea/fields.py:82
 msgid "Council tax must be a number"
 msgstr "Council tax must be a number"
 
-#: apps/plea/fields.py:81
+#: apps/plea/fields.py:83
 msgid "Council tax must be a number greater than, or equal to, 0"
 msgstr "Council tax must be a number greater than, or equal to, 0"
 
-#: apps/plea/fields.py:82
+#: apps/plea/fields.py:84
 msgid "TV subscription is a required field"
 msgstr "TV subscription is a required field"
 
-#: apps/plea/fields.py:83
+#: apps/plea/fields.py:85
 msgid "TV subscription must be a number"
 msgstr "TV subscription must be a number"
 
-#: apps/plea/fields.py:84
+#: apps/plea/fields.py:86
 msgid "TV subscription must be a number greater than, or equal to, 0"
 msgstr "TV subscription must be a number greater than, or equal to, 0"
 
-#: apps/plea/fields.py:85
+#: apps/plea/fields.py:87
 msgid "Travel expenses is a required field"
 msgstr "Travel expenses is a required field"
 
-#: apps/plea/fields.py:86
+#: apps/plea/fields.py:88
 msgid "Travel expenses must be a number"
 msgstr "Travel expenses must be a number"
 
-#: apps/plea/fields.py:87
+#: apps/plea/fields.py:89
 msgid "Travel expenses must be a number greater than, or equal to, 0"
 msgstr "Travel expenses must be a number greater than, or equal to, 0"
 
-#: apps/plea/fields.py:88
+#: apps/plea/fields.py:90
 msgid "Telephone is a required field"
 msgstr "Telephone is a required field"
 
-#: apps/plea/fields.py:89
+#: apps/plea/fields.py:91
 msgid "Telephone must be a number"
 msgstr "Telephone must be a number"
 
-#: apps/plea/fields.py:90
+#: apps/plea/fields.py:92
 msgid "Telephone must be a number greater than, or equal to, 0"
 msgstr "Telephone must be a number greater than, or equal to, 0"
 
-#: apps/plea/fields.py:91
+#: apps/plea/fields.py:93
 msgid "Loan repayment is a required field"
 msgstr "Loan repayment is a required field"
 
-#: apps/plea/fields.py:92
+#: apps/plea/fields.py:94
 msgid "Loan repayment must be a number"
 msgstr "Loan repayment must be a number"
 
-#: apps/plea/fields.py:93
+#: apps/plea/fields.py:95
 msgid "Loan repayment must be a number greater than, or equal to, 0"
 msgstr "Loan repayment must be a number greater than, or equal to, 0"
 
-#: apps/plea/fields.py:94
+#: apps/plea/fields.py:96
 msgid "Court payments is a required field"
 msgstr "Court payments is a required field"
 
-#: apps/plea/fields.py:95
+#: apps/plea/fields.py:97
 msgid "Court payments must be a number"
 msgstr "Court payments must be a number"
 
-#: apps/plea/fields.py:96
+#: apps/plea/fields.py:98
 msgid "Court payments must be a number greater than, or equal to, 0"
 msgstr "Court payments must be a number greater than, or equal to, 0"
 
-#: apps/plea/fields.py:97
+#: apps/plea/fields.py:99
 msgid "Child maintenance is a required field"
 msgstr "Child maintenance is a required field"
 
-#: apps/plea/fields.py:98
+#: apps/plea/fields.py:100
 msgid "Child maintenance must be a number"
 msgstr "Child maintenance must be a number"
 
-#: apps/plea/fields.py:99
+#: apps/plea/fields.py:101
 msgid "Child maintenance must be a number greater than, or equal to, 0"
 msgstr "Child maintenance must be a number greater than, or equal to, 0"
 
-#: apps/plea/fields.py:100
+#: apps/plea/fields.py:102
 msgid "Tell us if you have any other significant expenses"
 msgstr "Tell us if you have any other significant expenses"
 
-#: apps/plea/fields.py:101
+#: apps/plea/fields.py:103
 msgid "Enter your other significant expenses"
 msgstr "Enter your other significant expenses"
 
-#: apps/plea/fields.py:102
+#: apps/plea/fields.py:104
 msgid "Enter the monthly total of your other significant expenses"
 msgstr "Enter the monthly total of your other significant expenses"
 
-#: apps/plea/fields.py:103
+#: apps/plea/fields.py:105
 msgid "The monthly total must be a number"
 msgstr "The monthly total must be a number"
 
-#: apps/plea/fields.py:104
+#: apps/plea/fields.py:106
 msgid "The monthly total must be a number greater than, or equal to, 0"
 msgstr "The monthly total must be a number greater than, or equal to, 0"
 
-#: apps/plea/fields.py:105
+#: apps/plea/fields.py:107
 msgid "You must tell us if the company has been trading for more than 12 months"
 msgstr "You must tell us if the company has been trading for more than 12 months"
 
-#: apps/plea/fields.py:106
+#: apps/plea/fields.py:108
 msgid "Enter the number of employees"
 msgstr "Enter the number of employees"
 
-#: apps/plea/fields.py:107
+#: apps/plea/fields.py:109
 msgid "Enter the company's gross turnover"
 msgstr "Enter the company's gross turnover"
 
-#: apps/plea/fields.py:108
+#: apps/plea/fields.py:110
 msgid "Enter the company's net turnover"
 msgstr "Enter the company's net turnover"
 
-#: apps/plea/fields.py:109
+#: apps/plea/fields.py:111
 msgid "Enter the company's projected gross turnover"
 msgstr "Enter the company's projected gross turnover"
 
-#: apps/plea/fields.py:110
+#: apps/plea/fields.py:112
 msgid "Enter the company's projected net turnover"
 msgstr "Enter the company's projected net turnover"
 
-#: apps/plea/fields.py:111
+#: apps/plea/fields.py:113
 msgid "Tell us if you want to receive an email confirming your plea submission"
 msgstr "Tell us if you want to receive an email confirming your plea submission"
 
-#: apps/plea/fields.py:112
+#: apps/plea/fields.py:114
 msgid "You must provide an email address if you want to receive email updates about this case"
 msgstr "You must provide an email address if you want to receive email updates about this case"
 
-#: apps/plea/fields.py:113
+#: apps/plea/fields.py:115
 msgid "Enter your postcode"
 msgstr "Enter your postcode"
 
@@ -1129,79 +1154,87 @@ msgstr "Net turnover"
 msgid "For example, 110000"
 msgstr "For example, 110000"
 
-#: apps/plea/forms.py:987 apps/plea/templates/partials/review_plea.html:38
+#: apps/plea/forms.py:988 apps/plea/templates/partials/review_plea.html:38
 msgid "Mitigation"
 msgstr "Mitigation"
 
-#: apps/plea/forms.py:991
+#: apps/plea/forms.py:992
 msgid "Is there something you would like the court to consider?"
 msgstr "Is there something you would like the court to consider?"
 
-#: apps/plea/forms.py:996
+#: apps/plea/forms.py:997
 msgid "Not guilty because?"
 msgstr "Not guilty because?"
 
-#: apps/plea/forms.py:1000
+#: apps/plea/forms.py:1001
 msgid "Why do you believe you are not guilty?"
 msgstr "Why do you believe you are not guilty?"
 
-#: apps/plea/forms.py:1010 apps/plea/forms.py:1160
+#: apps/plea/forms.py:1011 apps/plea/forms.py:1179
 msgid "Do you need an interpreter in court?"
 msgstr "Do you need an interpreter in court?"
 
-#: apps/plea/forms.py:1020 apps/plea/forms.py:1084 apps/plea/forms.py:1170
+#: apps/plea/forms.py:1021 apps/plea/forms.py:1103 apps/plea/forms.py:1189
 msgid "If yes, tell us which language (include sign language):"
 msgstr "If yes, tell us which language (include sign language):"
 
-#: apps/plea/forms.py:1030
+#: apps/plea/forms.py:1030 apps/plea/templates/plea.html:175
+msgid "If there is a hearing, which language do you wish to speak?"
+msgstr "If there is a hearing, which language do you wish to speak?"
+
+#: apps/plea/forms.py:1039 apps/plea/templates/plea.html:176
+msgid "Please state in which language you wish to receive any further documentation?"
+msgstr "Please state in which language you wish to receive any further documentation?"
+
+#: apps/plea/forms.py:1049
 msgid "Do you disagree with any evidence from a witness statement in the notice we sent to you?"
 msgstr "Do you disagree with any evidence from a witness statement in the notice we sent to you?"
 
-#: apps/plea/forms.py:1041
+#: apps/plea/forms.py:1060
 msgid "If yes, tell us the name of the witness (on the top left of the statement) and what you disagree with:"
 msgstr "If yes, tell us the name of the witness (on the top left of the statement) and what you disagree with:"
 
-#: apps/plea/forms.py:1052
+#: apps/plea/forms.py:1071
 msgid "Do you want to call a defence witness?"
 msgstr "Do you want to call a defence witness?"
 
-#: apps/plea/forms.py:1053
+#: apps/plea/forms.py:1072
 msgid "Someone who can give evidence in court supporting your case."
 msgstr "Someone who can give evidence in court supporting your case."
 
-#: apps/plea/forms.py:1063
+#: apps/plea/forms.py:1082
 msgid "If yes, tell us the name, address and date of birth of any witnesses you want to call  to support your case:"
 msgstr "If yes, tell us the name, address and date of birth of any witnesses you want to call  to support your case:"
 
-#: apps/plea/forms.py:1074
+#: apps/plea/forms.py:1093
 msgid "Does your witness need an interpreter in court?"
 msgstr "Does your witness need an interpreter in court?"
 
-#: apps/plea/forms.py:1092 apps/plea/forms.py:1121
+#: apps/plea/forms.py:1111 apps/plea/forms.py:1140
 msgid "Guilty - I want the case to be dealt with in my absence"
 msgstr ""
 
-#: apps/plea/forms.py:1092 apps/plea/forms.py:1121
+#: apps/plea/forms.py:1111 apps/plea/forms.py:1140
 msgid "Guilty - I want to attend court in person"
 msgstr ""
 
-#: apps/plea/forms.py:1093
+#: apps/plea/forms.py:1112
 msgid "Not guilty - Pleading not guilty to this charge means we'll send details of a date for you to come to court for a trial."
 msgstr "Not guilty - Pleading not guilty to this charge means we'll send details of a date for you to come to court for a trial."
 
-#: apps/plea/forms.py:1122
+#: apps/plea/forms.py:1141
 msgid "Not guilty - Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date."
 msgstr "Not guilty - Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date."
 
-#: apps/plea/forms.py:1151
+#: apps/plea/forms.py:1170
 msgid "Do you want to come to court to plead guilty?"
 msgstr "Do you want to come to court to plead guilty?"
 
-#: apps/plea/forms.py:1201
+#: apps/plea/forms.py:1222
 msgid "Unique reference number (URN)"
 msgstr "Unique reference number (URN)"
 
-#: apps/plea/forms.py:1204
+#: apps/plea/forms.py:1225
 msgid "On page 1, usually at the top."
 msgstr "On page 1, usually at the top."
 
@@ -2109,6 +2142,14 @@ msgstr "Wants to call a witness?"
 msgid "Name, date of birth and address of the witness"
 msgstr "Name, date of birth and address of the witness"
 
+#: apps/plea/templates/partials/review_plea.html:97
+msgid "Hearing preference"
+msgstr "Hearing preference"
+
+#: apps/plea/templates/partials/review_plea.html:100
+msgid "Documentation preference"
+msgstr "Documentation preference"
+
 #: apps/plea/templates/plea.html:17
 msgid "This is your opportunity to present your case to the court:"
 msgstr "This is your opportunity to present your case to the court:"
@@ -2149,25 +2190,31 @@ msgstr "Charge %(charge_number)s of %(total)s"
 msgid "Charge %(charge_number)s of %(total)s continued"
 msgstr "Charge %(charge_number)s of %(total)s continued"
 
-#: apps/plea/templates/plea.html:90 apps/plea/templates/plea.html:139
+#: apps/plea/templates/plea.html:90 apps/plea/templates/plea.html:142
 msgid "Does your company representative need an interpreter in court?"
 msgstr "Does your company representative need an interpreter in court?"
 
-#: apps/plea/templates/plea.html:131
+#: apps/plea/templates/plea.html:134
 msgid "Pleading not guilty to this charge means we'll send details of a date for a company representative to come to court for a trial."
 msgstr "Pleading not guilty to this charge means we'll send details of a date for a company representative to come to court for a trial."
 
-#: apps/plea/templates/plea.html:133
+#: apps/plea/templates/plea.html:136
 msgid "Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date."
 msgstr "Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date."
 
-#: apps/plea/templates/plea.html:136
+#: apps/plea/templates/plea.html:139
 msgid "Tell us why you believe the company is not guilty:"
 msgstr "Tell us why you believe the company is not guilty:"
 
-#: apps/plea/templates/plea.html:149
+#: apps/plea/templates/plea.html:152
 msgid "Evidence and witness information"
 msgstr "Evidence and witness information"
+
+#: apps/plea/templates/plea.html:174
+#, fuzzy
+#| msgid "Language"
+msgid "Language Options"
+msgstr "Language"
 
 #: apps/plea/templates/review.html:9 apps/plea/templates/review.html:19
 msgid "Confirm your company's plea"
@@ -2552,14 +2599,6 @@ msgstr "Go to the GOV.UK homepage"
 #: make_a_plea/context_processors.py:20
 msgid "&copy; Crown copyright"
 msgstr "&copy; Crown copyright"
-
-#: make_a_plea/settings/base.py:51
-msgid "English"
-msgstr "English"
-
-#: make_a_plea/settings/base.py:52
-msgid "Welsh"
-msgstr "Welsh"
 
 #: make_a_plea/templates/404.html:5 make_a_plea/templates/404.html:10
 msgid "Page not found"

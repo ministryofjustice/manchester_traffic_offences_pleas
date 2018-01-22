@@ -8,6 +8,15 @@ def step_impl(context):
         And I press "Continue"
     ''')
 
+@given(u'I have validated a personal welsh URN')
+def step_impl(context):
+    context.execute_steps(u'''
+        When I visit "plea/enter_urn/"
+        And I submit a valid welsh URN in english
+        And I fill in "number_of_charges" with "1"
+        And I fill in correct date of birth
+        And I press "Continue"
+    ''')
 
 @given(u'I have validated a company URN')
 def step_impl(context):

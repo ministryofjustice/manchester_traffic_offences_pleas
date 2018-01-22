@@ -15,7 +15,9 @@ YESNO_CHOICES = {
     "Do/Naddo": ((True, _("Yes (v5)")),
                  (False, _("No (v5)"))),
     "Hoffwn/Na hoffwn": ((True, _("Yes (v6)")),
-                         (False, _("No (v6)")))
+                         (False, _("No (v6)"))),
+    "Saesneg/Cymraeg": ((True, _("English")),
+                        (False, _("Welsh")))
 }
 
 to_bool = lambda x: x == "True"
@@ -49,7 +51,11 @@ class BaseStageForm(forms.Form):
 
         def test_dependency_match(key, test_value):
             data_value = self.data.get(key, None)
-
+            if test_value and '|' in str(test_value):
+                test_values = str(test_value).split("|")
+                for t_value in test_values:
+                    if str(data_value) == str(t_value):
+                        return True
             if test_value and str(data_value) == str(test_value):
                 return True
 

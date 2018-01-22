@@ -348,7 +348,6 @@ class Case(models.Model):
 
         if dob and "DOB" in self.extra_data:
             dob_match = dob == date_parse(self.extra_data["DOB"]).date()
-
         return self.offences.count() == num_charges and (postcode_match or dob_match)
 
     def auth_field(self):
