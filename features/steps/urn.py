@@ -29,6 +29,9 @@ def step_impl(context):
 def step_impl(context):
     submit_urn(context, 'invalid')
 
+@when(u'I submit a valid welsh URN in english')
+def step_impl(context):
+    submit_urn(context, 'valid_welsh')
 
 @when(u'I submit a valid welsh URN in welsh')
 def step_impl(context):

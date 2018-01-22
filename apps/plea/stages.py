@@ -477,7 +477,7 @@ class PleaStage(IndexedStage):
             offences = get_offences(self.all_data["case"])
         else:
             offences = False
-
+        welsh_questions = self.all_data.get("welsh_court", False)
         if initial:
             data = self.all_data.get(self.name, {}).get("data", [])
             try:
@@ -486,10 +486,10 @@ class PleaStage(IndexedStage):
                 pass
 
             if self.form_class:
-                self.form = self.form_class(initial=initial_data, label_suffix="")
+                self.form = self.form_class(initial=initial_data, welsh_questions=welsh_questions, label_suffix="")
         else:
             if self.form_class:
-                self.form = self.form_class(data, label_suffix="")
+                self.form = self.form_class(data, welsh_questions=welsh_questions, label_suffix="")
 
         if offences:
             try:
