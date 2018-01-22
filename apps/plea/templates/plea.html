@@ -97,6 +97,9 @@
                         </div>
                         {% endif %}
                     {% endif %}
+
+
+
                 </section>
 
 				<section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.value != "guilty_no_court" %} nojs-hidden{% endif %}"
@@ -167,7 +170,17 @@
                     </div>
 
                 </section>
+        {% if not english_court %}
+            <div data-conditional="guilty" data-conditional-value="^(guilty_court|not_guilty)$">
+                        {% if form.hearing_language %}
+                        <h3>{% blocktrans %}Language Options{% endblocktrans %}</h3>
+                        {% radio_field form.hearing_language wide=True hide_optional=True inline=True label=_("If there is a hearing, which language do you wish to speak?") %}
+                        {% radio_field form.documentation_language wide=True hide_optional=True inline=True label=_("Please state in which language you wish to receive any further documentation?") %}
+                        {% endif %}
             </div>
+       {% endif %}
+            </div>
+
 
         </section>
 

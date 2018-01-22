@@ -105,16 +105,22 @@ class TestMultiPleaForms(TestCaseBase):
                         "guilty": "guilty_no_court",
                         "guilty_extra": "something",
                         "complete": True,
+                        "hearing_language": True,
+                        "documentation_language": True
                     },
                     {
                         "guilty": "guilty_no_court",
                         "guilty_extra": "something",
                         "complete": True,
+                        "hearing_language": True,
+                        "documentation_language": True
                     },
                     {
                         "guilty": "guilty_no_court",
                         "guilty_extra": "something",
                         "complete": True,
+                        "hearing_language": True,
+                        "documentation_language": True
                     }
                 ]
             },
@@ -609,7 +615,9 @@ class TestMultiPleaForms(TestCaseBase):
 
         form.load(self.request_context)
         form.save({"guilty": "guilty_court",
-                   "come_to_court": True},
+                   "come_to_court": True,
+                   "hearing_language": True,
+                   "documentation_language": True},
                   self.request_context)
         response = form.render(self.get_request_mock())
 
@@ -673,7 +681,9 @@ class TestMultiPleaForms(TestCaseBase):
         form = PleaOnlineForms(self.session, "plea", 1)
 
         plea_1 = {"guilty": "guilty_no_court",
-                  "guilty_extra": "lorem ipsum 1"}
+                  "guilty_extra": "lorem ipsum 1",
+                  "hearing_language": True,
+                  "documentation_language": True}
 
         form.load(self.request_context)
         form.save(plea_1,
@@ -688,7 +698,9 @@ class TestMultiPleaForms(TestCaseBase):
                   "not_guilty_extra": "lorem ipsum 1",
                   "interpreter_needed": False,
                   "disagree_with_evidence": False,
-                  "witness_needed": False}
+                  "witness_needed": False,
+                  "hearing_language": True,
+                  "documentation_language": True}
 
         form.load(self.request_context)
         form.save(plea_1,
@@ -728,7 +740,9 @@ class TestMultiPleaForms(TestCaseBase):
         form.load(request_context)
 
         plea_data = {"guilty": "guilty_no_court",
-                     "guilty_extra": "lorem ipsum 1"}
+                     "guilty_extra": "lorem ipsum 1",
+                     "hearing_language": True,
+                     "documentation_language": True}
 
         form.save(plea_data, request_context)
         response = form.render(self.get_request_mock())
@@ -767,7 +781,9 @@ class TestMultiPleaForms(TestCaseBase):
                      "not_guilty_extra": "lorem ipsum 1",
                      "interpreter_needed": False,
                      "disagree_with_evidence": False,
-                     "witness_needed": False}
+                     "witness_needed": False,
+                     "hearing_language": True,
+                     "documentation_language": True}
 
         form.save(plea_data, request_context)
         response = form.render(self.get_request_mock())
@@ -1407,7 +1423,9 @@ class TestMultiPleaForms(TestCaseBase):
         form.load(request_context)
 
         plea_data = {"guilty": "guilty_no_court",
-                     "guilty_extra": "lorem ipsum 1"}
+                     "guilty_extra": "lorem ipsum 1",
+                     "hearing_language": True,
+                     "documentation_language": True}
 
         form.save(plea_data, request_context)
         response = form.render(self.get_request_mock())
@@ -1489,7 +1507,9 @@ class TestMultiPleaForms(TestCaseBase):
         form.load(request_context)
 
         plea_data = {"guilty": "guilty_no_court",
-                     "guilty_extra": "lorem ipsum 1"}
+                     "guilty_extra": "lorem ipsum 1",
+                     "hearing_language": True,
+                     "documentation_language": True}
 
         form.save(plea_data, request_context)
         response = form.render(self.get_request_mock())
@@ -1501,7 +1521,9 @@ class TestMultiPleaForms(TestCaseBase):
         form.load(request_context)
 
         plea_data = {"guilty": "guilty_no_court",
-                     "guilty_extra": "lorem ipsum 2"}
+                     "guilty_extra": "lorem ipsum 2",
+                     "hearing_language": True,
+                     "documentation_language": True}
 
         form.save(plea_data, request_context)
         response = form.render(self.get_request_mock())
