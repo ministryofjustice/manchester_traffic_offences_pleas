@@ -92,7 +92,9 @@ class BaseEmailTemplateTests(TestCase):
 
         if not plea_data:
             plea_data = {"guilty": "guilty_no_court",
-                         "guilty_extra": "IT wasn't me driving!"}
+                         "guilty_extra": "IT wasn't me driving!",
+                         "hearing_language": True,
+                         "documentation_language": True}
 
         if not status_data:
             status_data = {"you_are": "Employed"}
@@ -321,6 +323,8 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
         self.assertContainsDefinition(response.content, "Your plea", "Guilty", count=1)
+        self.assertNotContains(response, "Hearing preference")
+        self.assertNotContains(response, "Documentation preference")
 
     def test_SJP_single_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
@@ -330,6 +334,9 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
         context_data["plea"]["data"][0]["show_interpreter_question"] = True
         context_data["plea"]["data"][0]["sjp_interpreter_needed"] = True
         context_data["plea"]["data"][0]["sjp_interpreter_language"] = "French"
+        context_data["plea"]["data"][0]["hearing_language"] = True
+        context_data["plea"]["data"][0]["documentation_language"] = True
+
 
         send_plea_email(context_data)
 
@@ -338,6 +345,8 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
         self.assertContainsDefinition(response.content, "Plead guilty in court", "Yes", count=1)
         self.assertContainsDefinition(response.content, "Interpreter required", "Yes", count=1)
         self.assertContainsDefinition(response.content, "Language", "French", count=1)
+        self.assertContainsDefinition(response.content, "Hearing preference", "English", count=1)
+        self.assertContainsDefinition(response.content, "Documentation preference", "English", count=1)
 
     def test_multiple_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
@@ -363,6 +372,8 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
         context_data["plea"]["data"][0]["witness_details"] = "Witness details"
         context_data["plea"]["data"][0]["witness_interpreter_needed"] = True
         context_data["plea"]["data"][0]["witness_interpreter_language"] = "German"
+        context_data["plea"]["data"][0]["hearing_language"] = True
+        context_data["plea"]["data"][0]["documentation_language"] = True
 
         send_plea_email(context_data)
 
@@ -381,21 +392,29 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
         self.assertContainsDefinition(response.content,
                                       "Name, date of birth and address of the witness", "Witness details", count=1)
         self.assertContainsDefinition(response.content, "Language", "German", count=1)
+        self.assertContainsDefinition(response.content, "Hearing preference", "English", count=1)
+        self.assertContainsDefinition(response.content, "Documentation preference", "English", count=1)
 
     def test_multiple_not_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
         context_data["plea"]["data"][0]["guilty"] = "not_guilty"
-        context_data["plea"]["data"].append({"not_guilty_extra": "test2", "guilty": "not_guilty"})
+        context_data["plea"]["data"][0]["hearing_language"] = True
+        context_data["plea"]["data"][0]["documentation_language"] = True
+        context_data["plea"]["data"].append({"not_guilty_extra": "test2", "guilty": "not_guilty",
+                                             "hearing_language": True, "documentation_language": True})
 
         send_plea_email(context_data)
 
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
         self.assertContainsDefinition(response.content, "Your plea", "Not guilty", count=2)
+        self.assertContainsDefinition(response.content, "Hearing preference", "English", count=2)
+        self.assertContainsDefinition(response.content, "Documentation preference", "English", count=2)
 
     def test_mixed_plea_email_plea_output(self):
         context_data = self.get_context_data()
-        context_data["plea"]["data"].append({"not_guilty_extra": "test2", "guilty": "not_guilty"})
+        context_data["plea"]["data"].append({"not_guilty_extra": "test2", "guilty": "not_guilty",
+                                             "hearing_language": True, "documentation_language": True})
 
         send_plea_email(context_data)
 
@@ -403,6 +422,8 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         self.assertContainsDefinition(response.content, "Your plea", "Guilty", count=1)
         self.assertContainsDefinition(response.content, "Your plea", "Not guilty", count=1)
+        self.assertContainsDefinition(response.content, "Hearing preference", "English", count=1)
+        self.assertContainsDefinition(response.content, "Documentation preference", "English", count=1)
 
     def test_status_output(self):
         context_data = self.get_context_data()
@@ -734,7 +755,8 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
     def test_PLP_multiple_not_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
         context_data["plea"]["data"][0]["guilty"] = "not_guilty"
-        context_data["plea"]["data"].append({"not_guilty_extra": "test2", "guilty": "not_guilty"})
+        context_data["plea"]["data"].append({"not_guilty_extra": "test2", "guilty": "not_guilty",
+                                             "hearing_language": True, "documentation_language": True})
 
         send_plea_email(context_data)
 
@@ -743,7 +765,8 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
 
     def test_PLP_mixed_plea_email_plea_output(self):
         context_data = self.get_context_data()
-        context_data["plea"]["data"].append({"not_guilty_extra": "test2", "guilty": "not_guilty"})
+        context_data["plea"]["data"].append({"not_guilty_extra": "test2", "guilty": "not_guilty",
+                                             "hearing_language": True, "documentation_language": True})
 
         send_plea_email(context_data)
 
@@ -817,15 +840,21 @@ class DefendantEmailTemplateTests(BaseEmailTemplateTests):
         context_data["plea"]["data"] = [
             {
                 "guilty": "not_guilty",
-                "not_guilty_extra": "asdf"
+                "not_guilty_extra": "asdf",
+                "hearing_language": True,
+                "documentation_language": True
             },
             {
                 "guilty": "not_guilty",
-                "not_guilty_extra": "asdf"
+                "not_guilty_extra": "asdf",
+                "hearing_language": True,
+                "documentation_language": True
             },
             {
                 "guilty": "not_guilty",
-                "not_guilty_extra": "asdf"
+                "not_guilty_extra": "asdf",
+                "hearing_language": True,
+                "documentation_language": True
             }
         ]
 
@@ -841,7 +870,9 @@ class DefendantEmailTemplateTests(BaseEmailTemplateTests):
         context_data["plea"]["data"] = [
             {
                 "guilty": "not_guilty",
-                "not_guilty_extra": "asdf"
+                "not_guilty_extra": "asdf",
+                "hearing_language": True,
+                "documentation_language": True
             },
             {
                 "guilty": "guilty_no_court",
@@ -849,7 +880,9 @@ class DefendantEmailTemplateTests(BaseEmailTemplateTests):
             },
             {
                 "guilty": "guilty_court",
-                "guilty_extra": "asdf"
+                "guilty_extra": "asdf",
+                "hearing_language": True,
+                "documentation_language": True
             }
         ]
 
@@ -930,7 +963,9 @@ class TestCompanyFinancesEmailLogic(TestCase):
                 "data": [
                     {
                         "guilty": "not_guilty",
-                        "not_guilty_extra": "something"
+                        "not_guilty_extra": "something",
+                        "hearing_language": True,
+                        "documentation_language": True
                     }
                 ]
             },

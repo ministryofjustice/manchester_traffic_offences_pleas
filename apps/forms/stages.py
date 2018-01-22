@@ -124,7 +124,6 @@ class FormStage(object):
             context = self.context
             context.update({k: v for (k, v) in self.all_data.items()})
             context["form"] = self.form
-
             return render(request, self.template, context)
 
 
@@ -193,7 +192,7 @@ class MultiStageForm(object):
             self.current_stage = self.current_stage_class(self.urls, self.all_data)
         if not self.current_stage.name == "enter_urn":
             if not self.all_data.get("welsh_court", False):
-                self.all_data["disable_language"] = True
+                self.all_data["english_court"] = True
 
         if not self.current_stage.check_dependencies_are_complete():
             if self.current_stage.name == "complete":

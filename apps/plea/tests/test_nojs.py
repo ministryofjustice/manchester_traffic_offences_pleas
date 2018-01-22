@@ -23,6 +23,8 @@ class TestNoJS(TestCase):
                                          "company_details": {"complete": True},
                                          "plea": {"complete": True,
                                                   "data": [{"guilty": "guilty_no_court",
+                                                  "hearing_language": True,
+                                                  "documentation_language": True,
                                                             "complete": True}]}}
 
         self.request_context = Mock()
@@ -54,7 +56,9 @@ class TestNoJS(TestCase):
         form = PleaOnlineForms(self.plea_session, "plea", 1)
 
         form.save({"split_form": "guilty",
-                   "guilty": "guilty_no_court"},
+                   "guilty": "guilty_no_court",
+                   "hearing_language": True,
+                   "documentation_language": True},
                   self.request_context)
 
         response = form.render(self.get_request_mock())
@@ -98,7 +102,9 @@ class TestNoJS(TestCase):
                    "interpreter_needed": True,
                    "interpreter_language": "French",
                    "disagree_with_evidence": False,
-                   "witness_needed": False},
+                   "witness_needed": False,
+                   "hearing_language": True,
+                   "documentation_language": True},
                   self.request_context)
 
         response = form.render(self.get_request_mock())
@@ -114,7 +120,7 @@ class TestNoJS(TestCase):
                    "form-INITIAL_FORMS": "0",
                    "form-MAX_NUM_FORMS": "1",
                    "form-0-guilty": "not_guilty",
-                   "form-0-interpreter_needed": True},
+                   "form-0-interpreter_needed": True,},
                   self.request_context)
 
         response = form.render(self.get_request_mock())
