@@ -43,6 +43,8 @@ ERROR_MESSAGES = {
     "NOT_GUILTY_REQUIRED": _("Tell us why you believe you are not guilty"),
     "INTERPRETER_NEEDED_REQUIRED": _("You must tell us if you need an interpreter in court"),
     "INTERPRETER_LANGUAGE_REQUIRED": _("You must tell us which language"),
+    "HEARING_LANGUAGE_REQUIRED": _("You must tell us which language you would like for your hearing"),
+    "DOCUMENTATION_LANGUAGE_REQUIRED": _("You must tell us which language you would like for your documentation"),
     "DISAGREE_WITH_EVIDENCE_REQUIRED": _("Tell us if you disagree with any of the evidence we sent to you"),
     "DISAGREE_WITH_EVIDENCE_DETAILS_REQUIRED": _("You need to tell us the name of the witness and what you disagree with"),
     "WITNESS_NEEDED_REQUIRED": _("You must tell us if you want to call a defence witness"),

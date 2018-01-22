@@ -92,7 +92,15 @@
                 {% endif %}
             {% endif %}
         {% endif %}
+        {% if not english_court %}
+        {% if pleaform.guilty == "guilty_court" or pleaform.guilty == "not_guilty" %}
+        <dt>{% blocktrans %}Hearing preference{% endblocktrans %}</dt>
+        <dd>{% if pleaform.hearing_language %}{% blocktrans %}English{% endblocktrans %}{% else %}{% blocktrans %}Welsh{% endblocktrans %}{% endif %}</dd>
 
+        <dt>{% blocktrans %}Documentation preference{% endblocktrans %}</dt>
+        <dd>{% if pleaform.documentation_language %}{% blocktrans %}English{% endblocktrans %}{% else %}{% blocktrans %}Welsh{% endblocktrans %}{% endif %}</dd>
+        {% endif %}
+        {% endif %}
     </dl>
 
 </section>

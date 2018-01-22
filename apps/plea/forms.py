@@ -978,6 +978,7 @@ class BasePleaForm(SplitStageForm):
     """Base form for pleas"""
 
 
+
     split_form_options = {
         "trigger": "guilty",
         "nojs_only": True
@@ -1020,6 +1021,24 @@ class BasePleaForm(SplitStageForm):
         help_text=_("If yes, tell us which language (include sign language):"),
         error_messages={
             "required": ERROR_MESSAGES["INTERPRETER_LANGUAGE_REQUIRED"]})
+
+    hearing_language = forms.TypedChoiceField(
+        widget=DSRadioSelect,
+        required=True,
+        choices=YESNO_CHOICES["Saesneg/Cymraeg"],
+        coerce=to_bool,
+        label=_("If there is a hearing, which language do you wish to speak?"),
+        error_messages={
+            "required": ERROR_MESSAGES["HEARING_LANGUAGE_REQUIRED"]})
+
+    documentation_language = forms.TypedChoiceField(
+        widget=DSRadioSelect,
+        required=True,
+        choices=YESNO_CHOICES["Saesneg/Cymraeg"],
+        coerce=to_bool,
+        label=_("Please state in which language you wish to receive any further documentation?"),
+        error_messages={
+            "required": ERROR_MESSAGES["DOCUMENTATION_LANGUAGE_REQUIRED"]})
 
     disagree_with_evidence = forms.TypedChoiceField(
         widget=DSRadioSelect,
@@ -1085,6 +1104,14 @@ class BasePleaForm(SplitStageForm):
         error_messages={
             "required": ERROR_MESSAGES["WITNESS_INTERPRETER_LANGUAGE_REQUIRED"]})
 
+    def __init__(self, *args, **kwargs):
+        welsh_questions = kwargs.pop("welsh_questions", False)
+        super(BasePleaForm, self).__init__(*args, **kwargs)
+
+        if not welsh_questions:
+            del self.fields["hearing_language"]
+            del self.fields["documentation_language"]
+
 
 class PleaForm(BasePleaForm):
     """Plea form"""
@@ -1102,9 +1129,10 @@ class PleaForm(BasePleaForm):
         ("witness_needed", {"field": "guilty", "value": "not_guilty"}),
         ("witness_details", {"field": "witness_needed", "value": "True"}),
         ("witness_interpreter_needed", {"field": "witness_needed", "value": "True"}),
-        ("witness_interpreter_language", {"field": "witness_interpreter_needed", "value": "True"})
+        ("witness_interpreter_language", {"field": "witness_interpreter_needed", "value": "True"}),
+        ("hearing_language", {"field": "guilty", "value": "not_guilty|guilty_court"}),
+        ("documentation_language", {"field": "guilty", "value": "not_guilty|guilty_court"}),
     ])
-
 
     guilty = forms.ChoiceField(
         choices=PLEA_CHOICES,
@@ -1133,7 +1161,9 @@ class SJPPleaForm(BasePleaForm):
         ("witness_needed", {"field": "guilty", "value": "not_guilty"}),
         ("witness_details", {"field": "witness_needed", "value": "True"}),
         ("witness_interpreter_needed", {"field": "witness_needed", "value": "True"}),
-        ("witness_interpreter_language", {"field": "witness_interpreter_needed", "value": "True"})
+        ("witness_interpreter_language", {"field": "witness_interpreter_needed", "value": "True"}),
+        ("hearing_language", {"field": "guilty", "value": "not_guilty|guilty_court"}),
+        ("documentation_language", {"field": "guilty", "value": "not_guilty|guilty_court"}),
     ])
 
     guilty = forms.ChoiceField(
@@ -1189,6 +1219,8 @@ class SJPPleaForm(BasePleaForm):
             "witness_details",
             "witness_interpreter_needed",
             "witness_interpreter_language",
+            "hearing_language",
+            "documentation_language"
         ]
         self.fields = reorder_fields(self.fields, fields_order)
 
