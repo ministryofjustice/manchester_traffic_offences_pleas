@@ -118,12 +118,6 @@ class PleaOnlineViews(StorageView):
                 not request.session.get("plea_data"),
                 kwargs.get("stage", self.start) != self.start,
         ]):
-            # messages.add_message(request, messages.ERROR, _("Your session has timed out"), extra_tags="session_timeout")
-            logger.error('User redirected to start page due to lack of session plea data', exc_info=False, extra={
-                    # Optionally pass a request and we'll grab any information we can
-                    'request': request,
-                    'stage': kwargs.get("stage"),
-                })
             return HttpResponseRedirect("/")
 
 
