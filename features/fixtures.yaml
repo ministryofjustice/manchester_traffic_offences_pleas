@@ -1,0 +1,89 @@
+- model: plea.case
+  pk: 3
+  fields: {created: !!timestamp '2017-11-06 12:25:00.249000', urn: 00FF1234560, extra_data: '{"DOB":
+      "11-11-90", "PostCode": "C1 1CC"}', case_number: null, name: null, email: null,
+    email_permission: false, date_of_hearing: null, imported: true, ou_code: null,
+    initiation_type: J, language: en, sent: false, processed: false, completed_on: null}
+- model: plea.case
+  pk: 4
+  fields: {created: !!timestamp '2017-11-06 13:04:07.910000', urn: 00FF1234561, extra_data: '{}',
+    case_number: null, name: null, email: null, email_permission: false, date_of_hearing: null,
+    imported: true, ou_code: null, initiation_type: J, language: en, sent: false,
+    processed: false, completed_on: null}
+- model: plea.case
+  pk: 5
+  fields: {created: !!timestamp '2017-11-06 13:31:54.244000', urn: 00FF1234562, extra_data: '{"DOB":
+      "11-11-90"}', case_number: null, name: null, email: null, email_permission: false,
+    date_of_hearing: null, imported: true, ou_code: null, initiation_type: J, language: en,
+    sent: false, processed: false, completed_on: null}
+- model: plea.case
+  pk: 6
+  fields: {created: !!timestamp '2017-11-06 13:32:00.248000', urn: 00FF1234563, extra_data: '{"PostCode":
+      "C1 1CC"}', case_number: null, name: null, email: null, email_permission: false,
+    date_of_hearing: null, imported: true, ou_code: null, initiation_type: J, language: en,
+    sent: false, processed: false, completed_on: null}
+- model: plea.case
+  pk: 7
+  fields: {created: !!timestamp '2017-11-09 12:37:50.412000', urn: 00FF1234564, extra_data: '{"OrganisationName":
+      "foobar", "PostCode": "C1 1CC"}', case_number: null, name: null, email: null,
+    email_permission: false, date_of_hearing: null, imported: true, ou_code: null,
+    initiation_type: J, language: en, sent: false, processed: false, completed_on: null}
+- model: plea.case
+  pk: 8
+  fields: {created: !!timestamp '2017-11-06 12:25:00.249000', urn: 03FF1234560, extra_data: '{"DOB":
+      "11-11-90", "PostCode": "C1 1CC"}', case_number: null, name: null, email: null,
+    email_permission: false, date_of_hearing: null, imported: true, ou_code: null,
+    initiation_type: J, language: en, sent: false, processed: false, completed_on: null}
+- model: plea.offence
+  pk: 2
+  fields: {case: 3, offence_code: null, offence_short_title: Speeding, offence_short_title_welsh: null,
+    offence_wording: Speeding 10 mph over speed limit on High Street on 14/3/2017
+      in car with licence ABCDEFG, offence_wording_welsh: '', offence_seq_number: null}
+- model: plea.offence
+  pk: 3
+  fields: {case: 5, offence_code: null, offence_short_title: Speeding, offence_short_title_welsh: null,
+    offence_wording: Speeding 10 mph over speed limit on High Street on 14/3/2017
+      in car with licence ABCDEFG, offence_wording_welsh: '', offence_seq_number: null}
+- model: plea.offence
+  pk: 4
+  fields: {case: 6, offence_code: null, offence_short_title: Speeding, offence_short_title_welsh: null,
+    offence_wording: Speeding 10 mph over speed limit on High Street on 14/3/2017
+      in car with licence ABCDEFG, offence_wording_welsh: '', offence_seq_number: null}
+- model: plea.offence
+  pk: 5
+  fields: {case: 3, offence_code: null, offence_short_title: No insurance, offence_short_title_welsh: null,
+    offence_wording: Driving without insurance, offence_wording_welsh: '', offence_seq_number: null}
+- model: plea.offence
+  pk: 6
+  fields: {case: 4, offence_code: null, offence_short_title: Speeding, offence_short_title_welsh: null,
+    offence_wording: Speeding 10mph, offence_wording_welsh: '', offence_seq_number: null}
+- model: plea.offence
+  pk: 7
+  fields: {case: 7, offence_code: null, offence_short_title: Speeding, offence_short_title_welsh: null,
+    offence_wording: Speeding 10mph, offence_wording_welsh: '', offence_seq_number: null}
+- model: plea.offence
+  pk: 8
+  fields: {case: 8, offence_code: null, offence_short_title: Speeding, offence_short_title_welsh: null,
+    offence_wording: Speeding 10 mph over speed limit on High Street on 14/3/2017
+      in car with licence ABCDEFG, offence_wording_welsh: '', offence_seq_number: null}
+- model: plea.court
+  pk: 3
+  fields: {court_code: null, region_code: '00', court_name: test both, court_address: test,
+    court_telephone: '123', court_email: court@example.com, court_language: en, submission_email: court@example.com,
+    court_receipt_email: null, local_receipt_email: null, plp_email: null, enabled: true,
+    test_mode: true, notice_types: both, validate_urn: true, display_case_data: true,
+    enforcement_email: null, enforcement_telephone: null}
+- model: plea.court
+  pk: 4
+  fields: {court_code: null, region_code: '01', court_name: test sjp, court_address: test,
+    court_telephone: '123', court_email: court@example.com, court_language: en, submission_email: court@example.com,
+    court_receipt_email: null, local_receipt_email: null, plp_email: null, enabled: true,
+    test_mode: true, notice_types: sjp, validate_urn: true, display_case_data: true,
+    enforcement_email: null, enforcement_telephone: null}
+- model: plea.court
+  pk: 5
+  fields: {court_code: null, region_code: '03', court_name: test welsh, court_address: test,
+    court_telephone: '123', court_email: court@example.com, court_language: cy, submission_email: court@example.com,
+    court_receipt_email: null, local_receipt_email: null, plp_email: null, enabled: true,
+    test_mode: true, notice_types: both, validate_urn: true, display_case_data: true,
+    enforcement_email: null, enforcement_telephone: null}
