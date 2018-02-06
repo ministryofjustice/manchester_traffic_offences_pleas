@@ -16,7 +16,7 @@ RUN echo "local  all all trust" > /etc/postgresql/9.4/main/pg_hba.conf \
 && service postgresql start \
 && psql -c 'CREATE DATABASE manchester_traffic_offences;' -U postgres \
 && python manage.py migrate --noinput \
-&& python manage.py loaddata features/fixtures.json
+&& python manage.py loaddata features/fixtures.yaml
 
 RUN python manage.py compilemessages
 
