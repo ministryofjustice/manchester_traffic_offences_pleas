@@ -31,7 +31,7 @@
 
 {% block content %}
     <div class="phase-banner">
-        {% if not english_court %}
+        {% if not disable_language_switch %}
         <nav id="language-switcher" class="language-switcher">
             <ul>
                 {% ifequal LANGUAGE_CODE "en" %}
