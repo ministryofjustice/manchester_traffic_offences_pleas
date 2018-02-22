@@ -170,7 +170,7 @@
                     </div>
 
                 </section>
-        {% if not english_court %}
+        {% if welsh_court is True %}
             <div data-conditional="guilty" data-conditional-value="^(guilty_court|not_guilty)$">
                         {% if form.hearing_language %}
                         <h3>{% blocktrans %}Language Options{% endblocktrans %}</h3>
