@@ -345,8 +345,8 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
         self.assertContainsDefinition(response.content, "Plead guilty in court", "Yes", count=1)
         self.assertContainsDefinition(response.content, "Interpreter required", "Yes", count=1)
         self.assertContainsDefinition(response.content, "Language", "French", count=1)
-        self.assertContainsDefinition(response.content, "Hearing preference", "English", count=1)
-        self.assertContainsDefinition(response.content, "Documentation preference", "English", count=1)
+        self.assertNotContains(response, "Hearing preference")
+        self.assertNotContains(response, "Documentation preference")
 
     def test_multiple_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
@@ -392,8 +392,8 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
         self.assertContainsDefinition(response.content,
                                       "Name, date of birth and address of the witness", "Witness details", count=1)
         self.assertContainsDefinition(response.content, "Language", "German", count=1)
-        self.assertContainsDefinition(response.content, "Hearing preference", "English", count=1)
-        self.assertContainsDefinition(response.content, "Documentation preference", "English", count=1)
+        self.assertNotContains(response, "Hearing preference")
+        self.assertNotContains(response, "Documentation preference")
 
     def test_multiple_not_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
@@ -408,8 +408,8 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
         response = self.get_mock_response(mail.outbox[0].attachments[0][1])
 
         self.assertContainsDefinition(response.content, "Your plea", "Not guilty", count=2)
-        self.assertContainsDefinition(response.content, "Hearing preference", "English", count=2)
-        self.assertContainsDefinition(response.content, "Documentation preference", "English", count=2)
+        self.assertNotContains(response, "Hearing preference")
+        self.assertNotContains(response, "Documentation preference")
 
     def test_mixed_plea_email_plea_output(self):
         context_data = self.get_context_data()
@@ -422,8 +422,8 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         self.assertContainsDefinition(response.content, "Your plea", "Guilty", count=1)
         self.assertContainsDefinition(response.content, "Your plea", "Not guilty", count=1)
-        self.assertContainsDefinition(response.content, "Hearing preference", "English", count=1)
-        self.assertContainsDefinition(response.content, "Documentation preference", "English", count=1)
+        self.assertNotContains(response, "Hearing preference")
+        self.assertNotContains(response, "Documentation preference")
 
     def test_status_output(self):
         context_data = self.get_context_data()
