@@ -133,7 +133,7 @@ class CaseAdmin(admin.ModelAdmin):
     list_display = ("urn", "sent", "processed", "charge_count", "initiation_type")
     list_filter = ("sent", "processed", "ou_code", "imported", "language", "completed_on", CaseInitiationTypeFilter)
     inlines = [InlineCaseAction, InlineOffence]
-    search_fields = ["urn", "case_number"]
+    search_fields = ["urn", "case_number", "name", "extra_data"]
     readonly_fields = ('created',)
     initial_report_template = "admin/case_initial_report.html"
     ongoing_report_template = "admin/case_ongoing_report.html"
