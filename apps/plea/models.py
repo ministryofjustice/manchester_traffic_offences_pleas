@@ -787,6 +787,7 @@ class AuditEvent(models.Model):
         ("case_invalid_offencecode", "Invalid Case: Invalid offence code"),
         ("case_invalid_courtcode", "Invalid Case: Invalid court code"),
         ("case_invalid_not_in_whitelist", "Invalid Case: Not in whitelist"),
+        ("case_invalid_invalid_initiation_type", "Invalid Case: Initiation type not accepted"),
         ("case_invalid_duplicate_offence", "Invalid Case: Duplicate offence"),
         ("case_invalid_duplicate_urn_used", "Invalid Case: Duplicate URN already used (sent)"),
         ("case_invalid_no_offences", "Invalid Case: No offences"),
