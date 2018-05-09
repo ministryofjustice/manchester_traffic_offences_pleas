@@ -48,6 +48,7 @@ class CaseSerializer(serializers.ModelSerializer):
     urn = serializers.CharField(required=True, validators=[is_valid_urn_format])
     offences = OffenceSerializer(many=True)
     ou_code = serializers.CharField(required=True)
+    accepted_initiation_types = ['J', 'Q', 'S']
 
     def __init__(self, *args, **kwargs):
         super(CaseSerializer, self).__init__(*args, **kwargs)
@@ -95,6 +96,17 @@ class CaseSerializer(serializers.ModelSerializer):
                  "in the whitelist").format(
                     data.get("urn"),
                     offence_codes))
+
+        init_type = data.get("initiation_type", "")
+        if init_type not in self.accepted_initiation_types:
+            AuditEvent().populate(
+                event_type="case_api",
+                event_subtype="case_invalid_invalid_initiation_type",
+                event_trace=str(data),
+            )
+            raise serializers.ValidationError(
+                "Case contains invalid initiation type {}".format(
+                    data.get("initiation_type", "")))
 
         urn = data.pop("urn")
         std_urn = standardise_urn(urn)
