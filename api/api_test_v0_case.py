@@ -82,6 +82,7 @@ class CaseAPICallTestCase(APITestCase):
                             "Postcode": "",
                             "DriverNumber": "",
                             "NINO": "AB00123456C"},
+            u'initiation_type': u'J',
             u'offences': [
                 {
                     u"offence_code": u"RT0123",
@@ -210,6 +211,12 @@ class CaseAPICallTestCase(APITestCase):
             json.loads(response.content)["non_field_errors"][0],
             ("Case 00AA0000000 contains offence codes [[u'DF09', u'DF09']] "
              "not present in the whitelist"))
+
+    def test_submission_with_invalid_initiation_type_fails(self):
+        data = deepcopy(self.test_data)
+        data["initiation_type"] = "C"
+        response = self._post_data(data)
+        self.assertEqual(response.status_code, 400)
 
     def test_valid_submissions_returns_dict_and_correct_urn(self):
         data = deepcopy(self.test_data)
