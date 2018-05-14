@@ -10,6 +10,7 @@ services:
   - postgresql
   - rabbitmq
 before_install:
+  - sudo apt-get -qq update
   - sudo ./apt/production.sh
   - sudo ./apt/testing.sh
   - wget -N https://chromedriver.storage.googleapis.com/2.36/chromedriver_linux64.zip -P ~/
