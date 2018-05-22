@@ -38,13 +38,16 @@ NOTICE_TYPES_CHOICES = (("both", "Both"),
 def get_totals(qs):
     totals = qs.aggregate(Sum('total_pleas'),
                           Sum('total_guilty'),
-                          Sum('total_not_guilty'))
-
+                          Sum('total_not_guilty'),
+                          Sum('total_guilty_court'),
+                          Sum('total_guilty_no_court'))
     return {
         'submissions': qs.count(),
         'pleas': totals['total_pleas__sum'] or 0,
         'guilty': totals['total_guilty__sum'] or 0,
-        'not_guilty': totals['total_not_guilty__sum'] or 0
+        'not_guilty': totals['total_not_guilty__sum'] or 0,
+        'guilty_court': totals['total_guilty_court__sum'] or 0,
+        'guilty_no_court': totals['total_guilty_no_court__sum'] or 0
     }
 
 
@@ -159,6 +162,8 @@ class CourtEmailCount(models.Model):
     total_pleas = models.IntegerField()
     total_guilty = models.IntegerField()
     total_not_guilty = models.IntegerField()
+    total_guilty_court = models.IntegerField(null=True, blank=True, default=0)
+    total_guilty_no_court = models.IntegerField(null=True, blank=True,default=0)
     hearing_date = models.DateTimeField()
 
     # special circumstances char counts
@@ -193,6 +198,12 @@ class CourtEmailCount(models.Model):
         if self.total_not_guilty is None:
             self.total_not_guilty = 0
 
+        if self.total_guilty_court is None:
+            self.total_guilty_court = 0
+
+        if self.total_guilty_no_court is None:
+            self.total_guilty_no_court = 0
+
         self.court = court
 
         try:
@@ -213,6 +224,12 @@ class CourtEmailCount(models.Model):
 
             if plea_data["guilty"] == "guilty" or plea_data["guilty"] == "guilty_court" or plea_data["guilty"] == "guilty_no_court":
                 self.total_guilty += 1
+
+            if plea_data["guilty"] == "guilty_court":
+                self.total_guilty_court += 1
+
+            if plea_data["guilty"] == "guilty_no_court":
+                self.total_guilty_no_court += 1
 
             if plea_data["guilty"] == "not_guilty":
                 self.total_not_guilty += 1
@@ -443,7 +460,9 @@ class UsageStatsManager(models.Manager):
                 start_date=start_date,
                 online_submissions=totals['submissions'],
                 online_guilty_pleas=totals['guilty'],
-                online_not_guilty_pleas=totals['not_guilty'])
+                online_not_guilty_pleas=totals['not_guilty'],
+                online_guilty_attend_court_pleas=totals['guilty_court'],
+                online_guilty_no_court_pleas=totals['guilty_no_court'])
 
             start_date += dt.timedelta(7)
 
@@ -467,7 +486,8 @@ class UsageStats(models.Model):
     online_submissions = models.PositiveIntegerField(default=0)
     online_guilty_pleas = models.PositiveIntegerField(default=0)
     online_not_guilty_pleas = models.PositiveIntegerField(default=0)
-
+    online_guilty_attend_court_pleas = models.PositiveIntegerField(blank=True, null=True, default=0)
+    online_guilty_no_court_pleas = models.PositiveIntegerField(blank=True, null=True, default=0)
     postal_requisitions = models.PositiveIntegerField(blank=True, null=True)
     postal_responses = models.PositiveIntegerField(blank=True, null=True)
 
