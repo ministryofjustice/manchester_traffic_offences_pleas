@@ -44,12 +44,12 @@ class TestStatsBase(TestCase):
         CourtEmailCount.objects.create(court=self.court_1, total_pleas=1, total_guilty=1, total_not_guilty=0, date_sent=dt.date(2015, 1, 5), hearing_date=dt.date(2015, 1, 29), sent=True) # 24 days
         CourtEmailCount.objects.create(court=self.court_1, total_pleas=1, total_guilty=0, total_not_guilty=1, date_sent=dt.date(2015, 1, 5), hearing_date=dt.date(2015, 1, 29), sent=True) # 24 days
         CourtEmailCount.objects.create(court=self.court_1, total_pleas=2, total_guilty=2, total_not_guilty=0, date_sent=dt.date(2015, 1, 5), hearing_date=dt.date(2015, 1, 29), sent=True) # 24 days
-        CourtEmailCount.objects.create(court=self.court_1, total_pleas=3, total_guilty=2, total_not_guilty=1, date_sent=dt.date(2015, 1, 9), hearing_date=dt.date(2015, 1, 30), sent=True) # 21 days
+        CourtEmailCount.objects.create(court=self.court_1, total_pleas=3, total_guilty=2, total_not_guilty=1, total_guilty_court=2, total_guilty_no_court=0,  date_sent=dt.date(2015, 1, 9), hearing_date=dt.date(2015, 1, 30), sent=True) # 21 days
 
         # Court 1, week starting 12/01/2015
         CourtEmailCount.objects.create(court=self.court_1, total_pleas=2, total_guilty=1, total_not_guilty=1, date_sent=dt.date(2015, 1, 12), hearing_date=dt.date(2015, 1, 30), sent=True) # 18 days
         CourtEmailCount.objects.create(court=self.court_1, total_pleas=2, total_guilty=1, total_not_guilty=1, date_sent=dt.date(2015, 1, 12), hearing_date=dt.date(2015, 1, 30), sent=True) # 18 days
-        CourtEmailCount.objects.create(court=self.court_1, total_pleas=2, total_guilty=1, total_not_guilty=1, date_sent=dt.date(2015, 1, 14), hearing_date=dt.date(2015, 1, 31), sent=True) # 17 days
+        CourtEmailCount.objects.create(court=self.court_1, total_pleas=2, total_guilty=1, total_not_guilty=1, total_guilty_court=0, total_guilty_no_court=1, date_sent=dt.date(2015, 1, 14), hearing_date=dt.date(2015, 1, 31), sent=True) # 17 days
 
         # Court 2, week starting 12/01/2015
         CourtEmailCount.objects.create(court=self.court_2, total_pleas=3, total_guilty=3, total_not_guilty=0, date_sent=dt.date(2015, 1, 12), hearing_date=dt.date(2015, 1, 30), sent=True) # 18 days
@@ -142,6 +142,8 @@ class CourtEmailCountModelTestCase(TestStatsBase):
         self.assertEquals(totals["pleas"], 16)
         self.assertEquals(totals["guilty"], 11)
         self.assertEquals(totals["not_guilty"], 5)
+        self.assertEquals(totals["guilty_court"], 2)
+        self.assertEquals(totals["guilty_no_court"], 1)
 
     def test_get_stats_start_date(self):
 
@@ -151,6 +153,8 @@ class CourtEmailCountModelTestCase(TestStatsBase):
         self.assertEquals(totals["pleas"], 9)
         self.assertEquals(totals["guilty"], 6)
         self.assertEquals(totals["not_guilty"], 3)
+        self.assertEquals(totals["guilty_court"], 0)
+        self.assertEquals(totals["guilty_no_court"], 1)
 
     def test_get_stats_end_date(self):
 
@@ -160,6 +164,8 @@ class CourtEmailCountModelTestCase(TestStatsBase):
         self.assertEquals(totals["pleas"], 7)
         self.assertEquals(totals["guilty"], 5)
         self.assertEquals(totals["not_guilty"], 2)
+        self.assertEquals(totals["guilty_court"], 2)
+        self.assertEquals(totals["guilty_no_court"], 0)
 
     def test_get_stats_by_hearing_date(self):
 
