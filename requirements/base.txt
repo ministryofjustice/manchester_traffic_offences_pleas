@@ -11,6 +11,7 @@ python-dateutil==2.6.0
 python-gnupg==0.4.0
 git+https://github.com/ministryofjustice/django-moj-irat
 raven==6.0.0
+kombu==4.1.0
 Celery==4.1.0
 
 django-extensions==1.7.9
