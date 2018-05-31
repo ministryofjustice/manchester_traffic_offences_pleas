@@ -57,13 +57,19 @@
                  data-conditional="guilty"
                  data-conditional-value="^(guilty_court|guilty_no_court|not_guilty)$">
 
+                <div id="guilty_extra_conditional" data-conditional="guilty"
+                 data-conditional-value="^(guilty_court|guilty_no_court)$">
+                    {% if notice_type.sjp %}
+                        <div id="guilty_extra_conditional">
+                            {% std_field form.guilty_extra wide=True %}
+                        </div>
+                    {% else %}
+                        {% std_field form.guilty_extra wide=True %}
+                    {% endif %}
+                    </div>
                 <section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.value != "guilty_court" %} nojs-hidden{% endif %}"
                     data-conditional="guilty"
                     data-conditional-value="^guilty_court$">
-
-                    <div id="guilty_extra_conditional">
-                        {% std_field form.guilty_extra wide=True %}
-                    </div>
 
                     {% if notice_type.sjp %}
 
@@ -100,22 +106,6 @@
 
 
 
-                </section>
-
-				<section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.value != "guilty_no_court" %} nojs-hidden{% endif %}"
-                    data-conditional="guilty"
-                    data-conditional-value="^guilty_no_court$">
-
-                    {% if notice_type.sjp %}
-
-                        <div id="guilty_extra_conditional">
-                            {% std_field form.guilty_extra wide=True %}
-                        </div>
-
-
-                    {% else %}
-                        {% std_field form.guilty_extra wide=True %}
-                    {% endif %}
                 </section>
 
                 <section class="js-hidden{% if form.split_form.value != "split_form_last_step" or form.guilty.value != "not_guilty" %} nojs-hidden{% endif %}" data-conditional="guilty" data-conditional-value="^not_guilty$">
