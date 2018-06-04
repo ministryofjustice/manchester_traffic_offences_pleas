@@ -76,6 +76,8 @@ LOCALE_PATHS = (
 # Force admin language
 ADMIN_LANGUAGE_CODE = "en"
 
+ADMIN_LOGIN_URL = '/admin/login/'
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = root('assets', 'uploads')
@@ -200,6 +202,7 @@ INSTALLED_APPS = [
     'apps.feedback',
     'apps.receipt',
     'apps.result',
+    'apps.reports',
     'django_premailer',
     'nested_admin',
     'raven.contrib.django.raven_compat',
