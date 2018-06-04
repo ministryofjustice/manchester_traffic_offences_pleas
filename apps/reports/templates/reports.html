@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block proposition_header %}
+<div class="header-proposition">
+      <div class="content">
+        <a id="proposition-name">Make a Plea: Reports</a>
+      </div>
+    </div>
+{% endblock %}
+
+{% block page_content %}
+      <!--Main Panel-->
+      <div class="panel panel-default">
+        <div class="row">
+
+  <!-- Supplier report description -->
+          <div class="col-6 col-sm-4 col-lg-4">
+            <div class="panel-body">
+              <h2><span class="glyphicon glyphicon-briefcase text-info"></span> Plea report </h2>
+              <p>A breakdown of the different types of plea over an entered date range <p>
+            </div>
+          </div>
+
+
+          <div class="col-6 col-sm-8 col-lg-8">
+            <div class="panel-body">
+
+              <div class="panel panel-success">
+                <div class="panel-body">
+                  <form class="form-horizontal" role="form" method="GET" action="{% url 'reports:plea_report' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label"> Start date </label>
+                      <div class="col-sm-7">
+                        <div class="input-group">
+                        <input type="text" class="form-control" id="start_date" value="" name="start_date"/>
+                        <span class="input-group-addon">DD/MM/YYYY</span>
+                        </div>
+                      </div>
+                      <script>
+                        $(function() {
+                          $( "#start_date" ).datepicker({ dateFormat: "dd/mm/yy" });
+                        });
+                        // getter
+                        var dateFormat = $( ".selector" ).datepicker( "option", "dateFormat" );
+                        // setter
+                        $( ".selector" ).datepicker( "option", "dateFormat", "dd/mm/yy" );
+                      </script>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label"> End date </label>
+                      <div class="col-sm-7">
+                        <div class="input-group">
+                        <input type="text" class="form-control" id="end_date" value="" name="end_date"/>
+                        <span class="input-group-addon">DD/MM/YYYY</span>
+                        </div>
+                      </div>
+                      <script>
+                        $(function() {
+                          $( "#end_date" ).datepicker({ dateFormat: "dd/mm/yy" });
+                        });
+                        // getter
+                        var dateFormat = $( ".selector" ).datepicker( "option", "dateFormat" );
+                        // setter
+                        $( ".selector" ).datepicker( "option", "dateFormat", "dd/mm/yy" );
+                      </script>
+                    </div>
+                </div>
+
+
+                <div class="panel-footer" style="text-align:left">
+                  <div class="btn-group" >
+                  <div class="col-sm-7">
+                    <button class="button">
+                      Get report
+                    <span class="glyphicon glyphicon-forward"></span></a>
+                  </div>
+                  </form>
+                </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div><!-- close row -->
+      </div><!--close panel-->
+{% endblock %}
+
+
