@@ -1,0 +1,35 @@
+{% extends "reports.html" %}
+
+{% block page_content %}
+        <a style="text-decoration: none; text-align: right; float: right;" href="{% url 'reports:index' %}">back to reports</a>
+        <h3>All plea data in date range ({% if start_date %}{{start_date}}{% endif %} - {% if end_date %}{{ end_date }}{% else %}present{% endif %})</h3>
+        <table>
+        <tr><td>Total submissions</td> <td>{{all_online_submissions}}</td></tr>
+        <tr><td>Total pleas</td> <td>{{all_online_pleas}}</td></tr>
+        <tr><td>Total guilty pleas</td> <td>{{all_online_guilty_pleas}}</td></tr>
+        <tr><td>Total non guilty pleas</td> <td>{{all_online_not_guilty_pleas}}</td></tr>
+        {% if late_end_date %}
+        {% if early_start_date %}
+        </table>
+        <h3>Plea data before 21st May 2018 ({% if start_date %}{{start_date}}{% endif %} - May 21, 2018)</h3>
+        <table>
+        <tr><td>Total submissions</td> <td>{{pre_online_submissions}}</td></tr>
+        <tr><td>Total pleas</td> <td>{{pre_online_pleas}}</td></tr>
+        <tr><td>Total guilty pleas</td> <td>{{pre_online_guilty_pleas}}</td></tr>
+        <tr><td>Total non guilty pleas</td> <td>{{pre_online_not_guilty_pleas}}</td></tr>
+        </table>
+        <h3>Plea data from the week of 21st May 2018 onwards (May 21, 2018 - {% if end_date %}{{ end_date }}{% else %}present{% endif %})</h3>
+        <table>
+        <tr><td>Total submissions</td> <td>{{post_online_submissions}}</td></tr>
+        <tr><td>Total pleas</td> <td>{{post_online_pleas}}</td></tr>
+        <tr><td>Total guilty pleas</td> <td>{{post_online_guilty_pleas}}</td></tr>
+        <tr><td>Total non guilty pleas</td> <td>{{post_online_not_guilty_pleas}}</td></tr>
+        {% endif %}
+        <tr><td>Total guilty attend court pleas</td> <td>{{post_online_guilty_attend_court_pleas}}</td></tr>
+        <tr><td>Total guilty no court pleas</td> <td>{{post_online_guilty_no_court_pleas}}</td></tr>
+        {% endif %}
+        </table>
+
+        <i>*Please note that the types of guilty plea have only been stored since the 21st May 2018. All figures represent the totals from each week and are calculated every Monday.</i>
+
+{% endblock %}
