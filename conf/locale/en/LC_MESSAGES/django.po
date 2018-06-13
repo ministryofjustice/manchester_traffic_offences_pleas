@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-25 17:07+0000\n"
+"POT-Creation-Date: 2018-06-14 11:57+0100\n"
 "PO-Revision-Date: 2015-11-16 16:24+0000\n"
 "Last-Translator: Fred Marecesche\n"
 "Language-Team: English (http://www.transifex.com/make-a-plea-gds/make-a-plea/language/en/)\n"
@@ -74,7 +74,7 @@ msgstr "Email address"
 msgid "If you'd like us to get back to you, tell us your email address below:"
 msgstr "If you'd like us to get back to you, tell us your email address below:"
 
-#: apps/feedback/stages.py:42 apps/plea/stages.py:998
+#: apps/feedback/stages.py:42 apps/plea/stages.py:1007
 msgid "Submission Error"
 msgstr "Submission Error"
 
@@ -181,14 +181,12 @@ msgstr "Yes"
 msgid "No (v6)"
 msgstr "No"
 
-#: make_a_plea/settings/base.py:51
-msgctxt "English in english"
-msgid "English"
-msgstr "English"
-
 #: apps/forms/forms.py:19 apps/plea/templates/partials/review_plea.html:98
 #: apps/plea/templates/partials/review_plea.html:101
-msgctxt "English in welsh"
+#: make_a_plea/settings/base.py:51
+#, fuzzy
+#| msgctxt "English in english"
+#| msgid "English"
 msgid "English"
 msgstr "English"
 
@@ -262,7 +260,7 @@ msgstr "Region"
 msgid "Match"
 msgstr "Match"
 
-#: apps/plea/email.py:151
+#: apps/plea/email.py:150
 #: apps/plea/templates/emails/user_plea_confirmation.html:8
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.html:8
 msgid "Online plea submission confirmation"
@@ -1170,19 +1168,19 @@ msgstr "Not guilty because?"
 msgid "Why do you believe you are not guilty?"
 msgstr "Why do you believe you are not guilty?"
 
-#: apps/plea/forms.py:1011 apps/plea/forms.py:1179
+#: apps/plea/forms.py:1011 apps/plea/forms.py:1190
 msgid "Do you need an interpreter in court?"
 msgstr "Do you need an interpreter in court?"
 
-#: apps/plea/forms.py:1021 apps/plea/forms.py:1103 apps/plea/forms.py:1189
+#: apps/plea/forms.py:1021 apps/plea/forms.py:1103 apps/plea/forms.py:1200
 msgid "If yes, tell us which language (include sign language):"
 msgstr "If yes, tell us which language (include sign language):"
 
-#: apps/plea/forms.py:1030 apps/plea/templates/plea.html:175
+#: apps/plea/forms.py:1030 apps/plea/templates/plea.html:167
 msgid "If there is a hearing, which language do you wish to speak?"
 msgstr "If there is a hearing, which language do you wish to speak?"
 
-#: apps/plea/forms.py:1039 apps/plea/templates/plea.html:176
+#: apps/plea/forms.py:1039 apps/plea/templates/plea.html:168
 msgid "Please state in which language you wish to receive any further documentation?"
 msgstr "Please state in which language you wish to receive any further documentation?"
 
@@ -1210,31 +1208,31 @@ msgstr "If yes, tell us the name, address and date of birth of any witnesses you
 msgid "Does your witness need an interpreter in court?"
 msgstr "Does your witness need an interpreter in court?"
 
-#: apps/plea/forms.py:1111 apps/plea/forms.py:1140
+#: apps/plea/forms.py:1119 apps/plea/forms.py:1149
 msgid "Guilty - I want the case to be dealt with in my absence"
 msgstr ""
 
-#: apps/plea/forms.py:1111 apps/plea/forms.py:1140
+#: apps/plea/forms.py:1119 apps/plea/forms.py:1149
 msgid "Guilty - I want to attend court in person"
 msgstr ""
 
-#: apps/plea/forms.py:1112
+#: apps/plea/forms.py:1120
 msgid "Not guilty - Pleading not guilty to this charge means we'll send details of a date for you to come to court for a trial."
 msgstr "Not guilty - Pleading not guilty to this charge means we'll send details of a date for you to come to court for a trial."
 
-#: apps/plea/forms.py:1141
+#: apps/plea/forms.py:1150
 msgid "Not guilty - Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date."
 msgstr "Not guilty - Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date."
 
-#: apps/plea/forms.py:1170
+#: apps/plea/forms.py:1181
 msgid "Do you want to come to court to plead guilty?"
 msgstr "Do you want to come to court to plead guilty?"
 
-#: apps/plea/forms.py:1222
+#: apps/plea/forms.py:1233
 msgid "Unique reference number (URN)"
 msgstr "Unique reference number (URN)"
 
-#: apps/plea/forms.py:1225
+#: apps/plea/forms.py:1236
 msgid "On page 1, usually at the top."
 msgstr "On page 1, usually at the top."
 
@@ -1250,23 +1248,31 @@ msgstr "To make your plea, you need to complete the paper form sent to you by th
 msgid "You must return the form within the time stated."
 msgstr "You must return the form within the time stated."
 
-#: apps/plea/stages.py:278
+#: apps/plea/stages.py:155
+msgid "Unfortunately you cannot use this service as your time limit for making a plea has now expired."
+msgstr "Unfortunately you cannot use this service as your time limit for making a plea has now expired."
+
+#: apps/plea/stages.py:157
+msgid "You will receive a notification of the outcome of the hearing in due course"
+msgstr "You will receive a notification of the outcome of the hearing in due course"
+
+#: apps/plea/stages.py:287
 msgid "Check the details you've entered"
 msgstr "Check the details you've entered"
 
-#: apps/plea/stages.py:279
+#: apps/plea/stages.py:288
 msgid "The information you've entered does not match our records."
 msgstr "The information you've entered does not match our records."
 
-#: apps/plea/stages.py:280
+#: apps/plea/stages.py:289
 msgid "Check the paper form sent by the police then enter the details exactly as shown on it."
 msgstr "Check the paper form sent by the police then enter the details exactly as shown on it."
 
-#: apps/plea/stages.py:983
+#: apps/plea/stages.py:992
 msgid "Your session has timed out"
 msgstr "Your session has timed out"
 
-#: apps/plea/stages.py:999
+#: apps/plea/stages.py:1008
 msgid "There seems to have been a problem submitting your plea. Please try again."
 msgstr "There seems to have been a problem submitting your plea. Please try again."
 
@@ -2190,27 +2196,27 @@ msgstr "Charge %(charge_number)s of %(total)s"
 msgid "Charge %(charge_number)s of %(total)s continued"
 msgstr "Charge %(charge_number)s of %(total)s continued"
 
-#: apps/plea/templates/plea.html:90 apps/plea/templates/plea.html:142
+#: apps/plea/templates/plea.html:96 apps/plea/templates/plea.html:132
 msgid "Does your company representative need an interpreter in court?"
 msgstr "Does your company representative need an interpreter in court?"
 
-#: apps/plea/templates/plea.html:134
+#: apps/plea/templates/plea.html:124
 msgid "Pleading not guilty to this charge means we'll send details of a date for a company representative to come to court for a trial."
 msgstr "Pleading not guilty to this charge means we'll send details of a date for a company representative to come to court for a trial."
 
-#: apps/plea/templates/plea.html:136
+#: apps/plea/templates/plea.html:126
 msgid "Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date."
 msgstr "Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date."
 
-#: apps/plea/templates/plea.html:139
+#: apps/plea/templates/plea.html:129
 msgid "Tell us why you believe the company is not guilty:"
 msgstr "Tell us why you believe the company is not guilty:"
 
-#: apps/plea/templates/plea.html:152
+#: apps/plea/templates/plea.html:142
 msgid "Evidence and witness information"
 msgstr "Evidence and witness information"
 
-#: apps/plea/templates/plea.html:174
+#: apps/plea/templates/plea.html:166
 #, fuzzy
 #| msgid "Language"
 msgid "Language Options"
@@ -2752,6 +2758,10 @@ msgstr "Questions about your pleas?"
 #: make_a_plea/templates/start.html:54
 msgid "Need help using this service?"
 msgstr "Need help using this service?"
+
+#~ msgctxt "English in welsh"
+#~ msgid "English"
+#~ msgstr "English"
 
 #~ msgid "Pleading guilty to this charge means you do not need to come to court to respond to this charge - we'll send you details of the court's decision and what to do next."
 #~ msgstr "Pleading guilty to this charge means you do not need to come to court to respond to this charge - we'll send you details of the court's decision and what to do next."
