@@ -147,6 +147,15 @@ class URNEntryStage(SJPChoiceBase):
                           "paper form sent to you by the police."),
                         _("You must return the form within the time stated.")))
             self.next_step = None
+        elif not case.has_valid_doh():
+            self.add_message(
+                messages.ERROR,
+                u"""<h1>{}</h1>
+                   <p>{}</p>""".format(
+                        _("Unfortunately you cannot use this service as "
+                          "your time limit for making a plea has now expired."),
+                        _("You will receive a notification of the outcome of the hearing in due course")))
+            self.next_step = None
         else:
             self.set_next_step("your_case_continued")
 

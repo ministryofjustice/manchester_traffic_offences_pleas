@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Make a Plea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-25 17:07+0000\n"
+"POT-Creation-Date: 2018-06-14 11:57+0100\n"
 "PO-Revision-Date: 2016-02-01 10:40+0000\n"
 "Last-Translator: Welsh Language Unit <welsh.language.unit.manager@hmcts.gsi.gov.uk>\n"
 "Language-Team: Welsh (http://www.transifex.com/make-a-plea-gds/make-a-plea/language/cy/)\n"
@@ -77,7 +77,7 @@ msgstr "Cyfeiriad e-bost"
 msgid "If you'd like us to get back to you, tell us your email address below:"
 msgstr "Os hoffech inni ddod yn ôl atoch, rhowch eich cyfeiriad e-bost isod:"
 
-#: apps/feedback/stages.py:42 apps/plea/stages.py:998
+#: apps/feedback/stages.py:42 apps/plea/stages.py:1007
 msgid "Submission Error"
 msgstr "Gwall wrth gyflwyno"
 
@@ -184,16 +184,14 @@ msgstr "Hoffwn"
 msgid "No (v6)"
 msgstr "Na hoffwn"
 
-#: make_a_plea/settings/base.py:51
-msgctxt "English in english"
-msgid "English"
-msgstr "English"
-
 #: apps/forms/forms.py:19 apps/plea/templates/partials/review_plea.html:98
 #: apps/plea/templates/partials/review_plea.html:101
-msgctxt "English in welsh"
+#: make_a_plea/settings/base.py:51
+#, fuzzy
+#| msgctxt "English in english"
+#| msgid "English"
 msgid "English"
-msgstr "Saesneg"
+msgstr "English"
 
 #: apps/forms/forms.py:20 apps/plea/templates/partials/review_plea.html:98
 #: apps/plea/templates/partials/review_plea.html:101
@@ -267,7 +265,7 @@ msgstr "Rhanbarth"
 msgid "Match"
 msgstr "Tebyg"
 
-#: apps/plea/email.py:151
+#: apps/plea/email.py:150
 #: apps/plea/templates/emails/user_plea_confirmation.html:8
 #: apps/plea/templates/emails/user_plea_confirmation_sjp.html:8
 msgid "Online plea submission confirmation"
@@ -1175,19 +1173,19 @@ msgstr "Dieuog oherwydd?"
 msgid "Why do you believe you are not guilty?"
 msgstr "Pam ydych chi'n credu eich bod yn ddieuog?"
 
-#: apps/plea/forms.py:1011 apps/plea/forms.py:1179
+#: apps/plea/forms.py:1011 apps/plea/forms.py:1190
 msgid "Do you need an interpreter in court?"
 msgstr "Oes arnoch angen cyfieithydd/dehonglydd yn y llys?"
 
-#: apps/plea/forms.py:1021 apps/plea/forms.py:1103 apps/plea/forms.py:1189
+#: apps/plea/forms.py:1021 apps/plea/forms.py:1103 apps/plea/forms.py:1200
 msgid "If yes, tell us which language (include sign language):"
 msgstr "Os oes, dywedwch wrthym pa iaith (gan gynnwys iaith arwyddion):"
 
-#: apps/plea/forms.py:1030 apps/plea/templates/plea.html:175
+#: apps/plea/forms.py:1030 apps/plea/templates/plea.html:167
 msgid "If there is a hearing, which language do you wish to speak?"
 msgstr "Nodwch ym mha iaith yr hoffech gael unrhyw ddogfennau pellach?"
 
-#: apps/plea/forms.py:1039 apps/plea/templates/plea.html:176
+#: apps/plea/forms.py:1039 apps/plea/templates/plea.html:168
 msgid "Please state in which language you wish to receive any further documentation?"
 msgstr "Pa iaith hoffech chi siarad os bydd yn rhaid I chi ddod I wrandawiad llys?"
 
@@ -1215,31 +1213,31 @@ msgstr "Os hoffech, dywedwch wrthym beth yw enw, cyfeiriad a dyddiad geni unrhyw
 msgid "Does your witness need an interpreter in court?"
 msgstr "A oes angen cyfieithydd/dehonglydd yn y llys ar gyfer eich tyst?"
 
-#: apps/plea/forms.py:1111 apps/plea/forms.py:1140
+#: apps/plea/forms.py:1119 apps/plea/forms.py:1149
 msgid "Guilty - I want the case to be dealt with in my absence"
 msgstr "Euog - Hoffwn i'r achos gael ei benderfynu yn fy absenoldeb"
 
-#: apps/plea/forms.py:1111 apps/plea/forms.py:1140
+#: apps/plea/forms.py:1119 apps/plea/forms.py:1149
 msgid "Guilty - I want to attend court in person"
 msgstr "Euog - Hoffwn fynychu'r llys yn bersonol"
 
-#: apps/plea/forms.py:1112
+#: apps/plea/forms.py:1120
 msgid "Not guilty - Pleading not guilty to this charge means we'll send details of a date for you to come to court for a trial."
 msgstr "Dieuog - Os byddwch yn pledio'n ddieuog i'r cyhuddiad hwn, byddwn yn anfon manylion dyddiad i chi ddod i'r llys ar gyfer treial."
 
-#: apps/plea/forms.py:1141
+#: apps/plea/forms.py:1150
 msgid "Not guilty - Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date."
 msgstr "Dieuog - Mae pledio'n ddieuog i'r cyhuddiad hwn yn golygu na fyddwch yn dod i'r llys ar y dyddiad gwrandawiad sydd yn eich pecyn gwysio - byddwn yn anfon manylion dyddiad gwrandawiad newydd. "
 
-#: apps/plea/forms.py:1170
+#: apps/plea/forms.py:1181
 msgid "Do you want to come to court to plead guilty?"
 msgstr "Hoffech chi ddod i'r llys i bledio'n euog? "
 
-#: apps/plea/forms.py:1222
+#: apps/plea/forms.py:1233
 msgid "Unique reference number (URN)"
 msgstr "Cyfeirnod unigryw (URN)"
 
-#: apps/plea/forms.py:1225
+#: apps/plea/forms.py:1236
 msgid "On page 1, usually at the top."
 msgstr "Ar dudalen 1, fel arfer ar y brig."
 
@@ -1255,23 +1253,31 @@ msgstr "I gofnodi eich ple, rhaid i chi lenwi'r ffurflen bapur a anfonodd yr hed
 msgid "You must return the form within the time stated."
 msgstr "Rhaid i chi anfon y ffurflen yn ôl o fewn yr amser penodedig."
 
-#: apps/plea/stages.py:278
+#: apps/plea/stages.py:155
+msgid "Unfortunately you cannot use this service as your time limit for making a plea has now expired."
+msgstr "Yn anffodus, ni allwch ddefnyddio’r gwasanaeth hwn oherwydd bod eich amser ar gyfer gwneud ple wedi dod i ben."
+
+#: apps/plea/stages.py:157
+msgid "You will receive a notification of the outcome of the hearing in due course"
+msgstr "Fe gewch wybod canlyniad y gwrandawiad yn y man’."
+
+#: apps/plea/stages.py:287
 msgid "Check the details you've entered"
 msgstr "Gwiriwch y manylion a roddwyd gennych"
 
-#: apps/plea/stages.py:279
+#: apps/plea/stages.py:288
 msgid "The information you've entered does not match our records."
 msgstr "Nid yw'r wybodaeth a roddwyd gennych yr un fath â'n cofnodion ni."
 
-#: apps/plea/stages.py:280
+#: apps/plea/stages.py:289
 msgid "Check the paper form sent by the police then enter the details exactly as shown on it."
 msgstr "Gwiriwch y ffurflen bapur a anfonodd yr heddlu atoch, ac yna rhowch y manylion yn union fel y dangosir arni."
 
-#: apps/plea/stages.py:983
+#: apps/plea/stages.py:992
 msgid "Your session has timed out"
 msgstr "Mae eich sesiwn wedi dod i ben"
 
-#: apps/plea/stages.py:999
+#: apps/plea/stages.py:1008
 msgid "There seems to have been a problem submitting your plea. Please try again."
 msgstr "Mae'n ymddangos bod problem wrth gyflwyno eich ple. Rhowch gynnig arall arni."
 
@@ -2221,27 +2227,27 @@ msgstr "Cyhuddiad %(charge_number)s o %(total)s"
 msgid "Charge %(charge_number)s of %(total)s continued"
 msgstr "Cyhuddiad %(charge_number)s o %(total)s - parhad"
 
-#: apps/plea/templates/plea.html:90 apps/plea/templates/plea.html:142
+#: apps/plea/templates/plea.html:96 apps/plea/templates/plea.html:132
 msgid "Does your company representative need an interpreter in court?"
 msgstr "Oes angen cyfieithydd/dehonglydd yn y llys ar gyfer cynrychiolydd eich cwmni?"
 
-#: apps/plea/templates/plea.html:134
+#: apps/plea/templates/plea.html:124
 msgid "Pleading not guilty to this charge means we'll send details of a date for a company representative to come to court for a trial."
 msgstr "Os byddwch yn pledio'n ddieuog i'r cyhuddiad hwn, byddwn yn anfon manylion dyddiad i gynrychiolydd o'r cwmni ddod i'r llys ar gyfer treial."
 
-#: apps/plea/templates/plea.html:136
+#: apps/plea/templates/plea.html:126
 msgid "Pleading not guilty to this charge means you do not come to court on the hearing date in your requisition pack - we'll send details of a new hearing date."
 msgstr "Mae pledio'n ddieuog i'r cyhuddiad hwn yn golygu na fyddwch yn dod i'r llys ar y dyddiad gwrandawiad sydd yn eich pecyn gwysio - byddwn yn anfon manylion dyddiad gwrandawiad newydd. "
 
-#: apps/plea/templates/plea.html:139
+#: apps/plea/templates/plea.html:129
 msgid "Tell us why you believe the company is not guilty:"
 msgstr "Dywedwch wrthym pam rydych yn credu bod y cwmni'n ddieuog:"
 
-#: apps/plea/templates/plea.html:152
+#: apps/plea/templates/plea.html:142
 msgid "Evidence and witness information"
 msgstr "Tystiolaeth a gwybodaeth am y tyst"
 
-#: apps/plea/templates/plea.html:174
+#: apps/plea/templates/plea.html:166
 msgid "Language Options"
 msgstr "Opsiynau iaith"
 
@@ -2798,6 +2804,10 @@ msgstr "Cwestiynau am eich pledion?"
 #: make_a_plea/templates/start.html:54
 msgid "Need help using this service?"
 msgstr "Angen help i ddefnyddio'r gwasanaeth hwn?"
+
+#~ msgctxt "English in welsh"
+#~ msgid "English"
+#~ msgstr "Saesneg"
 
 #~ msgid "English2"
 #~ msgstr "Saesneg"
