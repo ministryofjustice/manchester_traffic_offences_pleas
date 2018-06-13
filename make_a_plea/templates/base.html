@@ -152,7 +152,13 @@
         {% if notice_type %}ga('set', 'dimension2', '{{ notice_type.sjp|yesno:"Yes,No" }}');{% endif %}
         {% if case.plea_made_by %}ga('set', 'dimension3', '{{ case.plea_made_by }}');{% endif %}
 
-        {% block extra_analytics %}{% endblock extra_analytics %}
+        {% block extra_analytics %}
+            {% spaceless %}
+            {% if stage_load and google_analytics_id %}
+                ga('send', 'event', 'Stage load', '{{ stage_load.stage }}', '{{ stage_load.label }}');
+            {% endif %}
+        {% endspaceless %}
+        {% endblock extra_analytics %}
 
         ga('send', 'pageview');
         </script>

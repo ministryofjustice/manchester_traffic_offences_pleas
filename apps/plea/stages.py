@@ -117,6 +117,7 @@ class URNEntryStage(SJPChoiceBase):
     template = "urn_entry.html"
     form_class = URNEntryForm
     dependencies = []
+    analytics_name = "urn_stage"
 
     @staticmethod
     def _create_data_validation(urn, std_urn):
@@ -200,12 +201,14 @@ class URNEntryStage(SJPChoiceBase):
         return clean_data
 
 
+
 class AuthenticationStage(SJPChoiceBase):
     name = "your_case_continued"
     storage_key = "case"
     template = "authenticate.html"
     form_class = AuthForm
     dependencies = []
+    analytics_name = "auth_stage"
 
     def load_forms(self, data=None, initial=False):
 
@@ -300,6 +303,7 @@ class NoticeTypeStage(FormStage):
     template = "notice_type.html"
     form_class = NoticeTypeForm
     dependencies = []
+    analytics_name = "notice_stage"
 
     def render(self, request, request_context):
         try:
@@ -316,6 +320,7 @@ class CaseStage(FormStage):
     template = "case.html"
     form_class = CaseForm
     dependencies = ["notice_type"]
+    analytics_name = "case_stage"
 
     def __init__(self, *args, **kwargs):
         super(CaseStage, self).__init__(*args, **kwargs)
@@ -363,6 +368,8 @@ class CaseStage(FormStage):
 
 
 class DetailsStage(FormStage):
+    analytics_name = "details_stage"
+
     def save(self, form_data, next_step=None):
 
         contact_number= form_data.get("contact_number")
@@ -468,6 +475,7 @@ class PleaStage(IndexedStage):
     template = "plea.html"
     form_class = PleaForm
     dependencies = ["notice_type", "case", "your_details", "company_details"]
+    analytics_name = "plea_stage"
 
     def __init__(self, *args, **kwargs):
         super(PleaStage, self).__init__(*args, **kwargs)
@@ -610,6 +618,7 @@ class PleaStage(IndexedStage):
 
     def render(self, request, request_context):
         self.context["index"] = self.index
+
         return super(PleaStage, self).render(request, request_context)
 
 
@@ -618,9 +627,12 @@ class CompanyFinancesStage(FormStage):
     template = "company_finances.html"
     form_class = CompanyFinancesForm
     dependencies = ["notice_type", "case", "company_details", "plea"]
+    analytics_name = "company_finance_stage"
 
 
 class IncomeBaseStage(FormStage):
+    analytics_name = "income_stage"
+
     def add_income_source(self, label, period, amount):
         try:
             sources = self.all_data["your_income"]["sources"]
@@ -875,6 +887,7 @@ class HardshipStage(FormStage):
                     "your_benefits",
                     "your_pension_credit",
                     "your_income"]
+    analytics_name = "hardship_stage"
 
 
 class HouseholdExpensesStage(FormStage):
@@ -894,6 +907,7 @@ class HouseholdExpensesStage(FormStage):
                     "your_pension_credit",
                     "your_income",
                     "hardship"]
+    analytics_name = "household_expenses_stage"
 
     def save(self, form_data, next_step=None):
 
@@ -929,6 +943,7 @@ class OtherExpensesStage(FormStage):
                     "your_income",
                     "hardship",
                     "household_expenses"]
+    analytics_name = "other_expenses_stage"
 
     def save(self, form_data, next_step=None):
 
@@ -979,6 +994,7 @@ class ReviewStage(FormStage):
                     "household_expenses",
                     "other_expenses",
                     "company_finances"]
+    analytics_name = "review_stage"
 
     def save(self, form_data, next_step=None):
         clean_data = super(ReviewStage, self).save(form_data, next_step)
@@ -1033,6 +1049,7 @@ class CompleteStage(FormStage):
                     "other_expenses",
                     "company_finances",
                     "review"]
+    analytics_name = "complete_stage"
 
     def __init__(self, *args, **kwargs):
         super(CompleteStage, self).__init__(*args, **kwargs)
@@ -1045,7 +1062,6 @@ class CompleteStage(FormStage):
     def render(self, request, request_context):
 
         self.context["plea_type"] = get_plea_type(self.all_data)
-
         try:
             self.context["court"] = Court.objects.get_court_dx(self.all_data["case"]["urn"])
         except Court.DoesNotExist:

@@ -11,6 +11,8 @@ StageMessage = namedtuple("StageMessage", ["importance", "message", "tags"])
 
 
 class FormStage(object):
+    analytics_name = ""
+    
     def __init__(self, all_urls=None, all_data=None):
         self.all_urls = all_urls
         self.all_data = all_data or {}
@@ -121,6 +123,8 @@ class FormStage(object):
         if self.next_step:
             return HttpResponseRedirect(self.next_step)
         else:
+            if self.analytics_name:
+                self.context["stage_load"] = {"stage": self.analytics_name, "label": ""}
             context = self.context
             context.update({k: v for (k, v) in self.all_data.items()})
             context["form"] = self.form
