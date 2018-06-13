@@ -347,6 +347,13 @@ class Case(models.Model):
 
         return self.extra_data and ("PostCode" in self.extra_data or "DOB" in self.extra_data)
 
+    def has_valid_doh(self):
+        today = dt.date.today()
+        if self.date_of_hearing:
+            return self.date_of_hearing >= today
+        else:
+            return False
+
     def authenticate(self, num_charges, postcode, dob):
 
         postcode_match, dob_match = False, False

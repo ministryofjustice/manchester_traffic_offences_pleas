@@ -5,7 +5,7 @@ from django.test import TestCase
 
 from apps.plea.models import Case, Court
 from apps.plea.stages import URNEntryStage, AuthenticationStage, YourDetailsStage
-
+import datetime
 
 class BaseTestCase(TestCase):
     def setUp(self):
@@ -159,6 +159,29 @@ class URNStageWithURNValidation(BaseTestCase):
 
         self.assertEquals(len(stage.messages), 1)
         self.assertIn("You can't make a plea online", stage.messages[0].message)
+
+    def test_expired_doh_cannot_continue(self):
+        yesterday = datetime.date.today() - datetime.timedelta(days=1)
+        self.case.date_of_hearing = yesterday
+        self.case.extra_data["date_of_hearing"] = yesterday
+        self.case.save()
+        stage = URNEntryStage(self.urls, self.data)
+        stage.save({"urn": "06AA0000015"})
+
+        self.assertEquals(len(stage.messages), 1)
+        self.assertIn("Unfortunately you cannot use this service", stage.messages[0].message)
+
+    def future_doh_can_continue(self):
+        tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+        self.case.date_of_hearing = tomorrow
+        self.case.extra_data["date_of_hearing"] = tomorrow
+        self.case.save()
+        stage = URNEntryStage(self.urls, self.data)
+        stage.save({"urn": "06AA0000015"})
+
+        self.assertEquals(len(stage.messages), 0)
+        self.assertNotIn("Unfortunately you cannot use this service", stage.messages[0].message)
+
 
 class AuthStageWithURNValidationTestCase(BaseTestCase):
 
