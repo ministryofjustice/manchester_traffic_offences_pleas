@@ -1,3 +1,6 @@
+
+from apps.plea.models import CaseTracker, Case
+
 from collections import OrderedDict, namedtuple
 
 from django.core.urlresolvers import reverse
@@ -18,6 +21,7 @@ class FormStage(object):
         self.next_step = ""
         self.context = {}
         self.messages = []
+        self.stage_completion = None
 
         if not hasattr(self, "storage_key"):
             self.storage_key = self.name
@@ -179,6 +183,13 @@ class MultiStageForm(object):
     def load_from_storage(self, storage_dict):
         # copy data out so we're not manipulating an external object
         self.all_data.update({key: val for (key, val) in storage_dict.items()})
+        if not self.current_stage_class.name == "enter_urn":
+            try:
+                urn = self.all_data['case'].get('urn', None)
+                CaseTracker.objects.update_stage_for_urn(urn, self.current_stage_class.__name__)
+            except Exception:
+                # Catching the top level exception as don't want to risk the main process being affected
+                pass
 
     def save_to_storage(self):
         self.storage_dict.update({key: val for (key, val) in self.all_data.items()})
