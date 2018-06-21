@@ -1,3 +1,7 @@
+from datetime import datetime
+
+from apps.plea.models import StageCompletionTable, Case
+
 from collections import OrderedDict, namedtuple
 
 from django.core.urlresolvers import reverse
@@ -18,6 +22,7 @@ class FormStage(object):
         self.next_step = ""
         self.context = {}
         self.messages = []
+        self.stage_completion = None
 
         if not hasattr(self, "storage_key"):
             self.storage_key = self.name
@@ -179,6 +184,32 @@ class MultiStageForm(object):
     def load_from_storage(self, storage_dict):
         # copy data out so we're not manipulating an external object
         self.all_data.update({key: val for (key, val) in storage_dict.items()})
+        if not self.current_stage_class.__name__ == 'URNEntryStage':
+            try:
+                urn = self.all_data['case'].get('urn', None)
+                try:
+                    sc = StageCompletionTable.objects.get(case__urn=urn)
+                except StageCompletionTable.DoesNotExist:
+                    case = Case.objects.get(urn=urn)
+                    sc = StageCompletionTable(case=case)
+                    stage = self.current_stage_class.__name__
+                    sc.update_field(stage, True)
+                    sc.save()
+                except StageCompletionTable.MultipleObjectsReturned:
+                    scf = StageCompletionTable.objects.filter(case__urn=urn)
+                    sc = scf.first()
+                if sc:
+                    sc.last_update = datetime.now()
+                    try:
+                        stage = self.current_stage_class.__name__
+                        sc.update_field(stage, True)
+                        sc.save()
+                    except KeyError:
+                        pass
+            except Case.DoesNotExist:
+                pass
+            except KeyError:
+                pass
 
     def save_to_storage(self):
         self.storage_dict.update({key: val for (key, val) in self.all_data.items()})

@@ -1010,3 +1010,56 @@ class AuditEvent(models.Model):
         self.save()
 
         return self
+
+class StageCompletionTable(models.Model):
+    case = models.ForeignKey(Case, null=True)
+    last_update = models.DateTimeField(null=True)
+    authentication = models.BooleanField(default=False)
+    details = models.BooleanField(default=False)
+    plea = models.BooleanField(default=False)
+    company_finances = models.BooleanField(default=False)
+    income_base = models.BooleanField(default=False)
+    your_status = models.BooleanField(default=False)
+    your_self_employment = models.BooleanField(default=False)
+    your_out_of_work_benefits = models.BooleanField(default=False)
+    about_your_income = models.BooleanField(default=False)
+    your_benefits = models.BooleanField(default=False)
+    your_pension_credits = models.BooleanField(default=False)
+    your_income = models.BooleanField(default=False)
+    hardship = models.BooleanField(default=False)
+    household_expenses = models.BooleanField(default=False)
+    other_expenses = models.BooleanField(default=False)
+    review = models.BooleanField(default=False)
+    complete = models.BooleanField(default=False)
+
+    stage_class_mapping = {"AuthenticationStage": 'authentication',
+                            "YourDetailsStage": 'details',
+                            "PleaStage": 'plea',
+                            "YourStatusStage": 'your_status',
+                            "YourEmploymentStage": 'your_self_employment',
+                            "YourOutOfWorkBenefitsStage": 'your_out_of_work_benefits',
+                            "AboutYourIncomeStage": 'about_your_income',
+                            "YourBenefitsStage": 'your_benefits',
+                            "YourPensionCreditStage": 'your_pension_credits',
+                            "YourIncomeStage": 'your_income',
+                            "HardshipStage": 'hardship',
+                            "HouseholdExpensesStage": 'household_expenses' ,
+                            "OtherExpensesStage": 'other_expenses',
+                            "ReviewStage": 'review',
+                            "CompleteStage": 'complete'
+    }
+
+    def update_field(self, stage_name, value):
+        try:
+            field_name = self.stage_class_mapping[stage_name]
+            self.__setattr__(field_name, value)
+        except KeyError:
+            return KeyError
+
+    def get_field_name(self, stage_name):
+        return self.stage_class_mapping[stage_name]
+
+    def get_stage_value(self, stage_name):
+        return self.__getattribute__(self.stage_class_mapping[stage_name])
+
+

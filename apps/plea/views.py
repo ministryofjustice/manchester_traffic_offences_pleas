@@ -22,7 +22,7 @@ from make_a_plea.helpers import (
     parse_date_or_400,
     staff_or_404,
 )
-from .models import Case, Court
+from .models import Case, Court, StageCompletionTable
 from .forms import CourtFinderForm
 from .stages import (URNEntryStage,
                      AuthenticationStage,
@@ -118,6 +118,7 @@ class PleaOnlineViews(StorageView):
                 not request.session.get("plea_data"),
                 kwargs.get("stage", self.start) != self.start,
         ]):
+
             return HttpResponseRedirect("/")
 
 
@@ -138,6 +139,7 @@ class PleaOnlineViews(StorageView):
             return HttpResponseRedirect(reverse_lazy("plea_form_step", args=(stage,)))
 
         form = PleaOnlineForms(self.storage, stage, self.index)
+
         case_redirect = form.load(RequestContext(request))
         if case_redirect:
             return case_redirect
