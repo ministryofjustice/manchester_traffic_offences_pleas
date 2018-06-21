@@ -6,9 +6,9 @@ boto3==1.4.4
 
 Django==1.11.3
 psycopg2==2.7.1
-pycurl==7.43.0
 python-dateutil==2.6.0
 python-gnupg==0.4.0
+pycurl==7.43.0
 git+https://github.com/ministryofjustice/django-moj-irat
 raven==6.0.0
 kombu==4.1.0
