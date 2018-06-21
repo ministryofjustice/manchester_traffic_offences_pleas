@@ -9,7 +9,7 @@ from django.test.client import RequestFactory
 from django.template.context import RequestContext
 
 from ..fields import ERROR_MESSAGES
-from ..models import Case, Court
+from ..models import Case, Court, CaseTracker
 from ..views import PleaOnlineForms
 from ..standardisers import format_for_region
 
@@ -1553,6 +1553,9 @@ class TestMultiPleaForms(TestCaseBase):
         self.assertEqual(fake_session["plea"]["data"][1]["guilty"], "guilty_no_court")
         self.assertEqual(fake_session["plea"]["data"][1]["guilty_extra"], "lorem ipsum 2")
         self.assertEqual(fake_session["review"]["understand"], True)
+
+        case_tracker = CaseTracker.objects.get(case__urn='06AA0000000')
+        self.assertTrue(case_tracker.get_stage("CompleteStage"))
 
     def test_guilty_pleas_complete_page_content(self):
 
