@@ -991,7 +991,7 @@ class AuditEvent(models.Model):
         # If there's a form floating about, let's copy its fields
         elif "form" in kwargs:
             self.event_subtype = "form"
-            for k, v in kwarg.items():
+            for k, v in kwargs.items():
                 if k not in self.IGNORED_FORM_FIELDS:
                     self.event_data[k] = v
 
@@ -1010,3 +1010,68 @@ class AuditEvent(models.Model):
         self.save()
 
         return self
+
+
+class CaseTrackerManager(models.Manager):
+
+    def update_stage_for_urn(self, urn, stage):
+        try:
+            case = Case.objects.get(urn=urn)
+            ct, _ = self.all().get_or_create(case=case)
+            ct.update_stage(stage)
+            ct.save()
+        except (Case.DoesNotExist, Case.MultipleObjectsReturned):
+            pass
+
+
+class CaseTracker(models.Model):
+    case = models.ForeignKey(Case, null=True)
+    last_update = models.DateTimeField(null=True)
+    authentication = models.BooleanField(default=False)
+    details = models.BooleanField(default=False)
+    plea = models.BooleanField(default=False)
+    company_finances = models.BooleanField(default=False)
+    income_base = models.BooleanField(default=False)
+    your_status = models.BooleanField(default=False)
+    your_self_employment = models.BooleanField(default=False)
+    your_out_of_work_benefits = models.BooleanField(default=False)
+    about_your_income = models.BooleanField(default=False)
+    your_benefits = models.BooleanField(default=False)
+    your_pension_credits = models.BooleanField(default=False)
+    your_income = models.BooleanField(default=False)
+    hardship = models.BooleanField(default=False)
+    household_expenses = models.BooleanField(default=False)
+    other_expenses = models.BooleanField(default=False)
+    review = models.BooleanField(default=False)
+    complete = models.BooleanField(default=False)
+    objects = CaseTrackerManager()
+
+    stage_class_mapping = {"AuthenticationStage": 'authentication',
+                           "YourDetailsStage": 'details',
+                           "CompanyDetailsStage": 'details',
+                           "PleaStage": 'plea',
+                           "YourStatusStage": 'your_status',
+                           "YourEmploymentStage": 'your_self_employment',
+                           "YourSelfEmploymentStage": 'your_self_employment',
+                           "YourOutOfWorkBenefitsStage": 'your_out_of_work_benefits',
+                           "AboutYourIncomeStage": 'about_your_income',
+                           "YourBenefitsStage": 'your_benefits',
+                           "YourPensionCreditStage": 'your_pension_credits',
+                           "YourIncomeStage": 'your_income',
+                           "HardshipStage": 'hardship',
+                           "HouseholdExpensesStage": 'household_expenses',
+                           "OtherExpensesStage": 'other_expenses',
+                           "ReviewStage": 'review',
+                           "CompleteStage": 'complete'}
+
+    def get_field_name(self, stage_name):
+        return self.stage_class_mapping[stage_name] if stage_name in self.stage_class_mapping else None
+
+    def update_stage(self, stage_name):
+        if self.get_field_name(stage_name):
+            setattr(self, self.get_field_name(stage_name), True)
+            self.last_update = dt.datetime.now()
+            self.save()
+
+    def get_stage(self, stage_name):
+        return getattr(self, self.get_field_name(stage_name)) if self.get_field_name(stage_name) else None

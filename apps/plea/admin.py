@@ -21,6 +21,7 @@ from apps.plea.models import (
     INITIATION_TYPE_CHOICES,
     Offence,
     OUCode,
+    CaseTracker,
     UsageStats,
 )
 
@@ -223,7 +224,6 @@ class CaseAdmin(admin.ModelAdmin):
             'case_month_data': case_month_data,
             'cutoff_date': cutoff_date,
         })
-
 
 
 class OffenceFilterAdmin(admin.ModelAdmin):
@@ -487,3 +487,4 @@ admin.site.register(Case, CaseAdmin)
 admin.site.register(CaseOffenceFilter, OffenceFilterAdmin)
 admin.site.register(DataValidation, DataValidationAdmin)
 admin.site.register(AuditEvent, AuditEventAdmin)
+admin.site.register(CaseTracker)
