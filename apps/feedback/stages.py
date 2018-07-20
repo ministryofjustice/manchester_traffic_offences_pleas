@@ -35,7 +35,8 @@ class CommentsStage(FormStage):
 
             if complete:
                 UserRating.objects.record(self.all_data["service"]["service_satisfaction"],
-                                          self.all_data["service"].get("call_centre_satisfaction", ""))
+                                          self.all_data["service"].get("call_centre_satisfaction", ""),
+                                          email_data["comments"]["comments"])
                 self.set_next_step("complete")
             else:
                 self.add_message(messages.ERROR, '<h1>{}</h1><p>{}</p>'.format(
