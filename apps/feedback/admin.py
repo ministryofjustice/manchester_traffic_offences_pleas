@@ -53,7 +53,7 @@ performance_platform_export.short_description = "Export for performance platform
 
 
 class UserRatingAdmin(admin.ModelAdmin):
-    list_display = ("timestamp", "service_rating", "call_centre_rating")
+    list_display = ("timestamp", "service_rating", "call_centre_rating", "comments")
 
 
 class UserRatingAggregateAdmin(admin.ModelAdmin):
