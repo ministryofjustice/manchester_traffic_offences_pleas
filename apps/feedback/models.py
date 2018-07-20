@@ -8,7 +8,7 @@ from .forms import SATISFACTION_CHOICES, RATING_QUESTIONS
 
 class UserRatingManager(models.Manager):
 
-    def record(self, service_rating, call_centre_rating):
+    def record(self, service_rating, call_centre_rating, comments=None):
         """
         Record a user service and call centre satisfaction rating and update
         aggregates accordingly.
@@ -19,7 +19,7 @@ class UserRatingManager(models.Manager):
         except (ValueError, TypeError):
             cc_rating = None
 
-        obj = self.create(service_rating=int(service_rating), call_centre_rating=cc_rating)
+        obj = self.create(service_rating=int(service_rating), call_centre_rating=cc_rating, comments=comments)
 
         UserRatingAggregate.objects.update_weekly_aggregate(obj)
 
@@ -34,6 +34,8 @@ class UserRating(models.Model):
     service_rating = models.PositiveIntegerField(choices=SATISFACTION_CHOICES)
 
     call_centre_rating = models.PositiveIntegerField(choices=SATISFACTION_CHOICES, null=True)
+
+    comments = models.CharField(default=None, blank=True, null=True, max_length=4000)
 
     objects = UserRatingManager()
 
