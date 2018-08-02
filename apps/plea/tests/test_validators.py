@@ -148,7 +148,8 @@ class TestValidators(TestCase):
             "06AB12345/99",
             "06AB123456711",
             "32C90000000",
-            "41/A9/00000/00"
+            "41/A9/00000/00",
+            "41/AA/00000/00",
         ]
         bad_urns = [
             "123",
@@ -161,7 +162,6 @@ class TestValidators(TestCase):
             "06/BB/12345/9",
             "06/BB/1234567/9",
             "32CC0000000",
-            "41/AA/00000/00"
         ]
 
         for URN in good_urns:
