@@ -4,7 +4,7 @@ import datetime as dt
 
 from django.test import TestCase
 
-from ..models import AuditEvent, CourtEmailCount, UsageStats, Court, Case, OUCode
+from ..models import AuditEvent, CourtEmailCount, UsageStats, Court, Case, OUCode, StageCompletionTable
 
 
 class TestStatsBase(TestCase):
@@ -422,4 +422,26 @@ class TestCaseModel(TestCase):
         self.assertEqual(auditevent_1.event_type, "case_model")
         self.assertEqual(auditevent_1.event_subtype, "success")
 
+class TestStageCompletionTableModel(TestCase):
 
+    def setUp(self):
+        self.urn = "98AB1234561"
+        self.case = Case(urn=self.urn)
+        self.sc = StageCompletionTable(case=self.case)
+        self.case.save()
+        self.sc.save()
+
+    def tearDown(self):
+        Case.objects.filter(urn=self.urn).delete()
+        StageCompletionTable.objects.filter(case=self.case).delete()
+
+    def test_update_field(self):
+        self.sc.update_field("YourDetailsStage", True)
+        self.assertEquals(self.sc.details, True)
+
+    def test_get_field_name(self):
+        field = self.sc.get_field_name("YourDetailsStage")
+        self.assertEquals(field, u'details')
+
+    def test_get_stage_value(self):
+        self.assertFalse(self.sc.get_stage_value("YourDetailsStage"))

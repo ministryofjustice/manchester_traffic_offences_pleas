@@ -21,6 +21,7 @@ from apps.plea.models import (
     INITIATION_TYPE_CHOICES,
     Offence,
     OUCode,
+    StageCompletionTable,
     UsageStats,
 )
 
@@ -487,3 +488,4 @@ admin.site.register(Case, CaseAdmin)
 admin.site.register(CaseOffenceFilter, OffenceFilterAdmin)
 admin.site.register(DataValidation, DataValidationAdmin)
 admin.site.register(AuditEvent, AuditEventAdmin)
+admin.site.register(StageCompletionTable)
