@@ -480,6 +480,11 @@ class AuditEventAdmin(admin.ModelAdmin):
         return False
 
 
+class CaseTrackerAdmin(admin.ModelAdmin):
+    readonly_fields = (
+        'case',
+    )
+
 admin.site.register(UsageStats, UsageStatsAdmin)
 admin.site.register(Court, CourtAdmin)
 admin.site.register(CourtEmailCount, CourtEmailCountAdmin)
@@ -487,4 +492,4 @@ admin.site.register(Case, CaseAdmin)
 admin.site.register(CaseOffenceFilter, OffenceFilterAdmin)
 admin.site.register(DataValidation, DataValidationAdmin)
 admin.site.register(AuditEvent, AuditEventAdmin)
-admin.site.register(CaseTracker)
+admin.site.register(CaseTracker, CaseTrackerAdmin)
