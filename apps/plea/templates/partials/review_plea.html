@@ -38,9 +38,9 @@
         <dt>{% blocktrans %}Mitigation{% endblocktrans %}</dt>
         <dd>{{ pleaform.guilty_extra|linebreaksbr|default:"-" }}</dd>
 
-            {% if notice_type.sjp %}
         <dt>{% blocktrans %}Plead guilty in court{% endblocktrans %}</dt>
         <dd>{{ pleaform.come_to_court|yesno:_("Yes,No (v6)") }}</dd>
+        {% if notice_type.sjp %}
 
                 {% if pleaform.guilty == "guilty_court" and pleaform.show_interpreter_question %}
         <dt>{% blocktrans %}Interpreter required{% endblocktrans %}</dt>
