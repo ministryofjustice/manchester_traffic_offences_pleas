@@ -1,0 +1,18 @@
+<i>This is the stage report between {% if start_date %}{{start_date}}{% else %}-{% endif %} and {% if end_date %}{{ end_date }}{% else %}present{% endif %}</i>
+{% if case_count %}
+<p>Started pleas: {{ case_count }}</p>
+<p>Completed pleas:  {{ complete_count }} </p>
+<p>Completion rate: {{ completion_percentage }}%</p>
+{% endif %}
+<h2>{{ chart_name }}</h2>
+<div id="main_chart"></div>
+<!--Main Panel-->
+      <div class="panel panel-default">
+        <hr>
+        <h3>All stage completion charts:</h3>
+          {% for link in report_links %}
+        <div class="row">
+            {% include "partials/hidden_date_form.html" with report_url=link.0 link_text=link.1 link_message=link.2 %}
+        </div>
+          {% endfor %}
+      </div><!--close panel-->
