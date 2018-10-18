@@ -3,7 +3,7 @@ import datetime as dt
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from apps.plea.models import AuditEvent, Case
+from apps.plea.models import AuditEvent, Case, CaseTracker
 from apps.result.models import Result
 
 
