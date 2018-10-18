@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+
 {% block proposition_header %}
 <div class="header-proposition">
       <div class="content">
@@ -16,18 +17,18 @@
   <!-- Supplier report description -->
           <div class="col-6 col-sm-4 col-lg-4">
             <div class="panel-body">
-              <h2><span class="glyphicon glyphicon-briefcase text-info"></span> Plea report </h2>
-              <p>A breakdown of the different types of plea over an entered date range <p>
+              <h2><span class="glyphicon glyphicon-briefcase text-info"></span> {{ report_name }} </h2>
+              <p> {{ report_description }} <p>
             </div>
           </div>
-
+          {% block report_contents %}
 
           <div class="col-6 col-sm-8 col-lg-8">
             <div class="panel-body">
 
               <div class="panel panel-success">
                 <div class="panel-body">
-                  <form class="form-horizontal" role="form" method="GET" action="{% url 'reports:plea_report' %}">
+                  <form class="form-horizontal" role="form" method="GET" action="{{ report_url }}">
                     {% csrf_token %}
                     <div class="form-group">
                       <label class="col-sm-3 control-label"> Start date </label>
@@ -74,7 +75,7 @@
                   <div class="col-sm-7">
                     <button class="button">
                       Get report
-                    <span class="glyphicon glyphicon-forward"></span></a>
+                    <span class="glyphicon glyphicon-forward"></span></button>
                   </div>
                   </form>
                 </div>
@@ -86,6 +87,6 @@
           </div>
         </div><!-- close row -->
       </div><!--close panel-->
+      {% endblock %}
 {% endblock %}
-
 
