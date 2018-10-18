@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block proposition_header %}
+<div class="header-proposition">
+      <div class="content">
+        <a id="proposition-name">Make a Plea: Reports</a>
+      </div>
+    </div>
+{% endblock %}
+
+{% block page_content %}
+<h2>Available Reports:</h2>
+      <!--Main Panel-->
+      <div class="panel panel-default">
+        <div class="row">
+            <a href = "{% url 'reports:plea_report_entry' %}">Plea Report</a> - <i>A breakdown of all pleas in a given date range</i>
+        </div>
+        <div class="row">
+            <a href = "{% url 'reports:stage_report_entry' %}">Stage Completion Report</a> - <i>A statistical analysis of stage progression over all cases in a given date range</i>
+        </div><!-- close row -->
+      </div><!--close panel-->
+{% endblock %}
+
+
