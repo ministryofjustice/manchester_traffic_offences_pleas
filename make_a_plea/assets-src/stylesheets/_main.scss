@@ -319,6 +319,15 @@ Main styles
 	}
 }
 
+.feedback-form {
+  ul {
+    padding-left: 0px;
+  }
+  li {
+    list-style: none;
+  }
+}
+
 /*== Court Finder ===================================================*/
 .court-details {
 	h2.heading-medium {
