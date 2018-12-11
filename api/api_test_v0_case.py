@@ -243,7 +243,7 @@ class CaseAPICallTestCase(APITestCase):
 
     def test_case_invalid_urn_creates_auditevent(self):
         data = deepcopy(self.test_data)
-        data['urn'] = '00/ab/BROKEN/00'
+        data['urn'] = '0/ab/BROKEN/00'
         count_before = AuditEvent.objects.count()
         response = self._post_data(data)
         aes = AuditEvent.objects.filter(
