@@ -13,10 +13,13 @@
       <!--Main Panel-->
       <div class="panel panel-default">
         <div class="row">
-            <a href = "{% url 'reports:plea_report_entry' %}">Plea Report</a> - <i>A breakdown of all pleas in a given date range</i>
+            <a href="{% url 'reports:plea_report_entry' %}">Plea Report</a> - <i>A breakdown of all pleas in a given date range</i>
         </div>
         <div class="row">
-            <a href = "{% url 'reports:stage_report_entry' %}">Stage Completion Report</a> - <i>A statistical analysis of stage progression over all cases in a given date range</i>
+            <a href="{% url 'reports:stage_report_entry' %}">Stage Completion Report</a> - <i>A statistical analysis of stage progression over all cases in a given date range</i>
+        </div><!-- close row -->
+          <div class="row">
+            <a href="{% url 'reports:rating_report_entry' %}">User Rating Report</a> - <i>An analysis of service user ratings over a given date range</i>
         </div><!-- close row -->
       </div><!--close panel-->
 {% endblock %}

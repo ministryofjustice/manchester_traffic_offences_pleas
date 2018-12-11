@@ -2,18 +2,21 @@
 {% load staticfiles %}
 
 {% block report_contents %}
-        <hr/>
-        {% include report_partial %}
-                <p><a style="text-decoration: none; text-align: right; float: right;" href="{% url 'reports:index' %}">back to reports</a></p>
-
+<hr/>
+<a href="{{ day_url }}">Today</a>
+<a href="{{ week_url }}">Last Week</a>
+<a href="{{ month_url }}">Last Month</a>
+<a style="text-decoration: none; text-align: right; float: right;"
+   href="{% url 'reports:index' %}">back to reports</a>
+{% include report_partial %}
 {% endblock %}
 
 
 {% block extra_js %}
+
 <script type="text/javascript">
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
-google.charts.setOnLoadCallback(drawGuiltyChart);
 
 function drawChart() {
     var data = new google.visualization.DataTable();

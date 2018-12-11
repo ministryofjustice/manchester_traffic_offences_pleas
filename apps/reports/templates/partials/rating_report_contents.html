@@ -1,0 +1,17 @@
+<h3>Feedback data in date range ({% if start_date %}{{start_date}}{% endif %} - {% if end_date %}{{ end_date }}{% else %}present{% endif %})</h3>
+<p>Total amount of feedback: {{no_of_responses}} responses</p>
+
+<hr>
+<h3>Distribution of responses</h3>
+
+<div id="main_chart">
+</div>
+<br>
+<table>
+        <tr><th>Rating</th> <th>Number of responses</th><th>Percentage of responses (%)</th></tr>
+        <tr><td>Very dissatisfied</td> <td>{{no_of_each_response.0}}</td><td>{{percentage_of_each_response.0}}</td></tr>
+        <tr><td>Dissatisfied</td> <td>{{no_of_each_response.1}}</td><td>{{percentage_of_each_response.1}}</td></tr>
+        <tr><td>Neither satisfied nor dissatisfied</td> <td>{{no_of_each_response.2}}</td><td>{{percentage_of_each_response.2}}</td></tr>
+        <tr><td>Satisfied</td> <td>{{no_of_each_response.3}}</td><td>{{percentage_of_each_response.3}}</td></tr>
+        <tr><td>Very satisfied</td> <td>{{no_of_each_response.4}}</td><td>{{percentage_of_each_response.4}}</td></tr>
+    </table>
