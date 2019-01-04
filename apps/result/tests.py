@@ -245,18 +245,22 @@ class ResultTestCase(TestCase):
         self.adjourned_offence = ResultOffenceData.objects.create(
             result_offence=self.offence1,
             result_code="LEP",
-            result_short_title="ENDORSEMENT"
+            result_short_title="ENDORSEMENT",
+            result_wording="Driving record endorsed with 3 points.",
         )
 
         self.adjourned_offence = ResultOffenceData.objects.create(
             result_offence=self.offence2,
-            result_code="LEP",
-            result_short_title="ENDORSEMENT"
+            result_code="LEA",
+            result_short_title="ENDORSEMENT",
+            result_wording="Driving record endorsed with 6 points."
         )
 
         _, endorsements, _ = self.test_result1.get_offence_totals()
 
         self.assertEquals(len(endorsements), 2)
+        self.assertEquals(endorsements[0], "Driving record endorsed with 3 points.")
+        self.assertEquals(endorsements[1], "Driving record endorsed with 6 points.")
 
     def test_get_offence_totals_total(self):
 

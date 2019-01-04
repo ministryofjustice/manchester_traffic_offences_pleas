@@ -144,7 +144,7 @@ class Result(models.Model):
                     total += value
                     fines.append(r.result_wording_by_language)
 
-                elif r.result_code in ["LEP", ]:
+                elif r.result_code in ["LEP", "LEA"]:
                     endorsements.append(r.result_wording_by_language)
 
         return fines, endorsements, total
