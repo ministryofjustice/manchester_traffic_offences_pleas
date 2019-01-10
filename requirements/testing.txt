@@ -8,6 +8,6 @@ mock==1.0.1
 redgreenunittest==0.1.1
 
 # Fixture loading
-PyYAML==3.12
+PyYAML==4.2b1
 
 behaving==1.5.6
