@@ -4,7 +4,7 @@
 
 boto3==1.4.4
 
-Django==1.11.16
+Django==1.11.18
 psycopg2==2.7.1
 python-dateutil==2.6.0
 python-gnupg==0.4.0
