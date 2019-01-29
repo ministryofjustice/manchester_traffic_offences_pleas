@@ -1,3 +1,4 @@
+{% load admin_urls %}
 <h3>Feedback data in date range ({% if start_date %}{{start_date}}{% endif %} - {% if end_date %}{{ end_date }}{% else %}present{% endif %})</h3>
 <p>Total amount of feedback: {{no_of_responses}} responses</p>
 
@@ -9,9 +10,9 @@
 <br>
 <table>
         <tr><th>Rating</th> <th>Number of responses</th><th>Percentage of responses (%)</th></tr>
-        <tr><td>Very dissatisfied</td> <td>{{no_of_each_response.0}}</td><td>{{percentage_of_each_response.0}}</td></tr>
-        <tr><td>Dissatisfied</td> <td>{{no_of_each_response.1}}</td><td>{{percentage_of_each_response.1}}</td></tr>
-        <tr><td>Neither satisfied nor dissatisfied</td> <td>{{no_of_each_response.2}}</td><td>{{percentage_of_each_response.2}}</td></tr>
-        <tr><td>Satisfied</td> <td>{{no_of_each_response.3}}</td><td>{{percentage_of_each_response.3}}</td></tr>
-        <tr><td>Very satisfied</td> <td>{{no_of_each_response.4}}</td><td>{{percentage_of_each_response.4}}</td></tr>
+        <tr><td><a href="{% url 'admin:feedback_userrating_changelist' %}?service_rating__exact=1">Very dissatisfied</a></td> <td>{{no_of_each_response.0}}</td><td>{{percentage_of_each_response.0}}</td></tr>
+        <tr><td><a href="{% url 'admin:feedback_userrating_changelist' %}?service_rating__exact=2">Dissatisfied</a></td> <td>{{no_of_each_response.1}}</td><td>{{percentage_of_each_response.1}}</td></tr>
+        <tr><td><a href="{% url 'admin:feedback_userrating_changelist' %}?service_rating__exact=3">Neither satisfied nor dissatisfied</a></td> <td>{{no_of_each_response.2}}</td><td>{{percentage_of_each_response.2}}</td></tr>
+        <tr><td><a href="{% url 'admin:feedback_userrating_changelist' %}?service_rating__exact=4">Satisfied</a></td> <td>{{no_of_each_response.3}}</td><td>{{percentage_of_each_response.3}}</td></tr>
+        <tr><td><a href="{% url 'admin:feedback_userrating_changelist' %}?service_rating__exact=5">Very satisfied</a></td> <td>{{no_of_each_response.4}}</td><td>{{percentage_of_each_response.4}}</td></tr>
     </table>
