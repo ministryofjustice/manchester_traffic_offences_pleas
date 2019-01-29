@@ -144,11 +144,11 @@ class PleaReportView(PleaMixin, BaseReportView):
             if start_date > change_date:
                 early_start_date = False
         if self.end_date:
-            qs = qs.filter(start_date__lt=self.end_date)
+            qs = qs.filter(start_date__lte=self.end_date)
             end_date = self.end_date
             if end_date < change_date:
                 late_end_date = False
-        pre_qs = qs.filter(start_date__lt=change_date)
+        pre_qs = qs.filter(start_date__lte=change_date)
         post_qs = qs.filter(start_date__gte=change_date)
         pre_totals = pre_qs.aggregate(Sum('online_submissions'),
                               Sum('online_guilty_pleas'),
