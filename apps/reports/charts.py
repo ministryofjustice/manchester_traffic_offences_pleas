@@ -21,7 +21,7 @@ class ChartMaker():
         if start_date:
             self.all_cases = self.all_cases.filter(last_update__gte=start_date)
         if end_date:
-            self.all_cases = self.all_cases.filter(last_update__lt=end_date)
+            self.all_cases = self.all_cases.filter(last_update__lte=end_date)
         self.calculate_counts()
         self.prepare_chart()
 
