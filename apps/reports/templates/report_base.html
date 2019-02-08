@@ -1,13 +1,17 @@
 {% extends "reports.html" %}
 {% load staticfiles %}
 
+{% block report_breadcrumb_links %}
+{{ block.super }}
+<li><a href="{{ report_url }}">{{ report_type }} Report</a></li>
+{% endblock %}
+
 {% block report_contents %}
 <hr/>
 <a href="{{ day_url }}">Today</a>
 <a href="{{ week_url }}">Last Week</a>
 <a href="{{ month_url }}">Last Month</a>
-<a style="text-decoration: none; text-align: right; float: right;"
-   href="{% url 'reports:index' %}">back to reports</a>
+
 {% include report_partial %}
 {% endblock %}
 
@@ -22,19 +26,26 @@ function drawChart() {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Stage');
     data.addColumn('number', 'Number');
-    data.addRows({{bar_chart|safe}});
+    data.addRows({{bar_chart|safe|title}});
 
     var options = {
         width: 880,
         bars: 'vertical',
         legend: { position: 'none'},
         colors: ['#265b86','#337ab7'],
-        chartArea:{left:75,top:20,width:'90%',height:'85%'}
-
+        chartArea:{left:75,top:20,width:'90%',height:'60%'},
+        {% if display_axes %}
+        hAxis : { textPosition : 'in', slantedText: true, viewWindowMode: 'pretty'}
+        {% endif %}
     };
 
     var chart = new google.visualization.ColumnChart(document.getElementById('main_chart'));
     chart.draw(data, options);
+    var y, labels =  document.querySelectorAll('[text-anchor="middle"]');
+    for (var i=0;i<labels.length; i++) {
+       y = parseInt(labels[i].getAttribute('y'));
+       labels[i].setAttribute('y', y+50);
+    }
 }
 </script>
 {% endblock extra_js %}
