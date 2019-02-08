@@ -17,7 +17,7 @@ def pdir(obj):
     """
     Puts dir of an object on stdout
     """
-    print dir(obj)
+    print(dir(obj))
     return obj
 
 
@@ -35,5 +35,5 @@ def echo(obj):
     """
     Prints the value to the console.
     """
-    print obj
+    print(obj)
     return obj

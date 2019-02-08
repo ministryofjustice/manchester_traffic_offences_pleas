@@ -5,7 +5,7 @@ from celery import Celery
 
 from django.conf import settings
 
-if not os.environ.has_key("DJANGO_SETTINGS_MODULE"):
+if not "DJANGO_SETTINGS_MODULE" in os.environ:
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'make_a_plea.settings.local')
 
 app = Celery('apps.plea')

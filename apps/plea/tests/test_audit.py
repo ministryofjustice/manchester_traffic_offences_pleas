@@ -86,8 +86,12 @@ class CaseCreationTests(TestCase):
         elif len(files) > 1:
             self.fail('More than one data file found for URN')
 
-        file = open(files[0], "r")
-        decrypt = gpg.decrypt_file(file)
+        # file = open(files[0], "r")
+        with open(files[0], 'rb') as file:
+            b_data = file.read()
+        str_data = b_data.decode('utf8')
+        decrypt = gpg.decrypt(str_data)
+        # decrypt = gpg.decrypt_file(file)
 
         self.assertEquals(decrypt.status, "decryption ok")
 
@@ -98,7 +102,7 @@ class CaseCreationTests(TestCase):
     @override_settings(STORE_USER_DATA=True)
     @patch("apps.plea.attachment.TemplateAttachmentEmail.send")
     def test_email_failure_audit(self, send):
-        send.side_effect = socket.error("Email failed to send, socket error")
+        send.side_effect = OSError("Email failed to send, socket error")
 
         clear_user_data()
 
@@ -106,13 +110,13 @@ class CaseCreationTests(TestCase):
             send_plea_email(self.context_data)
         except Retry:
             pass
-        except socket.error:
+        except OSError:
             pass
 
         case = Case.objects.all().order_by('-id')[0]
         action = case.get_actions("Court email network error")
         self.assertTrue(len(action) > 0)
-        self.assertEqual(action[0].status_info, u"<class 'socket.error'>: Email failed to send, socket error")
+        self.assertEqual(action[0].status_info, u"<class 'OSError'>: Email failed to send, socket error")
 
         count_obj = CourtEmailCount.objects.all().order_by('-id')[0]
         self.assertEqual(case.sent, count_obj.sent)
@@ -132,7 +136,7 @@ class CaseCreationTests(TestCase):
     @override_settings(STORE_USER_DATA=True)
     @patch("apps.plea.tasks.EmailMultiAlternatives.send")
     def test_user_email_failure(self, send):
-        send.side_effect = iter([socket.error("Email failed to send, socket error"), True])
+        send.side_effect = iter([OSError("Email failed to send, socket error"), True])
 
         case = Case.objects.create(
             urn="00/AA/00000/00")
@@ -142,7 +146,7 @@ class CaseCreationTests(TestCase):
                                   "User email test", "<strong>Test email body</strong>",
                                   "Test email body")
 
-        except socket.error:
+        except OSError:
             pass
         except Retry:
             pass
@@ -162,7 +166,7 @@ class CaseCreationTests(TestCase):
     @override_settings(STORE_USER_DATA=True)
     @patch("apps.plea.tasks.EmailMultiAlternatives.send")
     def test_user_email_not_requested(self, send):
-        send.side_effect = iter([socket.error("Email failed to send, socket error"), True])
+        send.side_effect = iter([OSError("Email failed to send, socket error"), True])
 
         case = Case.objects.create(urn="00AA0000000")
 
@@ -171,7 +175,7 @@ class CaseCreationTests(TestCase):
 
         try:
             send_plea_email(self.context_data)
-        except socket.error:
+        except OSError:
             pass
         except Retry:
             pass

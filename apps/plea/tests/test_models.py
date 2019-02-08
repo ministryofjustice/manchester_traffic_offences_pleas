@@ -248,7 +248,7 @@ class UsageStatsTestCase(TestStatsBase):
     def setUp(self):
         super(UsageStatsTestCase, self).setUp()
         # wednesday
-        self.to_date = dt.date(2015, 01, 21)
+        self.to_date = dt.date(2015, 1, 21)
 
     def test_calculate_weekly_stats(self):
 
@@ -260,10 +260,10 @@ class UsageStatsTestCase(TestStatsBase):
 
         wk_, wk1, wk2 = UsageStats.objects.all().order_by('start_date')
 
-        self.assertEquals(wk1.start_date, dt.date(2015, 01, 05))
+        self.assertEquals(wk1.start_date, dt.date(2015, 1, 5))
         self.assertEquals(wk1.online_submissions, 4)
 
-        self.assertEquals(wk2.start_date, dt.date(2015, 01, 12))
+        self.assertEquals(wk2.start_date, dt.date(2015, 1, 12))
         self.assertEquals(wk2.online_submissions, 4)
 
 

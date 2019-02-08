@@ -3,7 +3,7 @@ dist: trusty
 addons:
   chrome: stable
 python:
-  - "2.7"
+  - "3.6"
 notifications:
   email: false
 services:

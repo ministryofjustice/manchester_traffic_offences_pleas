@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.views import View
 from django.urls import reverse, reverse_lazy
 from django.core.urlresolvers import resolve
-from urllib import quote, urlencode
+from urllib.parse import quote, urlencode
 from ..plea.models import UsageStats, CaseTracker
 from ..feedback.models import UserRating
 from .charts import RequiredStagesChart, FinancialSituationChart,\

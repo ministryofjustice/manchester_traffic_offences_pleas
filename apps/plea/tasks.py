@@ -23,9 +23,9 @@ logger = logging.getLogger(__name__)
 
 def get_email_subject(email_data):
     if email_data["notice_type"]["sjp"] is True:
-        subject = u"ONLINE PLEA: {case[formatted_urn]} <SJP> {email_name}"
+        subject = "ONLINE PLEA: {case[formatted_urn]} <SJP> {email_name}"
     else:
-        subject = u"ONLINE PLEA: {case[formatted_urn]} DOH: {email_date_of_hearing} {email_name}"
+        subject = "ONLINE PLEA: {case[formatted_urn]} DOH: {email_date_of_hearing} {email_name}"
 
     email_data["case"]["formatted_urn"] = format_for_region(email_data["case"]["urn"])
     return subject.format(**email_data)
