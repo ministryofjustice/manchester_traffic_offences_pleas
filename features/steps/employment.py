@@ -36,7 +36,7 @@ def step_impl(context, amount):
         Then the browser's URL should be "plea/your_income/"
         And I should see "Total weekly income"
         And I should see "%s"
-    ''' % amount)
+    ''' % str(amount))
 
 
 @then(u'I should see be asked to review my plea')

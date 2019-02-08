@@ -9,7 +9,7 @@ from django.contrib.postgres.fields import HStoreField
 from django.core.exceptions import ValidationError
 
 from .exceptions import *
-from standardisers import (
+from .standardisers import (
     standardise_name, StandardiserNoOutputException, standardise_urn,
     standardise_postcode
 )
@@ -93,7 +93,7 @@ class CourtEmailCountManager(models.Manager):
         """
 
         if not start_date:
-            start_date = dt.date(2012, 01, 01)
+            start_date = dt.date(2012, 1, 1)
 
         results = CourtEmailCount.objects\
             .filter(sent=True,
@@ -389,7 +389,7 @@ class Case(models.Model):
 
         return None
 
-    def __unicode__(self):
+    def __str__(self):
         return "{} / {}".format(
             self.urn,
             self.case_number,
@@ -458,7 +458,7 @@ class UsageStatsManager(models.Manager):
             last_entry = self.latest('start_date')
         except UsageStats.DoesNotExist:
             # arbitrary Monday start date that is before MAP went live
-            start_date = dt.date(2014, 05, 5)
+            start_date = dt.date(2014, 5, 5)
         else:
             start_date = last_entry.start_date + dt.timedelta(7)
 
@@ -695,7 +695,7 @@ class Court(models.Model):
         max_length=255, null=True, blank=True,
         help_text="")
 
-    def __unicode__(self):
+    def __str__(self):
         return "{} / {} / {}".format(self.court_code,
                                      self.region_code,
                                      self.court_name)

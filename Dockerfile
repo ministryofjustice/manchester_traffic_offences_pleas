@@ -1,4 +1,4 @@
-FROM python:2.7
+FROM python:3.6
 
 ENV APP_HOME=/makeaplea/
 ENV DJANGO_SETTINGS_MODULE=make_a_plea.settings.docker

@@ -35,12 +35,13 @@ class FormStage(object):
     def get_next(self, next_step):
         if next_step:
             return next_step
+        url_keys = list(self.all_urls.keys())
+        current = url_keys.index(self.name)
+        url_values = list(self.all_urls.values())
+        if current <= len(url_keys):
+            return url_values[current+1]
 
-        current = self.all_urls.keys().index(self.name)
-        if current <= len(self.all_urls.keys()):
-            return self.all_urls.values()[current+1]
-
-        return self.all_urls.values()[-1]
+        return url_values[-1]
 
     def set_next_step(self, next_step, skip=None):
         """

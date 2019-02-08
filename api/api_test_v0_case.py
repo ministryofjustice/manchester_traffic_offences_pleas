@@ -174,7 +174,7 @@ class CaseAPICallTestCase(APITestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            json.loads(response.content)["non_field_errors"][0],
+            json.loads(response.content.decode())["non_field_errors"][0],
             "case has no offences")
         self.assertEquals(Case.objects.count(), 0)
 
@@ -185,7 +185,7 @@ class CaseAPICallTestCase(APITestCase):
 
         self.assertEqual(
             response.data["non_field_errors"][0],
-            ("Case 00AA0000000 contains offence codes [[u'DF09', u'SZ09']] "
+            ("Case 00AA0000000 contains offence codes [['DF09', 'SZ09']] "
              "not present in the whitelist"))
         self.assertEqual(response.status_code, 400)
 
@@ -195,8 +195,8 @@ class CaseAPICallTestCase(APITestCase):
         response = self._post_data(data)
 
         self.assertEqual(
-            json.loads(response.content)["non_field_errors"][0],
-            ("Case 00AA0000000 contains offence codes [[u'RT01', u'DF09']] not "
+            json.loads(response.content.decode())["non_field_errors"][0],
+            ("Case 00AA0000000 contains offence codes [['RT01', 'DF09']] not "
              "present in the whitelist"))
         self.assertEqual(response.status_code, 400)
 
@@ -208,8 +208,8 @@ class CaseAPICallTestCase(APITestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            json.loads(response.content)["non_field_errors"][0],
-            ("Case 00AA0000000 contains offence codes [[u'DF09', u'DF09']] "
+            json.loads(response.content.decode())["non_field_errors"][0],
+            ("Case 00AA0000000 contains offence codes [['DF09', 'DF09']] "
              "not present in the whitelist"))
 
     def test_submission_with_invalid_initiation_type_fails(self):
@@ -221,7 +221,7 @@ class CaseAPICallTestCase(APITestCase):
     def test_valid_submissions_returns_dict_and_correct_urn(self):
         data = deepcopy(self.test_data)
         response = self._post_data(data)
-        response_json = json.loads(response.content)
+        response_json = json.loads(response.content.decode())
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(type(response_json), dict)

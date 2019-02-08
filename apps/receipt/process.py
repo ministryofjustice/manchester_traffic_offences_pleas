@@ -169,7 +169,7 @@ def _process_receipts(log_entry):
                     extract_data_from_email(email.subject, email.body)
 
             except InvalidFormatError as ex:
-                status_text.append(unicode(ex))
+                status_text.append(str(ex))
 
                 log_entry.total_errors += 1
 
@@ -216,7 +216,7 @@ def _process_receipts(log_entry):
 
                     old_urn, case_obj.urn = case_obj.urn, urn
 
-                    case_obj.add_action("receipt_success", "\URN CHANGED! Old Urn: {}".format(old_urn))
+                    case_obj.add_action("receipt_success", "\\URN CHANGED! Old Urn: {}".format(old_urn))
 
                     status_text.append('Passed [URN CHANGED! old urn: {}] {}'.format(urn, old_urn))
                 else:
@@ -282,7 +282,7 @@ def process_receipt(subject, body):
 
             old_urn, case_obj.urn = case_obj.urn, standardise_urn(urn)
 
-            case_obj.add_action("receipt_success", "\URN CHANGED! Old Urn: {}".format(old_urn))
+            case_obj.add_action("receipt_success", "\\URN CHANGED! Old Urn: {}".format(old_urn))
 
             status_text = 'Passed [URN CHANGED! old urn: {}] {}'.format(urn, old_urn)
         else:

@@ -109,8 +109,8 @@ class FeedbackFormTestCase(TestCase):
         form.load(self.request_context)
 
         response = form.render(self.get_request_mock())
-        self.assertIn('id="id_comments"', response.content)
-        self.assertIn('id="id_email"', response.content)
+        self.assertContains(response, 'id="id_comments"')
+        self.assertContains(response, 'id="id_email"')
 
     def test_email_is_sent(self):
         form = FeedbackForms(self.complete_session_data, "comments")
