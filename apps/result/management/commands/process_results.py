@@ -1,5 +1,5 @@
 # coding=utf-8
-import cStringIO as StringIO
+from io import StringIO
 import datetime as dt
 import os
 
@@ -25,7 +25,7 @@ class Command(BaseCommand):
         super(Command, self).__init__(*args, **kwargs)
 
         # we want to capture the output of the handle command
-        self._log_output = StringIO.StringIO()
+        self._log_output = StringIO()
 
     def log(self, message):
         self.stdout.write(message)

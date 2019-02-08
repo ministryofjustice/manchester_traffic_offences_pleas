@@ -45,28 +45,28 @@ def yield_waffle(chars=7, words=1, lines=1):
 
 class DateAwareSerializerTests(TestCase):
     def test_serializer_dumps_plain(self):
-        test_str = """{"key2": 2, "key1": "value1"}"""
+        test_str = b"""{"key1": "value1", "key2": 2}"""
         test_dict = {"key1": "value1",
                      "key2": 2}
 
         ds = DateAwareSerializer().dumps(test_dict)
-        self.assertEqual(ds, test_str)
+        self.assertEqual(ds.decode(), test_str.decode())
 
     def test_serializer_loads_plain(self):
-        test_str = """{"key2": 2, "key1": "value1"}"""
+        test_str = b"""{"key1": "value1", "key2": 2}"""
         test_dict = {"key1": "value1",
                      "key2": 2}
 
         ds = DateAwareSerializer().loads(test_str)
-        self.assertEqual(ds, test_dict)
+        self.assertEqual(ds.items(), test_dict.items())
 
     def test_serializer_dumps_datetime(self):
-        test_str = """{"key2": "2014-06-03T00:00:00", "key1": "value1"}"""
+        test_str = b"""{"key1": "value1", "key2": "2014-06-03T00:00:00"}"""
         test_dict = {"key1": "value1",
                      "key2": datetime(2014, 6, 3, 0, 0)}
 
         ds = DateAwareSerializer().dumps(test_dict)
-        self.assertEqual(ds, test_str)
+        self.assertEqual(ds.decode(), test_str.decode())
 
 
 class TestStartRedirect(TestCase):
@@ -184,4 +184,4 @@ class TestAdminPanel(TestCase):
         for page in admin_pages:
             resp = client.get(page)
             self.assertEqual(resp.status_code, 200)
-            assert "<!DOCTYPE html" in resp.content
+            self.assertContains(resp, "<!DOCTYPE html")

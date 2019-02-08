@@ -2,8 +2,7 @@ from __future__ import unicode_literals
 
 from moj_irat.views import PingJsonView, HealthcheckView
 
-import views
-
+from . import views
 from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static

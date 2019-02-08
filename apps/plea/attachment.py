@@ -35,7 +35,6 @@ class TemplateAttachmentEmail(object):
 
         self.attachment_content = render_to_string(self.attachment_template,
                                                    self.attachment_data)
-
         if connection:
             self.email = EmailMessage(subject, body, self.from_address,
                                       to_address, connection=connection)

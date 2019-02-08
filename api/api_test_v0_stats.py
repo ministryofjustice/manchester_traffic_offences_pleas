@@ -54,10 +54,10 @@ class TestStatsAPI(APITestCase):
             format="json")
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn("submissions", response.data)
-        self.assertIn("pleas", response.data)
-        self.assertIn("guilty", response.data)
-        self.assertIn("not_guilty", response.data)
+        self.assertContains(response, "submissions")
+        self.assertContains(response, "pleas")
+        self.assertContains(response, "guilty")
+        self.assertContains(response, "not_guilty")
 
     def test_stats_valid_start_date(self):
 
@@ -67,10 +67,10 @@ class TestStatsAPI(APITestCase):
             format="json")
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn("submissions", response.data)
-        self.assertIn("pleas", response.data)
-        self.assertIn("guilty", response.data)
-        self.assertIn("not_guilty", response.data)
+        self.assertContains(response, "submissions")
+        self.assertContains(response, "pleas")
+        self.assertContains(response, "guilty")
+        self.assertContains(response, "not_guilty")
 
     def test_stats_incorrect_start_date(self):
 
@@ -108,10 +108,10 @@ class TestStatsAPI(APITestCase):
             format="json")
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn("submissions", response.data)
-        self.assertIn("pleas", response.data)
-        self.assertIn("guilty", response.data)
-        self.assertIn("not_guilty", response.data)
+        self.assertContains(response, "submissions")
+        self.assertContains(response, "pleas")
+        self.assertContains(response, "guilty")
+        self.assertContains(response, "not_guilty")
 
     def test_stats_incorrect_end_date(self):
 
@@ -147,11 +147,11 @@ class TestStatsAPI(APITestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
-        self.assertIn("hearing_day", response.data[0])
-        self.assertIn("submissions", response.data[0])
-        self.assertIn("pleas", response.data[0])
-        self.assertIn("guilty", response.data[0])
-        self.assertIn("not_guilty", response.data[0])
+        self.assertContains(response, "hearing_day")
+        self.assertContains(response, "submissions")
+        self.assertContains(response, "pleas")
+        self.assertContains(response, "guilty")
+        self.assertContains(response, "not_guilty")
 
     def test_stats_all_by_hearing(self):
 
@@ -159,11 +159,11 @@ class TestStatsAPI(APITestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
-        self.assertIn("hearing_day", response.data[0])
-        self.assertIn("submissions", response.data[0])
-        self.assertIn("pleas", response.data[0])
-        self.assertIn("guilty", response.data[0])
-        self.assertIn("not_guilty", response.data[0])
+        self.assertContains(response, "hearing_day")
+        self.assertContains(response, "submissions")
+        self.assertContains(response, "pleas")
+        self.assertContains(response, "guilty")
+        self.assertContains(response, "not_guilty")
 
     def test_stats_by_week(self):
         CourtEmailCount.objects.create(court=self.court,
@@ -178,12 +178,12 @@ class TestStatsAPI(APITestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
-        self.assertIn("start_date", response.data[0])
-        self.assertIn("postal_requisitions", response.data[0])
-        self.assertIn("postal_responses", response.data[0])
-        self.assertIn("online_submissions", response.data[0])
-        self.assertIn("online_guilty_pleas", response.data[0])
-        self.assertIn("online_not_guilty_pleas", response.data[0])
+        self.assertContains(response, "start_date")
+        self.assertContains(response, "postal_requisitions")
+        self.assertContains(response, "postal_responses")
+        self.assertContains(response, "online_submissions")
+        self.assertContains(response, "online_guilty_pleas")
+        self.assertContains(response, "online_not_guilty_pleas")
 
     def test_stats_by_court(self):
 
@@ -191,12 +191,12 @@ class TestStatsAPI(APITestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
-        self.assertIn("region_code", response.data[0])
-        self.assertIn("court_name", response.data[0])
-        self.assertIn("submissions", response.data[0])
-        self.assertIn("pleas", response.data[0])
-        self.assertIn("guilty", response.data[0])
-        self.assertIn("not_guilty", response.data[0])
+        self.assertContains(response, "region_code")
+        self.assertContains(response, "court_name")
+        self.assertContains(response, "submissions")
+        self.assertContains(response, "pleas")
+        self.assertContains(response, "guilty")
+        self.assertContains(response, "not_guilty")
 
     def test_by_court_valid_start_date(self):
 
@@ -204,12 +204,12 @@ class TestStatsAPI(APITestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
-        self.assertIn("region_code", response.data[0])
-        self.assertIn("court_name", response.data[0])
-        self.assertIn("submissions", response.data[0])
-        self.assertIn("pleas", response.data[0])
-        self.assertIn("guilty", response.data[0])
-        self.assertIn("not_guilty", response.data[0])
+        self.assertContains(response, "region_code")
+        self.assertContains(response, "court_name")
+        self.assertContains(response, "submissions")
+        self.assertContains(response, "pleas")
+        self.assertContains(response, "guilty")
+        self.assertContains(response, "not_guilty")
 
     def test_by_court_incorrect_start_date(self):
 
@@ -230,20 +230,18 @@ class TestStatsAPI(APITestCase):
     def test_by_court_valid_end_date(self):
 
         response = self.client.get("/v0/stats/by_court/", {"end": "2015-01-01"}, format="json")
-
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
-        self.assertIn("region_code", response.data[0])
-        self.assertIn("court_name", response.data[0])
-        self.assertIn("submissions", response.data[0])
-        self.assertIn("pleas", response.data[0])
-        self.assertIn("guilty", response.data[0])
-        self.assertIn("not_guilty", response.data[0])
+        self.assertContains(response, "region_code")
+        self.assertContains(response, "court_name")
+        self.assertContains(response, "submissions")
+        self.assertContains(response, "pleas")
+        self.assertContains(response, "guilty")
+        self.assertContains(response, "not_guilty")
 
     def test_by_court_incorrect_end_date(self):
 
         response = self.client.get("/v0/stats/by_court/", {"end": "not_a_date"}, format="json")
-
         self.assertEqual(response.status_code, 400)
         self.assertIn("error", response.data)
         self.assertEqual("'not_a_date' value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format.", response.data["error"])
