@@ -25,16 +25,28 @@
       <div class="content">
         <a id="proposition-name">Make a Plea: Reports</a>
       </div>
-    </div>
+</div>
 {% endblock %}
+
 
 {% block page_content %}
       <div class="panel panel-default">
+          <div class="row" style="display: inline;">
+           {% block report_breadcrumbs %}
+            <ul class="report-breadcrumb">
+            {% block report_breadcrumb_links %}
+                <li><a href="{% url 'reports:index' %}">Reports</a></li>
+                <li><a href="{{ report_entry_url }}">{{ report_type }} Date Range</a></li>
+            {% endblock %}
+            </ul>
+           {% endblock %}
+              <a class="report-return-link" href="{% url 'reports:index' %}">back to reports</a>
+          </div>
         <div class="row">
 
           <div class="col-6 col-sm-4 col-lg-4">
             <div class="panel-body">
-              <h2><span class="glyphicon glyphicon-briefcase text-info"></span> {{ report_name }} </h2>
+              <h2><span class="glyphicon glyphicon-briefcase text-info"></span> {{ report_type }} Report</h2>
               <p> {{ report_description }} <p>
             </div>
           </div>
