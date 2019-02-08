@@ -59,7 +59,7 @@ def encrypt_and_store_user_data(urn, case_id, data, user_data_directory=None):
 
     try:
         fd = os.open(file_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-        os.write(fd, str(encrypted_data))
+        os.write(fd, str(encrypted_data).encode())
 
         # NOTE: It seems unlikely that there'll be file name
         # clashes given the file name is the urn + timestamp. However,

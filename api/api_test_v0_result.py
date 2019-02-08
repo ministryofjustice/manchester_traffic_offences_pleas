@@ -48,7 +48,7 @@ class CaseAPICallTestCase(APITestCase):
         self.test_data = {
             u"urn": u"51AA0000000",
             u"case_number": u"16273482",
-            u"date_of_hearing": unicode(date.today() + timedelta(days=5)),
+            u"date_of_hearing": str(date.today() + timedelta(days=5)),
             u"ou_code": u"123",
             u"result_offences": [
                 {u"offence_code": u"CODE123",
@@ -142,7 +142,7 @@ class CaseAPICallTestCase(APITestCase):
 
     def test_valid_submissions_returns_dict_with_correct_urn(self):
         response = self._post_data(self.test_data)
-        returned_data = json.loads(response.content)
+        returned_data = json.loads(response.content.decode())
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(type(returned_data), dict)

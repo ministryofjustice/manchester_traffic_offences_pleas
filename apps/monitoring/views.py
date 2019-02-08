@@ -1,7 +1,7 @@
 from collections import OrderedDict
 import datetime as dt
 import operator
-
+from functools import reduce
 from django.views.generic.base import TemplateView
 from django.db.models import Q
 from django.contrib.admin.views.decorators import staff_member_required

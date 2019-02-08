@@ -5,7 +5,7 @@ import os
 
 from mock import patch
 from decimal import Decimal
-from cStringIO import StringIO
+from io import StringIO
 
 from django.core import mail
 from django.test import TestCase

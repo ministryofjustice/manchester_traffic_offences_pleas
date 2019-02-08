@@ -180,7 +180,7 @@ class URNStageWithURNValidation(BaseTestCase):
         stage.save({"urn": "06AA0000015"})
 
         self.assertEquals(len(stage.messages), 0)
-        self.assertNotIn("Unfortunately you cannot use this service", stage.messages[0].message)
+        self.assertNotContains(stage.messages[0].message, "Unfortunately you cannot use this service")
 
 
 class AuthStageWithURNValidationTestCase(BaseTestCase):

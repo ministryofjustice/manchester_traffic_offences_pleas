@@ -27,7 +27,7 @@ class BaseEmailTemplateTests(TestCase):
     def assertContainsDefinition(self, content, label, value, count=None):
         pair_regex_tpl = r"<dt[^>]*>{0}</dt>\s*<dd[^>]*>{1}</dd>"
         pair_regex = pair_regex_tpl.format(re.escape(label), re.escape(value))
-        matches = re.findall(pair_regex, content)
+        matches = re.findall(pair_regex.encode(), content)
         if not matches:
             raise AssertionError("Definition pair \"" + label + "\"/\"" + value + "\" not found")
 
@@ -779,35 +779,35 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
         context_data["your_details"]["date_of_birth"] = (datetime.today() - relativedelta(years=18)).date()
         send_plea_email(context_data)
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
-        assert "The defendant is 18 years old or under" in response.content
+        assert b"The defendant is 18 years old or under" in response.content
 
     def test_under_18_message_is_shown_when_user_is_under_18(self):
         context_data = self.get_context_data()
         context_data["your_details"]["date_of_birth"] = (datetime.today() - relativedelta(years=17)).date()
         send_plea_email(context_data)
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
-        assert "The defendant is 18 years old or under" in response.content
+        assert b"The defendant is 18 years old or under" in response.content
 
     def test_under_18_message_is_not_shown_when_user_over_18(self):
         context_data = self.get_context_data()
         context_data["your_details"]["date_of_birth"] = (datetime.today() - relativedelta(years=19)).date()
         send_plea_email(context_data)
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
-        assert "The defendant is 18 years old or under" not in response.content
+        assert b"The defendant is 18 years old or under" not in response.content
 
     def test_under_18_message_is_not_shown_when_no_date_of_birth_present(self):
         context_data = self.get_context_data()
         del context_data["your_details"]["date_of_birth"]
         send_plea_email(context_data)
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
-        assert "The defendant is 18 years old or under" not in response.content
+        assert b"The defendant is 18 years old or under" not in response.content
 
     def test_under_18_message_is_not_shown_when_bad_date_of_birth_present(self):
         context_data = self.get_context_data()
         context_data["your_details"]["date_of_birth"] = "not a date"
         send_plea_email(context_data)
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
-        assert "The defendant is 18 years old or under" not in response.content
+        assert b"The defendant is 18 years old or under" not in response.content
 
 class DefendantEmailTemplateTests(BaseEmailTemplateTests):
     def test_plea_email_guilty_pleas(self):
