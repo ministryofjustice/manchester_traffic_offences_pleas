@@ -41,4 +41,4 @@ class TestTimeout(TestCase):
         wait = str(getattr(settings, "SESSION_COOKIE_AGE", 3600));
 
         self.assertEqual(response.has_header("Refresh"), True)
-        self.assertTrue("Refresh: " + wait + "; url=/session-timeout/" in response.serialize_headers())
+        self.assertIn(b"Refresh: " + wait.encode() + b"; url=/session-timeout/", response.serialize_headers())

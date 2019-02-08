@@ -10,8 +10,8 @@ from django.utils.translation import ugettext as _
 
 from .models import Case, CourtEmailCount, Court
 from .encrypt import encrypt_and_store_user_data
-from tasks import email_send_court, email_send_prosecutor, email_send_user
-from standardisers import format_for_region, standardise_name
+from .tasks import email_send_court, email_send_prosecutor, email_send_user
+from .standardisers import format_for_region, standardise_name
 
 
 logger = logging.getLogger(__name__)
@@ -62,7 +62,7 @@ def send_plea_email(context_data):
 
     # add DOH / name to the email subject for compliance with the current format
     if not context_data["notice_type"]["sjp"]:
-        if isinstance(context_data["case"]["date_of_hearing"], basestring):
+        if isinstance(context_data["case"]["date_of_hearing"], str):
             date_of_hearing = parser.parse(context_data["case"]["date_of_hearing"])
         else:
             date_of_hearing = context_data["case"]["date_of_hearing"]

@@ -106,7 +106,7 @@ class TestStats(TestCase):
 
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(  # Check default start date
-            json.loads(resp.content)["summary"]["start_date"],
+            json.loads(resp.content.decode())["summary"]["start_date"],
             start_date.isoformat())
 
     def test_optional_end_date(self):
@@ -122,7 +122,7 @@ class TestStats(TestCase):
 
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(  # Check default end date
-            json.loads(resp.content)["summary"]["end_date"],
+            json.loads(resp.content.decode())["summary"]["end_date"],
             end_date.isoformat())
 
     def test_start_and_end_supplied(self):
@@ -130,13 +130,13 @@ class TestStats(TestCase):
         resp = self.client.get("/plea/stats/?language=en&start_date=1-1-2017&end_date=31-5-2017")
 
         self.assertEqual(resp.status_code, 200)
-        self.assertTrue(json.loads(resp.content))  # Shouldn't be empty
+        self.assertTrue(json.loads(resp.content.decode()))  # Shouldn't be empty
 
     def test_content_lang_en(self):
         self.client.login(username=self.username, password=self.password)
         resp = self.client.get("/plea/stats/?language=en")
-        example = json.loads(resp.content)["latest_example"]
-        summary = json.loads(resp.content)["summary"]
+        example = json.loads(resp.content.decode())["latest_example"]
+        summary = json.loads(resp.content.decode())["summary"]
 
         self.assertEqual(example["extra_data"]["Forename2"], "Brent")
         self.assertEqual(summary["total"], 2)
@@ -146,8 +146,8 @@ class TestStats(TestCase):
     def test_content_lang_cy(self):
         self.client.login(username=self.username, password=self.password)
         resp = self.client.get("/plea/stats/?language=cy")
-        example = json.loads(resp.content)["latest_example"]
-        summary = json.loads(resp.content)["summary"]
+        summary = json.loads(resp.content.decode())["summary"]
+        example = json.loads(resp.content.decode())["latest_example"]
 
         self.assertEqual(example["extra_data"]["Forename2"], "Bryn")
         self.assertEqual(summary["total"], 2)
@@ -157,14 +157,14 @@ class TestStats(TestCase):
     def test_start_date_filter(self):
         self.client.login(username=self.username, password=self.password)
         resp = self.client.get("/plea/stats/?language=en&start_date=2017-3-3")
-        summary = json.loads(resp.content)["summary"]
+        summary = json.loads(resp.content.decode())["summary"]
 
         self.assertEqual(summary["by_month"], {"April 2017": 1})
 
     def test_end_date_filter(self):
         self.client.login(username=self.username, password=self.password)
         resp = self.client.get("/plea/stats/?language=cy&end_date=2017-3-3")
-        summary = json.loads(resp.content)["summary"]
+        summary = json.loads(resp.content.decode())["summary"]
 
         self.assertEqual(summary["by_month"], {"February 2017": 1})
 
@@ -174,7 +174,7 @@ class TestStats(TestCase):
 
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(
-            json.loads(resp.content),
+            json.loads(resp.content.decode()),
             {"error": "Bad date format"})
 
     def test_missing_language(self):
@@ -183,7 +183,7 @@ class TestStats(TestCase):
 
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(
-            json.loads(resp.content),
+            json.loads(resp.content.decode()),
             {"error": "No language given"})
 
 """

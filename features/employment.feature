@@ -8,7 +8,7 @@ Feature: Fill out employment status
   Scenario: Employed
     When I submit my employment status as "Employed"
     And I submit my home pay amount
-    Then I should see my calculated weekly income of "£923.08"
+    Then I should see my calculated weekly income of "923.08"
     When I choose no hardship
     And I press "Continue"
     Then I should see be asked to review my plea
@@ -18,4 +18,4 @@ Feature: Fill out employment status
     And I submit my home pay amount
     Then I should see "Which benefit do you receive?"
     When I submit my benefits as "Universal Credit"
-    Then I should see my calculated weekly income of "£1,384.62"
+    Then I should see my calculated weekly income of "1,384.62"

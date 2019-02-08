@@ -331,8 +331,8 @@ class TestMultiPleaForms(TestCaseBase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, court_obj.court_email)
-        self.assertEqual(form.current_stage.form.errors.keys()[0], NON_FIELD_ERRORS)
-        self.assertEqual(form.current_stage.form.errors.values()[0][0], ERROR_MESSAGES["URN_ALREADY_USED"])
+        self.assertEqual(list(form.current_stage.form.errors.keys())[0], NON_FIELD_ERRORS)
+        self.assertEqual(list(form.current_stage.form.errors.values())[0][0], ERROR_MESSAGES["URN_ALREADY_USED"])
 
     def test_case_stage_good_data(self):
         form = PleaOnlineForms(self.session, "case")
@@ -1276,7 +1276,7 @@ class TestMultiPleaForms(TestCaseBase):
 
         with self.assertTemplateUsed("review.html"):
             response = form.render(self.get_request_mock())
-            self.assertIn("06/AA/0000000/15", response.content)
+            self.assertContains(response, "06/AA/0000000/15")
 
     def test_review_stage_missing_data(self):
         form = PleaOnlineForms(self.session, "review")
@@ -1367,7 +1367,7 @@ class TestMultiPleaForms(TestCaseBase):
             response,
             "<br />".join(court_obj.court_address.split("\n")))
 
-        self.assertIn(format_for_region(test_data["case"]["urn"]), response.content)
+        self.assertContains(response, format_for_region(test_data["case"]["urn"]))
 
     def test_successful_completion_single_charge(self):
         fake_session = {}

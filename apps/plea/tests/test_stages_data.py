@@ -615,8 +615,8 @@ class TestPleaAuthStage(TestURNStageDataBase):
 
         offence = self.case.offences.all().first()
 
-        self.assertIn(offence.offence_short_title_welsh.encode("utf-8"), response.content)
-        self.assertIn(offence.offence_wording_welsh.encode("utf-8"), response.content)
+        self.assertContains(response, offence.offence_short_title_welsh.encode("utf-8"))
+        self.assertContains(response, offence.offence_wording_welsh.encode("utf-8"))
 
     @patch("django.utils.translation.get_language", return_value='cy')
     def test_offence_data_falls_back_to_en_when_cy_data_is_not_available(self, get_language):
@@ -635,8 +635,8 @@ class TestPleaAuthStage(TestURNStageDataBase):
         stage.load_forms({})
         response = stage.render(self.get_request_mock(), self.request_context)
 
-        self.assertIn(offence.offence_short_title.encode("utf-8"), response.content)
-        self.assertIn(offence.offence_wording.encode("utf-8"), response.content)
+        self.assertContains(response, offence.offence_short_title.encode("utf-8"))
+        self.assertContains(response, offence.offence_wording.encode("utf-8"))
 
 
 class TestURNSubmissionFailureMessage(TestCase):

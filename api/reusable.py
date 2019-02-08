@@ -24,10 +24,9 @@ def create_api_user():
     user.set_password(password)
     user.save()
 
-    credentials = base64.b64encode('{}:{}'.format(user.username, password))
+    credentials = base64.b64encode('{}:{}'.format(user.username, password).encode("utf-8"))
 
-    auth_header = {'HTTP_AUTHORIZATION': 'Basic {}'.format(credentials)}
-
+    auth_header = {'HTTP_AUTHORIZATION': 'Basic {}'.format(credentials.decode())}
     return user, auth_header
 
 

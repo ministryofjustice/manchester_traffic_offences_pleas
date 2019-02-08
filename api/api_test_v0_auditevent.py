@@ -101,7 +101,7 @@ class AuditEventAPICallTestCase(APITestCase):
         data = deepcopy(self.test_data)
         del data["event_type"]
         response = self._post_data(data)
-        response_json = json.loads(response.content)
+        response_json = json.loads(response.content.decode('utf-8'))
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -114,7 +114,7 @@ class AuditEventAPICallTestCase(APITestCase):
         data = deepcopy(self.test_data)
         del data["event_subtype"]
         response = self._post_data(data)
-        response_json = json.loads(response.content)
+        response_json = json.loads(response.content.decode('utf-8'))
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -146,7 +146,7 @@ class AuditEventAPICallTestCase(APITestCase):
         count = AuditEvent.objects.count()
         data = deepcopy(self.test_data)
         response = self._post_data(data)
-        response_json = json.loads(response.content)
+        response_json = json.loads(response.content.decode('utf-8'))
         _id = int(response_json["id"])
         saved_item = AuditEvent.objects.get(id=_id)
 

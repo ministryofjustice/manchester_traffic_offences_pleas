@@ -237,7 +237,6 @@ class TestProcessReceipts(TestCase):
         process_receipts()
 
         log = ReceiptLog.objects.latest('id')
-
         self.assertEqual(log.total_emails, 1)
         self.assertEqual(log.total_failed, 0)
         self.assertEqual(log.total_errors, 1)

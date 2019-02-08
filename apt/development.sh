@@ -4,7 +4,7 @@ apt-get install --fix-missing -y \
   postgresql \
   postgresql-contrib \
   build-essential \
-  python-dev \
+  python3-dev \
   libxml2-dev \
   libxslt-dev \
   python-setuptools \

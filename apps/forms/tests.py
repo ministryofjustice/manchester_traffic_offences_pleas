@@ -431,7 +431,7 @@ class TestMultiStageForm(TestCase):
         msf.load(self.request_context)
         msf.save({"field6": u'c'}, self.request_context)
 
-        self.assertIn("field7", msf.current_stage.form.errors)
+        self.assertIn("field7", msf.current_stage.form.errors )
         self.assertNotIn("field8", msf.current_stage.form.errors)
 
     @patch("apps.forms.stages.reverse", reverse)
