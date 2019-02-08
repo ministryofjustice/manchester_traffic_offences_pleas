@@ -33,44 +33,51 @@ def index(request):
 
 class ReportEntryView(LoginRequiredMixin, View):
     login_url = settings.ADMIN_LOGIN_URL
-    report_name = None
+    report_type = None
     report_url = None
+    report_entry_url = None
     report_description = None
     template = "reports.html"
     report_links = None
+    display_axes = True
 
     def get(self, request, *args, **kwargs):
         self.initialize_get(request)
         return render(request, self.template, self.get_context_data(request))
 
     def get_context_data(self, request):
-        return {"report_name": self.report_name,
+        return {"report_type": self.report_type,
                 "report_description": self.report_description,
                 "report_url": self.report_url,
+                "report_entry_url": self.report_entry_url,
+                'display_axes': self.display_axes,
                 'disable_language_switch': True}
 
 
 class PleaMixin(object):
 
     def initialize_get(self, request):
-        self.report_name = "Plea report"
+        self.report_type = "Plea"
         self.report_url = reverse("reports:plea_report")
+        self.report_entry_url = reverse("reports:plea_report_entry")
         self.report_description = "A breakdown of the different types of plea over an entered date range"
 
 
 class StageMixin(object):
 
     def initialize_get(self, request):
-        self.report_name = "Stage completion report"
+        self.report_type = "Stage Completion"
         self.report_url = reverse("reports:stage_report")
+        self.report_entry_url = reverse("reports:stage_report_entry")
         self.report_description = "A statistical analysis of stage progression"
 
 
 class UserRatingMixin(object):
 
     def initialize_get(self, request):
-        self.report_name = "User rating report"
+        self.report_type = "User Rating"
         self.report_url = reverse("reports:rating_report")
+        self.report_entry_url = reverse("reports:rating_report_entry")
         self.report_description = "An analysis of service user ratings"
 
 
@@ -254,6 +261,7 @@ class HardshipStagesNumbersView(StageReportView):
 
 class AllStagesDropoutsView(StageReportView):
     chart_name = "Dropout rates at all stages"
+    display_axes = False
 
     def call_correct_chart(self):
         return AllStagesDropoutsChart(self.start_date, self.end_date)
