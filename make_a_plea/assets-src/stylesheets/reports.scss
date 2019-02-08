@@ -1,0 +1,42 @@
+.report-breadcrumb {
+    display: inline;
+	background-color: transparent; /* Remove background from breadcrumbs to increase whitespace */
+	margin-bottom: 0; /* Remove margin from bottom of breadcumb to bring closer to header */
+	padding-left: 0; /* Remove padding from left to bring breadcrumb in line with rest of content */
+}
+
+
+ul.report-breadcrumb{
+    li {
+        display: inline;
+        font-size: 18px;
+
+        /* Add a slash symbol (/) before/behind each list item */
+        +li:before {
+            padding: 8px;
+            color: black;
+            content: "/\00a0";
+        }
+
+        /* Add a color to all links inside the list */
+        a {
+            color: #0275d8;
+            text-decoration: none;
+
+            /* Add a color on mouse-over */
+            :hover{
+                color: #01447e;
+                text-decoration: underline;
+            }
+        }
+    }
+
+}
+
+
+.report-return-link {
+    text-decoration: none;
+    text-align: right;
+    float: right;
+    display: inline;
+}
