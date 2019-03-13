@@ -3,6 +3,7 @@ from __future__ import absolute_import, unicode_literals
 import datetime as dt
 
 from django.test import TestCase
+from django.core.exceptions import ValidationError
 
 from ..models import AuditEvent, CourtEmailCount, UsageStats, Court, Case, OUCode, CaseTracker
 
@@ -356,6 +357,13 @@ class TestCourtModel(TestCase):
 
         self.assertEquals(court.id, self.court2.id)
 
+    def test_court_email_domain_validation(self):
+        court = Court.objects.get_court_dx(self.case.urn)
+        court.court_email = 'test@example.com'
+        self.assertRaises(ValidationError, court.clean)
+
+        court.court_email = 'test@justice.gov.uk'
+        court.clean()
 
 class TestAuditEventModel(TestCase):
 
