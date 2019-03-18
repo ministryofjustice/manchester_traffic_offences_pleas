@@ -32,6 +32,12 @@ URNs = {
     'company': '00FF1234564',
     'invalid': '1234',
     'inexistent': '00FF0000000',
+    'invalid_with_valid_region': '00FG1122233'
+}
+
+URNREGIONs = {
+    'valid': '00',
+    'invalid': '99',
 }
 
 # override with -Dkey=value
@@ -66,6 +72,8 @@ def before_all(context):
     context.base_url = config['base_url']
 
     context.URNs = URNs
+
+    context.URNREGIONs = URNREGIONs
 
     benv.before_all(context)
 
