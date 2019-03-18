@@ -12,6 +12,19 @@ def submit_urn_in_welsh(context, urn):
     ''' % context.URNs[urn])
 
 
+def submit_urn_region(context, urn):
+    context.execute_steps(u'''
+        when I fill in "urn" with "%s"
+        and I press "Find my court"
+    ''' % context.URNREGIONs[urn])
+
+
+def submit_urn_court_finder(context, urn):
+    context.execute_steps(u'''
+           when I fill in "urn" with "%s"
+           and I press "Find my court"
+       ''' % context.URNs[urn])
+
 @when(u'I submit a valid URN')
 def step_impl(context):
     submit_urn(context, 'valid')
@@ -139,3 +152,29 @@ def step_impl(context):
         Then the browser's URL should be "plea/company_details/"
         Then I should see "You can only make a plea on behalf of a company if you are a director"
     ''')
+
+
+@when(u'I submit a valid URN for court finder')
+def step_impl(context):
+    submit_urn_court_finder(context, 'valid')
+
+
+@when(u'I submit an invalid URN for court finder')
+def step_impl(context):
+    submit_urn_court_finder(context, 'invalid')
+
+
+@when(u'I submit valid court code with invalid URN')
+def step_impl(context):
+    submit_urn_court_finder(context, 'invalid_with_valid_region')
+
+
+@when(u'I submit a valid court code')
+def step_impl(context):
+    submit_urn_region(context, 'valid')
+
+
+@when(u'I submit an invalid court code')
+def step_impl(context):
+    submit_urn_region(context, 'invalid')
+
