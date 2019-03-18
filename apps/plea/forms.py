@@ -1232,7 +1232,6 @@ class CourtFinderForm(forms.Form):
             "class": "form-control"}),
         label=_("Unique reference number (URN)"),
         required=True,
-        validators=[is_urn_valid],
         help_text=_("On page 1, usually at the top."),
         error_messages={
             "required": ERROR_MESSAGES["URN_REQUIRED"],
