@@ -683,7 +683,7 @@ class Court(models.Model):
             return False
 
     def clean(self):
-        if not self.court_email.endswith(('@hmcts.gsi.gov.uk', '@justice.gov.uk', '@hmcts.net')):
+        if not self.submission_email.endswith(('@hmcts.gsi.gov.uk', '@justice.gov.uk', '@hmcts.net')):
             raise ValidationError('Not allowed court email domain')
 
 

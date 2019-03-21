@@ -65,6 +65,7 @@ def email_send_court(self, case_id, count_id, email_data):
     court_obj = get_court(email_data["case"]["urn"], case.ou_code)
 
     plea_email_to = [court_obj.submission_email]
+    smtp_route = get_smtp_gateway(court_obj.submission_email)
 
     email_count = None
     if not court_obj.test_mode:
@@ -80,7 +81,6 @@ def email_send_court(self, case_id, count_id, email_data):
                                          "emails/attachments/plea_email.html",
                                          email_data,
                                          "text/html")
-    smtp_route = get_smtp_gateway(court_obj.court_email)
 
     try:
         with translation.override("en"):
