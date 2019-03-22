@@ -22,6 +22,8 @@ SMTP_ROUTES["GSI"]["USERNAME"] = os.environ.get("GSI_EMAIL_USERNAME", "")
 SMTP_ROUTES["GSI"]["PASSWORD"] = os.environ.get("GSI_EMAIL_PASSWORD", "")
 SMTP_ROUTES["PNN"]["USERNAME"] = os.environ.get("PNN_EMAIL_USERNAME", "")
 SMTP_ROUTES["PNN"]["PASSWORD"] = os.environ.get("PNN_EMAIL_PASSWORD", "")
+SMTP_ROUTES["PUB"]["USERNAME"] = os.environ.get("EMAIL_HOST_USER", "")
+SMTP_ROUTES["PUB"]["PASSWORD"] = os.environ.get("EMAIL_HOST_PASSWORD", "")
 
 ALLOWED_HOSTS = [x.strip() for x in os.environ.get("ALLOWED_HOSTS", "localhost:8000").split(',')]
 
