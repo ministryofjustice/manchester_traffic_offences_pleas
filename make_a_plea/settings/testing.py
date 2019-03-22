@@ -28,7 +28,8 @@ EMAIL_HOST = "127.0.0.1"
 EMAIL_USE_TLS = False
 
 SMTP_ROUTES = {"GSI": {"HOST": "127.0.0.1", "PORT": 1025, "USE_TLS": False},
-               "PNN": {"HOST": "127.0.0.1", "PORT": 1025, "USE_TLS": False}}
+               "PNN": {"HOST": "127.0.0.1", "PORT": 1025, "USE_TLS": False},
+               "PUB": {"HOST": "127.0.0.1", "PORT": 1025, "USE_TLS": False}}
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 

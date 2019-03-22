@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models import Sum, Count, F
 from django.utils.translation import get_language
 from django.contrib.postgres.fields import HStoreField
+from django.core.exceptions import ValidationError
 
 from .exceptions import *
 from standardisers import (
@@ -680,6 +681,11 @@ class Court(models.Model):
             return True
         else:
             return False
+
+    def clean(self):
+        if not self.submission_email.endswith(('@hmcts.gsi.gov.uk', '@justice.gov.uk', '@hmcts.net')):
+            raise ValidationError('Not allowed court email domain')
+
 
 class OUCode(models.Model):
     court = models.ForeignKey(Court)
