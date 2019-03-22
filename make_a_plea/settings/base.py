@@ -290,12 +290,13 @@ CELERY_RESULT_BACKEND='django-db'
 
 SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "")
 
-# Secure mail
 SMTP_ROUTES = {"GSI": {"HOST": os.environ.get("GSI_EMAIL_HOST", "localhost"),
                        "PORT": os.environ.get("GSI_EMAIL_PORT", 25)},
                "PNN": {"HOST": os.environ.get("PNN_EMAIL_HOST", "localhost"),
-                       "PORT": os.environ.get("PNN_EMAIL_PORT", 25),
-                       "USE_TLS": False}}
+                       "PORT": os.environ.get("PNN_EMAIL_PORT", 25), "USE_TLS": False},
+               "PUB": {"HOST": os.environ.get("EMAIL_HOST", "localhost"),
+                       "PORT": os.environ.get("EMAIL_PORT", 25)}
+               }
 
 # Public email
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "localhost")

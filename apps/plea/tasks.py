@@ -49,10 +49,14 @@ def is_18_or_under(date_of_birth):
     return date_of_birth >= target_date
 
 
+def get_smtp_gateway(email_address):
+    if email_address.endswith('gsi.gov.uk'):
+        return "GSI"
+    return "PUB"
+
+
 @shared_task(bind=True, max_retries=10, default_retry_delay=900)
 def email_send_court(self, case_id, count_id, email_data):
-    smtp_route = "GSI"
-
     email_data["urn"] = format_for_region(email_data["case"]["urn"])
 
     # No error trapping, let these fail hard if the objects can't be found
@@ -61,6 +65,7 @@ def email_send_court(self, case_id, count_id, email_data):
     court_obj = get_court(email_data["case"]["urn"], case.ou_code)
 
     plea_email_to = [court_obj.submission_email]
+    smtp_route = get_smtp_gateway(court_obj.submission_email)
 
     email_count = None
     if not court_obj.test_mode:
