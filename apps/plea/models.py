@@ -463,39 +463,37 @@ class UsageStatsManager(models.Manager):
 
         court_list = Court.objects.all()
 
-        # while start_date + dt.timedelta(7) <= to_date:
-        #     for c in court_list:
-        #         court_specific_email_counts = CourtEmailCount.objects.filter(court=c)
-        #         totals = court_specific_email_counts.calculate_aggregates(start_date, 7)
-        #         print("before")
-        #         print(UsageStats.objects.last())
-        #         UsageStats.objects.create(
-        #             start_date=start_date,
-        #             court=c,
-        #             online_submissions=totals['submissions'],
-        #             online_guilty_pleas=totals['guilty'],
-        #             online_not_guilty_pleas=totals['not_guilty'],
-        #             online_guilty_attend_court_pleas=totals['guilty_court'],
-        #             online_guilty_no_court_pleas=totals['guilty_no_court'])
+        while start_date + dt.timedelta(7) <= to_date:
+            for c in court_list:
+                court_specific_email_counts = CourtEmailCount.objects.filter(court=c)
+                totals = court_specific_email_counts.calculate_aggregates(start_date, 7)
+                print("before")
+                print(UsageStats.objects.last())
+                UsageStats.objects.create(
+                    start_date=start_date,
+                    court=c,
+                    online_submissions=totals['submissions'],
+                    online_guilty_pleas=totals['guilty'],
+                    online_not_guilty_pleas=totals['not_guilty'],
+                    online_guilty_attend_court_pleas=totals['guilty_court'],
+                    online_guilty_no_court_pleas=totals['guilty_no_court'])
+
+                start_date += dt.timedelta(7)
+                print("after")
+                print(UsageStats.objects.last())
+
+        # while start_date+dt.timedelta(7) <= to_date:
+        #     totals = CourtEmailCount.objects.calculate_aggregates(start_date, 7)
         #
-        #         start_date += dt.timedelta(7)
-        #         print("after")
-        #         print(UsageStats.objects.last())
-
-
-
-        while start_date+dt.timedelta(7) <= to_date:
-            totals = CourtEmailCount.objects.calculate_aggregates(start_date, 7)
-
-            UsageStats.objects.create(
-                start_date=start_date,
-                online_submissions=totals['submissions'],
-                online_guilty_pleas=totals['guilty'],
-                online_not_guilty_pleas=totals['not_guilty'],
-                online_guilty_attend_court_pleas=totals['guilty_court'],
-                online_guilty_no_court_pleas=totals['guilty_no_court'])
-
-            start_date += dt.timedelta(7)
+        #     UsageStats.objects.create(
+        #         start_date=start_date,
+        #         online_submissions=totals['submissions'],
+        #         online_guilty_pleas=totals['guilty'],
+        #         online_not_guilty_pleas=totals['not_guilty'],
+        #         online_guilty_attend_court_pleas=totals['guilty_court'],
+        #         online_guilty_no_court_pleas=totals['guilty_no_court'])
+        #
+        #     start_date += dt.timedelta(7)
 
     def last_six_months(self):
         """

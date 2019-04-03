@@ -9,14 +9,13 @@ from django.views import View
 from django.urls import reverse, reverse_lazy
 from django.core.urlresolvers import resolve
 from urllib import quote, urlencode
-from ..plea.models import UsageStats, CaseTracker
+from ..plea.models import UsageStats, CaseTracker, Court
 from ..feedback.models import UserRating
 from .charts import RequiredStagesChart, FinancialSituationChart,\
     HardshipChart, AllStagesDropoutsChart, IncomeSourcesDropoutsChart
 from django.db.models import Value, Sum
 import datetime
 from .charts import safe_percentage
-# Create your views here.
 
 
 def build_url(*args, **kwargs):
@@ -136,10 +135,15 @@ class BaseReportView(ReportEntryView):
 
 class PleaReportView(PleaMixin, BaseReportView):
 
+    selected_court = None
     report_partial = "partials/plea_report_contents.html"
 
     def prepare_report_context(self, request):
         # Ensure correct start and end dates for report
+        list_of_courts = Court.objects.all()
+        if 'selected_court' in request.GET:
+            self.set_selected_court(request.GET['selected_court'])
+
         self.set_start_end_dates(request)
         change_date = datetime.date(day=21,month=5,year=2018)
         qs = UsageStats.objects.all()
@@ -182,6 +186,7 @@ class PleaReportView(PleaMixin, BaseReportView):
         post_online_guilty_attend_court_pleas = post_totals["online_guilty_attend_court_pleas__sum"] or 0
         post_online_guilty_no_court_pleas = post_totals["online_guilty_no_court_pleas__sum"] or 0
         post_online_pleas = post_online_not_guilty_pleas + post_online_guilty_pleas
+
         return {
             'start_date': self.start_date,
             'end_date': self.end_date,
@@ -201,7 +206,14 @@ class PleaReportView(PleaMixin, BaseReportView):
             'post_online_guilty_attend_court_pleas': post_online_guilty_attend_court_pleas,
             'post_online_guilty_no_court_pleas': post_online_guilty_no_court_pleas,
             'post_online_pleas': post_online_pleas,
+            'list_of_courts': list_of_courts,
         }
+
+    def set_selected_court(self, court):
+        if court != "All courts":
+            self.selected_court = court
+        else:
+            self.selected_court = None
 
 
 class StageReportView(StageMixin, BaseReportView):
