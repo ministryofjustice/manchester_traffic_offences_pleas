@@ -5,6 +5,11 @@ from collections import OrderedDict
 from django import forms
 from django.forms.widgets import Textarea
 from django.utils.translation import ugettext_lazy as _
+from django.utils.functional import lazy
+from django.utils.safestring import mark_safe
+
+mark_safe_lazy = lazy(mark_safe, str)
+
 
 from apps.forms.fields import DateWidget, DSRadioSelect, DSStackedRadioSelect
 from apps.forms.forms import (
@@ -282,9 +287,11 @@ class YourDetailsForm(BaseStageForm):
         coerce=to_bool,
         choices=YESNO_CHOICES["Oes/Nac oes"],
         label=_("Do you have a National Insurance number?"),
-        help_text=_(
-            "It's on your National Insurance card, benefit letter, payslip or P60 - for example, 'QQ 12 34 56 C'"
-        ),
+        help_text=mark_safe_lazy(_(
+            "It's on your National Insurance card, benefit letter, payslip or P60 - for example, 'QQ 12 34 56 C'. "
+            "<a href='https://www.gov.uk/lost-national-insurance-number' target='_blank'>Find a lost "
+            "national insurance number</a>"
+        )),
         error_messages={
             "required": ERROR_MESSAGES["HAVE_NI_NUMBER_REQUIRED"]})
 
