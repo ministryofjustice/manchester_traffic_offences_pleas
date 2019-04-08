@@ -838,7 +838,7 @@ msgstr "A oes gennych chi rif Yswiriant Gwladol?"
 #, fuzzy
 #| msgid "It's on your National Insurance card, benefit letter, payslip or P60 - for example, 'QQ 12 34 56 C'"
 msgid "It's on your National Insurance card, benefit letter, payslip or P60 - for example, 'QQ 12 34 56 C'. <a href='https://www.gov.uk/lost-national-insurance-number' target='_blank'>Find a lost national insurance number</a>"
-msgstr "Gallwch ddod o hyd i'r rhif ar eich cerdyn Yswiriant Gwladol, llythyr budd-dal, slip cyflog neu P60 - er enghraifft, 'QQ 12 34 56 C'. <a href='https://www.gov.uk/lost-national-insurance-number' target='_blank'>Find a lost national insurance number</a>"
+msgstr "Gallwch ddod o hyd i'r rhif ar eich cerdyn Yswiriant Gwladol, llythyr budd-dal, slip cyflog neu P60 - er enghraifft, 'QQ 12 34 56 C'. <a href='https://www.gov.uk/lost-national-insurance-number' target='_blank'>Dod o hyd i rif yswiriant gwladol sydd ar goll</a>"
 
 #: apps/plea/forms.py:304
 msgid "If yes, enter it here."
