@@ -322,9 +322,11 @@ class YourDetailsForm(BaseStageForm):
         coerce=to_bool,
         choices=YESNO_CHOICES["Oes/Nac oes"],
         label=_("Do you have a UK driving licence?"),
-        help_text=_(
+        help_text=mark_safe_lazy(_(
             "Entering your UK driving licence number means you don't have "
-            "to send your licence to the court."),
+            "to send your licence to the court. "
+            "<a href='https://www.viewdrivingrecord.service.gov.uk/driving-record/personal-details' target='_blank'>"
+            "View your driving licence information</a>")),
         error_messages={
             "required": ERROR_MESSAGES["HAVE_DRIVING_LICENCE_NUMBER_REQUIRED"]})
 
