@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.views import View
 from django.urls import reverse, reverse_lazy
 from django.core.urlresolvers import resolve
+from django.http import HttpResponseRedirect
 from urllib import quote, urlencode
 from ..plea.models import UsageStats, CaseTracker, Court
 from ..feedback.models import UserRating
@@ -24,6 +25,7 @@ def build_url(*args, **kwargs):
     if get:
         url += '?' + urlencode(get)
     return url
+
 
 @login_required(login_url=settings.ADMIN_LOGIN_URL)
 def index(request):
@@ -142,7 +144,11 @@ class PleaReportView(PleaMixin, BaseReportView):
         # Ensure correct start and end dates for report
         list_of_courts = Court.objects.all()
         if 'selected_court' in request.GET:
+            print("request body has selected_court")
             self.set_selected_court(request.GET['selected_court'])
+            print(self.selected_court)
+
+        # select_court_form = SelectCourtForm()
 
         self.set_start_end_dates(request)
         change_date = datetime.date(day=21,month=5,year=2018)
@@ -207,7 +213,17 @@ class PleaReportView(PleaMixin, BaseReportView):
             'post_online_guilty_no_court_pleas': post_online_guilty_no_court_pleas,
             'post_online_pleas': post_online_pleas,
             'list_of_courts': list_of_courts,
+            # 'select_court_form': select_court_form
         }
+
+    def post(self, request):
+        print("BEFORE adding selected_court to request")
+        print(request)
+        # Add selected_court to request body
+        request.selected_court = "prrt"
+        print("AFTER adding selected_court to request")
+        print(request)
+        return HttpResponseRedirect("")
 
     def set_selected_court(self, court):
         if court != "All courts":

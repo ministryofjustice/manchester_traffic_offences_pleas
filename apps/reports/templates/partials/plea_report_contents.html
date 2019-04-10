@@ -1,11 +1,17 @@
 <div class="form-group">
-  <label class="form-label" for="select-box">This is the label text</label>
-  <select class="form-control" id="select-box" name="select-box">
-    <option>All courts</option>
-    {% for court in list_of_courts %}
-          <option>{{court.court_name}}</option>
-    {% endfor %}
-  </select>
+  <br>
+  <form method="post">
+    {% csrf_token %}
+    <label class="form-label" for="select-box">Filter by court</label>
+    <select class="form-control" id="select-box" name="select-box">
+      <option>All courts</option>
+      {% for court in list_of_courts %}
+            <option>{{court.court_name}}</option>
+      {% endfor %}
+    </select>
+    <button class="button" type="submit">Apply filter</button>
+  </form>
+
 </div>
 <h3>All plea data in date range ({% if start_date %}{{start_date}}{% endif %} - {% if end_date %}{{ end_date }}{% else %}present{% endif %})</h3>
         <table>
