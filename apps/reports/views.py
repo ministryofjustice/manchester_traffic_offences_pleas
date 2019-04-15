@@ -142,13 +142,6 @@ class PleaReportView(PleaMixin, BaseReportView):
 
     def prepare_report_context(self, request):
         # Ensure correct start and end dates for report
-        list_of_courts = Court.objects.all()
-        if 'selected_court' in request.GET:
-            print("request body has selected_court")
-            self.set_selected_court(request.GET['selected_court'])
-            print(self.selected_court)
-
-        # select_court_form = SelectCourtForm()
 
         self.set_start_end_dates(request)
         change_date = datetime.date(day=21,month=5,year=2018)
@@ -165,6 +158,13 @@ class PleaReportView(PleaMixin, BaseReportView):
             end_date = self.end_date
             if end_date < change_date:
                 late_end_date = False
+
+        list_of_courts = Court.objects.all()
+        # if 'selected_court' in request.GET:
+        #     print("request body has selected_court")
+        #     self.set_selected_court(request.GET['selected_court'])
+        #     print(self.selected_court)
+
         pre_qs = qs.filter(start_date__lte=change_date)
         post_qs = qs.filter(start_date__gte=change_date)
         pre_totals = pre_qs.aggregate(Sum('online_submissions'),
@@ -213,16 +213,25 @@ class PleaReportView(PleaMixin, BaseReportView):
             'post_online_guilty_no_court_pleas': post_online_guilty_no_court_pleas,
             'post_online_pleas': post_online_pleas,
             'list_of_courts': list_of_courts,
-            # 'select_court_form': select_court_form
         }
 
     def post(self, request):
-        print("BEFORE adding selected_court to request")
-        print(request)
-        # Add selected_court to request body
-        request.selected_court = "prrt"
-        print("AFTER adding selected_court to request")
-        print(request)
+        # set selected court within this method
+        print(request.POST['court_selector'])
+        selected_court = request.POST['court_selector']
+        # add this value to the url
+
+            # read what this has been submitted to, then decode url, add value, print as string,
+
+        # if existing selected_court,
+
+        #   replace it
+
+        # else
+
+        #   add it
+
+        # redirect to this page
         return HttpResponseRedirect("")
 
     def set_selected_court(self, court):

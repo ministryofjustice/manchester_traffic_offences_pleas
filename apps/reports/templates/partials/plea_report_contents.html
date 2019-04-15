@@ -1,18 +1,17 @@
-<div class="form-group">
-  <br>
-  <form method="post">
+<form class="form-horizontal" role="form" method="POST">
+    <br>
     {% csrf_token %}
-    <label class="form-label" for="select-box">Filter by court</label>
-    <select class="form-control" id="select-box" name="select-box">
+    <label class="form-label" for="court_selector">Filter by court</label>
+
+    <select class="form-control" id="court_selector" name="court_selector">
       <option>All courts</option>
       {% for court in list_of_courts %}
-            <option>{{court.court_name}}</option>
+        <option>{{court.court_name}}</option>
       {% endfor %}
     </select>
-    <button class="button" type="submit">Apply filter</button>
-  </form>
+    <button class="button"> Apply filter</button>
+</form>
 
-</div>
 <h3>All plea data in date range ({% if start_date %}{{start_date}}{% endif %} - {% if end_date %}{{ end_date }}{% else %}present{% endif %})</h3>
         <table>
         <tr><td>Total submissions</td> <td>{{all_online_submissions}}</td></tr>
