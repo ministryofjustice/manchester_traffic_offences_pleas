@@ -143,9 +143,9 @@ class PleaReportView(PleaMixin, BaseReportView):
     def prepare_report_context(self, request):
         # Ensure correct start and end dates for report
 
-        self.set_start_end_dates(request)
-        change_date = datetime.date(day=21,month=5,year=2018)
         qs = UsageStats.objects.all()
+        self.set_start_end_dates(request)
+        change_date = datetime.date(day=21, month=5, year=2018)
         late_end_date = True  # Set to true if end date is after 21st May
         early_start_date = True
         if self.start_date:
@@ -159,11 +159,9 @@ class PleaReportView(PleaMixin, BaseReportView):
             if end_date < change_date:
                 late_end_date = False
 
-        list_of_courts = Court.objects.all()
-        # if 'selected_court' in request.GET:
-        #     print("request body has selected_court")
-        #     self.set_selected_court(request.GET['selected_court'])
-        #     print(self.selected_court)
+        if 'selected_court' in request.GET:
+            self.set_selected_court(request.GET['selected_court'])
+            qs = qs.filter(court__court_name=self.selected_court) if self.selected_court is not None else qs
 
         pre_qs = qs.filter(start_date__lte=change_date)
         post_qs = qs.filter(start_date__gte=change_date)
@@ -212,7 +210,8 @@ class PleaReportView(PleaMixin, BaseReportView):
             'post_online_guilty_attend_court_pleas': post_online_guilty_attend_court_pleas,
             'post_online_guilty_no_court_pleas': post_online_guilty_no_court_pleas,
             'post_online_pleas': post_online_pleas,
-            'list_of_courts': list_of_courts,
+            'list_of_courts': Court.objects.all().order_by('court_name'),
+            'selected_court': self.selected_court,
         }
 
     def post(self, request):
@@ -232,13 +231,11 @@ class PleaReportView(PleaMixin, BaseReportView):
         #   add it
 
         # redirect to this page
-        return HttpResponseRedirect("")
+        return ('reports:plea_report')
+        # return HttpResponseRedirect("")
 
     def set_selected_court(self, court):
-        if court != "All courts":
-            self.selected_court = court
-        else:
-            self.selected_court = None
+        self.selected_court = court if court != "All courts" else None
 
 
 class StageReportView(StageMixin, BaseReportView):

@@ -1,6 +1,5 @@
-from django.conf import settings
-from django.conf.urls import include, url
-from django.views.generic.base import RedirectView
+from django.conf.urls import url
+
 import views
 
 urlpatterns = [
