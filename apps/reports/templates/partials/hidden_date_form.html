@@ -1,6 +1,6 @@
 <form method="GET" action="{{ report_url }}">
     {% csrf_token %}
-        <input hidden type="text" class="form-control" id="start_date" value="{{ start_date|date:'d/m/Y' }}" name="start_date"></input>
+        <input hidden type="text" class="form-control" id="start_date" value="{{ start_date|date:'d/m/Y' }}" name="start_date">
         <input hidden type="text" class="form-control" id="end_date" value="{{ end_date|date:'d/m/Y' }}" name="end_date"/>
      <input type="submit" value="{{ link_text }}" />
     <i>{{ link_message }}</i>

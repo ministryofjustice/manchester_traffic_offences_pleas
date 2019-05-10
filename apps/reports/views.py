@@ -101,6 +101,7 @@ class BaseReportView(ReportEntryView):
     end_date = None
 
     def update_context_with_period(self, request, context):
+        print("JJJ GENERIC")
         day_start = quote(datetime.date.today().strftime('%d/%m/%Y'))
         week_start = datetime.date.today() - datetime.timedelta(days=7)
         week_start = quote(week_start.strftime('%d/%m/%Y'))
@@ -141,9 +142,10 @@ class PleaReportView(PleaMixin, BaseReportView):
     report_partial = "partials/plea_report_contents.html"
 
     def prepare_report_context(self, request):
-        # Ensure correct start and end dates for report
 
         qs = UsageStats.objects.all()
+
+        # Ensure correct start and end dates for report
         self.set_start_end_dates(request)
         change_date = datetime.date(day=21, month=5, year=2018)
         late_end_date = True  # Set to true if end date is after 21st May
@@ -159,20 +161,19 @@ class PleaReportView(PleaMixin, BaseReportView):
             if end_date < change_date:
                 late_end_date = False
 
-        if 'selected_court' in request.GET:
-            self.set_selected_court(request.GET['selected_court'])
-            qs = qs.filter(court__court_name=self.selected_court) if self.selected_court is not None else qs
+        self.set_selected_court(request)
+        qs = qs.filter(court__court_name=self.selected_court) if self.selected_court is not None else qs
 
         pre_qs = qs.filter(start_date__lte=change_date)
         post_qs = qs.filter(start_date__gte=change_date)
         pre_totals = pre_qs.aggregate(Sum('online_submissions'),
-                              Sum('online_guilty_pleas'),
-                              Sum('online_not_guilty_pleas'))
+                                      Sum('online_guilty_pleas'),
+                                      Sum('online_not_guilty_pleas'))
         post_totals = post_qs.aggregate(Sum('online_submissions'),
-                              Sum('online_guilty_pleas'),
-                              Sum('online_not_guilty_pleas'),
-                              Sum('online_guilty_attend_court_pleas'),
-                              Sum('online_guilty_no_court_pleas'))
+                                        Sum('online_guilty_pleas'),
+                                        Sum('online_not_guilty_pleas'),
+                                        Sum('online_guilty_attend_court_pleas'),
+                                        Sum('online_guilty_no_court_pleas'))
         totals = qs.aggregate(Sum('online_submissions'),
                               Sum('online_guilty_pleas'),
                               Sum('online_not_guilty_pleas'))
@@ -214,28 +215,60 @@ class PleaReportView(PleaMixin, BaseReportView):
             'selected_court': self.selected_court,
         }
 
-    def post(self, request):
-        # set selected court within this method
-        print(request.POST['court_selector'])
-        selected_court = request.POST['court_selector']
-        # add this value to the url
+    def set_selected_court(self, request):
+        if 'selected_court' in request.GET:
+            try:
+                self.selected_court = request.GET['selected_court'] if request.GET['selected_court'] != "All courts" else None
+            except ValueError:
+                self.selected_court = None
 
-            # read what this has been submitted to, then decode url, add value, print as string,
+    # TODO Try to find a cleaner way of doing this, so that changes in base method are taken into account here.
+    #  e.g. that doesn't work is...
+    # def update_context_with_period(self, request, context):
+    #     if self.selected_court:
+    #         # TODO Group these 4 lines into one separate method in parent class, called by super update_context_with_period
+    #         day_start = quote(datetime.date.today().strftime('%d/%m/%Y'))
+    #         week_start = datetime.date.today() - datetime.timedelta(days=7)
+    #         week_start = quote(week_start.strftime('%d/%m/%Y'))
+    #         month_start = quote(subtract_one_month(datetime.date.today()).strftime('%d/%m/%Y'))
+    #         today = quote(datetime.date.today().strftime('%d/%m/%Y'))
+    #
+    #         # TODO Do this bit separately, instead of doing the normal next bit
+    #         context["day_url"] = build_url("reports:" + resolve(request.path).url_name,
+    #                                        get={'start_date': day_start, 'end_date': today,
+    #                                             'selected_court': self.selected_court})
+    #         context["week_url"] = build_url("reports:" + resolve(request.path).url_name,
+    #                                         get={'start_date': week_start, 'end_date': today,
+    #                                              'selected_court': self.selected_court})
+    #         context["month_url"] = build_url("reports:" + resolve(request.path).url_name,
+    #                                          get={'start_date': month_start, 'end_date': today,
+    #                                               'selected_court': self.selected_court})
+    #     else:
+    #         super(PleaReportView, self).update_context_with_period(request, context)
 
-        # if existing selected_court,
+    def update_context_with_period(self, request, context):
 
-        #   replace it
+        day_start = quote(datetime.date.today().strftime('%d/%m/%Y'))
+        week_start = datetime.date.today() - datetime.timedelta(days=7)
+        week_start = quote(week_start.strftime('%d/%m/%Y'))
+        month_start = quote(subtract_one_month(datetime.date.today()).strftime('%d/%m/%Y'))
+        today = quote(datetime.date.today().strftime('%d/%m/%Y'))
 
-        # else
-
-        #   add it
-
-        # redirect to this page
-        return ('reports:plea_report')
-        # return HttpResponseRedirect("")
-
-    def set_selected_court(self, court):
-        self.selected_court = court if court != "All courts" else None
+        if self.selected_court:
+            context["day_url"] = build_url("reports:" + resolve(request.path).url_name,
+                                           get={'start_date': day_start, 'end_date': today, 'selected_court': self.selected_court})
+            context["week_url"] = build_url("reports:" + resolve(request.path).url_name,
+                                            get={'start_date': week_start, 'end_date': today, 'selected_court': self.selected_court})
+            context["month_url"] = build_url("reports:" + resolve(request.path).url_name,
+                                             get={'start_date': month_start, 'end_date': today, 'selected_court': self.selected_court})
+        else:
+            context["day_url"] = build_url("reports:" + resolve(request.path).url_name,
+                                           get={'start_date': day_start, 'end_date': today})
+            context["week_url"] = build_url("reports:" + resolve(request.path).url_name,
+                                            get={'start_date': week_start, 'end_date': today})
+            context["month_url"] = build_url("reports:" + resolve(request.path).url_name,
+                                             get={'start_date': month_start, 'end_date': today})
+        return context
 
 
 class StageReportView(StageMixin, BaseReportView):

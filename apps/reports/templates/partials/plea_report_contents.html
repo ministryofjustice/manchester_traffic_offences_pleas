@@ -1,16 +1,34 @@
-<form class="form-horizontal" role="form" method="POST">
+  <form class="form-horizontal" role="form" method="GET" action="{{ report_url }}">
     <br>
     {% csrf_token %}
-    <label class="form-label" for="court_selector">Filter by court</label>
+    <div class="form-group">
+    <label class="col-sm-3 control-label"> Filter by court</label>
+      <div class="input-group">
+      <select class="form-control" id="selected_court" name="selected_court"/>
+        <option>All courts</option>
+        {% for court in list_of_courts %}
+<!--TODO So close! It works for court.court_name == "test welsh" - test welsh is selected on opening page. just get selected_court to be compared to court.court_name better-->
+          {% if court.court_name == "{{selected_court}}" %}
+          <option selected="selected">{{court.court_name}}</option>
+          {% else %}
+          <option>{{court.court_name}}</option>
+          {% endif %}
+        {% endfor %}
 
-    <select class="form-control" id="court_selector" name="court_selector">
-      <option>All courts</option>
-      {% for court in list_of_courts %}
-        <option>{{court.court_name}}</option>
-      {% endfor %}
-    </select>
-    <button class="button"> Apply filter</button>
-</form>
+      </select>
+      </div>
+    </div>
+
+    <div class="panel-footer" style="text-align:left">
+      <div class="btn-group" >
+        <button class="button">
+        Apply filter
+        <span class="glyphicon glyphicon-forward"></span></button>
+      </div>
+    </div>
+  </form>
+
+
 
 {% if selected_court %}
 <h3>Plea data for {{selected_court}} in date range ({% if start_date %}{{start_date}}{% endif %} - {% if end_date %}{{ end_date }}{% else %}present{% endif %})</h3>
