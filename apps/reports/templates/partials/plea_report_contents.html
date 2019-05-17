@@ -4,17 +4,11 @@
     <div class="form-group">
     <label class="col-sm-3 control-label"> Filter by court</label>
       <div class="input-group">
-      <select class="form-control" id="selected_court" name="selected_court"/>
+      <select class="form-control" id="selected_court" name="selected_court">
         <option>All courts</option>
         {% for court in list_of_courts %}
-<!--TODO So close! It works for court.court_name == "test welsh" - test welsh is selected on opening page. just get selected_court to be compared to court.court_name better-->
-          {% if court.court_name == "{{selected_court}}" %}
-          <option selected="selected">{{court.court_name}}</option>
-          {% else %}
-          <option>{{court.court_name}}</option>
-          {% endif %}
+          <option value="{{court.court_name}}">{{court.court_name}}</option>
         {% endfor %}
-
       </select>
       </div>
     </div>
