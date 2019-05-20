@@ -7,7 +7,7 @@
           <select class="form-control" id="selected_court" name="selected_court">
             <option>All courts</option>
               {% for court in list_of_courts %}
-                  {% if court.court_name == {{ selected_court }} %}
+                  {% if court.court_name == selected_court %}
                       <option selected="selected">{{ court.court_name }}</option>
                   {% else %}
                       <option>{{court.court_name}}</option>
