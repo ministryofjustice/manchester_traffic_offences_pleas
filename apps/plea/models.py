@@ -476,21 +476,7 @@ class UsageStatsManager(models.Manager):
                     online_guilty_attend_court_pleas=totals['guilty_court'],
                     online_guilty_no_court_pleas=totals['guilty_no_court'])
 
-                start_date += dt.timedelta(7)
-                print(UsageStats.objects.last())
-
-        # while start_date+dt.timedelta(7) <= to_date:
-        #     totals = CourtEmailCount.objects.calculate_aggregates(start_date, 7)
-        #
-        #     UsageStats.objects.create(
-        #         start_date=start_date,
-        #         online_submissions=totals['submissions'],
-        #         online_guilty_pleas=totals['guilty'],
-        #         online_not_guilty_pleas=totals['not_guilty'],
-        #         online_guilty_attend_court_pleas=totals['guilty_court'],
-        #         online_guilty_no_court_pleas=totals['guilty_no_court'])
-        #
-        #     start_date += dt.timedelta(7)
+            start_date += dt.timedelta(7)
 
 
         # while start_date+dt.timedelta(7) <= to_date:
