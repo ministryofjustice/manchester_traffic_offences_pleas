@@ -153,7 +153,9 @@ class PleaReportView(PleaMixin, BaseReportView):
         # Ensure correct start and end dates for report
         self.set_start_end_dates(request)
         change_date = datetime.date(day=21, month=5, year=2018)
+        court_change_date = datetime.date(day=10, month=6, year=2019)
         late_end_date = True  # Set to true if end date is after 21st May
+        court_specific_late_end_date = True  # Set to true if end date is after 10th June
         early_start_date = True
         if self.start_date:
             qs = qs.filter(start_date__gte=self.start_date)
@@ -165,6 +167,8 @@ class PleaReportView(PleaMixin, BaseReportView):
             end_date = self.end_date
             if end_date < change_date:
                 late_end_date = False
+            if end_date < court_change_date:
+                court_specific_late_end_date = False
 
         self.set_selected_court(request)
         qs = qs.filter(court__court_name=self.selected_court) if self.selected_court is not None else qs
@@ -218,6 +222,7 @@ class PleaReportView(PleaMixin, BaseReportView):
             'post_online_pleas': post_online_pleas,
             'list_of_courts': Court.objects.all().order_by('court_name'),
             'selected_court': self.selected_court,
+            'court_specific_late_end_date': court_specific_late_end_date,
         }
 
     def set_selected_court(self, request):
