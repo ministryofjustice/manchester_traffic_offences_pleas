@@ -30,11 +30,24 @@
   </form>
 
 {% if selected_court %}
-<h3>Plea data for {{selected_court}} in date range ({% if start_date %}{{start_date}}{% endif %} - {% if end_date %}{{ end_date }}{% else %}present{% endif %})</h3>
-{% else %}
-<h3>All plea data in date range ({% if start_date %}{{start_date}}{% endif %} - {% if end_date %}{{ end_date }}{% else %}present{% endif %})</h3>
-{% endif %}
+
+<h3>Plea data for {{selected_court}} in date range {% if start_date %}({{start_date}}{% else %}27th May 2019 onwards (May 27, 2019 {% endif %} - {% if end_date %}{{ end_date }}{% else %}present{% endif %})</h3>
 <table>
+        <tr><td>Total submissions</td> <td>{{all_online_submissions}}</td></tr>
+        <tr><td>Total pleas</td> <td>{{all_online_pleas}}</td></tr>
+        <tr><td>Total guilty pleas</td> <td>{{all_online_guilty_pleas}}</td></tr>
+        <tr><td>Total non guilty pleas</td> <td>{{all_online_not_guilty_pleas}}</td></tr>
+        <tr><td>Total guilty attend court pleas</td> <td>{{post_online_guilty_attend_court_pleas}}</td></tr>
+        <tr><td>Total guilty no court pleas</td> <td>{{post_online_guilty_no_court_pleas}}</td></tr>
+</table>
+
+<i>*Please note that court specific information has only been stored since the 27th May 2019. All figures represent the totals from each week and are calculated every Monday.</i>
+
+
+{% else %}
+
+  <h3>All plea data in date range ({% if start_date %}{{start_date}}{% endif %} - {% if end_date %}{{ end_date }}{% else %}present{% endif %})</h3>
+        <table>
         <tr><td>Total submissions</td> <td>{{all_online_submissions}}</td></tr>
         <tr><td>Total pleas</td> <td>{{all_online_pleas}}</td></tr>
         <tr><td>Total guilty pleas</td> <td>{{all_online_guilty_pleas}}</td></tr>
@@ -62,3 +75,7 @@
         </table>
 
         <i>*Please note that the types of guilty plea have only been stored since the 21st May 2018. All figures represent the totals from each week and are calculated every Monday.</i>
+
+
+
+{% endif %}
