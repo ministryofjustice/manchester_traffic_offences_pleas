@@ -143,7 +143,7 @@ class BaseReportView(ReportEntryView):
 
 class PleaReportView(PleaMixin, BaseReportView):
 
-    selected_court = None
+    selected_court = "All courts"
     report_partial = "partials/plea_report_contents.html"
 
     def prepare_report_context(self, request):
@@ -170,7 +170,9 @@ class PleaReportView(PleaMixin, BaseReportView):
             if end_date < court_change_date:
                 court_specific_late_end_date = False
 
-        self.set_selected_court(request)
+        if 'selected_court' in request.GET:
+                self.selected_court = request.GET['selected_court']
+            
         qs = qs.filter(court__court_name=self.selected_court) if self.selected_court is not None else qs
 
         pre_qs = qs.filter(start_date__lte=change_date)
@@ -224,14 +226,6 @@ class PleaReportView(PleaMixin, BaseReportView):
             'selected_court': self.selected_court,
             'court_specific_late_end_date': court_specific_late_end_date,
         }
-
-    def set_selected_court(self, request):
-        if 'selected_court' in request.GET:
-            try:
-                self.selected_court = request.GET['selected_court'] if request.GET['selected_court'] != "All courts" \
-                    else None
-            except ValueError:
-                self.selected_court = None
 
     def update_context_with_period(self, request, context):
         if self.selected_court:
