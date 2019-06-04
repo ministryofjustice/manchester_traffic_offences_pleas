@@ -29,7 +29,7 @@
     <input hidden type="text" class="form-control" id="end_date" value="{{ end_date|date:'d/m/Y' }}" name="end_date"/>
   </form>
 
-{% if selected_court %}
+{% if selected_court != "All courts" %}
 
     {% if court_specific_late_end_date %}
     <h3>Plea data for {{selected_court}} in date range {% if start_date %}({{start_date}}{% else %}10th June 2019 onwards (June 10, 2019 {% endif %} - {% if end_date %}{{ end_date }}{% else %}present{% endif %})</h3>
