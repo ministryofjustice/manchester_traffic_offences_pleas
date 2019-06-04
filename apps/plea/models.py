@@ -462,7 +462,7 @@ class UsageStatsManager(models.Manager):
         else:
             start_date = last_entry.start_date + dt.timedelta(7)
 
-        court_list = Court.objects.all()
+        court_list = Court.objects.filter(test_mode=False)
 
         while start_date + dt.timedelta(7) <= to_date:
             for c in court_list:
