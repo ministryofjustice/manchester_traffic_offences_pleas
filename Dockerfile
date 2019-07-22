@@ -12,6 +12,7 @@ RUN apt-get -y update && $APP_HOME/apt/production.sh
 COPY requirements.txt $APP_HOME
 COPY requirements/ $APP_HOME/requirements/
 RUN pip install -r requirements.txt
+RUN pip install http://initd.org/psycopg/upload/psycopg2-2.7.3.1.dev0/psycopg2-2.7.3.1.dev0-cp36-cp36m-manylinux1_x86_64.whl
 
 RUN mkdir /user_data
 RUN mkdir /user_data/.gnupg
