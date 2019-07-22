@@ -5,7 +5,7 @@
 boto3==1.4.4
 
 Django==1.11.22
-psycopg2==2.7.1
+psycopg2==2.8.3
 python-dateutil==2.6.0
 python-gnupg==0.4.4
 pycurl==7.43.0
