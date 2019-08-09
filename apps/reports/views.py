@@ -173,7 +173,8 @@ class PleaReportView(PleaMixin, BaseReportView):
         if 'selected_court' in request.GET:
                 self.selected_court = request.GET['selected_court']
 
-        qs = qs.filter(court__court_name=self.selected_court) if self.selected_court is not None else qs
+        if self.selected_court != "All courts":
+            qs = qs.filter(court__court_name=self.selected_court)
 
         pre_qs = qs.filter(start_date__lte=change_date)
         post_qs = qs.filter(start_date__gte=change_date)
