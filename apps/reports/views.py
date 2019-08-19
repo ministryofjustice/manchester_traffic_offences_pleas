@@ -155,7 +155,7 @@ class PleaReportView(PleaMixin, BaseReportView):
         change_date = datetime.date(day=21, month=5, year=2018)
         court_change_date = datetime.date(day=10, month=6, year=2019)
         late_end_date = True  # Set to true if end date is after 21st May
-        court_specific_late_end_date = True  # Set to true if end date is after 10th June
+        court_specific_late_end_date = True  # Set to true if end date is after 19th August 
         early_start_date = True
         if self.start_date:
             qs = qs.filter(start_date__gte=self.start_date)
