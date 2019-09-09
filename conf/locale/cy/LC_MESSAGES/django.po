@@ -751,6 +751,10 @@ msgstr "Fel y mae wedi'i ysgrifennu ar yr hysbysiad a anfonwyd atoch"
 msgid "Date of birth"
 msgstr "Dyddiad geni"
 
+#: apps/plea/forms.py:94
+msgid "For example, 27 3 2007 <br />DD MM YY"
+msgstr "Er enghraifft, 27 3 2007 <br />DD MM YY"
+
 #: apps/plea/forms.py:102
 msgid "Single Justice Procedure Notice"
 msgstr "Hysbysiad Gweithdrefn Un Ynad"
@@ -2732,9 +2736,6 @@ msgstr ""
 msgid "You have entered some information"
 msgstr "Rydych wedi rhoi rhywfaint o wybodaeth"
 
-#: make_a_plea/templates/base_form.html:12
-msgid "See highlighted errors below."
-msgstr "Gweler y gwallau wedi'u hamlygu isod."
 
 #: make_a_plea/templates/base_user_email.html:225
 msgid "Terms and Conditions and privacy policy"
