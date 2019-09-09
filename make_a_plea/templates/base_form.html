@@ -9,8 +9,6 @@
         {% block errors_summary %}
         <h1>{% blocktrans %}You need to fix the errors on this page before continuing.{% endblocktrans %}</h1>
 
-        <p>{% blocktrans %}See highlighted errors below.{% endblocktrans %}</p>
-
         <ul>
         {% for field in form %}
             {% if field.errors %}
