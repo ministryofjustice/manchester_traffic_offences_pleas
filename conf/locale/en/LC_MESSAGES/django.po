@@ -746,6 +746,10 @@ msgstr "As written on the notice we sent you"
 msgid "Date of birth"
 msgstr "Date of birth"
 
+#: apps/plea/forms.py:94
+msgid "For example, 27 3 2007 <br />DD MM YY"
+msgstr "For example, 27 3 2007 <br />DD MM YY"
+
 #: apps/plea/forms.py:102
 msgid "Single Justice Procedure Notice"
 msgstr "Single Justice Procedure Notice"
@@ -2688,9 +2692,6 @@ msgstr "All content is available under the <a href=\"https://www.nationalarchive
 msgid "You have entered some information"
 msgstr "You have entered some information"
 
-#: make_a_plea/templates/base_form.html:12
-msgid "See highlighted errors below."
-msgstr "See highlighted errors below."
 
 #: make_a_plea/templates/base_user_email.html:225
 msgid "Terms and Conditions and privacy policy"
