@@ -2,21 +2,19 @@
 from __future__ import unicode_literals
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.shortcuts import render
 from django.views import View
 from django.urls import reverse, reverse_lazy
 from django.core.urlresolvers import resolve
 from urllib import quote, urlencode
-from ..plea.models import UsageStats, CaseTracker
+from ..plea.models import UsageStats, Court
 from ..feedback.models import UserRating
 from .charts import RequiredStagesChart, FinancialSituationChart,\
     HardshipChart, AllStagesDropoutsChart, IncomeSourcesDropoutsChart
-from django.db.models import Value, Sum
+from django.db.models import Sum
 import datetime
 from .charts import safe_percentage
-# Create your views here.
 
 
 def build_url(*args, **kwargs):
@@ -25,6 +23,7 @@ def build_url(*args, **kwargs):
     if get:
         url += '?' + urlencode(get)
     return url
+
 
 @login_required(login_url=settings.ADMIN_LOGIN_URL)
 def index(request):
@@ -99,15 +98,23 @@ class BaseReportView(ReportEntryView):
     start_date = None
     end_date = None
 
-    def update_context_with_period(self, request, context):
+    @staticmethod
+    def set_dates():
         day_start = quote(datetime.date.today().strftime('%d/%m/%Y'))
         week_start = datetime.date.today() - datetime.timedelta(days=7)
         week_start = quote(week_start.strftime('%d/%m/%Y'))
         month_start = quote(subtract_one_month(datetime.date.today()).strftime('%d/%m/%Y'))
         today = quote(datetime.date.today().strftime('%d/%m/%Y'))
-        context["day_url"] = build_url("reports:" + resolve(request.path).url_name, get={'start_date':day_start, 'end_date':today})
-        context["week_url"] = build_url("reports:" + resolve(request.path).url_name, get={'start_date':week_start, 'end_date':today})
-        context["month_url"] = build_url("reports:" + resolve(request.path).url_name, get={'start_date':month_start, 'end_date':today})
+        return day_start, week_start, month_start, today
+
+    def update_context_with_period(self, request, context):
+        day_start, week_start, month_start, today = self.set_dates()
+        context["day_url"] = build_url("reports:" + resolve(request.path).url_name,
+                                       get={'start_date': day_start, 'end_date': today})
+        context["week_url"] = build_url("reports:" + resolve(request.path).url_name,
+                                        get={'start_date': week_start, 'end_date': today})
+        context["month_url"] = build_url("reports:" + resolve(request.path).url_name,
+                                         get={'start_date': month_start, 'end_date': today})
         return context
 
     def get_context_data(self, request):
@@ -136,14 +143,19 @@ class BaseReportView(ReportEntryView):
 
 class PleaReportView(PleaMixin, BaseReportView):
 
+    selected_court = "All courts"
     report_partial = "partials/plea_report_contents.html"
 
     def prepare_report_context(self, request):
+
+        qs = UsageStats.objects.all()
+
         # Ensure correct start and end dates for report
         self.set_start_end_dates(request)
-        change_date = datetime.date(day=21,month=5,year=2018)
-        qs = UsageStats.objects.all()
+        change_date = datetime.date(day=21, month=5, year=2018)
+        court_change_date = datetime.date(day=10, month=6, year=2019)
         late_end_date = True  # Set to true if end date is after 21st May
+        court_specific_late_end_date = True  # Set to true if end date is after 16th September
         early_start_date = True
         if self.start_date:
             qs = qs.filter(start_date__gte=self.start_date)
@@ -155,16 +167,25 @@ class PleaReportView(PleaMixin, BaseReportView):
             end_date = self.end_date
             if end_date < change_date:
                 late_end_date = False
+            if end_date < court_change_date:
+                court_specific_late_end_date = False
+
+        if 'selected_court' in request.GET:
+                self.selected_court = request.GET['selected_court']
+
+        if self.selected_court != "All courts":
+            qs = qs.filter(court__court_name=self.selected_court)
+
         pre_qs = qs.filter(start_date__lte=change_date)
         post_qs = qs.filter(start_date__gte=change_date)
         pre_totals = pre_qs.aggregate(Sum('online_submissions'),
-                              Sum('online_guilty_pleas'),
-                              Sum('online_not_guilty_pleas'))
+                                      Sum('online_guilty_pleas'),
+                                      Sum('online_not_guilty_pleas'))
         post_totals = post_qs.aggregate(Sum('online_submissions'),
-                              Sum('online_guilty_pleas'),
-                              Sum('online_not_guilty_pleas'),
-                              Sum('online_guilty_attend_court_pleas'),
-                              Sum('online_guilty_no_court_pleas'))
+                                        Sum('online_guilty_pleas'),
+                                        Sum('online_not_guilty_pleas'),
+                                        Sum('online_guilty_attend_court_pleas'),
+                                        Sum('online_guilty_no_court_pleas'))
         totals = qs.aggregate(Sum('online_submissions'),
                               Sum('online_guilty_pleas'),
                               Sum('online_not_guilty_pleas'))
@@ -182,6 +203,7 @@ class PleaReportView(PleaMixin, BaseReportView):
         post_online_guilty_attend_court_pleas = post_totals["online_guilty_attend_court_pleas__sum"] or 0
         post_online_guilty_no_court_pleas = post_totals["online_guilty_no_court_pleas__sum"] or 0
         post_online_pleas = post_online_not_guilty_pleas + post_online_guilty_pleas
+
         return {
             'start_date': self.start_date,
             'end_date': self.end_date,
@@ -201,7 +223,26 @@ class PleaReportView(PleaMixin, BaseReportView):
             'post_online_guilty_attend_court_pleas': post_online_guilty_attend_court_pleas,
             'post_online_guilty_no_court_pleas': post_online_guilty_no_court_pleas,
             'post_online_pleas': post_online_pleas,
+            'list_of_courts': Court.objects.all().order_by('court_name'),
+            'selected_court': self.selected_court,
+            'court_specific_late_end_date': court_specific_late_end_date,
         }
+
+    def update_context_with_period(self, request, context):
+        if self.selected_court:
+            day_start, week_start, month_start, today = self.set_dates()
+            context["day_url"] = build_url("reports:" + resolve(request.path).url_name,
+                                           get={'start_date': day_start, 'end_date': today,
+                                                'selected_court': self.selected_court})
+            context["week_url"] = build_url("reports:" + resolve(request.path).url_name,
+                                            get={'start_date': week_start, 'end_date': today,
+                                                 'selected_court': self.selected_court})
+            context["month_url"] = build_url("reports:" + resolve(request.path).url_name,
+                                             get={'start_date': month_start, 'end_date': today,
+                                                  'selected_court': self.selected_court})
+        else:
+            context = super(PleaReportView, self).update_context_with_period(request, context)
+        return context
 
 
 class StageReportView(StageMixin, BaseReportView):
