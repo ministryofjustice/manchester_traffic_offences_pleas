@@ -1,4 +1,60 @@
-<h3>All plea data in date range ({% if start_date %}{{start_date}}{% endif %} - {% if end_date %}{{ end_date }}{% else %}present{% endif %})</h3>
+  <form class="form-horizontal" role="form" method="GET" action="{{ report_url }}">
+    <br>
+    {% csrf_token %}
+    <div class="form-group">
+    <label class="col-sm-3 control-label"> Filter by court</label>
+      <div class="input-group">
+          <select class="form-control" id="selected_court" name="selected_court">
+            <option>All courts</option>
+              {% for court in list_of_courts %}
+                  {% if court.court_name == selected_court %}
+                      <option selected="selected">{{ court.court_name }}</option>
+                  {% else %}
+                      <option>{{court.court_name}}</option>
+                  {% endif %}
+              {% endfor %}
+          </select>
+      </div>
+    </div>
+
+    <div class="panel-footer" style="text-align:left">
+      <div class="btn-group" >
+        <button class="button">
+        Apply filter
+        <span class="glyphicon glyphicon-forward"></span></button>
+      </div>
+    </div>
+
+    <input hidden type="text" class="form-control" id="start_date" value="{{ start_date|date:'d/m/Y' }}" name="start_date"/>
+    <input hidden type="text" class="form-control" id="end_date" value="{{ end_date|date:'d/m/Y' }}" name="end_date"/>
+  </form>
+
+{% if selected_court != "All courts" %}
+
+    {% if court_specific_late_end_date %}
+    <h3>Plea data for {{selected_court}} in date range {% if start_date %}({{start_date}}{% else %}16th September 2019 onwards (September 16, 2019 {% endif %} - {% if end_date %}{{ end_date }}{% else %}present{% endif %})</h3>
+
+
+    <table>
+            <tr><td>Total submissions</td> <td>{{all_online_submissions}}</td></tr>
+            <tr><td>Total pleas</td> <td>{{all_online_pleas}}</td></tr>
+            <tr><td>Total guilty pleas</td> <td>{{all_online_guilty_pleas}}</td></tr>
+            <tr><td>Total non guilty pleas</td> <td>{{all_online_not_guilty_pleas}}</td></tr>
+            <tr><td>Total guilty attend court pleas</td> <td>{{post_online_guilty_attend_court_pleas}}</td></tr>
+            <tr><td>Total guilty no court pleas</td> <td>{{post_online_guilty_no_court_pleas}}</td></tr>
+    </table>
+
+    {% else %}
+    <h3>Plea data for {{selected_court}} in date range ({% if start_date %}{{start_date}}{% endif %} - {% if end_date %}{{ end_date }}{% else %}present{% endif %})</h3>
+
+    {% endif %}
+
+    <i>*Please note that court specific information has only been stored since the 16th September 2019. All figures represent the totals from each week and are calculated every Monday.</i>
+
+
+{% else %}
+
+  <h3>All plea data in date range ({% if start_date %}{{start_date}}{% endif %} - {% if end_date %}{{ end_date }}{% else %}present{% endif %})</h3>
         <table>
         <tr><td>Total submissions</td> <td>{{all_online_submissions}}</td></tr>
         <tr><td>Total pleas</td> <td>{{all_online_pleas}}</td></tr>
@@ -27,3 +83,7 @@
         </table>
 
         <i>*Please note that the types of guilty plea have only been stored since the 21st May 2018. All figures represent the totals from each week and are calculated every Monday.</i>
+
+
+
+{% endif %}
