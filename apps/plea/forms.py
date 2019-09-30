@@ -91,7 +91,7 @@ class AuthForm(BaseStageForm):
         required=True,
         validators=[is_date_in_past],
         label=_("Date of birth"),
-        help_text=mark_safe_lazy(_("For example, 27 3 2007 <br />DD MM YY")),
+        help_text=mark_safe_lazy(_("For example, 27 03 2007 <br />DD MM YY")),
         error_messages={
             "required": ERROR_MESSAGES["DATE_OF_BIRTH_REQUIRED"],
             "invalid": ERROR_MESSAGES["DATE_OF_BIRTH_INVALID"],
