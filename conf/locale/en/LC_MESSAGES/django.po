@@ -747,8 +747,8 @@ msgid "Date of birth"
 msgstr "Date of birth"
 
 #: apps/plea/forms.py:94
-msgid "For example, 27 3 2007 <br />DD MM YY"
-msgstr "For example, 27 3 2007 <br />DD MM YY"
+msgid "For example, 27 03 2007 <br />DD MM YY"
+msgstr "For example, 27 03 2007 <br />DD MM YY"
 
 #: apps/plea/forms.py:103
 msgid "Single Justice Procedure Notice"
