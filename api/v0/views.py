@@ -5,6 +5,8 @@ views
 """
 import datetime as dt
 
+from django.db.models import Sum
+
 from django.core.exceptions import ValidationError
 
 from rest_framework.decorators import detail_route, list_route
@@ -63,6 +65,12 @@ class PublicStatsViewSet(viewsets.ViewSet):
 
         return Response(stats)
 
+    def aggregate_field(self, query_to_aggregate, field_name):
+
+        total = query_to_aggregate.aggregate(Sum(field_name))
+
+        return total
+
     @list_route()
     def days_from_hearing(self, request):
         stats = CourtEmailCount.objects.get_stats_days_from_hearing()
@@ -92,7 +100,33 @@ class PublicStatsViewSet(viewsets.ViewSet):
 
         stats = UsageStats.objects.last_six_months()
 
-        serializer = UsageStatsSerializer(stats, many=True)
+        start_dates = []
+
+        for n in stats:
+            start_dates.append(n.start_date)
+
+        distinct_start_dates = set(start_dates)
+
+        stats_without_court = []
+
+        for date in distinct_start_dates:
+
+            weekly_stats = stats.filter(start_date=date)
+            week_dict = {'online_submissions': self.aggregate_field(weekly_stats, 'online_submissions')['online_submissions__sum'],
+                         'online_guilty_pleas': self.aggregate_field(weekly_stats, 'online_guilty_pleas')['online_guilty_pleas__sum'],
+                         'online_not_guilty_pleas': self.aggregate_field(weekly_stats, 'online_not_guilty_pleas')['online_not_guilty_pleas__sum'],
+                         'online_guilty_attend_court_pleas': self.aggregate_field(weekly_stats, 'online_guilty_attend_court_pleas')['online_guilty_attend_court_pleas__sum'],
+                         'online_guilty_no_court_pleas': self.aggregate_field(weekly_stats, 'online_guilty_no_court_pleas')['online_guilty_no_court_pleas__sum'],
+                         'postal_requisitions': self.aggregate_field(weekly_stats, 'postal_requisitions')['postal_requisitions__sum'],
+                         'postal_responses': self.aggregate_field(weekly_stats, 'postal_responses')['postal_responses__sum'],
+                         'start_date': date,
+                         'id': weekly_stats[:1].get().id}
+
+            stats_without_court.append(week_dict)
+
+        stats_without_court_ordered = sorted(stats_without_court, key=lambda k: k['start_date'])
+
+        serializer = UsageStatsSerializer(stats_without_court_ordered, many=True)
 
         return Response(serializer.data)
 
