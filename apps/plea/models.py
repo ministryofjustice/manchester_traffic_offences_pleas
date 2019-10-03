@@ -501,13 +501,13 @@ class UsageStatsManager(models.Manager):
 
         self.filter(start_date__gte=start_date)
 
-        stats_per_week= self.values('start_date').annotate(Sum('online_submissions'),
-                                           Sum('online_guilty_pleas'),
-                                           Sum('online_not_guilty_pleas'),
-                                           Sum('online_guilty_attend_court_pleas'),
-                                           Sum('online_guilty_no_court_pleas'),
-                                           Sum('postal_requisitions'),
-                                           Sum('postal_responses'))
+        stats_per_week = self.values('start_date').annotate(online_submissions=Sum('online_submissions'),
+                                                           online_guilty_pleas=Sum('online_guilty_pleas'),
+                                                           online_not_guilty_pleas=Sum('online_not_guilty_pleas'),
+                                                           online_guilty_attend_court_pleas=Sum('online_guilty_attend_court_pleas'),
+                                                           online_guilty_no_court_pleas=Sum('online_guilty_no_court_pleas'),
+                                                           postal_requisitions=Sum('postal_requisitions'),
+                                                           postal_responses=Sum('postal_responses'))
 
         return stats_per_week
 
