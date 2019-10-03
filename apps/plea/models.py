@@ -494,13 +494,22 @@ class UsageStatsManager(models.Manager):
 
     def last_six_months(self):
         """
-        Get the usage data for the last 6 months
+        Get the usage data for the last 6 months and usage data per week
         """
 
         start_date = dt.date.today() - dt.timedelta(175)
 
-        return self.filter(start_date__gte=start_date)
+        self.filter(start_date__gte=start_date)
 
+        stats_per_week= self.values('start_date').annotate(Sum('online_submissions'),
+                                           Sum('online_guilty_pleas'),
+                                           Sum('online_not_guilty_pleas'),
+                                           Sum('online_guilty_attend_court_pleas'),
+                                           Sum('online_guilty_no_court_pleas'),
+                                           Sum('postal_requisitions'),
+                                           Sum('postal_responses'))
+
+        return stats_per_week
 
 class UsageStats(models.Model):
     """
