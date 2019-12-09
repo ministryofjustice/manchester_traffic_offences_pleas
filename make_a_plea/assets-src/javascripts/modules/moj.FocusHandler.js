@@ -25,7 +25,7 @@
       /**
        * Set focus to the relevant field when clicking an error message in the summary
        */
-      $('.error-summary [href^=#section_]').on('click', function() {
+      $('.error-summary [href^="#section_"]').on('click', function() {
         var $target = $($(this).attr('href')).find('input, textarea, select').eq(0);
         setTimeout(function() { $target.focus(); }, 250);
       });
