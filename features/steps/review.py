@@ -42,6 +42,13 @@ def step_impl(context):
     assert 'Your URN: {}'.format(persona['urn']) in text
 
 
+@then(u'police should receive confirmation email')
+def step_impl(context):
+    context.execute_steps(u'''
+        Then I should receive an email at "police@example.com" with subject "POLICE ONLINE PLEA: 00/FF/12345/60 <SJP> SMITH John"
+    ''')
+
+
 @then(u'the court should receive my plea email with attached details')
 def step_impl(context):
     persona = context.persona
