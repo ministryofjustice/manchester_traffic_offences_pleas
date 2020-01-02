@@ -70,20 +70,20 @@
   pk: 3
   fields: {court_code: null, region_code: '00', court_name: test both, court_address: test,
     court_telephone: '123', court_email: court@example.com, court_language: en, submission_email: court@example.com,
-    court_receipt_email: null, local_receipt_email: null, plp_email: null, enabled: true,
+    court_receipt_email: null, local_receipt_email: null, plp_email: police@example.com, enabled: true,
     test_mode: true, notice_types: both, validate_urn: true, display_case_data: true,
     enforcement_email: null, enforcement_telephone: null}
 - model: plea.court
   pk: 4
   fields: {court_code: null, region_code: '01', court_name: test sjp, court_address: test,
     court_telephone: '123', court_email: court@example.com, court_language: en, submission_email: court@example.com,
-    court_receipt_email: null, local_receipt_email: null, plp_email: null, enabled: true,
+    court_receipt_email: null, local_receipt_email: null, plp_email: police@example.com, enabled: true,
     test_mode: true, notice_types: sjp, validate_urn: true, display_case_data: true,
     enforcement_email: null, enforcement_telephone: null}
 - model: plea.court
   pk: 5
   fields: {court_code: null, region_code: '03', court_name: test welsh, court_address: test,
     court_telephone: '123', court_email: court@example.com, court_language: cy, submission_email: court@example.com,
-    court_receipt_email: null, local_receipt_email: null, plp_email: null, enabled: true,
+    court_receipt_email: null, local_receipt_email: null, plp_email: police@example.com, enabled: true,
     test_mode: true, notice_types: both, validate_urn: true, display_case_data: true,
     enforcement_email: null, enforcement_telephone: null}
