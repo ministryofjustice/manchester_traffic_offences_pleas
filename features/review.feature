@@ -17,3 +17,4 @@ Feature: Review and submit a plea
     When I confirm and submit my plea
     Then I should receive the confirmation email
     And the court should receive my plea email with attached details
+    And police should receive confirmation email
