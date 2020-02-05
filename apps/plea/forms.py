@@ -1013,6 +1013,25 @@ class BasePleaForm(SplitStageForm):
         error_messages={
             "required": ERROR_MESSAGES["NOT_GUILTY_REQUIRED"]})
 
+    interpreter_needed_guilty = forms.TypedChoiceField(
+        widget=DSRadioSelect,
+        required=True,
+        choices=YESNO_CHOICES["Oes/Nac oes"],
+        coerce=to_bool,
+        label=_("Do you need an interpreter in court?"),
+        error_messages={
+            "required": ERROR_MESSAGES["INTERPRETER_NEEDED_REQUIRED"]})
+
+    interpreter_language_guilty = forms.CharField(
+        widget=forms.TextInput(attrs={
+            "class": "form-control"}),
+        max_length=100,
+        required=True,
+        label="",
+        help_text=_("If yes, tell us which language (include sign language):"),
+        error_messages={
+            "required": ERROR_MESSAGES["INTERPRETER_LANGUAGE_REQUIRED"]})
+
     interpreter_needed = forms.TypedChoiceField(
         widget=DSRadioSelect,
         required=True,
@@ -1132,6 +1151,8 @@ class PleaForm(BasePleaForm):
 
     dependencies = OrderedDict([
         ("not_guilty_extra", {"field": "guilty", "value": "not_guilty"}),
+        ("interpreter_needed_guilty", {"field": "guilty", "value": "not_guilty"}),
+        ("interpreter_language_guilty", {"field": "guilty", "value": "not_guilty"}),
         ("interpreter_needed", {"field": "guilty", "value": "not_guilty"}),
         ("interpreter_language", {"field": "interpreter_needed", "value": "True"}),
         ("disagree_with_evidence", {"field": "guilty", "value": "not_guilty"}),
@@ -1164,6 +1185,8 @@ class SJPPleaForm(BasePleaForm):
         ("sjp_interpreter_needed", {"field": "guilty", "value": "guilty_court"}),
         ("sjp_interpreter_language", {"field": "sjp_interpreter_needed", "value": "True"}),
         ("not_guilty_extra", {"field": "guilty", "value": "not_guilty"}),
+        ("interpreter_needed_guilty", {"field": "guilty", "value": "not_guilty"}),
+        ("interpreter_language_guilty", {"field": "guilty", "value": "not_guilty"}),
         ("interpreter_needed", {"field": "guilty", "value": "not_guilty"}),
         ("interpreter_language", {"field": "interpreter_needed", "value": "True"}),
         ("disagree_with_evidence", {"field": "guilty", "value": "not_guilty"}),
@@ -1221,6 +1244,8 @@ class SJPPleaForm(BasePleaForm):
             "sjp_interpreter_language",
             "guilty_extra",
             "not_guilty_extra",
+            "interpreter_needed_guilty",
+            "interpreter_language_guilty",
             "interpreter_needed",
             "interpreter_language",
             "disagree_with_evidence",
