@@ -24,6 +24,17 @@
           else {
             $(this).closest('label').removeClass('selected');
           }
+          if ($('#id_guilty_not_guilty').closest('label').hasClass('selected')) {
+            $('section[data-conditional-value="^guilty_court$"]').find('input[type="radio"]').prop('checked', false);
+            $('section[data-conditional-value="^guilty_court$"]').find('label').removeClass('selected')
+            if ($(this).attr('id') == 'id_interpreter_needed_true') {
+              $('section[data-conditional-value="^not_guilty$"]').find('label[for="id_interpreter_needed_true"]').addClass('selected');
+              $('section[data-conditional-value="^not_guilty$"]').find('input[id="id_interpreter_needed_true"]').prop('checked', true);
+            } else if ($(this).attr('id') == 'id_interpreter_needed_false') {
+              $('section[data-conditional-value="^not_guilty$"]').find('label[for="id_interpreter_needed_false"]').addClass('selected');
+              $('section[data-conditional-value="^not_guilty$"]').find('input[id="id_interpreter_needed_false"]').prop('checked', true);
+            }
+          }
         },
         'focus': function() {
           $(this).closest('label').addClass('focused');
