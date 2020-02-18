@@ -86,20 +86,20 @@
                     {% else %}
 
                         {% if case.plea_made_by == "Defendant" %}
-                            {% if form.interpreter_needed %}
-                                {% radio_field form.interpreter_needed wide=True hide_optional=True inline=True %}
+                            {% if form.interpreter_needed_guilty_court %}
+                                {% radio_field form.interpreter_needed_guilty_court wide=True hide_optional=True inline=True %}
                             {% endif %}
                         {% endif %}
 
                     {% if case.plea_made_by == "Company representative" %}
-                            {% if form.interpreter_needed %}
-                                {% radio_field form.interpreter_needed wide=True hide_optional=True inline=True label=_("Does your company representative need an interpreter in court?") %}
+                            {% if form.interpreter_needed_guilty_court %}
+                                {% radio_field form.interpreter_needed_guilty_court wide=True hide_optional=True inline=True label=_("Does your company representative need an interpreter in court?") %}
                             {% endif %}
                     {% endif %}
 
-                        {% if form.interpreter_needed %}
-                        <div class="move-up" data-conditional="interpreter_needed" data-conditional-value="True">
-                            {% std_field form.interpreter_language wide=True hide_optional=True %}
+                        {% if form.interpreter_needed_guilty_court %}
+                        <div class="move-up" data-conditional="interpreter_needed_guilty_court" data-conditional-value="True">
+                            {% std_field form.interpreter_language_guilty_court wide=True hide_optional=True %}
                         </div>
                         {% endif %}
                     {% endif %}
