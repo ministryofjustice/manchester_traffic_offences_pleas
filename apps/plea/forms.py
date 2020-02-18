@@ -31,7 +31,7 @@ from .validators import (
 
 def reorder_fields(fields, order):
     """Convert dict to OrderedDictionary, sorted and filtered by order"""
-    for key, v in fields.items():
+    for key, v in fields.copy().items():
         if key not in order:
             del fields[key]
 
@@ -1032,6 +1032,25 @@ class BasePleaForm(SplitStageForm):
         error_messages={
             "required": ERROR_MESSAGES["INTERPRETER_LANGUAGE_REQUIRED"]})
 
+    interpreter_needed_guilty_court = forms.TypedChoiceField(
+        widget=DSRadioSelect,
+        required=True,
+        choices=YESNO_CHOICES["Oes/Nac oes"],
+        coerce=to_bool,
+        label=_("Do you need an interpreter in court?"),
+        error_messages={
+            "required": ERROR_MESSAGES["INTERPRETER_NEEDED_REQUIRED"]})
+
+    interpreter_language_guilty_court = forms.CharField(
+        widget=forms.TextInput(attrs={
+            "class": "form-control"}),
+        max_length=100,
+        required=True,
+        label="",
+        help_text=_("If yes, tell us which language (include sign language):"),
+        error_messages={
+            "required": ERROR_MESSAGES["INTERPRETER_LANGUAGE_REQUIRED"]})
+
     hearing_language = forms.TypedChoiceField(
         widget=DSRadioSelect,
         required=True,
@@ -1134,6 +1153,8 @@ class PleaForm(BasePleaForm):
         ("not_guilty_extra", {"field": "guilty", "value": "not_guilty"}),
         ("interpreter_needed", {"field": "guilty", "value": "not_guilty"}),
         ("interpreter_language", {"field": "interpreter_needed", "value": "True"}),
+        ("interpreter_needed_guilty_court", {"field": "guilty", "value": "guilty_court"}),
+        ("interpreter_language_guilty_court", {"field": "interpreter_needed_guilty_court", "value": "True"}),
         ("disagree_with_evidence", {"field": "guilty", "value": "not_guilty"}),
         ("disagree_with_evidence_details", {"field": "disagree_with_evidence", "value": "True"}),
         ("witness_needed", {"field": "guilty", "value": "not_guilty"}),
