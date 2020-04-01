@@ -2757,6 +2757,14 @@ msgid "Use this service to plead guilty or not guilty to each offence you're cha
 msgstr "Defnyddiwch y gwasanaeth hwn i bledio'n euog neu'n ddieuog i bob trosedd rydych wedi cael eich cyhuddo ohono."
 
 #: make_a_plea/templates/start.html:20
+msgid "Please note that due to the COVID-19 pandemic HMCTS has had to reduce it service and your case now will be delayed and considered at a date in the future. You can find further information on the current position affecting courts business on the gov.uk website. We apologise for any inconvenience that this may cause you."
+msgstr "Dalier sylw oherwydd y pandemic COVID-19 mae GLlTEM wedi gorfod lleihau ei wasanaethau a bellach bydd eich achos yn cael ei ohirio i ddyddiad i’w bennu yn y dyfodol. Gallwch ddod o hyd i fwy o wybodaeth am y sefyllfa bresennol a sut mae’n effeithio gwaith y llysoedd ar wefan gov.uk. Ymddiheurwn am unrhyw anghyfleustra y mae hyn yn ei beri i chi. Dalier sylw mai dim ond am 21 diwrnod yn dilyn y dyddiad postio ar eich rhybudd y gallwch ddefnyddio y gwasanaeth Gwneud eich Ple."
+
+#: make_a_plea/templates/start.html:20
+msgid "Please note that you can only use the Make a Plea service for 21 days from your posting date on your notice."
+msgstr "Dalier sylw mai dim ond am 21 diwrnod yn dilyn y dyddiad postio ar eich rhybudd y gallwch ddefnyddio y gwasanaeth Gwneud eich Ple."
+
+#: make_a_plea/templates/start.html:20
 msgid "You'll need to:"
 msgstr "Bydd angen i chi:"
 
