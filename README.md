@@ -14,7 +14,7 @@ Clone the repository:
 ### To run a dev environment locally:
 
 You'll need:
- - python 2.7
+ - python 3.6
  - postgres database with hstore
  - rabbit-mq for celery tasks
 
