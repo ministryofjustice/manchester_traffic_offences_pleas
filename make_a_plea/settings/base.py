@@ -340,7 +340,7 @@ FTP_SERVER_IP = os.environ.get("FTP_SERVER_IP", "")
 
 AXES_COOLOFF_TIME = 1
 
-DATA_RETENTION_PERIOD = int(os.environ.get("DATA_RETENTION_PERIOD", "140"))
+DATA_RETENTION_PERIOD = int(os.environ.get("DATA_RETENTION_PERIOD", "210"))
 
 RAVEN_CONFIG = {
     'dsn': os.environ.get("SENTRY_DSN", ""),
