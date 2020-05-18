@@ -1,5 +1,5 @@
 language: python
-dist: trusty
+dist: xenial
 addons:
   chrome: stable
 python:
@@ -13,7 +13,7 @@ before_install:
   - sudo apt-get -qq update
   - sudo ./apt/production.sh
   - sudo ./apt/testing.sh
-  - wget -N https://chromedriver.storage.googleapis.com/2.36/chromedriver_linux64.zip -P ~/
+  - wget -N https://chromedriver.storage.googleapis.com/81.0.4044.138/chromedriver_linux64.zip -P ~/
   - unzip ~/chromedriver_linux64.zip -d ~/
   - sudo mv ~/chromedriver /usr/local/bin/chromedriver
 install:
