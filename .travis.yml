@@ -2,13 +2,15 @@ language: python
 dist: xenial
 addons:
   chrome: stable
+  apt:
+    packages:
+      - rabbitmq
 python:
   - "3.6"
 notifications:
   email: false
 services:
   - postgresql
-  - rabbitmq
 before_install:
   - sudo apt-get -qq update
   - sudo ./apt/production.sh
