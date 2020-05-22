@@ -4,7 +4,7 @@ addons:
   chrome: stable
   apt:
     packages:
-      - rabbitmq
+      - rabbitmq-server
 python:
   - "3.6"
 notifications:
