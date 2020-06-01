@@ -46,4 +46,4 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {
 #
 SECRET_KEY = os.environ.get("SECRET_KEY", "46c4b7f21d407686230bbe39ebd8da2834fe2bf2")
 
-STORE_USER_DATA = os.environ.get("STORE_USER_DATA", "") == "True"
+STORE_USER_DATA = False
