@@ -13,6 +13,7 @@ git+https://github.com/ministryofjustice/django-moj-irat@0.4
 raven==6.0.0
 kombu==4.1.0
 Celery==4.1.0
+celery[sqs]==4.1.0
 
 django-extensions==1.7.9
 django-brake==1.3.1
