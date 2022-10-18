@@ -25,7 +25,7 @@ SMTP_ROUTES["PNN"]["PASSWORD"] = os.environ.get("PNN_EMAIL_PASSWORD", "")
 SMTP_ROUTES["PUB"]["USERNAME"] = os.environ.get("EMAIL_HOST_USER", "")
 SMTP_ROUTES["PUB"]["PASSWORD"] = os.environ.get("EMAIL_HOST_PASSWORD", "")
 
-ALLOWED_HOSTS = [x.strip() for x in os.environ.get("ALLOWED_HOSTS", "localhost:8000").split(',')]
+ALLOWED_HOSTS = [x.strip() for x in os.environ.get("ALLOWED_HOSTS", "*").split(',')]
 
 # Enable CachedStaticFilesStorage for cache-busting assets
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
