@@ -26,6 +26,12 @@ RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
 RUN python manage.py collectstatic --noinput
 RUN python manage.py compilemessages
 
+RUN adduser --disabled-password appuser -u 1001
+RUN chown -R appuser:appuser /makeaplea && \
+    chown -R appuser:appuser /user_data
+
+USER 1001
+
 CMD ["./run.sh"]
 
 EXPOSE 9080

@@ -333,7 +333,7 @@ RECEIPT_HEADER_FRAGMENT_CHECK = os.environ.get("RECEIPT_HEADER_FRAGMENT_CHECK", 
 
 USER_DATA_DIRECTORY = os.environ.get('USER_DATA_DIRECTORY', os.path.abspath(here('../../user_data')))
 GPG_RECIPIENT = os.environ.get('GPG_RECIPIENT', 'test@example.org')
-GPG_HOME_DIRECTORY = os.environ.get('GPG_HOME_DIRECTORY', '/home/vagrant/.gnupg/')
+GPG_HOME_DIRECTORY = os.environ.get('GPG_HOME_DIRECTORY', '/user_data/.gnupg/')
 
 ENV_BASE_URL = os.environ.get("ENV_BASE_URL", "")
 FTP_SERVER_IP = os.environ.get("FTP_SERVER_IP", "")
