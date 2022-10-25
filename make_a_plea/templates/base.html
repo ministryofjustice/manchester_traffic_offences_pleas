@@ -86,8 +86,7 @@
 <ul>
     <li><a href="{% url "terms" %}">{% blocktrans %}Terms and Conditions and Privacy Policy{% endblocktrans %}</a></li>
     <li><a href="https://www.gov.uk/help/cookies">{% trans "Cookies" %}</a></li>
-    <li class="clear"><a href="http://www.gov.uk/help" lang="en">{% blocktrans %}Help{% endblocktrans %}</a></li>
-    <li><a href="http://www.gov.uk/contact" lang="en">{% blocktrans %}Contact{% endblocktrans %}</a></li>
+    <li class="clear"><a href="{% url "ad_support" %}" lang="en">{% blocktrans %}Help{% endblocktrans %}</a></li>
     <li><a href="http://www.gov.uk/cymraeg" lang="cy">{% blocktrans %}Cymraeg{% endblocktrans %}</a></li>
     <li>{% blocktrans %}Built by <a href="https://mojdigital.blog.gov.uk/"><abbr title="Ministry of Justice">MOJ</abbr> Digital</a>{% endblocktrans %}</li>
 </ul>
