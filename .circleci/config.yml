@@ -50,6 +50,8 @@ jobs:
             . venv/bin/activate
             pip install setuptools==32
             pip install -r requirements/testing.txt
+            pip install behave
+            pip install behaving
 
       - run:
           name: Database migration
