@@ -9,7 +9,6 @@ jobs:
         type: string
       ecr_endpoint:
         type: string
-    executor: python/default
 
     docker:
       - image: 'circleci/python:3.6'
