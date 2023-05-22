@@ -29,12 +29,12 @@ jobs:
       - run:
           name: Install linux dependencies
           command: |
-            - sudo apt-get -qq update
-            - sudo ./apt/production.sh
-            - sudo ./apt/testing.sh
-            - wget -N https://chromedriver.storage.googleapis.com/83.0.4103.39/chromedriver_linux64.zip -P ~/
-            - unzip ~/chromedriver_linux64.zip -d ~/
-            - sudo mv ~/chromedriver /usr/local/bin/chromedriver
+            sudo apt-get -qq update
+            sudo ./apt/production.sh
+            sudo ./apt/testing.sh
+            wget -N https://chromedriver.storage.googleapis.com/83.0.4103.39/chromedriver_linux64.zip -P ~/
+            unzip ~/chromedriver_linux64.zip -d ~/
+            sudo mv ~/chromedriver /usr/local/bin/chromedriver
 
 workflows:
    test-build-deploy:
