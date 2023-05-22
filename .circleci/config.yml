@@ -52,6 +52,7 @@ jobs:
             pip install -r requirements/testing.txt
             pip install behave
             pip install behaving
+            pip install selenium
 
       - run:
           name: Database migration
