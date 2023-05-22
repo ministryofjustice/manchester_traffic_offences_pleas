@@ -73,7 +73,7 @@ jobs:
             mailmock -p 1025 -o /tmp/mailmock -n &
             celery worker -A make_a_plea -D
             sleep 2
-            behave -Dheadless -Dbase_url=http://127.0.0.1:8000/ -tags=-local
+            behave --format progress3 -D headless
 
 workflows:
    test-build-deploy:
