@@ -13,13 +13,18 @@ jobs:
     docker:
       - image: 'circleci/python:3.6'
         environment:
-          POSTGRES_USER: postgres
           DJANGO_SETTINGS_MODULE: make_a_plea.settings.testing
-          DATABASE_URL: 'postgresql://postgres@localhost:5432/manchester_traffic_offences'
+          POSTGRES_DB: manchester_traffic_offences
+          POSTGRES_USER: postgres
+          POSTGRES_PASS: password
+          POSTGRES_PORT: 5432
+          POSTGRES_HOST: localhost
       - image: 'circleci/postgres:10.4'
         environment:
           POSTGRES_DB: manchester_traffic_offences
           POSTGRES_USER: postgres
+          POSTGRES_PASS: password
+          POSTGRES_PORT: 5432
           POSTGRES_HOST: localhost
 
     steps:
