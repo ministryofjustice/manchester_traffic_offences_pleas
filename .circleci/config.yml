@@ -15,10 +15,12 @@ jobs:
         environment:
           POSTGRES_USER: postgres
           DJANGO_SETTINGS_MODULE: make_a_plea.settings.testing
+          DATABASE_URL: 'postgresql://postgres@localhost:5432/manchester_traffic_offences'
       - image: 'circleci/postgres:10.4'
         environment:
           POSTGRES_DB: manchester_traffic_offences
           POSTGRES_USER: postgres
+          POSTGRES_HOST: localhost
 
     steps:
       - checkout
