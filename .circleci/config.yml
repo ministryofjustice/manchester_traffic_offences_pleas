@@ -36,6 +36,35 @@ jobs:
             unzip ~/chromedriver_linux64.zip -d ~/
             sudo mv ~/chromedriver /usr/local/bin/chromedriver
 
+      - run:
+          name: Install python dependencies
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install setuptools==32
+            pip install -r requirements/testing.txt
+
+      - run:
+          name: Database migration
+          command: |
+            . venv/bin/activate
+            python manage.py migrate --noinput
+            python manage.py compilemessages
+
+      - run:
+          name: Unit and E2E tests
+          command: |
+            . venv/bin/activate
+            coverage run --source='.' manage.py test
+            coverage report
+            python manage.py test --settings=api.settings.testing -p "api_test_*.py"
+            python manage.py loaddata features/fixtures.yaml
+            python manage.py runserver &
+            mailmock -p 1025 -o /tmp/mailmock -n &
+            celery worker -A make_a_plea -D
+            sleep 2
+            behave --format progress3 -Dheadless
+
 workflows:
    test-build-deploy:
     jobs:
