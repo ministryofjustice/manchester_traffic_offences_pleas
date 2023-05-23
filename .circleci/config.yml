@@ -58,6 +58,7 @@ jobs:
             pip install setuptools==32
             pip install -r requirements/testing.txt
             pip install behave==1.2.6 behaving==1.5.6 splinter==0.14.0 selenium==3.141.0
+            pip install rabbitmq
 
       - run:
           name: Database migration
@@ -74,6 +75,7 @@ jobs:
             coverage report
             python manage.py test --settings=api.settings.testing -p "api_test_*.py"
             python manage.py loaddata features/fixtures.yaml
+            rabbitmq-server
             python manage.py runserver &
             mailmock -p 1025 -o /tmp/mailmock -n &
             celery worker -A make_a_plea -D
