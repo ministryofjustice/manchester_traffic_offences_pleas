@@ -40,6 +40,9 @@ jobs:
             sudo apt-get -qq update
             sudo ./apt/production.sh
             sudo ./apt/testing.sh
+            sudo curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add
+            sudo bash -c "echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list.d/google-chrome.list"
+            sudo apt -y install google-chrome-stable
             wget -N https://chromedriver.storage.googleapis.com/114.0.5735.16/chromedriver_linux64.zip -P ~/
             unzip ~/chromedriver_linux64.zip -d ~/
             sudo mv ~/chromedriver /usr/local/bin/chromedriver
