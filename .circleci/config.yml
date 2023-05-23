@@ -50,8 +50,6 @@ jobs:
             sudo chmod +x /usr/local/bin/chromedriver
             wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -P ~/
             sudo apt install ~/google-chrome-stable_current_amd64.deb
-            echo google-chrome --version
-            echo chromedriver -v
 
       - run:
           name: Install python dependencies
@@ -61,7 +59,6 @@ jobs:
             pip install setuptools==32
             pip install -r requirements/testing.txt
             pip install behave==1.2.6 behaving==1.5.6 splinter==0.14.0 selenium==3.141.0
-            pip install rabbitmq
 
       - run:
           name: Database migration
@@ -86,7 +83,7 @@ jobs:
             mailmock -p 1025 -o /tmp/mailmock -n &
             celery worker -A make_a_plea -D
             sleep 2
-            behave -Dheadless
+            behave --format progress3 -Dheadless
 
 workflows:
    test-build-deploy:
