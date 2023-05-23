@@ -40,16 +40,12 @@ jobs:
             sudo apt-get -qq update
             sudo ./apt/production.sh
             sudo ./apt/testing.sh
-            sudo apt-get install libgconf2-4 libnss3-1d libxss1
+            sudo apt-get install libxss1 libappindicator1 libindicator7
             wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-            sudo dpkg -i google-chrome-stable_current_amd64.deb
-            sudo apt-get install -f
-            google-chrome --version
+            sudo apt install ./google-chrome*.deb
             wget -N https://chromedriver.storage.googleapis.com/114.0.5735.16/chromedriver_linux64.zip -P ~/
             unzip ~/chromedriver_linux64.zip -d ~/
             sudo mv ~/chromedriver /usr/local/bin/chromedriver
-            sudo chown root:root /usr/bin/chromedriver
-            sudo chmod +x /usr/bin/chromedriver
 
       - run:
           name: Install python dependencies
