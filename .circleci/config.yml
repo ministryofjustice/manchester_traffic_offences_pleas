@@ -42,7 +42,7 @@ jobs:
             sudo ./apt/testing.sh
             wget -N https://chromedriver.storage.googleapis.com/114.0.5735.16/chromedriver_linux64.zip -P ~/
             unzip ~/chromedriver_linux64.zip -d ~/
-            sudo mv ~/chromedriver /usr/local/bin/chromedriver
+            sudo mv ~/chromedriver /usr/bin/chromedriver
             sudo chown root:root /usr/bin/chromedriver
             sudo chmod +x /usr/bin/chromedriver
 
