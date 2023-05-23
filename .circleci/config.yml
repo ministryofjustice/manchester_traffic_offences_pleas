@@ -46,7 +46,7 @@ jobs:
             sudo chown root:root /usr/local/bin/chromedriver
             sudo chmod +x /usr/local/bin/chromedriver
             wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -P ~/
-            sudo apt install ./google-chrome-stable_current_amd64.deb
+            sudo apt install ~/google-chrome-stable_current_amd64.deb
 
       - run:
           name: Install python dependencies
