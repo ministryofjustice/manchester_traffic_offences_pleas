@@ -65,7 +65,7 @@ def before_all(context):
         context.default_browser = 'chrome'
         context.single_browser = True
         if config['headless']:
-            chrome_options = webdriver.Chrome('/usr/local/bin/chromedriver')
+            chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument("--headless")
             context.browser_args = {'options': chrome_options}
 
