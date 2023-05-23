@@ -19,6 +19,7 @@ jobs:
           POSTGRES_PASS: password
           POSTGRES_PORT: 5432
           POSTGRES_HOST: localhost
+
       - image: 'circleci/postgres:10.4'
         environment:
           POSTGRES_DB: manchester_traffic_offences
@@ -44,17 +45,6 @@ jobs:
             sudo mv ~/chromedriver /usr/local/bin/chromedriver
 
       - run:
-          name: Download Selenium
-          command: |
-            mkdir test-reports
-            curl -O http://selenium-release.storage.googleapis.com/3.5/selenium-server-standalone-3.5.3.jar
-      - run:
-          name: Start Selenium
-          command: |
-            java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
-          background: true
-
-      - run:
           name: Install python dependencies
           command: |
             python -m venv venv
@@ -78,7 +68,6 @@ jobs:
             coverage report
             python manage.py test --settings=api.settings.testing -p "api_test_*.py"
             python manage.py loaddata features/fixtures.yaml
-            python manage.py runserver &
             mailmock -p 1025 -o /tmp/mailmock -n &
             celery worker -A make_a_plea -D
             sleep 2
