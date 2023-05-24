@@ -4,6 +4,14 @@ orbs:
   docker: circleci/docker@1.7.0
 
 jobs:
+  aws-cli-cred-setup:
+    executor: aws-cli/default
+    steps:
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID_DEV
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY_DEV
+          aws-region: AWS_REGION
+
   build:
     parameters:
       env_name:
@@ -30,8 +38,6 @@ jobs:
           POSTGRES_HOST: localhost
 
       - image: rabbitmq
-
-    executor: aws-cli/default
 
     steps:
       - checkout
@@ -87,13 +93,6 @@ jobs:
             sleep 2
             behave --format progress3 -Dheadless
 
-#      - run:
-#          name: Set up aws
-#          command: |
-#            sudo apt-get update
-#            sudo apt-get --assume-yes install python3-pip
-#            sudo pip3 install awscli
-
       - run:
           name: Build MaP image
           command: |
@@ -107,11 +106,6 @@ jobs:
               --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
               --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
               -t map-app .
-
-      - aws-cli/setup:
-          aws-access-key-id: AWS_ACCESS_KEY_ID_DEV
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY_DEV
-          aws-region: AWS_REGION
 
       - run:
           name: Tag and push image to ECR
