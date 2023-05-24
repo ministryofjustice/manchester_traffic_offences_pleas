@@ -4,14 +4,6 @@ orbs:
   docker: circleci/docker@1.7.0
 
 jobs:
-  aws-cli-cred-setup:
-    executor: aws-cli/default
-    steps:
-      - aws-cli/setup:
-          aws-access-key-id: ${AWS_ACCESS_KEY_ID_DEV}
-          aws-secret-access-key: ${AWS_SECRET_ACCESS_KEY_DEV}
-          aws-region: ${AWS_REGION}
-
   build:
     parameters:
       env_name:
@@ -38,6 +30,8 @@ jobs:
           POSTGRES_HOST: localhost
 
       - image: rabbitmq
+
+    executor: aws-cli/default
 
     steps:
       - checkout
