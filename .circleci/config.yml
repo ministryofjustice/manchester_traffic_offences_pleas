@@ -114,6 +114,7 @@ jobs:
             docker tag map-app "${ECR_ENDPOINT_DEV}:map-latest"
             docker push "${ECR_ENDPOINT_DEV}:map-${CIRCLE_SHA1}"
             docker push "${ECR_ENDPOINT_DEV}:map-latest"
+
 workflows:
    test-build-deploy:
     jobs:
@@ -124,3 +125,4 @@ workflows:
           ecr_endpoint: ${ECR_ENDPOINT_DEV}
           filters:
             branches:
+              only: /^RST-.*/
