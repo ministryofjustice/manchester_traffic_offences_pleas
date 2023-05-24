@@ -1,0 +1,128 @@
+version: 2.1
+orbs:
+  aws-cli: circleci/aws-cli@2.0.6
+  docker: circleci/docker@1.7.0
+
+jobs:
+  build:
+    parameters:
+      env_name:
+        type: string
+      ecr_endpoint:
+        type: string
+
+    docker:
+      - image: 'circleci/python:3.6'
+        environment:
+          DJANGO_SETTINGS_MODULE: make_a_plea.settings.testing
+          POSTGRES_DB: manchester_traffic_offences
+          POSTGRES_USER: postgres
+          POSTGRES_PASS: password
+          POSTGRES_PORT: 5432
+          POSTGRES_HOST: localhost
+
+      - image: 'circleci/postgres:10.4'
+        environment:
+          POSTGRES_DB: manchester_traffic_offences
+          POSTGRES_USER: postgres
+          POSTGRES_PASS: password
+          POSTGRES_PORT: 5432
+          POSTGRES_HOST: localhost
+
+      - image: rabbitmq
+
+    executor: aws-cli/default
+
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.11
+          docker_layer_caching: true
+      - run:
+          name: Install linux dependencies
+          command: |
+            sudo apt-get -qq update
+            sudo ./apt/production.sh
+            sudo ./apt/testing.sh
+            wget -N https://chromedriver.storage.googleapis.com/113.0.5672.63/chromedriver_linux64.zip -P ~/
+            unzip ~/chromedriver_linux64.zip -d ~/
+            sudo mv ~/chromedriver /usr/local/bin/chromedriver
+            sudo chown root:root /usr/local/bin/chromedriver
+            sudo chmod +x /usr/local/bin/chromedriver
+            wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -P ~/
+            sudo apt install ~/google-chrome-stable_current_amd64.deb
+
+      - run:
+          name: Install python dependencies
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install setuptools==32
+            pip install -r requirements/testing.txt
+            pip install behave==1.2.6 behaving==1.5.6 splinter==0.14.0 selenium==3.141.0
+
+      - run:
+          name: Database migration
+          command: |
+            . venv/bin/activate
+            python manage.py migrate --noinput
+            python manage.py compilemessages
+
+      - run:
+          name: Wait for RabbitMQ to have started
+          command: dockerize -wait tcp://localhost:5672 -timeout 1m
+
+      - run:
+          name: Unit and E2E tests
+          command: |
+            . venv/bin/activate
+            coverage run --omit 'venv/*' --source='.' manage.py test
+            coverage report
+            python manage.py test --settings=api.settings.testing -p "api_test_*.py"
+            python manage.py loaddata features/fixtures.yaml
+            python manage.py runserver &
+            mailmock -p 1025 -o /tmp/mailmock -n &
+            celery worker -A make_a_plea -D
+            sleep 2
+            behave --format progress3 -Dheadless
+
+      - run:
+          name: Build MaP image
+          command: |
+            export BUILD_DATE=$(date -Is) >> $BASH_ENV
+            source $BASH_ENV
+            docker build \
+              --label build.git.sha=${CIRCLE_SHA1} \
+              --label build.git.branch=${CIRCLE_BRANCH} \
+              --label build.date=${BUILD_DATE} \
+              --build-arg APP_BUILD_DATE=${BUILD_DATE} \
+              --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
+              --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
+              -t map-app .
+
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID_DEV
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY_DEV
+          aws-region: AWS_REGION
+
+      - run:
+          name: Tag and push image to ECR
+          command: |
+            login="$(aws ecr get-login-password --region eu-west-2)"
+            echo ${login} | docker login --username AWS --password-stdin 754256621582.dkr.ecr.eu-west-2.amazonaws.com
+            docker tag map-app "${ECR_ENDPOINT_DEV}:map-${CIRCLE_SHA1}"
+            docker tag map-app "${ECR_ENDPOINT_DEV}:map-latest"
+            docker push "${ECR_ENDPOINT_DEV}:map-${CIRCLE_SHA1}"
+            docker push "${ECR_ENDPOINT_DEV}:map-latest"
+
+workflows:
+   test-build-deploy:
+    jobs:
+      ### DEV ###
+      - build:
+          name: build-containers-dev
+          env_name: DEV
+          ecr_endpoint: ${ECR_ENDPOINT_DEV}
+          filters:
+            branches:
+              only: /^RST-.*/
