@@ -6,6 +6,7 @@ orbs:
 jobs:
   build:
     parameters:
+      executor: aws-cli/default
       env_name:
         type: string
       ecr_endpoint:
@@ -30,8 +31,6 @@ jobs:
           POSTGRES_HOST: localhost
 
       - image: rabbitmq
-
-    executor: aws-cli/default
 
     steps:
       - checkout
