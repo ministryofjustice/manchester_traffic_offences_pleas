@@ -94,11 +94,6 @@ jobs:
 #            sudo apt-get --assume-yes install python3-pip
 #            sudo pip3 install awscli
 
-      - aws-cli/setup:
-          aws-access-key-id: AWS_ACCESS_KEY_ID_DEV
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY_DEV
-          aws-region: AWS_REGION
-
       - run:
           name: Build MaP image
           command: |
