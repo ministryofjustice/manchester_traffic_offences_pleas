@@ -4,14 +4,6 @@ orbs:
   docker: circleci/docker@1.7.0
 
 jobs:
-  aws-cli-cred-setup:
-    executor: aws-cli/default
-    steps:
-      - aws-cli/setup:
-          aws-access-key-id: ${AWS_ACCESS_KEY_ID_DEV}
-          aws-secret-access-key: ${AWS_SECRET_ACCESS_KEY_DEV}
-          aws-region: ${AWS_REGION}
-
   build:
     parameters:
       env_name:
@@ -39,12 +31,13 @@ jobs:
 
       - image: rabbitmq
 
+    executor: aws-cli/default
+
     steps:
       - checkout
       - setup_remote_docker:
           version: 20.10.11
           docker_layer_caching: true
-
       - run:
           name: Install linux dependencies
           command: |
@@ -93,11 +86,6 @@ jobs:
             sleep 2
             behave --format progress3 -Dheadless
 
-      - aws-cli/setup:
-          aws-access-key-id: AWS_ACCESS_KEY_ID_DEV
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY_DEV
-          aws-region: AWS_REGION
-
       - run:
           name: Build MaP image
           command: |
@@ -112,18 +100,20 @@ jobs:
               --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
               -t map-app .
 
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID_DEV
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY_DEV
+          aws-region: AWS_REGION
+
       - run:
           name: Tag and push image to ECR
           command: |
             login="$(aws ecr get-login-password --region eu-west-2)"
             echo ${login} | docker login --username AWS --password-stdin 754256621582.dkr.ecr.eu-west-2.amazonaws.com
-
             docker tag map-app "${ECR_ENDPOINT_DEV}:map-${CIRCLE_SHA1}"
             docker tag map-app "${ECR_ENDPOINT_DEV}:map-latest"
-
             docker push "${ECR_ENDPOINT_DEV}:map-${CIRCLE_SHA1}"
             docker push "${ECR_ENDPOINT_DEV}:map-latest"
-
 workflows:
    test-build-deploy:
     jobs:
@@ -134,4 +124,3 @@ workflows:
           ecr_endpoint: ${ECR_ENDPOINT_DEV}
           filters:
             branches:
-              only: /^RST-.*/
