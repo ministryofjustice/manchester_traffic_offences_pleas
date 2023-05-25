@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: make-a-plea
-  namespace: map-dev
+  name: makeaplea
+  namespace: makeaplea-dev
   annotations:
     external-dns.alpha.kubernetes.io/set-identifier: make-a-plea-map-dev-green
     external-dns.alpha.kubernetes.io/aws-weight: "100"
@@ -29,6 +29,6 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: map-app-service
+                name: map-service
                 port:
-                  number: 3000
+                  number: 9080
