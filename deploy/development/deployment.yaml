@@ -1,0 +1,112 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: map-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: map-app
+  template:
+    metadata:
+      labels:
+        app: map-app
+    spec:
+      containers:
+      - name: map-app
+        image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:map-latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9080
+        env:
+          - name: PREMAILER_BASE_URL
+            value: ""
+          - name: SECRET_KEY
+            value: ""
+          - name: SERVER_EMAIL
+            value: ""
+          - name: GSI_EMAIL_HOST
+            value: ""
+          - name: GSI_EMAIL_PORT
+            value: ""
+          - name: PNN_EMAIL_HOST
+            value: ""
+          - name: PNN_EMAIL_PORT
+            value: ""
+          - name: EMAIL_HOST
+            value: ""
+          - name: EMAIL_PORT
+            value: ""
+          - name: EMAIL_HOST_USER
+            value: ""
+          - name: EMAIL_HOST_PASSWORD
+            value: ""
+          - name: PLEA_EMAIL_FROM
+            value: ""
+          - name: PLP_EMAIL_FROM
+            value: ""
+          - name: FEEDBACK_EMAIL_FROM
+            value: ""
+          - name: FEEDBACK_EMAIL_TO
+            value: ""
+          - name: PLEA_CONFIRMATION_EMAIL_FROM
+            value: ""
+          - name: RECEIPT_INBOX_FROM_EMAIL
+            value: ""
+          - name: RECEIPT_INBOX_USERNAME
+            value: ""
+          - name: RECEIPT_GMAIL_PASSWORD
+            value: ""
+          - name: RECEIPT_HEADER_FRAGMENT_CHECK
+            value: ""
+          - name: USER_DATA_DIRECTORY
+            value: ""
+          - name: GPG_RECIPIENT
+            value: ""
+          - name: ENV_BASE_URL
+            value: ""
+          - name: FTP_SERVER_IP
+            value: ""
+          - name: DATA_RETENTION_PERIOD
+            value: ""
+          - name: SENTRY_DSN
+            value: ""
+          - name: APP_GIT_COMMIT
+            value: ""
+          - name: POSTGRES_DB
+            value: ""
+          - name: DB_USERNAME
+            value: ""
+          - name: DB_PASSWORD
+            value: ""
+          - name: DB_HOST
+            value: ""
+          - name: DB_PORT
+            value: ""
+          - name: GOOGLE_ANALYTICS_ID
+            value: ""
+          - name: GSI_EMAIL_USERNAME
+            value: ""
+          - name: GSI_EMAIL_PASSWORD
+            value: ""
+          - name: PNN_EMAIL_USERNAME
+            value: ""
+          - name: PNN_EMAIL_PASSWORD
+            value: ""
+          - name: ALLOWED_HOSTS
+            value: ""
+          - name: CELERY_ALWAYS_EAGER
+            value: ""
+          - name: CELERY_BROKER_URL
+            value: ""
+          - name: CELERY_QUEUE_POLLING_PREFIX
+            value: ""
+          - name: RATE_LIMIT
+            value: ""
+          - name: REDIRECT_START_PAGE
+            value: ""
+          - name: SENTRY_DSN
+            value: ""
+          - name: APP_GIT_COMMIT
+            value: ""
+
