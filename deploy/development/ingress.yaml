@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: make-a-plea
+  namespace: map-dev
+  annotations:
+    external-dns.alpha.kubernetes.io/set-identifier: make-a-plea-map-dev-green
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
+    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
+    nginx.ingress.kubernetes.io/modsecurity-snippet: |
+      SecRuleEngine On
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location @custom_403 {
+        return 403 "<h1>There is a problem:</h1><br><h3>Go back to the previous page using the back arrow and enter valid content</h3>";
+      }
+      error_page 403 @custom_403;
+spec:
+  ingressClassName: modsec
+  tls:
+    - hosts:
+        - dev.make-a-plea.service.justice.gov.uk
+      secretName: make-a-plea-app-secret
+
+  rules:
+    - host: dev.make-a-plea.service.justice.gov.uk
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: map-app-service
+                port:
+                  number: 3000
