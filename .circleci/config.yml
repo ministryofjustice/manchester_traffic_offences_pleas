@@ -12,7 +12,7 @@ jobs:
         type: string
 
     docker:
-      - image: 'circleci/python:3.6'
+      - image: "circleci/python:3.6"
         environment:
           DJANGO_SETTINGS_MODULE: make_a_plea.settings.testing
           POSTGRES_DB: manchester_traffic_offences
@@ -21,7 +21,7 @@ jobs:
           POSTGRES_PORT: 5432
           POSTGRES_HOST: localhost
 
-      - image: 'circleci/postgres:10.4'
+      - image: "circleci/postgres:10.4"
         environment:
           POSTGRES_DB: manchester_traffic_offences
           POSTGRES_USER: postgres
@@ -115,8 +115,22 @@ jobs:
             docker push "${ECR_ENDPOINT_DEV}:map-${CIRCLE_SHA1}"
             docker push "${ECR_ENDPOINT_DEV}:map-latest"
 
+      - run:
+          name: Authenticate to LIVE cluster
+          command: |
+            echo -n ${K8S_CLUSTER_CERT} | base64 -d > ./ca.crt
+            kubectl config set-cluster ${K8S_CLUSTER_NAME} --certificate-authority=./ca.crt --server=https://${K8S_CLUSTER_NAME}
+            kubectl config set-credentials cd-serviceaccount --token=${K8S_TOKEN_DEV}
+            kubectl config set-context ${K8S_CLUSTER_NAME} --cluster=${K8S_CLUSTER_NAME} --user=cd-serviceaccount --namespace=${K8S_NAMESPACE_DEV}
+            kubectl config use-context ${K8S_CLUSTER_NAME}
+
+      - deploy:
+          name: rolling update image
+          command: |
+            kubectl apply -n makeaplea-dev --record=false -f ./deploy/development
+
 workflows:
-   test-build-deploy:
+  test-build-deploy:
     jobs:
       ### DEV ###
       - build:

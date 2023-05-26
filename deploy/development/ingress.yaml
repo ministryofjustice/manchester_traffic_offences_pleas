@@ -19,7 +19,7 @@ spec:
   tls:
     - hosts:
         - dev.make-a-plea.service.justice.gov.uk
-      secretName: make-a-plea-app-secret
+      secretName: make-a-plea-app-cert
 
   rules:
     - host: dev.make-a-plea.service.justice.gov.uk
