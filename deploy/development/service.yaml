@@ -6,8 +6,8 @@ metadata:
     app: map-service
 spec:
   ports:
-  - port: 9080
-    name: http
-    targetPort: 9080
+    - port: 3000
+      name: http
+      targetPort: 3000
   selector:
     app: map-app
