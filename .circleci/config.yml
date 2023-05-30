@@ -41,9 +41,9 @@ jobs:
           docker_layer_caching: true
       - kubernetes/install-kubectl
       - aws-cli/setup:
-          aws-access-key-id: AWS_ACCESS_KEY_ID_DEV
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY_DEV
-          aws-region: AWS_REGION
+          aws-access-key-id: ${AWS_ACCESS_KEY_ID_DEV}
+          aws-secret-access-key: ${AWS_SECRET_ACCESS_KEY_DEV}
+          aws-region: ${AWS_REGION}
       - run:
           name: Checking AWS vars
           command: |
