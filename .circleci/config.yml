@@ -125,6 +125,7 @@ jobs:
             kubectl config set-credentials cd-serviceaccount --token=${K8S_TOKEN_DEV}
             kubectl config set-context ${K8S_CLUSTER_NAME} --cluster=${K8S_CLUSTER_NAME} --user=cd-serviceaccount --namespace=${K8S_NAMESPACE_DEV}
             kubectl config use-context ${K8S_CLUSTER_NAME}
+            kubectl config view
 
       - deploy:
           name: rolling update image
