@@ -47,9 +47,9 @@ jobs:
       - run:
           name: Checking AWS vars
           command: |
-            echo AWS_ACCESS_KEY_ID_DEV
-            echo AWS_SECRET_ACCESS_KEY_DEV
-            echo AWS_REGION
+            echo ${AWS_ACCESS_KEY_ID_DEV}
+            echo ${AWS_SECRET_ACCESS_KEY_DEV}
+            echo ${AWS_REGION}
       - run:
           name: Install linux dependencies
           command: |
