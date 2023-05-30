@@ -33,7 +33,6 @@ ENV APP_BUILD_TAG="a816014d47fe98db08f600476a7f811c3ac70f93"
 ENV APP_VERSION="0.1.3-1731-ga816014"
 
 # Don't run as root user
-USER 1000
 CMD ["./run.sh"]
 
 EXPOSE 3000
