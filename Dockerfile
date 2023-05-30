@@ -32,8 +32,11 @@ ENV APP_GIT_COMMIT="master.a816014"
 ENV APP_BUILD_TAG="a816014d47fe98db08f600476a7f811c3ac70f93"
 ENV APP_VERSION="0.1.3-1731-ga816014"
 
-# Don't run as root user
-USER 755
+# add a user for the docker image and give it permissions
+RUN useradd -ms /bin/bash admin
+RUN chown -R admin:admin /home
+RUN chmod 755 /home
+USER admin
 CMD ["./run.sh"]
 
 EXPOSE 3000
