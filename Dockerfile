@@ -32,8 +32,9 @@ ENV APP_GIT_COMMIT="master.a816014"
 ENV APP_BUILD_TAG="a816014d47fe98db08f600476a7f811c3ac70f93"
 ENV APP_VERSION="0.1.3-1731-ga816014"
 
-# Create the vagrant directory
+# Create the vagrant directories
 RUN mkdir -p /home/vagrant
+RUN mkdir -p /home/vagrant/.gnupg/
 
 # Don't run as root user
 USER 1000
