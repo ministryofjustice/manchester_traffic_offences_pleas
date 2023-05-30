@@ -40,6 +40,16 @@ jobs:
           version: 20.10.11
           docker_layer_caching: true
       - kubernetes/install-kubectl
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID_DEV
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY_DEV
+          aws-region: AWS_REGION
+      - run:
+          name: Checking AWS vars
+          command: |
+            echo AWS_ACCESS_KEY_ID_DEV
+            echo AWS_SECRET_ACCESS_KEY_DEV
+            echo AWS_REGION
       - run:
           name: Install linux dependencies
           command: |
@@ -101,11 +111,6 @@ jobs:
               --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
               --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
               -t map-app .
-
-      - aws-cli/setup:
-          aws-access-key-id: AWS_ACCESS_KEY_ID_DEV
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY_DEV
-          aws-region: AWS_REGION
 
       - run:
           name: Tag and push image to ECR
