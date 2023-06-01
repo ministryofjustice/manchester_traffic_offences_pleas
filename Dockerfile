@@ -39,6 +39,7 @@ RUN mkdir -p /home/vagrant/.gnupg/
 RUN apt-get update
 RUN apt-get install nginx -y
 COPY nginx.conf /etc/nginx/conf.d
+RUN mkdir /home/staticfiles
 
 # Don't run as root user
 USER 1000
