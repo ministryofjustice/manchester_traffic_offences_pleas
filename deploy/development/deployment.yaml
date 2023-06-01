@@ -12,12 +12,18 @@ spec:
       labels:
         app: map-app
     spec:
+      volumes:
+        - name: staticfiles
+          emptyDir: {}
       containers:
         - name: map-app
           image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:map-latest
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
+          volumeMounts:
+            - name: staticfiles
+              mountPath: /home/app/web/staticfiles/
           env:
             - name: PREMAILER_BASE_URL
               valueFrom:
