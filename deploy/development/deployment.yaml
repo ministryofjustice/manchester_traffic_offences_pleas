@@ -23,7 +23,7 @@ spec:
             - containerPort: 3000
           volumeMounts:
             - name: staticfiles
-              mountPath: /home/app/web/staticfiles/
+              mountPath: /makeaplea/make_a_plea/static/
           env:
             - name: PREMAILER_BASE_URL
               valueFrom:
