@@ -14,7 +14,9 @@ spec:
     spec:
       volumes:
         - name: staticfiles
-        - ./static_cdn/static_root/:/static
+          hostPath:
+            path: ./static_cdn/static_root/:/static
+            type: DirectoryOrCreate
       containers:
         - name: map-app
           image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:map-latest
