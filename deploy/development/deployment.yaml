@@ -13,7 +13,7 @@ spec:
         app: map-app
     spec:
       volumes:
-        - name: staticfiles
+        - name: static
           hostPath:
             path: ./static_cdn/static_root/:/static
             type: DirectoryOrCreate
@@ -24,7 +24,7 @@ spec:
           ports:
             - containerPort: 3000
           volumeMounts:
-            - name: staticfiles
+            - name: static
               mountPath: ./static_cdn/static_root/:/makeaplea/make_a_plea/static_cdn/static_root
           env:
             - name: PREMAILER_BASE_URL
