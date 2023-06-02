@@ -13,10 +13,9 @@ spec:
         app: map-app
     spec:
       volumes:
-        - name: static
+        - name: static-volume
           hostPath:
-            path: ./static_cdn/static_root/:/static
-            type: DirectoryOrCreate
+            path: /makeaplea/make_a_plea/staticfiles
       containers:
         - name: map-app
           image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:map-latest
@@ -24,8 +23,8 @@ spec:
           ports:
             - containerPort: 3000
           volumeMounts:
-            - name: static
-              mountPath: ./static_cdn/static_root/:/makeaplea/make_a_plea/static_cdn/static_root
+            - name: static-volume
+              mountPath: /makeaplea/make_a_plea/staticfiles
           env:
             - name: PREMAILER_BASE_URL
               valueFrom:
