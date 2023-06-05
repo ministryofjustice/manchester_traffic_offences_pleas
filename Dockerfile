@@ -2,8 +2,6 @@ FROM python:3.6
 
 ENV APP_HOME=/makeaplea/
 ENV DJANGO_SETTINGS_MODULE=make_a_plea.settings.docker
-RUN chown newuser /$APP_HOME
-USER newuser
 WORKDIR $APP_HOME
 
 # Debian dependencies
@@ -21,7 +19,7 @@ RUN mkdir -p make_a_plea/assets
 
 VOLUME ["/user_data"]
 
-COPY . $APP_HOME
+COPY --chown=docker:docker . $APP_HOME
 
 RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
 
