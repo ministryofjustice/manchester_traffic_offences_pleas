@@ -19,8 +19,8 @@ RUN mkdir -p make_a_plea/assets
 
 VOLUME ["/user_data"]
 
-ARG uid=1001
-ARG gid=51
+ARG uid=1000
+ARG gid=1000
 
 RUN addgroup --gid $gid mygroup \
  && adduser --disabled-password --gecos "" --no-create-home --uid $uid --gid $gid myuser
