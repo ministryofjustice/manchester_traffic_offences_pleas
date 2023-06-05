@@ -13,42 +13,42 @@ spec:
         app: map-app
     spec:
       volumes:
-        - name: staticfiles
-          hostPath:
-            path: /makeaplea/make_a_plea/staticfiles
-        - name: nginx-conf
-          hostPath:
-            path: /etc/nginx/conf.d
+        # - name: staticfiles
+        #   hostPath:
+        #     path: /makeaplea/make_a_plea/staticfiles
+        # - name: nginx-conf
+        #   hostPath:
+        #     path: /etc/nginx/conf.d
       containers:
-          - name: nginx-sidecar
-            image: nginx:stable
-            imagePullPolicy: Always
-            securityContext:
-              privileged: false
-              # Nginx must start as root to bind the proper port in the container.
-              allowPrivilegeEscalation: true
-              runAsNonRoot: false
-            ports:
-              - name: http
-                containerPort: 80
-                protocol: TCP
-            volumeMounts:
-              - name: nginx-conf
-                mountPath: /etc/nginx/conf.d
-                readOnly: true
-              - name: staticfiles
-                mountPath: /makeaplea/make_a_plea/staticfiles
-                readOnly: true
+          # - name: nginx-sidecar
+          #   image: nginx:stable
+          #   imagePullPolicy: Always
+          #   securityContext:
+          #     privileged: false
+          #     # Nginx must start as root to bind the proper port in the container.
+          #     allowPrivilegeEscalation: true
+          #     runAsNonRoot: false
+          #   ports:
+          #     - name: http
+          #       containerPort: 80
+          #       protocol: TCP
+          #   volumeMounts:
+          #     - name: nginx-conf
+          #       mountPath: /etc/nginx/conf.d
+          #       readOnly: true
+          #     - name: staticfiles
+          #       mountPath: /makeaplea/make_a_plea/staticfiles
+          #       readOnly: true
           - name: map-app
             image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:map-latest
             imagePullPolicy: Always
             ports:
               - containerPort: 3000
-            volumeMounts:
-              - name: staticfiles
-                mountPath: /makeaplea/make_a_plea/staticfiles
-                # The API must be able to copy the files to the volume.
-                readOnly: false
+            # volumeMounts:
+            #   - name: staticfiles
+            #     mountPath: /makeaplea/make_a_plea/staticfiles
+            #     # The API must be able to copy the files to the volume.
+            #     readOnly: false
             env:
               - name: PREMAILER_BASE_URL
                 valueFrom:

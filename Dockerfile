@@ -2,6 +2,8 @@ FROM python:3.6
 
 ENV APP_HOME=/makeaplea/
 ENV DJANGO_SETTINGS_MODULE=make_a_plea.settings.docker
+RUN chown newuser /$APP_HOME
+USER newuser
 WORKDIR $APP_HOME
 
 # Debian dependencies
