@@ -16,6 +16,7 @@ RUN pip install -r requirements.txt
 RUN mkdir /user_data
 RUN mkdir /user_data/.gnupg
 RUN mkdir -p make_a_plea/assets
+RUN touch make_a_plea/debug.log
 
 VOLUME ["/user_data"]
 
@@ -42,7 +43,8 @@ COPY nginx.conf /etc/nginx/conf.d
 
 # Don't run as root user
 USER 1000
-CMD ["./run.sh"]
+# CMD ["nginx -g 'daemon off;'", "./run.sh"]
+CMD [ "./run.sh"]
 
 EXPOSE 3000
 
