@@ -91,7 +91,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = root('staticfiles')
+STATIC_ROOT = root('static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -229,6 +229,11 @@ LOGGING = {
         }
     },
     'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/makeaplea/make_a_plea/debug.log',
+        },
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
@@ -253,12 +258,17 @@ LOGGING = {
     'loggers': {
         '': {
             'handlers': ['console', 'sentry'],
-            'level': 'INFO',
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
             'propagate': True,
         },
         'django.request': {
             'handlers': ['mail_admins', 'console'],
-            'level': 'INFO',
+            'level': 'DEBUG',
             'propagate': True,
         },
         'apps.plea.views': {
