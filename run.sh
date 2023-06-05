@@ -8,4 +8,4 @@ migrate)
 esac
 
 gunicorn make_a_plea.wsgi --bind=0.0.0.0:3000
-# nginx -g 'daemon off;'
+nginx -g 'daemon off;'
