@@ -232,7 +232,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/makeaplea/make_a_plea/debug.log',
+            'filename': 'debug.log',
         },
         'mail_admins': {
             'level': 'ERROR',
