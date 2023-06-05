@@ -19,7 +19,13 @@ RUN mkdir -p make_a_plea/assets
 
 VOLUME ["/user_data"]
 
-COPY --chown=docker:docker . $APP_HOME
+ARG uid=1001
+ARG gid=51
+
+RUN addgroup --gid $gid mygroup \
+ && adduser --disabled-password --gecos "" --no-create-home --uid $uid --gid $gid myuser
+
+COPY --chown=myuser:mygroup . $APP_HOME
 
 RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
 
