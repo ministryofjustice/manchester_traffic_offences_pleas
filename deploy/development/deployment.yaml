@@ -15,7 +15,7 @@ spec:
       volumes:
         - name: staticfiles
           hostPath:
-            path: /makeaplea/make_a_plea/static
+            path: /makeaplea/make_a_plea/staticfiles
         - name: nginx-conf
           hostPath:
             path: /etc/nginx/conf.d
@@ -37,7 +37,7 @@ spec:
                 mountPath: /etc/nginx/conf.d
                 readOnly: true
               - name: staticfiles
-                mountPath: /makeaplea/make_a_plea/static
+                mountPath: /makeaplea/make_a_plea/staticfiles
                 readOnly: true
           - name: map-app
             image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:map-latest
@@ -46,7 +46,7 @@ spec:
               - containerPort: 3000
             volumeMounts:
               - name: staticfiles
-                mountPath: /makeaplea/make_a_plea/static
+                mountPath: /makeaplea/make_a_plea/staticfiles
                 # The API must be able to copy the files to the volume.
                 readOnly: false
             env:
