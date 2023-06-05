@@ -20,7 +20,7 @@ RUN mkdir -p make_a_plea/assets
 VOLUME ["/user_data"]
 
 ARG uid=1000
-ARG gid=51
+ARG gid=1000
 
 RUN addgroup --gid $gid mygroup \
  && adduser --disabled-password --gecos "" --no-create-home --uid $uid --gid $gid myuser
@@ -48,7 +48,7 @@ RUN apt-get install nginx -y
 COPY nginx.conf /etc/nginx/conf.d
 
 # Don't run as root user
-USER myuser
+USER 1000
 # CMD ["nginx -g 'daemon off;'", "./run.sh"]
 CMD [ "./run.sh"]
 
