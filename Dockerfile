@@ -48,7 +48,7 @@ RUN apt-get install nginx -y
 COPY nginx.conf /etc/nginx/conf.d
 
 # Don't run as root user
-USER myuser
+USER 1000
 # CMD ["nginx -g 'daemon off;'", "./run.sh"]
 CMD [ "./run.sh"]
 
