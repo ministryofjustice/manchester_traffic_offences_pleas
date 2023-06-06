@@ -50,7 +50,6 @@ COPY nginx.conf /etc/nginx/conf.d
 
 # Don't run as root user
 USER 1000
-# CMD ["nginx -g 'daemon off;'", "./run.sh"]
 CMD [ "./run.sh"]
 
 EXPOSE 3000
