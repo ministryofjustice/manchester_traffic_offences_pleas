@@ -44,10 +44,6 @@ ENV APP_VERSION="0.1.3-1731-ga816014"
 RUN mkdir -p /home/vagrant
 RUN mkdir -p /home/vagrant/.gnupg/
 
-RUN apt-get update
-RUN apt-get install nginx -y
-COPY nginx.conf /etc/nginx/conf.d
-
 # Don't run as root user
 USER 1000
 CMD [ "./run.sh"]
