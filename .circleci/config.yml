@@ -88,11 +88,15 @@ jobs:
             sleep 2
             behave --format progress3 -Dheadless
 
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_REGION
+
       - run:
           name: Build MaP image
           command: |
             export BUILD_DATE=$(date -Is) >> $BASH_ENV
-            export $AWS_STORAGE_BUCKET_NAME
             source $BASH_ENV
             docker build \
               --label build.git.sha=${CIRCLE_SHA1} \
@@ -102,11 +106,6 @@ jobs:
               --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
               --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
               -t map-app .
-
-      - aws-cli/setup:
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_REGION
 
       - run:
           name: Tag and push image to ECR
