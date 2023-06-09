@@ -244,3 +244,8 @@ spec:
                   secretKeyRef:
                     name: map-dev-env-vars
                     key: AWS_SECRET_ACCESS_KEY
+              - name: AWS_STORAGE_BUCKET_NAME
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: AWS_STORAGE_BUCKET_NAME
