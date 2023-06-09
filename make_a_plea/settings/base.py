@@ -205,6 +205,7 @@ INSTALLED_APPS = [
     'django_premailer',
     'nested_admin',
     'raven.contrib.django.raven_compat',
+    'storages'
 ]
 
 # A sample logging configuration. The only tangible logging

@@ -92,6 +92,7 @@ jobs:
           name: Build MaP image
           command: |
             export BUILD_DATE=$(date -Is) >> $BASH_ENV
+            export $AWS_STORAGE_BUCKET_NAME
             source $BASH_ENV
             docker build \
               --label build.git.sha=${CIRCLE_SHA1} \
