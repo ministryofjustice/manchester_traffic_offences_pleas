@@ -32,7 +32,7 @@ RUN chown -R myuser:mygroup $APP_HOME
 
 RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
 
-RUN python manage.py collectstatic --noinput
+#RUN python manage.py collectstatic --noinput
 RUN python manage.py compilemessages
 
 # bypass broken pipeline
