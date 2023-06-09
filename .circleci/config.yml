@@ -105,6 +105,10 @@ jobs:
               --build-arg APP_BUILD_DATE=${BUILD_DATE} \
               --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
               --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
+              --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+              --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+              --build-arg AWS_REGION=${AWS_REGION} \
+              --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME} \
               -t map-app .
 
       - run:
