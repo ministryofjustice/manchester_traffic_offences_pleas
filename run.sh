@@ -7,5 +7,4 @@ migrate)
     ;;
 esac
 
-gunicorn make_a_plea.wsgi --bind=0.0.0.0:9080
-
+gunicorn make_a_plea.wsgi --bind=0.0.0.0:3000
