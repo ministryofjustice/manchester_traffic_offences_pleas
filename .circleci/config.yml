@@ -97,10 +97,6 @@ jobs:
           name: Build MaP image
           command: |
             export BUILD_DATE=$(date -Is) >> $BASH_ENV
-            echo "${DEV_ENV}"
-            echo "${CIRCLE_BRANCH}"
-            echo "${BUILD_DATE}"
-            echo "${CIRCLE_SHA1}"
             source $BASH_ENV
             docker build \
               --label build.git.sha=${CIRCLE_SHA1} \
@@ -109,7 +105,7 @@ jobs:
               --build-arg APP_BUILD_DATE=${BUILD_DATE} \
               --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
               --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
-              --build-arg ENV=${DEV_ENV} \
+              --build-arg DJANGO_SETTINGS=make_a_plea.settings.dev \
               -t map-app .
 
       - run:
