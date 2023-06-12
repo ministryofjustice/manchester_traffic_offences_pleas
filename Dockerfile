@@ -3,6 +3,9 @@ FROM python:3.6
 ENV APP_HOME=/makeaplea/
 ENV DJANGO_SETTINGS_MODULE=make_a_plea.settings.${ENV}
 
+RUN echo "FIRRRRIINNGG"
+RUN echo "${ENV}"
+
 WORKDIR $APP_HOME
 
 # Debian dependencies
