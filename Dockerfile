@@ -2,7 +2,6 @@ FROM python:3.6
 
 ENV APP_HOME=/makeaplea/
 ENV DJANGO_SETTINGS_MODULE=make_a_plea.settings.dev
-ENV DJANGO_DEBUG=True
 
 WORKDIR $APP_HOME
 
