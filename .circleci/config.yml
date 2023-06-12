@@ -97,10 +97,6 @@ jobs:
           name: Build MaP image
           command: |
             export BUILD_DATE=$(date -Is) >> $BASH_ENV
-            export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-            export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-            export AWS_REGION=${AWS_REGION}
-            export AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
 
             source $BASH_ENV
             docker build \
@@ -110,7 +106,7 @@ jobs:
               --build-arg APP_BUILD_DATE=${BUILD_DATE} \
               --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
               --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
-              --build-arg ENV=dev
+              --build-arg ENV="dev"
               -t map-app .
 
       - run:
