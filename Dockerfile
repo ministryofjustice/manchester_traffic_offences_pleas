@@ -1,9 +1,11 @@
 FROM python:3.6
 
 ARG ENV
+ARG AWS_STORAGE_BUCKET_NAME
 
 ENV APP_HOME=/makeaplea/
 ENV DJANGO_SETTINGS_MODULE make_a_plea.settings.${ENV}
+ENV AWS_STORAGE_BUCKET_NAME ${AWS_STORAGE_BUCKET_NAME}
 
 RUN echo "${DJANGO_SETTINGS_MODULE}"
 
@@ -35,7 +37,7 @@ RUN chown -R myuser:mygroup $APP_HOME
 
 RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
 
-#RUN python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput
 RUN python manage.py compilemessages
 
 # bypass broken pipeline
