@@ -1,0 +1,422 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: map-mgw
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: map-mgw
+  template:
+    metadata:
+      labels:
+        app: map-mgw
+    spec:
+      containers:
+        - name: map-mgw
+          image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:makeaplea_mgw
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+            - containerPort: 9990
+          env:
+            - name: DB_ENGINE
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_ENGINE
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_NAME
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_PASSWORD
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DATABASE_URL
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: POSTGRES_DB
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: POSTGRES_HOST
+            - name: POSTGRES_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: POSTGRES_PASS
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: POSTGRES_PORT
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: POSTGRES_USER
+            - name: WILDFLY_APPLICATION_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: WILDFLY_APPLICATION_PASS
+            - name: WILDFLY_APPLICATION_USER
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: WILDFLY_APPLICATION_USER
+            - name: WILDFLY_MANAGEMENT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: WILDFLY_MANAGEMENT_PASS
+            - name: WILDFLY_MANAGEMENT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: WILDFLY_MANAGEMENT_USER
+            - name: PROJECT
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: PROJECT
+            - name: ENV
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: ENV
+            - name: DOCKER_STATE
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DOCKER_STATE
+            - name: PATH
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: PATH
+            - name: JAVA_HOME
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: JAVA_HOME
+            - name: WILDFLY_VERSION
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: WILDFLY_VERSION
+            - name: WILDFLY_SHA1
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: WILDFLY_SHA1
+            - name: JBOSS_HOME
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: JBOSS_HOME
+            - name: JAVA_OPTS
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: JAVA_OPTS
+
+        - name: map-mgw-dequeue
+          image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:makeaplea_mgw_dequeue
+          imagePullPolicy: Always
+          env:
+            - name: DB_ENGINE
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_ENGINE
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_NAME
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_PASSWORD
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DATABASE_URL
+            - name: MGW_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: MGW_HOST
+            - name: WILDFLY_APPLICATION_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: WILDFLY_APPLICATION_PASS
+            - name: WILDFLY_APPLICATION_USER
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: WILDFLY_APPLICATION_USER
+            - name: PROJECT
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: PROJECT
+            - name: ENV
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: ENV
+            - name: DOCKER_STATE
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DOCKER_STATE
+            - name: PATH
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: PATH
+            - name: LANG
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: LANG
+            - name: JAVA_HOME_DEQUEUE
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: JAVA_HOME_DEQUEUE
+            - name: JAVA_VERSION
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: JAVA_VERSION
+            - name: JAVA_DEBIAN_VERSION
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: JAVA_DEBIAN_VERSION
+            - name: CA_CERTIFICATES_JAVA_VERSION
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: CA_CERTIFICATES_JAVA_VERSION
+            - name: WORKDIR
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: WORKDIR
+
+        - name: map-mgw-import
+          image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:makeaplea_mgw_import
+          imagePullPolicy: Always
+          env:
+            - name: DB_ENGINE
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_ENGINE
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_NAME
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_PASSWORD
+            - name: API_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: API_ENDPOINT
+            - name: API_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: API_PASSWORD
+            - name: API_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: API_USERNAME
+            - name: ARCHIVE_DIR
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: ARCHIVE_DIR
+            - name: ARCHIVE_PROCESSED_FILES
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: ARCHIVE_PROCESSED_FILES
+            - name: CREATE_STATUS_FILES
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: CREATE_STATUS_FILES
+            - name: GPG_HOME_DIRECTORY
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: GPG_HOME_DIRECTORY
+            - name: GPG_RECIPIENT
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: GPG_RECIPIENT
+            - name: INCOMING_DIR
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: INCOMING_DIR
+            - name: LOG_DIR
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: LOG_DIR
+            - name: RELEASE_STAGE
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: RELEASE_STAGE
+            - name: STATUS_EMAIL_FROM
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: STATUS_EMAIL_FROM
+            - name: STATUS_EMAIL_TO
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: STATUS_EMAIL_TO
+            - name: PROJECT
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: PROJECT
+            - name: ENV
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: ENV
+            - name: DOCKER_STATE
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DOCKER_STATE
+            - name: PATH
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: PATH
+            - name: LANG
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: LANG
+            - name: GPG_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: GPG_KEY
+            - name: PYTHON_VERSION
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: PYTHON_VERSION
+            - name: PYTHON_PIP_VERSION
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: PYTHON_PIP_VERSION
+            - name: PYTHON_GET_PIP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: PYTHON_GET_PIP_URL
+            - name: PYTHON_GET_PIP_SHA256
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: PYTHON_GET_PIP_SHA256
+            - name: APP_VERSION
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: APP_VERSION
+            - name: APP_GIT_COMMIT
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: APP_GIT_COMMIT
+            - name: APP_BUILD_DATE
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: APP_BUILD_DATE
+            - name: APP_BUILD_TAG
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: APP_BUILD_TAG

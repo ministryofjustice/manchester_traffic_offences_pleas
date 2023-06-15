@@ -32,6 +32,14 @@ jobs:
 
       - image: rabbitmq
 
+      - image: "circleci/postgres:9.4"
+        environment:
+          POSTGRES_DB: pleaonline
+          POSTGRES_USER: makeaplea
+          POSTGRES_PASS: password
+          POSTGRES_PORT: 5432
+          POSTGRES_HOST: db
+
     executor: aws-cli/default
 
     steps:
