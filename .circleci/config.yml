@@ -32,13 +32,13 @@ jobs:
 
       - image: rabbitmq
 
-      - image: "circleci/postgres:9.4"
-        environment:
-          POSTGRES_DB: pleaonline
-          POSTGRES_USER: makeaplea
-          POSTGRES_PASS: password
-          POSTGRES_PORT: 5432
-          POSTGRES_HOST: db
+      # - image: "circleci/postgres:9.4"
+      #   environment:
+      #     POSTGRES_DB: pleaonline
+      #     POSTGRES_USER: makeaplea
+      #     POSTGRES_PASS: password
+      #     POSTGRES_PORT: 5432
+      #     POSTGRES_HOST: db
 
     executor: aws-cli/default
 
@@ -141,7 +141,8 @@ jobs:
       - deploy:
           name: rolling update image
           command: |
-            kubectl apply -n makeaplea-dev --record=false -f ./deploy/development
+            kubectl apply -n makeaplea-dev --record=false -f ./deploy/development/map-app
+            kubectl apply -n makeaplea-dev --record=false -f ./deploy/development/map-mgw
 
 workflows:
   test-build-deploy:
