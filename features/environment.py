@@ -66,7 +66,6 @@ def before_all(context):
         context.single_browser = True
         if config['headless']:
             chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_argument('--no-sandbox')
             chrome_options.add_argument("--headless")
             context.browser_args = {'options': chrome_options}
 
