@@ -42,6 +42,7 @@ jobs:
           name: Install linux dependencies
           command: |
             sudo apt-get -qq update
+            sudo apt-get install -y xvfb
             sudo ./apt/production.sh
             sudo ./apt/testing.sh
             wget -N https://chromedriver.storage.googleapis.com/113.0.5672.63/chromedriver_linux64.zip -P ~/
@@ -84,7 +85,7 @@ jobs:
             mailmock -p 1025 -o /tmp/mailmock -n &
             celery worker -A make_a_plea -D
             sleep 2
-            behave --format progress3 -Dheadless
+            xvfb-run behave --format progress3 -Dheadless
 
       - run:
           name: Build MaP image
