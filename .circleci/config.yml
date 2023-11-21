@@ -44,14 +44,14 @@ jobs:
             sudo apt-get -qq update
             sudo ./apt/production.sh
             sudo ./apt/testing.sh
-            wget -N https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/linux64/chrome-linux64.zip -P ~/
+            LATEST_CHROME_RELEASE=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json | jq '.channels.Stable')
+            LATEST_CHROME_URL=$(echo "$LATEST_CHROME_RELEASE" | jq -r '.downloads.chrome[] | select(.platform == "linux64") | .url')
+            wget -N "$LATEST_CHROME_URL" -P ~/
             unzip ~/chrome-linux64.zip -d ~/
             sudo mv ~/chrome-linux64 ~/chrome
             sudo ln -s ~/chrome/chrome /usr/local/bin/chrome
             sudo chmod +x ~/chrome
             sudo rm ~/chrome-linux64.zip
-            wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -P ~/
-            sudo apt install ~/google-chrome-stable_current_amd64.deb
 
       - run:
           name: Install python dependencies
