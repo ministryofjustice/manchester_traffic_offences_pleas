@@ -44,12 +44,13 @@ jobs:
             sudo apt-get -qq update
             sudo ./apt/production.sh
             sudo ./apt/testing.sh
-            wget -N https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip -P ~/
-            unzip ~/chromedriver_linux64.zip -d ~/
-            sudo mv ~/chromedriver /usr/local/bin/chromedriver
-            sudo chown root:root /usr/local/bin/chromedriver
-            sudo chmod +x /usr/local/bin/chromedriver
-            sudo apt install -y chromium-browser
+            wget -N https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/linux64/chrome-linux64.zip -P ~/
+            unzip ~/chrome-linux64.zip -d ~/
+            sudo mv ~/chrome /usr/local/bin/chrome
+            sudo chown root:root /usr/local/bin/chrome
+            sudo chmod +x /usr/local/bin/chrome
+            wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -P ~/
+            sudo apt install ~/google-chrome-stable_current_amd64.deb
 
       - run:
           name: Install python dependencies
@@ -83,7 +84,7 @@ jobs:
             mailmock -p 1025 -o /tmp/mailmock -n &
             celery worker -A make_a_plea -D
             sleep 2
-            behave --format progress3 -Dheadless -DDEBUG
+            behave --format progress3 -Dheadless
 
       - run:
           name: Build MaP image
