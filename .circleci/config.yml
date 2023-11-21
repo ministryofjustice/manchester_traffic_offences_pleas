@@ -50,7 +50,7 @@ jobs:
             sudo chown root:root /usr/local/bin/chromedriver
             sudo chmod +x /usr/local/bin/chromedriver
             wget -N https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/linux64/chrome-linux64.zip -P ~/
-            unzip ~/chromedriver_linux64.zip -d ~/
+            unzip ~/chrome_linux64.zip -d ~/
 
       - run:
           name: Install python dependencies
