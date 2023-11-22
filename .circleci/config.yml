@@ -60,8 +60,6 @@ jobs:
             sudo ln -s ~/chromedriver/chromedriver /usr/local/bin/chromedriver
             sudo chmod +x /usr/local/bin/chromedriver
             sudo rm ~/chromedriver-linux64.zip
-            google-chrome --version
-            whereis google-chrome
 
       - run:
           name: Install python dependencies
