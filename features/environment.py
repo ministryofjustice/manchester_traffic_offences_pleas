@@ -64,24 +64,13 @@ def before_all(context):
     else:
         context.default_browser = 'chrome'
         context.single_browser = True
-        # try:
-        #     chrome_options = webdriver.ChromeOptions()
-        #     chrome_options.binary_location = "/usr/local/bin/chrome"
-        #     chrome_driver_binary = "/usr/local/bin/chromedriver"
-        #     chrome_options.add_argument("--headless")
-        #     chrome_options.add_argument("--no-sandbox")
-        #     chrome_options.add_argument("--disable-dev-shm-usage")
-        #     context.browser_args = webdriver.Chrome(chrome_driver_binary, options=chrome_options)
-        # except Exception as e:
-        #     print(f"Error initializing browser: {e}")
-        #     raise WebDriverException("Failed to initialize browser")
         if config['headless']:
             chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument("--headless")
-            # chrome_options.binary_location = "/usr/local/bin/chrome"
+            chrome_options.binary_location = "/usr/local/bin/chrome"
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-dev-shm-usage")
-            chrome_driver_binary = "/usr/local/bin/chrome"
+            chrome_driver_binary = "/usr/local/bin/chromedriver"
             context.browser_args = webdriver.Chrome(chrome_driver_binary, options=chrome_options)
             # context.browser_args = {'options': chrome_options}
 
