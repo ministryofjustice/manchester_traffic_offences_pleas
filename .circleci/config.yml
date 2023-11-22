@@ -42,7 +42,6 @@ jobs:
           name: Install linux dependencies
           command: |
             sudo apt-get -qq update
-            sudo apt-get install -y libglib2.0-0=2.50.3-2 libnss3=2:3.26.2-1.1+deb9u1 libgconf-2-4=3.2.6-4+b1 libfontconfig1=2.11.0-6.7+b1
             sudo ./apt/production.sh
             sudo ./apt/testing.sh
             LATEST_CHROME_RELEASE=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json | jq '.channels.Stable')
@@ -60,6 +59,11 @@ jobs:
             sudo ln -s ~/chromedriver/chromedriver /usr/local/bin/chromedriver
             sudo chmod +x /usr/local/bin/chromedriver
             sudo rm ~/chromedriver-linux64.zip
+
+      - run:
+          name: Run chromedriver
+          command: |
+            ./chromedriver
 
       - run:
           name: Install python dependencies
