@@ -111,7 +111,7 @@ jobs:
 
       - aws-cli/setup:
           role_arn: $ECR_ROLE_TO_ASSUME_DEV
-          region: $ECR_REGION
+          region: $ECR_REGION_DEV
 
       - run:
           name: Tag and push image to ECR
