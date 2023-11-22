@@ -63,7 +63,7 @@ jobs:
       - run:
           name: Run chromedriver
           command: |
-            ./chromedriver
+            ./usr/local/bin/chromedriver
 
       - run:
           name: Install python dependencies
