@@ -44,6 +44,11 @@ jobs:
             sudo apt-get -qq update
             sudo ./apt/production.sh
             sudo ./apt/testing.sh
+            wget -N https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/linux64/chromedriver-linux64.zip -P ~/
+            unzip ~/chromedriver-linux64.zip -d ~/
+            sudo mv ~/chromedriver /usr/local/bin/chromedriver
+            sudo chown root:root /usr/local/bin/chromedriver
+            sudo chmod +x /usr/local/bin/chromedriver
             LATEST_CHROME_RELEASE=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json | jq '.channels.Stable')
             LATEST_CHROME_URL=$(echo "$LATEST_CHROME_RELEASE" | jq -r '.downloads.chrome[] | select(.platform == "linux64") | .url')
             wget -N "$LATEST_CHROME_URL" -P ~/
