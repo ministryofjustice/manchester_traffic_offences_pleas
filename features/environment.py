@@ -69,6 +69,9 @@ def before_all(context):
             chrome_options = webdriver.ChromeOptions()
             chrome_options.binary_location = "/usr/local/bin/chrome"
             chrome_driver_binary = "/usr/local/bin/chromedriver"
+            chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("--disable-dev-shm-usage")
             context.browser_args = webdriver.Chrome(chrome_driver_binary, options=chrome_options)
         except Exception as e:
             print(f"Error initializing browser: {e}")
