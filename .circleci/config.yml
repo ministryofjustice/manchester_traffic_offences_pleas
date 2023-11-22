@@ -60,7 +60,7 @@ jobs:
             . venv/bin/activate
             pip install setuptools==32
             pip install -r requirements/testing.txt
-            pip install behave behaving splinter selenium
+            pip install behave behaving splinter==0.14.0 selenium
 
       - run:
           name: Database migration
