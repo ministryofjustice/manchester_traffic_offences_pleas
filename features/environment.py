@@ -3,6 +3,7 @@ from behaving.web.steps import *
 from behaving.mail.steps import *
 from behaving.personas.steps import *
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
 import os
 
 PERSONAS = {
@@ -64,14 +65,17 @@ def before_all(context):
     else:
         context.default_browser = 'chrome'
         context.single_browser = True
+        try:
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.binary_location = "/usr/local/bin/chrome"
+            context.browser = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver', options=chrome_options)
+        except Exception as e:
+            print(f"Error initializing browser: {e}")
+            raise WebDriverException("Failed to initialize browser")
         if config['headless']:
-            try:
-                chrome_options = webdriver.ChromeOptions()
-                chrome_options.add_argument("--headless")
-                context.browser_args = {'options': chrome_options}
-            except Exception as e:
-                print(f"Error initializing browser: {e}")
-                raise WebDriverException("Failed to initialize browser")
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_argument("--headless")
+            context.browser_args = {'options': chrome_options}
 
     context.base_url = config['base_url']
 
