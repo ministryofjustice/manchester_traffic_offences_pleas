@@ -68,7 +68,8 @@ def before_all(context):
         try:
             chrome_options = webdriver.ChromeOptions()
             chrome_options.binary_location = "/usr/local/bin/chrome"
-            context.browser = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver', options=chrome_options)
+            chrome_driver_binary = "/usr/local/bin/chromedriver"
+            context.browser_args = webdriver.Chrome(chrome_driver_binary, options=chrome_options)
         except Exception as e:
             print(f"Error initializing browser: {e}")
             raise WebDriverException("Failed to initialize browser")
