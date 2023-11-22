@@ -205,6 +205,7 @@ INSTALLED_APPS = [
     'django_premailer',
     'nested_admin',
     'raven.contrib.django.raven_compat',
+    'storages'
 ]
 
 # A sample logging configuration. The only tangible logging
@@ -229,6 +230,11 @@ LOGGING = {
         }
     },
     'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'makeaplea.log',
+        },
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
@@ -253,12 +259,17 @@ LOGGING = {
     'loggers': {
         '': {
             'handlers': ['console', 'sentry'],
-            'level': 'INFO',
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
             'propagate': True,
         },
         'django.request': {
             'handlers': ['mail_admins', 'console'],
-            'level': 'INFO',
+            'level': 'DEBUG',
             'propagate': True,
         },
         'apps.plea.views': {

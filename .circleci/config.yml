@@ -3,6 +3,7 @@ orbs:
   aws-cli: circleci/aws-cli@4.0.0
   docker: circleci/docker@1.7.0
   aws-ecr: circleci/aws-ecr@8.2.1
+  kubernetes: circleci/kubernetes@1.3.1
 
 jobs:
   build:
@@ -13,7 +14,7 @@ jobs:
         type: string
 
     docker:
-      - image: 'circleci/python:3.6'
+      - image: "circleci/python:3.6"
         environment:
           DJANGO_SETTINGS_MODULE: make_a_plea.settings.testing
           POSTGRES_DB: manchester_traffic_offences
@@ -22,7 +23,7 @@ jobs:
           POSTGRES_PORT: 5432
           POSTGRES_HOST: localhost
 
-      - image: 'circleci/postgres:10.4'
+      - image: "circleci/postgres:10.4"
         environment:
           POSTGRES_DB: manchester_traffic_offences
           POSTGRES_USER: postgres
@@ -32,6 +33,14 @@ jobs:
 
       - image: rabbitmq
 
+      # - image: "circleci/postgres:9.4"
+      #   environment:
+      #     POSTGRES_DB: pleaonline
+      #     POSTGRES_USER: makeaplea
+      #     POSTGRES_PASS: password
+      #     POSTGRES_PORT: 5432
+      #     POSTGRES_HOST: db
+
     executor: aws-cli/default
 
     steps:
@@ -39,6 +48,7 @@ jobs:
       - setup_remote_docker:
           version: 20.10.11
           docker_layer_caching: true
+      - kubernetes/install-kubectl
       - run:
           name: Install linux dependencies
           command: |
@@ -108,6 +118,10 @@ jobs:
               --build-arg APP_BUILD_DATE=${BUILD_DATE} \
               --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
               --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
+              --build-arg ENV=dev \
+              --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_DEV} \
+              --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID_S3_DEV} \
+              --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY_S3_DEV} \
               -t map-app .
 
       - aws-cli/setup:
@@ -124,8 +138,23 @@ jobs:
             docker push "${ECR_ENDPOINT_DEV}:map-${CIRCLE_SHA1}"
             docker push "${ECR_ENDPOINT_DEV}:map-latest"
 
+      - run:
+          name: Authenticate to LIVE cluster
+          command: |
+            echo -n ${K8S_CLUSTER_CERT} | base64 -d > ./ca.crt
+            kubectl config set-cluster ${K8S_CLUSTER_NAME} --certificate-authority=./ca.crt --server=https://${K8S_CLUSTER_NAME}
+            kubectl config set-credentials cd-serviceaccount --token=${K8S_TOKEN_DEV}
+            kubectl config set-context ${K8S_CLUSTER_NAME} --cluster=${K8S_CLUSTER_NAME} --user=cd-serviceaccount --namespace=${K8S_NAMESPACE_DEV}
+            kubectl config use-context ${K8S_CLUSTER_NAME}
+
+      - deploy:
+          name: rolling update image
+          command: |
+            kubectl apply -n makeaplea-dev --record=false -f ./deploy/development/map-app
+            kubectl apply -n makeaplea-dev --record=false -f ./deploy/development/map-mgw
+
 workflows:
-   test-build-deploy:
+  test-build-deploy:
     jobs:
       ### DEV ###
       - build:
