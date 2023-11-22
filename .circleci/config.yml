@@ -42,7 +42,7 @@ jobs:
           name: Install linux dependencies
           command: |
             sudo apt-get -qq update
-            sudo apt-get install libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libxkbcommon0
+            sudo apt-get install libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libxkbcommon0 libxcomposite1
             sudo ./apt/production.sh
             sudo ./apt/testing.sh
             LATEST_CHROME_RELEASE=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json | jq '.channels.Stable')
