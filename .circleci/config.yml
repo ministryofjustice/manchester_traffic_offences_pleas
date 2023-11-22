@@ -110,9 +110,8 @@ jobs:
               -t map-app .
 
       - aws-cli/setup:
-          aws-access-key-id: AWS_ACCESS_KEY_ID_DEV
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY_DEV
-          aws-region: AWS_REGION
+          role_arn: $ECR_ROLE_TO_ASSUME_DEV
+          region: $ECR_REGION
 
       - run:
           name: Tag and push image to ECR
