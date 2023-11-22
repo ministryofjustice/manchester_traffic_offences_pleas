@@ -119,9 +119,6 @@ jobs:
               --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
               --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
               --build-arg ENV=dev \
-              --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_DEV} \
-              --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID_S3_DEV} \
-              --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY_S3_DEV} \
               -t map-app .
 
       - aws-cli/setup:
