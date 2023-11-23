@@ -250,3 +250,8 @@ spec:
                   secretKeyRef:
                     name: map-dev-env-vars
                     key: AWS_STORAGE_BUCKET_NAME
+              - name: ECR_ROLE_TO_ASSUME_DEV
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: ECR_ROLE_TO_ASSUME_DEV
