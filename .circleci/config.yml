@@ -92,6 +92,7 @@ jobs:
             . venv/bin/activate
             python manage.py migrate --noinput
             python manage.py compilemessages
+            python manage.py collectstatic --noinput
 
       - run:
           name: Wait for RabbitMQ to have started
