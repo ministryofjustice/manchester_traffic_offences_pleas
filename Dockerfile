@@ -37,10 +37,6 @@ RUN chown -R myuser:mygroup $APP_HOME
 
 RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
 
-# Get rid of the collectstatic command and look into using a service pod instead
-# RUN python manage.py collectstatic --noinput
-RUN python manage.py compilemessages
-
 # bypass broken pipeline
 #ENV APP_BUILD_DATE="2020-06-17T09:26:53+0000"
 #ENV APP_GIT_COMMIT="master.a816014"
