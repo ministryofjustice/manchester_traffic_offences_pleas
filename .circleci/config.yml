@@ -49,6 +49,11 @@ jobs:
           version: 20.10.11
           docker_layer_caching: true
       - kubernetes/install-kubectl
+
+      - aws-cli/setup:
+          role_arn: $ECR_ROLE_TO_ASSUME_DEV
+          region: $ECR_REGION_DEV
+
       - run:
           name: Install linux dependencies
           command: |
@@ -121,10 +126,6 @@ jobs:
               --build-arg ENV=dev \
               --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_DEV} \
               -t map-app .
-
-      - aws-cli/setup:
-          role_arn: $ECR_ROLE_TO_ASSUME_DEV
-          region: $ECR_REGION_DEV
 
       - run:
           name: Tag and push image to ECR
