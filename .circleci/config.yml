@@ -125,6 +125,8 @@ jobs:
               --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
               --build-arg ENV=dev \
               --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_DEV} \
+              --build-arg ECR_ROLE_TO_ASSUME_DEV=${ECR_ROLE_TO_ASSUME_DEV} \
+              --build-arg ECR_REGION_DEV=${ECR_REGION_DEV} \
               -t map-app .
 
       - run:
