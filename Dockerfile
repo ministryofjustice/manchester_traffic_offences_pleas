@@ -2,15 +2,10 @@ FROM python:3.6
 
 ARG ENV
 ARG AWS_STORAGE_BUCKET_NAME
-ARG ECR_ROLE_TO_ASSUME_DEV
-ARG ECR_REGION_DEV
 
 ENV APP_HOME=/makeaplea/
 ENV DJANGO_SETTINGS_MODULE make_a_plea.settings.${ENV}
 ENV AWS_STORAGE_BUCKET_NAME ${AWS_STORAGE_BUCKET_NAME}
-ENV AWS_ROLE_ARN ${ECR_ROLE_TO_ASSUME_DEV}
-ENV ECR_REGION_DEV ${ECR_REGION_DEV}
-# Find a way to assume the role called ECR_ROLE_TO_ASSUME_DEV??
 
 RUN echo "${DJANGO_SETTINGS_MODULE}"
 
@@ -42,7 +37,8 @@ RUN chown -R myuser:mygroup $APP_HOME
 
 RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
 
-RUN python manage.py collectstatic --noinput
+# Get rid of the collectstatic command and look into using a service pod instead
+# RUN python manage.py collectstatic --noinput
 RUN python manage.py compilemessages
 
 # bypass broken pipeline
