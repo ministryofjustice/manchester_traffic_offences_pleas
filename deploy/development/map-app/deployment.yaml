@@ -12,7 +12,7 @@ spec:
       labels:
         app: map-app
     spec:
-      serviceAccountName: map-mgw-dev
+      serviceAccountName: makeaplea-dev
       containers:
           - name: map-app
             image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:map-latest
