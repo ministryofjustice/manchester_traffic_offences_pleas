@@ -1,6 +1,6 @@
 from .docker import *
 
-DJANGO_DEBUG = True
+DJANGO_DEBUG = False
 
 # aws settings
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
