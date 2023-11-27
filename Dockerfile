@@ -2,14 +2,10 @@ FROM python:3.6
 
 ARG ENV
 ARG AWS_STORAGE_BUCKET_NAME
-ARG AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY
 
 ENV APP_HOME=/makeaplea/
 ENV DJANGO_SETTINGS_MODULE make_a_plea.settings.${ENV}
 ENV AWS_STORAGE_BUCKET_NAME ${AWS_STORAGE_BUCKET_NAME}
-ENV AWS_ACCESS_KEY_ID ${AWS_ACCESS_KEY_ID}
-ENV AWS_SECRET_ACCESS_KEY ${AWS_SECRET_ACCESS_KEY}
 
 RUN echo "${DJANGO_SETTINGS_MODULE}"
 
@@ -40,9 +36,6 @@ COPY . $APP_HOME
 RUN chown -R myuser:mygroup $APP_HOME
 
 RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
-
-RUN python manage.py collectstatic --noinput
-RUN python manage.py compilemessages
 
 # bypass broken pipeline
 #ENV APP_BUILD_DATE="2020-06-17T09:26:53+0000"

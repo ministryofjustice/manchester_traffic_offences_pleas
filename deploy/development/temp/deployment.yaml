@@ -12,6 +12,7 @@ spec:
       labels:
         app: map-mgw
     spec:
+      serviceAccountName: makeaplea-dev
       containers:
         - name: map-mgw
           image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:makeaplea_mgw
@@ -250,6 +251,11 @@ spec:
                 secretKeyRef:
                   name: map-mgw-dev-env-vars
                   key: WORKDIR
+            - name: S3_BUCKET_NAME_MGW
+              valueFrom:
+                secretKeyRef:
+                  name: s3-bucket-output-mgw
+                  key: bucket_name
 
         - name: map-mgw-import
           image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:makeaplea_mgw_import
@@ -420,3 +426,8 @@ spec:
                 secretKeyRef:
                   name: map-mgw-dev-env-vars
                   key: APP_BUILD_TAG
+            - name: S3_BUCKET_NAME_MGW
+              valueFrom:
+                secretKeyRef:
+                  name: s3-bucket-output-mgw
+                  key: bucket_name
