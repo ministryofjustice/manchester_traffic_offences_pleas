@@ -7,7 +7,10 @@ metadata:
 spec:
   ports:
     - port: 3000
-      name: http
+      name: webapp
       targetPort: 3000
+    - port: 3001
+      name: api
+      targetPort: 3001
   selector:
     app: map-app

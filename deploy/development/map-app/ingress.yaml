@@ -28,10 +28,10 @@ spec:
     - host: dev-api-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk
       http:
         paths:
-            - path: /
-              pathType: ImplementationSpecific
-              backend:
-                service:
-                  name: map-service
-                  port:
-                    number: 3001
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: map-service
+                port:
+                  number: 3001
