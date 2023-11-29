@@ -255,7 +255,7 @@ spec:
                   secretKeyRef:
                     name: map-dev-env-vars
                     key: ECR_ROLE_TO_ASSUME_DEV
-          - name: map-app
+          - name: map-api
             image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:map-api-latest
             imagePullPolicy: Always
             ports:
