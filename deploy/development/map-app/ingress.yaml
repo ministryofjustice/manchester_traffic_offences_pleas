@@ -11,6 +11,7 @@ spec:
   tls:
     - hosts:
         - dev-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk
+        - dev-api-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk
       secretName: make-a-plea-app-cert
 
   rules:
@@ -25,12 +26,12 @@ spec:
                 port:
                   number: 3000
     - host: dev-api-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk
-        http:
-          paths:
-              - path: /
-                pathType: ImplementationSpecific
-                backend:
-                  service:
-                    name: map-service
-                    port:
-                      number: 3001
+      http:
+        paths:
+            - path: /
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: map-service
+                  port:
+                    number: 3001
