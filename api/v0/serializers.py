@@ -45,9 +45,13 @@ class AuditEventSerializer(serializers.ModelSerializer):
 class CaseSerializer(serializers.ModelSerializer):
     # FIXME: using modelserialiser would suggest not defining fields directly:w
     case_number = serializers.CharField(required=True)
+    print("case_number1: " + case_number)
     urn = serializers.CharField(required=True, validators=[is_valid_urn_format])
+    print("urn1: " + urn)
     offences = OffenceSerializer(many=True)
+    print("offences: " + offences)
     ou_code = serializers.CharField(required=True)
+    print("ou_code: " + ou_code)
     accepted_initiation_types = ['J', 'Q', 'S']
 
     def __init__(self, *args, **kwargs):
@@ -117,6 +121,7 @@ class CaseSerializer(serializers.ModelSerializer):
             urn=std_urn,
             case_number=data["case_number"],
             sent=True).exists()
+        print("sent_case: " + sent_case)
 
         if sent_case:
             AuditEvent().populate(
@@ -138,6 +143,7 @@ class CaseSerializer(serializers.ModelSerializer):
             urn=validated_data["urn"],
             case_number=validated_data["case_number"],
             sent=False)
+        print("open_cases" + open_cases)
 
         if open_cases:
             case = open_cases[0]
@@ -188,7 +194,9 @@ class ResultOffenceSerializer(serializers.ModelSerializer):
 
 class ResultSerializer(serializers.ModelSerializer):
     case_number = serializers.CharField(required=True)
+    print("case_number2: " + case_number)
     urn = serializers.CharField(required=True, validators=[is_valid_urn_format, ])
+    print("urn2: " + urn)
 
     result_offences = ResultOffenceSerializer(many=True)
 
@@ -209,6 +217,7 @@ class ResultSerializer(serializers.ModelSerializer):
             urn=urn,
             case_number=data["case_number"],
             sent=True).exists()
+        print("sent_results" + sent_results)
 
         if sent_results:
             AuditEvent().populate(
@@ -230,6 +239,7 @@ class ResultSerializer(serializers.ModelSerializer):
             urn=validated_data["urn"],
             case_number=validated_data["case_number"],
             sent=False)
+        print("open_results" + open_results)
 
         if open_results:
             result = open_results[0]
