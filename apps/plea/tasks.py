@@ -90,31 +90,9 @@ def email_send_court(self, case_id, count_id, email_data):
 
     plea_email.upload_file_link(email_data, 'emails/attachments/plea_email.html')
 
-
-
-    # plea_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
-    #                                      settings.PLEA_EMAIL_ATTACHMENT_NAME,
-    #                                      "emails/attachments/plea_email.html",
-    #                                      email_data,
-    #                                      "text/html")
-
     try:
         with translation.override("en"):
-            # plea_email.send(plea_email_to,
-            #                 email_subject,
-            #                 email_body,
-            #                 route=smtp_route)
             plea_email.send_email()
-    # except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
-    #     logger.warning("Error sending email to court: {0}".format(exc))
-    #     case.add_action("Court email network error", u"{}: {}".format(type(exc), exc))
-    #     if email_count is not None:
-    #         email_count.get_status_from_case(case)
-    #         email_count.save()
-    #     case.sent = False
-    #     case.save()
-    #
-    #     raise self.retry(args=[case_id, count_id, email_data], exc=exc)
     except Exception as exc:
         logger.warning("Error sending email to court: {0}".format(exc))
         case.add_action("Court email network error", u"{}: {}".format(type(exc), exc))
@@ -124,7 +102,7 @@ def email_send_court(self, case_id, count_id, email_data):
         case.sent = False
         case.save()
 
-    case.add_action("Court email sent", "Sent mail to {0} via {1}".format(plea_email_to, smtp_route))
+    case.add_action("Court email sent", "Sent mail to {0} via {1}".format(plea_email_to, 'make.a.plea@notifications.service.gov.uk'))
 
     if not court_obj.test_mode:
         case.sent = True
