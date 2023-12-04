@@ -1,7 +1,8 @@
-from notifications_python_client.notifications import NotificationsAPIClient, prepare_upload
-from make_a_plea.settings.dev import GOV_NOTIFY_API
-from django.template.loader import render_to_string
 import pdfkit
+from django.template.loader import render_to_string
+from notifications_python_client import prepare_upload
+from notifications_python_client.notifications import NotificationsAPIClient
+from make_a_plea.settings.dev import GOV_NOTIFY_API
 
 
 class GovNotify:
