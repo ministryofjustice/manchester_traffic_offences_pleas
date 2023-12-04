@@ -255,3 +255,8 @@ spec:
                   secretKeyRef:
                     name: map-dev-env-vars
                     key: ECR_ROLE_TO_ASSUME_DEV
+              - name: GOV_NOTIFY_API
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: GOV_NOTIFY_API

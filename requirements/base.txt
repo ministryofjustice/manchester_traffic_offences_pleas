@@ -9,6 +9,7 @@ psycopg2==2.8.3
 python-dateutil==2.6.0
 python-gnupg==0.4.4
 pycurl==7.43.0
+pdfkit==1.0.0
 git+https://github.com/ministryofjustice/django-moj-irat@0.4
 raven==6.0.0
 kombu==4.1.0
@@ -24,6 +25,8 @@ django-premailer==0.2.0
 django-axes==1.6.0
 django-nested-admin==2.2.3
 django-storages==1.9.1
+
+notifications-python-client==7.0.0
 
 unicodecsv==0.14.1
 
