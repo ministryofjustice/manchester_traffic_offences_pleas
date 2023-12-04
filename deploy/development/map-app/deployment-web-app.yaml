@@ -260,4 +260,3 @@ spec:
                   secretKeyRef:
                     name: map-dev-env-vars
                     key: GOV_NOTIFY_API
-              -
