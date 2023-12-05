@@ -240,16 +240,6 @@ spec:
               #     secretKeyRef:
               #       name: map-dev-env-vars
               #       key: SENTRY_DSN
-              - name: AWS_ACCESS_KEY_ID
-                valueFrom:
-                  secretKeyRef:
-                    name: map-dev-env-vars
-                    key: AWS_ACCESS_KEY_ID
-              - name: AWS_SECRET_ACCESS_KEY
-                valueFrom:
-                  secretKeyRef:
-                    name: map-dev-env-vars
-                    key: AWS_SECRET_ACCESS_KEY
               - name: AWS_STORAGE_BUCKET_NAME
                 valueFrom:
                   secretKeyRef:
@@ -491,16 +481,6 @@ spec:
                 #     secretKeyRef:
                 #       name: map-dev-env-vars
                 #       key: SENTRY_DSN
-                - name: AWS_ACCESS_KEY_ID
-                  valueFrom:
-                    secretKeyRef:
-                      name: map-dev-env-vars
-                      key: AWS_ACCESS_KEY_ID
-                - name: AWS_SECRET_ACCESS_KEY
-                  valueFrom:
-                    secretKeyRef:
-                      name: map-dev-env-vars
-                      key: AWS_SECRET_ACCESS_KEY
                 - name: AWS_STORAGE_BUCKET_NAME
                   valueFrom:
                     secretKeyRef:
