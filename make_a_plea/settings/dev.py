@@ -16,12 +16,17 @@ STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 ALLOWED_HOSTS = ['dev-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk']
 GOV_NOTIFY_API = os.getenv('GOV_NOTIFY_API')
+AWS_SQS_ROLE_ARN = os.environ.get('AWS_SQS_ROLE_ARN')
 
 CELERY_TASK_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
 CELERY_BROKER_URL = "SQS://"
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     'region': 'eu-west-2',
-    'queue_name_prefix': os.environ.get("CELERY_QUEUE_POLLING_PREFIX", "pet-development-"),
+    "predefined_queues": {
+        "CeleryBroker": {
+            "url": os.environ.get('AWS_SQS_ID'),
+        },
+    },
     'polling_interval': 1,
     'visibility_timeout': 3600
 }
