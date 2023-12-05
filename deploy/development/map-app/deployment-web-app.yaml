@@ -219,7 +219,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: makeaplea-instance-output-sqs-instance-output
-                    key: irsa_policy_arn
+                    key: sqs_arn
               - name: CELERY_QUEUE_POLLING_PREFIX
                 valueFrom:
                   secretKeyRef:
@@ -470,7 +470,7 @@ spec:
                   valueFrom:
                     secretKeyRef:
                       name: makeaplea-instance-output-sqs-instance-output
-                      key: irsa_policy_arn
+                      key: sqs_arn
                 - name: CELERY_QUEUE_POLLING_PREFIX
                   valueFrom:
                     secretKeyRef:
