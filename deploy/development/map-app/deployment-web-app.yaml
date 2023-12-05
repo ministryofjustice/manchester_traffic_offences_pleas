@@ -210,11 +210,11 @@ spec:
               #     secretKeyRef:
               #       name: map-dev-env-vars
               #       key: CELERY_ALWAYS_EAGER
-              # - name: CELERY_BROKER_URL
-              #   valueFrom:
-              #     secretKeyRef:
-              #       name: map-dev-env-vars
-              #       key: CELERY_BROKER_URL
+              - name: CELERY_BROKER_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: CELERY_BROKER_URL
               - name: CELERY_QUEUE_POLLING_PREFIX
                 valueFrom:
                   secretKeyRef:
