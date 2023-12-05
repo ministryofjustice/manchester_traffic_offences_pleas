@@ -215,11 +215,11 @@ spec:
                   secretKeyRef:
                     name: makeaplea-instance-output-sqs-instance-output
                     key: sqs_arn
-              - name: CELERY_BROKER_URL
+              - name: AWS_SQS_ID
                 valueFrom:
                   secretKeyRef:
-                    name: map-dev-env-vars
-                    key: CELERY_BROKER_URL
+                    name: makeaplea-instance-output-sqs-instance-output
+                    key: sqs_id
               - name: CELERY_QUEUE_POLLING_PREFIX
                 valueFrom:
                   secretKeyRef:
