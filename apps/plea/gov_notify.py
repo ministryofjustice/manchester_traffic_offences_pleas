@@ -2,15 +2,16 @@ import pdfkit
 from django.template.loader import render_to_string
 from notifications_python_client import prepare_upload
 from notifications_python_client.notifications import NotificationsAPIClient
+from typing import Dict
+
 from make_a_plea.settings.dev import GOV_NOTIFY_API
 
 
 class GovNotify:
 
-    def __init__(self, email_address, subject, personalisation, template_id):
+    def __init__(self, email_address, personalisation, template_id):
         self.api_key: str = GOV_NOTIFY_API
         self.client: NotificationsAPIClient = NotificationsAPIClient(self.api_key)
-        self.subject: str = subject
         self.email_address: str = email_address
         self.personalisation = personalisation
         self.template_id: str = template_id
