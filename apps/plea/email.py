@@ -127,6 +127,13 @@ def send_plea_email(context_data):
           f'\n'
           f'EMAIL_COUNT_ID: {email_count_id}'
           f'\n', flush=True)
+    logger.info(f'\n\n\n'
+                + 'CONTEXT_DATA: {context_data}'
+                + '\n'
+                + 'CASE ID: {case.id}'
+                + '\n'
+                + 'EMAIL_COUNT_ID: {email_count_id}'
+                + '\n')
     email_send_court.delay(case.id, email_count_id, context_data)
 
     if court_obj.plp_email:

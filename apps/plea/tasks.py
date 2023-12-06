@@ -67,6 +67,9 @@ def email_send_court(self, case_id, count_id, email_data):
     print(f'COURT ID and SUB EMAIL: {court_obj.id, court_obj.submission_email}'
           f'COURT NAME: {court_obj.court_name}'
           f'\n\n\n', flush=True)
+    logger.info(f'COURT ID and SUB EMAIL: {court_obj.id, court_obj.submission_email}'
+                + 'COURT NAME: {court_obj.court_name}'
+                + '\n\n\n')
 
     plea_email_to = court_obj.submission_email
     # smtp_route = get_smtp_gateway(court_obj.submission_email)
