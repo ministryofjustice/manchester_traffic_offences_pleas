@@ -16,10 +16,10 @@ class GovNotify:
         self.template_id: str = template_id
 
     def send_email(self):
-        return self.client.send_email_notification(
-            self.email_address,
-            self.personalisation,
-            self.template_id
+        self.client.send_email_notification(
+            email_address=self.email_address,
+            personalisation=self.personalisation,
+            template_id=self.template_id
         )
 
     def upload_file_link(self, data, html_template):
