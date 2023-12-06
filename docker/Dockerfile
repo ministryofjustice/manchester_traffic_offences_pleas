@@ -15,6 +15,7 @@ WORKDIR $APP_HOME
 # Debian dependencies
 COPY apt/ $APP_HOME/apt
 RUN apt-get -y update && $APP_HOME/apt/production.sh
+RUN apt-get install wkhtmltopdf
 
 # Python dependencies
 COPY requirements.txt $APP_HOME
