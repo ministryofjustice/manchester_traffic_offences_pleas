@@ -120,6 +120,13 @@ def send_plea_email(context_data):
     else:
         # use a fake email count ID as we're using a test record
         email_count_id = "XX"
+    print(f'\n\n\n'
+          f'CONTEXT_DATA: {context_data}'
+          f'\n'
+          f'CASE ID: {case.id}'
+          f'\n'
+          f'EMAIL_COUNT_ID: {email_count_id}'
+          f'\n', flush=True)
     email_send_court.delay(case.id, email_count_id, context_data)
 
     if court_obj.plp_email:
