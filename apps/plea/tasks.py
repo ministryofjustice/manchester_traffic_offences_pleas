@@ -65,7 +65,7 @@ def email_send_court(self, case_id, count_id, email_data):
 
     court_obj = get_court(email_data["case"]["urn"], case.ou_code)
 
-    plea_email_to = [court_obj.submission_email]
+    plea_email_to = court_obj.submission_email
     # smtp_route = get_smtp_gateway(court_obj.submission_email)
 
     email_count = None
@@ -79,7 +79,8 @@ def email_send_court(self, case_id, count_id, email_data):
 
     personalisation = {
         "case_id": case.id,
-        "count_id": count_id
+        "count_id": count_id,
+        "link_to_file": ""
     }
     plea_email = GovNotify(
         email_address=plea_email_to,
