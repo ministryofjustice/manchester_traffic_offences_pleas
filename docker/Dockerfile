@@ -36,7 +36,7 @@ RUN addgroup --gid $gid mygroup \
 COPY . $APP_HOME
 RUN chown -R myuser:mygroup $APP_HOME
 
-#RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
+RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
 
 # bypass broken pipeline
 #ENV APP_BUILD_DATE="2020-06-17T09:26:53+0000"
@@ -52,4 +52,4 @@ RUN mkdir -p /home/vagrant/.gnupg/
 USER 1000
 CMD [ "./docker/run_celery.sh"]
 
-EXPOSE 3000
+EXPOSE 3001
