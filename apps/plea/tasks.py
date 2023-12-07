@@ -100,7 +100,8 @@ def email_send_court(self, case_id, count_id, email_data):
         case.sent = False
         case.save()
 
-    case.add_action("Court email sent", "Sent mail to {0} via {1}".format(plea_email_to, 'make.a.plea@notifications.service.gov.uk'))
+    case.add_action("Court email sent", "Sent mail to {0} via {1}".format(
+        plea_email_to, 'make.a.plea@notifications.service.gov.uk'))
 
     if not court_obj.test_mode:
         case.sent = True
@@ -114,7 +115,6 @@ def email_send_court(self, case_id, count_id, email_data):
 
 @shared_task(bind=True, max_retries=10, default_retry_delay=1800)
 def email_send_prosecutor(self, case_id, email_data):
-    smtp_route = "PNN"
 
     email_data["urn"] = format_for_region(email_data["case"]["urn"])
 
@@ -131,25 +131,30 @@ def email_send_prosecutor(self, case_id, email_data):
     email_data["your_details"]["18_or_under"] = is_18_or_under(
         email_data["your_details"].get("date_of_birth"))
 
-    plp_email = TemplateAttachmentEmail(settings.PLP_EMAIL_FROM,
-                                        settings.PLEA_EMAIL_ATTACHMENT_NAME,
-                                        "emails/attachments/plp_email.html",
-                                        email_data,
-                                        "text/html")
-
     if court_obj.plp_email:
+
+        personalisation = {
+            "subject": email_subject,
+            "email_body": email_body
+        }
+        plp_email = GovNotify(
+            email_address=court_obj.plp_email,
+            personalisation=personalisation,
+            template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
+        )
+
+        plp_email.upload_file_link(email_data, 'emails/attachments/plp_email.html')
+
         try:
             with translation.override("en"):
-                plp_email.send([court_obj.plp_email],
-                               email_subject,
-                               email_body,
-                               route=smtp_route)
-        except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
+                plp_email.send_email()
+        except Exception as exc:
             logger.warning("Error sending email to prosecutor: {0}".format(exc))
             case.add_action("Prosecutor email network error", u"{}: {}".format(type(exc), exc))
             raise self.retry(args=[case_id, email_data], exc=exc)
 
-        case.add_action("Prosecutor email sent", "Sent mail to {0} via {1}".format(court_obj.plp_email, smtp_route))
+        case.add_action("Prosecutor email sent", "Sent mail to {0} via {1}".format(
+            court_obj.plp_email, 'make.a.plea@notifications.service.gov.uk'))
 
     else:
         case.add_action("Prosecutor email not sent", "No plp email in court data")
