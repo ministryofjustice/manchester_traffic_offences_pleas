@@ -175,7 +175,8 @@ def email_send_user(self, case_id, email_address, subject, html_body):
 
     personalisation = {
         "subject": subject,
-        "email_body": html_body
+        "email_body": html_body,
+        "link_to_file": ''
     }
     user_email = GovNotify(
         email_address=email_address,
