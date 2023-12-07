@@ -149,7 +149,7 @@ def send_plea_email(context_data):
 
         subject = _("Online plea submission confirmation")
 
-        email_send_user.delay(case.id, email_address, subject, html_body)
+        email_send_user.delay(case.id, email_address, subject, txt_body)
 
     else:
         case.add_action("No email entered, user email not sent", "")
