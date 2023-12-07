@@ -163,7 +163,7 @@ def email_send_prosecutor(self, case_id, email_data):
 
 
 @shared_task(bind=True, max_retries=10, default_retry_delay=1800)
-def email_send_user(self, case_id, email_address, subject, html_body, txt_body):
+def email_send_user(self, case_id, email_address, subject, html_body):
     """
     Dispatch an email to the user to confirm that their plea submission
     was successful.
@@ -173,23 +173,22 @@ def email_send_user(self, case_id, email_address, subject, html_body, txt_body):
     case = Case.objects.get(id=case_id)
     case.add_action("User email started", "")
 
-    connection = get_connection(host=settings.EMAIL_HOST,
-                                port=settings.EMAIL_PORT,
-                                username=settings.EMAIL_HOST_USER,
-                                password=settings.EMAIL_HOST_PASSWORD,
-                                use_tls=settings.EMAIL_USE_TLS)
-
-    email = EmailMultiAlternatives(subject, txt_body, settings.PLEA_CONFIRMATION_EMAIL_FROM,
-                                   [email_address], connection=connection)
-
-    email.attach_alternative(html_body, "text/html")
+    personalisation = {
+        "subject": subject,
+        "email_body": html_body
+    }
+    user_email = GovNotify(
+        email_address=email_address,
+        personalisation=personalisation,
+        template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
+    )
 
     try:
-        email.send(fail_silently=False)
-    except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
+        user_email.send_email()
+    except Exception as exc:
         logger.warning("Error sending user confirmation email: {0}".format(exc))
         case.add_action("User email network error", u"{}: {}".format(type(exc), exc))
-        raise self.retry(args=[case_id, email_address, subject, html_body, txt_body], exc=exc)
+        raise self.retry(args=[case_id, email_address, subject, html_body], exc=exc)
 
     case.add_action("User email sent", "")
 
