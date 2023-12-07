@@ -1,16 +1,14 @@
+from django.conf import settings
 from django.template.loader import render_to_string
 from notifications_python_client import prepare_upload
 from notifications_python_client.notifications import NotificationsAPIClient
-from xhtml2pdf import pisa
-from io import BytesIO
-
-from make_a_plea.settings.dev import GOV_NOTIFY_API
+from .pdf import PDFUtils
 
 
 class GovNotify:
 
     def __init__(self, email_address, personalisation, template_id):
-        self.api_key: str = GOV_NOTIFY_API
+        self.api_key: str = settings.GOV_NOTIFY_API
         self.client: NotificationsAPIClient = NotificationsAPIClient(self.api_key)
         self.email_address: str = email_address
         self.personalisation = personalisation
@@ -23,17 +21,11 @@ class GovNotify:
             template_id=self.template_id
         )
 
-    @staticmethod
-    def create_pdf_from_html(html: str) -> BytesIO:
-        pdf_stream: BytesIO = BytesIO()
-        pisa.CreatePDF(html, dest=pdf_stream)
-        pdf_stream.seek(0)
-        return pdf_stream
-
     def upload_file_link(self, data, html_template):
         string_data = render_to_string(html_template, data)
         try:
-            pdf_file = self.create_pdf_from_html(string_data)
+            pdf_file = PDFUtils.create_pdf_from_html(string_data)
             self.personalisation['link_to_file'] = prepare_upload(pdf_file)
         except Exception as e:
-            print(f'Error uploading file (plea_file.pdf) to notify with message: {e}')
+            print(f'Error uploading file to notify with message: {e}')
+            self.personalisation['link_to_file'] = 'There was an issue attaching attaching the pdf file'
