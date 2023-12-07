@@ -28,4 +28,4 @@ class GovNotify:
             self.personalisation['link_to_file'] = prepare_upload(pdf_file)
         except Exception as e:
             print(f'Error uploading file to notify with message: {e}')
-            self.personalisation['link_to_file'] = 'There was an issue attaching attaching the pdf file'
+            self.personalisation['link_to_file'] = 'There was an issue attaching the pdf file'
