@@ -34,6 +34,6 @@ class GovNotify:
         string_data = render_to_string(html_template, data)
         try:
             pdf_file = self.create_pdf_from_html(string_data)
-            self.personalisation['link_to_file'] = prepare_upload(pdf_file.read())
+            self.personalisation['link_to_file'] = prepare_upload(pdf_file)
         except Exception as e:
             print(f'Error uploading file (plea_file.pdf) to notify with message: {e}')
