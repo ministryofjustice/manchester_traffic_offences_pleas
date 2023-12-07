@@ -23,7 +23,8 @@ class GovNotify:
             template_id=self.template_id
         )
 
-    def create_pdf_from_html(self, html: str) -> BytesIO:
+    @staticmethod
+    def create_pdf_from_html(html: str) -> BytesIO:
         pdf_stream: BytesIO = BytesIO()
         pisa.CreatePDF(html, dest=pdf_stream)
         pdf_stream.seek(0)
@@ -32,8 +33,8 @@ class GovNotify:
     def upload_file_link(self, data, html_template):
         string_data = render_to_string(html_template, data)
         try:
-            pdf_file = create_pdf_from_html(string_data)
-            with open(pdf_file, 'rb') as file_:
+            pdf_file = self.create_pdf_from_html(string_data)
+            with open(pdf_file.read(), 'rb') as file_:
                 self.personalisation['link_to_file'] = prepare_upload(file_)
         except Exception as e:
             print(f'Error uploading file (plea_file.pdf) to notify with message: {e}')
