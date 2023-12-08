@@ -134,7 +134,7 @@ class CaseCreationTests(TestCase):
             self.fail('Should be one file in {}'.format(file_glob))
 
     @override_settings(STORE_USER_DATA=True)
-    @patch("apps.plea.tasks.EmailMultiAlternatives.send")
+    @patch("apps.plea.tasks.GovNotify.send_email")
     def test_user_email_failure(self, send):
         send.side_effect = iter([OSError("Email failed to send, socket error"), True])
 
@@ -143,7 +143,7 @@ class CaseCreationTests(TestCase):
 
         try:
             email_send_user.delay(case.id, "ian.george@digital.justice.gov.uk",
-                                  "User email test", "<strong>Test email body</strong>",
+                                  "User email test",
                                   "Test email body")
 
         except OSError:
