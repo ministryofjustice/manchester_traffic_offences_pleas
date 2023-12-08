@@ -86,7 +86,8 @@ class EmailGenerationTests(TestCase):
         response = self.gov_notify_client.send_email()
 
         self.assertEqual(response['content']['subject'], "Subject line")
-        self.assertEqual(response['content']['body'], "Body Text")
+        self.assertEqual(response['content']['email_body'], "Body Text")
+        self.assertIsNotNone(response['content']['link_to_file'])
 
     def test_plea_email_sends(self):
         send_plea_email(self.test_data_defendant)
