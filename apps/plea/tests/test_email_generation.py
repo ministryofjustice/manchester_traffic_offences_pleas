@@ -86,7 +86,6 @@ class EmailGenerationTests(TestCase):
         print(self.gov_notify_client.client)
         response = self.gov_notify_client.send_email()
         print(response)
-        print(response.status_code)
 
         self.assertEqual(response['content']['subject'], "Subject line")
         self.assertIn(response['content']['email_body'], "Body Text")
