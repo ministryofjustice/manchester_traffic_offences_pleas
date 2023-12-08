@@ -164,7 +164,7 @@ class CaseCreationTests(TestCase):
                     action.status, correct_actions[i]))
 
     @override_settings(STORE_USER_DATA=True)
-    @patch("apps.plea.tasks.EmailMultiAlternatives.send")
+    @patch("apps.plea.tasks.GovNotify.send_email")
     def test_user_email_not_requested(self, send):
         send.side_effect = iter([OSError("Email failed to send, socket error"), True])
 
