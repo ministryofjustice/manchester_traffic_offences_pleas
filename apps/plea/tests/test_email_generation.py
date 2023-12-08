@@ -89,8 +89,8 @@ class EmailGenerationTests(TestCase):
         print(response.status_code)
 
         self.assertEqual(response['content']['subject'], "Subject line")
-        self.assertEqual(response['content']['email_body'], "Body Text")
-        self.assertIsNotNone(response['content']['link_to_file'])
+        self.assertIn(response['content']['email_body'], "Body Text")
+        self.assertIn(response['content']['link_to_file'], "https://documents.service.gov.uk/")
 
     def test_plea_email_sends(self):
         send_plea_email(self.test_data_defendant)
