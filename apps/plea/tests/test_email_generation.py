@@ -82,8 +82,11 @@ class EmailGenerationTests(TestCase):
             "email_body": "Body Text"
         }
         self.gov_notify_client.upload_file_link(email_context, "emails/attachments/plea_email.html")
-
+        print("RUNNING MY TEST")
+        print(self.gov_notify_client.client)
         response = self.gov_notify_client.send_email()
+        print(response)
+        print(response.status_code)
 
         self.assertEqual(response['content']['subject'], "Subject line")
         self.assertEqual(response['content']['email_body'], "Body Text")
