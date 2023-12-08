@@ -15,7 +15,7 @@ class GovNotify:
         self.template_id: str = template_id
 
     def send_email(self):
-        self.client.send_email_notification(
+        return self.client.send_email_notification(
             email_address=self.email_address,
             personalisation=self.personalisation,
             template_id=self.template_id
