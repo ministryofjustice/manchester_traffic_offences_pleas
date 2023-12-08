@@ -82,14 +82,12 @@ class EmailGenerationTests(TestCase):
             "email_body": "Body Text"
         }
         self.gov_notify_client.upload_file_link(email_context, "emails/attachments/plea_email.html")
-        print("RUNNING MY TEST")
-        print(self.gov_notify_client.client)
+
         response = self.gov_notify_client.send_email()
-        print(response)
 
         self.assertEqual(response['content']['subject'], "Subject line")
-        self.assertIn(response['content']['body'], "Body Text")
-        self.assertIn(response['content']['body'], "https://documents.service.gov.uk/")
+        self.assertIn("Body Text", response['content']['body'])
+        self.assertIn("https://documents.service.gov.uk/", response['content']['body'])
 
     def test_plea_email_sends(self):
         send_plea_email(self.test_data_defendant)
