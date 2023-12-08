@@ -16,7 +16,6 @@ STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 ALLOWED_HOSTS = ['dev-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk']
 GOV_NOTIFY_API = os.getenv('GOV_NOTIFY_API')
-AWS_SQS_ROLE_ARN = os.environ.get('AWS_SQS_ROLE_ARN')
 
 CELERY_TASK_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
 CELERY_BROKER_URL = "SQS://"

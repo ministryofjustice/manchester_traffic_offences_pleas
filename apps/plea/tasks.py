@@ -1,17 +1,11 @@
 from __future__ import absolute_import
 
 import logging
-import smtplib
-import socket
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 
-from django.core.mail import EmailMultiAlternatives
-from django.core.mail import get_connection
-from django.conf import settings
 from django.utils import translation
 
-from apps.plea.attachment import TemplateAttachmentEmail
 from apps.plea.gov_notify import GovNotify
 
 from celery import shared_task

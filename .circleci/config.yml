@@ -17,6 +17,7 @@ jobs:
       - image: "circleci/python:3.6"
         environment:
           DJANGO_SETTINGS_MODULE: make_a_plea.settings.testing
+          GOV_NOTIFY_API: '${GOV_NOTIFY_API}'
           POSTGRES_DB: manchester_traffic_offences
           POSTGRES_USER: postgres
           POSTGRES_PASS: password

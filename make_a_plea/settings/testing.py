@@ -42,6 +42,7 @@ GPG_RECIPIENT = "test@example.org"
 
 TEST_RUNNER = 'make_a_plea.runner.MAPTestRunner'
 
+GOV_NOTIFY_API = os.getenv('GOV_NOTIFY_API')
 
 # a test gpg key with no passphrase and email test@example.org
 
