@@ -715,10 +715,10 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 class PLPEmailTemplateTests(BaseEmailTemplateTests):
 
     @patch('apps.plea.tasks.GovNotify.send_email')
-    def test_PLP_subject_output(self, send_email):
+    def test_PLP_subject_output(self, send_email_mock):
         context_data = self.get_context_data()
         send_plea_email(context_data)
-        self.assertEqual(send_email.call_count, 3)
+        self.assertEqual(send_email_mock.call_count, 3)
 
         self.gov_notify_client.personalisation = {
             'subject': 'POLICE ' + get_email_subject(context_data),
