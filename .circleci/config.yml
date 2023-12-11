@@ -103,7 +103,8 @@ jobs:
           name: Unit and E2E tests
           command: |
             . venv/bin/activate
-            coverage run --omit 'venv/*' --source='.' manage.py test
+            coverage run --omit 'venv/*' --source='.' manage.py test apps.plea.tests.test_email_template_output.PLPEmailTemplateTests.test_PLP_subject_output
+            coverage report
             python manage.py test --settings=api.settings.testing -p "api_test_*.py"
             python manage.py loaddata features/fixtures.yaml
             python manage.py runserver &
