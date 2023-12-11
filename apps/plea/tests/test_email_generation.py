@@ -120,6 +120,7 @@ class EmailGenerationTests(TestCase):
             'subject': 'Test Subject',
             'email_body': get_email_body(case=case_obj, count_id=count_obj.id)
         }
+        self.gov_notify_client.upload_file_link(None, None)
 
         response = self.gov_notify_client.send_email()
         self.assertIn(f"<<<makeaplea-ref: {case_obj.id}/{count_obj.id}>>>", response["content"]["body"])
