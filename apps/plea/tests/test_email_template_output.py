@@ -730,7 +730,7 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
         self.gov_notify_client.upload_file_link(None, None)
 
         response = self.gov_notify_client.send_email()
-        self.assertEqual(f"POLICE ONLINE PLEA: 06/AA/0000000/00 DOH: {self.hearing_date: %Y-%m-%d} PUBLIC Joe",
+        self.assertEqual(f"POLICE ONLINE PLEA: 06/AA/0000000/00 DOH:{self.hearing_date: %Y-%m-%d} PUBLIC Joe",
                          response["content"]["subject"])
 
     def test_PLP_case_details_output(self):
