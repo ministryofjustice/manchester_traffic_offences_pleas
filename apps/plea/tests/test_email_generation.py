@@ -114,43 +114,23 @@ class EmailGenerationTests(TestCase):
 
         self.assertEqual(court_stats_count, 1)
 
-    @patch('apps.plea.gov_notify.GovNotify.send_email.client.send_email_notification')
-    def test_plea_email_body_contains_plea_and_count_ids(self,
-                                                         send_email_notification_mock):
+    @patch('apps.plea.email.email_send_court')
+    @patch('apps.plea.tasks.GovNotify.send_email')
+    def test_plea_email_body_contains_plea_and_count_ids(self, email_send_court_mock, gov_notify_send_email_mock):
         send_plea_email(self.test_data_defendant)
 
         case_obj = Case.objects.all().order_by('-id')[0]
         count_obj = CourtEmailCount.objects.latest('date_sent')
 
-        # gov_notify_send_email_mock.assert_called_with()
-        send_email_notification_mock.assert_called_once()
-        # send_email_notification_mock.assert_called_with(
-        #     email_address='court@example.org',
-        #     personalisation={
-        #         "subject": f"ONLINE PLEA: 06/XX/00000/00 DOH: 2014-06-30 CX v",
-        #         "email_body": f"<<<makeaplea-ref:{case_obj.id}/{count_obj.id}>>>",
-        #         "link_to_file": "Link to pdf file"
-        #     },
-        #     template_id=self.gov_notify_client.template_id
-        # )
-
-        # print(gov_notify_send_email_mock.call_args[0])
-        # self.assertEqual(
-        #     gov_notify_send_email_mock.call_args[0][0].personalisation["email_body"],
-        #     f"<<<makeaplea-ref:{case_obj.id}/{count_obj.id}>>>"
-        # )
-
-        # matches = re.search("<<<makeaplea-ref:\s*(\d+)/(\d+)>>>", mail.outbox[0].body)
-        #
-        # try:
-        #     matches.groups()
-        # except AttributeError:
-        #     self.fail('Body makeaplea-ref tag not found!')
-        #
-        # case_id, count_id = matches.groups()
-        #
-        # self.assertEqual(int(case_id), case_obj.id)
-        # self.assertEqual(int(count_id), count_obj.id)
+        email_send_court_mock.assert_called_with(case_obj.id, count_obj.id, self.test_data_defendant)
+        gov_notify_send_email_mock.assert_called_with()
+        # email_address = 'court@example.org',
+        # personalisation = {
+        #                       "subject": f"ONLINE PLEA: 06/XX/00000/00 DOH: 2014-06-30 CX v",
+        #                       "email_body": f"<<<makeaplea-ref:{case_obj.id}/{count_obj.id}>>>",
+        #                       "link_to_file": "Link to pdf file"
+        #                   },
+        # template_id = self.gov_notify_client.template_id
 
     def test_send_plea_email_with_unicode(self):
         data = deepcopy(self.test_data_defendant)
