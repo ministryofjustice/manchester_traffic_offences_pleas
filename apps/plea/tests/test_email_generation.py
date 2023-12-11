@@ -129,6 +129,7 @@ class EmailGenerationTests(TestCase):
         #                       "link_to_file": "Link to pdf file"
         #                   },
         # template_id = self.gov_notify_client.template_id
+        print(gov_notify_send_email_mock.call_args[0])
         self.assertEqual(
             gov_notify_send_email_mock.call_args[0][0].personalisation["email_body"],
             f"<<<makeaplea-ref:{case_obj.id}/{count_obj.id}>>>"
