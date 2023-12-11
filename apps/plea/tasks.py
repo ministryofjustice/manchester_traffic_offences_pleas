@@ -26,6 +26,10 @@ def get_email_subject(email_data):
     return subject.format(**email_data)
 
 
+def get_email_body(case, count_id):
+    return "<<<makeaplea-ref: {}/{}>>>".format(case.id, count_id)
+
+
 def get_court(urn, ou_code):
     try:
         court_obj = Court.objects.get_court(urn, ou_code=ou_code)
@@ -68,7 +72,7 @@ def email_send_court(self, case_id, count_id, email_data):
     case.add_action("Court email started", "")
 
     email_subject = get_email_subject(email_data)
-    email_body = "<<<makeaplea-ref: {}/{}>>>".format(case.id, count_id)
+    email_body = get_email_subject()
 
     personalisation = {
         "subject": email_subject,

@@ -1,19 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 from copy import deepcopy
-import re
 
-from mock import patch, MagicMock
 from django.test import TestCase
 from django.core import mail
-
-from apps.plea.attachment import TemplateAttachmentEmail
 
 from ..email import send_plea_email
 from ..gov_notify import GovNotify
 from ..models import Case, CourtEmailCount, Court, OUCode
 from ..standardisers import format_for_region
-from ..tasks import email_send_court, email_send_prosecutor, email_send_user
+from ..tasks import get_email_body
 
 
 class EmailGenerationTests(TestCase):
@@ -115,24 +111,16 @@ class EmailGenerationTests(TestCase):
         self.assertEqual(court_stats_count, 1)
 
     def test_plea_email_body_contains_plea_and_count_ids(self):
-        print(self.test_data_defendant)
-        send_plea_email(self.test_data_defendant)
-        print(self.test_data_defendant)
-
         case_obj = Case.objects.all().order_by('-id')[0]
         count_obj = CourtEmailCount.objects.latest('date_sent')
 
-        matches = re.search("<<<makeaplea-ref:\s*(\d+)/(\d+)>>>", mail.outbox[0].body)
+        self.gov_notify_client.personalisation = {
+            'subject': 'Test Subject',
+            'email_body': get_email_body(case=case_obj, count_id=count_obj.id)
+        }
 
-        try:
-            matches.groups()
-        except AttributeError:
-            self.fail('Body makeaplea-ref tag not found!')
-
-        case_id, count_id = matches.groups()
-
-        self.assertEqual(int(case_id), case_obj.id)
-        self.assertEqual(int(count_id), count_obj.id)
+        response = self.gov_notify_client.send_email()
+        self.assertIn(f"<<<makeaplea-ref: {case_obj.id}/{count_obj.id}>>>", response["content"]["body"])
 
     def test_send_plea_email_with_unicode(self):
         data = deepcopy(self.test_data_defendant)

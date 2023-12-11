@@ -22,8 +22,8 @@ class GovNotify:
         )
 
     def upload_file_link(self, data, html_template):
-        string_data = render_to_string(html_template, data)
         try:
+            string_data = render_to_string(html_template, data)
             pdf_file = PDFUtils.create_pdf_from_html(string_data)
             self.personalisation['link_to_file'] = prepare_upload(pdf_file)
         except Exception as e:
