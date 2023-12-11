@@ -72,7 +72,7 @@ def email_send_court(self, case_id, count_id, email_data):
     case.add_action("Court email started", "")
 
     email_subject = get_email_subject(email_data)
-    email_body = get_email_subject()
+    email_body = get_email_body(case, count_id)
 
     personalisation = {
         "subject": email_subject,
