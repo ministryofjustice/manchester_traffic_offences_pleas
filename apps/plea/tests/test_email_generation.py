@@ -114,7 +114,7 @@ class EmailGenerationTests(TestCase):
 
         self.assertEqual(court_stats_count, 1)
 
-    @patch('apps.plea.tasks.GovNotify.send_email.client.send_email_notification')
+    @patch('apps.plea.tasks.GovNotify.send_email.GovNotify.client.send_email_notification')
     @patch('apps.plea.tasks.GovNotify.send_email')
     def test_plea_email_body_contains_plea_and_count_ids(self, gov_notify_send_email_mock,
                                                          send_email_notification_mock):
