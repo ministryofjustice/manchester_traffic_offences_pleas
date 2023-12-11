@@ -1,20 +1,21 @@
 from django.conf import settings
+from django.core.mail.message import EmailMessage, outbox
 from django.template.loader import render_to_string
 from notifications_python_client import prepare_upload
 from notifications_python_client.notifications import NotificationsAPIClient
 from .pdf import PDFUtils
 
 
-class GovNotify:
+class GovNotifyClient(EmailMessage):
 
     def __init__(self, email_address, personalisation, template_id):
-        self.api_key: str = settings.GOV_NOTIFY_API
-        self.client: NotificationsAPIClient = NotificationsAPIClient(self.api_key)
+        super().__init__()
+        self.client: NotificationsAPIClient = NotificationsAPIClient(settings.GOV_NOTIFY_API)
         self.email_address: str = email_address
-        self.personalisation = personalisation
+        self.personalisation: str = personalisation
         self.template_id: str = template_id
 
-    def send_email(self):
+    def send(self, fail_silently=True):
         return self.client.send_email_notification(
             email_address=self.email_address,
             personalisation=self.personalisation,

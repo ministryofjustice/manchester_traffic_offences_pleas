@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 from copy import deepcopy
+import re
 
 from django.test import TestCase
 from django.core import mail
 
 from ..email import send_plea_email
-from ..gov_notify import GovNotify
+from ..gov_notify import GovNotifyClient
 from ..models import Case, CourtEmailCount, Court, OUCode
 from ..standardisers import format_for_region
 from ..tasks import get_email_body
@@ -67,7 +68,7 @@ class EmailGenerationTests(TestCase):
                                                      {"guilty": "guilty_no_court", "guilty_extra": "test2"}]},
                                   "review": {"understand": True}}
 
-        self.gov_notify_client = GovNotify(
+        self.gov_notify_client = GovNotifyClient(
             email_address='test_to@example.org',
             personalisation={},
             template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
@@ -81,7 +82,7 @@ class EmailGenerationTests(TestCase):
         }
         self.gov_notify_client.upload_file_link(email_context, "emails/attachments/plea_email.html")
 
-        response = self.gov_notify_client.send_email()
+        response = self.gov_notify_client.send()
 
         self.assertEqual(response['content']['subject'], "Subject line")
         self.assertIn("Body Text", response['content']['body'])
@@ -116,14 +117,17 @@ class EmailGenerationTests(TestCase):
         case_obj = Case.objects.all().order_by('-id')[0]
         count_obj = CourtEmailCount.objects.latest('date_sent')
 
-        self.gov_notify_client.personalisation = {
-            'subject': 'Test Subject',
-            'email_body': get_email_body(case=case_obj, count_id=count_obj.id)
-        }
-        self.gov_notify_client.upload_file_link(None, None)
+        matches = re.search("<<<makeaplea-ref:\s*(\d+)/(\d+)>>>", mail.outbox[0].body)
 
-        response = self.gov_notify_client.send_email()
-        self.assertIn(f"<<<makeaplea-ref: {case_obj.id}/{count_obj.id}>>>", response["content"]["body"])
+        try:
+            matches.groups()
+        except AttributeError:
+            self.fail('Body makeaplea-ref tag not found!')
+
+        case_id, count_id = matches.groups()
+
+        self.assertEqual(int(case_id), case_obj.id)
+        self.assertEqual(int(count_id), count_obj.id)
 
     def test_send_plea_email_with_unicode(self):
         data = deepcopy(self.test_data_defendant)
