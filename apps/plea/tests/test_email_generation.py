@@ -114,7 +114,7 @@ class EmailGenerationTests(TestCase):
 
         self.assertEqual(court_stats_count, 1)
 
-    @patch('apps.plea.tasks.GovNotify.send_email')
+    @patch('apps.plea.tasks.GovNotify.client.send_email_notification')
     def test_plea_email_body_contains_plea_and_count_ids(self, gov_notify_send_email_mock):
         send_plea_email(self.test_data_defendant)
 
@@ -125,7 +125,8 @@ class EmailGenerationTests(TestCase):
             email_address='court@example.org',
             personalisation={
                 "subject": f"ONLINE PLEA: 06/XX/00000/00 DOH: 2014-06-30 CX v",
-                "email_body": f"<<<makeaplea-ref:{case_obj.id}/{count_obj.id}>>>"
+                "email_body": f"<<<makeaplea-ref:{case_obj.id}/{count_obj.id}>>>",
+                "link_to_file": "Link to pdf file"
             },
             template_id=self.gov_notify_client.template_id
         )
