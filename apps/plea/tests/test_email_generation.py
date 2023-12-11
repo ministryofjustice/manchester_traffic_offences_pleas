@@ -6,6 +6,7 @@ import re
 from django.test import TestCase
 from django.core import mail
 
+from ..attachment import TemplateAttachmentEmail
 from ..email import send_plea_email
 from ..gov_notify import GovNotifyClient
 from ..models import Case, CourtEmailCount, Court, OUCode
@@ -68,25 +69,16 @@ class EmailGenerationTests(TestCase):
                                                      {"guilty": "guilty_no_court", "guilty_extra": "test2"}]},
                                   "review": {"understand": True}}
 
-        self.gov_notify_client = GovNotifyClient(
-            email_address='test_to@example.org',
-            personalisation={},
-            template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
-        )
-
     def test_template_attachment_sends_email(self):
         email_context = {"case": {"urn": "062B3C4D5E"}}
-        self.gov_notify_client.personalisation = {
-            "subject": "Subject line",
-            "email_body": "Body Text"
-        }
-        self.gov_notify_client.upload_file_link(email_context, "emails/attachments/plea_email.html")
+        email = TemplateAttachmentEmail("test_from@example.org",
+                                        "test.html",
+                                        "emails/attachments/plea_email.html",
+                                        email_context,
+                                        "<p>Test Content</p><br><p>{{ urn }}</p>")
 
-        response = self.gov_notify_client.send()
-
-        self.assertEqual(response['content']['subject'], "Subject line")
-        self.assertIn("Body Text", response['content']['body'])
-        self.assertIn("https://documents.service.gov.uk/", response['content']['body'])
+        self.assertEqual(mail.outbox[0].subject, "Subject line")
+        self.assertEqual(mail.outbox[0].body, "Body Text")
 
     def test_plea_email_sends(self):
         send_plea_email(self.test_data_defendant)
