@@ -111,6 +111,8 @@ class EmailGenerationTests(TestCase):
         self.assertEqual(court_stats_count, 1)
 
     def test_plea_email_body_contains_plea_and_count_ids(self):
+        send_plea_email(self.test_data_defendant)
+
         case_obj = Case.objects.all().order_by('-id')[0]
         count_obj = CourtEmailCount.objects.latest('date_sent')
 
