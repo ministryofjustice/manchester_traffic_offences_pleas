@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.mail.message import EmailMessage, outbox
+from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 from notifications_python_client import prepare_upload
 from notifications_python_client.notifications import NotificationsAPIClient
