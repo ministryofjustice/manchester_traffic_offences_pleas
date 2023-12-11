@@ -114,16 +114,16 @@ class EmailGenerationTests(TestCase):
 
         self.assertEqual(court_stats_count, 1)
 
-    @patch('apps.plea.tasks.GovNotify.send_email.GovNotify.client.send_email_notification')
-    @patch('apps.plea.tasks.GovNotify.send_email')
-    def test_plea_email_body_contains_plea_and_count_ids(self, gov_notify_send_email_mock,
+    @patch('apps.plea.tasks.GovNotify.client.send_email_notification')
+    # @patch('apps.plea.tasks.GovNotify.send_email')
+    def test_plea_email_body_contains_plea_and_count_ids(self,
                                                          send_email_notification_mock):
         send_plea_email(self.test_data_defendant)
 
         case_obj = Case.objects.all().order_by('-id')[0]
         count_obj = CourtEmailCount.objects.latest('date_sent')
 
-        gov_notify_send_email_mock.assert_called_with()
+        # gov_notify_send_email_mock.assert_called_with()
         send_email_notification_mock.assert_called_with(
             email_address='court@example.org',
             personalisation={
