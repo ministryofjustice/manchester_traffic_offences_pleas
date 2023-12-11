@@ -76,13 +76,10 @@ def email_send_court(self, case_id, count_id, email_data):
     email_subject = get_email_subject(email_data)
     email_body = get_email_body(case, count_id)
 
-    personalisation = {
-        "subject": email_subject,
-        "email_body": email_body
-    }
     plea_email = GovNotifyClient(
-        email_address=plea_email_to,
-        personalisation=personalisation,
+        subject=email_subject,
+        body=email_body,
+        to=plea_email_to,
         template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
     )
 
