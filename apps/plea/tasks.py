@@ -88,6 +88,7 @@ def email_send_court(self, case_id, count_id, email_data):
 
     try:
         with translation.override("en"):
+            print("SENDING PLEA EMAIL")
             plea_email.send_email()
     except Exception as exc:
         logger.warning("Error sending email to court: {0}".format(exc))
@@ -145,6 +146,7 @@ def email_send_prosecutor(self, case_id, email_data):
 
         try:
             with translation.override("en"):
+                print("SENDING PLP EMAIL")
                 plp_email.send_email()
         except Exception as exc:
             logger.warning("Error sending email to prosecutor: {0}".format(exc))
@@ -183,6 +185,7 @@ def email_send_user(self, case_id, email_address, subject, txt_body):
     )
 
     try:
+        print("SENDING USER EMAIL")
         user_email.send_email()
     except Exception as exc:
         logger.warning("Error sending user confirmation email: {0}".format(exc))
