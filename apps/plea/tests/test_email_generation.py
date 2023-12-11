@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from copy import deepcopy
 import re
 
-from mock import patch
+from mock import patch, MagicMock
 from django.test import TestCase
 from django.core import mail
 
@@ -114,23 +114,25 @@ class EmailGenerationTests(TestCase):
 
         self.assertEqual(court_stats_count, 1)
 
-    @patch('apps.plea.email.email_send_court')
-    @patch('apps.plea.tasks.GovNotify.send_email')
-    def test_plea_email_body_contains_plea_and_count_ids(self, email_send_court_mock, gov_notify_send_email_mock):
+    def test_plea_email_body_contains_plea_and_count_ids(self):
+        print(self.test_data_defendant)
         send_plea_email(self.test_data_defendant)
+        print(self.test_data_defendant)
 
         case_obj = Case.objects.all().order_by('-id')[0]
         count_obj = CourtEmailCount.objects.latest('date_sent')
 
-        email_send_court_mock.assert_called_with(case_obj.id, count_obj.id, self.test_data_defendant)
-        gov_notify_send_email_mock.assert_called_with()
-        # email_address = 'court@example.org',
-        # personalisation = {
-        #                       "subject": f"ONLINE PLEA: 06/XX/00000/00 DOH: 2014-06-30 CX v",
-        #                       "email_body": f"<<<makeaplea-ref:{case_obj.id}/{count_obj.id}>>>",
-        #                       "link_to_file": "Link to pdf file"
-        #                   },
-        # template_id = self.gov_notify_client.template_id
+        matches = re.search("<<<makeaplea-ref:\s*(\d+)/(\d+)>>>", mail.outbox[0].body)
+
+        try:
+            matches.groups()
+        except AttributeError:
+            self.fail('Body makeaplea-ref tag not found!')
+
+        case_id, count_id = matches.groups()
+
+        self.assertEqual(int(case_id), case_obj.id)
+        self.assertEqual(int(count_id), count_obj.id)
 
     def test_send_plea_email_with_unicode(self):
         data = deepcopy(self.test_data_defendant)
