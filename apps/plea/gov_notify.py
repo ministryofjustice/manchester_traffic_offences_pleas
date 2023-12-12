@@ -12,7 +12,7 @@ class GovNotifyClient(message.EmailMessage):
         super().__init__(subject=subject, body=body, to=to, connection=self.get_connection())
         self.client: NotificationsAPIClient = NotificationsAPIClient(settings.GOV_NOTIFY_API)
         self.email_address: str = to[0]
-        self.personalisation = {'subject': subject, 'email_body': body}
+        self.personalisation = {'subject': subject, 'email_body': body, 'link_to_file': ''}
         self.template_id: str = template_id
 
     def get_connection(self, fail_silently=False):
