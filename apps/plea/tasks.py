@@ -97,7 +97,7 @@ def email_send_court(self, case_id, count_id, email_data):
         case.sent = False
         case.save()
 
-        raise self.retry(args=[case_id, count_id, email_data], exc=e)
+        # raise self.retry(args=[case_id, count_id, email_data], exc=e)
 
     case.add_action("Court email sent", "Sent mail to {0} via {1}".format(
         plea_email_to, 'make.a.plea@notifications.service.gov.uk'))

@@ -7,7 +7,6 @@ from mock import patch
 import socket
 
 from django.conf import settings
-from django.core import mail
 from django.test import TestCase
 from django.test.utils import override_settings
 
@@ -21,8 +20,6 @@ from ..tasks import email_send_user
 
 class CaseCreationTests(TestCase):
     def setUp(self):
-
-        mail.outbox = []
 
         self.court = Court.objects.create(
             court_code="0000",
