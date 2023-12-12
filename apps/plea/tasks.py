@@ -77,12 +77,16 @@ def email_send_court(self, case_id, count_id, email_data):
     email_subject = get_email_subject(email_data)
     email_body = get_email_body(case, count_id)
     print("BEFORE GOV NOTIFY CLIENT")
-    plea_email = GovNotifyClient(
-        subject=email_subject,
-        body=email_body,
-        to=plea_email_to,
-        template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
-    )
+    try:
+        plea_email = GovNotifyClient(
+            subject=email_subject,
+            body=email_body,
+            to=plea_email_to,
+            template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
+        )
+    except Exception as e:
+        print(f"ISSUE INITING NOTIFY CLIENT: {e}")
+        plea_email = None
 
     print("PLEA EMAIL => ", plea_email)
 
