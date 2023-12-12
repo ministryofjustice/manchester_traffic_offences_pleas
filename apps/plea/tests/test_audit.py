@@ -109,23 +109,16 @@ class CaseCreationTests(TestCase):
         clear_user_data()
 
         try:
-            print("SENDING PLEA EMAILL")
             send_plea_email(self.context_data)
-            print("PLEA EMAILL SENT")
         except Retry:
-            print("RETRY")
             pass
-        except OSError:
-            print("HIT OS ERROR")
+        except errors.HTTPError:
             pass
 
         case = Case.objects.all().order_by('-id')[0]
-        print("CASE, ", case)
-        print("ACTIONS, ", [action.status for action in case.actions.all()])
         action = case.get_actions("Court email network error")
-        print("ACTION, ", action)
         self.assertTrue(len(action) > 0)
-        self.assertEqual(action[0].status_info, u"<class 'OSError'>: Email failed to send, socket error")
+        self.assertEqual(action[0].status_info, u"503: Request failed")
 
         count_obj = CourtEmailCount.objects.all().order_by('-id')[0]
         self.assertEqual(case.sent, count_obj.sent)
