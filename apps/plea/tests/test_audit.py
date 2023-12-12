@@ -100,7 +100,7 @@ class CaseCreationTests(TestCase):
         self.assertEquals(self.context_data['case']['urn'], data['case']['urn'])
 
     @override_settings(STORE_USER_DATA=True)
-    @patch("apps.plea.gov_notify.GovNotifyClient.send")
+    @patch("apps.plea.tasks.GovNotifyClient.send")
     def test_email_failure_audit(self, send):
         send.side_effect = OSError("Email failed to send, socket error")
 
