@@ -107,14 +107,20 @@ class CaseCreationTests(TestCase):
         clear_user_data()
 
         try:
+            print("SENDING PLEA EMAILL")
             send_plea_email(self.context_data)
+            print("PLEA EMAILL SENT")
         except Retry:
+            print("RETRY")
             pass
         except OSError:
+            print("HIT OS ERROR")
             pass
 
         case = Case.objects.all().order_by('-id')[0]
+        print("CASE, ", case)
         action = case.get_actions("Court email network error")
+        print("ACTION, ", action)
         self.assertTrue(len(action) > 0)
         self.assertEqual(action[0].status_info, u"<class 'OSError'>: Email failed to send, socket error")
 
