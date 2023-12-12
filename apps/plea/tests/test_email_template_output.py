@@ -725,8 +725,6 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
         self.assertContainsDefinition(response.content, "First name", "Joe", count=1)
         self.assertContainsDefinition(response.content, "Last name", "Public", count=1)
 
-
-
     def test_PLP_single_guilty_plea_email_plea_output(self):
         context_data = self.get_context_data()
 
