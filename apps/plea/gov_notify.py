@@ -20,7 +20,7 @@ class GovNotifyClient(message.EmailMessage):
         super().__init__(subject=subject, body=body, to=to, connection=get_connection())
         print("AFTER SUPER")
         self.client: NotificationsAPIClient = NotificationsAPIClient(settings.GOV_NOTIFY_API)
-        self.email_address: str = to
+        self.email_address: str = to[0]
         self.personalisation = {'subject': subject, 'email_body': body}
         self.template_id: str = template_id
 
