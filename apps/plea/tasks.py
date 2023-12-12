@@ -171,27 +171,20 @@ def email_send_user(self, case_id, email_address, subject, txt_body):
     case = Case.objects.get(id=case_id)
     case.add_action("User email started", "")
 
-    try:
-        user_email = GovNotifyClient(
-            subject=subject,
-            body=txt_body,
-            to=[email_address],
-            template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
-        )
-    except Exception as e:
-        print(f"ERROR INIT USER EMAIL CLIENT: {e}")
-        user_email = None
+    user_email = GovNotifyClient(
+        subject=subject,
+        body=txt_body,
+        to=[email_address],
+        template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
+    )
 
     try:
-        print("SENDING USER EMAIL")
-        print(user_email.send())
+        user_email.send()
     except errors.HTTPError as e:
         print(f"ERROR CAUGHT - {e.status_code, e.message}")
         logger.warning(f"Error sending user confirmation email: {e.status_code} - {e.message}")
         case.add_action(f"User email network error", u"{}: {}".format(e.status_code, e.message))
         raise self.retry(args=[case_id, email_address, subject, txt_body], exc=e)
-    except Exception as e:
-        print(f"SOMETHIGN WENT WRONG: {e}")
 
     case.add_action("User email sent", "")
 

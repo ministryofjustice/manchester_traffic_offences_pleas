@@ -19,14 +19,12 @@ class GovNotifyClient(message.EmailMessage):
         return get_connection() if settings.EMAIL_BACKEND else None
 
     def send(self, fail_silently=False):
-        print("CONNECTION: ", self.connection)
         if self.connection:
             """
             A connection will only be made to EMAIL_BACKEND if using test runner in which case we want to add the emails
             to the mailbox for testing. Otherwise just send the email via notify.
             """
             super().send()
-            print("called send parent method: ", self.connection)
 
         return self.client.send_email_notification(
             email_address=self.email_address,
