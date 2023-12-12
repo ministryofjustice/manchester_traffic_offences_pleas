@@ -103,7 +103,7 @@ jobs:
           name: Unit and E2E tests
           command: |
             . venv/bin/activate
-            coverage run --omit 'venv/*' --source='.' manage.py test apps.plea.tests.test_audit.CaseCreationTests.test_email_failure_audit
+            coverage run --omit 'venv/*' --source='.' manage.py test
             coverage report
             python manage.py test --settings=api.settings.testing -p "api_test_*.py"
             python manage.py loaddata features/fixtures.yaml
@@ -111,7 +111,7 @@ jobs:
             mailmock -p 1025 -o /tmp/mailmock -n &
             celery worker -A make_a_plea -D
             sleep 2
-            behave --format progress3 -Dheadless
+            behave --format progress3 -Dheadless -s --no-capture
 
       - run:
           name: Build MaP web app image
