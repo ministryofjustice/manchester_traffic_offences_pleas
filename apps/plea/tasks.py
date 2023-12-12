@@ -90,7 +90,7 @@ def email_send_court(self, case_id, count_id, email_data):
             plea_email.send()
     except errors.HTTPError as e:
         logger.warning(f"Error sending email to court: {e.status_code} - {e.message}")
-        case.add_action(f"Court email network error, u'{e.status_code}: {e.message}")
+        case.add_action(f"Court email network error", u"{}: {}".format(e.status_code, e.message))
         if email_count is not None:
             email_count.get_status_from_case(case)
             email_count.save()
