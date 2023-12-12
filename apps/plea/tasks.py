@@ -184,8 +184,7 @@ def email_send_user(self, case_id, email_address, subject, txt_body):
 
     try:
         print("SENDING USER EMAIL")
-        response = user_email.send()
-        print(response)
+        print(user_email.send())
     except errors.HTTPError as e:
         logger.warning(f"Error sending user confirmation email: {e.status_code} - {e.message}")
         case.add_action(f"User email network error", u"{}: {}".format(e.status_code, e.message))
