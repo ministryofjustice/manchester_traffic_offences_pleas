@@ -83,6 +83,8 @@ def email_send_court(self, case_id, count_id, email_data):
         template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
     )
 
+    print("PLEA EMAIL => ", plea_email)
+
     plea_email.upload_file_link(email_data, 'emails/attachments/plea_email.html')
 
     try:
