@@ -58,7 +58,6 @@ def get_smtp_gateway(email_address):
 
 @shared_task(bind=True, max_retries=10, default_retry_delay=900)
 def email_send_court(self, case_id, count_id, email_data):
-    print("In EMAIL SEND COURT")
     email_data["urn"] = format_for_region(email_data["case"]["urn"])
 
     # No error trapping, let these fail hard if the objects can't be found
@@ -76,39 +75,22 @@ def email_send_court(self, case_id, count_id, email_data):
 
     email_subject = get_email_subject(email_data)
     email_body = get_email_body(case, count_id)
-    print("BEFORE GOV NOTIFY CLIENT")
-    try:
-        plea_email = GovNotifyClient(
-            subject=email_subject,
-            body=email_body,
-            to=[plea_email_to],
-            template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
-        )
-    except Exception as e:
-        print(f"ISSUE INITING NOTIFY CLIENT: {e}")
-        plea_email = None
 
-    print("PLEA EMAIL => ", plea_email)
+    plea_email = GovNotifyClient(
+        subject=email_subject,
+        body=email_body,
+        to=[plea_email_to],
+        template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
+    )
 
     plea_email.upload_file_link(email_data, 'emails/attachments/plea_email.html')
 
     try:
         with translation.override("en"):
-            response = plea_email.send()
-            print(response)
-            print("PLEA EMAIL SENT")
+            plea_email.send()
     except errors.HTTPError as e:
         logger.warning(f"Error sending email to court: {e.status_code} - {e.message}")
         case.add_action(f"Court email network error, u'{e.status_code}: {e.message}")
-        if email_count is not None:
-            email_count.get_status_from_case(case)
-            email_count.save()
-        case.sent = False
-        case.save()
-    except Exception as e:
-        print(f"ERROR SENDING NOTIFY EMAIL: {e}")
-        logger.warning(f"Error sending email to court: {e}")
-        case.add_action(f"Court email network error, u'{e}")
         if email_count is not None:
             email_count.get_status_from_case(case)
             email_count.save()

@@ -8,24 +8,25 @@ from .pdf import PDFUtils
 
 class GovNotifyClient(message.EmailMessage):
 
-    # def __init__(self, email_address, personalisation, template_id):
-    #     super().__init__()
-    #     self.client: NotificationsAPIClient = NotificationsAPIClient(settings.GOV_NOTIFY_API)
-    #     self.email_address: str = email_address
-    #     self.personalisation = personalisation
-    #     self.template_id: str = template_id
-
     def __init__(self, subject, body, to, template_id):
-        print("INIT")
-        super().__init__(subject=subject, body=body, to=to, connection=get_connection())
-        print("AFTER SUPER")
+        super().__init__(subject=subject, body=body, to=to, connection=self.get_connection())
         self.client: NotificationsAPIClient = NotificationsAPIClient(settings.GOV_NOTIFY_API)
         self.email_address: str = to[0]
         self.personalisation = {'subject': subject, 'email_body': body}
         self.template_id: str = template_id
 
-    def send(self, fail_silently=True):
-        super().send()
+    def get_connection(self, fail_silently=False):
+        return get_connection() if settings.EMAIL_BACKEND else None
+
+    def send(self, fail_silently=False):
+
+        if self.connection:
+            """
+            A connection will only be made to EMAIL_BACKEND if using test runner in which case we want to add the emails
+            to the mailbox for testing. Otherwise just send the email via notify.
+            """
+            super().send()
+
         return self.client.send_email_notification(
             email_address=self.email_address,
             personalisation=self.personalisation,

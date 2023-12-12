@@ -43,7 +43,6 @@ def send_plea_email(context_data):
 
     context_data: dict populated by form fields
     """
-    print("RUNNING SEND PLEA EMAIL")
     case = Case.objects.filter(
         urn__iexact=context_data["case"]["urn"].upper(), sent=False,
         imported=True).first()
@@ -120,7 +119,6 @@ def send_plea_email(context_data):
     else:
         # use a fake email count ID as we're using a test record
         email_count_id = "XX"
-    print("RUNNING email_send_court")
     email_send_court.delay(case.id, email_count_id, context_data)
 
     if court_obj.plp_email:
