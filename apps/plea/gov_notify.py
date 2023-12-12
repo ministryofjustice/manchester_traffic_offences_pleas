@@ -16,14 +16,14 @@ class GovNotifyClient(message.EmailMessage):
     #     self.template_id: str = template_id
 
     def __init__(self, subject, body, to, template_id):
-        super().__init__(subject=subject, body=body, to=to, connection=None)
+        super().__init__(subject=subject, body=body, to=to, connection=get_connection())
         self.client: NotificationsAPIClient = NotificationsAPIClient(settings.GOV_NOTIFY_API)
         self.email_address: str = to
         self.personalisation = {'subject': subject, 'email_body': body}
         self.template_id: str = template_id
 
-    def send(self, fail_silently=True, connection=get_connection()):
-        print("CONNECTION=> ", connection)
+    def send(self, fail_silently=True):
+        print("CONNECTION=> ", self.connection)
         return self.client.send_email_notification(
             email_address=self.email_address,
             personalisation=self.personalisation,

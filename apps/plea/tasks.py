@@ -133,13 +133,10 @@ def email_send_prosecutor(self, case_id, email_data):
 
     if court_obj.plp_email:
 
-        personalisation = {
-            "subject": email_subject,
-            "email_body": email_body
-        }
         plp_email = GovNotifyClient(
-            email_address=court_obj.plp_email,
-            personalisation=personalisation,
+            subject=email_subject,
+            body=email_body,
+            to=court_obj.plp_email,
             template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
         )
 
@@ -173,14 +170,10 @@ def email_send_user(self, case_id, email_address, subject, txt_body):
     case = Case.objects.get(id=case_id)
     case.add_action("User email started", "")
 
-    personalisation = {
-        "subject": subject,
-        "email_body": txt_body,
-        "link_to_file": ''
-    }
     user_email = GovNotifyClient(
-        email_address=email_address,
-        personalisation=personalisation,
+        subject=subject,
+        body=txt_body,
+        to=email_address,
         template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
     )
 
