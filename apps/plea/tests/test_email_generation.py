@@ -136,7 +136,6 @@ class EmailGenerationTests(TestCase):
 
         self.assertEqual(len(mail.outbox), 3)
         self.assertIn(format_for_region(self.test_data_defendant['case']['urn']), mail.outbox[-1].body)
-        self.assertIn(format_for_region(self.test_data_defendant['case']['urn']), mail.outbox[-1].alternatives[0][0])
         self.assertIn(self.test_data_defendant['your_details']['email'], mail.outbox[-1].to)
 
     def test_user_confirmation_sends_no_email(self):
@@ -151,16 +150,13 @@ class EmailGenerationTests(TestCase):
 
         self.assertEqual(len(mail.outbox), 3)
         self.assertIn(format_for_region(self.test_data_company['case']['urn']), mail.outbox[-1].body)
-        self.assertIn(format_for_region(self.test_data_company['case']['urn']), mail.outbox[-1].alternatives[0][0])
         self.assertIn(self.test_data_company['company_details']['email'], mail.outbox[-1].to)
 
     def test_user_confirmation_displays_court_details(self):
         send_plea_email(self.test_data_defendant)
 
         self.assertIn(self.court_obj.court_name, mail.outbox[-1].body)
-        self.assertIn(self.court_obj.court_name, mail.outbox[-1].alternatives[0][0])
         self.assertIn(self.court_obj.court_email, mail.outbox[-1].body)
-        self.assertIn(self.court_obj.court_email, mail.outbox[-1].alternatives[0][0])
 
     def test_sjp_user_confirmation_displays_court_details(self):
         self.test_data_defendant.update({"notice_type": {"sjp": True}})
@@ -168,9 +164,7 @@ class EmailGenerationTests(TestCase):
         send_plea_email(self.test_data_defendant)
 
         self.assertIn(self.court_obj.court_name, mail.outbox[-1].body)
-        self.assertIn(self.court_obj.court_name, mail.outbox[-1].alternatives[0][0])
         self.assertIn(self.court_obj.court_email, mail.outbox[-1].body)
-        self.assertIn(self.court_obj.court_email, mail.outbox[-1].alternatives[0][0])
 
     def test_email_addresses_from_court_model(self):
         send_plea_email(self.test_data_defendant)

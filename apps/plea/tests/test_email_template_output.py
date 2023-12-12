@@ -50,12 +50,6 @@ class BaseEmailTemplateTests(TestCase):
             enabled=True,
             test_mode=True)
 
-        self.gov_notify_client = GovNotify(
-            email_address='test_to@example.org',
-            personalisation={},
-            template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
-        )
-
     def get_context_data(self,
                          urn_entry_data=None,
                          notice_type_data=None,
@@ -713,25 +707,14 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
 
 class PLPEmailTemplateTests(BaseEmailTemplateTests):
-
-    @patch('apps.plea.tasks.GovNotify.send_email')
-    def test_number_of_emails_send(self, send_email):
-        context_data = self.get_context_data()
-        send_plea_email(context_data)
-        self.assertEqual(send_email.call_count, 3)
-
     def test_PLP_subject_output(self):
         context_data = self.get_context_data()
-        send_plea_email(context_data)
-        self.gov_notify_client.personalisation = {
-            'subject': 'POLICE ' + get_email_subject(context_data),
-            'email_body': ''
-        }
-        self.gov_notify_client.upload_file_link(None, None)
 
-        response = self.gov_notify_client.send_email()
-        self.assertEqual(f"POLICE ONLINE PLEA: 06/AA/0000000/00 DOH:{self.hearing_date: %Y-%m-%d} PUBLIC Joe",
-                         response["content"]["subject"])
+        send_plea_email(context_data)
+
+        self.assertEqual(len(mail.outbox), 3)
+        self.assertEqual(mail.outbox[1].subject, "POLICE ONLINE PLEA: 06/AA/0000000/00 DOH: {} PUBLIC Joe"
+                         .format(self.hearing_date.strftime("%Y-%m-%d")))
 
     def test_PLP_case_details_output(self):
         context_data = self.get_context_data()
