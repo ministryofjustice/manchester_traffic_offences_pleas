@@ -100,7 +100,7 @@ class CaseCreationTests(TestCase):
         self.assertEquals(self.context_data['case']['urn'], data['case']['urn'])
 
     @override_settings(STORE_USER_DATA=True)
-    @patch("apps.plea.attachment.TemplateAttachmentEmail.send")
+    @patch("apps.plea.tasks.GovNotifyClient.send")
     def test_email_failure_audit(self, send):
         send.side_effect = OSError("Email failed to send, socket error")
 
@@ -134,7 +134,7 @@ class CaseCreationTests(TestCase):
             self.fail('Should be one file in {}'.format(file_glob))
 
     @override_settings(STORE_USER_DATA=True)
-    @patch("apps.plea.tasks.GovNotify.send")
+    @patch("apps.plea.tasks.GovNotifyClient.send")
     def test_user_email_failure(self, send):
         send.side_effect = iter([OSError("Email failed to send, socket error"), True])
 
@@ -164,7 +164,7 @@ class CaseCreationTests(TestCase):
                     action.status, correct_actions[i]))
 
     @override_settings(STORE_USER_DATA=True)
-    @patch("apps.plea.tasks.GovNotify.send")
+    @patch("apps.plea.tasks.GovNotifyClient.send")
     def test_user_email_not_requested(self, send):
         send.side_effect = iter([OSError("Email failed to send, socket error"), True])
 

@@ -9,7 +9,6 @@ from django.core import mail
 from django.test import TestCase
 from django.utils import translation
 from ..email import send_plea_email
-from ..gov_notify import GovNotify
 from ..models import Court, Case
 from ..forms import (URNEntryForm,
                      NoticeTypeForm,
@@ -22,7 +21,6 @@ from ..forms import (URNEntryForm,
                      HouseholdExpensesForm,
                      OtherExpensesForm,
                      ConfirmationForm)
-from ..tasks import get_email_subject
 
 
 class BaseEmailTemplateTests(TestCase):

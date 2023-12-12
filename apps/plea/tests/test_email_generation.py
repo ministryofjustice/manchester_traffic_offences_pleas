@@ -8,10 +8,8 @@ from django.core import mail
 
 from ..attachment import TemplateAttachmentEmail
 from ..email import send_plea_email
-from ..gov_notify import GovNotifyClient
 from ..models import Case, CourtEmailCount, Court, OUCode
 from ..standardisers import format_for_region
-from ..tasks import get_email_body
 
 
 class EmailGenerationTests(TestCase):
