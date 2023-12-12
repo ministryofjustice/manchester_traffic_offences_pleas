@@ -26,6 +26,7 @@ CELERY_BROKER_URL = "amqp://localhost"
 EMAIL_PORT = 1025
 EMAIL_HOST = "127.0.0.1"
 EMAIL_USE_TLS = False
+EMAIL_BACKEND = 'apps.plea.tests.utils.email_backend.TestEmailBackend'
 
 SMTP_ROUTES = {"GSI": {"HOST": "127.0.0.1", "PORT": 1025, "USE_TLS": False},
                "PNN": {"HOST": "127.0.0.1", "PORT": 1025, "USE_TLS": False},

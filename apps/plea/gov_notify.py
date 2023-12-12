@@ -22,7 +22,7 @@ class GovNotifyClient(EmailMessage):
         self.personalisation = {'subject': subject, 'email_body': body}
         self.template_id: str = template_id
 
-    def send(self, fail_silently=True):
+    def send(self, fail_silently=True, connection=settings.EMAIL_BACKEND):
         return self.client.send_email_notification(
             email_address=self.email_address,
             personalisation=self.personalisation,
