@@ -26,6 +26,7 @@ class GovNotifyClient(message.EmailMessage):
 
     def send(self, fail_silently=True):
         print("CONNECTION=> ", self.connection)
+        super().send(self)
         return self.client.send_email_notification(
             email_address=self.email_address,
             personalisation=self.personalisation,
