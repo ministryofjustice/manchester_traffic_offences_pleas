@@ -149,7 +149,7 @@ def send_plea_email(context_data):
         txt_body = wrap(render_to_string(email_template + ".txt", data), 72)
 
         subject = _("Online plea submission confirmation")
-        print("EMAIL SEND USER\n")
+        print("EMAIL SEND USER")
         email_send_user.delay(case.id, email_address, subject, txt_body)
 
     else:
