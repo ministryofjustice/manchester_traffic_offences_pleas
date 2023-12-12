@@ -76,6 +76,9 @@ class EmailGenerationTests(TestCase):
                                         "emails/attachments/plea_email.html",
                                         email_context,
                                         "<p>Test Content</p><br><p>{{ urn }}</p>")
+        email.send(["test_to@example.org", ],
+                   "Subject line",
+                   "Body Text")
 
         self.assertEqual(mail.outbox[0].subject, "Subject line")
         self.assertEqual(mail.outbox[0].body, "Body Text")
