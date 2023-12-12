@@ -87,8 +87,7 @@ def email_send_court(self, case_id, count_id, email_data):
 
     try:
         with translation.override("en"):
-            response = plea_email.send()
-            print(response)
+            plea_email.send()
     except errors.HTTPError as e:
         logger.warning(f"Error sending email to court: {e.status_code} - {e.message}")
         case.add_action(f"Court email network error", u"{}: {}".format(e.status_code, e.message))
@@ -144,8 +143,7 @@ def email_send_prosecutor(self, case_id, email_data):
 
         try:
             with translation.override("en"):
-                response = plp_email.send()
-                print(response)
+                plp_email.send()
         except errors.HTTPError as e:
             logger.warning(f"Error sending email to prosecutor: {e.status_code} - {e.message}")
             case.add_action(f"Prosecutor email network error", u"{}: {}".format(e.status_code, e.message))
