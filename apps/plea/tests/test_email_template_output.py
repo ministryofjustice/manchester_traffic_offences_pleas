@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 from mock import Mock, patch
 
 from django.core import mail
+from django.template.loader import render_to_string
 from django.test import TestCase
 from django.utils import translation
 from ..email import send_plea_email
@@ -337,10 +338,10 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
         context_data["plea"]["data"][0]["hearing_language"] = True
         context_data["plea"]["data"][0]["documentation_language"] = True
 
-
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        plea_template = "emails/attachments/plea_email.html"
+        response = self.get_mock_response(render_to_string(plea_template, context_data))
         self.assertContainsDefinition(response.content, "Your plea", "Guilty", count=1)
         self.assertContainsDefinition(response.content, "Plead guilty in court", "Yes", count=1)
         self.assertContainsDefinition(response.content, "Interpreter required", "Yes", count=1)
