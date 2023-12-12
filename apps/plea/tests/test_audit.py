@@ -119,6 +119,7 @@ class CaseCreationTests(TestCase):
 
         case = Case.objects.all().order_by('-id')[0]
         print("CASE, ", case)
+        print("ACTIONS, ", case.actions.all())
         action = case.get_actions("Court email network error")
         print("ACTION, ", action)
         self.assertTrue(len(action) > 0)

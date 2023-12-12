@@ -146,7 +146,7 @@ def email_send_prosecutor(self, case_id, email_data):
                 plp_email.send()
         except errors.HTTPError as e:
             logger.warning(f"Error sending email to prosecutor: {e.status_code} - {e.message}")
-            case.add_action(f"Prosecutor email network error, u'{e.status_code}: {e.message}")
+            case.add_action(f"Prosecutor email network error", u"{}: {}".format(e.status_code, e.message))
             raise self.retry(args=[case_id, email_data], exc=e)
 
         case.add_action("Prosecutor email sent", "Sent mail to {0} via {1}".format(
@@ -180,7 +180,7 @@ def email_send_user(self, case_id, email_address, subject, txt_body):
         user_email.send()
     except errors.HTTPError as e:
         logger.warning(f"Error sending user confirmation email: {e.status_code} - {e.message}")
-        case.add_action(f"User email network error, u'{e.status_code}: {e.message}")
+        case.add_action(f"User email network error", u"{}: {}".format(e.status_code, e.message))
         raise self.retry(args=[case_id, email_address, subject, txt_body], exc=e)
 
     case.add_action("User email sent", "")
