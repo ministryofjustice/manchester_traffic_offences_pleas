@@ -49,6 +49,8 @@ class BaseEmailTemplateTests(TestCase):
             enabled=True,
             test_mode=True)
 
+        self.plea_template = "emails/attachments/plea_email.html"
+
     def get_context_data(self,
                          urn_entry_data=None,
                          notice_type_data=None,
@@ -253,7 +255,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
 
         self.assertContainsDefinition(response.content, "Unique reference number", "06/AA/0000000/00", count=1)
         self.assertContainsDefinition(response.content, "Court hearing date", self.hearing_date_formatted, count=1)
@@ -340,8 +342,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        plea_template = "emails/attachments/plea_email.html"
-        response = self.get_mock_response(render_to_string(plea_template, context_data))
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
         self.assertContainsDefinition(response.content, "Your plea", "Guilty", count=1)
         self.assertContainsDefinition(response.content, "Plead guilty in court", "Yes", count=1)
         self.assertContainsDefinition(response.content, "Interpreter required", "Yes", count=1)
@@ -446,7 +447,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
 
         self.assertContains(response, '<h3>Your employment</h3>', html=True, count=1)
         self.assertContainsDefinition(response.content, "You get paid", "Weekly", count=1)
@@ -463,7 +464,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
 
         self.assertContains(response, '<h3>Your employment</h3>', html=True, count=1)
         self.assertContainsDefinition(response.content, "You get paid", "Fortnightly", count=1)
@@ -481,7 +482,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
 
         self.assertContains(response, '<h3>Your employment</h3>', html=True, count=1)
         self.assertContainsDefinition(response.content, "You get paid", "Monthly", count=1)
@@ -499,7 +500,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
 
         self.assertContains(response, '<h3>Your self-employment</h3>', html=True, count=1)
         self.assertContainsDefinition(response.content, "You get paid", "Weekly", count=1)
@@ -556,7 +557,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
 
         self.assertContains(response, '<h3>Your benefits</h3>', html=True, count=1)
         self.assertContainsDefinition(response.content, "You receive", "Income support", count=1)
@@ -570,7 +571,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
 
         self.assertContainsDefinition(
             response.content,
@@ -604,7 +605,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
         self.assertContainsDefinition(response.content, "Other contributors to household bills", "Yes", count=1)
 
     def test_expenses_output_not_listed(self):
@@ -632,7 +633,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
         self.assertContainsDefinition(response.content, "Other expenses (not listed)", "Extra expenses.", count=1)
 
     def test_skipped_email_finances_output(self):
@@ -641,7 +642,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
         self.assertContainsDefinition(
             response.content,
             "Status", "<i>Not completed/provided Financial details must be collected at hearing</i>",
@@ -652,7 +653,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
 
         self.assertContainsDefinition(response.content, "Email address", "user@example.org", count=1)
 
@@ -672,7 +673,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
 
         self.assertContainsDefinition(response.content, 'Work email address', 'company@example.org', count=1)
 
@@ -681,7 +682,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
 
         self.assertNotContains(response, "<<SHOWEXPENSES>>")
 
@@ -698,7 +699,7 @@ class CourtEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[0].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
 
         self.assertContains(response, "101")
         self.assertContains(response, "202")
