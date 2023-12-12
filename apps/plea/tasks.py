@@ -179,7 +179,7 @@ def email_send_user(self, case_id, email_address, subject, txt_body):
             template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
         )
     except Exception as e:
-        print("ERROR INIT USER EMAIL CLIENT")
+        print(f"ERROR INIT USER EMAIL CLIENT: {e}")
         user_email = None
 
     try:
