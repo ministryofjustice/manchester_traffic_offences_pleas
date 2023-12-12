@@ -58,6 +58,7 @@ def get_smtp_gateway(email_address):
 
 @shared_task(bind=True, max_retries=10, default_retry_delay=900)
 def email_send_court(self, case_id, count_id, email_data):
+    print("In EMAIL SEND COURT")
     email_data["urn"] = format_for_region(email_data["case"]["urn"])
 
     # No error trapping, let these fail hard if the objects can't be found
@@ -75,7 +76,7 @@ def email_send_court(self, case_id, count_id, email_data):
 
     email_subject = get_email_subject(email_data)
     email_body = get_email_body(case, count_id)
-
+    print("BEFORE GOV NOTIFY CLIENT")
     plea_email = GovNotifyClient(
         subject=email_subject,
         body=email_body,
