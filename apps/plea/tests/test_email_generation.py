@@ -112,9 +112,6 @@ class EmailGenerationTests(TestCase):
         case_obj = Case.objects.all().order_by('-id')[0]
         count_obj = CourtEmailCount.objects.latest('date_sent')
 
-        print(mail.outbox)
-        print(mail.outbox[0])
-
         matches = re.search("<<<makeaplea-ref:\s*(\d+)/(\d+)>>>", mail.outbox[0].body)
 
         try:
