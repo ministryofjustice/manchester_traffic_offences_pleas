@@ -50,6 +50,7 @@ class BaseEmailTemplateTests(TestCase):
             test_mode=True)
 
         self.plea_template = "emails/attachments/plea_email.html"
+        self.plp_template = "emails/attachments/plp_email.html"
 
     def get_context_data(self,
                          urn_entry_data=None,
@@ -721,7 +722,7 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[1].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plp_template, context_data))
         self.assertContainsDefinition(response.content, "First name", "Joe", count=1)
         self.assertContainsDefinition(response.content, "Last name", "Public", count=1)
 
@@ -730,7 +731,7 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[1].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
         self.assertContainsDefinition(response.content, "Your plea", "Guilty", count=1)
 
     def test_PLP_multiple_guilty_plea_email_plea_output(self):
@@ -740,7 +741,7 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[1].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
         self.assertContainsDefinition(response.content, "Your plea", "Guilty", count=2)
 
     def test_PLP_single_not_guilty_plea_email_plea_output(self):
@@ -749,7 +750,7 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[1].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
         self.assertContainsDefinition(response.content, "Your plea", "Not guilty", count=1)
 
     def test_PLP_multiple_not_guilty_plea_email_plea_output(self):
@@ -760,7 +761,7 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[1].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
         self.assertContainsDefinition(response.content, "Your plea", "Not guilty", count=2)
 
     def test_PLP_mixed_plea_email_plea_output(self):
@@ -770,7 +771,7 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
 
         send_plea_email(context_data)
 
-        response = self.get_mock_response(mail.outbox[1].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
         self.assertContainsDefinition(response.content, "Your plea", "Guilty", count=1)
         self.assertContainsDefinition(response.content, "Your plea", "Not guilty", count=1)
 
@@ -778,35 +779,35 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
         context_data = self.get_context_data()
         context_data["your_details"]["date_of_birth"] = (datetime.today() - relativedelta(years=18)).date()
         send_plea_email(context_data)
-        response = self.get_mock_response(mail.outbox[1].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
         assert b"The defendant is 18 years old or under" in response.content
 
     def test_under_18_message_is_shown_when_user_is_under_18(self):
         context_data = self.get_context_data()
         context_data["your_details"]["date_of_birth"] = (datetime.today() - relativedelta(years=17)).date()
         send_plea_email(context_data)
-        response = self.get_mock_response(mail.outbox[1].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
         assert b"The defendant is 18 years old or under" in response.content
 
     def test_under_18_message_is_not_shown_when_user_over_18(self):
         context_data = self.get_context_data()
         context_data["your_details"]["date_of_birth"] = (datetime.today() - relativedelta(years=19)).date()
         send_plea_email(context_data)
-        response = self.get_mock_response(mail.outbox[1].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
         assert b"The defendant is 18 years old or under" not in response.content
 
     def test_under_18_message_is_not_shown_when_no_date_of_birth_present(self):
         context_data = self.get_context_data()
         del context_data["your_details"]["date_of_birth"]
         send_plea_email(context_data)
-        response = self.get_mock_response(mail.outbox[1].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
         assert b"The defendant is 18 years old or under" not in response.content
 
     def test_under_18_message_is_not_shown_when_bad_date_of_birth_present(self):
         context_data = self.get_context_data()
         context_data["your_details"]["date_of_birth"] = "not a date"
         send_plea_email(context_data)
-        response = self.get_mock_response(mail.outbox[1].attachments[0][1])
+        response = self.get_mock_response(render_to_string(self.plea_template, context_data))
         assert b"The defendant is 18 years old or under" not in response.content
 
 class DefendantEmailTemplateTests(BaseEmailTemplateTests):
