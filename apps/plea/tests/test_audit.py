@@ -10,6 +10,8 @@ from django.conf import settings
 from django.test import TestCase
 from django.test.utils import override_settings
 
+from notifications_python_client import errors
+
 from ..email import send_plea_email
 from ..models import Case, CourtEmailCount, Court
 from ..encrypt import clear_user_data, gpg
@@ -102,7 +104,7 @@ class CaseCreationTests(TestCase):
     @override_settings(STORE_USER_DATA=True)
     @patch("apps.plea.tasks.GovNotifyClient.send")
     def test_email_failure_audit(self, send):
-        send.side_effect = OSError("Email failed to send, socket error")
+        send.side_effect = errors.HTTPError("Email failed to send, socket error")
 
         clear_user_data()
 
