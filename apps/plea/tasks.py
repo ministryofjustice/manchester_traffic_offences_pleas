@@ -190,6 +190,8 @@ def email_send_user(self, case_id, email_address, subject, txt_body):
         logger.warning(f"Error sending user confirmation email: {e.status_code} - {e.message}")
         case.add_action(f"User email network error", u"{}: {}".format(e.status_code, e.message))
         raise self.retry(args=[case_id, email_address, subject, txt_body], exc=e)
+    except Exception as e:
+        print(f"SOMETHIGN WENT WRONG: {e}")
 
     case.add_action("User email sent", "")
 
