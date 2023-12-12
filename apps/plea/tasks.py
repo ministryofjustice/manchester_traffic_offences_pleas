@@ -94,7 +94,8 @@ def email_send_court(self, case_id, count_id, email_data):
 
     try:
         with translation.override("en"):
-            plea_email.send()
+            response = plea_email.send()
+            print(response)
             print("PLEA EMAIL SENT")
     except errors.HTTPError as e:
         logger.warning(f"Error sending email to court: {e.status_code} - {e.message}")
