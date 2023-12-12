@@ -95,9 +95,19 @@ def email_send_court(self, case_id, count_id, email_data):
     try:
         with translation.override("en"):
             plea_email.send()
+            print("PLEA EMAIL SENT")
     except errors.HTTPError as e:
         logger.warning(f"Error sending email to court: {e.status_code} - {e.message}")
         case.add_action(f"Court email network error, u'{e.status_code}: {e.message}")
+        if email_count is not None:
+            email_count.get_status_from_case(case)
+            email_count.save()
+        case.sent = False
+        case.save()
+    except Exception as e:
+        print(f"ERROR SENDING NOTIFY EMAIL: {e}")
+        logger.warning(f"Error sending email to court: {e}")
+        case.add_action(f"Court email network error, u'{e}")
         if email_count is not None:
             email_count.get_status_from_case(case)
             email_count.save()
