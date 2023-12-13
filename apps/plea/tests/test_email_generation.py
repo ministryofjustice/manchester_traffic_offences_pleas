@@ -5,6 +5,7 @@ import re
 
 from django.test import TestCase
 # from django.core import mail
+from django.conf import settings
 from ..tests.email_backends import notify_mail
 
 from ..attachment import TemplateAttachmentEmail
@@ -16,6 +17,8 @@ from ..standardisers import format_for_region
 class EmailGenerationTests(TestCase):
 
     def setUp(self):
+        settings.EMAIL_BACKEND = 'apps.plea.tests.email_backends.gov_notify_backend.GovNotifyBackendTest'
+
         notify_mail.outbox = []
 
         self.court_obj = Court.objects.create(
