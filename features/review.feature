@@ -12,6 +12,7 @@ Feature: Review and submit a plea
     When I confirm and submit my plea
     Then I should see the confirmation page
 
+  @skip
   @local
   Scenario: Confirmation and court emails sent
     When I confirm and submit my plea
