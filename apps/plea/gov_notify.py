@@ -32,6 +32,7 @@ class GovNotifyClient(message.EmailMessage):
         self.connection = settings.EMAIL_BACKEND
 
     def send(self, fail_silently=False):
+        print(settings.EMAIL_BACKEND)
         print(self.connection)
         return self.connection.send_messages([self])
 
