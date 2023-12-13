@@ -22,7 +22,7 @@ class MAPTestRunner(RedGreenDiscoverRunner):
 
         gpg.import_keys(settings.GPG_TEST_KEY)
 
-        settings.EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+        settings.EMAIL_BACKEND = 'apps.plea.tests.email_backends.gov_notify_backend.GovNotifyBackendTest'
         settings.CELERY_TASK_ALWAYS_EAGER = True
         settings.CELERY_BROKER_URL = 'memory://'
 
