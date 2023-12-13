@@ -79,7 +79,7 @@ def email_send_court(self, case_id, count_id, email_data):
     plea_email = GovNotifyClient(
         subject=email_subject,
         body=email_body,
-        to=[plea_email_to],
+        email_address=plea_email_to,
         template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
     )
 
@@ -135,7 +135,7 @@ def email_send_prosecutor(self, case_id, email_data):
         plp_email = GovNotifyClient(
             subject=email_subject,
             body=email_body,
-            to=[court_obj.plp_email],
+            email_address=court_obj.plp_email,
             template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
         )
 
@@ -172,7 +172,7 @@ def email_send_user(self, case_id, email_address, subject, txt_body):
     user_email = GovNotifyClient(
         subject=subject,
         body=txt_body,
-        to=[email_address],
+        email_address=email_address,
         template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
     )
 

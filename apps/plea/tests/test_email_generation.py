@@ -6,8 +6,11 @@ import re
 from django.test import TestCase
 from django.core import mail
 
+from unittest.mock import patch
+
 from ..attachment import TemplateAttachmentEmail
 from ..email import send_plea_email
+from ..gov_notify import GovNotifyClient
 from ..models import Case, CourtEmailCount, Court, OUCode
 from ..standardisers import format_for_region
 
@@ -67,6 +70,8 @@ class EmailGenerationTests(TestCase):
                                                      {"guilty": "guilty_no_court", "guilty_extra": "test2"}]},
                                   "review": {"understand": True}}
 
+        self.gov_notify_client = GovNotifyClient
+
     def test_template_attachment_sends_email(self):
         email_context = {"case": {"urn": "062B3C4D5E"}}
         email = TemplateAttachmentEmail("test_from@example.org",
@@ -81,9 +86,11 @@ class EmailGenerationTests(TestCase):
         self.assertEqual(mail.outbox[0].subject, "Subject line")
         self.assertEqual(mail.outbox[0].body, "Body Text")
 
+    @patch('apps.plea.tasks.GovNotifyClient.send', side_effect=mail.outbox.append(GovNotifyClient))
     def test_plea_email_sends(self):
         send_plea_email(self.test_data_defendant)
-
+        print("TESTING MOCK")
+        print(mail.outbox)
         self.assertEqual(len(mail.outbox), 3)
 
     def test_plea_email_adds_to_court_stats(self):
