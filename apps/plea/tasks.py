@@ -89,6 +89,7 @@ def email_send_court(self, case_id, count_id, email_data):
         with translation.override("en"):
             plea_email.send()
     except errors.HTTPError as e:
+        print(f"Error sending email to court: {e.status_code} - {e.message}")
         logger.warning(f"Error sending email to court: {e.status_code} - {e.message}")
         case.add_action(f"Court email network error", u"{}: {}".format(e.status_code, e.message))
         if email_count is not None:
@@ -145,6 +146,7 @@ def email_send_prosecutor(self, case_id, email_data):
             with translation.override("en"):
                 plp_email.send()
         except errors.HTTPError as e:
+            print(f"Error sending email to court: {e.status_code} - {e.message}")
             logger.warning(f"Error sending email to prosecutor: {e.status_code} - {e.message}")
             case.add_action(f"Prosecutor email network error", u"{}: {}".format(e.status_code, e.message))
             raise self.retry(args=[case_id, email_data], exc=e)
@@ -179,6 +181,7 @@ def email_send_user(self, case_id, email_address, subject, txt_body):
     try:
         user_email.send()
     except errors.HTTPError as e:
+        print(f"Error sending email to court: {e.status_code} - {e.message}")
         logger.warning(f"Error sending user confirmation email: {e.status_code} - {e.message}")
         case.add_action(f"User email network error", u"{}: {}".format(e.status_code, e.message))
         raise self.retry(args=[case_id, email_address, subject, txt_body], exc=e)

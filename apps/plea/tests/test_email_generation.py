@@ -93,7 +93,7 @@ class EmailGenerationTests(TestCase):
 
     @patch('apps.plea.tasks.GovNotifyClient.send')
     def test_plea_email_sends(self, send_mock):
-        send_mock.side_effect = self.gov_notify_email_outbox.append(send_mock.self)
+        send_mock.side_effect = self.gov_notify_email_outbox.append(self.get_notify_client_mock())
         send_plea_email(self.test_data_defendant)
         print(self.gov_notify_email_outbox)
         self.assertEqual(len(self.gov_notify_email_outbox), 3)
