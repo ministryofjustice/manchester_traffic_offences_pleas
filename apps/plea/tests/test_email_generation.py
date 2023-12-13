@@ -70,7 +70,12 @@ class EmailGenerationTests(TestCase):
                                                      {"guilty": "guilty_no_court", "guilty_extra": "test2"}]},
                                   "review": {"understand": True}}
 
-        self.gov_notify_client = GovNotifyClient
+        self.gov_notify_email_outbox = []
+
+    @staticmethod
+    def get_notify_client_mock():
+        return GovNotifyClient(subject='', body='', email_address='',
+                               template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b')
 
     def test_template_attachment_sends_email(self):
         email_context = {"case": {"urn": "062B3C4D5E"}}
@@ -88,12 +93,10 @@ class EmailGenerationTests(TestCase):
 
     @patch('apps.plea.tasks.GovNotifyClient.send')
     def test_plea_email_sends(self, send_mock):
-        send_mock.side_effect = mail.outbox.append(self.gov_notify_client)
+        send_mock.side_effect = self.gov_notify_email_outbox.append(send_mock.self)
         send_plea_email(self.test_data_defendant)
-        self.assertEqual(send_mock.call_count, 3)
-        print("TESTING MOCK")
-        print(mail.outbox)
-        self.assertEqual(len(mail.outbox), 3)
+
+        self.assertEqual(len(self.gov_notify_email_outbox), 3)
 
     def test_plea_email_adds_to_court_stats(self):
         send_plea_email(self.test_data_defendant)
