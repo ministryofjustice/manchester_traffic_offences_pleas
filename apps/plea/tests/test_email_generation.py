@@ -90,6 +90,7 @@ class EmailGenerationTests(TestCase):
     def test_plea_email_sends(self, send_mock):
         send_mock.side_effect = mail.outbox.append(GovNotifyClient)
         send_plea_email(self.test_data_defendant)
+        self.assertEqual(send_mock.call_count, 3)
         print("TESTING MOCK")
         print(mail.outbox)
         self.assertEqual(len(mail.outbox), 3)
