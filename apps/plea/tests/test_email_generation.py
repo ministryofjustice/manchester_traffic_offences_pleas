@@ -86,8 +86,9 @@ class EmailGenerationTests(TestCase):
         self.assertEqual(mail.outbox[0].subject, "Subject line")
         self.assertEqual(mail.outbox[0].body, "Body Text")
 
-    @patch('apps.plea.tasks.GovNotifyClient.send', side_effect=mail.outbox.append(GovNotifyClient))
-    def test_plea_email_sends(self):
+    @patch('apps.plea.tasks.GovNotifyClient.send')
+    def test_plea_email_sends(self, send_mock):
+        send_mock.side_effect = mail.outbox.append(GovNotifyClient)
         send_plea_email(self.test_data_defendant)
         print("TESTING MOCK")
         print(mail.outbox)
