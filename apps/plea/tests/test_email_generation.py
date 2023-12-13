@@ -5,7 +5,7 @@ import re
 
 from django.test import TestCase
 # from django.core import mail
-from ..tests.email_backends import notify_outbox
+from ..tests.email_backends import notify_mail
 
 from ..attachment import TemplateAttachmentEmail
 from ..email import send_plea_email
@@ -16,7 +16,7 @@ from ..standardisers import format_for_region
 class EmailGenerationTests(TestCase):
 
     def setUp(self):
-        notify_outbox.outbox = []
+        notify_mail.outbox = []
 
         self.court_obj = Court.objects.create(
             court_code="0000",
@@ -79,14 +79,14 @@ class EmailGenerationTests(TestCase):
                    "Subject line",
                    "Body Text")
 
-        self.assertEqual(notify_outbox.outbox[0].subject, "Subject line")
-        self.assertEqual(notify_outbox.outbox[0].body, "Body Text")
+        self.assertEqual(notify_mail.outbox[0].subject, "Subject line")
+        self.assertEqual(notify_mail.outbox[0].body, "Body Text")
 
     def test_plea_email_sends(self):
         send_plea_email(self.test_data_defendant)
-        print(notify_outbox.outbox)
-        print(notify_outbox.outbox[0].personalisation)
-        self.assertEqual(len(notify_outbox.outbox), 3)
+        print(notify_mail.outbox)
+        print(notify_mail.outbox[0].personalisation)
+        self.assertEqual(len(notify_mail.outbox), 3)
 
     def test_plea_email_adds_to_court_stats(self):
         send_plea_email(self.test_data_defendant)
@@ -112,7 +112,7 @@ class EmailGenerationTests(TestCase):
         case_obj = Case.objects.all().order_by('-id')[0]
         count_obj = CourtEmailCount.objects.latest('date_sent')
 
-        matches = re.search("<<<makeaplea-ref:\s*(\d+)/(\d+)>>>", notify_outbox.outbox[0].body)
+        matches = re.search("<<<makeaplea-ref:\s*(\d+)/(\d+)>>>", notify_mail.outbox[0].body)
 
         try:
             matches.groups()
@@ -134,44 +134,44 @@ class EmailGenerationTests(TestCase):
     def test_user_confirmation_sends_email(self):
         send_plea_email(self.test_data_defendant)
 
-        self.assertEqual(len(notify_outbox.outbox), 3)
-        self.assertIn(format_for_region(self.test_data_defendant['case']['urn']), notify_outbox.outbox[-1].body)
-        self.assertIn(self.test_data_defendant['your_details']['email'], notify_outbox.outbox[-1].to)
+        self.assertEqual(len(notify_mail.outbox), 3)
+        self.assertIn(format_for_region(self.test_data_defendant['case']['urn']), notify_mail.outbox[-1].body)
+        self.assertIn(self.test_data_defendant['your_details']['email'], notify_mail.outbox[-1].to)
 
     def test_user_confirmation_sends_no_email(self):
         self.test_data_defendant['your_details']['email'] = ''
 
         send_plea_email(self.test_data_defendant)
 
-        self.assertEqual(len(notify_outbox.outbox), 2)
+        self.assertEqual(len(notify_mail.outbox), 2)
 
     def test_user_confirmation_for_company_uses_correct_email_address(self):
         send_plea_email(self.test_data_company)
 
-        self.assertEqual(len(notify_outbox.outbox), 3)
-        self.assertIn(format_for_region(self.test_data_company['case']['urn']), notify_outbox.outbox[-1].body)
-        self.assertIn(self.test_data_company['company_details']['email'], notify_outbox.outbox[-1].to)
+        self.assertEqual(len(notify_mail.outbox), 3)
+        self.assertIn(format_for_region(self.test_data_company['case']['urn']), notify_mail.outbox[-1].body)
+        self.assertIn(self.test_data_company['company_details']['email'], notify_mail.outbox[-1].to)
 
     def test_user_confirmation_displays_court_details(self):
         send_plea_email(self.test_data_defendant)
 
-        self.assertIn(self.court_obj.court_name, notify_outbox.outbox[-1].body)
-        self.assertIn(self.court_obj.court_email, notify_outbox.outbox[-1].body)
+        self.assertIn(self.court_obj.court_name, notify_mail.outbox[-1].body)
+        self.assertIn(self.court_obj.court_email, notify_mail.outbox[-1].body)
 
     def test_sjp_user_confirmation_displays_court_details(self):
         self.test_data_defendant.update({"notice_type": {"sjp": True}})
 
         send_plea_email(self.test_data_defendant)
 
-        self.assertIn(self.court_obj.court_name, notify_outbox.outbox[-1].body)
-        self.assertIn(self.court_obj.court_email, notify_outbox.outbox[-1].body)
+        self.assertIn(self.court_obj.court_name, notify_mail.outbox[-1].body)
+        self.assertIn(self.court_obj.court_email, notify_mail.outbox[-1].body)
 
     def test_email_addresses_from_court_model(self):
         send_plea_email(self.test_data_defendant)
 
-        self.assertEqual(len(notify_outbox.outbox), 3)
+        self.assertEqual(len(notify_mail.outbox), 3)
 
-        to_emails = [item.to[0] for item in notify_outbox.outbox]
+        to_emails = [item.to[0] for item in notify_mail.outbox]
 
         self.assertIn(self.court_obj.submission_email, to_emails)
         self.assertIn(self.court_obj.plp_email, to_emails)
@@ -182,7 +182,7 @@ class EmailGenerationTests(TestCase):
 
         send_plea_email(self.test_data_defendant)
 
-        self.assertEqual(len(notify_outbox.outbox), 2)
+        self.assertEqual(len(notify_mail.outbox), 2)
 
     def test_anon_stats_not_added_when_court_in_test_mode(self):
         self.court_obj.test_mode = True
@@ -205,7 +205,7 @@ class EmailGenerationTests(TestCase):
 
         send_plea_email(self.test_data_defendant)
 
-        to_emails = [item.to[0] for item in notify_outbox.outbox]
+        to_emails = [item.to[0] for item in notify_mail.outbox]
 
         self.assertIn(self.court_obj.submission_email, to_emails)
 
@@ -233,7 +233,7 @@ class EmailGenerationTests(TestCase):
 
         send_plea_email(self.test_data_defendant)
 
-        to_emails = [item.to[0] for item in notify_outbox.outbox]
+        to_emails = [item.to[0] for item in notify_mail.outbox]
 
         self.assertIn(court2.submission_email, to_emails)
         self.assertNotIn(self.court_obj.submission_email, to_emails)
@@ -261,7 +261,7 @@ class EmailGenerationTests(TestCase):
 
         send_plea_email(self.test_data_defendant)
 
-        to_emails = [item.to[0] for item in notify_outbox.outbox]
+        to_emails = [item.to[0] for item in notify_mail.outbox]
 
         self.assertIn(self.court_obj.submission_email, to_emails)
         self.assertNotIn(court2.submission_email, to_emails)

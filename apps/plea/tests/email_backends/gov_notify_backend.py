@@ -1,4 +1,5 @@
 from django.core.mail.backends.locmem import EmailBackend
+from . import notify_mail
 
 
 class GovNotifyBackendTest(EmailBackend):
@@ -8,8 +9,4 @@ class GovNotifyBackendTest(EmailBackend):
     def send_messages(self, email_messages):
         if email_messages:
             for email in email_messages:
-                email.client.send_email_notification(
-                    email_address=email.email_address,
-                    personalisation=email.personalisation,
-                    template_id=email.template_id
-                )
+                notify_mail.outbox.append(email)
