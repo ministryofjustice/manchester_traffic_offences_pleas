@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.mail import message
+from django.core.mail import message, get_connection
 from django.core.mail.backends.smtp import EmailBackend
 from django.template.loader import render_to_string
 from notifications_python_client import prepare_upload
@@ -29,7 +29,7 @@ class GovNotifyClient(message.EmailMessage):
         self.email_address: str = to[0]
         self.personalisation = {'subject': subject, 'email_body': body, 'link_to_file': ''}
         self.template_id: str = template_id
-        self.connection = settings.EMAIL_BACKEND
+        self.connection = get_connection(backend=settings.EMAIL_BACKEND)
 
     def send(self, fail_silently=False):
         print(settings.EMAIL_BACKEND)
