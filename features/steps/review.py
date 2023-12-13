@@ -59,9 +59,6 @@ def step_impl(context):
     ''' % name)
 
     messages = context.mail.messages_for_user('court@example.com')
-    print("\n\nFIRING=========")
-    print(messages[0])
-    print(email.message_from_string(messages[0]).get_payload(1))
     attachment = email.message_from_string(messages[0]).get_payload(1)
     text = str(attachment)
 
