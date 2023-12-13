@@ -9,7 +9,7 @@ from .pdf import PDFUtils
 class GovNotifyClient(message.EmailMessage):
 
     def __init__(self, subject, body, to, template_id):
-        super().__init__(subject=subject, body=body, to=to, connection=get_connection(backend=settings.BACKEND))
+        super().__init__(subject=subject, body=body, to=to, connection=get_connection(backend=settings.EMAIL_BACKEND))
         self.client: NotificationsAPIClient = NotificationsAPIClient(settings.GOV_NOTIFY_API)
         self.email_address: str = to[0]
         self.personalisation = {'subject': subject, 'email_body': body, 'link_to_file': ''}
