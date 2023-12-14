@@ -29,10 +29,6 @@ class GovNotifyClient(message.EmailMessage):
         self.email_address: str = to[0]
         self.personalisation = {'subject': subject, 'email_body': body, 'link_to_file': ''}
         self.template_id: str = template_id
-        self.connection = get_connection(backend=settings.EMAIL_BACKEND)
-
-    def send(self, fail_silently=False):
-        return self.connection.send_messages([self])
 
     def upload_file_link(self, data, html_template):
         try:
