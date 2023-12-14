@@ -113,7 +113,7 @@ jobs:
             behave --format progress3 -Dheadless
 
       - run:
-          name: Build MaP image
+          name: Build MaP web app image
           command: |
             export BUILD_DATE=$(date -Is) >> $BASH_ENV
             source $BASH_ENV
@@ -124,11 +124,50 @@ jobs:
               --build-arg APP_BUILD_DATE=${BUILD_DATE} \
               --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
               --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
+              --build-arg DJANGO_SETTINGS=make_a_plea.settings \
               --build-arg ENV=dev \
               --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_DEV} \
               --build-arg ECR_ROLE_TO_ASSUME_DEV=${ECR_ROLE_TO_ASSUME_DEV} \
               --build-arg ECR_REGION_DEV=${ECR_REGION_DEV} \
               -t map-app .
+      - run:
+          name: Build MaP api image
+          command: |
+            export BUILD_DATE=$(date -Is) >> $BASH_ENV
+            source $BASH_ENV
+            docker build \
+              --label build.git.sha=${CIRCLE_SHA1} \
+              --label build.git.branch=${CIRCLE_BRANCH} \
+              --label build.date=${BUILD_DATE} \
+              --build-arg APP_BUILD_DATE=${BUILD_DATE} \
+              --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
+              --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
+              --build-arg DJANGO_SETTINGS=api.settings \
+              --build-arg ENV=docker \
+              --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_DEV} \
+              --build-arg ECR_ROLE_TO_ASSUME_DEV=${ECR_ROLE_TO_ASSUME_DEV} \
+              --build-arg ECR_REGION_DEV=${ECR_REGION_DEV} \
+              -t map-api .
+
+      - run:
+          name: Build MaP celery image
+          command: |
+            export BUILD_DATE=$(date -Is) >> $BASH_ENV
+            source $BASH_ENV
+            docker build \
+              -f ./docker/Dockerfile \
+              --label build.git.sha=${CIRCLE_SHA1} \
+              --label build.git.branch=${CIRCLE_BRANCH} \
+              --label build.date=${BUILD_DATE} \
+              --build-arg APP_BUILD_DATE=${BUILD_DATE} \
+              --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
+              --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
+              --build-arg DJANGO_SETTINGS=make_a_plea.settings \
+              --build-arg ENV=dev \
+              --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_DEV} \
+              --build-arg ECR_ROLE_TO_ASSUME_DEV=${ECR_ROLE_TO_ASSUME_DEV} \
+              --build-arg ECR_REGION_DEV=${ECR_REGION_DEV} \
+              -t map-celery .
 
       - run:
           name: Tag and push image to ECR
@@ -137,8 +176,17 @@ jobs:
             echo ${login} | docker login --username AWS --password-stdin 754256621582.dkr.ecr.eu-west-2.amazonaws.com
             docker tag map-app "${ECR_ENDPOINT_DEV}:map-${CIRCLE_SHA1}"
             docker tag map-app "${ECR_ENDPOINT_DEV}:map-latest"
+            docker tag map-api "${ECR_ENDPOINT_DEV}:map-api-${CIRCLE_SHA1}"
+            docker tag map-api "${ECR_ENDPOINT_DEV}:map-api-latest"
+            docker tag map-celery "${ECR_ENDPOINT_DEV}:map-celery-${CIRCLE_SHA1}"
+            docker tag map-celery "${ECR_ENDPOINT_DEV}:map-celery-latest"
+
             docker push "${ECR_ENDPOINT_DEV}:map-${CIRCLE_SHA1}"
             docker push "${ECR_ENDPOINT_DEV}:map-latest"
+            docker push "${ECR_ENDPOINT_DEV}:map-api-${CIRCLE_SHA1}"
+            docker push "${ECR_ENDPOINT_DEV}:map-api-latest"
+            docker push "${ECR_ENDPOINT_DEV}:map-celery-${CIRCLE_SHA1}"
+            docker push "${ECR_ENDPOINT_DEV}:map-celery-latest"
 
       - run:
           name: Authenticate to LIVE cluster
