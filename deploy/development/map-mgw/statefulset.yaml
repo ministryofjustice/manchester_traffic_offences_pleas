@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: map-mgw
 spec:
@@ -7,12 +7,12 @@ spec:
   selector:
     matchLabels:
       app: map-mgw
+  serviceName: map-mgw-service
   template:
     metadata:
       labels:
         app: map-mgw
     spec:
-      serviceAccountName: makeaplea-dev
       containers:
         - name: map-mgw
           image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:makeaplea_mgw
@@ -150,6 +150,9 @@ spec:
         - name: map-mgw-dequeue
           image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:makeaplea_mgw_dequeue
           imagePullPolicy: Always
+          volumeMounts:
+            - name: data
+              mountPath: "/data"
           env:
             - name: DB_ENGINE
               valueFrom:
@@ -251,15 +254,17 @@ spec:
                 secretKeyRef:
                   name: map-mgw-dev-env-vars
                   key: WORKDIR
-            - name: S3_BUCKET_NAME_MGW
-              valueFrom:
-                secretKeyRef:
-                  name: s3-bucket-output-mgw
-                  key: bucket_name
 
         - name: map-mgw-import
           image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:makeaplea_mgw_import
           imagePullPolicy: Always
+          volumeMounts:
+            - name: data
+              mountPath: "/data"
+            - name: archive
+              mountPath: "/archive"
+            - name: logs
+              mountPath: "/logs"
           env:
             - name: DB_ENGINE
               valueFrom:
@@ -426,8 +431,28 @@ spec:
                 secretKeyRef:
                   name: map-mgw-dev-env-vars
                   key: APP_BUILD_TAG
-            - name: S3_BUCKET_NAME_MGW
-              valueFrom:
-                secretKeyRef:
-                  name: s3-bucket-output-mgw
-                  key: bucket_name
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "gp2-expand" # StorageClass name used to create PV
+        resources:
+          requests:
+            storage: 4Gi
+    - metadata:
+        name: archive
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "gp2-expand" # StorageClass name used to create PV
+        resources:
+          requests:
+            storage: 4Gi
+    - metadata:
+        name: logs
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "gp2-expand" # StorageClass name used to create PV
+        resources:
+          requests:
+            storage: 4Gi
