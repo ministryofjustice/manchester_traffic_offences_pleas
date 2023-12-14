@@ -149,6 +149,7 @@ jobs:
               --build-arg ECR_ROLE_TO_ASSUME_DEV=${ECR_ROLE_TO_ASSUME_DEV} \
               --build-arg ECR_REGION_DEV=${ECR_REGION_DEV} \
               -t map-api .
+
       - run:
           name: Build MaP celery image
           command: |
@@ -188,7 +189,6 @@ jobs:
             docker push "${ECR_ENDPOINT_DEV}:map-api-latest"
             docker push "${ECR_ENDPOINT_DEV}:map-celery-${CIRCLE_SHA1}"
             docker push "${ECR_ENDPOINT_DEV}:map-celery-latest"
-
 
       - run:
           name: Authenticate to LIVE cluster
