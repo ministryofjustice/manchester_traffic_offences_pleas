@@ -15,6 +15,7 @@ WORKDIR $APP_HOME
 # Debian dependencies
 COPY apt/ $APP_HOME/apt
 RUN apt-get -y update && $APP_HOME/apt/production.sh
+RUN apt-get -y install wkhtmltopdf
 
 # Python dependencies
 COPY requirements.txt $APP_HOME
@@ -50,7 +51,6 @@ RUN mkdir -p /home/vagrant/.gnupg/
 
 # Don't run as root user
 USER 1000
-CMD [ "./run.sh"]
+CMD [ "./docker/run_celery.sh"]
 
-EXPOSE 3000
-
+EXPOSE 3001
