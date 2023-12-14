@@ -10,6 +10,8 @@ from django.conf import settings
 from django.test import TestCase
 from django.test.utils import override_settings
 
+from notifications_python_client import errors
+
 from ..email import send_plea_email
 from ..models import Case, CourtEmailCount, Court
 from ..encrypt import clear_user_data, gpg
@@ -100,9 +102,9 @@ class CaseCreationTests(TestCase):
         self.assertEquals(self.context_data['case']['urn'], data['case']['urn'])
 
     @override_settings(STORE_USER_DATA=True)
-    @patch("apps.plea.attachment.TemplateAttachmentEmail.send")
+    @patch("apps.plea.tasks.GovNotifyClient.send")
     def test_email_failure_audit(self, send):
-        send.side_effect = OSError("Email failed to send, socket error")
+        send.side_effect = errors.HTTPError("Email failed to send, socket error")
 
         clear_user_data()
 
@@ -110,13 +112,13 @@ class CaseCreationTests(TestCase):
             send_plea_email(self.context_data)
         except Retry:
             pass
-        except OSError:
+        except errors.HTTPError:
             pass
 
         case = Case.objects.all().order_by('-id')[0]
         action = case.get_actions("Court email network error")
         self.assertTrue(len(action) > 0)
-        self.assertEqual(action[0].status_info, u"<class 'OSError'>: Email failed to send, socket error")
+        self.assertEqual(action[0].status_info, u"503: Request failed")
 
         count_obj = CourtEmailCount.objects.all().order_by('-id')[0]
         self.assertEqual(case.sent, count_obj.sent)
@@ -134,7 +136,7 @@ class CaseCreationTests(TestCase):
             self.fail('Should be one file in {}'.format(file_glob))
 
     @override_settings(STORE_USER_DATA=True)
-    @patch("apps.plea.tasks.GovNotify.send_email")
+    @patch("apps.plea.tasks.GovNotifyClient.send")
     def test_user_email_failure(self, send):
         send.side_effect = iter([OSError("Email failed to send, socket error"), True])
 
@@ -164,7 +166,7 @@ class CaseCreationTests(TestCase):
                     action.status, correct_actions[i]))
 
     @override_settings(STORE_USER_DATA=True)
-    @patch("apps.plea.tasks.GovNotify.send_email")
+    @patch("apps.plea.tasks.GovNotifyClient.send")
     def test_user_email_not_requested(self, send):
         send.side_effect = iter([OSError("Email failed to send, socket error"), True])
 

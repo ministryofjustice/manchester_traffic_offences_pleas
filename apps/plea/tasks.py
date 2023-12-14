@@ -6,12 +6,14 @@ from dateutil.relativedelta import relativedelta
 
 from django.utils import translation
 
-from apps.plea.gov_notify import GovNotify
+from apps.plea.gov_notify import GovNotifyClient
 
 from celery import shared_task
 
 from apps.plea.models import Case, CourtEmailCount, Court
 from apps.plea.standardisers import format_for_region
+
+from notifications_python_client import errors
 
 logger = logging.getLogger(__name__)
 
@@ -74,13 +76,10 @@ def email_send_court(self, case_id, count_id, email_data):
     email_subject = get_email_subject(email_data)
     email_body = get_email_body(case, count_id)
 
-    personalisation = {
-        "subject": email_subject,
-        "email_body": email_body
-    }
-    plea_email = GovNotify(
-        email_address=plea_email_to,
-        personalisation=personalisation,
+    plea_email = GovNotifyClient(
+        subject=email_subject,
+        body=email_body,
+        to=[plea_email_to],
         template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
     )
 
@@ -88,15 +87,17 @@ def email_send_court(self, case_id, count_id, email_data):
 
     try:
         with translation.override("en"):
-            plea_email.send_email()
-    except Exception as exc:
-        logger.warning("Error sending email to court: {0}".format(exc))
-        case.add_action("Court email network error", u"{}: {}".format(type(exc), exc))
+            plea_email.send()
+    except errors.HTTPError as e:
+        logger.warning(f"Error sending email to court: {e.status_code} - {e.message}")
+        case.add_action(f"Court email network error", u"{}: {}".format(e.status_code, e.message))
         if email_count is not None:
             email_count.get_status_from_case(case)
             email_count.save()
         case.sent = False
         case.save()
+
+        raise self.retry(args=[case_id, count_id, email_data], exc=e)
 
     case.add_action("Court email sent", "Sent mail to {0} via {1}".format(
         plea_email_to, 'make.a.plea@notifications.service.gov.uk'))
@@ -131,13 +132,10 @@ def email_send_prosecutor(self, case_id, email_data):
 
     if court_obj.plp_email:
 
-        personalisation = {
-            "subject": email_subject,
-            "email_body": email_body
-        }
-        plp_email = GovNotify(
-            email_address=court_obj.plp_email,
-            personalisation=personalisation,
+        plp_email = GovNotifyClient(
+            subject=email_subject,
+            body=email_body,
+            to=[court_obj.plp_email],
             template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
         )
 
@@ -145,11 +143,11 @@ def email_send_prosecutor(self, case_id, email_data):
 
         try:
             with translation.override("en"):
-                plp_email.send_email()
-        except Exception as exc:
-            logger.warning("Error sending email to prosecutor: {0}".format(exc))
-            case.add_action("Prosecutor email network error", u"{}: {}".format(type(exc), exc))
-            raise self.retry(args=[case_id, email_data], exc=exc)
+                plp_email.send()
+        except errors.HTTPError as e:
+            logger.warning(f"Error sending email to prosecutor: {e.status_code} - {e.message}")
+            case.add_action(f"Prosecutor email network error", u"{}: {}".format(e.status_code, e.message))
+            raise self.retry(args=[case_id, email_data], exc=e)
 
         case.add_action("Prosecutor email sent", "Sent mail to {0} via {1}".format(
             court_obj.plp_email, 'make.a.plea@notifications.service.gov.uk'))
@@ -171,23 +169,19 @@ def email_send_user(self, case_id, email_address, subject, txt_body):
     case = Case.objects.get(id=case_id)
     case.add_action("User email started", "")
 
-    personalisation = {
-        "subject": subject,
-        "email_body": txt_body,
-        "link_to_file": ''
-    }
-    user_email = GovNotify(
-        email_address=email_address,
-        personalisation=personalisation,
+    user_email = GovNotifyClient(
+        subject=subject,
+        body=txt_body,
+        to=[email_address],
         template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
     )
 
     try:
-        user_email.send_email()
-    except Exception as exc:
-        logger.warning("Error sending user confirmation email: {0}".format(exc))
-        case.add_action("User email network error", u"{}: {}".format(type(exc), exc))
-        raise self.retry(args=[case_id, email_address, subject, txt_body], exc=exc)
+        user_email.send()
+    except errors.HTTPError as e:
+        logger.warning(f"Error sending user confirmation email: {e.status_code} - {e.message}")
+        case.add_action(f"User email network error", u"{}: {}".format(e.status_code, e.message))
+        raise self.retry(args=[case_id, email_address, subject, txt_body], exc=e)
 
     case.add_action("User email sent", "")
 

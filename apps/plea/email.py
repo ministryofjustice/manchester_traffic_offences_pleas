@@ -43,7 +43,6 @@ def send_plea_email(context_data):
 
     context_data: dict populated by form fields
     """
-
     case = Case.objects.filter(
         urn__iexact=context_data["case"]["urn"].upper(), sent=False,
         imported=True).first()

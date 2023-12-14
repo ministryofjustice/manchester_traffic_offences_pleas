@@ -41,6 +41,7 @@ GPG_HOME_DIRECTORY = os.path.join(PROJECT_ROOT, 'test_gpg_home')
 GPG_RECIPIENT = "test@example.org"
 
 TEST_RUNNER = 'make_a_plea.runner.MAPTestRunner'
+EMAIL_BACKEND = 'apps.plea.tests.email_backends.gov_notify_backend.GovNotifyBackendTest'
 
 GOV_NOTIFY_API = os.getenv('GOV_NOTIFY_API')
 
