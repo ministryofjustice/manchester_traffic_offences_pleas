@@ -43,7 +43,6 @@ def send_plea_email(context_data):
 
     context_data: dict populated by form fields
     """
-
     case = Case.objects.filter(
         urn__iexact=context_data["case"]["urn"].upper(), sent=False,
         imported=True).first()
@@ -149,7 +148,7 @@ def send_plea_email(context_data):
 
         subject = _("Online plea submission confirmation")
 
-        email_send_user.delay(case.id, email_address, subject, html_body, txt_body)
+        email_send_user.delay(case.id, email_address, subject, txt_body)
 
     else:
         case.add_action("No email entered, user email not sent", "")

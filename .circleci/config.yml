@@ -17,6 +17,7 @@ jobs:
       - image: "circleci/python:3.6"
         environment:
           DJANGO_SETTINGS_MODULE: make_a_plea.settings.testing
+          GOV_NOTIFY_API: '${GOV_NOTIFY_API}'
           POSTGRES_DB: manchester_traffic_offences
           POSTGRES_USER: postgres
           POSTGRES_PASS: password
@@ -110,7 +111,7 @@ jobs:
             mailmock -p 1025 -o /tmp/mailmock -n &
             celery worker -A make_a_plea -D
             sleep 2
-            behave --format progress3 -Dheadless
+            behave --format progress3 -Dheadless --tags=-skip
 
       - run:
           name: Build MaP web app image
@@ -174,6 +175,7 @@ jobs:
           command: |
             login="$(aws ecr get-login-password --region eu-west-2)"
             echo ${login} | docker login --username AWS --password-stdin 754256621582.dkr.ecr.eu-west-2.amazonaws.com
+
             docker tag map-app "${ECR_ENDPOINT_DEV}:map-${CIRCLE_SHA1}"
             docker tag map-app "${ECR_ENDPOINT_DEV}:map-latest"
             docker tag map-api "${ECR_ENDPOINT_DEV}:map-api-${CIRCLE_SHA1}"

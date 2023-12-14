@@ -1,22 +1,19 @@
 from __future__ import absolute_import
 
 import logging
-import smtplib
-import socket
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 
-from django.core.mail import EmailMultiAlternatives
-from django.core.mail import get_connection
-from django.conf import settings
 from django.utils import translation
 
-from apps.plea.attachment import TemplateAttachmentEmail
+from apps.plea.gov_notify import GovNotifyClient
 
 from celery import shared_task
 
 from apps.plea.models import Case, CourtEmailCount, Court
 from apps.plea.standardisers import format_for_region
+
+from notifications_python_client import errors
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +26,10 @@ def get_email_subject(email_data):
 
     email_data["case"]["formatted_urn"] = format_for_region(email_data["case"]["urn"])
     return subject.format(**email_data)
+
+
+def get_email_body(case, count_id):
+    return "<<<makeaplea-ref: {}/{}>>>".format(case.id, count_id)
 
 
 def get_court(urn, ou_code):
@@ -64,8 +65,7 @@ def email_send_court(self, case_id, count_id, email_data):
 
     court_obj = get_court(email_data["case"]["urn"], case.ou_code)
 
-    plea_email_to = [court_obj.submission_email]
-    smtp_route = get_smtp_gateway(court_obj.submission_email)
+    plea_email_to = court_obj.submission_email
 
     email_count = None
     if not court_obj.test_mode:
@@ -74,32 +74,33 @@ def email_send_court(self, case_id, count_id, email_data):
     case.add_action("Court email started", "")
 
     email_subject = get_email_subject(email_data)
-    email_body = "<<<makeaplea-ref: {}/{}>>>".format(case.id, count_id)
+    email_body = get_email_body(case, count_id)
 
-    plea_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
-                                         settings.PLEA_EMAIL_ATTACHMENT_NAME,
-                                         "emails/attachments/plea_email.html",
-                                         email_data,
-                                         "text/html")
+    plea_email = GovNotifyClient(
+        subject=email_subject,
+        body=email_body,
+        to=[plea_email_to],
+        template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
+    )
+
+    plea_email.upload_file_link(email_data, 'emails/attachments/plea_email.html')
 
     try:
         with translation.override("en"):
-            plea_email.send(plea_email_to,
-                            email_subject,
-                            email_body,
-                            route=smtp_route)
-    except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
-        logger.warning("Error sending email to court: {0}".format(exc))
-        case.add_action("Court email network error", u"{}: {}".format(type(exc), exc))
+            plea_email.send()
+    except errors.HTTPError as e:
+        logger.warning(f"Error sending email to court: {e.status_code} - {e.message}")
+        case.add_action(f"Court email network error", u"{}: {}".format(e.status_code, e.message))
         if email_count is not None:
             email_count.get_status_from_case(case)
             email_count.save()
         case.sent = False
         case.save()
 
-        raise self.retry(args=[case_id, count_id, email_data], exc=exc)
+        raise self.retry(args=[case_id, count_id, email_data], exc=e)
 
-    case.add_action("Court email sent", "Sent mail to {0} via {1}".format(plea_email_to, smtp_route))
+    case.add_action("Court email sent", "Sent mail to {0} via {1}".format(
+        plea_email_to, 'make.a.plea@notifications.service.gov.uk'))
 
     if not court_obj.test_mode:
         case.sent = True
@@ -113,7 +114,6 @@ def email_send_court(self, case_id, count_id, email_data):
 
 @shared_task(bind=True, max_retries=10, default_retry_delay=1800)
 def email_send_prosecutor(self, case_id, email_data):
-    smtp_route = "PNN"
 
     email_data["urn"] = format_for_region(email_data["case"]["urn"])
 
@@ -130,25 +130,27 @@ def email_send_prosecutor(self, case_id, email_data):
     email_data["your_details"]["18_or_under"] = is_18_or_under(
         email_data["your_details"].get("date_of_birth"))
 
-    plp_email = TemplateAttachmentEmail(settings.PLP_EMAIL_FROM,
-                                        settings.PLEA_EMAIL_ATTACHMENT_NAME,
-                                        "emails/attachments/plp_email.html",
-                                        email_data,
-                                        "text/html")
-
     if court_obj.plp_email:
+
+        plp_email = GovNotifyClient(
+            subject=email_subject,
+            body=email_body,
+            to=[court_obj.plp_email],
+            template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
+        )
+
+        plp_email.upload_file_link(email_data, 'emails/attachments/plp_email.html')
+
         try:
             with translation.override("en"):
-                plp_email.send([court_obj.plp_email],
-                               email_subject,
-                               email_body,
-                               route=smtp_route)
-        except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
-            logger.warning("Error sending email to prosecutor: {0}".format(exc))
-            case.add_action("Prosecutor email network error", u"{}: {}".format(type(exc), exc))
-            raise self.retry(args=[case_id, email_data], exc=exc)
+                plp_email.send()
+        except errors.HTTPError as e:
+            logger.warning(f"Error sending email to prosecutor: {e.status_code} - {e.message}")
+            case.add_action(f"Prosecutor email network error", u"{}: {}".format(e.status_code, e.message))
+            raise self.retry(args=[case_id, email_data], exc=e)
 
-        case.add_action("Prosecutor email sent", "Sent mail to {0} via {1}".format(court_obj.plp_email, smtp_route))
+        case.add_action("Prosecutor email sent", "Sent mail to {0} via {1}".format(
+            court_obj.plp_email, 'make.a.plea@notifications.service.gov.uk'))
 
     else:
         case.add_action("Prosecutor email not sent", "No plp email in court data")
@@ -157,7 +159,7 @@ def email_send_prosecutor(self, case_id, email_data):
 
 
 @shared_task(bind=True, max_retries=10, default_retry_delay=1800)
-def email_send_user(self, case_id, email_address, subject, html_body, txt_body):
+def email_send_user(self, case_id, email_address, subject, txt_body):
     """
     Dispatch an email to the user to confirm that their plea submission
     was successful.
@@ -167,23 +169,19 @@ def email_send_user(self, case_id, email_address, subject, html_body, txt_body):
     case = Case.objects.get(id=case_id)
     case.add_action("User email started", "")
 
-    connection = get_connection(host=settings.EMAIL_HOST,
-                                port=settings.EMAIL_PORT,
-                                username=settings.EMAIL_HOST_USER,
-                                password=settings.EMAIL_HOST_PASSWORD,
-                                use_tls=settings.EMAIL_USE_TLS)
-
-    email = EmailMultiAlternatives(subject, txt_body, settings.PLEA_CONFIRMATION_EMAIL_FROM,
-                                   [email_address], connection=connection)
-
-    email.attach_alternative(html_body, "text/html")
+    user_email = GovNotifyClient(
+        subject=subject,
+        body=txt_body,
+        to=[email_address],
+        template_id='d91127f7-814c-4b03-a1fd-10fd5630a49b'
+    )
 
     try:
-        email.send(fail_silently=False)
-    except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
-        logger.warning("Error sending user confirmation email: {0}".format(exc))
-        case.add_action("User email network error", u"{}: {}".format(type(exc), exc))
-        raise self.retry(args=[case_id, email_address, subject, html_body, txt_body], exc=exc)
+        user_email.send()
+    except errors.HTTPError as e:
+        logger.warning(f"Error sending user confirmation email: {e.status_code} - {e.message}")
+        case.add_action(f"User email network error", u"{}: {}".format(e.status_code, e.message))
+        raise self.retry(args=[case_id, email_address, subject, txt_body], exc=e)
 
     case.add_action("User email sent", "")
 

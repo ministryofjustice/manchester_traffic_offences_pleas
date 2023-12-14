@@ -250,6 +250,11 @@ spec:
                   secretKeyRef:
                     name: map-dev-env-vars
                     key: ECR_ROLE_TO_ASSUME_DEV
+              - name: GOV_NOTIFY_API
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: GOV_NOTIFY_API
           - name: map-celery
             image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:map-celery-latest
             imagePullPolicy: Always
@@ -486,3 +491,8 @@ spec:
                   secretKeyRef:
                     name: map-dev-env-vars
                     key: ECR_ROLE_TO_ASSUME_DEV
+              - name: GOV_NOTIFY_API
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: GOV_NOTIFY_API
