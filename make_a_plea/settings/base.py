@@ -308,6 +308,30 @@ SMTP_ROUTES = {"GSI": {"HOST": os.environ.get("GSI_EMAIL_HOST", "localhost"),
                        "PORT": os.environ.get("EMAIL_PORT", 25)}
                }
 
+# Public email
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "localhost")
+EMAIL_PORT = os.environ.get("EMAIL_PORT", 25)
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = True
+EMAIL_TIMEOUT = 60
+
+# Full plea email sent to court mailbox
+PLEA_EMAIL_FROM = os.environ.get("PLEA_EMAIL_FROM", "plea_from@example.org")
+PLEA_EMAIL_ATTACHMENT_NAME = "plea.html"
+
+# Cut down email sent to the police prosecutor
+PLP_EMAIL_FROM = os.environ.get("PLP_EMAIL_FROM", "plea_from@example.org")
+
+# Feedback email
+FEEDBACK_EMAIL_FROM = os.environ.get("FEEDBACK_EMAIL_FROM", "plea_feedback@example.org")
+FEEDBACK_EMAIL_TO = (os.environ.get("FEEDBACK_EMAIL_TO", "plea_feedback_to@example.org"), )
+
+# Emails to users
+PLEA_CONFIRMATION_EMAIL_FROM = os.environ.get("PLEA_CONFIRMATION_EMAIL_FROM", "")
+PLEA_CONFIRMATION_EMAIL_BCC = []
+SEND_PLEA_CONFIRMATION_EMAIL = True
+
 EMAIL_BACKEND = "apps.plea.gov_notify.GovNotifyBackend"
 
 

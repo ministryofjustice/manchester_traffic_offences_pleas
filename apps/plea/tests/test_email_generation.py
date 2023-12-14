@@ -87,8 +87,6 @@ class EmailGenerationTests(TestCase):
 
     def test_plea_email_sends(self):
         send_plea_email(self.test_data_defendant)
-        print(notify_mail.outbox)
-        print(notify_mail.outbox[0].personalisation)
         self.assertEqual(len(notify_mail.outbox), 3)
 
     def test_plea_email_adds_to_court_stats(self):
