@@ -24,3 +24,5 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {
     'polling_interval': 1,
     'visibility_timeout': 3600
 }
+
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "")
