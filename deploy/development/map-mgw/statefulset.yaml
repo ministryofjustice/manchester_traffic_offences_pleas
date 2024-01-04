@@ -431,6 +431,12 @@ spec:
                 secretKeyRef:
                   name: map-mgw-dev-env-vars
                   key: APP_BUILD_TAG
+            - name: SENDGRID_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: SENDGRID_API_KEY
+
   volumeClaimTemplates:
     - metadata:
         name: data
