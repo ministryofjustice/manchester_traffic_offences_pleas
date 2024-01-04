@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: dequeue-cronjob
 spec:
-  schedule: "15 11 * * *"
+  schedule: "50 13 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:
@@ -18,4 +18,105 @@ spec:
             - /bin/sh
             - -c
             - /MessageConsumer/dequeue_messages.sh
+            env:
+            - name: DB_ENGINE
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_ENGINE
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_NAME
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DB_PASSWORD
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DATABASE_URL
+            - name: MGW_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: MGW_HOST
+            - name: WILDFLY_APPLICATION_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: WILDFLY_APPLICATION_PASS
+            - name: WILDFLY_APPLICATION_USER
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: WILDFLY_APPLICATION_USER
+            - name: PROJECT
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: PROJECT
+            - name: ENV
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: ENV
+            - name: DOCKER_STATE
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: DOCKER_STATE
+            - name: PATH
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: PATH
+            - name: LANG
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: LANG
+            - name: JAVA_HOME_DEQUEUE
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: JAVA_HOME_DEQUEUE
+            - name: JAVA_VERSION
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: JAVA_VERSION
+            - name: JAVA_DEBIAN_VERSION
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: JAVA_DEBIAN_VERSION
+            - name: CA_CERTIFICATES_JAVA_VERSION
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: CA_CERTIFICATES_JAVA_VERSION
+            - name: WORKDIR
+              valueFrom:
+                secretKeyRef:
+                  name: map-mgw-dev-env-vars
+                  key: WORKDIR
           restartPolicy: OnFailure
