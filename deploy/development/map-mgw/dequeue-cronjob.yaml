@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: dequeue-cronjob
+spec:
+  schedule: "15 11 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 100
+      template:
+        spec:
+          containers:
+          - name: map-mgw-dequeue
+            image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:makeaplea_mgw_dequeue
+            args:
+            - /bin/sh
+            - -c
+            - /MessageConsumer/dequeue_messages.sh
+          restartPolicy: OnFailure
