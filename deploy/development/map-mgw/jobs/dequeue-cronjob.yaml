@@ -1,0 +1,203 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: dequeue-cronjob
+spec:
+  schedule: "*/15 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 1000
+      template:
+        spec:
+          containers:
+            - name: map-mgw-import
+              image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:makeaplea_mgw_import
+              args:
+                - /bin/sh
+                - -c
+                - /makeaplea_dx/run_import.sh >> /var/log/data_import.log 2>&1
+              volumeMounts:
+                - name: data
+                  mountPath: "/data"
+                - name: archive
+                  mountPath: "/archive"
+                - name: logs
+                  mountPath: "/logs"
+              env:
+                - name: DB_ENGINE
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: DB_ENGINE
+                - name: DB_HOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: DB_HOST
+                - name: DB_PORT
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: DB_PORT
+                - name: DB_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: DB_NAME
+                - name: DB_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: DB_USERNAME
+                - name: DB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: DB_PASSWORD
+                - name: API_ENDPOINT
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: API_ENDPOINT
+                - name: API_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: API_PASSWORD
+                - name: API_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: API_USERNAME
+                - name: ARCHIVE_DIR
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: ARCHIVE_DIR
+                - name: ARCHIVE_PROCESSED_FILES
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: ARCHIVE_PROCESSED_FILES
+                - name: CREATE_STATUS_FILES
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: CREATE_STATUS_FILES
+                - name: GPG_HOME_DIRECTORY
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: GPG_HOME_DIRECTORY
+                - name: GPG_RECIPIENT
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: GPG_RECIPIENT
+                - name: INCOMING_DIR
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: INCOMING_DIR
+                - name: LOG_DIR
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: LOG_DIR
+                - name: RELEASE_STAGE
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: RELEASE_STAGE
+                - name: STATUS_EMAIL_FROM
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: STATUS_EMAIL_FROM
+                - name: STATUS_EMAIL_TO
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: STATUS_EMAIL_TO
+                - name: PROJECT
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: PROJECT
+                - name: ENV
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: ENV
+                - name: DOCKER_STATE
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: DOCKER_STATE
+                - name: PATH
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: PATH
+                - name: LANG
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: LANG
+                - name: GPG_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: GPG_KEY
+                - name: PYTHON_VERSION
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: PYTHON_VERSION
+                - name: PYTHON_PIP_VERSION
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: PYTHON_PIP_VERSION
+                - name: PYTHON_GET_PIP_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: PYTHON_GET_PIP_URL
+                - name: PYTHON_GET_PIP_SHA256
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: PYTHON_GET_PIP_SHA256
+                - name: APP_VERSION
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: APP_VERSION
+                - name: APP_GIT_COMMIT
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: APP_GIT_COMMIT
+                - name: APP_BUILD_DATE
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: APP_BUILD_DATE
+                - name: APP_BUILD_TAG
+                  valueFrom:
+                    secretKeyRef:
+                      name: map-mgw-dev-env-vars
+                      key: APP_BUILD_TAG
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: data
+            - name: archive
+              persistentVolumeClaim:
+                claimName: archive
+            - name: logs
+              persistentVolumeClaim:
+                claimName: logs
