@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: calculate-stats
+  name: calculate-usage-stats
 spec:
   schedule: "*/5 * * * *"
   jobTemplate:
