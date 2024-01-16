@@ -1,0 +1,249 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: delete-expired-sessions
+spec:
+  schedule: "*/10 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: map-app
+            image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:map-latest
+            command:
+              - /bin/sh
+              - -c
+              - ./manage.py clearsessions
+            env:
+              - name: PREMAILER_BASE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: PREMAILER_BASE_URL
+              - name: SECRET_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: SECRET_KEY
+              - name: SERVER_EMAIL
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: SERVER_EMAIL
+              - name: GSI_EMAIL_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: GSI_EMAIL_HOST
+              - name: GSI_EMAIL_PORT
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: GSI_EMAIL_PORT
+              - name: PNN_EMAIL_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: PNN_EMAIL_HOST
+              - name: PNN_EMAIL_PORT
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: PNN_EMAIL_PORT
+              - name: EMAIL_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: EMAIL_HOST
+              - name: EMAIL_PORT
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: EMAIL_PORT
+              - name: EMAIL_HOST_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: EMAIL_HOST_USER
+              - name: EMAIL_HOST_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: EMAIL_HOST_PASSWORD
+              - name: PLEA_EMAIL_FROM
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: PLEA_EMAIL_FROM
+              - name: PLP_EMAIL_FROM
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: PLP_EMAIL_FROM
+              - name: FEEDBACK_EMAIL_FROM
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: FEEDBACK_EMAIL_FROM
+              - name: FEEDBACK_EMAIL_TO
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: FEEDBACK_EMAIL_TO
+              - name: PLEA_CONFIRMATION_EMAIL_FROM
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: PLEA_CONFIRMATION_EMAIL_FROM
+              - name: RECEIPT_INBOX_FROM_EMAIL
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: RECEIPT_INBOX_FROM_EMAIL
+              - name: RECEIPT_INBOX_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: RECEIPT_INBOX_USERNAME
+              - name: RECEIPT_GMAIL_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: RECEIPT_GMAIL_PASSWORD
+              - name: RECEIPT_HEADER_FRAGMENT_CHECK
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: RECEIPT_HEADER_FRAGMENT_CHECK
+              - name: USER_DATA_DIRECTORY
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: USER_DATA_DIRECTORY
+              - name: GPG_RECIPIENT
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: GPG_RECIPIENT
+              - name: ENV_BASE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: ENV_BASE_URL
+              # - name: FTP_SERVER_IP
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: map-dev-env-vars
+              #       key: FTP_SERVER_IP
+              # - name: DATA_RETENTION_PERIOD
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: map-dev-env-vars
+              #       key: DATA_RETENTION_PERIOD
+              # - name: SENTRY_DSN
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: map-dev-env-vars
+              #       key: SENTRY_DSN
+              - name: POSTGRES_DB
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: POSTGRES_DB
+              - name: DB_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: DB_USERNAME
+              - name: DB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: DB_PASSWORD
+              - name: DB_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: DB_HOST
+              - name: DB_PORT
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: DB_PORT
+              # - name: GOOGLE_ANALYTICS_ID
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: map-dev-env-vars
+              #       key: GOOGLE_ANALYTICS_ID
+              # - name: GSI_EMAIL_USERNAME
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: map-dev-env-vars
+              #       key: GSI_EMAIL_USERNAME
+              # - name: GSI_EMAIL_PASSWORD
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: map-dev-env-vars
+              #       key: GSI_EMAIL_PASSWORD
+              - name: PNN_EMAIL_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: PNN_EMAIL_USERNAME
+              - name: PNN_EMAIL_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: PNN_EMAIL_PASSWORD
+              - name: ALLOWED_HOSTS
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: ALLOWED_HOSTS
+              # - name: CELERY_ALWAYS_EAGER
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: map-dev-env-vars
+              #       key: CELERY_ALWAYS_EAGER
+              - name: AWS_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: makeaplea-instance-output-sqs-instance-output
+                    key: external_sqs_access_key_id
+              - name: AWS_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: makeaplea-instance-output-sqs-instance-output
+                    key: external_sqs_secret_access_key
+              - name: CELERY_QUEUE_POLLING_PREFIX
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: CELERY_QUEUE_POLLING_PREFIX
+              # - name: RATE_LIMIT
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: map-dev-env-vars
+              #       key: RATE_LIMIT
+              # - name: REDIRECT_START_PAGE
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: map-dev-env-vars
+              #       key: REDIRECT_START_PAGE
+              # - name: SENTRY_DSN
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: map-dev-env-vars
+              #       key: SENTRY_DSN
+              - name: AWS_STORAGE_BUCKET_NAME
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: AWS_STORAGE_BUCKET_NAME
+              - name: ECR_ROLE_TO_ASSUME_DEV
+                valueFrom:
+                  secretKeyRef:
+                    name: map-dev-env-vars
+                    key: ECR_ROLE_TO_ASSUME_DEV
+          restartPolicy: OnFailure
