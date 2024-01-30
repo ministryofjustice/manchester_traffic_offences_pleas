@@ -200,8 +200,8 @@ jobs:
       - run:
           name: rolling update image
           command: |
-            kubectl apply -n makeaplea-dev --record=false -f ./deploy/development/map-app
-            kubectl apply -n makeaplea-dev --record=false -f ./deploy/development/map-mgw/statefulset.yaml
+            kubectl apply -n makeaplea-dev -f ./deploy/development/map-app/deployment-web-app.yaml
+            kubectl apply -n makeaplea-dev -f ./deploy/development/map-mgw/statefulset.yaml
 
 workflows:
   test-build-deploy:
