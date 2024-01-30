@@ -19,7 +19,7 @@ spec:
           imagePullPolicy: Always
           volumeMounts:
             - name: jms
-              mountPath: "/opt/jboss/wildfly/storage"
+              mountPath: "/opt/jboss/wildfly/standalone/storage"
           ports:
             - containerPort: 8080
             - containerPort: 9990
