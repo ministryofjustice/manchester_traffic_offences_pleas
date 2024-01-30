@@ -17,6 +17,9 @@ spec:
         - name: map-mgw
           image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:makeaplea_mgw
           imagePullPolicy: Always
+          volumeMounts:
+            - name: jms
+              mountPath: "/opt/jboss/wildfly/storage"
           ports:
             - containerPort: 8080
             - containerPort: 9990
@@ -456,6 +459,14 @@ spec:
             storage: 4Gi
     - metadata:
         name: logs
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "gp2-expand" # StorageClass name used to create PV
+        resources:
+          requests:
+            storage: 4Gi
+    - metadata:
+        name: jms
       spec:
         accessModes: [ "ReadWriteOnce" ]
         storageClassName: "gp2-expand" # StorageClass name used to create PV
