@@ -32,6 +32,6 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: map-mgw-admin-service
+                name: map-mgw-service
                 port:
                   number: 9990
