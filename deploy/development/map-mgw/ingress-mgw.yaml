@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: makeaplea
+  namespace: makeaplea-dev
+  annotations:
+    external-dns.alpha.kubernetes.io/set-identifier: makeaplea-makeaplea-dev-green
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
+spec:
+  ingressClassName: default
+  tls:
+    - hosts:
+      - dev-map-mgw.apps.live.cloud-platform.service.justice.gov.uk
+      - dev-map-mgw-admin.apps.live.cloud-platform.service.justice.gov.uk
+      secretName: mirror-gateway-cert-secret
+
+  rules:
+    - host: dev-map-mgw.apps.live.cloud-platform.service.justice.gov.uk
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: map-mgw-service
+                port:
+                  number: 8080
+    - host: dev-map-mgw-admin.apps.live.cloud-platform.service.justice.gov.uk
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: map-mgw-admin-service
+                port:
+                  number: 9990
