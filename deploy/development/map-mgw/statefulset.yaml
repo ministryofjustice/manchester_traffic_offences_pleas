@@ -23,6 +23,11 @@ spec:
           ports:
             - containerPort: 8080
             - containerPort: 9990
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
           env:
             - name: DB_ENGINE
               valueFrom:
@@ -156,6 +161,11 @@ spec:
           volumeMounts:
             - name: data
               mountPath: "/data"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
           env:
             - name: DB_ENGINE
               valueFrom:
@@ -268,6 +278,11 @@ spec:
               mountPath: "/archive"
             - name: logs
               mountPath: "/logs"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
           env:
             - name: DB_ENGINE
               valueFrom:
