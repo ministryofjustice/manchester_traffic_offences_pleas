@@ -200,7 +200,7 @@ jobs:
       - run:
           name: rolling update image
           command: |
-            kubectl delete -f ./deploy/development/map-mgw/statefulset.yaml --cascade=orphan
+            # kubectl delete -f ./deploy/development/map-mgw/statefulset.yaml --cascade=orphan
             kubectl apply -n makeaplea-dev -f ./deploy/development/map-app
             kubectl apply -n makeaplea-dev -f ./deploy/development/map-mgw
 
