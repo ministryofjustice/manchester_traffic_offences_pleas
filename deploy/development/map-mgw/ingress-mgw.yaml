@@ -6,6 +6,10 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/set-identifier: makeaplea-mgw-makeaplea-dev-green
     external-dns.alpha.kubernetes.io/aws-weight: "100"
+    nginx.ingress.kubernetes.io/auth-tls-secret: "makeaplea-dev/mirror-gateway-cert-secret"
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: on
+    nginx.ingress.kubernetes.io/auth-tls-verify-depth: 1
+
 spec:
   ingressClassName: default
   tls:
