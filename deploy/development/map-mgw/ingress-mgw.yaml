@@ -6,7 +6,7 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/set-identifier: makeaplea-mgw-makeaplea-dev-green
     external-dns.alpha.kubernetes.io/aws-weight: "100"
-    nginx.ingress.kubernetes.io/auth-tls-secret: "makeaplea-dev/mirror-gateway-cert-secret"
+    nginx.ingress.kubernetes.io/auth-tls-secret: "makeaplea-dev/mtls-certs"
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
     nginx.ingress.kubernetes.io/auth-tls-verify-depth: "2"
 
@@ -16,7 +16,7 @@ spec:
     - hosts:
       - dev-map-mgw.apps.live.cloud-platform.service.justice.gov.uk
       - dev-map-mgw-admin.apps.live.cloud-platform.service.justice.gov.uk
-      secretName: mirror-gateway-cert-secret
+      secretName: mtls-certs
 
   rules:
     - host: dev-map-mgw.apps.live.cloud-platform.service.justice.gov.uk
