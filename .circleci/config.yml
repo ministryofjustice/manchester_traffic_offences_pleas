@@ -52,14 +52,14 @@ jobs:
           steps:
             - aws-cli/setup:
                 role_arn: $ECR_ROLE_TO_ASSUME_DEV
-                region: $ECR_REGION_DEV
+                region: $AWS_REGION
       - when:
           condition:
             equal: [ PREPROD, << parameters.env_name >> ]
           steps:
             - aws-cli/setup:
                 role_arn: $ECR_ROLE_TO_ASSUME_PREPROD
-                region: $ECR_REGION_PREPROD
+                region: $AWS_REGION
 
       - setup_remote_docker:
           version: 20.10.11
@@ -143,7 +143,7 @@ jobs:
                     --build-arg ENV=dev \
                     --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_DEV} \
                     --build-arg ECR_ROLE_TO_ASSUME_DEV=${ECR_ROLE_TO_ASSUME_DEV} \
-                    --build-arg ECR_REGION_DEV=${ECR_REGION_DEV} \
+                    --build-arg ECR_REGION_DEV=${AWS_REGION} \
                     -t map-app .
             - run:
                 name: Build MaP api image
@@ -161,7 +161,7 @@ jobs:
                     --build-arg ENV=docker \
                     --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_DEV} \
                     --build-arg ECR_ROLE_TO_ASSUME_DEV=${ECR_ROLE_TO_ASSUME_DEV} \
-                    --build-arg ECR_REGION_DEV=${ECR_REGION_DEV} \
+                    --build-arg ECR_REGION_DEV=${AWS_REGION} \
                     -t map-api .
 
             - run:
@@ -181,7 +181,7 @@ jobs:
                     --build-arg ENV=dev \
                     --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_DEV} \
                     --build-arg ECR_ROLE_TO_ASSUME_DEV=${ECR_ROLE_TO_ASSUME_DEV} \
-                    --build-arg ECR_REGION_DEV=${ECR_REGION_DEV} \
+                    --build-arg ECR_REGION_DEV=${AWS_REGION} \
                     -t map-celery .
 
             - run:
@@ -240,7 +240,7 @@ jobs:
                     --build-arg ENV=preprod \
                     --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_PREPROD} \
                     --build-arg ECR_ROLE_TO_ASSUME_PREPROD=${ECR_ROLE_TO_ASSUME_PREPROD} \
-                    --build-arg ECR_REGION_PREPROD=${ECR_REGION_PREPROD} \
+                    --build-arg ECR_REGION_PREPROD=${AWS_REGION} \
                     -t map-app .
             - run:
                 name: Build MaP api image
@@ -258,7 +258,7 @@ jobs:
                     --build-arg ENV=docker \
                     --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_PREPROD} \
                     --build-arg ECR_ROLE_TO_ASSUME_PREPROD=${ECR_ROLE_TO_ASSUME_PREPROD} \
-                    --build-arg ECR_REGION_PREPROD=${ECR_REGION_PREPROD} \
+                    --build-arg ECR_REGION_PREPROD=${AWS_REGION} \
                     -t map-api .
 
             - run:
@@ -278,7 +278,7 @@ jobs:
                     --build-arg ENV=preprod \
                     --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_PREPROD} \
                     --build-arg ECR_ROLE_TO_ASSUME_PREPROD=${ECR_ROLE_TO_ASSUME_PREPROD} \
-                    --build-arg ECR_REGION_PREPROD=${ECR_REGION_PREPROD} \
+                    --build-arg ECR_REGION_PREPROD=${AWS_REGION} \
                     -t map-celery .
 
             - run:
