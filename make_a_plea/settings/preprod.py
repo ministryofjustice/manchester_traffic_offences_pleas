@@ -1,14 +1,6 @@
 from .docker import *
 import os
 
-
-INSTALLED_APPS.append('raven.contrib.django.raven_compat')
-
-RAVEN_CONFIG = {
-    'dsn': os.environ["SENTRY_DSN"],
-    'release': os.environ.get("APP_GIT_COMMIT", "no-git-commit-available")
-}
-
 # aws settings
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
