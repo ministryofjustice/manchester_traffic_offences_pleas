@@ -104,21 +104,6 @@ jobs:
             python manage.py migrate --noinput
             python manage.py compilemessages
 
-      - when:
-          condition:
-            equal: [ PREPROD, << parameters.env_name >> ]
-          steps:
-            - run:
-                name: Collect static preprod
-                environment:
-                  DJANGO_SETTINGS_MODULE: make_a_plea.settings.preprod
-                  AWS_STORAGE_BUCKET_NAME_PREPROD: $AWS_STORAGE_BUCKET_NAME_PREPROD
-                  AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID_S3_PREPROD
-                  AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY_ID_S3_PREPROD
-                command: |
-                  . venv/bin/activate
-                  python manage.py collectstatic --noinput
-
       - run:
           name: Wait for RabbitMQ to start
           command: dockerize -wait tcp://localhost:5672 -timeout 1m
