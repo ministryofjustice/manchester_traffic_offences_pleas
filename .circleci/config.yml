@@ -98,23 +98,12 @@ jobs:
             pip install behave==1.2.6 behaving==1.5.6 splinter==0.14.0 selenium==3.141.0
 
       - run:
-          name: Run migrate, compilemessages
+          name: Run migrate, compilemessages, collectstatic
           command: |
             . venv/bin/activate
             python manage.py migrate --noinput
             python manage.py compilemessages
-
-      - when:
-          condition:
-            equal: [ PREPROD, << parameters.env_name >> ]
-          steps:
-            - run:
-                name: Collect static preprod
-                environment:
-                  DJANGO_SETTINGS_MODULE: make_a_plea.settings.preprod
-                command: |
-                  . venv/bin/activate
-                  python manage.py collectstatic --noinput
+            python manage.py collectstatic --noinput
 
       - run:
           name: Wait for RabbitMQ to start
