@@ -113,6 +113,8 @@ jobs:
                 environment:
                   DJANGO_SETTINGS_MODULE: make_a_plea.settings.preprod
                   AWS_STORAGE_BUCKET_NAME_PREPROD: $AWS_STORAGE_BUCKET_NAME_PREPROD
+                  AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID_S3_PREPROD
+                  AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY_ID_S3_PREPROD
                 command: |
                   . venv/bin/activate
                   python manage.py collectstatic --noinput
