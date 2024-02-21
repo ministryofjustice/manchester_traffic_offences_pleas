@@ -113,6 +113,7 @@ jobs:
                 environment:
                   DJANGO_SETTINGS_MODULE: make_a_plea.settings.preprod
                 command: |
+                  . venv/bin/activate
                   python manage.py collectstatic --noinput
 
       - run:
