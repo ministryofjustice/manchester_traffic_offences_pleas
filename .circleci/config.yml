@@ -254,7 +254,7 @@ jobs:
                     --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
                     --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
                     --build-arg DJANGO_SETTINGS=api.settings \
-                    --build-arg ENV=docker \
+                    --build-arg ENV=preprod \
                     --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_PREPROD} \
                     --build-arg ECR_ROLE_TO_ASSUME_PREPROD=${ECR_ROLE_TO_ASSUME_PREPROD} \
                     --build-arg ECR_REGION_PREPROD=${AWS_REGION} \
