@@ -10,12 +10,12 @@ spec:
   ingressClassName: default
   tls:
     - hosts:
-        - makeaplea.justice.gov.uk
+        - prod-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk
         - api.makeaplea.justice.gov.uk
       secretName: make-a-plea-app-cert
 
   rules:
-    - host: makeaplea.justice.gov.uk
+    - host: prod-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk
       http:
         paths:
           - path: /
