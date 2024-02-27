@@ -60,6 +60,13 @@ jobs:
             - aws-cli/setup:
                 role_arn: $ECR_ROLE_TO_ASSUME_PREPROD
                 region: $AWS_REGION
+      - when:
+          condition:
+            equal: [ PROD, << parameters.env_name >> ]
+          steps:
+            - aws-cli/setup:
+                role_arn: $ECR_ROLE_TO_ASSUME_PROD
+                region: $AWS_REGION
 
       - setup_remote_docker:
           version: 20.10.11
@@ -316,6 +323,103 @@ jobs:
                   kubectl apply -n makeaplea-preprod -f ./deploy/preproduction/map-app
                   kubectl apply -n makeaplea-preprod -f ./deploy/preproduction/map-mgw
 
+      - when:
+          condition:
+            equal: [ PROD, << parameters.env_name >> ]
+          steps:
+            - run:
+                name: Build MaP web app image
+                command: |
+                  export BUILD_DATE=$(date -Is) >> $BASH_ENV
+                  source $BASH_ENV
+                  docker build \
+                    --label build.git.sha=${CIRCLE_SHA1} \
+                    --label build.git.branch=${CIRCLE_BRANCH} \
+                    --label build.date=${BUILD_DATE} \
+                    --build-arg APP_BUILD_DATE=${BUILD_DATE} \
+                    --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
+                    --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
+                    --build-arg DJANGO_SETTINGS=make_a_plea.settings \
+                    --build-arg ENV=prod \
+                    --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_PROD} \
+                    --build-arg ECR_ROLE_TO_ASSUME_PROD=${ECR_ROLE_TO_ASSUME_PROD} \
+                    --build-arg ECR_REGION_PROD=${AWS_REGION} \
+                    -t map-app .
+            - run:
+                name: Build MaP api image
+                command: |
+                  export BUILD_DATE=$(date -Is) >> $BASH_ENV
+                  source $BASH_ENV
+                  docker build \
+                    --label build.git.sha=${CIRCLE_SHA1} \
+                    --label build.git.branch=${CIRCLE_BRANCH} \
+                    --label build.date=${BUILD_DATE} \
+                    --build-arg APP_BUILD_DATE=${BUILD_DATE} \
+                    --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
+                    --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
+                    --build-arg DJANGO_SETTINGS=api.settings \
+                    --build-arg ENV=prod \
+                    --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_PROD} \
+                    --build-arg ECR_ROLE_TO_ASSUME_PROD=${ECR_ROLE_TO_ASSUME_PROD} \
+                    --build-arg ECR_REGION_PROD=${AWS_REGION} \
+                    -t map-api .
+
+            - run:
+                name: Build MaP celery image
+                command: |
+                  export BUILD_DATE=$(date -Is) >> $BASH_ENV
+                  source $BASH_ENV
+                  docker build \
+                    -f ./docker/Dockerfile \
+                    --label build.git.sha=${CIRCLE_SHA1} \
+                    --label build.git.branch=${CIRCLE_BRANCH} \
+                    --label build.date=${BUILD_DATE} \
+                    --build-arg APP_BUILD_DATE=${BUILD_DATE} \
+                    --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
+                    --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
+                    --build-arg DJANGO_SETTINGS=make_a_plea.settings \
+                    --build-arg ENV=prod \
+                    --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_PROD} \
+                    --build-arg ECR_ROLE_TO_ASSUME_PROD=${ECR_ROLE_TO_ASSUME_PROD} \
+                    --build-arg ECR_REGION_PROD=${AWS_REGION} \
+                    -t map-celery .
+
+            - run:
+                name: Tag and push image to ECR
+                command: |
+                  login="$(aws ecr get-login-password --region eu-west-2)"
+                  echo ${login} | docker login --username AWS --password-stdin 754256621582.dkr.ecr.eu-west-2.amazonaws.com
+                  docker tag map-app "${ECR_ENDPOINT_PROD}:map-${CIRCLE_SHA1}"
+                  docker tag map-app "${ECR_ENDPOINT_PROD}:map-latest"
+                  docker tag map-api "${ECR_ENDPOINT_PROD}:map-api-${CIRCLE_SHA1}"
+                  docker tag map-api "${ECR_ENDPOINT_PROD}:map-api-latest"
+                  docker tag map-celery "${ECR_ENDPOINT_PROD}:map-celery-${CIRCLE_SHA1}"
+                  docker tag map-celery "${ECR_ENDPOINT_PROD}:map-celery-latest"
+
+                  docker push "${ECR_ENDPOINT_PROD}:map-${CIRCLE_SHA1}"
+                  docker push "${ECR_ENDPOINT_PROD}:map-latest"
+                  docker push "${ECR_ENDPOINT_PROD}:map-api-${CIRCLE_SHA1}"
+                  docker push "${ECR_ENDPOINT_PROD}:map-api-latest"
+                  docker push "${ECR_ENDPOINT_PROD}:map-celery-${CIRCLE_SHA1}"
+                  docker push "${ECR_ENDPOINT_PROD}:map-celery-latest"
+
+            - run:
+                name: Authenticate to LIVE cluster
+                command: |
+                  echo -n ${K8S_CLUSTER_CERT} | base64 -d > ./ca.crt
+                  kubectl config set-cluster ${K8S_CLUSTER_NAME} --certificate-authority=./ca.crt --server=https://${K8S_CLUSTER_NAME}
+                  kubectl config set-credentials cd-serviceaccount --token=${K8S_TOKEN_PROD}
+                  kubectl config set-context ${K8S_CLUSTER_NAME} --cluster=${K8S_CLUSTER_NAME} --user=cd-serviceaccount --namespace=${K8S_NAMESPACE_PROD}
+                  kubectl config use-context ${K8S_CLUSTER_NAME}
+
+            - run:
+                name: rolling update image
+                command: |
+                  # The deletion of the statefulset is needed when adding a new volume from scratch
+                  kubectl delete -f ./deploy/production/map-mgw/statefulset.yaml --cascade=orphan
+                  kubectl apply -n makeaplea-prod -f ./deploy/production/map-app
+                  kubectl apply -n makeaplea-prod -f ./deploy/production/map-mgw
+
 workflows:
   test-build-deploy:
     jobs:
@@ -333,6 +437,15 @@ workflows:
           name: build-containers-preprod
           env_name: PREPROD
           ecr_endpoint: ${ECR_ENDPOINT_PREPROD}
+          filters:
+            branches:
+              only: /^RST-.*/
+
+      ### PROD ###
+      - build:
+          name: build-containers-prod
+          env_name: PROD
+          ecr_endpoint: ${ECR_ENDPOINT_PROD}
           filters:
             branches:
               only: /^RST-.*/
