@@ -7,4 +7,4 @@ ADMINS = (
     ('HMCTS Reform Sustaining Support', 'sustainingteamsupport@HMCTS.NET'),
 )
 
-ALLOWED_HOSTS = ['api.makeaplea.justice.gov.uk']
+ALLOWED_HOSTS = ['prod-api-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk']
