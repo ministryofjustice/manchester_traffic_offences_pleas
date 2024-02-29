@@ -439,7 +439,7 @@ workflows:
           ecr_endpoint: ${ECR_ENDPOINT_PREPROD}
           filters:
             branches:
-              only: /^RST-.*/
+              only: staging
 
       ### PROD ###
       - build:
@@ -448,4 +448,4 @@ workflows:
           ecr_endpoint: ${ECR_ENDPOINT_PROD}
           filters:
             branches:
-              only: /^RST-.*/
+              only: master
