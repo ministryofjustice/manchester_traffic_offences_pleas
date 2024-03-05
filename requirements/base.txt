@@ -2,7 +2,7 @@
 # After the first "pip install -r", just run "pip freeze" and add the version
 # to each package in each requirements/*.txt.
 
-boto3==1.4.4
+boto3==1.9.220
 
 Django==1.11.29
 psycopg2==2.8.3
