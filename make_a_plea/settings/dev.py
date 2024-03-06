@@ -23,7 +23,11 @@ CELERY_TASK_DEFAULT_QUEUE = "makeaplea_queue"
 CELERY_BROKER_URL = "SQS://"
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     'region': 'eu-west-2',
-    'queue_name_prefix': "pet-development-",
+    'predefined_queues': {
+        'pet-development-makeaplea_queue': {  ## the name of the SQS queue
+            'url': 'https://sqs.eu-west-2.amazonaws.com/754256621582/pet-development-makeaplea_queue',
+        }
+    },
     'polling_interval': 1,
     'visibility_timeout': 3600
 }
