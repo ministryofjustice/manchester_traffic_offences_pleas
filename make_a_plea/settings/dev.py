@@ -19,15 +19,10 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 ALLOWED_HOSTS = ['dev-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk', 'dev-api-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk']
 
 CELERY_TASK_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
-CELERY_TASK_DEFAULT_QUEUE = "pet-development-celery"
 CELERY_BROKER_URL = "SQS://"
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     'region': 'eu-west-2',
-    'predefined_queues': {
-        'pet-development-celery': {  ## the name of the SQS queue
-            'url': 'https://sqs.eu-west-2.amazonaws.com/754256621582/pet-development-celery',
-        }
-    },
+    'queue_name_prefix': "pet-development-",
     'polling_interval': 1,
     'visibility_timeout': 3600
 }
