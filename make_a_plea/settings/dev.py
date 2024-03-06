@@ -19,7 +19,7 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 ALLOWED_HOSTS = ['dev-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk', 'dev-api-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk']
 
 CELERY_TASK_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
-CELERY_TASK_DEFAULT_QUEUE = "makeaplea_queue"
+CELERY_TASK_DEFAULT_QUEUE = "pet-development-makeaplea_queue"
 CELERY_BROKER_URL = "SQS://"
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     'region': 'eu-west-2',
