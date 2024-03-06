@@ -24,5 +24,6 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {
     'region': 'eu-west-2',
     'queue_name_prefix': "pet-development-",
     'polling_interval': 1,
-    'visibility_timeout': 3600
+    'visibility_timeout': 3600,
+    'never_list_queues': True,
 }
