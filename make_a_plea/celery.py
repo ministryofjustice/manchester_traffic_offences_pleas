@@ -15,12 +15,13 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 app.conf.update(
     broker = 'sqs://',
     task_default_queue = 'pet-development-celery',
-    transport_options={
+    broker_transport_options={
         'region': 'eu-west-2',
         'predefined_queues': {
             'pet-development-celery': {  ## the name of the SQS queue
                 'url': 'https://sqs.eu-west-2.amazonaws.com/754256621582/pet-development-celery',
             }
-        }
+        },
+        'sts_role_arn': 'arn:aws:iam::754256621582:policy/cloud-platform/sqs/cloud-platform-sqs-5f3d35c662e8'
     }
 )
