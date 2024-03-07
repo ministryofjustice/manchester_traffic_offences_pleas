@@ -11,3 +11,16 @@ if not "DJANGO_SETTINGS_MODULE" in os.environ:
 app = Celery('apps.plea', task_create_missing_queues=False)
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+
+app.conf.update(
+    broker = 'sqs://',
+    task_default_queue = 'pet-development-celery',
+    transport_options={
+        'region': 'eu-west-2',
+        'predefined_queues': {
+            'pet-development-celery': {  ## the name of the SQS queue
+                'url': 'https://sqs.eu-west-2.amazonaws.com/754256621582/pet-development-celery',
+            }
+        }
+    }
+)
