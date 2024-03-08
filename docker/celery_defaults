@@ -32,8 +32,3 @@ CELERYD_GROUP="makeaplea"
 # If enabled pid and log directories will be created if missing,
 # and owned by the userid/group configured.
 CELERY_CREATE_DIRS=1
-
-# Apparently this disables prefetching
-CELERYD_CONCURRENCY = 1
-CELERYD_PREFETCH_MULTIPLIER = 1
-CELERY_ACKS_LATE = True
