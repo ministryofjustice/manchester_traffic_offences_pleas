@@ -6,13 +6,21 @@ from django.utils import translation
 from django.http import HttpResponse
 
 from .exceptions import BadRequestException
-from celery.worker import aws
+from celery.worker.middleware import BaseMiddleware
 
-class CustomS3Middleware(aws.s3.S3):
-    def before_parameter_build(self, params, operation_model, context):
-        if operation_model.name == 'ListQueues':
-            return None  # Skip the ListQueues operation
-        return super().before_parameter_build(params, operation_model, context)
+class CustomS3Middleware(BaseMiddleware):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def before(self, event, **kwargs):
+        """
+        Override the before method to filter out the before-parameter-build.sqs.ListQueues event.
+        """
+        if event.get('op') == 'before-parameter-build.sqs.ListQueues':
+            # Return False to indicate that the event should be skipped
+            return False
+        return event
+
 
 
 def get_session_timeout(request):
