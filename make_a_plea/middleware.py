@@ -6,20 +6,28 @@ from django.utils import translation
 from django.http import HttpResponse
 
 from .exceptions import BadRequestException
-from celery.worker.middleware import BaseMiddleware
+import boto3
+from botocore import hooks
 
-class CustomS3Middleware(BaseMiddleware):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+class CustomInterceptor:
+    def __init__(self, event_name):
+        self.event_name = event_name
 
-    def before(self, event, **kwargs):
-        """
-        Override the before method to filter out the before-parameter-build.sqs.ListQueues event.
-        """
-        if event.get('op') == 'before-parameter-build.sqs.ListQueues':
-            # Return False to indicate that the event should be skipped
-            return False
-        return event
+    def __call__(self, **kwargs):
+        if kwargs.get('event_name') == self.event_name:
+            return None  # Skip the event
+        return kwargs
+
+# Register the interceptor
+hooks.register('before-parameter-build.sqs.ListQueues', CustomInterceptor('before-parameter-build.sqs.ListQueues'))
+
+# Create a custom session with the modified hooks
+session = boto3.Session()
+
+# Now, any boto3 client or resource created with this session will skip the ListQueues operation
+sqs_client = session.client('sqs')
+
+# Use sqs_client as usual...
 
 
 
