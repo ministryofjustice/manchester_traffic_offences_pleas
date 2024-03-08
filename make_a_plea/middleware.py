@@ -12,7 +12,7 @@ class CustomInterceptor:
     def __init__(self, event_name):
         self.event_name = event_name
 
-    def __call__(self, kwargs):
+    def __call__(self, **kwargs):
         if kwargs['operation_name'] == self.event_name:
             return {'event_name': None}  # Skip the event
         return kwargs
