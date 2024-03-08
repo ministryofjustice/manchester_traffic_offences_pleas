@@ -26,4 +26,10 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {
     'polling_interval': 1,
     'visibility_timeout': 3600,
     'never_list_queues': True,
+    'predefined_queues': {
+        'pet-development-celery': {  ## the name of the SQS queue
+            'url': 'https://sqs.eu-west-2.amazonaws.com/754256621582/pet-development-celery',
+        }
+    },
+    'sts_role_arn': 'arn:aws:iam::754256621582:policy/cloud-platform/sqs/cloud-platform-sqs-5f3d35c662e8'
 }
