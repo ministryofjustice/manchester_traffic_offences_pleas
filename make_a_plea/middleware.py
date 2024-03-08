@@ -7,27 +7,27 @@ from django.http import HttpResponse
 
 from .exceptions import BadRequestException
 import boto3
-from botocore import hooks
 
 class CustomInterceptor:
     def __init__(self, event_name):
         self.event_name = event_name
 
-    def __call__(self, **kwargs):
-        if kwargs.get('event_name') == self.event_name:
-            return None  # Skip the event
+    def __call__(self, kwargs):
+        if kwargs['operation_name'] == self.event_name:
+            return {'event_name': None}  # Skip the event
         return kwargs
-
-# Register the interceptor
-hooks.register('before-parameter-build.sqs.ListQueues', CustomInterceptor('before-parameter-build.sqs.ListQueues'))
 
 # Create a custom session with the modified hooks
 session = boto3.Session()
+
+# Attach custom event handler to the session
+session.events.register('before-call', CustomInterceptor('ListQueues'))
 
 # Now, any boto3 client or resource created with this session will skip the ListQueues operation
 sqs_client = session.client('sqs')
 
 # Use sqs_client as usual...
+
 
 
 
