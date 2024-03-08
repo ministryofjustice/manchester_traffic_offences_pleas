@@ -6,30 +6,6 @@ from django.utils import translation
 from django.http import HttpResponse
 
 from .exceptions import BadRequestException
-import boto3
-
-class CustomInterceptor:
-    def __init__(self, event_name):
-        self.event_name = event_name
-
-    def __call__(self, **kwargs):
-        if kwargs['operation_name'] == self.event_name:
-            return {'event_name': None}  # Skip the event
-        return kwargs
-
-# Create a custom session with the modified hooks
-session = boto3.Session()
-
-# Attach custom event handler to the session
-session.events.register('before-call', CustomInterceptor('ListQueues'))
-
-# Now, any boto3 client or resource created with this session will skip the ListQueues operation
-sqs_client = session.client('sqs')
-
-# Use sqs_client as usual...
-
-
-
 
 def get_session_timeout(request):
     try:
