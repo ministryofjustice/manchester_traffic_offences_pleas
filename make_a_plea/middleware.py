@@ -6,6 +6,13 @@ from django.utils import translation
 from django.http import HttpResponse
 
 from .exceptions import BadRequestException
+from celery.worker import aws
+
+class CustomS3Middleware(aws.s3.S3):
+    def before_parameter_build(self, params, operation_model, context):
+        if operation_model.name == 'ListQueues':
+            return None  # Skip the ListQueues operation
+        return super().before_parameter_build(params, operation_model, context)
 
 
 def get_session_timeout(request):
