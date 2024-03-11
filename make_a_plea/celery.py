@@ -2,7 +2,6 @@ from __future__ import absolute_import
 
 import os
 from celery import Celery
-from kombu import Queue
 
 from django.conf import settings
 
@@ -12,11 +11,3 @@ if not "DJANGO_SETTINGS_MODULE" in os.environ:
 app = Celery('apps.plea')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
-
-app.conf.update(
-    broker_url = 'sqs://',
-    task_queues = [
-        Queue('pet-development-celery')
-    ],
-    task_create_missing_queues = False,
-)
