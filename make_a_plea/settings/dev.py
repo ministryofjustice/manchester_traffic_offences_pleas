@@ -22,14 +22,19 @@ CELERY_TASK_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
 CELERY_BROKER_URL = "SQS://"
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     'region': 'eu-west-2',
-    'queue_name_prefix': "pet-development-",
-    'polling_interval': 1,
-    'visibility_timeout': 3600,
-    'never_list_queues': True,
+#'task_queues = [
+#        Queue('pet-development-celery')
+#    ]'
     'predefined_queues': {
         'pet-development-celery': {  ## the name of the SQS queue
             'url': 'https://sqs.eu-west-2.amazonaws.com/754256621582/pet-development-celery',
         }
     },
     'sts_role_arn': 'arn:aws:iam::754256621582:policy/cloud-platform/sqs/cloud-platform-sqs-5f3d35c662e8'
+}
+CELERY_QUEUES = (Broadcast('pet-development-celery'),)
+CELERY_ROUTES = {
+    'make_a_plea.celery.tasks.email_send_court': {
+        'queue': 'pet-development-celery'
+    }
 }
