@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: makeaplea-mgw
+  namespace: makeaplea-prod
+  annotations:
+    external-dns.alpha.kubernetes.io/set-identifier: makeaplea-mgw-makeaplea-prod-green
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
+    nginx.ingress.kubernetes.io/auth-tls-secret: "makeaplea-prod/mtls-certs"
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: "off"
+    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "2"
+
+spec:
+  ingressClassName: default
+  tls:
+    - hosts:
+      - prod-map-mgw.apps.live.cloud-platform.service.justice.gov.uk
+      - prod-map-mgw-admin.apps.live.cloud-platform.service.justice.gov.uk
+      secretName: mtls-certs
+
+  rules:
+    - host: prod-map-mgw.apps.live.cloud-platform.service.justice.gov.uk
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: map-mgw-service
+                port:
+                  number: 8080
+    - host: prod-map-mgw-admin.apps.live.cloud-platform.service.justice.gov.uk
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: map-mgw-service
+                port:
+                  number: 9990

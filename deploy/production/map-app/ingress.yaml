@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: makeaplea
+  namespace: makeaplea-prod
+  annotations:
+    external-dns.alpha.kubernetes.io/set-identifier: makeaplea-makeaplea-prod-green
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
+spec:
+  ingressClassName: default
+  tls:
+    - hosts:
+        - prod-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk
+        - prod-api-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk
+      secretName: make-a-plea-app-cert
+
+  rules:
+    - host: prod-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: map-app-service
+                port:
+                  number: 3000
+    - host: prod-api-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: map-api-service
+                port:
+                  number: 3000
