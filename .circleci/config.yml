@@ -448,4 +448,4 @@ workflows:
           ecr_endpoint: ${ECR_ENDPOINT_PROD}
           filters:
             branches:
-              only: /^RST-.*/
+              only: master
