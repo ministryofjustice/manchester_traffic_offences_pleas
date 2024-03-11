@@ -210,17 +210,17 @@ spec:
               #     secretKeyRef:
               #       name: map-dev-env-vars
               #       key: CELERY_ALWAYS_EAGER
-              - name: AWS_ACCESS_KEY_ID
-                valueFrom:
-                  secretKeyRef:
-                    name: makeaplea-instance-output-sqs-instance-output
-                    key: external_sqs_access_key_id
-              - name: AWS_SECRET_ACCESS_KEY
-                valueFrom:
-                  secretKeyRef:
-                    name: makeaplea-instance-output-sqs-instance-output
-                    key: external_sqs_secret_access_key
-              - name: CELERY_QUEUE_POLLING_PREFIX
+              # - name: AWS_ACCESS_KEY_ID
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: makeaplea-instance-output-sqs-instance-output
+              #       key: external_sqs_access_key_id
+              # - name: AWS_SECRET_ACCESS_KEY
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: makeaplea-instance-output-sqs-instance-output
+              #       key: external_sqs_secret_access_key
+              # - name: CELERY_QUEUE_POLLING_PREFIX
                 valueFrom:
                   secretKeyRef:
                     name: map-dev-env-vars
