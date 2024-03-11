@@ -19,7 +19,6 @@ app.conf.update(
         Queue('pet-development-celery')
     ],
     task_create_missing_queues = False,
-    task_default_queue = 'pet-development-celery',
     broker_transport_options={
         'region': 'eu-west-2',
         'predefined_queues': {
