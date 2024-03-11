@@ -7,6 +7,7 @@ from django.http import HttpResponse
 
 from .exceptions import BadRequestException
 
+
 def get_session_timeout(request):
     try:
         has_plea_data = request.session["plea_data"]["notice_type"]
