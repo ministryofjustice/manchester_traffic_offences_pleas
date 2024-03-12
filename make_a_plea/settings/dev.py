@@ -22,9 +22,12 @@ CELERY_TASK_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
 CELERY_BROKER_URL = "SQS://"
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     'region': 'eu-west-2',
-    'task_queues = [
-        Queue('pet-development-celery')
-    ]'
+    'task_queues': {
+        'pet-development-celery': {
+            'exchange': 'default',
+            'routing_key': 'default',
+        }
+    },
     'predefined_queues': {
         'pet-development-celery': {  ## the name of the SQS queue
             'url': 'https://sqs.eu-west-2.amazonaws.com/754256621582/pet-development-celery',
