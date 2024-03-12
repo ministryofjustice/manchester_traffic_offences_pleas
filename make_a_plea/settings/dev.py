@@ -32,7 +32,7 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {
     },
     'sts_role_arn': 'arn:aws:iam::754256621582:policy/cloud-platform/sqs/cloud-platform-sqs-5f3d35c662e8'
 }
-CELERY_QUEUES = (Broadcast('pet-development-celery'),)
+CELERY_QUEUES = (Queue('pet-development-celery'),)
 CELERY_ROUTES = {
     'make_a_plea.celery.tasks.email_send_court': {
         'queue': 'pet-development-celery'
