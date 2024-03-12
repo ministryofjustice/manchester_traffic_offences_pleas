@@ -221,10 +221,10 @@ spec:
               #       name: makeaplea-instance-output-sqs-instance-output
               #       key: external_sqs_secret_access_key
               # - name: CELERY_QUEUE_POLLING_PREFIX
-                valueFrom:
-                  secretKeyRef:
-                    name: map-dev-env-vars
-                    key: CELERY_QUEUE_POLLING_PREFIX
+              #  valueFrom:
+              #    secretKeyRef:
+              #      name: map-dev-env-vars
+              #      key: CELERY_QUEUE_POLLING_PREFIX
               # - name: RATE_LIMIT
               #   valueFrom:
               #     secretKeyRef:
