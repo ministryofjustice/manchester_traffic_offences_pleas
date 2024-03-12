@@ -258,9 +258,9 @@ spec:
             readinessProbe:
               exec:
                 command:
-                  - cat
-                  - /makeaplea/docker/celery_defaults
-              initialDelaySeconds: 5
+                  - "ls"
+                  - "/tmp"
+              initialDelaySeconds: 10
               periodSeconds: 5
             env:
               - name: PREMAILER_BASE_URL
