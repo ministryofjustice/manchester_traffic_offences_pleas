@@ -430,7 +430,7 @@ workflows:
           ecr_endpoint: ${ECR_ENDPOINT_DEV}
           filters:
             branches:
-              only: /^RST-.*/
+              only: /^dev-.*/
 
       ### PREPROD ###
       - build:
