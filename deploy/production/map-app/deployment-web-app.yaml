@@ -20,6 +20,11 @@ spec:
             ports:
               - containerPort: 3000
             env:
+              - name: STORE_USER_DATA
+                valueFrom:
+                  secretKeyRef:
+                    name: map-prod-env-vars
+                    key: STORE_USER_DATA
               - name: PREMAILER_BASE_URL
                 valueFrom:
                   secretKeyRef:
