@@ -107,8 +107,8 @@ def send_plea_email(context_data):
 
     case.save()
 
-    if getattr(settings, "STORE_USER_DATA", False):
-        encrypt_and_store_user_data(case.urn, case.id, context_data)
+    #if getattr(settings, "STORE_USER_DATA", False):
+    encrypt_and_store_user_data(case.urn, case.id, context_data)
 
     if not court_obj.test_mode:
         # don't add test court entries to the anon stat data
