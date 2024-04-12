@@ -40,6 +40,8 @@ from .models import Court, Case, Offence, DataValidation
 from .standardisers import standardise_urn, format_for_region
 import re
 
+logger = logging.getLogger(__name__)
+
 def get_case(urn):
     try:
         return Case.objects.get(urn__iexact=urn, sent=False)
