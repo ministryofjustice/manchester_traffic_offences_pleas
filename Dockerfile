@@ -26,13 +26,10 @@ RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
 RUN python manage.py collectstatic --noinput
 RUN python manage.py compilemessages
 
-# bypass broken pipeline
-ENV APP_BUILD_DATE="2020-06-17T09:26:53+0000"
-ENV APP_GIT_COMMIT="master.a816014"
-ENV APP_BUILD_TAG="a816014d47fe98db08f600476a7f811c3ac70f93"
-ENV APP_VERSION="0.1.3-1731-ga816014"
-
 CMD ["./run.sh"]
 
 EXPOSE 9080
 
+
+# Build environment variables
+ENV APP_VERSION="0.1.3-1731-ga816014" APP_GIT_COMMIT="a816014d47fe98db08f600476a7f811c3ac70f93" APP_BUILD_DATE="2020-06-17T09:26:53+0000" APP_BUILD_TAG="master.a816014"

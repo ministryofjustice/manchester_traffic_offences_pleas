@@ -74,6 +74,7 @@ class FeedbackViews(StorageView):
 
         return form.render(request)
 
+    @method_decorator(ratelimit(block=True, rate=settings.RATE_LIMIT))
     def post(self, request, stage):
         nxt = request.GET.get("next", None)
 
