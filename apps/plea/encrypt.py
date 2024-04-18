@@ -2,6 +2,7 @@ import gnupg
 import json
 import os
 import time
+import logging
 
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
@@ -14,6 +15,7 @@ gpg.encoding = 'utf-8'
 class PersistenceError(Exception):
     pass
 
+logger = logging.getLogger(__name__)
 
 def clear_user_data():
     """
@@ -60,11 +62,14 @@ def encrypt_and_store_user_data(urn, case_id, data, user_data_directory=None):
     try:
         fd = os.open(file_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
         os.write(fd, str(encrypted_data).encode())
+        logger.info("encrypt_and_store_user_data: file path {}".format(file_path))
 
         # NOTE: It seems unlikely that there'll be file name
         # clashes given the file name is the urn + timestamp. However,
         # if it does become an issue, you can check for a 'file already
         # exists' error by captching an OSError with ex.errno == 17
+    except Exception as e:
+        logger.error("encrypt_and_store_user_data fd file error: {}".format(e))
 
     finally:
         if 'fd' in locals():
