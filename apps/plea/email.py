@@ -1,6 +1,7 @@
 import datetime as dt
 from dateutil import parser
 import logging
+import json
 
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -106,7 +107,7 @@ def send_plea_email(context_data):
 
     case.save()
 
-    if getattr(settings, "STORE_USER_DATA", False):
+    if getattr(settings, "STORE_USER_DATA", True):
         encrypt_and_store_user_data(case.urn, case.id, context_data)
 
     if not court_obj.test_mode:
@@ -122,8 +123,10 @@ def send_plea_email(context_data):
         email_count_id = "XX"
     email_send_court.delay(case.id, email_count_id, context_data)
 
-    if court_obj.plp_email:
-        email_send_prosecutor.delay(case.id, context_data)
+    # No longer attempting to send prosecutor email as it is no longer required
+    # Contact Paul Ridings for further info
+    #if court_obj.plp_email:
+    #email_send_prosecutor.delay(case.id, context_data)
 
     if email_address:
         data = {

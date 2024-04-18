@@ -48,7 +48,7 @@ RATE_LIMIT = os.environ.get("RATE_LIMIT", "120/m")
 #
 SECRET_KEY = os.environ.get("SECRET_KEY", "***REMOVED***")
 
-STORE_USER_DATA = False
+STORE_USER_DATA = os.environ.get("STORE_USER_DATA", True)
 
 REDIRECT_START_PAGE = os.environ.get("REDIRECT_START_PAGE", "")
 
