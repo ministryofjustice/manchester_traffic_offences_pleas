@@ -33,7 +33,7 @@ def manual_send_court_email(json_data, case_id):
 
     case_id = case.id if case else "XX"
 
-    smtp_route = "GSI"
+    smtp_route = "PUB"
 
     try:
         court_obj = Court.objects.get_by_urn(email_data["case"]["urn"])
