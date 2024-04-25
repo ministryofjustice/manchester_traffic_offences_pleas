@@ -27,5 +27,7 @@ django-storages==1.9.1
 
 unicodecsv==0.14.1
 
+vine==5.0.0
+
 # GOVUK Template
 git+https://github.com/froddd/govuk_template_django.git
