@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: map-api-service
+  labels:
+    app: map-api-service
+spec:
+  ports:
+    - port: 3000
+      name: http
+      targetPort: 3000
+  selector:
+    app: map-api

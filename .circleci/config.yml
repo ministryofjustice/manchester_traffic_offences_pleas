@@ -1,0 +1,218 @@
+version: 2.1
+orbs:
+  aws-cli: circleci/aws-cli@4.0.0
+  docker: circleci/docker@1.7.0
+  aws-ecr: circleci/aws-ecr@8.2.1
+  kubernetes: circleci/kubernetes@1.3.1
+
+jobs:
+  build:
+    parameters:
+      env_name:
+        type: string
+      ecr_endpoint:
+        type: string
+
+    docker:
+      - image: "circleci/python:3.6"
+        environment:
+          DJANGO_SETTINGS_MODULE: make_a_plea.settings.testing
+          POSTGRES_DB: manchester_traffic_offences
+          POSTGRES_USER: postgres
+          POSTGRES_PASS: password
+          POSTGRES_PORT: 5432
+          POSTGRES_HOST: localhost
+
+      - image: "circleci/postgres:10.4"
+        environment:
+          POSTGRES_DB: manchester_traffic_offences
+          POSTGRES_USER: postgres
+          POSTGRES_PASS: password
+          POSTGRES_PORT: 5432
+          POSTGRES_HOST: localhost
+
+      - image: rabbitmq
+
+      # - image: "circleci/postgres:9.4"
+      #   environment:
+      #     POSTGRES_DB: pleaonline
+      #     POSTGRES_USER: makeaplea
+      #     POSTGRES_PASS: password
+      #     POSTGRES_PORT: 5432
+      #     POSTGRES_HOST: db
+
+    executor: aws-cli/default
+
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.11
+          docker_layer_caching: true
+      - kubernetes/install-kubectl
+
+      - aws-cli/setup:
+          role_arn: $ECR_ROLE_TO_ASSUME_DEV
+          region: $ECR_REGION_DEV
+
+      - run:
+          name: Install linux dependencies
+          command: |
+            sudo apt-get -qq update
+            sudo apt-get install libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libxkbcommon0 libxcomposite1 libxrandr2 libasound2
+            sudo ./apt/production.sh
+            sudo ./apt/testing.sh
+            LATEST_CHROME_RELEASE=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json | jq '.channels.Stable')
+            LATEST_CHROME_URL=$(echo "$LATEST_CHROME_RELEASE" | jq -r '.downloads.chrome[] | select(.platform == "linux64") | .url')
+            wget -N "$LATEST_CHROME_URL" -P ~/
+            unzip ~/chrome-linux64.zip -d ~/
+            sudo mv ~/chrome-linux64 ~/chrome
+            sudo ln -s ~/chrome/chrome /usr/bin/google-chrome
+            sudo chmod +x /usr/bin/google-chrome
+            sudo rm ~/chrome-linux64.zip
+            LATEST_CHROMEDRIVER_URL=$(echo "$LATEST_CHROME_RELEASE" | jq -r '.downloads.chromedriver[] | select(.platform == "linux64") | .url')
+            wget -N "$LATEST_CHROMEDRIVER_URL" -P ~/
+            unzip ~/chromedriver-linux64.zip -d ~/
+            sudo mv ~/chromedriver-linux64 ~/chromedriver
+            sudo ln -s ~/chromedriver/chromedriver /usr/local/bin/chromedriver
+            sudo chmod +x /usr/local/bin/chromedriver
+            sudo rm ~/chromedriver-linux64.zip
+
+      - run:
+          name: Install python dependencies
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install setuptools==32
+            pip install -r requirements/testing.txt
+            pip install behave==1.2.6 behaving==1.5.6 splinter==0.14.0 selenium==3.141.0
+
+      - run:
+          name: Run migrate, compilemessages, collectstatic
+          command: |
+            . venv/bin/activate
+            python manage.py migrate --noinput
+            python manage.py compilemessages
+            python manage.py collectstatic --noinput
+
+      - run:
+          name: Wait for RabbitMQ to have started
+          command: dockerize -wait tcp://localhost:5672 -timeout 1m
+
+      - run:
+          name: Unit and E2E tests
+          command: |
+            . venv/bin/activate
+            coverage run --omit 'venv/*' --source='.' manage.py test
+            coverage report
+            python manage.py test --settings=api.settings.testing -p "api_test_*.py"
+            python manage.py loaddata features/fixtures.yaml
+            python manage.py runserver &
+            mailmock -p 1025 -o /tmp/mailmock -n &
+            celery worker -A make_a_plea -D
+            sleep 2
+            behave --format progress3 -Dheadless
+
+      - run:
+          name: Build MaP web app image
+          command: |
+            export BUILD_DATE=$(date -Is) >> $BASH_ENV
+            source $BASH_ENV
+            docker build \
+              --label build.git.sha=${CIRCLE_SHA1} \
+              --label build.git.branch=${CIRCLE_BRANCH} \
+              --label build.date=${BUILD_DATE} \
+              --build-arg APP_BUILD_DATE=${BUILD_DATE} \
+              --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
+              --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
+              --build-arg DJANGO_SETTINGS=make_a_plea.settings \
+              --build-arg ENV=dev \
+              --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_DEV} \
+              --build-arg ECR_ROLE_TO_ASSUME_DEV=${ECR_ROLE_TO_ASSUME_DEV} \
+              --build-arg ECR_REGION_DEV=${ECR_REGION_DEV} \
+              -t map-app .
+      - run:
+          name: Build MaP api image
+          command: |
+            export BUILD_DATE=$(date -Is) >> $BASH_ENV
+            source $BASH_ENV
+            docker build \
+              --label build.git.sha=${CIRCLE_SHA1} \
+              --label build.git.branch=${CIRCLE_BRANCH} \
+              --label build.date=${BUILD_DATE} \
+              --build-arg APP_BUILD_DATE=${BUILD_DATE} \
+              --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
+              --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
+              --build-arg DJANGO_SETTINGS=api.settings \
+              --build-arg ENV=docker \
+              --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_DEV} \
+              --build-arg ECR_ROLE_TO_ASSUME_DEV=${ECR_ROLE_TO_ASSUME_DEV} \
+              --build-arg ECR_REGION_DEV=${ECR_REGION_DEV} \
+              -t map-api .
+
+      - run:
+          name: Build MaP celery image
+          command: |
+            export BUILD_DATE=$(date -Is) >> $BASH_ENV
+            source $BASH_ENV
+            docker build \
+              -f ./docker/Dockerfile \
+              --label build.git.sha=${CIRCLE_SHA1} \
+              --label build.git.branch=${CIRCLE_BRANCH} \
+              --label build.date=${BUILD_DATE} \
+              --build-arg APP_BUILD_DATE=${BUILD_DATE} \
+              --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
+              --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
+              --build-arg DJANGO_SETTINGS=make_a_plea.settings \
+              --build-arg ENV=dev \
+              --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_DEV} \
+              --build-arg ECR_ROLE_TO_ASSUME_DEV=${ECR_ROLE_TO_ASSUME_DEV} \
+              --build-arg ECR_REGION_DEV=${ECR_REGION_DEV} \
+              -t map-celery .
+
+      - run:
+          name: Tag and push image to ECR
+          command: |
+            login="$(aws ecr get-login-password --region eu-west-2)"
+            echo ${login} | docker login --username AWS --password-stdin 754256621582.dkr.ecr.eu-west-2.amazonaws.com
+            docker tag map-app "${ECR_ENDPOINT_DEV}:map-${CIRCLE_SHA1}"
+            docker tag map-app "${ECR_ENDPOINT_DEV}:map-latest"
+            docker tag map-api "${ECR_ENDPOINT_DEV}:map-api-${CIRCLE_SHA1}"
+            docker tag map-api "${ECR_ENDPOINT_DEV}:map-api-latest"
+            docker tag map-celery "${ECR_ENDPOINT_DEV}:map-celery-${CIRCLE_SHA1}"
+            docker tag map-celery "${ECR_ENDPOINT_DEV}:map-celery-latest"
+
+            docker push "${ECR_ENDPOINT_DEV}:map-${CIRCLE_SHA1}"
+            docker push "${ECR_ENDPOINT_DEV}:map-latest"
+            docker push "${ECR_ENDPOINT_DEV}:map-api-${CIRCLE_SHA1}"
+            docker push "${ECR_ENDPOINT_DEV}:map-api-latest"
+            docker push "${ECR_ENDPOINT_DEV}:map-celery-${CIRCLE_SHA1}"
+            docker push "${ECR_ENDPOINT_DEV}:map-celery-latest"
+
+      - run:
+          name: Authenticate to LIVE cluster
+          command: |
+            echo -n ${K8S_CLUSTER_CERT} | base64 -d > ./ca.crt
+            kubectl config set-cluster ${K8S_CLUSTER_NAME} --certificate-authority=./ca.crt --server=https://${K8S_CLUSTER_NAME}
+            kubectl config set-credentials cd-serviceaccount --token=${K8S_TOKEN_DEV}
+            kubectl config set-context ${K8S_CLUSTER_NAME} --cluster=${K8S_CLUSTER_NAME} --user=cd-serviceaccount --namespace=${K8S_NAMESPACE_DEV}
+            kubectl config use-context ${K8S_CLUSTER_NAME}
+
+      - run:
+          name: rolling update image
+          command: |
+            # The deletion of the statefulset is needed when adding a new volume from scratch
+            # kubectl delete -f ./deploy/development/map-mgw/statefulset.yaml --cascade=orphan
+            kubectl apply -n makeaplea-dev -f ./deploy/development/map-app
+            kubectl apply -n makeaplea-dev -f ./deploy/development/map-mgw
+
+workflows:
+  test-build-deploy:
+    jobs:
+      ### DEV ###
+      - build:
+          name: build-containers-dev
+          env_name: DEV
+          ecr_endpoint: ${ECR_ENDPOINT_DEV}
+          filters:
+            branches:
+              only: /^RST-.*/
