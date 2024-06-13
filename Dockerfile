@@ -12,6 +12,7 @@ RUN apt-get -y update && $APP_HOME/apt/production.sh
 COPY requirements.txt $APP_HOME
 COPY requirements/ $APP_HOME/requirements/
 RUN pip install -r requirements.txt
+RUN pip install psycopg2-binary 
 
 RUN mkdir /user_data
 RUN mkdir /user_data/.gnupg
