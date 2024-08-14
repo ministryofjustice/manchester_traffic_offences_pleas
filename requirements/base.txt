@@ -2,23 +2,23 @@
 # After the first "pip install -r", just run "pip freeze" and add the version
 # to each package in each requirements/*.txt.
 
-boto3==1.9.220
+boto3==1.12.220
 
 Django==1.11.29
 psycopg2==2.8.3
 python-dateutil==2.6.0
 python-gnupg==0.4.4
-pycurl==7.43.0
+pycurl==7.43.0.5
 git+https://github.com/ministryofjustice/django-moj-irat@0.4
 raven==6.0.0
-kombu==4.1.0
-Celery==4.1.0
-celery[sqs]==4.1.0
+kombu==5.1.0
+Celery=5.1.0
+celery[sqs]==5.1.0
 
 django-extensions==1.7.9
 django-brake==1.3.1
 django-waffle==0.10.1
-django-celery-results==1.0.1
+django-celery-results==2.0.0
 djangorestframework==3.9.4
 django-premailer==0.2.0
 django-axes==1.6.0
@@ -26,6 +26,8 @@ django-nested-admin==2.2.3
 django-storages==1.9.1
 
 unicodecsv==0.14.1
+
+vine==5.0.0
 
 # GOVUK Template
 git+https://github.com/froddd/govuk_template_django.git
