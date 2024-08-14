@@ -255,13 +255,6 @@ spec:
             imagePullPolicy: Always
             ports:
               - containerPort: 3001
-            readinessProbe:
-              exec:
-                command:
-                  - "ls"
-                  - "/tmp"
-              initialDelaySeconds: 10
-              periodSeconds: 5
             env:
               - name: PREMAILER_BASE_URL
                 valueFrom:
