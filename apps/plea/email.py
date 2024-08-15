@@ -80,6 +80,7 @@ def send_plea_email(context_data):
 
     if "date_of_birth" in context_data["case"]:
         context_data["your_details"]["date_of_birth"] = context_data["case"]["date_of_birth"]
+        print("context_data: ", context_data)
 
     context_data["email_name"] = " ".join([last_name.upper(), first_name, middle_name]).strip()
 
@@ -89,17 +90,18 @@ def send_plea_email(context_data):
 
     # Check if the defendant is 18 years old or under
     date_of_birth = context_data["case"]["date_of_birth"]
-    try:
-        if isinstance(date_of_birth, str):
-            dob = dt.datetime.strptime(date_of_birth, "%Y-%m-%d").date()
-        else:
-            dob = date_of_birth
-        age = (dt.datetime.today().date() - dob).days // 365
-        if age <= 18:
-            context_data["under_18_message"] = "The defendant is 18 years old or under"
-            print("Under 18 message added to context_data")  # Debug statement
-    except ValueError:
-        pass
+    if date_of_birth:
+        try:
+            if isinstance(date_of_birth, str):
+                dob = dt.datetime.strptime(date_of_birth, "%Y-%m-%d").date()
+            else:
+                dob = date_of_birth
+            age = (dt.datetime.today().date() - dob).days // 365
+            if age <= 18:
+                context_data["under_18_message"] = "The defendant is 18 years old or under"
+                print("Under 18 message added to context_data")  # Debug statement
+        except ValueError:
+            pass
 
     if context_data["notice_type"]["sjp"]:
         case.initiation_type = "J"
