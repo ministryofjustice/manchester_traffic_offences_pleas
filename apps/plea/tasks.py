@@ -42,8 +42,6 @@ def get_court(urn, ou_code):
 
 
 def is_18_or_under(date_of_birth):
-    print("(1) inside is_18_or_under, date_of_birth type: ", type(date_of_birth), "date_of_birth value: ", date_of_birth)
-
     if isinstance(date_of_birth, str):
         try:
             date_of_birth = parse(date_of_birth).date()
@@ -54,8 +52,6 @@ def is_18_or_under(date_of_birth):
         return False
 
     target_date = (datetime.today() - relativedelta(years=18)).date()
-
-    print("(2) inside is_18_or_under, date_of_birth:", date_of_birth, "date_of_birth type: ", type(date_of_birth),  "target_date: ", target_date, "target_date type: ", type(target_date))
 
     return date_of_birth >= target_date
 
@@ -140,11 +136,6 @@ def email_send_prosecutor(self, case_id, email_data):
 
     email_data["your_details"]["18_or_under"] = is_18_or_under(
         email_data["your_details"].get("date_of_birth"))
-
-    print("email_data[your_details][18_or_under]: ", email_data["your_details"]["18_or_under"])
-    print("type of email_data[your_details][18_or_under]: ", type(email_data["your_details"]["18_or_under"]))
-    print("email_data[your_details].get(date_of_birth)", email_data["your_details"].get("date_of_birth"))
-    print("email_data[your_details].get(date_of_birth)", type(email_data["your_details"].get("date_of_birth")))
 
     plp_email = TemplateAttachmentEmail(settings.PLP_EMAIL_FROM,
                                         settings.PLEA_EMAIL_ATTACHMENT_NAME,
