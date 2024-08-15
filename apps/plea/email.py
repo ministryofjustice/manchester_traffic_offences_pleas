@@ -91,7 +91,7 @@ def send_plea_email(context_data):
     date_of_birth = context_data["your_details"].get("date_of_birth")
     if date_of_birth:
         try:
-            dob = dt.strptime(date_of_birth, "%Y-%m-%d").date()
+            dob = dt.datetime.strptime(date_of_birth, "%Y-%m-%d").date()
             age = (dt.today().date() - dob).days // 365
             if age <= 18:
                 context_data["under_18_message"] = "The defendant is 18 years old or under"
