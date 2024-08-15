@@ -89,7 +89,7 @@ def send_plea_email(context_data):
         context_data["welsh_language"] = True
 
     # Check if the defendant is 18 years old or under
-    date_of_birth = context_data["case"]["date_of_birth"]
+    date_of_birth = context_data["your_details"].get("date_of_birth")
     if date_of_birth:
         try:
             if isinstance(date_of_birth, str):
@@ -149,7 +149,8 @@ def send_plea_email(context_data):
             "contact_deadline": context_data["case"]["contact_deadline"],
             "plea_type": get_plea_type(context_data),
             "court_name": court_obj.court_name,
-            "court_email": court_obj.court_email
+            "court_email": court_obj.court_email,
+            "under_18_message": context_data['under_18_message']
         }
 
         email_template = "emails/user_plea_confirmation"
@@ -164,12 +165,6 @@ def send_plea_email(context_data):
         txt_body = wrap(render_to_string(email_template + ".txt", data), 72)
 
         subject = _("Online plea submission confirmation")
-
-        # Add the under 18 message if present
-        if "under_18_message" in context_data:
-            html_body += f"<p>{context_data['under_18_message']}</p>"
-            txt_body += f"\n{context_data['under_18_message']}"
-            print("Under 18 message added to email content")  # Debug statement
 
         email_send_user.delay(case.id, email_address, subject, html_body, txt_body)
 
