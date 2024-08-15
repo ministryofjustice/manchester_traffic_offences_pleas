@@ -779,6 +779,7 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
         context_data["your_details"]["date_of_birth"] = (datetime.today() - relativedelta(years=18)).date()
         send_plea_email(context_data)
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
+        print(response.content)
         assert b"The defendant is 18 years old or under" in response.content
 
     def test_under_18_message_is_shown_when_user_is_under_18(self):
@@ -786,6 +787,7 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
         context_data["your_details"]["date_of_birth"] = (datetime.today() - relativedelta(years=17)).date()
         send_plea_email(context_data)
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
+        print(response.content)
         assert b"The defendant is 18 years old or under" in response.content
 
     def test_under_18_message_is_not_shown_when_user_over_18(self):
