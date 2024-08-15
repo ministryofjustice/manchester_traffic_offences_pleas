@@ -135,6 +135,8 @@ def email_send_prosecutor(self, case_id, email_data):
 
     print("email_data[your_details][18_or_under]: ", email_data["your_details"]["18_or_under"])
     print("type of email_data[your_details][18_or_under]: ", type(email_data["your_details"]["18_or_under"]))
+    print("email_data[your_details].get(date_of_birth)", email_data["your_details"].get("date_of_birth"))
+    print("email_data[your_details].get(date_of_birth)", type(email_data["your_details"].get("date_of_birth")))
 
     plp_email = TemplateAttachmentEmail(settings.PLP_EMAIL_FROM,
                                         settings.PLEA_EMAIL_ATTACHMENT_NAME,
