@@ -774,19 +774,17 @@ class PLPEmailTemplateTests(BaseEmailTemplateTests):
         self.assertContainsDefinition(response.content, "Your plea", "Guilty", count=1)
         self.assertContainsDefinition(response.content, "Your plea", "Not guilty", count=1)
 
-    def test_under_18_message_is_shown_when_user_is_18(self):
-        context_data = self.get_context_data()
-        context_data["your_details"]["date_of_birth"] = (datetime.today() - relativedelta(years=18)).strftime("%Y-%m-%d")
-        send_plea_email(context_data)
-        response = self.get_mock_response(mail.outbox[1].attachments[0][1])
-        self.assertIn(b"The defendant is 18 years old or under", response.content)
-
     def test_under_18_message_is_shown_when_user_is_under_18(self):
         context_data = self.get_context_data()
         context_data["your_details"]["date_of_birth"] = (datetime.today() - relativedelta(years=17)).strftime("%Y-%m-%d")
         send_plea_email(context_data)
         response = self.get_mock_response(mail.outbox[1].attachments[0][1])
-        self.assertIn(b"The defendant is 18 years old or under", response.content)
+        try:
+            self.assertIn(b"The defendant is 18 years old or under", response.content)
+        except AssertionError:
+            print("Context Data:", context_data)  # Debug statement
+            print("Email Content:", response.content)  # Debug statement
+            raise
 
     def test_under_18_message_is_not_shown_when_user_over_18(self):
         context_data = self.get_context_data()

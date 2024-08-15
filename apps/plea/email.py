@@ -98,6 +98,7 @@ def send_plea_email(context_data):
             age = (dt.datetime.today().date() - dob).days // 365
             if age <= 18:
                 context_data["under_18_message"] = "The defendant is 18 years old or under"
+                print("Under 18 message added to context_data")  # Debug statement
         except ValueError:
             pass
 
@@ -167,6 +168,7 @@ def send_plea_email(context_data):
         if "under_18_message" in context_data:
             html_body += f"<p>{context_data['under_18_message']}</p>"
             txt_body += f"\n{context_data['under_18_message']}"
+            print("Under 18 message added to email content")  # Debug statement
 
         email_send_user.delay(case.id, email_address, subject, html_body, txt_body)
 
