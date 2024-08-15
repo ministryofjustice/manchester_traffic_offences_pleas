@@ -125,7 +125,7 @@ jobs:
             python manage.py loaddata features/fixtures.yaml
             python manage.py runserver &
             mailmock -p 1025 -o /tmp/mailmock -n &
-            celery worker -A make_a_plea -D
+            celery --app=make_a_plea.celery:app worker -D
             sleep 2
             behave --format progress3 -Dheadless
 
