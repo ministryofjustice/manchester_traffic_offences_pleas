@@ -87,6 +87,17 @@ def send_plea_email(context_data):
     if translation.get_language() == "cy":
         context_data["welsh_language"] = True
 
+    # Check if the defendant is 18 years old or under
+    date_of_birth = context_data["your_details"].get("date_of_birth")
+    if date_of_birth:
+        try:
+            dob = dt.strptime(date_of_birth, "%Y-%m-%d").date()
+            age = (dt.today().date() - dob).days // 365
+            if age <= 18:
+                context_data["under_18_message"] = "The defendant is 18 years old or under"
+        except ValueError:
+            pass
+
     if context_data["notice_type"]["sjp"]:
         case.initiation_type = "J"
 
@@ -148,6 +159,11 @@ def send_plea_email(context_data):
         txt_body = wrap(render_to_string(email_template + ".txt", data), 72)
 
         subject = _("Online plea submission confirmation")
+
+        # Add the under 18 message if present
+        if "under_18_message" in context_data:
+            html_body += f"<p>{context_data['under_18_message']}</p>"
+            txt_body += f"\n{context_data['under_18_message']}"
 
         email_send_user.delay(case.id, email_address, subject, html_body, txt_body)
 
