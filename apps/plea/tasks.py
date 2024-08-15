@@ -41,12 +41,13 @@ def get_court(urn, ou_code):
 
 
 def is_18_or_under(date_of_birth):
+    print("inside is_18_or_under, date_of_birth type: ", type(date_of_birth), "date_of_birth value: ", date_of_birth)
     if not isinstance(date_of_birth, date):
         return False
 
     target_date = (datetime.today() - relativedelta(years=18)).date()
 
-    print("inside is_18_or_under. date_of_birth:", date_of_birth, "target_date: ", target_date)
+    print("inside is_18_or_under, date_of_birth:", date_of_birth, "target_date: ", target_date)
 
     return date_of_birth >= target_date
 
@@ -133,6 +134,7 @@ def email_send_prosecutor(self, case_id, email_data):
         email_data["your_details"].get("date_of_birth"))
 
     print("email_data[your_details][18_or_under]: ", email_data["your_details"]["18_or_under"])
+    print("type of email_data[your_details][18_or_under]: ", type(email_data["your_details"]["18_or_under"]))
 
     plp_email = TemplateAttachmentEmail(settings.PLP_EMAIL_FROM,
                                         settings.PLEA_EMAIL_ATTACHMENT_NAME,
