@@ -4,6 +4,7 @@ import logging
 import smtplib
 import socket
 from datetime import datetime, date
+from dateutil.parser import parse
 from dateutil.relativedelta import relativedelta
 
 from django.core.mail import EmailMultiAlternatives
@@ -41,13 +42,20 @@ def get_court(urn, ou_code):
 
 
 def is_18_or_under(date_of_birth):
-    print("inside is_18_or_under, date_of_birth type: ", type(date_of_birth), "date_of_birth value: ", date_of_birth)
+    print("(1) inside is_18_or_under, date_of_birth type: ", type(date_of_birth), "date_of_birth value: ", date_of_birth)
+
+    if isinstance(date_of_birth, str):
+        try:
+            date_of_birth = parse(date_of_birth).date()
+        except ValueError:
+            return False
+
     if not isinstance(date_of_birth, date):
         return False
 
     target_date = (datetime.today() - relativedelta(years=18)).date()
 
-    print("inside is_18_or_under, date_of_birth:", date_of_birth, "target_date: ", target_date)
+    print("(2) inside is_18_or_under, date_of_birth:", date_of_birth, "date_of_birth type: ", type(date_of_birth),  "target_date: ", target_date, "target_date type: ", type(target_date))
 
     return date_of_birth >= target_date
 
