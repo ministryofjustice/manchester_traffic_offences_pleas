@@ -149,7 +149,7 @@ def send_plea_email(context_data):
         email_content = render_to_string('emails/attachments/plp_email.html', context_data)
 
         # Debug statement to print the rendered template content
-        print("Print email_content:", email_content)
+        # print("Print email_content:", email_content)
 
         html_body = render_to_string(email_template + ".html", data)
         txt_body = wrap(render_to_string(email_template + ".txt", data), 72)

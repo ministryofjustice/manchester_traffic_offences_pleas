@@ -46,6 +46,8 @@ def is_18_or_under(date_of_birth):
 
     target_date = (datetime.today() - relativedelta(years=18)).date()
 
+    print("inside is_18_or_under. date_of_birth:", date_of_birth, "target_date: ", target_date)
+
     return date_of_birth >= target_date
 
 
@@ -129,6 +131,8 @@ def email_send_prosecutor(self, case_id, email_data):
 
     email_data["your_details"]["18_or_under"] = is_18_or_under(
         email_data["your_details"].get("date_of_birth"))
+
+    print("email_data[your_details][18_or_under]: ", email_data["your_details"]["18_or_under"])
 
     plp_email = TemplateAttachmentEmail(settings.PLP_EMAIL_FROM,
                                         settings.PLEA_EMAIL_ATTACHMENT_NAME,

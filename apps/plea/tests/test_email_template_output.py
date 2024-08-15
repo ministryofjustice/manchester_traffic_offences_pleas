@@ -186,7 +186,7 @@ class BaseEmailTemplateTests(TestCase):
                                  "total_other_expenses": total_other,
                                  "total_expenses": total_expenses}
 
-        print("Print data:", data)
+        # print("Print data:", data)
         return data
 
     def get_mock_response(self, html):
