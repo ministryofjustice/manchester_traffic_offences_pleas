@@ -7,4 +7,9 @@ export C_FORCE_ROOT=true
 source /makeaplea/docker/celery_defaults
 
 # Start the Celery worker
-celery --app=make_a_plea.celery:app worker --loglevel DEBUG --queues pet-development-celery
+# celery --app=make_a_plea.celery:app worker --loglevel DEBUG --queues pet-development-celery
+
+while true
+do
+  sleep 60
+done
