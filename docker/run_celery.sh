@@ -11,4 +11,4 @@ export C_FORCE_ROOT=true
 #   sleep 60
 # done
 
-supervisord -c supervisord.conf
+supervisord -c /makeaplea/docker/supervisord.conf
