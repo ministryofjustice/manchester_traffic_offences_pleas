@@ -5,8 +5,8 @@ ARG DJANGO_SETTINGS
 ARG AWS_STORAGE_BUCKET_NAME
 
 ENV APP_HOME=/makeaplea/
-ENV DJANGO_SETTINGS_MODULE ${DJANGO_SETTINGS}.${ENV}
-ENV AWS_STORAGE_BUCKET_NAME ${AWS_STORAGE_BUCKET_NAME}
+ENV DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS}.${ENV}
+ENV AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
 
 RUN echo "${DJANGO_SETTINGS_MODULE}"
 
@@ -36,23 +36,19 @@ RUN addgroup --gid $gid mygroup \
 
 COPY . $APP_HOME
 RUN chown -R myuser:mygroup $APP_HOME
-RUN chmod -R 755 $APP_HOME
-RUN mkdir -p /var/log && chmod -R 777 /var/log
 
 RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
-
-# bypass broken pipeline
-#ENV APP_BUILD_DATE="2020-06-17T09:26:53+0000"
-#ENV APP_GIT_COMMIT="master.a816014"
-#ENV APP_BUILD_TAG="a816014d47fe98db08f600476a7f811c3ac70f93"
-#ENV APP_VERSION="0.1.3-1731-ga816014"
 
 # Create the vagrant directories
 RUN mkdir -p /home/vagrant
 RUN mkdir -p /home/vagrant/.gnupg/
 
+# Copy the run_celery.sh script and make it executable
+COPY docker/run_celery.sh /makeaplea/docker/run_celery.sh
+RUN chmod +x /makeaplea/docker/run_celery.sh
+
 # Don't run as root user
 USER 1000
-CMD [ "./docker/run_celery.sh"]
+CMD ["/makeaplea/docker/run_celery.sh"]
 
 EXPOSE 3001

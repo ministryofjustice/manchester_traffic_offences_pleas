@@ -1,14 +1,10 @@
 #!/usr/bin/env bash
 
 export PATH=$PATH:/makeaplea/
-
 export C_FORCE_ROOT=true
 
-# cd /makeaplea && source /makeaplea/docker/celery_defaults && celery --app=make_a_plea.celery:app worker --loglevel DEBUG --queues pet-development-celery
+# Source the Celery defaults
+source /makeaplea/docker/celery_defaults
 
-# while true
-# do
-#   sleep 60
-# done
-
-supervisord -c /makeaplea/docker/supervisord.conf
+# Start the Celery worker
+celery --app=make_a_plea.celery:app worker --loglevel DEBUG --queues pet-development-celery
