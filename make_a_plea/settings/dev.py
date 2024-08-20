@@ -22,7 +22,8 @@ ALLOWED_HOSTS = ['dev-make-a-plea.apps.live.cloud-platform.service.justice.gov.u
 
 CELERY_TASK_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
 CELERY_BROKER_URL = "SQS://"
-REPLY_QUEUE_SUFFIX = str(uuid.uuid4())
+REPLY_QUEUE_SUFFIX = os.environ.get("REPLY_QUEUE_SUFFIX")
+CELERY_TASK_DEFAULT_QUEUE = "pet-development-celery"
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     'region': 'eu-west-2',
     'queue_name_prefix': "pet-development-",

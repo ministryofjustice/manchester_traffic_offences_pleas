@@ -3,10 +3,12 @@ FROM python:3.6
 ARG ENV
 ARG DJANGO_SETTINGS
 ARG AWS_STORAGE_BUCKET_NAME
+ARG REPLY_QUEUE_SUFFIX
 
 ENV APP_HOME=/makeaplea/
 ENV DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS}.${ENV}
 ENV AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
+ENV REPLY_QUEUE_SUFFIX=${REPLY_QUEUE_SUFFIX}
 
 RUN echo "${DJANGO_SETTINGS_MODULE}"
 
@@ -25,6 +27,13 @@ RUN pip install -r requirements.txt
 RUN mkdir /user_data
 RUN mkdir /user_data/.gnupg
 RUN mkdir -p make_a_plea/assets
+
+# Create a script to start Celery
+RUN echo "#!/bin/sh\n\
+export REPLY_QUEUE_SUFFIX=$REPLY_QUEUE_SUFFIX\n\
+celery -A make_a_plea.celery:app worker --loglevel DEBUG --queues pet-development-celery &\n\
+exec \"\$@\"" > /usr/local/bin/start_celery.sh \
+ && chmod +x /usr/local/bin/start_celery.sh
 
 VOLUME ["/user_data"]
 
@@ -51,6 +60,6 @@ RUN mkdir -p /home/vagrant/.gnupg/
 
 # Don't run as root user
 USER 1000
-CMD [ "./docker/run_celery.sh"]
+CMD ["/usr/local/bin/start_celery.sh", "./docker/run_celery.sh"]
 
 EXPOSE 3001
