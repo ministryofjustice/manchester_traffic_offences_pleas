@@ -252,7 +252,6 @@ spec:
                     key: ECR_ROLE_TO_ASSUME_DEV
           - name: map-celery
             image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-dev-ecr:map-celery-latest
-            command: ["celery", "--app=make_a_plea.celery:app", "worker", "--loglevel", "DEBUG", "--queues", "pet-development-celery"]
             imagePullPolicy: Always
             ports:
               - containerPort: 3001
