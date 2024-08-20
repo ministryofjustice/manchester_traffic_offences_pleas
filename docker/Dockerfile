@@ -56,6 +56,6 @@ RUN mkdir -p /home/vagrant/.gnupg/
 
 # Don't run as root user
 USER 1000
-CMD [ "./docker/run_celery.sh", "./docker/run_celery.sh"]
+CMD ["/usr/local/bin/start_celery.sh", "./docker/run_celery.sh"]
 
 EXPOSE 3001
