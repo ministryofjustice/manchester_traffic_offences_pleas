@@ -38,6 +38,8 @@ RUN addgroup --gid $gid mygroup \
 
 COPY . $APP_HOME
 RUN chown -R myuser:mygroup $APP_HOME
+RUN chmod -R 755 $APP_HOME
+RUN mkdir -p /var/log && chmod -R 777 /var/log
 
 RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
 
