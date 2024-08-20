@@ -12,6 +12,13 @@ RUN echo "${DJANGO_SETTINGS_MODULE}"
 
 WORKDIR $APP_HOME
 
+# Create the systemd service file for Celery
+RUN touch /etc/systemd/system/celeryd.service \
+ && echo "[Unit]\nDescription=Celery Service\nAfter=network.target\n\n[Service]\nType=forking\nUser=myuser\nGroup=mygroup\nWorkingDirectory=/makeaplea\nExecStart=/usr/local/bin/celery --app=make_a_plea.celery:app worker --loglevel DEBUG --queues pet-development-celery\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/celeryd.service
+
+# Start the Celery service
+RUN systemctl start celeryd
+
 # Debian dependencies
 COPY apt/ $APP_HOME/apt
 RUN apt-get -y update && $APP_HOME/apt/production.sh
