@@ -225,6 +225,7 @@ jobs:
                   kubectl delete -f ./deploy/development/map-mgw/statefulset.yaml --cascade=orphan
                   kubectl apply -n makeaplea-dev -f ./deploy/development/map-app
                   kubectl apply -n makeaplea-dev -f ./deploy/development/map-mgw
+                  kubectl rollout restart deployment map-app -n makeaplea-dev
 
       - when:
           condition:
