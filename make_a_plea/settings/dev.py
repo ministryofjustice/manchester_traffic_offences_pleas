@@ -1,3 +1,5 @@
+import os
+import uuid
 from .docker import *
 
 DJANGO_DEBUG = True
@@ -20,6 +22,7 @@ ALLOWED_HOSTS = ['dev-make-a-plea.apps.live.cloud-platform.service.justice.gov.u
 
 CELERY_TASK_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
 CELERY_BROKER_URL = "SQS://"
+REPLY_QUEUE_SUFFIX = str(uuid.uuid4())
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     'region': 'eu-west-2',
     'queue_name_prefix': "pet-development-",
@@ -29,6 +32,9 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {
     'predefined_queues': {
         'pet-development-celery': {  ## the name of the SQS queue
             'url': 'https://sqs.eu-west-2.amazonaws.com/754256621582/pet-development-celery',
+        },
+        f'pet-development-{REPLY_QUEUE_SUFFIX}-reply-celery-pidbox': {
+            'url': f'https://sqs.eu-west-2.amazonaws.com/754256621582/pet-development-{REPLY_QUEUE_SUFFIX}-reply-celery-pidbox',
         }
     },
     'sts_role_arn': 'arn:aws:iam::754256621582:policy/cloud-platform/sqs/cloud-platform-sqs-5f3d35c662e8'

@@ -12,11 +12,6 @@ RUN echo "${DJANGO_SETTINGS_MODULE}"
 
 WORKDIR $APP_HOME
 
-RUN echo "#!/bin/sh\n\
-celery -A make_a_plea.celery:app worker --loglevel DEBUG --queues pet-development-celery &\n\
-exec \"\$@\"" > /usr/local/bin/start_celery.sh \
- && chmod +x /usr/local/bin/start_celery.sh
-
 # Debian dependencies
 COPY apt/ $APP_HOME/apt
 RUN apt-get -y update && $APP_HOME/apt/production.sh
@@ -56,6 +51,6 @@ RUN mkdir -p /home/vagrant/.gnupg/
 
 # Don't run as root user
 USER 1000
-CMD ["/usr/local/bin/start_celery.sh", "./docker/run_celery.sh"]
+CMD [ "./docker/run_celery.sh"]
 
 EXPOSE 3001
