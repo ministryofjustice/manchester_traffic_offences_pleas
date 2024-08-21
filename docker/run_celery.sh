@@ -9,11 +9,11 @@ export C_FORCE_ROOT=true
 # Start the Celery worker
 # celery --app=make_a_plea.celery:app worker --loglevel DEBUG --queues pet-development-celery
 
-cd /makeaplea && source /makeaplea/docker/celery_defaults && celery -A make_a_plea.celeryapp worker --loglevel=info --queues pet-development-celery
-
-# supervisord -c /makeaplea/docker/supervisord.conf
-
 # while true
 # do
 #   sleep 60
 # done
+
+# cd /makeaplea && source /makeaplea/docker/celery_defaults && celery -A make_a_plea.celeryapp worker --loglevel=info --queues pet-development-celery
+
+supervisord -c /makeaplea/docker/supervisord.conf
