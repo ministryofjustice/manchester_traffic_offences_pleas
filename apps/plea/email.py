@@ -35,9 +35,6 @@ def get_plea_type(context_data):
     else:
         return "mixed"
 
-def send_test_email():
-    print("Message received")
-
 def send_plea_email(context_data):
     """
     Sends a plea email. All addresses, content etc. are defined in

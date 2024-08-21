@@ -10,7 +10,7 @@ from django.utils.translation import ugettext as _
 from apps.forms.stages import FormStage, IndexedStage
 from make_a_plea.sentry_logging import log_user_data
 
-from .email import send_plea_email, get_plea_type, send_test_email
+from .email import send_plea_email, get_plea_type
 from .forms import (URNEntryForm,
                     AuthForm,
                     NoticeTypeForm,
@@ -998,8 +998,8 @@ class ReviewStage(FormStage):
             email_data = {k: v for k, v in self.all_data.items()}
             email_data.update({"review": clean_data})
 
-            # email_result = send_plea_email(email_data)
-            email_result = send_test_email()
+            email_result = send_plea_email(email_data)
+            # email_result = send_test_email()
 
             if email_result:
                 self.set_next_step("complete")
@@ -1011,6 +1011,8 @@ class ReviewStage(FormStage):
 
         return clean_data
 
+def send_test_email():
+    print("Message received")
 
 class CompleteStage(FormStage):
     name = "complete"
