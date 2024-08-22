@@ -1,6 +1,5 @@
 from celery import Celery
 
-# Create the Celery app and set the broker location (default RabbitMQ = pyamqp://guest@localhost//)
 app = Celery('celeryapp',
             backend='rpc://',
             # broker='pyamqp://guest@localhost//')
