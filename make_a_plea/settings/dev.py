@@ -35,5 +35,6 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {
             'url': 'https://sqs.eu-west-2.amazonaws.com/754256621582/pet-development-celery',
         },
     },
-    'sts_role_arn': 'arn:aws:iam::754256621582:policy/cloud-platform/sqs/cloud-platform-sqs-5f3d35c662e8'
+    #'sts_role_arn': 'arn:aws:iam::754256621582:policy/cloud-platform/sqs/cloud-platform-sqs-5f3d35c662e8'
+    'sts_role_arn': 'arn:aws:iam::754256621582:role/cloud-platform-irsa-1269953a1b321ac6-live'
 }
