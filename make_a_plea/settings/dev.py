@@ -22,12 +22,11 @@ ALLOWED_HOSTS = ['dev-make-a-plea.apps.live.cloud-platform.service.justice.gov.u
 
 CELERY_TASK_ALWAYS_EAGER = os.environ.get("CELERY_ALWAYS_EAGER", False)
 CELERY_BROKER_URL = "SQS://"
-REPLY_QUEUE_SUFFIX = os.environ.get("REPLY_QUEUE_SUFFIX")
-CELERY_TASK_DEFAULT_QUEUE = "pet-development-celery"
+
+# CELERY_TASK_DEFAULT_QUEUE = "pet-development-celery"
 AWS_SQS_QUEUE_URL = 'https://sqs.eu-west-2.amazonaws.com/754256621582/pet-development-celery'
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     'region': 'eu-west-2',
-    'queue_name_prefix': "pet-development-",
     'polling_interval': 1,
     'visibility_timeout': 3600,
     'never_list_queues': True,
@@ -35,9 +34,6 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {
         'pet-development-celery': {  ## the name of the SQS queue
             'url': 'https://sqs.eu-west-2.amazonaws.com/754256621582/pet-development-celery',
         },
-        f'pet-development-{REPLY_QUEUE_SUFFIX}-reply-celery-pidbox': {
-            'url': f'https://sqs.eu-west-2.amazonaws.com/754256621582/pet-development-{REPLY_QUEUE_SUFFIX}-reply-celery-pidbox',
-        }
     },
     'sts_role_arn': 'arn:aws:iam::754256621582:policy/cloud-platform/sqs/cloud-platform-sqs-5f3d35c662e8'
 }

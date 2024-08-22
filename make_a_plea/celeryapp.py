@@ -13,4 +13,3 @@ app = Celery('celeryapp',
                     }
                 }
             })
-

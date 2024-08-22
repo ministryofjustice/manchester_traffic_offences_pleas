@@ -10,4 +10,7 @@ if not "DJANGO_SETTINGS_MODULE" in os.environ:
 
 app = Celery('apps.plea')
 app.config_from_object('django.conf:settings', namespace='CELERY')
+# app = Celery('celeryapp',
+#             backend='rpc://',
+#             broker='pyamqp://guest@localhost//')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
