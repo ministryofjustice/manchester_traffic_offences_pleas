@@ -320,7 +320,7 @@ jobs:
                 name: rolling update image
                 command: |
                   # The deletion of the statefulset is needed when adding a new volume from scratch
-                  kubectl delete -f ./deploy/preproduction/map-mgw/statefulset.yaml --cascade=orphan
+                  kubectl delete -n makeaplea-preprod -f ./deploy/preproduction/map-mgw/statefulset.yaml --cascade=orphan
                   kubectl apply -n makeaplea-preprod -f ./deploy/preproduction/map-app
                   kubectl apply -n makeaplea-preprod -f ./deploy/preproduction/map-mgw
 
