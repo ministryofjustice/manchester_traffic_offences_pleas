@@ -8,6 +8,6 @@ from django.conf import settings
 if not "DJANGO_SETTINGS_MODULE" in os.environ:
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'make_a_plea.settings.local')
 
-app = Celery('apps.plea')
+app = Celery('celeryapp')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)

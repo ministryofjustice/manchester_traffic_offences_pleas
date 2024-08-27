@@ -205,16 +205,6 @@ spec:
                     secretKeyRef:
                       name: map-dev-env-vars
                       key: ALLOWED_HOSTS
-                # - name: CELERY_ALWAYS_EAGER
-                #   valueFrom:
-                #     secretKeyRef:
-                #       name: map-dev-env-vars
-                #       key: CELERY_ALWAYS_EAGER
-                # - name: CELERY_BROKER_URL
-                #   valueFrom:
-                #     secretKeyRef:
-                #       name: map-dev-env-vars
-                #       key: CELERY_BROKER_URL
                 - name: CELERY_QUEUE_POLLING_PREFIX
                   valueFrom:
                     secretKeyRef:
@@ -235,16 +225,6 @@ spec:
                 #     secretKeyRef:
                 #       name: map-dev-env-vars
                 #       key: SENTRY_DSN
-                - name: AWS_ACCESS_KEY_ID
-                  valueFrom:
-                    secretKeyRef:
-                      name: map-dev-env-vars
-                      key: AWS_ACCESS_KEY_ID
-                - name: AWS_SECRET_ACCESS_KEY
-                  valueFrom:
-                    secretKeyRef:
-                      name: map-dev-env-vars
-                      key: AWS_SECRET_ACCESS_KEY
                 - name: AWS_STORAGE_BUCKET_NAME
                   valueFrom:
                     secretKeyRef:

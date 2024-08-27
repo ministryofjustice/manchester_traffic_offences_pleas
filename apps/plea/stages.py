@@ -1023,7 +1023,6 @@ class ReviewStage(FormStage):
 
         return clean_data
 
-
 class CompleteStage(FormStage):
     name = "complete"
     template = "complete.html"
