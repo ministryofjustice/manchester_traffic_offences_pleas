@@ -1,8 +1,7 @@
 from celery import Celery
 
 app = Celery('celeryapp',
-            backend='rpc://',
-            # broker='pyamqp://guest@localhost//')
+            result_backend='django-db',
             broker_url="SQS://",
             broker_transport_options={
                 "region": "eu-west-2", # your AWS SQS region

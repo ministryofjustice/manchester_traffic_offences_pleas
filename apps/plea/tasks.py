@@ -90,7 +90,6 @@ def email_send_court(self, case_id, count_id, email_data):
                                          "text/html")
 
     try:
-        logger.info("inside try block of email_send_court in tasks.py")
         with translation.override("en"):
             plea_email.send(plea_email_to,
                             email_subject,
@@ -116,54 +115,52 @@ def email_send_court(self, case_id, count_id, email_data):
         email_count.get_status_from_case(case)
         email_count.save()
 
-    logger.info("Court email sent")
     return True
 
 
 @shared_task(bind=True, max_retries=10, default_retry_delay=1800, queue='pet-development-celery')
 def email_send_prosecutor(self, case_id, email_data):
-    # smtp_route = "PNN"
+    smtp_route = "PNN"
 
-    # email_data["urn"] = format_for_region(email_data["case"]["urn"])
+    email_data["urn"] = format_for_region(email_data["case"]["urn"])
 
-    # # No error trapping, let these fail hard if the objects can't be found
-    # case = Case.objects.get(pk=case_id)
+    # No error trapping, let these fail hard if the objects can't be found
+    case = Case.objects.get(pk=case_id)
 
-    # court_obj = get_court(email_data["case"]["urn"], case.ou_code)
+    court_obj = get_court(email_data["case"]["urn"], case.ou_code)
 
-    # case.add_action("Prosecutor email started", "")
+    case.add_action("Prosecutor email started", "")
 
-    # email_subject = "POLICE " + get_email_subject(email_data)
-    # email_body = ""
+    email_subject = "POLICE " + get_email_subject(email_data)
+    email_body = ""
 
-    # email_data["your_details"]["18_or_under"] = is_18_or_under(
-    #     email_data["your_details"].get("date_of_birth"))
+    email_data["your_details"]["18_or_under"] = is_18_or_under(
+        email_data["your_details"].get("date_of_birth"))
 
-    # plp_email = TemplateAttachmentEmail(settings.PLP_EMAIL_FROM,
-    #                                     settings.PLEA_EMAIL_ATTACHMENT_NAME,
-    #                                     "emails/attachments/plp_email.html",
-    #                                     email_data,
-    #                                     "text/html")
+    plp_email = TemplateAttachmentEmail(settings.PLP_EMAIL_FROM,
+                                        settings.PLEA_EMAIL_ATTACHMENT_NAME,
+                                        "emails/attachments/plp_email.html",
+                                        email_data,
+                                        "text/html")
 
-    # if court_obj.plp_email:
-    #     try:
-    #         logger.info("inside try block of email_send_prosecutor in tasks.py")
-    #         with translation.override("en"):
-    #             plp_email.send([court_obj.plp_email],
-    #                            email_subject,
-    #                            email_body,
-    #                            route=smtp_route)
-    #     except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
-    #         logger.warning("Error sending email to prosecutor: {0}".format(exc))
-    #         case.add_action("Prosecutor email network error", u"{}: {}".format(type(exc), exc))
-    #         raise self.retry(args=[case_id, email_data], exc=exc)
+    if court_obj.plp_email:
+        try:
+            logger.info("inside try block of email_send_prosecutor in tasks.py")
+            with translation.override("en"):
+                plp_email.send([court_obj.plp_email],
+                               email_subject,
+                               email_body,
+                               route=smtp_route)
+        except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
+            logger.warning("Error sending email to prosecutor: {0}".format(exc))
+            case.add_action("Prosecutor email network error", u"{}: {}".format(type(exc), exc))
+            raise self.retry(args=[case_id, email_data], exc=exc)
 
-    #     case.add_action("Prosecutor email sent", "Sent mail to {0} via {1}".format(court_obj.plp_email, smtp_route))
+        case.add_action("Prosecutor email sent", "Sent mail to {0} via {1}".format(court_obj.plp_email, smtp_route))
 
-    # else:
-    #     case.add_action("Prosecutor email not sent", "No plp email in court data")
+    else:
+        case.add_action("Prosecutor email not sent", "No plp email in court data")
 
-    logger.info("Prosecutor email attempt")
     return True
 
 
@@ -190,16 +187,12 @@ def email_send_user(self, case_id, email_address, subject, html_body, txt_body):
     email.attach_alternative(html_body, "text/html")
 
     try:
-        logger.info("inside try block of email_send_user in tasks.py")
-        # Try changing this line to a logger.warning (or logger.log) to see what's happening
-        # It might also be failing earlier on in the function, as I don't see the warning from the except clause anywhere
         email.send(fail_silently=False)
     except (smtplib.SMTPException, socket.error, socket.gaierror) as exc:
         logger.warning("Error sending user confirmation email: {0}".format(exc))
         case.add_action("User email network error", u"{}: {}".format(type(exc), exc))
         raise self.retry(args=[case_id, email_address, subject, html_body, txt_body], exc=exc)
 
-    logger.info("User email sent")
     case.add_action("User email sent", "")
 
     return True
