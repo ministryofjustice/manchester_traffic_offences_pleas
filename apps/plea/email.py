@@ -83,9 +83,8 @@ def send_plea_email(context_data):
     context_data["email_name"] = " ".join([last_name.upper(), first_name, middle_name]).strip()
 
     # Add Welsh flag if journey was completed in Welsh
-    # if translation.get_language() == "cy":
-    #     context_data["welsh_language"] = True
-    context_data["welsh_language"] = translation.get_language() == "cy"
+    if translation.get_language() == "cy":
+        context_data["welsh_language"] = True
 
     if context_data["notice_type"]["sjp"]:
         case.initiation_type = "J"

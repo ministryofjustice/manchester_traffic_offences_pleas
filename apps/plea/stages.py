@@ -999,7 +999,6 @@ class ReviewStage(FormStage):
             email_data.update({"review": clean_data})
 
             email_result = send_plea_email(email_data)
-            # email_result = send_test_email()
 
             if email_result:
                 self.set_next_step("complete")
@@ -1010,9 +1009,6 @@ class ReviewStage(FormStage):
                 self.set_next_step("review")
 
         return clean_data
-
-def send_test_email():
-    print("Message received")
 
 class CompleteStage(FormStage):
     name = "complete"

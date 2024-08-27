@@ -62,7 +62,7 @@ def get_smtp_gateway(email_address):
     return "PUB"
 
 
-@shared_task(bind=True, max_retries=10, default_retry_delay=900, queue='pet-development-celery')
+@shared_task(bind=True, max_retries=10, default_retry_delay=900)
 def email_send_court(self, case_id, count_id, email_data):
     email_data["urn"] = format_for_region(email_data["case"]["urn"])
 
@@ -118,7 +118,7 @@ def email_send_court(self, case_id, count_id, email_data):
     return True
 
 
-@shared_task(bind=True, max_retries=10, default_retry_delay=1800, queue='pet-development-celery')
+@shared_task(bind=True, max_retries=10, default_retry_delay=1800)
 def email_send_prosecutor(self, case_id, email_data):
     smtp_route = "PNN"
 
@@ -163,7 +163,7 @@ def email_send_prosecutor(self, case_id, email_data):
     return True
 
 
-@shared_task(bind=True, max_retries=10, default_retry_delay=1800, queue='pet-development-celery')
+@shared_task(bind=True, max_retries=10, default_retry_delay=1800)
 def email_send_user(self, case_id, email_address, subject, html_body, txt_body):
     """
     Dispatch an email to the user to confirm that their plea submission
