@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 
 export PATH=$PATH:/makeaplea/
-
 export C_FORCE_ROOT=true
 
-#cd /makeaplea && source /makeaplea/docker/celery_defaults && celery worker -A make_a_plea.celery:app --loglevel INFO
+# Run the migrations here?
+# python manage.py migrate --noinput
 
-while true
-do
-  sleep 60
-done
+cd /makeaplea && source /makeaplea/docker/celery_defaults && celery -A make_a_plea.celery worker --loglevel=info --queues pet-development-celery

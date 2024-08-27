@@ -205,16 +205,6 @@ spec:
                     secretKeyRef:
                       name: map-preprod-env-vars
                       key: ALLOWED_HOSTS
-                # - name: CELERY_ALWAYS_EAGER
-                #   valueFrom:
-                #     secretKeyRef:
-                #       name: map-preprod-env-vars
-                #       key: CELERY_ALWAYS_EAGER
-                # - name: CELERY_BROKER_URL
-                #   valueFrom:
-                #     secretKeyRef:
-                #       name: map-preprod-env-vars
-                #       key: CELERY_BROKER_URL
                 - name: CELERY_QUEUE_POLLING_PREFIX
                   valueFrom:
                     secretKeyRef:
