@@ -83,6 +83,14 @@ def email_send_court(self, case_id, count_id, email_data):
     email_subject = get_email_subject(email_data)
     email_body = "<<<makeaplea-ref: {}/{}>>>".format(case.id, count_id)
 
+   # Test to grab email json data for Court Email
+    logger.warning("writing email json data to file")
+    h = open("sample_court_email_data.txt", "w")
+    h.write(json.dumps(email_data))
+    h.flush()
+    h.close()
+    # End test to grab email json data for Court Email
+
     plea_email = TemplateAttachmentEmail(settings.PLEA_EMAIL_FROM,
                                          settings.PLEA_EMAIL_ATTACHMENT_NAME,
                                          "emails/attachments/plea_email.html",

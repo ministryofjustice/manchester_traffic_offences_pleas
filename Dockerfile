@@ -31,11 +31,19 @@ ARG uid=1000
 ARG gid=51
 
 RUN addgroup --gid $gid mygroup \
- && adduser --disabled-password --gecos "" --no-create-home --uid $uid --gid $gid myuser
+ && adduser --disabled-password --gecos "" --uid $uid --gid $gid myuser
 
 COPY . $APP_HOME
 RUN chown -R myuser:mygroup $APP_HOME
 
+# Create the vagrant directories
+RUN mkdir -p /home/vagrant
+RUN mkdir -p /home/vagrant/.gnupg/
+
+# Don't run as root user
+USER 1000
+
+#Import the encryption public key
 RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
 
 # bypass broken pipeline
@@ -44,12 +52,6 @@ RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
 #ENV APP_BUILD_TAG="a816014d47fe98db08f600476a7f811c3ac70f93"
 #ENV APP_VERSION="0.1.3-1731-ga816014"
 
-# Create the vagrant directories
-RUN mkdir -p /home/vagrant
-RUN mkdir -p /home/vagrant/.gnupg/
-
-# Don't run as root user
-USER 1000
 CMD [ "./run.sh"]
 
 EXPOSE 3000

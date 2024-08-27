@@ -1,6 +1,7 @@
 import datetime as dt
 from dateutil import parser
 import logging
+import json
 
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -105,8 +106,8 @@ def send_plea_email(context_data):
 
     case.save()
 
-    if getattr(settings, "STORE_USER_DATA", False):
-        encrypt_and_store_user_data(case.urn, case.id, context_data)
+    #if getattr(settings, "STORE_USER_DATA", False):
+    encrypt_and_store_user_data(case.urn, case.id, context_data)
 
     if not court_obj.test_mode:
         # don't add test court entries to the anon stat data
@@ -119,6 +120,14 @@ def send_plea_email(context_data):
     else:
         # use a fake email count ID as we're using a test record
         email_count_id = "XX"
+
+    # Test to grab email json data for Court Email
+    logger.warning("writing context data before before_email_send_court_delay")
+    h = open("before_email_send_court_delay.txt", "w")
+    h.write(json.dumps(context_data))
+    h.flush()
+    h.close()
+    # End test to grab email json data for Court Email
     email_send_court.delay(case.id, email_count_id, context_data)
 
     if court_obj.plp_email:

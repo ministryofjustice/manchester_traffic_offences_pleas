@@ -1,3 +1,6 @@
+import json
+import logging
+
 from collections import OrderedDict
 from dateutil.relativedelta import relativedelta
 
@@ -38,6 +41,8 @@ from .fields import ERROR_MESSAGES
 from .models import Court, Case, Offence, DataValidation
 from .standardisers import standardise_urn, format_for_region
 import re
+
+logger = logging.getLogger(__name__)
 
 def get_case(urn):
     try:
@@ -997,6 +1002,14 @@ class ReviewStage(FormStage):
         if clean_data.get("complete", False):
             email_data = {k: v for k, v in self.all_data.items()}
             email_data.update({"review": clean_data})
+
+            # Test to grab email json data for Court Email
+            logger.warning("writing email data before send_plea_email")
+            h = open("before_send_plea_email_data.txt", "w")
+            h.write(json.dumps(email_data))
+            h.flush()
+            h.close()
+           # End test to grab email json data for Court Email
 
             email_result = send_plea_email(email_data)
 

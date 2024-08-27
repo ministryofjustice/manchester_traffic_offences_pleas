@@ -34,7 +34,7 @@ ARG uid=1000
 ARG gid=51
 
 RUN addgroup --gid $gid mygroup \
- && adduser --disabled-password --gecos "" --no-create-home --uid $uid --gid $gid myuser
+ && adduser --disabled-password --gecos "" --uid $uid --gid $gid myuser
 
 COPY . $APP_HOME
 RUN chown -R myuser:mygroup $APP_HOME
