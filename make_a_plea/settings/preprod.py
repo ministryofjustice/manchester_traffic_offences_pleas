@@ -1,9 +1,6 @@
 from .docker import *
 import os
 
-# aws settings
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME_PREPROD')
 ECR_ROLE_TO_ASSUME_PREPROD = os.getenv('ECR_ROLE_TO_ASSUME_PREPROD')
 AWS_DEFAULT_ACL = 'public-read'
