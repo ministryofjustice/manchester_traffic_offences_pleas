@@ -145,7 +145,6 @@ def email_send_prosecutor(self, case_id, email_data):
 
     if court_obj.plp_email:
         try:
-            logger.info("inside try block of email_send_prosecutor in tasks.py")
             with translation.override("en"):
                 plp_email.send([court_obj.plp_email],
                                email_subject,
