@@ -45,6 +45,7 @@ jobs:
 
     steps:
       - checkout
+      - setup_remote_docker
       - kubernetes/install-kubectl
       - when:
           condition:
@@ -67,10 +68,6 @@ jobs:
             - aws-cli/setup:
                 role_arn: $ECR_ROLE_TO_ASSUME_PROD
                 region: $AWS_REGION
-
-      - setup_remote_docker:
-          version: 20.10.11
-          docker_layer_caching: true
 
       - run:
           name: Install linux dependencies
