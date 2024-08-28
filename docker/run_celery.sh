@@ -8,4 +8,9 @@ export C_FORCE_ROOT=true
 # Run the migrations here?
 # python manage.py migrate --noinput
 
-cd /makeaplea && source /makeaplea/docker/celery_defaults && celery -A make_a_plea.celery worker --loglevel=info --queues "pet-${ENV_NAME}-celery"
+# cd /makeaplea && source /makeaplea/docker/celery_defaults && celery -A make_a_plea.celery worker --loglevel=info --queues "pet-${ENV_NAME}-celery"
+
+while :
+do
+	sleep 60
+done
