@@ -240,6 +240,11 @@ spec:
                   secretKeyRef:
                     name: map-preprod-env-vars
                     key: ECR_ROLE_TO_ASSUME_PREPROD
+              - name: GPG_HOME_DIRECTORY
+                valueFrom:
+                  secretKeyRef:
+                    name: map-preprod-env-vars
+                    key: GPG_HOME_DIRECTORY
           - name: map-celery
             image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/pet/makeaplea-preprod-ecr:map-celery-latest
             imagePullPolicy: Always
