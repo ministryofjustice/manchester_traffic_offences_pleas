@@ -36,6 +36,10 @@ RUN addgroup --gid $gid mygroup \
 COPY . $APP_HOME
 RUN chown -R myuser:mygroup $APP_HOME
 
+# Create the vagrant directories
+RUN mkdir -p /home/vagrant
+RUN mkdir -p /home/vagrant/.gnupg/
+
 # Don't run as root user
 USER 1000
 
