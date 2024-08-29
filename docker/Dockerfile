@@ -42,7 +42,7 @@ RUN chown -R myuser:mygroup $APP_HOME
 RUN chmod -R 755 $APP_HOME
 RUN mkdir -p /var/log && chown -R myuser:mygroup /var/log
 
-RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
+RUN gpg --import /makeaplea/docker/legacy-apps-support-team-public-key.gpg
 
 # bypass broken pipeline
 #ENV APP_BUILD_DATE="2020-06-17T09:26:53+0000"

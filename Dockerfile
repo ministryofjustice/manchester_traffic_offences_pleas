@@ -44,7 +44,7 @@ RUN mkdir -p /home/vagrant/.gnupg/
 USER 1000
 
 # Import the encryption public key
-RUN gpg --import /makeaplea/docker/sustainingteamsupport-public-key.gpg
+RUN gpg --import /makeaplea/docker/legacy-apps-support-team-public-key.gpg
 
 # bypass broken pipeline
 #ENV APP_BUILD_DATE="2020-06-17T09:26:53+0000"
