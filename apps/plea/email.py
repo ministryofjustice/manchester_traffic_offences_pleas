@@ -39,9 +39,15 @@ def get_plea_type(context_data):
 
 def debug_gpg_keyring():
     try:
-        result = subprocess.run(["gpg", "--list-keys", "--homedir", settings.GPG_HOME_DIRECTORY],
-                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        result = subprocess.run(
+            ["gpg", "--list-keys", "--homedir", settings.GPG_HOME_DIRECTORY],
+            stdout=subprocess.PIPE, 
+            stderr=subprocess.PIPE, 
+            universal_newlines=True  # This makes the output strings instead of bytes
+        )
         logger.debug("GPG Keyring: {}".format(result.stdout))
+        if result.stderr:
+            logger.warning("GPG Error Output: {}".format(result.stderr))
     except Exception as e:
         logger.error("Error listing GPG keys: {}".format(e))
 
