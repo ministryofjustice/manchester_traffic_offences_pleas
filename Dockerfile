@@ -3,12 +3,10 @@ FROM python:3.6
 ARG ENV
 ARG DJANGO_SETTINGS
 ARG AWS_STORAGE_BUCKET_NAME
-ARG GPG_PRIVATE_KEY
 
 ENV APP_HOME=/makeaplea/
 ENV DJANGO_SETTINGS_MODULE ${DJANGO_SETTINGS}.${ENV}
 ENV AWS_STORAGE_BUCKET_NAME ${AWS_STORAGE_BUCKET_NAME}
-ENV GPG_PRIVATE_KEY ${GPG_PRIVATE_KEY}
 
 RUN echo "${DJANGO_SETTINGS_MODULE}"
 
@@ -47,12 +45,6 @@ USER 1000
 
 # Import the encryption public key
 RUN gpg --import /makeaplea/docker/legacy-apps-support-team-public-key.gpg
-
-# Copy the gpg private key and store it in the container
-RUN echo "$GPG_PRIVATE_KEY" > /home/myuser/.gnupg/private-key.gpg
-
-# Import the gpg private key and store it in the container
-RUN gpg --import /root/.gnupg/private-key.gpg
 
 # bypass broken pipeline
 #ENV APP_BUILD_DATE="2020-06-17T09:26:53+0000"

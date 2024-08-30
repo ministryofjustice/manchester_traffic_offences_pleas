@@ -2,6 +2,7 @@ import datetime as dt
 from dateutil import parser
 import logging
 import json
+import subprocess
 
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -35,6 +36,14 @@ def get_plea_type(context_data):
         return "guilty"
     else:
         return "mixed"
+
+def debug_gpg_keyring():
+    try:
+        result = subprocess.run(["gpg", "--list-keys", "--homedir", settings.GPG_HOME_DIRECTORY],
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        logger.debug("GPG Keyring: {}".format(result.stdout))
+    except Exception as e:
+        logger.error("Error listing GPG keys: {}".format(e))
 
 def send_plea_email(context_data):
     """
@@ -107,6 +116,7 @@ def send_plea_email(context_data):
     case.save()
 
     #if getattr(settings, "STORE_USER_DATA", False):
+    debug_gpg_keyring()
     encrypt_and_store_user_data(case.urn, case.id, context_data)
 
     if not court_obj.test_mode:
