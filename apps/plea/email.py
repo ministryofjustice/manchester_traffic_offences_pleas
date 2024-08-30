@@ -1,6 +1,7 @@
 import datetime as dt
 from dateutil import parser
 import logging
+import gnupg
 import json
 import subprocess
 
@@ -39,17 +40,14 @@ def get_plea_type(context_data):
 
 def debug_gpg_keyring():
     try:
-        result = subprocess.run(
-            ["gpg", "--list-keys", "--homedir", settings.GPG_HOME_DIRECTORY],
-            stdout=subprocess.PIPE, 
-            stderr=subprocess.PIPE, 
-            universal_newlines=True  # This makes the output strings instead of bytes
-        )
-        logger.debug("GPG Keyring: {}".format(result.stdout))
-        if result.stderr:
-            logger.warning("GPG Error Output: {}".format(result.stderr))
+        gpg = gnupg.GPG(gnupghome=settings.GPG_HOME_DIRECTORY)
+        keys = gpg.list_keys()
+
+        logger.debug("GPG keys found: {}".format(len(keys)))
+        for key in keys:
+            logger.debug("Key: {}".format(key['uids']))
     except Exception as e:
-        logger.error("Error listing GPG keys: {}".format(e))
+        logger.error("Error listing GPG keys with gnupg: {}".format(e))
 
 def send_plea_email(context_data):
     """
