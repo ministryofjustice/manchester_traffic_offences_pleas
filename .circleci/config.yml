@@ -245,6 +245,7 @@ jobs:
                     --build-arg AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME_PREPROD} \
                     --build-arg ECR_ROLE_TO_ASSUME_PREPROD=${ECR_ROLE_TO_ASSUME_PREPROD} \
                     --build-arg ECR_REGION_PREPROD=${AWS_REGION} \
+                    --build-arg GPG_PRIVATE_KEY=${GPG_PRIVATE_KEY} \
                     -t map-app .
             - run:
                 name: Build MaP api image
