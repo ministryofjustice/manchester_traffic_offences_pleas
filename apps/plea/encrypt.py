@@ -64,11 +64,13 @@ def encrypt_and_store_user_data(urn, case_id, data, user_data_directory=None):
     logger.warning("encrypt_and_store_user_data: about to encrypt data")
 
     # Check if the recipient's key is available
-    recipient_key = gpg.list_keys(settings.GPG_RECIPIENT)
-    if not recipient_key:
-        logger.error("encrypt_and_store_user_data: invalid recipient: {}".format(settings.GPG_RECIPIENT))
-        raise PersistenceError("GPG encryption failed: invalid recipient")
+    #recipient_key = gpg.list_keys(settings.GPG_RECIPIENT)
+    #if not recipient_key:
+    #    logger.error("encrypt_and_store_user_data: invalid recipient: {}".format(settings.GPG_RECIPIENT))
+    #    raise PersistenceError("GPG encryption failed: invalid recipient")
 
+    logger.warning("encrypt_and_store_user_data: recipient: {}".format(settings.GPG_RECIPIENT))
+    logger.warning("encrypt_and_store_user_data: GPG_HOME_DIR: {}".format(settings.GPG_HOME_DIRECTORY))
     encrypted_data = gpg.encrypt(data, settings.GPG_RECIPIENT, always_trust=True)
     logger.warning("encrypt_and_store_user_data: encrypted_data.status {}".format(encrypted_data.status))
 
