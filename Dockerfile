@@ -36,6 +36,9 @@ RUN addgroup --gid $gid mygroup \
 COPY . $APP_HOME
 RUN chown -R myuser:mygroup $APP_HOME
 
+# user_data needs to be owned by the process owner (myuser)
+RUN chown -R myuser:mygroup /user_data
+
 # Create the vagrant directories
 RUN mkdir -p /home/vagrant
 RUN mkdir -p /home/vagrant/.gnupg/
