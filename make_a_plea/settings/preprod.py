@@ -13,7 +13,7 @@ AWS_LOCATION = 'static'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 ALLOWED_HOSTS = ['preprod-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk', 'preprod-api-make-a-plea.apps.live.cloud-platform.service.justice.gov.uk']
 CELERY_BROKER_URL = "SQS://"
-CELERY_TASK_DEFAULT_QUEUE = "pet-preproduction-celery"
+CELERY_TASK_DEFAULT_QUEUE = "pet-preprod-celery"
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     'region': 'eu-west-2',
     'predefined_queues': {
@@ -22,3 +22,4 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {
         }
     }
 }
+USER_DATA_DIRECTORY = "/user_data"
