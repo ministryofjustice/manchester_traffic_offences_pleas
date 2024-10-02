@@ -1004,11 +1004,11 @@ class ReviewStage(FormStage):
             email_data.update({"review": clean_data})
 
             # Test to grab email json data for Court Email
-            logger.warning("writing email data before send_plea_email")
-            h = open("before_send_plea_email_data.txt", "w")
-            h.write(json.dumps(email_data))
-            h.flush()
-            h.close()
+            # logger.warning("writing email data before send_plea_email")
+            # h = open("before_send_plea_email_data.txt", "w")
+            # h.write(json.dumps(email_data))
+            # h.flush()
+            # h.close()
            # End test to grab email json data for Court Email
 
             email_result = send_plea_email(email_data)
