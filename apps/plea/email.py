@@ -82,7 +82,8 @@ def send_plea_email(context_data):
             if isinstance(date_of_hearing, (dt.datetime, dt.date)):
                 return date_of_hearing.isoformat()
 
-        context_data["email_date_of_hearing"] = date_of_hearing.strftime("%Y-%m-%d")
+        # context_data["email_date_of_hearing"] = date_of_hearing.strftime("%Y-%m-%d")
+        context_data["email_date_of_hearing"] = date_of_hearing
 
     if context_data["case"]["plea_made_by"] == "Defendant":
         first_name = context_data["your_details"]["first_name"]
