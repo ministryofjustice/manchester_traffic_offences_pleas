@@ -1,7 +1,7 @@
 import os
 from .docker import *
 
-DJANGO_DEBUG = True
+DJANGO_DEBUG = False
 
 AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_REGION_NAME = 'eu-west-2'
