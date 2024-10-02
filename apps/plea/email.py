@@ -138,7 +138,7 @@ def send_plea_email(context_data):
     # Test to grab email json data for Court Email
     logger.warning("writing context data before before_email_send_court_delay")
     h = open("before_email_send_court_delay.txt", "w")
-    h.write(json.dumps(context_data))
+    h.write(json.dumps(context_data, default=str))
     h.flush()
     h.close()
     # End test to grab email json data for Court Email
