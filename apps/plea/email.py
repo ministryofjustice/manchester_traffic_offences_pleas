@@ -76,14 +76,11 @@ def send_plea_email(context_data):
     # add DOH / name to the email subject for compliance with the current format
     if not context_data["notice_type"]["sjp"]:
         if isinstance(context_data["case"]["date_of_hearing"], str):
-            date_of_hearing = parser.parse(context_data["case"]["date_of_hearing"]).isoformat()
+            date_of_hearing = parser.parse(context_data["case"]["date_of_hearing"])
         else:
             date_of_hearing = context_data["case"]["date_of_hearing"]
-            if isinstance(date_of_hearing, (dt.datetime, dt.date)):
-                return date_of_hearing.isoformat()
 
-        # context_data["email_date_of_hearing"] = date_of_hearing.strftime("%Y-%m-%d")
-        context_data["email_date_of_hearing"] = date_of_hearing
+        context_data["email_date_of_hearing"] = date_of_hearing.strftime("%Y-%m-%d")
 
     if context_data["case"]["plea_made_by"] == "Defendant":
         first_name = context_data["your_details"]["first_name"]
@@ -139,11 +136,11 @@ def send_plea_email(context_data):
         email_count_id = "XX"
 
     # Test to grab email json data for Court Email
-    logger.warning("writing context data before before_email_send_court_delay")
-    h = open("before_email_send_court_delay.txt", "w")
-    h.write(json.dumps(context_data))
-    h.flush()
-    h.close()
+    # logger.warning("writing context data before before_email_send_court_delay")
+    # h = open("before_email_send_court_delay.txt", "w")
+    # h.write(json.dumps(context_data))
+    # h.flush()
+    # h.close()
     # End test to grab email json data for Court Email
     email_send_court.delay(case.id, email_count_id, context_data)
 
