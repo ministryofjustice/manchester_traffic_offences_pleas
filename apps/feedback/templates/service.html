@@ -3,47 +3,58 @@
 {% load i18n %}
 {% load form_widgets %}
 
+{% block content %}
+    {% with homepage_url=homepage_url|default:'/' %}
+    {% with global_header_text=global_header_text|default:'Default Header Text' %}
+    {% with enable_a11y_testing=enable_a11y_testing|default:False %}
+    {% with formset_has_errors=formset_has_errors|default:False %}
 
 
-{% block page_title %}{% blocktrans %}Your feedback{% endblocktrans %} - {{ block.super }}{% endblock %}
+    {% block page_title %}{% blocktrans %}Your feedback{% endblocktrans %} - {{ block.super }}{% endblock %}
 
-{% block stage_header %}
-    {% url "court_finder" as court_finder_url %}
+    {% block stage_header %}
+        {% url "court_finder" as court_finder_url %}
 
-    <h1>{% blocktrans %}Your feedback{% endblocktrans %}</h1>
+        <h1>{% blocktrans %}Your feedback{% endblocktrans %}</h1>
 
-    <p>{% blocktrans %}This is your opportunity to tell us your views about using this online plea service.{% endblocktrans %}<br/>
-        {% blocktrans %}If you have questions about your case, you'll need to contact your court using our <a href="{{ court_finder_url }}">court finder service</a>.{% endblocktrans %}</p>
-{% endblock stage_header %}
+        <p>{% blocktrans %}This is your opportunity to tell us your views about using this online plea service.{% endblocktrans %}<br/>
+            {% blocktrans %}If you have questions about your case, you'll need to contact your court using our <a href="{{ court_finder_url }}">court finder service</a>.{% endblocktrans %}</p>
+    {% endblock stage_header %}
 
 
-{% block form_attributes %}class="feedback-form"{% endblock form_attributes %}
+    {% block form_attributes %}class="feedback-form"{% endblock form_attributes %}
 
-{% block stage_form %}
+    {% block stage_form %}
 
-    {% split_form form %}
+        {% split_form form %}
 
-    {% if service.split_form == "split_form_last_step" %}
-        {% hidden_field form.used_call_centre %}
-    {% else %}
-        {% radio_field form.used_call_centre inline=True %}
-    {% endif %}
+        {% if service.split_form == "split_form_last_step" %}
+            {% hidden_field form.used_call_centre %}
+        {% else %}
+            {% radio_field form.used_call_centre inline=True %}
+        {% endif %}
 
-    <div {% if service.split_form != "split_form_last_step" or service.used_call_centre == False %}class="nojs-hidden"{% endif %} data-conditional="used_call_centre" data-conditional-value="^(True)$" data-template-trigger="used_call_centre">
-        {% radio_field form.call_centre_satisfaction hide_optional=True %}
+        <div {% if service.split_form != "split_form_last_step" or service.used_call_centre == False %}class="nojs-hidden"{% endif %} data-conditional="used_call_centre" data-conditional-value="^(True)$" data-template-trigger="used_call_centre">
+            {% radio_field form.call_centre_satisfaction hide_optional=True %}
+        </div>
+
+        <div {% if service.split_form != "split_form_last_step" %}class="nojs-hidden"{% endif %} data-conditional="used_call_centre" data-conditional-value="^(True|False)$" data-template-trigger="used_call_centre">
+            {% radio_field form.service_satisfaction hide_optional=True %}
+        </div>
+    {% endblock stage_form %}
+
+    {% block stage_submit %}
+    <div class="form-submit">
+        <button class="button" type="submit">{% blocktrans %}Continue{% endblocktrans %}</button>
+
+        {% if service.split_form == "split_form_last_step" %}
+        <p><a href="{{ request.path }}?reset">{% blocktrans %}Back{% endblocktrans %}</a></p>
+        {% endif %}
     </div>
+    {% endblock stage_submit %}
 
-    <div {% if service.split_form != "split_form_last_step" %}class="nojs-hidden"{% endif %} data-conditional="used_call_centre" data-conditional-value="^(True|False)$" data-template-trigger="used_call_centre">
-        {% radio_field form.service_satisfaction hide_optional=True %}
-    </div>
-{% endblock stage_form %}
-
-{% block stage_submit %}
-<div class="form-submit">
-    <button class="button" type="submit">{% blocktrans %}Continue{% endblocktrans %}</button>
-
-    {% if service.split_form == "split_form_last_step" %}
-    <p><a href="{{ request.path }}?reset">{% blocktrans %}Back{% endblocktrans %}</a></p>
-    {% endif %}
-</div>
-{% endblock stage_submit %}
+    {% endwith %}
+    {% endwith %}
+    {% endwith %}
+    {% endwith %}
+{% endblock %}
