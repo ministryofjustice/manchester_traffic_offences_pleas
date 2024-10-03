@@ -85,17 +85,19 @@
     </section>
     {% endif %}
 
-    {% if welsh_language %}
-    <section id="welsh_language">
-        <header>
-            <h2>Plea language</h2>
-        </header>
+    {% with welsh_language=welsh_language|default:False %}
+        {% if welsh_language %}
+        <section id="welsh_language">
+            <header>
+                <h2>Plea language</h2>
+            </header>
 
-        <dl>
-            <dt>Welsh language</dt>
-            <dd>Yes</dd>
-        </dl>
-    </section>
-    {% endif %}
+            <dl>
+                <dt>Welsh language</dt>
+                <dd>Yes</dd>
+            </dl>
+        </section>
+        {% endif %}
+    {% endwith %}
 
 {% endblock email_content %}

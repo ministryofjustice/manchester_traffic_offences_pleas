@@ -99,6 +99,12 @@ def send_plea_email(context_data):
     # Add Welsh flag if journey was completed in Welsh
     if translation.get_language() == "cy":
         context_data["welsh_language"] = True
+        logger.debug("Welsh language set to True in context_data")
+    else:
+        context_data["welsh_language"] = False
+        logger.debug("Welsh language set to False in context_data")
+
+    logger.debug(f"Context data before rendering template: {context_data}")
 
     if context_data["notice_type"]["sjp"]:
         case.initiation_type = "J"
