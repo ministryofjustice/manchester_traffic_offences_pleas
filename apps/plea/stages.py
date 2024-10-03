@@ -1011,6 +1011,8 @@ class ReviewStage(FormStage):
             # h.close()
            # End test to grab email json data for Court Email
 
+            logger.debug(f"email_data in stages.py before send_plea_email is called: {email_data}")
+
             email_result = send_plea_email(email_data)
 
             if email_result:
