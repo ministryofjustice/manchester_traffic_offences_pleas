@@ -57,6 +57,8 @@ def send_plea_email(context_data):
     context_data: dict populated by form fields
     """
 
+    logger.debug("in send_plea_email")
+
     case = Case.objects.filter(
         urn__iexact=context_data["case"]["urn"].upper(), sent=False,
         imported=True).first()
@@ -72,6 +74,8 @@ def send_plea_email(context_data):
     email_address = email_address or context_data.get("company_details", {}).get("email", False)
 
     context_data["email"] = email_address
+
+    logger.debug(f"email_address: {email_address}")
 
     # add DOH / name to the email subject for compliance with the current format
     if not context_data["notice_type"]["sjp"]:
