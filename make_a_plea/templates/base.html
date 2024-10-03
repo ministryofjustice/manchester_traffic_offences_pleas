@@ -33,6 +33,8 @@
 {% endblock proposition_header %}
 
 {% block content %}
+    {% with disable_language_switch=disable_language_switch|default:False %}
+    {% with enable_a11y_testing=enable_a11y_testing|default:False %}
     <div class="phase-banner">
         {% if not disable_language_switch %}
         <nav id="language-switcher" class="language-switcher">
@@ -79,7 +81,8 @@
 
         </section>
     </div>
-
+    {% endwith %}
+    {% endwith %}
 {% endblock %}
 
 {% block footer_support_links %}
