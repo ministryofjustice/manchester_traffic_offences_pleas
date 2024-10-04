@@ -28,7 +28,6 @@ RUN pip install -r requirements.txt
 RUN mkdir /user_data
 RUN mkdir /user_data/.gnupg
 RUN mkdir -p make_a_plea/assets
-RUN mkdir /srv/pleaonline/user_data
 
 VOLUME ["/user_data"]
 
