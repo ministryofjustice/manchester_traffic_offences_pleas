@@ -148,6 +148,7 @@ def send_plea_email(context_data):
         email_send_prosecutor.delay(case.id, context_data)
 
     if email_address:
+        logger.info("inside if statement")
         data = {
             "urn": format_for_region(context_data["case"]["urn"]),
             "plea_made_by": context_data["case"]["plea_made_by"],
@@ -170,6 +171,8 @@ def send_plea_email(context_data):
         txt_body = wrap(render_to_string(email_template + ".txt", data), 72)
 
         subject = _("Online plea submission confirmation")
+
+        logger.info("before email_send_user")
 
         email_send_user.delay(case.id, email_address, subject, html_body, txt_body)
 
