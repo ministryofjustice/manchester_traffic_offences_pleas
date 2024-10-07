@@ -71,7 +71,9 @@ def encrypt_and_store_user_data(urn, case_id, data, user_data_directory=None):
 
     logger.warning("encrypt_and_store_user_data: recipient: {}".format(settings.GPG_RECIPIENT))
     logger.warning("encrypt_and_store_user_data: GPG_HOME_DIR: {}".format(settings.GPG_HOME_DIRECTORY))
-    encrypted_data = gpg.encrypt(data, settings.GPG_RECIPIENT, always_trust=True)
+    data_str = json.dumps(data)
+    encrypted_data = gpg.encrypt(data_str.encode('utf-8'), settings.GPG_RECIPIENT, always_trust=True)
+    # encrypted_data = gpg.encrypt(data, settings.GPG_RECIPIENT, always_trust=True)
     logger.warning("encrypt_and_store_user_data: encrypted_data.status {}".format(encrypted_data.status))
 
     if encrypted_data.status != "encryption ok":
