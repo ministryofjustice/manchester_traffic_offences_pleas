@@ -55,11 +55,11 @@ def encrypt_and_store_user_data(urn, case_id, data, user_data_directory=None):
     file_path = os.path.join(settings.USER_DATA_DIRECTORY, file_name)
     logger.warning("encrypt_and_store_user_data: file_path: {}".format(file_path))
 
-    data = json.dumps(data, cls=DjangoJSONEncoder)
-    h = open("before_gpg.encrypt.txt", "w")
-    h.write(data)
-    h.flush()
-    h.close()
+    # data = json.dumps(data, cls=DjangoJSONEncoder)
+    # h = open("before_gpg.encrypt.txt", "w")
+    # h.write(data)
+    # h.flush()
+    # h.close()
 
     logger.warning("encrypt_and_store_user_data: about to encrypt data")
 
