@@ -136,11 +136,11 @@ def send_plea_email(context_data):
         email_count_id = "XX"
 
     # Test to grab email json data for Court Email
-    logger.warning("writing context data before before_email_send_court_delay")
-    h = open("before_email_send_court_delay.txt", "w")
-    h.write(json.dumps(context_data))
-    h.flush()
-    h.close()
+    # logger.warning("writing context data before before_email_send_court_delay")
+    # h = open("before_email_send_court_delay.txt", "w")
+    # h.write(json.dumps(context_data))
+    # h.flush()
+    # h.close()
     # End test to grab email json data for Court Email
     email_send_court.delay(case.id, email_count_id, context_data)
 
