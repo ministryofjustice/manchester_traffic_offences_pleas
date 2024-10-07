@@ -202,8 +202,8 @@ class CaseCreationTests(TestCase):
 
         files = glob(path)
 
-        # Filter out .gnupg directory and check the length
-        non_gnupg_files = [f for f in files if not os.path.basename(os.path.dirname(f)) == '.gnupg']
+        # Filter out .gnupg directory and check the remaining files
+        non_gnupg_files = [file for file in files if os.path.basename(file) != '.gnupg']
         if len(non_gnupg_files) > 0:
             self.fail('User data directory is not empty')
 
