@@ -14,7 +14,7 @@ jobs:
         type: string
 
     docker:
-      - image: "python:3.6.5"
+      - image: "debian:buster"
         environment:
           DJANGO_SETTINGS_MODULE: make_a_plea.settings.testing
           POSTGRES_DB: manchester_traffic_offences
@@ -48,8 +48,12 @@ jobs:
       - setup_remote_docker
       - kubernetes/install-kubectl
       - run:
-          name: Install unzip
-          command: apt-get update && apt-get install -y unzip
+          name: Install Python 3.6.5 and unzip
+          command: |
+            apt-get update
+            apt-get install -y python3.6 python3.6-distutils unzip
+            curl -O https://bootstrap.pypa.io/get-pip.py
+            python3.6 get-pip.py
       - when:
           condition:
             equal: [ DEV, << parameters.env_name >> ]
