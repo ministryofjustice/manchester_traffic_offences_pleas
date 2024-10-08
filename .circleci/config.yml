@@ -46,7 +46,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - kubernetes/install-kubectl
       - run:
           name: Install Python 3.6.5 and unzip
           command: |
@@ -75,6 +74,7 @@ jobs:
             - aws-cli/setup:
                 role_arn: $ECR_ROLE_TO_ASSUME_PROD
                 region: $AWS_REGION
+      - kubernetes/install-kubectl
 
       - run:
           name: Install linux dependencies
