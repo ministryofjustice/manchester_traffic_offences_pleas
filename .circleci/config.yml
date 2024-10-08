@@ -14,7 +14,7 @@ jobs:
         type: string
 
     docker:
-      - image: "circleci/python:3.6.5"
+      - image: "python:3.6.5"
         environment:
           DJANGO_SETTINGS_MODULE: make_a_plea.settings.testing
           POSTGRES_DB: manchester_traffic_offences
