@@ -105,6 +105,27 @@ jobs:
             pip list
 
       - run:
+          name: Test Celery import
+          command: |
+            . venv/bin/activate
+            python -c "import celery; print(celery.__file__); from celery import Celery; print(Celery)"
+
+      - run:
+          name: Check Celery __init__.py
+          command: |
+            . venv/bin/activate
+            cat $(python -c "import celery; print(celery.__file__)")
+
+      - run:
+          name: Reinstall Celery
+          command: |
+            . venv/bin/activate
+            pip uninstall -y celery
+            pip install celery==5.1.0
+            pip install "celery[sqs]"==5.1.0
+            python -c "from celery import Celery; print(Celery)"
+
+      - run:
           name: Run migrate, compilemessages
           command: |
             . venv/bin/activate
