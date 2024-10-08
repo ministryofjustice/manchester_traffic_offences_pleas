@@ -101,40 +101,6 @@ jobs:
             pip install setuptools==32
             pip install -r requirements/testing.txt
             pip install behave==1.2.6 behaving==1.5.6 splinter==0.14.0 selenium==4.0.0a7
-            echo "Installed packages:"
-            pip list
-
-      - run:
-          name: Check Celery __init__.py
-          command: |
-            . venv/bin/activate
-            cat $(python -c "import celery; print(celery.__file__)")
-
-      - run:
-          name: Check Celery version
-          command: |
-            . venv/bin/activate
-            python -c "import celery; print(celery.__version__)"
-
-      - run:
-          name: Test other Celery imports
-          command: |
-            . venv/bin/activate
-            python -c "from celery import shared_task; print(shared_task)"
-            python -c "from celery import Task; print(Task)"
-
-      - run:
-          name: Check for conflicting Celery installations
-          command: |
-            . venv/bin/activate
-            find /home/circleci/project/venv -name celery
-
-      - run:
-          name: Check Python path
-          command: |
-            . venv/bin/activate
-            python -c "import sys; print('\n'.join(sys.path))"
-
 
       - run:
           name: Run migrate, compilemessages
