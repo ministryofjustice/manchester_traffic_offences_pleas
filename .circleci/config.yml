@@ -100,7 +100,8 @@ jobs:
             pip install --upgrade pip==24.0
             pip install setuptools==32
             pip install -r requirements/testing.txt
-            pip install behave==1.2.6 behaving==2.0.0 splinter==0.17.0 selenium==4.1.0
+            pip install behave==1.2.6 behaving==2.0.0 splinter==0.17.0
+            pip install --upgrade selenium
 
       - run:
           name: Run migrate, compilemessages
