@@ -70,7 +70,7 @@ def before_all(context):
             chrome_options.set_headless()
             context.browser_args = {'options': chrome_options}
 
-    chrome_driver_version = "129.0.0"
+    chrome_driver_version = "100.0.4896.20"
     context.browser = webdriver.Chrome(ChromeDriverManager(version=chrome_driver_version).install(), options=chrome_options)
 
     context.base_url = config['base_url']
