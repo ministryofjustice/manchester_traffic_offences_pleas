@@ -96,6 +96,15 @@ jobs:
             rm ~/chromedriver-linux64.zip
 
       - run:
+          name: Install system dependencies including psycopg2 and pycurl
+          command: |
+            apt-get update && apt-get install -y \
+            libpq-dev \
+            libcurl4-openssl-dev \
+            python3-dev \
+            build-essential
+
+      - run:
           name: Install python dependencies
           command: |
             python -m venv venv
