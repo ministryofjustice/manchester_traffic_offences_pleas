@@ -14,7 +14,7 @@ jobs:
         type: string
 
     docker:
-      - image: "continuumio/miniconda3"
+      - image: "cimg/python:3.12"
         environment:
           DJANGO_SETTINGS_MODULE: make_a_plea.settings.testing
           POSTGRES_DB: manchester_traffic_offences
