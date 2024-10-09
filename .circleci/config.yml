@@ -76,7 +76,7 @@ jobs:
           name: Install linux dependencies
           command: |
             apt-get -qq update
-            apt-get install -y libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libxkbcommon0 libxcomposite1 libxrandr2 libasound2
+            apt-get install -y libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libxkbcommon0 libxcomposite1 libxrandr2 libasound2 python-dev python3-dev
             ./apt/production.sh
             ./apt/testing.sh
             LATEST_CHROME_RELEASE=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json | jq '.channels.Stable')
@@ -102,7 +102,7 @@ jobs:
             . venv/bin/activate
             pip install --upgrade wheel
             pip install --upgrade setuptools
-            pip install psycopg2-binary
+            pip install psycopg2
             pip install pycurl
             pip install -r requirements/testing.txt
             pip install behave==1.2.6 splinter==0.14.0 selenium==4.0.0a7
