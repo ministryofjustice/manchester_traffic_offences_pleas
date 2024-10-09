@@ -4,6 +4,7 @@ from behaving.mail.steps import *
 from behaving.personas.steps import *
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service as ChromeService
 import os
 
 PERSONAS = {
@@ -49,7 +50,6 @@ config = {
 }
 
 def before_all(context):
-    webdriver.Chrome(ChromeDriverManager().install())
     mail_dir = '/tmp/mailmock'
     context.mail_path = '/tmp/mailmock'
     if not os.path.exists(mail_dir):
@@ -69,7 +69,12 @@ def before_all(context):
         if config['headless']:
             chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--disable-gpu")
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("--window-size=1920,1080")
             context.browser_args = {'options': chrome_options}
+
+    context.browser = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
     context.base_url = config['base_url']
 

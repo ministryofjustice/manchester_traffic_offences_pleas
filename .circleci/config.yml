@@ -105,7 +105,7 @@ jobs:
             pip install webdriver-manager
             pip install pip==21.3.1
             pip install -r requirements/testing.txt
-            pip install behave==1.2.6 splinter==0.14.0 selenium==3.141.0
+            pip install behave==1.2.6 behaving==3.1.4 splinter==0.14.0 selenium==3.141.0
 
       - run:
           name: Run migrate, compilemessages
@@ -130,7 +130,7 @@ jobs:
             mailmock -p 1025 -o /tmp/mailmock -n &
             celery --app=make_a_plea.celery:app worker -D
             sleep 2
-            behave --format progress3 -Dheadless --browser=chrome --headless --disable-gpu --no-sandbox
+            behave --format progress3 -Dheadless
 
       - when:
           condition:
