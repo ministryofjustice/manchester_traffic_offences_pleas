@@ -100,6 +100,7 @@ jobs:
           command: |
             python -m venv venv
             . venv/bin/activate
+            python --version
             pip install --upgrade wheel
             pip install --upgrade setuptools
             pip install -r requirements/testing.txt
