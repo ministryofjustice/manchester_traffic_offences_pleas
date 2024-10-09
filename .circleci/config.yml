@@ -94,10 +94,6 @@ jobs:
             sudo ln -s ~/chromedriver/chromedriver /usr/local/bin/chromedriver
             sudo chmod +x /usr/local/bin/chromedriver
             sudo rm ~/chromedriver-linux64.zip
-            # Install Chrome version 114
-            CHROME_VERSION="114.0.5735.90"
-            wget -N "https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}-1_amd64.deb" -P ~/
-            sudo dpkg -i ~/google-chrome-stable_${CHROME_VERSION}-1_amd64.deb || sudo apt-get -y -f install
 
       - run:
           name: Install python dependencies
