@@ -67,15 +67,11 @@ def before_all(context):
         context.single_browser = True
         if config['headless']:
             chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_argument("--headless")
-            chrome_options.add_argument("--disable-gpu")
-            chrome_options.add_argument("--no-sandbox")
-            chrome_options.add_argument("--disable-dev-shm-usage")
-            chrome_options.add_argument("--disable-extensions")
-            chrome_options.add_argument("--remote-debugging-port=9222")
+            chrome_options.set_headless()
             context.browser_args = {'options': chrome_options}
 
     context.browser = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+    context.browser.get('https://google.com')
 
     context.base_url = config['base_url']
 
