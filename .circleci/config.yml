@@ -104,7 +104,7 @@ jobs:
             pip install --upgrade setuptools wheel
             pip install pip==21.3.1
             pip install -r requirements/testing.txt
-            pip install behave==1.2.6 splinter==0.14.0 selenium==4.0.0a7
+            pip install behave==1.2.6 splinter==0.14.0 selenium==3.141.0
 
       - run:
           name: Run migrate, compilemessages
