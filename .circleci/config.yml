@@ -105,7 +105,7 @@ jobs:
             pip install webdriver-manager
             pip install pip==21.3.1
             pip install -r requirements/testing.txt
-            pip install behave==1.2.6 behaving==3.1.4 splinter==0.14.0 selenium==3.141.0
+            pip install behave==1.2.6 behaving==2.0.0 splinter==0.14.0 selenium==3.141.0
 
       - run:
           name: Run migrate, compilemessages
