@@ -102,7 +102,6 @@ jobs:
             . venv/bin/activate
             python --version
             pip install --upgrade setuptools wheel
-            conda install -c conda-forge pycurl
             pip install -r requirements/testing.txt
             pip install behave==1.2.6 splinter==0.14.0 selenium==4.0.0a7
 
