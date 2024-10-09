@@ -100,7 +100,8 @@ jobs:
           command: |
             python -m venv venv
             . venv/bin/activate
-            pip install psycopg2 pycurl
+            pip install psycopg2
+            pip install pycurl
             pip install setuptools==32
             pip install -r requirements/testing.txt
             pip install behave==1.2.6 splinter==0.14.0 selenium==4.0.0a7
