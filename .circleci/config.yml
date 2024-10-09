@@ -96,11 +96,6 @@ jobs:
             sudo rm ~/chromedriver-linux64.zip
 
       - run:
-          name: Install system dependencies for pycurl
-          command: |
-            sudo apt-get install -y libcurl4-openssl-dev
-
-      - run:
           name: Install python dependencies
           command: |
             python -m venv venv
