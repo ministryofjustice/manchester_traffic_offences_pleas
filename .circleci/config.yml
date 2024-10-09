@@ -102,7 +102,7 @@ jobs:
             . venv/bin/activate
             python --version
             pip install --upgrade setuptools wheel
-            pip install pip==24.0
+            pip install pip==21.3.1
             pip install -r requirements/testing.txt
             pip install behave==1.2.6 splinter==0.14.0 selenium==4.0.0a7
 
