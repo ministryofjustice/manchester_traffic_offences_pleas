@@ -130,7 +130,7 @@ jobs:
             mailmock -p 1025 -o /tmp/mailmock -n &
             celery --app=make_a_plea.celery:app worker -D
             sleep 2
-            behave --format progress3 -Dheadless
+            behave --format progress3 -Dheadless --browser=chrome --headless --disable-gpu --no-sandbox
 
       - when:
           condition:
