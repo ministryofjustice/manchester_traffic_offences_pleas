@@ -94,6 +94,11 @@ jobs:
             sudo ln -s ~/chromedriver/chromedriver /usr/local/bin/chromedriver
             sudo chmod +x /usr/local/bin/chromedriver
             sudo rm ~/chromedriver-linux64.zip
+            # Install Google Chrome
+            wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add - \
+            && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list \
+            && sudo apt-get update \
+            && sudo apt-get install -y google-chrome-stable
 
       - run:
           name: Install python dependencies
