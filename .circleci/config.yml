@@ -48,7 +48,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Install unzip, curl and jq and development packages
-          command: apt-get update && apt-get install -y unzip curl jq libpq-dev libcurl4-openssl-dev libssl-dev build-essential
+          command: apt-get update && apt-get install -y unzip curl jq libpq-dev libcurl4-openssl-dev libssl-dev build-essential python3-dev
       - when:
           condition:
             equal: [ DEV, << parameters.env_name >> ]
@@ -76,7 +76,7 @@ jobs:
           name: Install linux dependencies
           command: |
             apt-get -qq update
-            apt-get install -y libnss3 libnss3-dev libatk1.0-0 libatk-bridge2.0-0 libcups2 libxkbcommon0 libxcomposite1 libxrandr2 libasound2 python3-dev
+            apt-get install -y libnss3 libnss3-dev libatk1.0-0 libatk-bridge2.0-0 libcups2 libxkbcommon0 libxcomposite1 libxrandr2 libasound2
             ./apt/production.sh
             ./apt/testing.sh
             LATEST_CHROME_RELEASE=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json | jq '.channels.Stable')
@@ -102,7 +102,6 @@ jobs:
             . venv/bin/activate
             python --version
             pip install --upgrade setuptools wheel
-            pip install pycurl --only-binary :all:
             pip install -r requirements/testing.txt
             pip install behave==1.2.6 splinter==0.14.0 selenium==4.0.0a7
 
