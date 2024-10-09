@@ -75,25 +75,39 @@ jobs:
       - run:
           name: Install linux dependencies
           command: |
+      - run:
+          name: Install linux dependencies
+          command: |
             sudo apt-get -qq update
-            sudo apt-get install -y libnss3 libnss3-dev libatk1.0-0 libatk-bridge2.0-0 libcups2 libxkbcommon0 libxcomposite1 libxrandr2 libasound2
-            sudo ./apt/production.sh
-            sudo ./apt/testing.sh
-            LATEST_CHROME_RELEASE=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json | jq '.channels.Stable')
-            LATEST_CHROME_URL=$(echo "$LATEST_CHROME_RELEASE" | jq -r '.downloads.chrome[] | select(.platform == "linux64") | .url')
-            wget -N "$LATEST_CHROME_URL" -P ~/
-            unzip ~/chrome-linux64.zip -d ~/
-            sudo mv ~/chrome-linux64 ~/chrome
-            sudo ln -s ~/chrome/chrome /usr/bin/google-chrome
-            sudo chmod +x /usr/bin/google-chrome
-            sudo rm ~/chrome-linux64.zip
-            LATEST_CHROMEDRIVER_URL=$(echo "$LATEST_CHROME_RELEASE" | jq -r '.downloads.chromedriver[] | select(.platform == "linux64") | .url')
-            wget -N "$LATEST_CHROMEDRIVER_URL" -P ~/
-            unzip ~/chromedriver-linux64.zip -d ~/
-            sudo mv ~/chromedriver-linux64 ~/chromedriver
-            sudo ln -s ~/chromedriver/chromedriver /usr/local/bin/chromedriver
-            sudo chmod +x /usr/local/bin/chromedriver
-            sudo rm ~/chromedriver-linux64.zip
+            sudo apt-get install -y \
+              libnss3 \
+              libnss3-dev \
+              libatk1.0-0 \
+              libatk-bridge2.0-0 \
+              libcups2 \
+              libxkbcommon0 \
+              libxcomposite1 \
+              libxrandr2 \
+              libasound2 \
+              fonts-liberation \
+              libappindicator3-1 \
+              libxss1 \
+              libgconf-2-4 \
+              wget \
+              unzip \
+              # Install Google Chrome
+              && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add - \
+              && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list \
+              && sudo apt-get update \
+              && sudo apt-get install -y google-chrome-stable \
+              # Install ChromeDriver
+              && CHROME_VERSION=$(google-chrome --version | sed 's/.* //') \
+              && CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d '.' -f 1) \
+              && wget -N https://chromedriver.storage.googleapis.com/${CHROME_MAJOR_VERSION}.0/chromedriver_linux64.zip -P ~/ \
+              && unzip ~/chromedriver_linux64.zip -d ~/ \
+              && sudo mv ~/chromedriver /usr/local/bin/ \
+              && sudo chmod +x /usr/local/bin/chromedriver \
+              && rm ~/chromedriver_linux64.zip
 
       - run:
           name: Install python dependencies
