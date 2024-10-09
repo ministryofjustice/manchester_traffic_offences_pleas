@@ -3,6 +3,7 @@ from behaving.web.steps import *
 from behaving.mail.steps import *
 from behaving.personas.steps import *
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 import os
 
 PERSONAS = {
@@ -48,6 +49,7 @@ config = {
 }
 
 def before_all(context):
+    webdriver.Chrome(ChromeDriverManager().install())
     mail_dir = '/tmp/mailmock'
     context.mail_path = '/tmp/mailmock'
     if not os.path.exists(mail_dir):
