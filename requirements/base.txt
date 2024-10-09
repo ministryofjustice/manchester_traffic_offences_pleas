@@ -9,7 +9,7 @@ Django==1.11.29
 psycopg2-binary
 python-dateutil==2.6.0
 python-gnupg==0.4.4
-pycurl==7.45.3
+pycurl==7.43.0.5
 git+https://github.com/ministryofjustice/django-moj-irat@0.4
 raven==6.0.0
 kombu==5.1.0

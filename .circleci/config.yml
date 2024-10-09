@@ -14,7 +14,7 @@ jobs:
         type: string
 
     docker:
-      - image: "cimg/python:3.12"
+      - image: "cimg/python:3.6"
         environment:
           DJANGO_SETTINGS_MODULE: make_a_plea.settings.testing
           POSTGRES_DB: manchester_traffic_offences
