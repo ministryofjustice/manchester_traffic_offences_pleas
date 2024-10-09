@@ -101,9 +101,8 @@ jobs:
             python -m venv venv
             . venv/bin/activate
             python --version
-            pip install --upgrade wheel
-            pip install --upgrade setuptools
-            pip install --no-cache-dir pycurl
+            pip install --upgrade pip setuptools wheel
+            pip install pycurl --only-binary :all:
             pip install -r requirements/testing.txt
             pip install behave==1.2.6 splinter==0.14.0 selenium==4.0.0a7
 
