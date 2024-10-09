@@ -4,7 +4,6 @@ from behaving.mail.steps import *
 from behaving.personas.steps import *
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service as ChromeService
 import os
 
 PERSONAS = {
@@ -74,7 +73,7 @@ def before_all(context):
             chrome_options.add_argument("--window-size=1920,1080")
             context.browser_args = {'options': chrome_options}
 
-    context.browser = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
+    context.browser = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
 
     context.base_url = config['base_url']
 
