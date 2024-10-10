@@ -424,7 +424,7 @@ class CaseAction(models.Model):
 
 
 class Offence(models.Model):
-    case = models.ForeignKey(Case, related_name="offences")
+    case = models.ForeignKey(Case, related_name="offences", on_delete=models.CASCADE)
 
     offence_code = models.CharField(max_length=10, null=True, blank=True)
     offence_short_title = models.CharField(max_length=120)
