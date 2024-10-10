@@ -1059,7 +1059,7 @@ class CaseTrackerManager(models.Manager):
 
 
 class CaseTracker(models.Model):
-    case = models.ForeignKey(Case, null=True)
+    case = models.ForeignKey(Case, null=True, on_delete=models.CASCADE)
     last_update = models.DateTimeField(null=True)
     authentication = models.BooleanField(default=False)
     details = models.BooleanField(default=False)
