@@ -11,7 +11,7 @@ python-dateutil==2.6.0
 python-gnupg==0.4.4
 pycurl==7.45.3
 git+https://github.com/ministryofjustice/django-moj-irat@0.4
-raven==6.0.0
+raven==6.10.0
 kombu==5.4.2
 kombu[sqs]==5.4.2
 Celery==5.2.0
