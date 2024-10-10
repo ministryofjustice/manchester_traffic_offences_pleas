@@ -2,7 +2,7 @@ import datetime as dt
 import json
 
 from django.core import mail
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.test import TestCase, RequestFactory
 from django.test.utils import override_settings
 

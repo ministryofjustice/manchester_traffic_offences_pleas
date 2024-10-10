@@ -3,7 +3,7 @@ from __future__ import division
 from datetime import date, timedelta
 from functools import update_wrapper
 
-from django.core import urlresolvers
+from django.urls import reverse
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render
@@ -459,7 +459,7 @@ class AuditEventAdmin(admin.ModelAdmin):
     def case_link(self, auditevent):
         """Display cases as links where possible"""
         if hasattr(auditevent, "case") and auditevent.case is not None:
-            link = urlresolvers.reverse(
+            link = reverse(
                 "admin:plea_case_change",
                 args=[auditevent.case.id],
             )
