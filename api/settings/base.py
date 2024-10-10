@@ -12,7 +12,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'rest_framework',
-    'reports'
+    'apps.reports'
 ]
 
 MIDDLEWARE_CLASSES = (
