@@ -45,7 +45,7 @@ WITHDRAWN_CODES = {
 class Result(models.Model):
     created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
-    case = models.ForeignKey("plea.Case", related_name="results", null=True, blank=True)
+    case = models.ForeignKey("plea.Case", related_name="results", null=True, blank=True, on_delete=models.CASCADE)
     urn = models.CharField(max_length=30, db_index=True)
 
     case_number = models.CharField(max_length=12, null=True, blank=True,
@@ -151,14 +151,14 @@ class Result(models.Model):
 
 
 class ResultOffence(models.Model):
-    result = models.ForeignKey(Result, related_name="result_offences")
+    result = models.ForeignKey(Result, related_name="result_offences", on_delete=models.CASCADE)
 
     offence_code = models.CharField(max_length=10, null=True, blank=True)
     offence_seq_number = models.CharField(max_length=10, null=True, blank=True)
 
 
 class ResultOffenceData(models.Model):
-    result_offence = models.ForeignKey(ResultOffence, related_name="offence_data")
+    result_offence = models.ForeignKey(ResultOffence, related_name="offence_data", on_delete=models.CASCADE)
 
     result_code = models.CharField(max_length=10, null=True, blank=True)
     result_short_title = models.CharField(max_length=120)
