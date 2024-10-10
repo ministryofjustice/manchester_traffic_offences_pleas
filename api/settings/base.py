@@ -12,6 +12,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'rest_framework',
+    'reports'
 ]
 
 MIDDLEWARE_CLASSES = (
@@ -34,7 +35,6 @@ PROJECT_APPS = [
     'apps.result',
     'api',
     'api.v0',
-    'apps.reports'
 ]
 
 # Django-rest-framework throttling config
