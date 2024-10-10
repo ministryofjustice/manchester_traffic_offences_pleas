@@ -414,7 +414,7 @@ class Case(models.Model):
 
 
 class CaseAction(models.Model):
-    case = models.ForeignKey(Case, related_name="actions", null=False, blank=False)
+    case = models.ForeignKey(Case, related_name="actions", null=False, blank=False, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=50, null=False, blank=False)
     status_info = models.TextField(null=True, blank=True)
