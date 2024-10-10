@@ -155,7 +155,7 @@ class CourtEmailCountManager(models.Manager):
 
 class CourtEmailCount(models.Model):
     date_sent = models.DateTimeField(auto_now_add=True)
-    court = models.ForeignKey("Court", related_name="court_email_counts")
+    court = models.ForeignKey("Court", related_name="court_email_counts", on_delete=models.CASCADE)
     initiation_type = models.CharField(max_length=2, null=False, blank=False, default="Q",
                                        choices=INITIATION_TYPE_CHOICES)
     language = models.CharField(max_length=2, null=False, blank=False, default="en",
