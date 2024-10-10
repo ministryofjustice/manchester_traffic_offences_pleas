@@ -249,16 +249,17 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
-        'sentry': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
-            'tags': {'custom-tag': 'x'}
-        },
+        # 'sentry': {
+        #     'level': 'ERROR',
+        #     'filters': ['require_debug_false'],
+        #     'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        #     'tags': {'custom-tag': 'x'}
+        # },
     },
     'loggers': {
         '': {
-            'handlers': ['console', 'sentry'],
+            # 'handlers': ['console', 'sentry'],
+            'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
         },
@@ -353,10 +354,10 @@ AXES_COOLOFF_TIME = 1
 
 DATA_RETENTION_PERIOD = int(os.environ.get("DATA_RETENTION_PERIOD", "210"))
 
-RAVEN_CONFIG = {
-    'dsn': os.environ.get("SENTRY_DSN", ""),
-    'release': os.environ.get("APP_GIT_COMMIT", "no-git-commit-available")
-}
+# RAVEN_CONFIG = {
+#     'dsn': os.environ.get("SENTRY_DSN", ""),
+#     'release': os.environ.get("APP_GIT_COMMIT", "no-git-commit-available")
+# }
 
 # .local.py overrides all the common settings.
 try:
