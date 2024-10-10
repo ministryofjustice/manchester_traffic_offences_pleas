@@ -516,7 +516,7 @@ class UsageStats(models.Model):
     period.
     """
     start_date = models.DateField()
-    court = models.ForeignKey('Court', blank=True, null=True)
+    court = models.ForeignKey('Court', blank=True, null=True, on_delete=models.CASCADE)
 
     online_submissions = models.PositiveIntegerField(default=0)
     online_guilty_pleas = models.PositiveIntegerField(default=0)
@@ -726,7 +726,7 @@ class DataValidation(models.Model):
     urn_entered = models.CharField(max_length=50, null=False, blank=False)
     urn_standardised = models.CharField(max_length=50, null=False, blank=False)
     urn_formatted = models.CharField(max_length=50, null=False, blank=False)
-    case_match = models.ForeignKey("plea.Case", null=True, blank=True)
+    case_match = models.ForeignKey("plea.Case", null=True, blank=True, on_delete=models.CASCADE)
     case_match_count = models.PositiveIntegerField(default=0)
 
     class Meta:
