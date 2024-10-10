@@ -716,7 +716,7 @@ class Court(models.Model):
 
 
 class OUCode(models.Model):
-    court = models.ForeignKey(Court)
+    court = models.ForeignKey(Court, on_delete=models.CASCADE)
     ou_code = models.CharField(max_length=5, unique=True,
                                help_text="The first five digits of an OU code")
 
@@ -872,7 +872,7 @@ class AuditEvent(models.Model):
         Case,
         verbose_name="Related case",
         help_text="If there was a successful case loaded then it is related here",
-        null=True, blank=True)
+        null=True, blank=True, on_delete=models.CASCADE)
 
     event_type = models.CharField(
         choices=EVENT_TYPE_CHOICES,
