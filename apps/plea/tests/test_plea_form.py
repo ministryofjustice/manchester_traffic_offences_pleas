@@ -2,7 +2,7 @@ from copy import copy
 import datetime
 from mock import Mock, patch
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.exceptions import NON_FIELD_ERRORS
 from django.test import TestCase
 from django.test.client import RequestFactory

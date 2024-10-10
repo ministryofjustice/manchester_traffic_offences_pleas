@@ -6,7 +6,6 @@ from django.conf import settings
 from django.shortcuts import render
 from django.views import View
 from django.urls import reverse, reverse_lazy
-from django.core.urlresolvers import resolve
 from ..plea.models import UsageStats, Court
 from urllib.parse import quote, urlencode
 from ..feedback.models import UserRating

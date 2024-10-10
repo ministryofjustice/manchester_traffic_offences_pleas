@@ -2,7 +2,7 @@ from brake.decorators import ratelimit
 
 from django.utils.decorators import method_decorator
 from django.conf import settings
-from django.core.urlresolvers import reverse_lazy, reverse
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 

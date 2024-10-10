@@ -3,7 +3,7 @@ from apps.plea.models import CaseTracker, Case
 
 from collections import OrderedDict, namedtuple
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib import messages
 from django.http import Http404, HttpResponseRedirect, QueryDict
 from django.shortcuts import render
