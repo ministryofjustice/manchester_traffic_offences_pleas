@@ -3,7 +3,6 @@ from behaving.web.steps import *
 from behaving.mail.steps import *
 from behaving.personas.steps import *
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 import os
 
 PERSONAS = {
@@ -67,11 +66,8 @@ def before_all(context):
         context.single_browser = True
         if config['headless']:
             chrome_options = webdriver.ChromeOptions()
-            chrome_options.set_headless()
+            chrome_options.add_argument("--headless")
             context.browser_args = {'options': chrome_options}
-
-    chrome_driver_version = "114.0.5735.90"
-    context.browser = webdriver.Chrome(ChromeDriverManager(version=chrome_driver_version).install(), options=chrome_options)
 
     context.base_url = config['base_url']
 
