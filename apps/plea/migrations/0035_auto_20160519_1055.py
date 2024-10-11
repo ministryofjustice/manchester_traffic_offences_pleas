@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='oucode',
             name='ou_code',
-            field=models.CharField(help_text=b'The first five digits of an OU code', unique=True, max_length=5),
+            field=models.CharField(help_text='The first five digits of an OU code', unique=True, max_length=5),
         ),
     ]

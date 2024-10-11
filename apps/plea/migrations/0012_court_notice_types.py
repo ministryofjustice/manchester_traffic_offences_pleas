@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='court',
             name='notice_types',
-            field=models.CharField(default=b'both', help_text=b'What kind of notices are being sent out by this area?', max_length=7, choices=[(b'both', b'Both'), (b'sjp', b'SJP'), (b'non-sjp', b'Non-SJP')]),
+            field=models.CharField(default='both', help_text='What kind of notices are being sent out by this area?', max_length=7, choices=[('both', 'Both'), ('sjp', 'SJP'), ('non-sjp', 'Non-SJP')]),
         ),
     ]

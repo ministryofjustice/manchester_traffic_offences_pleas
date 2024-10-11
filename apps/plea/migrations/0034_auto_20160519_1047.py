@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='OUCode',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('ou_code', models.CharField(help_text=b'The first 4 digits of an OU code', unique=True, max_length=4)),
+                ('ou_code', models.CharField(help_text='The first 4 digits of an OU code', unique=True, max_length=4)),
             ],
         ),
         migrations.RemoveField(

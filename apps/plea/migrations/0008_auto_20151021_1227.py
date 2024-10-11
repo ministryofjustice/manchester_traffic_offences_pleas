@@ -14,17 +14,17 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='case',
             name='initiation_type',
-            field=models.CharField(default=b'C', max_length=2),
+            field=models.CharField(default='C', max_length=2),
         ),
         migrations.AddField(
             model_name='court',
             name='court_language',
-            field=models.CharField(default=b'en', max_length=4, choices=[(b'en', b'English'), (b'cy', b'Welsh')]),
+            field=models.CharField(default='en', max_length=4, choices=[('en', 'English'), ('cy', 'Welsh')]),
         ),
         migrations.AddField(
             model_name='courtemailcount',
             name='initiation_type',
-            field=models.CharField(default=b'C', max_length=2),
+            field=models.CharField(default='C', max_length=2),
         ),
         migrations.AddField(
             model_name='offence',

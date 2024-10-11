@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='court',
             name='display_case_data',
-            field=models.BooleanField(default=False, help_text=b'Display DX offence data on plea page if available?'),
+            field=models.BooleanField(default=False, help_text='Display DX offence data on plea page if available?'),
         ),
     ]

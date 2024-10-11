@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='case',
             name='case_number',
-            field=models.CharField(help_text=b'as supplied by DX', max_length=12, null=True, blank=True),
+            field=models.CharField(help_text='as supplied by DX', max_length=12, null=True, blank=True),
         ),
     ]

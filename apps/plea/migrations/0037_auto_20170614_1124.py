@@ -15,17 +15,17 @@ class Migration(migrations.Migration):
             model_name='auditevent',
             name='event_type',
             field=models.CharField(
-                help_text=b'Identified the area of the application that the event happened in',
+                help_text='Identified the area of the application that the event happened in',
                 max_length=255,
-                verbose_name=b'event type',
+                verbose_name='event type',
                 choices=[
-                    (b'not_set', b'Not Set'),
-                    (b'case_model', b'Case Save event'),
-                    (b'case_form', b'Case Form event'),
-                    (b'case_api', b'Case API event'),
-                    (b'urn_validator', b'URN validation event'),
-                    (b'result_api', b'Result API event'),
-                    (b'auditevent_api', b'AuditEvent API event')
+                    ('not_set', 'Not Set'),
+                    ('case_model', 'Case Save event'),
+                    ('case_form', 'Case Form event'),
+                    ('case_api', 'Case API event'),
+                    ('urn_validator', 'URN validation event'),
+                    ('result_api', 'Result API event'),
+                    ('auditevent_api', 'AuditEvent API event')
                 ]
             ),
         ),

@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='courtemailcount',
             name='initiation_type',
-            field=models.CharField(default=b'Q', max_length=2, choices=[(b'C', b'Charge'), (b'J', b'SJP'), (b'Q', b'Requisition'), (b'O', b'Other'), (b'R', b'Remitted'), (b'S', b'Summons')]),
+            field=models.CharField(default='Q', max_length=2, choices=[('C', 'Charge'), ('J', 'SJP'), ('Q', 'Requisition'), ('O', 'Other'), ('R', 'Remitted'), ('S', 'Summons')]),
         ),
     ]
