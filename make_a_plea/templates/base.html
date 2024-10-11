@@ -37,11 +37,11 @@
         {% if not disable_language_switch %}
         <nav id="language-switcher" class="language-switcher">
             <ul>
-                {% ifequal LANGUAGE_CODE "en" %}
+                {% if LANGUAGE_CODE "en" %}
                 <li><a rel="alternate" href="{% url 'set_language' %}?lang=cy" hreflang="cy" lang="cy">Cymraeg</a></li>
                 {% else %}
                 <li><a rel="alternate" href="{% url 'set_language' %}?lang=en" hreflang="en" lang="en">English</a></li>
-                {% endifequal %}
+                {% endif %}
             </ul>
         </nav>
         {% endif %}
@@ -98,9 +98,9 @@
 
 
 {% block body_end %}
-    {% ifequal LANGUAGE_CODE "cy" %}
+    {% if LANGUAGE_CODE "cy" %}
     <script type="text/javascript">var promptOnChangeMessage = "{% blocktrans %}You have entered some information{% endblocktrans %}";</script>
-    {% endifequal %}
+    {% endif %}
 
     {% if request.session_timeout %}
     <script type="text/javascript">var sessionTimeout = {{ request.session_timeout|stringformat:"i" }};</script>
