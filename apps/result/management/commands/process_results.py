@@ -9,7 +9,7 @@ from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
 from django.utils import translation
 from django.template.loader import get_template
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from apps.result.models import Result
 from apps.plea.models import Court

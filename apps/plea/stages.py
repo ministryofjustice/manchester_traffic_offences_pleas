@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.core.exceptions import MultipleObjectsReturned, NON_FIELD_ERRORS
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from apps.forms.stages import FormStage, IndexedStage
 # from make_a_plea.sentry_logging import log_user_data
