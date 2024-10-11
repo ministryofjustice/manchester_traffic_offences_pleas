@@ -26,8 +26,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'make_a_plea.middleware.AdminLocaleURLMiddleware',
     'make_a_plea.middleware.TimeoutRedirectMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
-    'axes.middleware.AxesMiddleware'
+    'django.middleware.cache.FetchFromCacheMiddleware'
 )
 
 PROJECT_APPS = [
