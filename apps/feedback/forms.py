@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.widgets import RadioSelect
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from apps.forms.forms import (
     YESNO_CHOICES,

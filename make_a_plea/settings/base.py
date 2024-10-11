@@ -3,7 +3,7 @@ import os
 from os.path import join, abspath, dirname
 import logging
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 VERSION = (1, 0, 0)
 
