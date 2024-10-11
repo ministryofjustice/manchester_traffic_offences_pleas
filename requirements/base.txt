@@ -4,7 +4,7 @@
 
 boto3==1.26.143
 
-Django==3.2.25
+Django==5.1.2
 psycopg2==2.9.7
 # psycopg2-binary
 python-dateutil==2.9.0
