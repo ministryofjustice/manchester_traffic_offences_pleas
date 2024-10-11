@@ -14,17 +14,17 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='case',
             name='completed_on',
-            field=models.DateTimeField(help_text=b'The date/time a user completes a submission.', null=True, blank=True),
+            field=models.DateTimeField(help_text='The date/time a user completes a submission.', null=True, blank=True),
         ),
         migrations.AddField(
             model_name='court',
             name='enforcement_email',
-            field=models.CharField(help_text=b'', max_length=255, null=True, verbose_name=b'Email address of the enforcement team', blank=True),
+            field=models.CharField(help_text='', max_length=255, null=True, verbose_name='Email address of the enforcement team', blank=True),
         ),
         migrations.AddField(
             model_name='court',
             name='enforcement_telephone',
-            field=models.CharField(help_text=b'', max_length=255, null=True, verbose_name=b'Email address of the enforcement team', blank=True),
+            field=models.CharField(help_text='', max_length=255, null=True, verbose_name='Email address of the enforcement team', blank=True),
         ),
         migrations.AddField(
             model_name='court',

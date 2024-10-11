@@ -14,17 +14,17 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='case',
             name='language',
-            field=models.CharField(default=b'en', max_length=2, choices=[(b'en', b'English'), (b'cy', b'Welsh')]),
+            field=models.CharField(default='en', max_length=2, choices=[('en', 'English'), ('cy', 'Welsh')]),
         ),
         migrations.AddField(
             model_name='courtemailcount',
             name='language',
-            field=models.CharField(default=b'en', max_length=2, choices=[(b'en', b'English'), (b'cy', b'Welsh')]),
+            field=models.CharField(default='en', max_length=2, choices=[('en', 'English'), ('cy', 'Welsh')]),
         ),
         migrations.AlterField(
             model_name='case',
             name='initiation_type',
-            field=models.CharField(default=b'C', max_length=2, choices=[(b'C', b'Charge'), (b'J', b'SJP'), (b'Q', b'Requisition'), (b'O', b'Other'), (b'R', b'Remitted'), (b'S', b'Summons')]),
+            field=models.CharField(default='C', max_length=2, choices=[('C', 'Charge'), ('J', 'SJP'), ('Q', 'Requisition'), ('O', 'Other'), ('R', 'Remitted'), ('S', 'Summons')]),
         ),
         migrations.AlterField(
             model_name='courtemailcount',
@@ -34,6 +34,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='courtemailcount',
             name='initiation_type',
-            field=models.CharField(default=b'C', max_length=2, choices=[(b'C', b'Charge'), (b'J', b'SJP'), (b'Q', b'Requisition'), (b'O', b'Other'), (b'R', b'Remitted'), (b'S', b'Summons')]),
+            field=models.CharField(default='C', max_length=2, choices=[('C', 'Charge'), ('J', 'SJP'), ('Q', 'Requisition'), ('O', 'Other'), ('R', 'Remitted'), ('S', 'Summons')]),
         ),
     ]

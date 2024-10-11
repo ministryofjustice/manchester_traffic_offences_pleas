@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='court',
             name='sjp_area',
-            field=models.BooleanField(default=False, help_text=b'Is this area sending out SJP notices?'),
+            field=models.BooleanField(default=False, help_text='Is this area sending out SJP notices?'),
         ),
     ]

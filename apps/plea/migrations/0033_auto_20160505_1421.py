@@ -14,11 +14,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='court',
             name='enforcement_telephone',
-            field=models.CharField(help_text=b'', max_length=255, null=True, verbose_name=b'Telephone number of the enforcement team', blank=True),
+            field=models.CharField(help_text='', max_length=255, null=True, verbose_name='Telephone number of the enforcement team', blank=True),
         ),
         migrations.AlterField(
             model_name='court',
             name='region_code',
-            field=models.CharField(help_text=b'The initial two digit URN number, e.g. 06', max_length=2, verbose_name=b'URN Region Code'),
+            field=models.CharField(help_text='The initial two digit URN number, e.g. 06', max_length=2, verbose_name='URN Region Code'),
         ),
     ]
