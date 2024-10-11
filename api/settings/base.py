@@ -12,8 +12,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'rest_framework',
-    'reports',
-    'axes'
+    'reports'
 ]
 
 MIDDLEWARE_CLASSES = (
@@ -27,7 +26,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'make_a_plea.middleware.AdminLocaleURLMiddleware',
     'make_a_plea.middleware.TimeoutRedirectMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware'
+    'django.middleware.cache.FetchFromCacheMiddleware',
+    'axes.middleware.AxesMiddleware'
 )
 
 PROJECT_APPS = [
