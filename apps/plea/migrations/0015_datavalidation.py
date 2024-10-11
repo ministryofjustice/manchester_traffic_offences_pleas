@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('urn_standardised', models.CharField(max_length=50)),
                 ('urn_formatted', models.CharField(max_length=50)),
                 ('case_match_count', models.PositiveIntegerField(default=0)),
-                ('case_match', models.ForeignKey(blank=True, to='plea.Case', null=True)),
+                ('case_match', models.ForeignKey(blank=True, to='plea.Case', null=True, on_delete=models.CASCADE)),
             ],
         ),
     ]

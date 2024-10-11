@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('event_trace', models.CharField(help_text=b'This detail about the reason for this event may be useful for developers to debug import issue', max_length=4000, null=True, verbose_name=b'error detail', blank=True)),
                 ('event_data', django.contrib.postgres.fields.hstore.HStoreField(help_text=b'If there was a failure and data fields were found, they are stored here to debug', null=True, verbose_name=b'Event data', blank=True)),
                 ('event_datetime', models.DateTimeField(help_text=b'The time at which the event occurred', verbose_name=b'event date and time', auto_now_add=True)),
-                ('case', models.ForeignKey(blank=True, to='plea.Case', help_text=b'If there was a successful case loaded then it is related here', null=True, verbose_name=b'Related case')),
+                ('case', models.ForeignKey(blank=True, to='plea.Case', help_text=b'If there was a successful case loaded then it is related here', null=True, verbose_name=b'Related case', on_delete=models.CASCADE)),
             ],
         ),
     ]

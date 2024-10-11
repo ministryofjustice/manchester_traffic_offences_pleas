@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
                 ('date', models.DateTimeField(auto_now_add=True)),
                 ('status', models.CharField(max_length=50)),
                 ('status_info', models.TextField(null=True, blank=True)),
-                ('case', models.ForeignKey(related_name=b'actions', to='plea.Case')),
+                ('case', models.ForeignKey(related_name=b'actions', to='plea.Case', on_delete=models.CASCADE)),
             ],
             options={
                 'get_latest_by': 'date',
@@ -89,7 +89,7 @@ class Migration(migrations.Migration):
                 ('offence_short_title', models.CharField(max_length=100)),
                 ('offence_wording', models.TextField(max_length=4000)),
                 ('offence_seq_number', models.CharField(max_length=10, null=True, blank=True)),
-                ('case', models.ForeignKey(related_name=b'offences', to='plea.Case')),
+                ('case', models.ForeignKey(related_name=b'offences', to='plea.Case', on_delete=models.CASCADE)),
             ],
             options={
             },

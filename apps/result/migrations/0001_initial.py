@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('payment_type', models.CharField(max_length=10, null=True, blank=True)),
                 ('sent', models.BooleanField(default=False)),
                 ('sent_on', models.DateTimeField(null=True, blank=True)),
-                ('case', models.ForeignKey(related_name='results', blank=True, to='plea.Case', null=True)),
+                ('case', models.ForeignKey(related_name='results', blank=True, to='plea.Case', null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'result_result',
@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('offence_code', models.CharField(max_length=10, null=True, blank=True)),
                 ('offence_seq_number', models.CharField(max_length=10, null=True, blank=True)),
-                ('result', models.ForeignKey(related_name='result_offences', to='result.Result')),
+                ('result', models.ForeignKey(related_name='result_offences', to='result.Result', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'result_resultoffence',
@@ -57,7 +57,7 @@ class Migration(migrations.Migration):
                 ('result_wording', models.TextField(max_length=4000)),
                 ('result_wording_welsh', models.TextField(max_length=4000, null=True, blank=True)),
                 ('result_seq_number', models.CharField(max_length=10, null=True, blank=True)),
-                ('result_offence', models.ForeignKey(related_name='offence_data', to='result.ResultOffence')),
+                ('result_offence', models.ForeignKey(related_name='offence_data', to='result.ResultOffence', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'result_resultoffencedata',
