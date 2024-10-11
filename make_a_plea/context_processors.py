@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.utils.translation import ugettext as _, get_language
+from django.utils.translation import gettext as _, get_language
 from django.utils.safestring import mark_safe
 
 

@@ -9,7 +9,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.text import wrap
 from django.utils import translation
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from .models import Case, CourtEmailCount, Court
 from .encrypt import encrypt_and_store_user_data
