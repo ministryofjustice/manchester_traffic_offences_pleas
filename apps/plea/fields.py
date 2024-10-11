@@ -1,4 +1,4 @@
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 ERROR_MESSAGES = {
     "NOTICE_TYPE_REQUIRED": _("Tell us what is written at the top of the notice we sent to you"),

@@ -5,7 +5,7 @@ from functools import update_wrapper
 
 from django.urls import reverse
 from django.contrib import admin
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render
 from django.template import RequestContext
 from django.db.models import Count, When, IntegerField, Q
