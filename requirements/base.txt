@@ -28,6 +28,7 @@ django-axes==7.0.0
 django-nested-admin==4.0.0
 django-storages==1.9.1
 django-utils2==3.0.2
+django-base-template==1.0.5
 
 unicodecsv==0.14.1
 
