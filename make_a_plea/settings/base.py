@@ -144,7 +144,7 @@ TEMPLATES = [
     }
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = (
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -158,7 +158,7 @@ MIDDLEWARE = [
     'make_a_plea.middleware.BadRequestExceptionMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
     'axes.middleware.FailedLoginMiddleware'
-]
+)
 
 CACHE_MIDDLEWARE_SECONDS = 0
 
