@@ -3,7 +3,7 @@ import datetime
 from django.conf import settings
 from django import http
 from django.shortcuts import render
-from django.utils.http import is_safe_url
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.translation import check_for_language, get_language, activate
 from django.views.generic import TemplateView
 
@@ -42,9 +42,9 @@ def set_language(request):
     with a ?lang=cy querystring.
     """
     next = request.GET.get('next')
-    if not is_safe_url(url=next, host=request.get_host()):
+    if not url_has_allowed_host_and_scheme(url=next, host=request.get_host()):
         next = request.META.get('HTTP_REFERER')
-        if not is_safe_url(url=next, host=request.get_host()):
+        if not url_has_allowed_host_and_scheme(url=next, host=request.get_host()):
             next = '/'
     response = http.HttpResponseRedirect(next)
 
