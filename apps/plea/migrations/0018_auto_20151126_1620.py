@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='resultoffence',
             name='result',
-            field=models.ForeignKey(related_name='result_offences', to='plea.Result'),
+            field=models.ForeignKey(related_name='result_offences', to='plea.Result', on_delete=models.CASCADE),
         ),
     ]
