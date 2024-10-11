@@ -4,7 +4,7 @@
 
 boto3==1.26.143
 
-Django==4.0
+Django==4.2
 psycopg2==2.9.7
 # psycopg2-binary
 python-dateutil==2.9.0
@@ -27,7 +27,6 @@ django-premailer==0.2.0
 django-axes==6.0.0
 django-nested-admin==4.0.0
 django-storages==1.9.1
-django-jsonfield-backport==1.0.5
 
 unicodecsv==0.14.1
 
