@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='courtemailcount',
             name='court',
-            field=models.ForeignKey(related_name='court_email_counts', to='plea.Court'),
+            field=models.ForeignKey(related_name='court_email_counts', to='plea.Court', on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='courtemailcount',

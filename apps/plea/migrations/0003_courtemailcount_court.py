@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='courtemailcount',
             name='court',
-            field=models.ForeignKey(default=1, to='plea.Court'),
+            field=models.ForeignKey(default=1, to='plea.Court', on_delete=models.CASCADE),
             preserve_default=False,
         ),
     ]

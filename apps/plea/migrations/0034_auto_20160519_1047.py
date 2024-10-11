@@ -25,6 +25,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='oucode',
             name='court',
-            field=models.ForeignKey(to='plea.Court'),
+            field=models.ForeignKey(to='plea.Court', on_delete=models.CASCADE),
         ),
     ]
