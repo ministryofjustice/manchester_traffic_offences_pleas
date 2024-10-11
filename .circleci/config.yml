@@ -23,7 +23,7 @@ jobs:
           POSTGRES_PORT: 5432
           POSTGRES_HOST: localhost
 
-      - image: "circleci/postgres:10.4"
+      - image: "circleci/postgres:12.0"
         environment:
           POSTGRES_DB: manchester_traffic_offences
           POSTGRES_USER: postgres
