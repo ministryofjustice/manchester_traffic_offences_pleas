@@ -161,6 +161,10 @@ MIDDLEWARE = [
     'axes.middleware.AxesMiddleware',
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesStandaloneBackend'
+]
+
 CACHE_MIDDLEWARE_SECONDS = 0
 
 ROOT_URLCONF = 'make_a_plea.urls'
