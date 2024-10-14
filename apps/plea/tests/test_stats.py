@@ -3,6 +3,7 @@ import json
 
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
+from django.utils.crypto import get_random_string
 
 from ..models import Case
 
@@ -73,7 +74,7 @@ class TestStats(TestCase):
 
     def create_user(self):
         self.username = "test_staff"
-        self.password = User.objects.make_random_password()
+        self.password = get_random_string()
         user, created = User.objects.get_or_create(username=self.username)
         user.set_password(self.password)
         user.is_staff = True
