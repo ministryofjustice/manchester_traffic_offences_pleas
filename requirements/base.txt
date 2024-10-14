@@ -5,7 +5,7 @@
 boto3==1.26.143
 
 Django==5.1.2
-psycopg2==2.9.7
+psycopg2==2.9.9
 # psycopg2-binary
 python-dateutil==2.9.0
 python-gnupg==0.4.4
