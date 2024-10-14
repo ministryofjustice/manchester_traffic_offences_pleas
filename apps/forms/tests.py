@@ -225,7 +225,7 @@ class TestMultiStageForm(TestCase):
         self.assertEqual(msf.all_data["stage_2"]["field1"], "Joe")
         self.assertEqual(msf.all_data["stage_2"]["field2"], 10)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response._headers['location'][1],
+        self.assertEqual(response.headers['location'][1],
                          "/path/to/msf-url/stage_3")
 
     @patch("apps.forms.stages.reverse", reverse)
@@ -271,7 +271,7 @@ class TestMultiStageForm(TestCase):
         self.assertEqual(msf.all_data["stage_3"]["Factory"][1]["field3"], "Jill Smith")
         self.assertEqual(msf.all_data["stage_3"]["Factory"][1]["field4"], "jill.smith@example.org")
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response._headers['location'][1], "/path/to/msf-url/stage_4")
+        self.assertEqual(response.headers['location'][1], "/path/to/msf-url/stage_4")
 
     @patch("apps.forms.stages.reverse", reverse)
     @patch("apps.forms.stages.messages.add_message")
