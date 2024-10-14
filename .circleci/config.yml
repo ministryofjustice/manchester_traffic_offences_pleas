@@ -109,10 +109,8 @@ jobs:
             pip install behave==1.2.7.dev6 behaving==3.0.5 splinter==0.18.1 selenium==3.141.0
 
       - run:
-          name: Start Postgres, Run migrate, compilemessages
+          name: Run migrate, compilemessages
           command: |
-            sudo systemctl start postgresql
-            sudo systemctl enable postgresql
             . venv/bin/activate
             python manage.py migrate --noinput
             python manage.py compilemessages
