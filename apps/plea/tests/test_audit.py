@@ -93,11 +93,11 @@ class CaseCreationTests(TestCase):
         decrypt = gpg.decrypt(str_data)
         # decrypt = gpg.decrypt_file(file)
 
-        self.assertEquals(decrypt.status, "decryption ok")
+        self.assertEqual(decrypt.status, "decryption ok")
 
         data = json.loads(str(decrypt))
 
-        self.assertEquals(self.context_data['case']['urn'], data['case']['urn'])
+        self.assertEqual(self.context_data['case']['urn'], data['case']['urn'])
 
     @override_settings(STORE_USER_DATA=True)
     @patch("apps.plea.attachment.TemplateAttachmentEmail.send")

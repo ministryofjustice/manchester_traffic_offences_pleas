@@ -88,15 +88,15 @@ class TestStartRedirect(TestCase):
 
         response = start(fake_request)
 
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(response.url, "http://redirect.test")
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "http://redirect.test")
 
     def test_start_screen_does_not_redirect(self):
         fake_request = self.get_request_mock("/")
 
         response = start(fake_request)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
 
 class CullOldDataTestCase(TestCase):
@@ -132,11 +132,11 @@ class CullOldDataTestCase(TestCase):
 
         self.command.handle()
 
-        self.assertEquals(Case.objects.count(), 0)
-        self.assertEquals(Offence.objects.count(), 0)
-        self.assertEquals(Result.objects.count(), 0)
-        self.assertEquals(ResultOffence.objects.count(), 0)
-        self.assertEquals(ResultOffenceData.objects.count(), 0)
+        self.assertEqual(Case.objects.count(), 0)
+        self.assertEqual(Offence.objects.count(), 0)
+        self.assertEqual(Result.objects.count(), 0)
+        self.assertEqual(ResultOffence.objects.count(), 0)
+        self.assertEqual(ResultOffenceData.objects.count(), 0)
 
     def test_newer_records_are_retained(self):
 
@@ -147,8 +147,8 @@ class CullOldDataTestCase(TestCase):
 
         self.command.handle()
 
-        self.assertEquals(Case.objects.count(), 1)
-        self.assertEquals(Result.objects.count(), 1)
+        self.assertEqual(Case.objects.count(), 1)
+        self.assertEqual(Result.objects.count(), 1)
 
 
 class TestAdminPanel(TestCase):

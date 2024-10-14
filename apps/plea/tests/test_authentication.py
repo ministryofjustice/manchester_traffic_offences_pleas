@@ -124,12 +124,12 @@ class PleaModelTestCase(BaseTestCase):
         self.assertTrue(self.case.authenticate(2, "m601pr", None))
 
     def test_auth_field_dob(self):
-        self.assertEquals(self.case.auth_field(), "PostCode")
+        self.assertEqual(self.case.auth_field(), "PostCode")
 
     def test_auth_field_postcode(self):
         self.case.extra_data["DOB"] = "1979-03-11"
 
-        self.assertEquals(self.case.auth_field(), "DOB")
+        self.assertEqual(self.case.auth_field(), "DOB")
 
 
 class URNStageWithURNValidation(BaseTestCase):
@@ -147,7 +147,7 @@ class URNStageWithURNValidation(BaseTestCase):
         stage = URNEntryStage(self.urls, self.data)
         stage.save({"urn": "06AA0000015"})
 
-        self.assertEquals(len(stage.messages), 1)
+        self.assertEqual(len(stage.messages), 1)
         self.assertIn("You can't make a plea online", stage.messages[0].message)
 
     def test_multiple_defendants_per_urn_cannot_continue(self):
@@ -157,7 +157,7 @@ class URNStageWithURNValidation(BaseTestCase):
         stage = URNEntryStage(self.urls, self.data)
         stage.save({"urn": "06AA0000015"})
 
-        self.assertEquals(len(stage.messages), 1)
+        self.assertEqual(len(stage.messages), 1)
         self.assertIn("You can't make a plea online", stage.messages[0].message)
 
     def test_expired_doh_cannot_continue(self):
@@ -168,7 +168,7 @@ class URNStageWithURNValidation(BaseTestCase):
         stage = URNEntryStage(self.urls, self.data)
         stage.save({"urn": "06AA0000015"})
 
-        self.assertEquals(len(stage.messages), 1)
+        self.assertEqual(len(stage.messages), 1)
         self.assertIn("Unfortunately you cannot use this service", stage.messages[0].message)
 
     def future_doh_can_continue(self):
@@ -179,7 +179,7 @@ class URNStageWithURNValidation(BaseTestCase):
         stage = URNEntryStage(self.urls, self.data)
         stage.save({"urn": "06AA0000015"})
 
-        self.assertEquals(len(stage.messages), 0)
+        self.assertEqual(len(stage.messages), 0)
         self.assertNotContains(stage.messages[0].message, "Unfortunately you cannot use this service")
 
 
@@ -194,7 +194,7 @@ class AuthStageWithURNValidationTestCase(BaseTestCase):
         stage = AuthenticationStage(self.urls, self.data)
 
         stage.save({"number_of_charges": "2", "postcode": "m60 1pr"})
-        self.assertEquals(stage.next_step, "your_details")
+        self.assertEqual(stage.next_step, "your_details")
 
     def test_invalid_auth_details(self):
         self.data["case"]["urn"] = "06AA0000015"
@@ -203,7 +203,7 @@ class AuthStageWithURNValidationTestCase(BaseTestCase):
 
         stage.save({"number_of_charges": "1", "postcode": "m60 1pr"})
 
-        self.assertEquals(len(stage.messages), 1)
+        self.assertEqual(len(stage.messages), 1)
         self.assertIsNone(stage.next_step)
         self.assertIn("Check the details you've entered", stage.messages[0].message)
 

@@ -61,7 +61,7 @@ class TestStatsLogic(TestCase):
 
         stats = self.court_view._get_stats(self.court, dt.date.today())
 
-        self.assertEquals(stats["imported"]["value"], 1)
+        self.assertEqual(stats["imported"]["value"], 1)
 
     def test_completed_submission_count(self):
         self._create_case(urn="20XX0000000",
@@ -70,7 +70,7 @@ class TestStatsLogic(TestCase):
 
         stats = self.court_view._get_stats(self.court, dt.date.today())
 
-        self.assertEquals(stats["submissions"]["value"], 1)
+        self.assertEqual(stats["submissions"]["value"], 1)
 
     def test_unvalidated_submission_count(self):
         self._create_case(urn="20XX0000000",
@@ -81,7 +81,7 @@ class TestStatsLogic(TestCase):
 
         stats = self.court_view._get_stats(self.court, dt.date.today())
 
-        self.assertEquals(stats["unvalidated_submissions"]["value"], 1)
+        self.assertEqual(stats["unvalidated_submissions"]["value"], 1)
 
     def test_failed_email_sending_count(self):
         self._create_case(urn="20XX0000000",
@@ -93,7 +93,7 @@ class TestStatsLogic(TestCase):
 
         stats = self.court_view._get_stats(self.court, dt.date.today())
 
-        self.assertEquals(stats["email_failure"]["value"], 1)
+        self.assertEqual(stats["email_failure"]["value"], 1)
 
     def test_sjp_case_import_count(self):
         self._create_case(urn="20XX0000000",
@@ -104,7 +104,7 @@ class TestStatsLogic(TestCase):
 
         stats = self.court_view._get_stats(self.court, dt.date.today())
 
-        self.assertEquals(stats["sjp_count"]["value"], 1)
+        self.assertEqual(stats["sjp_count"]["value"], 1)
 
     def test_completed_on_with_oucode(self):
         """
@@ -122,7 +122,7 @@ class TestStatsLogic(TestCase):
 
         stats = self.court_view._get_stats(self.court, dt.date.today())
 
-        self.assertEquals(stats["submissions"]["value"], 1)
+        self.assertEqual(stats["submissions"]["value"], 1)
 
 
 

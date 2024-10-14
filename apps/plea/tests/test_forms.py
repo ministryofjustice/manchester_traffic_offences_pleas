@@ -18,7 +18,7 @@ class TestCompanyForm(unittest.TestCase):
 
         form.is_valid()
 
-        self.assertEquals(len(form.errors.items()), 3)
+        self.assertEqual(len(form.errors.items()), 3)
         self.assertIn('number_of_employees', form.errors)
         self.assertIn('gross_turnover', form.errors)
         self.assertIn('net_turnover', form.errors)

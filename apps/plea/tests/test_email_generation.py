@@ -198,7 +198,7 @@ class EmailGenerationTests(TestCase):
 
         send_plea_email(self.test_data_defendant)
 
-        self.assertEquals(anon_total, CourtEmailCount.objects.all().count())
+        self.assertEqual(anon_total, CourtEmailCount.objects.all().count())
 
     def test_ou_code_email_routing_with_associated_case_no_ou_code(self):
         Case.objects.create(

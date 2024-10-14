@@ -20,7 +20,7 @@ class TestEncrypt(TestCase):
 
         with self.settings(USER_DATA_DIRECTORY=test_dir):
             clear_user_data()
-            self.assertEquals(os.listdir(test_dir), [])
+            self.assertEqual(os.listdir(test_dir), [])
 
         shutil.rmtree(test_dir)
 
