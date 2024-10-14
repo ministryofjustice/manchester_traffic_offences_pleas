@@ -112,6 +112,7 @@ jobs:
           name: Run migrate, compilemessages
           command: |
             . venv/bin/activate
+            sudo service postgresql status
             python manage.py migrate --noinput
             python manage.py compilemessages
 
