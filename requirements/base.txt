@@ -14,8 +14,8 @@ git+https://github.com/ministryofjustice/django-moj-irat@0.4
 raven==6.10.0
 kombu==5.4.2
 kombu[sqs]==5.4.2
-Celery==5.2.0
-celery[sqs]==5.2.0
+Celery==5.1.0
+celery[sqs]==5.1.0
 importlib-metadata==4.13.0
 
 django-extensions==3.2.3
