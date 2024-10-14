@@ -68,19 +68,19 @@ class CourtEmailCountManagerTestCase(TestStatsBase):
 
         totals = CourtEmailCount.objects.calculate_aggregates(dt.date(2015, 1, 5), self.court_1, 7)
 
-        self.assertEquals(totals['submissions'], 4)
-        self.assertEquals(totals['pleas'], 7)
-        self.assertEquals(totals['guilty'], 5)
-        self.assertEquals(totals['not_guilty'], 2)
+        self.assertEqual(totals['submissions'], 4)
+        self.assertEqual(totals['pleas'], 7)
+        self.assertEqual(totals['guilty'], 5)
+        self.assertEqual(totals['not_guilty'], 2)
 
     def test_null_entries_are_zero(self):
 
         totals = CourtEmailCount.objects.calculate_aggregates(dt.date(2020, 1, 1), 7)
 
-        self.assertEquals(totals['submissions'], 0)
-        self.assertEquals(totals['pleas'], 0)
-        self.assertEquals(totals['guilty'], 0)
-        self.assertEquals(totals['not_guilty'], 0)
+        self.assertEqual(totals['submissions'], 0)
+        self.assertEqual(totals['pleas'], 0)
+        self.assertEqual(totals['guilty'], 0)
+        self.assertEqual(totals['not_guilty'], 0)
 
 
 class CourtEmailCountModelTestCase(TestStatsBase):
@@ -139,34 +139,34 @@ class CourtEmailCountModelTestCase(TestStatsBase):
 
         totals = CourtEmailCount.objects.get_stats()
 
-        self.assertEquals(totals["submissions"], 8)
-        self.assertEquals(totals["pleas"], 16)
-        self.assertEquals(totals["guilty"], 11)
-        self.assertEquals(totals["not_guilty"], 5)
-        self.assertEquals(totals["guilty_court"], 2)
-        self.assertEquals(totals["guilty_no_court"], 1)
+        self.assertEqual(totals["submissions"], 8)
+        self.assertEqual(totals["pleas"], 16)
+        self.assertEqual(totals["guilty"], 11)
+        self.assertEqual(totals["not_guilty"], 5)
+        self.assertEqual(totals["guilty_court"], 2)
+        self.assertEqual(totals["guilty_no_court"], 1)
 
     def test_get_stats_start_date(self):
 
         totals = CourtEmailCount.objects.get_stats(start="2015-01-12")
 
-        self.assertEquals(totals["submissions"], 4)
-        self.assertEquals(totals["pleas"], 9)
-        self.assertEquals(totals["guilty"], 6)
-        self.assertEquals(totals["not_guilty"], 3)
-        self.assertEquals(totals["guilty_court"], 0)
-        self.assertEquals(totals["guilty_no_court"], 1)
+        self.assertEqual(totals["submissions"], 4)
+        self.assertEqual(totals["pleas"], 9)
+        self.assertEqual(totals["guilty"], 6)
+        self.assertEqual(totals["not_guilty"], 3)
+        self.assertEqual(totals["guilty_court"], 0)
+        self.assertEqual(totals["guilty_no_court"], 1)
 
     def test_get_stats_end_date(self):
 
         totals = CourtEmailCount.objects.get_stats(end="2015-01-11")
 
-        self.assertEquals(totals["submissions"], 4)
-        self.assertEquals(totals["pleas"], 7)
-        self.assertEquals(totals["guilty"], 5)
-        self.assertEquals(totals["not_guilty"], 2)
-        self.assertEquals(totals["guilty_court"], 2)
-        self.assertEquals(totals["guilty_no_court"], 0)
+        self.assertEqual(totals["submissions"], 4)
+        self.assertEqual(totals["pleas"], 7)
+        self.assertEqual(totals["guilty"], 5)
+        self.assertEqual(totals["not_guilty"], 2)
+        self.assertEqual(totals["guilty_court"], 2)
+        self.assertEqual(totals["guilty_no_court"], 0)
 
     def test_get_stats_by_hearing_date(self):
 
@@ -257,15 +257,15 @@ class UsageStatsTestCase(TestStatsBase):
 
         UsageStats.objects.calculate_weekly_stats(to_date=self.to_date)
 
-        self.assertEquals(UsageStats.objects.all().count(), 5)
+        self.assertEqual(UsageStats.objects.all().count(), 5)
 
         wk_, wk1_court1, wk1_court2, wk2_court1, wk2_court2 = UsageStats.objects.all().order_by('start_date')
 
-        self.assertEquals(wk1_court1.start_date, dt.date(2015, 1, 5))
-        self.assertEquals(wk1_court1.online_submissions, 4)
+        self.assertEqual(wk1_court1.start_date, dt.date(2015, 1, 5))
+        self.assertEqual(wk1_court1.online_submissions, 4)
 
-        self.assertEquals(wk2_court2.start_date, dt.date(2015, 1, 12))
-        self.assertEquals(wk2_court2.online_submissions, 1)
+        self.assertEqual(wk2_court2.start_date, dt.date(2015, 1, 12))
+        self.assertEqual(wk2_court2.online_submissions, 1)
 
 
 class TestCourtModel(TestCase):
@@ -300,7 +300,7 @@ class TestCourtModel(TestCase):
             urn="61XX0000000")
 
     def test_manager_get_by_urn(self):
-        self.assertEquals(self.court.id, Court.objects.get_by_urn("51/xx/00000/00").id)
+        self.assertEqual(self.court.id, Court.objects.get_by_urn("51/xx/00000/00").id)
 
     def test_manager_get_by_urn_no_match(self):
         self.court.enabled = False
@@ -320,12 +320,12 @@ class TestCourtModel(TestCase):
 
     def test_get_court_with_ou_code(self):
 
-        self.assertEquals(
+        self.assertEqual(
             self.court.id,
             Court.objects.get_court("51/xx/00000/00", ou_code="B01CN11").id)
 
     def test_get_court_ou_code_no_match(self):
-        self.assertEquals(
+        self.assertEqual(
             self.court.id,
             Court.objects.get_court("51/xx/00000/00", ou_code="C01CN11").id)
 
@@ -336,13 +336,13 @@ class TestCourtModel(TestCase):
     def test_get_court_dx_ou_code_different_court(self):
         court = Court.objects.get_court_dx(self.case.urn)
 
-        self.assertEquals(self.court2.id, court.id)
+        self.assertEqual(self.court2.id, court.id)
 
     def test_get_court_dx_no_case(self):
 
         court = Court.objects.get_court_dx("51/AA/00000/00")
 
-        self.assertEquals(self.court.id, court.id)
+        self.assertEqual(self.court.id, court.id)
 
     def test_get_court_dx_duplicate_cases(self):
         """
@@ -355,7 +355,7 @@ class TestCourtModel(TestCase):
         self.case.save()
         court = Court.objects.get_court_dx(self.case.urn)
 
-        self.assertEquals(court.id, self.court2.id)
+        self.assertEqual(court.id, self.court2.id)
 
     def test_submission_email_domain_validation(self):
         court = Court.objects.get_court_dx(self.case.urn)
@@ -446,11 +446,11 @@ class TestStageCompletionTableModel(TestCase):
 
     def test_update_field(self):
         self.sc.update_stage("YourDetailsStage")
-        self.assertEquals(self.sc.details, True)
+        self.assertEqual(self.sc.details, True)
 
     def test_get_field_name(self):
         field = self.sc.get_field_name("YourDetailsStage")
-        self.assertEquals(field, u'details')
+        self.assertEqual(field, u'details')
 
     def test_get_stage_value(self):
         self.assertFalse(self.sc.get_stage("YourDetailsStage"))

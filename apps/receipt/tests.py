@@ -167,8 +167,8 @@ class TestProcessReceipts(TestCase):
         self.assertTrue(case_obj.processed)
 
         self.assertTrue(case_obj.has_action("receipt_success"))
-        self.assertEquals(case_obj.sent, count_obj.sent)
-        self.assertEquals(case_obj.processed, count_obj.processed)
+        self.assertEqual(case_obj.sent, count_obj.sent)
+        self.assertEqual(case_obj.processed, count_obj.processed)
 
         self.assertEqual(ReceiptLog.objects.all().count(), 1)
         log = ReceiptLog.objects.latest('id')
@@ -194,8 +194,8 @@ class TestProcessReceipts(TestCase):
         count_obj = CourtEmailCount.objects.get(pk=self.email_count.id)
 
         self.assertTrue(case_obj.has_action("receipt_failure"))
-        self.assertEquals(case_obj.sent, count_obj.sent)
-        self.assertEquals(case_obj.processed, count_obj.processed)
+        self.assertEqual(case_obj.sent, count_obj.sent)
+        self.assertEqual(case_obj.processed, count_obj.processed)
 
         self.assertEqual(ReceiptLog.objects.all().count(), 1)
         log = ReceiptLog.objects.latest('id')
@@ -262,8 +262,8 @@ class TestProcessReceipts(TestCase):
         count_obj = CourtEmailCount.objects.get(pk=self.email_count.id)
 
         self.assertTrue(case_obj.has_action("receipt_success"))
-        self.assertEquals(case_obj.sent, count_obj.sent)
-        self.assertEquals(case_obj.processed, count_obj.processed)
+        self.assertEqual(case_obj.sent, count_obj.sent)
+        self.assertEqual(case_obj.processed, count_obj.processed)
 
         log = ReceiptLog.objects.latest('id')
         self.assertEqual(log.total_emails, 1)
@@ -356,19 +356,19 @@ class WebHookTestCase(TestCase):
 
         ReceiptWebhook.as_view()(request)
 
-        self.assertEquals(CourtEmailCount.objects.all().count(), 1)
+        self.assertEqual(CourtEmailCount.objects.all().count(), 1)
 
-        self.assertEquals(ReceiptLog.objects.all().count(), 1)
+        self.assertEqual(ReceiptLog.objects.all().count(), 1)
 
         log = ReceiptLog.objects.all()[0]
 
         case = Case.objects.get(pk=self.case.id)
 
-        self.assertEquals(case.processed, True)
-        self.assertEquals(log.total_emails, 1)
-        self.assertEquals(log.total_success, 1)
-        self.assertEquals(log.total_failed, 0)
-        self.assertEquals(log.total_errors, 0)
+        self.assertEqual(case.processed, True)
+        self.assertEqual(log.total_emails, 1)
+        self.assertEqual(log.total_success, 1)
+        self.assertEqual(log.total_failed, 0)
+        self.assertEqual(log.total_errors, 0)
 
     def test_failed_entry(self):
 
@@ -378,16 +378,16 @@ class WebHookTestCase(TestCase):
 
         ReceiptWebhook.as_view()(request)
 
-        self.assertEquals(CourtEmailCount.objects.all().count(), 1)
+        self.assertEqual(CourtEmailCount.objects.all().count(), 1)
 
-        self.assertEquals(ReceiptLog.objects.all().count(), 1)
+        self.assertEqual(ReceiptLog.objects.all().count(), 1)
 
         log = ReceiptLog.objects.all()[0]
 
-        self.assertEquals(log.total_emails, 1)
-        self.assertEquals(log.total_success, 0)
-        self.assertEquals(log.total_failed, 1)
-        self.assertEquals(log.total_errors, 0)
+        self.assertEqual(log.total_emails, 1)
+        self.assertEqual(log.total_success, 0)
+        self.assertEqual(log.total_failed, 1)
+        self.assertEqual(log.total_errors, 0)
 
     def test_errored_entry(self):
 
@@ -399,14 +399,14 @@ class WebHookTestCase(TestCase):
 
         ReceiptWebhook.as_view()(request)
 
-        self.assertEquals(ReceiptLog.objects.all().count(), 1)
+        self.assertEqual(ReceiptLog.objects.all().count(), 1)
 
         log = ReceiptLog.objects.all()[0]
 
-        self.assertEquals(log.total_emails, 1)
-        self.assertEquals(log.total_success, 0)
-        self.assertEquals(log.total_failed, 0)
-        self.assertEquals(log.total_errors, 1)
+        self.assertEqual(log.total_emails, 1)
+        self.assertEqual(log.total_success, 0)
+        self.assertEqual(log.total_failed, 0)
+        self.assertEqual(log.total_errors, 1)
 
     @override_settings(RECEIPT_HEADER_FRAGMENT_CHECK="MUSTHAVETHISTEXT")
     def test_missing_header(self):
@@ -415,14 +415,14 @@ class WebHookTestCase(TestCase):
 
         ReceiptWebhook.as_view()(request)
 
-        self.assertEquals(ReceiptLog.objects.all().count(), 1)
+        self.assertEqual(ReceiptLog.objects.all().count(), 1)
 
         log = ReceiptLog.objects.all()[0]
 
-        self.assertEquals(log.total_emails, 1)
-        self.assertEquals(log.total_success, 0)
-        self.assertEquals(log.total_failed, 0)
-        self.assertEquals(log.total_errors, 1)
+        self.assertEqual(log.total_emails, 1)
+        self.assertEqual(log.total_success, 0)
+        self.assertEqual(log.total_failed, 0)
+        self.assertEqual(log.total_errors, 1)
 
     def test_invalid_emails(self):
 
@@ -431,11 +431,11 @@ class WebHookTestCase(TestCase):
 
         ReceiptWebhook.as_view()(request)
 
-        self.assertEquals(ReceiptLog.objects.all().count(), 1)
+        self.assertEqual(ReceiptLog.objects.all().count(), 1)
 
         log = ReceiptLog.objects.all()[0]
 
-        self.assertEquals(log.total_emails, 1)
-        self.assertEquals(log.total_success, 0)
-        self.assertEquals(log.total_failed, 0)
-        self.assertEquals(log.total_errors, 1)
+        self.assertEqual(log.total_emails, 1)
+        self.assertEqual(log.total_success, 0)
+        self.assertEqual(log.total_failed, 0)
+        self.assertEqual(log.total_errors, 1)

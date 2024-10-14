@@ -164,7 +164,7 @@ class ResultTestCase(TestCase):
 
         fines, _, _ = self.test_result1.get_offence_totals()
 
-        self.assertEquals(len(fines), 2)
+        self.assertEqual(len(fines), 2)
 
     def test_get_offence_totals_fines_wording_english(self):
 
@@ -180,7 +180,7 @@ class ResultTestCase(TestCase):
 
         fines, _, _ = self.test_result1.get_offence_totals()
 
-        self.assertEquals(fines[0], u"english words £75.00 more english")
+        self.assertEqual(fines[0], u"english words £75.00 more english")
 
     def test_get_offence_totals_fines_wording_welsh(self):
 
@@ -199,7 +199,7 @@ class ResultTestCase(TestCase):
 
         fines, _, _ = self.test_result1.get_offence_totals()
 
-        self.assertEquals(fines[0], u"I dalu costau o £75.00 welsh")
+        self.assertEqual(fines[0], u"I dalu costau o £75.00 welsh")
 
     def test_get_offence_totals_fines_wording_welsh_but_no_welsh_text(self):
 
@@ -218,7 +218,7 @@ class ResultTestCase(TestCase):
 
         fines, _, _ = self.test_result1.get_offence_totals()
 
-        self.assertEquals(fines[0], u"english words £75.00 more english")
+        self.assertEqual(fines[0], u"english words £75.00 more english")
 
     def test_get_offence_totals_fines_wording_welsh_but_whitespace_welsh_text(self):
 
@@ -237,7 +237,7 @@ class ResultTestCase(TestCase):
 
         fines, _, _ = self.test_result1.get_offence_totals()
 
-        self.assertEquals(fines[0], u"english words £75.00 more english")
+        self.assertEqual(fines[0], u"english words £75.00 more english")
 
 
     def test_get_offence_totals_endorsements(self):
@@ -258,9 +258,9 @@ class ResultTestCase(TestCase):
 
         _, endorsements, _ = self.test_result1.get_offence_totals()
 
-        self.assertEquals(len(endorsements), 2)
-        self.assertEquals(endorsements[0], "Driving record endorsed with 3 points.")
-        self.assertEquals(endorsements[1], "Driving record endorsed with 6 points.")
+        self.assertEqual(len(endorsements), 2)
+        self.assertEqual(endorsements[0], "Driving record endorsed with 3 points.")
+        self.assertEqual(endorsements[1], "Driving record endorsed with 6 points.")
 
     def test_get_offence_totals_total(self):
 
@@ -280,7 +280,7 @@ class ResultTestCase(TestCase):
 
         _, _, total = self.test_result1.get_offence_totals()
 
-        self.assertEquals(Decimal("100"), total)
+        self.assertEqual(Decimal("100"), total)
 
 
 class ProcessResultsTestCase(TestCase):
@@ -349,8 +349,8 @@ class ProcessResultsTestCase(TestCase):
         self.assertTrue(result.sent)
         self.assertTrue(result.processed)
 
-        self.assertEquals(len(mail.outbox), 1)
-        self.assertEquals(mail.outbox[0].to, [self.test_case1.email])
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, [self.test_case1.email])
 
     def test_option_override_recipient(self):
 
@@ -358,8 +358,8 @@ class ProcessResultsTestCase(TestCase):
 
         self.command.handle(**self.opts)
 
-        self.assertEquals(len(mail.outbox), 1)
-        self.assertEquals(mail.outbox[0].to, ["override@xyzyzyz.com"])
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ["override@xyzyzyz.com"])
 
     def test_option_dry_run(self):
 
@@ -377,8 +377,8 @@ class ProcessResultsTestCase(TestCase):
 
         self.command.handle(**self.opts)
 
-        self.assertEquals(len(mail.outbox), 1)
-        self.assertEquals(mail.outbox[0].to, ["statusemail@testxyz.com"])
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ["statusemail@testxyz.com"])
 
     @patch('os.environ.get')
     def test_subject_includes_env(self, mock_env):
@@ -387,7 +387,7 @@ class ProcessResultsTestCase(TestCase):
 
         mock_env.return_value = 'unit_test'
         self.command.handle(**self.opts)
-        self.assertEquals(mail.outbox[0].subject, "[unit_test] make-a-plea resulting status email")
+        self.assertEqual(mail.outbox[0].subject, "[unit_test] make-a-plea resulting status email")
 
     def test_no_supplied_email_no_result(self):
 
@@ -434,7 +434,7 @@ class ProcessResultsTestCase(TestCase):
 
         result = Result.objects.get(pk=self.test_result1.id)
 
-        self.assertEquals(mail.outbox, [])
+        self.assertEqual(mail.outbox, [])
 
     def test_result_is_marked_sent_and_processed(self):
         assert not self.test_result1.sent

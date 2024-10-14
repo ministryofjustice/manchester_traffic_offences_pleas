@@ -176,7 +176,7 @@ class CaseAPICallTestCase(APITestCase):
         self.assertEqual(
             json.loads(response.content.decode())["non_field_errors"][0],
             "case has no offences")
-        self.assertEquals(Case.objects.count(), 0)
+        self.assertEqual(Case.objects.count(), 0)
 
     def test_submission_with_first_non_listed_offence_code_fails(self):
         data = deepcopy(self.test_data)

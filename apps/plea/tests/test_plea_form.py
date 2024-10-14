@@ -1636,7 +1636,7 @@ class TestMultiPleaForms(TestCaseBase):
                    "plea_made_by": "Defendant"},
                   request_context)
 
-        self.assertEquals(fake_session["case"]["contact_deadline"], hearing_date)
+        self.assertEqual(fake_session["case"]["contact_deadline"], hearing_date)
 
     def test_sjp_contact_deadline_is_28_days_after_posting_date(self):
         fake_session = {
@@ -1659,7 +1659,7 @@ class TestMultiPleaForms(TestCaseBase):
                    "plea_made_by": "Defendant"},
                   request_context)
 
-        self.assertEquals(fake_session["case"]["contact_deadline"], contact_deadline)
+        self.assertEqual(fake_session["case"]["contact_deadline"], contact_deadline)
 
     def test_case_stage_urn_in_session(self):
 
@@ -2124,8 +2124,8 @@ class TestYourExpensesStage(TestCaseBase):
 
         response = form.render(self.get_request_mock())
 
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(form.current_stage.form.errors), 1)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(form.current_stage.form.errors), 1)
         self.assertIn("hardship_details", form.current_stage.form.errors)
 
     def test_household_expenses_form_requires_validation(self):
@@ -2138,8 +2138,8 @@ class TestYourExpensesStage(TestCaseBase):
 
         response = form.render(self.get_request_mock())
 
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(form.current_stage.form.errors), 1)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(form.current_stage.form.errors), 1)
         self.assertIn("other_bill_payers", form.current_stage.form.errors)
 
     def test_other_expenses_form_requires_validation(self):
@@ -2152,8 +2152,8 @@ class TestYourExpensesStage(TestCaseBase):
 
         response = form.render(self.get_request_mock())
 
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(form.current_stage.form.errors), 1)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(form.current_stage.form.errors), 1)
         self.assertIn("other_not_listed", form.current_stage.form.errors)
 
     def test_other_expenses_form_requires_validation_not_listed(self):
@@ -2166,8 +2166,8 @@ class TestYourExpensesStage(TestCaseBase):
 
         response = form.render(self.get_request_mock())
 
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(form.current_stage.form.errors), 2)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(form.current_stage.form.errors), 2)
         self.assertIn("other_not_listed_details", form.current_stage.form.errors)
         self.assertIn("other_not_listed_amount", form.current_stage.form.errors)
 

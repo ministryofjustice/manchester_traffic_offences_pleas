@@ -124,7 +124,7 @@ class FeedbackFormTestCase(TestCase):
 
         form.render(self.get_request_mock())
 
-        self.assertEquals(len(mail.outbox), 1)
+        self.assertEqual(len(mail.outbox), 1)
 
     def test_email_is_not_sent_if_user_does_not_provide_a_comment(self):
 
@@ -135,7 +135,7 @@ class FeedbackFormTestCase(TestCase):
 
         form.render(self.get_request_mock())
 
-        self.assertEquals(len(mail.outbox), 0)
+        self.assertEqual(len(mail.outbox), 0)
 
     def test_comments_stage_redirects_to_complete(self):
         session_data = {
@@ -195,7 +195,7 @@ class FeedbackFormTestCase(TestCase):
         view = FeedbackViews()
         view.get(fake_request, stage="service")
 
-        self.assertEquals(view.storage["feedback_redirect"], "/terms-and-conditions-and-privacy-policy/")
+        self.assertEqual(view.storage["feedback_redirect"], "/terms-and-conditions-and-privacy-policy/")
 
     def test_redirect_is_set_to_home_for_complete_stage(self):
         fake_request = self.get_request_mock("/feedback/?next=plea_form_step&stage=complete")
@@ -203,7 +203,7 @@ class FeedbackFormTestCase(TestCase):
         view = FeedbackViews()
         view.get(fake_request, stage="complete")
 
-        self.assertEquals(view.storage["feedback_redirect"], "/")
+        self.assertEqual(view.storage["feedback_redirect"], "/")
 
     def test_complete_stage_redirects_to_start_if_no_session_feedback_data(self):
         form = FeedbackForms({}, "complete")
@@ -216,7 +216,7 @@ class FeedbackFormTestCase(TestCase):
         form = FeedbackForms(self.complete_session_data, "comments")
         form.save({}, self.request_context)
 
-        self.assertEquals(UserRating.objects.all().count(), 1)
+        self.assertEqual(UserRating.objects.all().count(), 1)
 
 
 class UserRatingTestCase(TestCase):
@@ -226,43 +226,43 @@ class UserRatingTestCase(TestCase):
         # Only Service rating
         UserRating.objects.record(5, "")
 
-        self.assertEquals(UserRating.objects.all().count(), 1)
-        self.assertEquals(UserRatingAggregate.objects.all().count(), 1)
+        self.assertEqual(UserRating.objects.all().count(), 1)
+        self.assertEqual(UserRatingAggregate.objects.all().count(), 1)
 
         rating = UserRating.objects.all()[0]
         aggregate = UserRatingAggregate.objects.all()[0]
 
-        self.assertEquals(rating.service_rating, 5)
-        self.assertEquals(aggregate.rating_1, 0)
-        self.assertEquals(aggregate.rating_2, 0)
-        self.assertEquals(aggregate.rating_3, 0)
-        self.assertEquals(aggregate.rating_4, 0)
-        self.assertEquals(aggregate.rating_5, 1)
-        self.assertEquals(aggregate.total, 1)
+        self.assertEqual(rating.service_rating, 5)
+        self.assertEqual(aggregate.rating_1, 0)
+        self.assertEqual(aggregate.rating_2, 0)
+        self.assertEqual(aggregate.rating_3, 0)
+        self.assertEqual(aggregate.rating_4, 0)
+        self.assertEqual(aggregate.rating_5, 1)
+        self.assertEqual(aggregate.total, 1)
 
         # Include Call Centre rating
         UserRating.objects.record(1, 3)
 
-        self.assertEquals(UserRating.objects.all().count(), 2)
-        self.assertEquals(UserRatingAggregate.objects.all().count(), 2)
+        self.assertEqual(UserRating.objects.all().count(), 2)
+        self.assertEqual(UserRatingAggregate.objects.all().count(), 2)
 
         aggregate = UserRatingAggregate.objects.all()[0]
 
-        self.assertEquals(aggregate.rating_1, 1)
-        self.assertEquals(aggregate.rating_2, 0)
-        self.assertEquals(aggregate.rating_3, 0)
-        self.assertEquals(aggregate.rating_4, 0)
-        self.assertEquals(aggregate.rating_5, 1)
-        self.assertEquals(aggregate.total, 2)
+        self.assertEqual(aggregate.rating_1, 1)
+        self.assertEqual(aggregate.rating_2, 0)
+        self.assertEqual(aggregate.rating_3, 0)
+        self.assertEqual(aggregate.rating_4, 0)
+        self.assertEqual(aggregate.rating_5, 1)
+        self.assertEqual(aggregate.total, 2)
 
         call_centre_aggregate = UserRatingAggregate.objects.all()[1]
 
-        self.assertEquals(call_centre_aggregate.rating_1, 0)
-        self.assertEquals(call_centre_aggregate.rating_2, 0)
-        self.assertEquals(call_centre_aggregate.rating_3, 1)
-        self.assertEquals(call_centre_aggregate.rating_4, 0)
-        self.assertEquals(call_centre_aggregate.rating_5, 0)
-        self.assertEquals(call_centre_aggregate.total, 1)
+        self.assertEqual(call_centre_aggregate.rating_1, 0)
+        self.assertEqual(call_centre_aggregate.rating_2, 0)
+        self.assertEqual(call_centre_aggregate.rating_3, 1)
+        self.assertEqual(call_centre_aggregate.rating_4, 0)
+        self.assertEqual(call_centre_aggregate.rating_5, 0)
+        self.assertEqual(call_centre_aggregate.total, 1)
 
     def test_submits_to_correct_week(self):
 
@@ -275,20 +275,20 @@ class UserRatingTestCase(TestCase):
 
         UserRatingAggregate.objects.update_weekly_aggregate(rating_obj)
 
-        self.assertEquals(UserRatingAggregate.objects.all().count(), 2)
+        self.assertEqual(UserRatingAggregate.objects.all().count(), 2)
 
         week1, week2 = UserRatingAggregate.objects.all()
 
-        self.assertEquals(week1.rating_1, 1)
-        self.assertEquals(week1.rating_2, 0)
-        self.assertEquals(week1.rating_3, 0)
-        self.assertEquals(week1.rating_4, 0)
-        self.assertEquals(week1.rating_5, 1)
-        self.assertEquals(week1.total, 2)
+        self.assertEqual(week1.rating_1, 1)
+        self.assertEqual(week1.rating_2, 0)
+        self.assertEqual(week1.rating_3, 0)
+        self.assertEqual(week1.rating_4, 0)
+        self.assertEqual(week1.rating_5, 1)
+        self.assertEqual(week1.total, 2)
 
-        self.assertEquals(week2.rating_1, 0)
-        self.assertEquals(week2.rating_2, 0)
-        self.assertEquals(week2.rating_3, 1)
-        self.assertEquals(week2.rating_4, 0)
-        self.assertEquals(week2.rating_5, 0)
-        self.assertEquals(week2.total, 1)
+        self.assertEqual(week2.rating_1, 0)
+        self.assertEqual(week2.rating_2, 0)
+        self.assertEqual(week2.rating_3, 1)
+        self.assertEqual(week2.rating_4, 0)
+        self.assertEqual(week2.rating_5, 0)
+        self.assertEqual(week2.total, 1)
