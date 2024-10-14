@@ -157,7 +157,7 @@ class TestAdminPanel(TestCase):
 
     def create_user(self):
         self.username = "test_admin"
-        self.password = get_random_string()
+        self.password = get_random_string(10)
         user, created = User.objects.get_or_create(username=self.username)
         user.set_password(self.password)
         user.is_staff = True
