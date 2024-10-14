@@ -27,7 +27,7 @@ jobs:
         environment:
           POSTGRES_DB: manchester_traffic_offences
           POSTGRES_USER: postgres
-          POSTGRES_PASS: password
+          POSTGRES_PASSWORD: password
           POSTGRES_PORT: 5432
           POSTGRES_HOST: localhost
 
@@ -112,7 +112,6 @@ jobs:
           name: Run migrate, compilemessages
           command: |
             . venv/bin/activate
-            sudo service postgresql status
             python manage.py migrate --noinput
             python manage.py compilemessages
 
