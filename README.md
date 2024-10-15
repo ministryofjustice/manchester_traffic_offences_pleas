@@ -131,3 +131,4 @@ It may then be necessary to manually find strings marked as fuzzy, and check the
 Once the file has been updated, it needs to be submitted to the relevant translation team, who should then provide an updated Welsh language .po file. Replace the existing `/conf/locale/cy/LC_MESSAGES/django.po` with this file, then compile the messages:
 
     ./manage.py compilemessages
+
