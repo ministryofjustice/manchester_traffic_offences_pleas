@@ -47,7 +47,7 @@ class AdminLocaleURLMiddleware(object):
             request.LANGUAGE_CODE = request.LANG
 
 
-class BadRequestExceptionMiddleware(object):
+class BadRequestExceptionMiddleware():
 
     def process_exception(self, request, e):
         if isinstance(e, BadRequestException):
