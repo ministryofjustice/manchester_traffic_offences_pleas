@@ -211,8 +211,7 @@ INSTALLED_APPS = [
     'nested_admin',
     'raven.contrib.django.raven_compat',
     'storages',
-    'django_components',
-    'django_components.safer_staticfiles'
+    'django_components'
 ]
 
 # A sample logging configuration. The only tangible logging
