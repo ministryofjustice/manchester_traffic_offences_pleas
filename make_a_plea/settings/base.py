@@ -191,7 +191,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.sites',
-    'django.contrib.staticfiles',
+    # 'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django.contrib.postgres',
     'django_extensions',
@@ -210,7 +210,9 @@ INSTALLED_APPS = [
     'django_premailer',
     'nested_admin',
     'raven.contrib.django.raven_compat',
-    'storages'
+    'storages',
+    'django_components',
+    'django_components.safer_staticfiles'
 ]
 
 # A sample logging configuration. The only tangible logging
