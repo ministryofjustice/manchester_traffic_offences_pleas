@@ -9,10 +9,8 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'django.contrib.sessions',
     'django.contrib.sites',
-    # 'django.contrib.staticfiles',
+    'django.contrib.staticfiles',
     'django_extensions',
-    'django_components',
-    'django_components.safer_staticfiles',
     'rest_framework',
     'reports'
 ]
