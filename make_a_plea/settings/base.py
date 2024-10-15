@@ -158,9 +158,7 @@ MIDDLEWARE = [
     'make_a_plea.middleware.AdminLocaleURLMiddleware',
     'make_a_plea.middleware.TimeoutRedirectMiddleware',
     'make_a_plea.middleware.BadRequestExceptionMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
-    'axes.middleware.FailedLoginMiddleware',
-    'axes.middleware.AxesMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware'
 ]
 
 AUTHENTICATION_BACKENDS = [
