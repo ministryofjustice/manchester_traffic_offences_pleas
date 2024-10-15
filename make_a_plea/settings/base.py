@@ -15,6 +15,8 @@ root = lambda *x: join(abspath(PROJECT_ROOT), *x)
 DEBUG = True
 template_DEBUG = DEBUG
 
+BASE_DIR = dirname(dirname(abspath(__file__)))
+
 ADMINS = (
     ('[DEV] HMCTS Reform Sustaining Support', 'sustainingteamdev@hmcts.net'),
 )
