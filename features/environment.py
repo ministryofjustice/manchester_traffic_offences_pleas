@@ -3,6 +3,7 @@ from behaving.web.steps import *
 from behaving.mail.steps import *
 from behaving.personas.steps import *
 from selenium import webdriver
+from splinter import Browser
 import os
 
 PERSONAS = {
@@ -68,6 +69,8 @@ def before_all(context):
             chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument("--headless")
             context.browser_args = {'options': chrome_options}
+        else:
+            context.browser_args = {}
 
     context.base_url = config['base_url']
 
@@ -97,6 +100,8 @@ def before_scenario(context, scenario):
         Given a browser
         And "John" as the persona
     ''')
+    with Browser('chrome', **context.browser_args) as browser:
+        context.browser = browser
 
 def after_scenario(context, scenario):
     benv.after_scenario(context, scenario)
