@@ -69,8 +69,6 @@ def before_all(context):
             chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument("--headless")
             context.browser_args = {'options': chrome_options}
-        else:
-            context.browser_args = {}
 
     context.base_url = config['base_url']
 
@@ -95,13 +93,13 @@ def after_feature(context, feature):
 
 def before_scenario(context, scenario):
     benv.before_scenario(context, scenario)
-    context.personas = PERSONAS
-    context.execute_steps(u'''
-        Given a browser
-        And "John" as the persona
-    ''')
     with Browser('chrome', **context.browser_args) as browser:
         context.browser = browser
+        context.personas = PERSONAS
+        context.execute_steps(u'''
+            Given a browser
+            And "John" as the persona
+        ''')
 
 def after_scenario(context, scenario):
     benv.after_scenario(context, scenario)
