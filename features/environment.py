@@ -99,4 +99,4 @@ def after_scenario(context, scenario):
 
 @given(u'a browser')
 def step_impl(context):
-    context.browser = webdriver.Chrome(options=context.browser_args['options'])
+    context.browser = webdriver.Chrome(options=context.browser_args['options'], executable_path=context.browser_args['executable_path'])
