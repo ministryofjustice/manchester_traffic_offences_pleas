@@ -72,7 +72,11 @@ def before_all(context):
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument( "--remote-debugging-pipe" )
         # chrome_options.add_argument("--remote-debugging-port=9222")
-        context.browser_args = {'options': chrome_options}
+        chrome_driver_path = "/usr/local/bin/chromedriver"
+        context.browser_args = {
+            'options': chrome_options,
+            'executable_path': chrome_driver_path
+        }
 
     context.base_url = config['base_url']
     context.URNs = URNs
