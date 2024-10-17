@@ -2,6 +2,7 @@ from behave import given
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 import resource
 import os
 
@@ -66,17 +67,19 @@ def before_all(context):
         context.default_browser = 'chrome'
         context.single_browser = True
         chrome_options = Options()
-        chrome_options.binary_location = '/usr/bin/google-chrome'
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument( "--remote-debugging-pipe" )
-        # chrome_options.add_argument("--remote-debugging-port=9222")
-        chrome_driver_path = "/usr/local/bin/chromedriver"
+        chrome_options.add_argument("--window-size=1920,1080")
+        chrome_options.add_argument("--disable-extensions")
+        chrome_options.add_argument("--proxy-server='direct://'")
+        chrome_options.add_argument("--proxy-bypass-list=*")
+        chrome_options.add_argument("--start-maximized")
+        chrome_options.add_argument("--disable-setuid-sandbox")
         context.browser_args = {
             'options': chrome_options,
-            'service': Service(chrome_driver_path)
+            'service': Service(ChromeDriverManager().install())
         }
 
     context.base_url = config['base_url']
@@ -100,4 +103,4 @@ def after_scenario(context, scenario):
 
 @given(u'a browser')
 def step_impl(context):
-    context.browser = webdriver.Chrome(options=context.browser_args['options'], service=context.browser_args['service'])
+    context.browser = webdriver.Chrome(**context.browser_args)
