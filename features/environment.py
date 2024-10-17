@@ -77,9 +77,12 @@ def before_all(context):
         chrome_options.add_argument("--proxy-bypass-list=*")
         chrome_options.add_argument("--start-maximized")
         chrome_options.add_argument("--disable-setuid-sandbox")
+        chrome_options.add_argument("--remote-debugging-port=9222")
+        chrome_options.binary_location = "/usr/bin/google-chrome-stable"
+        service = Service(ChromeDriverManager().install())
         context.browser_args = {
             'options': chrome_options,
-            'service': Service(ChromeDriverManager().install())
+            'service': service
         }
 
     context.base_url = config['base_url']
@@ -104,3 +107,4 @@ def after_scenario(context, scenario):
 @given(u'a browser')
 def step_impl(context):
     context.browser = webdriver.Chrome(**context.browser_args)
+    context.browser.implicitly_wait(10)  # Wait up to 10 seconds for elements to appear
