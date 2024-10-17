@@ -107,4 +107,4 @@ def after_scenario(context, scenario):
 
 @given(u'a browser')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Given a browser')
+    context.browser = webdriver.Chrome(options=context.browser_args['options'])
