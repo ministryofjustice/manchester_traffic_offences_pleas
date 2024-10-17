@@ -2,7 +2,7 @@ from behaving import environment as benv
 from behaving.web.steps import *
 from behaving.mail.steps import *
 from behaving.personas.steps import *
-from selenium import webdriver
+from selenium import webdriver, Options
 from splinter import Browser
 import os
 
@@ -66,7 +66,7 @@ def before_all(context):
         context.default_browser = 'chrome'
         context.single_browser = True
         # if config['headless']:
-        chrome_options = webdriver.ChromeOptions()
+        chrome_options = Options()
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
