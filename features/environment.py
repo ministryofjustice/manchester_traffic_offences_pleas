@@ -1,10 +1,6 @@
 from behaving import environment as benv
-from behaving.web.steps import *
-from behaving.mail.steps import *
-from behaving.personas.steps import *
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from splinter import Browser
 import os
 
 PERSONAS = {
