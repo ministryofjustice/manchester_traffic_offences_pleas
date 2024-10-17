@@ -49,6 +49,7 @@ config = {
 
 def before_all(context):
     resource.setrlimit(resource.RLIMIT_NOFILE, (4096, 4096))
+    context.base_url = "http://localhost:8000"
     mail_dir = '/tmp/mailmock'
     context.mail_path = '/tmp/mailmock'
     if not os.path.exists(mail_dir):
