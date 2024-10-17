@@ -65,16 +65,13 @@ def before_all(context):
     else:
         context.default_browser = 'chrome'
         context.single_browser = True
-        if config['headless']:
-            chrome_options = webdriver.Chrome()
-            chrome_options.add_argument("--headless")
-            chrome_options.add_argument("--no-sandbox")
-            chrome_options.add_argument("--disable-dev-shm-usage")
-            chrome_options.add_argument("--disable-gpu")
-            chrome_options.add_argument("--window-size=1920x1080")
-            context.browser_args = {'options': chrome_options}
-        else:
-            context.browser_args = {}
+        # if config['headless']:
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        context.browser_args = {'options': chrome_options}
+        webdriver.Chrome('/usr/local/bin/chromedriver', options=chrome_options)
 
     context.base_url = config['base_url']
     context.URNs = URNs
