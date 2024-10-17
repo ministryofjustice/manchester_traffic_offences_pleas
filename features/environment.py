@@ -78,7 +78,7 @@ def before_all(context):
         chrome_options.add_argument("--start-maximized")
         chrome_options.add_argument("--disable-setuid-sandbox")
         chrome_options.add_argument("--remote-debugging-port=9222")
-        chrome_options.binary_location = "/usr/bin/google-chrome-stable"
+        chrome_options.binary_location = "/usr/bin/google-chrome"
         service = Service(ChromeDriverManager().install())
         context.browser_args = {
             'options': chrome_options,
