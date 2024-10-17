@@ -54,7 +54,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
+
       - run:
           name: Set up Chrome
           command: |
