@@ -95,7 +95,7 @@ def after_feature(context, feature):
 
 def before_scenario(context, scenario):
     benv.before_scenario(context, scenario)
-    with Browser('chrome', options=context.browser_args['options']) as browser:
+    with Browser('chrome', options=context.browser_args['chrome_options']) as browser:
         context.browser = browser
         context.personas = PERSONAS
         context.execute_steps(u'''
