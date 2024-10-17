@@ -93,6 +93,12 @@ jobs:
             sudo ln -s ~/chrome/chrome /usr/bin/google-chrome
             sudo chmod +x /usr/bin/google-chrome
             sudo rm ~/chrome-linux64.zip
+            CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+            wget -N "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -P ~/
+            unzip ~/chromedriver_linux64.zip -d ~/
+            sudo mv ~/chromedriver /usr/local/bin/chromedriver
+            sudo chmod +x /usr/local/bin/chromedriver
+            sudo rm ~/chromedriver_linux64.zip
 
       - run:
           name: Install python dependencies
