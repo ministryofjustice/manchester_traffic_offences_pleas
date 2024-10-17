@@ -105,7 +105,7 @@ jobs:
             pip install --upgrade webdriver-manager
             pip install pip==21.3.1
             pip install -r requirements/testing.txt
-            pip install splinter==0.21.0 selenium==4.25.0
+            pip install selenium==4.25.0
 
       - run:
           name: Run migrate, compilemessages
