@@ -70,7 +70,7 @@ def before_all(context):
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
-        context.browser_args = {'options': chrome_options}
+        # context.browser_args = {'options': chrome_options}
         webdriver.Chrome('/usr/local/bin/chromedriver', options=chrome_options)
 
     context.base_url = config['base_url']
