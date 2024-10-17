@@ -2,7 +2,8 @@ from behaving import environment as benv
 from behaving.web.steps import *
 from behaving.mail.steps import *
 from behaving.personas.steps import *
-from selenium import webdriver, Options
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from splinter import Browser
 import os
 
@@ -104,4 +105,4 @@ def before_scenario(context, scenario):
 
 def after_scenario(context, scenario):
     benv.after_scenario(context, scenario)
-    context.browser.quit()  # Ensure the browser is closed after each scenario
+    context.browser.quit()
