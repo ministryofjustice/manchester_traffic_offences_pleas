@@ -98,12 +98,15 @@ def before_scenario(context, scenario):
     context.personas = PERSONAS
     context.execute_steps(u'''
         Given a browser
-        And "John" as the persona
     ''')
 
 def after_scenario(context, scenario):
     if hasattr(context, 'browser'):
         context.browser.quit()
+
+@given(u'"John" as the persona')
+def step_impl(context):
+    context.persona = context.personas['John']
 
 @given(u'a browser')
 def step_impl(context):
