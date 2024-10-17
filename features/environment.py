@@ -1,4 +1,4 @@
-from behave import given, when, then, before_all, after_all, before_scenario, after_scenario
+from behave import given
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import resource
