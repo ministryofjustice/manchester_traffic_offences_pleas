@@ -1,3 +1,8 @@
+from behave import when
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 @given(u'I have validated a personal URN')
 def step_impl(context):
     context.execute_steps(u'''
@@ -55,3 +60,35 @@ def step_impl(context):
         When I choose no hardship
         And I press "Continue"
     ''')
+
+@when(u'I visit "{url}"')
+def step_impl(context, url):
+    full_url = context.base_url + url
+    context.browser.get(full_url)
+
+@when(u'I press "{button_text}"')
+def step_impl(context, button_text):
+    button = WebDriverWait(context.browser, 10).until(
+        EC.element_to_be_clickable((By.XPATH, f"//button[contains(text(), '{button_text}')]"))
+    )
+    button.click()
+
+@then(u'I should see "{text}"')
+def step_impl(context, text):
+    WebDriverWait(context.browser, 10).until(
+        EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{text}')]"))
+    )
+
+@then(u'I should not see "{text}"')
+def step_impl(context, text):
+    assert context.browser.find_elements(By.XPATH, f"//*[contains(text(), '{text}')]") == []
+
+@when(u'I fill in "{field_name}" with "{value}"')
+def step_impl(context, field_name, value):
+    field = context.browser.find_element(By.ID, f"id_{field_name}")
+    field.clear()
+    field.send_keys(value)
+
+@then(u'I should not see an element with id "{element_id}"')
+def step_impl(context, element_id):
+    assert context.browser.find_elements(By.ID, element_id) == []
