@@ -2,6 +2,7 @@ from behaving import environment as benv
 from behave import given
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+import resource
 import os
 
 PERSONAS = {
@@ -42,11 +43,12 @@ URNREGIONs = {
 # override with -Dkey=value
 config = {
     'base_url': 'http://127.0.0.1:8000',
-    'headless': False,
+    'headless': True,
     'remote': False,
 }
 
 def before_all(context):
+    resource.setrlimit(resource.RLIMIT_NOFILE, (4096, 4096))
     mail_dir = '/tmp/mailmock'
     context.mail_path = '/tmp/mailmock'
     if not os.path.exists(mail_dir):
@@ -68,6 +70,8 @@ def before_all(context):
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("--remote-debugging-port=9222")
         context.browser_args = {'options': chrome_options}
         # webdriver.Chrome('/usr/local/bin/chromedriver', options=chrome_options)
 

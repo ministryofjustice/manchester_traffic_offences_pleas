@@ -5,6 +5,14 @@ orbs:
   aws-ecr: circleci/aws-ecr@8.2.1
   kubernetes: circleci/kubernetes@1.3.1
 
+executors:
+  chrome-executor:
+    docker:
+      - image: cimg/browser:chrome
+  python-executor:
+    docker:
+      - image: cimg/python:3.9
+
 jobs:
   build:
     parameters:
