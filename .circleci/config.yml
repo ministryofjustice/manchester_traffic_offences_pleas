@@ -59,7 +59,7 @@ jobs:
           name: Set up Chrome
           command: |
             google-chrome --version
-            chromedriver --version
+
       - when:
           condition:
             equal: [ DEV, << parameters.env_name >> ]
