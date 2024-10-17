@@ -66,14 +66,14 @@ def before_all(context):
         context.default_browser = 'chrome'
         context.single_browser = True
         if config['headless']:
-            chrome_options = webdriver.ChromeOptions()
+            chrome_options = webdriver.Chrome()
             chrome_options.add_argument("--headless")
             context.browser_args = {'options': chrome_options}
+        else:
+            context.browser_args = {}
 
     context.base_url = config['base_url']
-
     context.URNs = URNs
-
     context.URNREGIONs = URNREGIONs
 
     benv.before_all(context)
@@ -103,3 +103,4 @@ def before_scenario(context, scenario):
 
 def after_scenario(context, scenario):
     benv.after_scenario(context, scenario)
+    context.browser.quit()  # Ensure the browser is closed after each scenario
