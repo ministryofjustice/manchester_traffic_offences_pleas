@@ -9,8 +9,6 @@ executors:
   chrome-executor:
     docker:
       - image: cimg/browser:chrome
-  python-executor:
-    docker:
       - image: cimg/python:3.9
 
 jobs:
@@ -49,7 +47,7 @@ jobs:
       #     POSTGRES_PORT: 5432
       #     POSTGRES_HOST: db
 
-    executor: aws-cli/default
+    executor: chrome-executor
 
     steps:
       - checkout
