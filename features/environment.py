@@ -67,11 +67,11 @@ def before_all(context):
         context.default_browser = 'chrome'
         context.single_browser = True
         # if config['headless']:
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        context.browser_args = {'options': chrome_options}
+        # chrome_options = Options()
+        # chrome_options.add_argument("--headless")
+        # chrome_options.add_argument("--no-sandbox")
+        # chrome_options.add_argument("--disable-dev-shm-usage")
+        # context.browser_args = {'options': chrome_options}
         # webdriver.Chrome('/usr/local/bin/chromedriver', options=chrome_options)
 
     context.base_url = config['base_url']
