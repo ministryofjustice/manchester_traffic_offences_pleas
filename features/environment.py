@@ -69,6 +69,7 @@ def before_all(context):
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument( "--remote-debugging-pipe" )
         # chrome_options.add_argument("--remote-debugging-port=9222")
         context.browser_args = {'options': chrome_options}
 
