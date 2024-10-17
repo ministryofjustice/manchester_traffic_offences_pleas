@@ -103,3 +103,6 @@ def after_scenario(context, scenario):
     benv.after_scenario(context, scenario)
     if hasattr(context, 'browser'):
         context.browser.quit()
+
+def step_impl(context):
+    context.browser = webdriver.Chrome(options=context.browser_args['options'])
