@@ -2,7 +2,6 @@ from behave import given
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 import resource
 import os
 
@@ -80,7 +79,8 @@ def before_all(context):
         chrome_options.add_argument("--remote-debugging-port=9222")
         chrome_options.add_argument("--remote-debugging-pipe")
         chrome_options.binary_location = "/usr/bin/google-chrome"
-        service = Service(ChromeDriverManager(version="latest").install())
+        chromedriver_path = "/usr/local/bin/chromedriver"
+        service = Service(chromedriver_path)
         context.browser_args = {
             'options': chrome_options,
             'service': service
