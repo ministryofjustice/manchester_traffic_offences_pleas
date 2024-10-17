@@ -1,6 +1,7 @@
 from behave import given
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 import resource
 import os
 
@@ -75,7 +76,7 @@ def before_all(context):
         chrome_driver_path = "/usr/local/bin/chromedriver"
         context.browser_args = {
             'options': chrome_options,
-            'executable_path': chrome_driver_path
+            'service': Service(chrome_driver_path)
         }
 
     context.base_url = config['base_url']
@@ -99,4 +100,4 @@ def after_scenario(context, scenario):
 
 @given(u'a browser')
 def step_impl(context):
-    context.browser = webdriver.Chrome(options=context.browser_args['options'], executable_path=context.browser_args['executable_path'])
+    context.browser = webdriver.Chrome(options=context.browser_args['options'], service=context.browser_args['service'])
