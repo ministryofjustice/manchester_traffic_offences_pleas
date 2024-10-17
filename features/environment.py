@@ -1,5 +1,4 @@
-from behaving import environment as benv
-from behave import given
+from behave import given, when, then, before_all, after_all, before_scenario, after_scenario
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import resource
@@ -65,7 +64,6 @@ def before_all(context):
     else:
         context.default_browser = 'chrome'
         context.single_browser = True
-        # if config['headless']:
         chrome_options = Options()
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
@@ -73,31 +71,16 @@ def before_all(context):
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--remote-debugging-port=9222")
         context.browser_args = {'options': chrome_options}
-        # webdriver.Chrome('/usr/local/bin/chromedriver', options=chrome_options)
 
     context.base_url = config['base_url']
     context.URNs = URNs
     context.URNREGIONs = URNREGIONs
 
-    benv.before_all(context)
-
-
 def after_all(context):
-    benv.after_all(context)
-
-
-def before_feature(context, feature):
-    benv.before_feature(context, feature)
-
-
-def after_feature(context, feature):
-    benv.after_feature(context, feature)
-
+    if hasattr(context, 'browser'):
+        context.browser.quit()
 
 def before_scenario(context, scenario):
-    benv.before_scenario(context, scenario)
-    # with Browser('chrome', options=context.browser_args['options']) as browser:
-    #     context.browser = browser
     context.personas = PERSONAS
     context.execute_steps(u'''
         Given a browser
@@ -105,7 +88,6 @@ def before_scenario(context, scenario):
     ''')
 
 def after_scenario(context, scenario):
-    benv.after_scenario(context, scenario)
     if hasattr(context, 'browser'):
         context.browser.quit()
 
