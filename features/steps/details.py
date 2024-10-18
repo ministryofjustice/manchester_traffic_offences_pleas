@@ -10,7 +10,10 @@ def step_impl(context):
 
 @when(u'I confirm my address as correct')
 def step_impl(context):
-    context.execute_steps(u'When I choose "True" from "correct_address"')
+    context.execute_steps(u'''
+        When I choose "True" from "correct_address"
+        And I press "Continue"
+    ''')
 
 
 @when(u'I don\'t provide National Insurance number')

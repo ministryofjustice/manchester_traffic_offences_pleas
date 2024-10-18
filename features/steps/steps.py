@@ -1,6 +1,6 @@
-from behave import when
+from behave import when, then
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 
 @given(u'I have validated a personal URN')
@@ -100,3 +100,24 @@ def step_impl(context, field_name, value):
 @then(u'I should not see an element with id "{element_id}"')
 def step_impl(context, element_id):
     assert context.browser.find_elements(By.ID, element_id) == []
+
+@when(u'I choose "{option}" from "{select_name}"')
+def step_impl(context, option, select_name):
+    select_element = context.browser.find_element(By.ID, f"id_{select_name}")
+    select = Select(select_element)
+    select.select_by_visible_text(option)
+
+@when(u'I enter my name and contact details')
+def step_impl(context):
+    context.execute_steps(u'''
+        When I fill in "first_name" with "{}"
+        And I fill in "last_name" with "{}"
+        And I fill in "email" with "{}"
+        And I fill in "contact_number" with "{}"
+        And I press "Continue"
+    '''.format(
+        context.persona['first_name'],
+        context.persona['last_name'],
+        context.persona['email'],
+        context.persona['contact_number']
+    ))
