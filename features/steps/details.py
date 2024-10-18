@@ -1,12 +1,6 @@
-@when(u'I enter my name and contact details')
-def step_impl(context):
-    context.execute_steps(u'''
-        When I fill in "first_name" with "$first_name"
-        And I fill in "last_name" with "$last_name"
-        And I fill in "contact_number" with "$contact_number"
-        And I fill in "email" with "$email"
-    ''')
-
+from behave import when
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
 
 @when(u'I confirm my address as correct')
 def step_impl(context):
@@ -15,6 +9,11 @@ def step_impl(context):
         And I press "Continue"
     ''')
 
+@when(u'I choose "{option}" from "{select_name}"')
+def step_impl(context, option, select_name):
+    select_element = context.browser.find_element(By.ID, f"id_{select_name}")
+    select = Select(select_element)
+    select.select_by_visible_text(option)
 
 @when(u'I don\'t provide National Insurance number')
 def step_impl(context):
@@ -36,7 +35,6 @@ def step_impl(context):
         And I should see "Your plea for this charge"
     ''')
 
-
 @when(u'I enter my company information')
 def step_impl(context):
     context.execute_steps(u'''
@@ -44,16 +42,13 @@ def step_impl(context):
         And I choose "$position_in_company" from "position_in_company"
     ''')
 
-
 @when(u'I choose to provide National Insurance number')
 def step_impl(context):
     context.execute_steps(u'When I choose "True" from "have_ni_number"')
 
-
 @when(u'I choose to provide UK driving licence')
 def step_impl(context):
     context.execute_steps(u'When I choose "True" from "have_driving_licence_number"')
-
 
 @when(u'I chose my address is incorrect')
 def step_impl(context):
