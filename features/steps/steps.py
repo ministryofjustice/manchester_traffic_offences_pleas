@@ -68,6 +68,7 @@ def step_impl(context, url):
     else:
         full_url = context.base_url + '/' + url.lstrip('/')
     context.browser.get(full_url)
+    print(f"Visiting URL: {full_url}")  # Add this line for debugging
 
 @when(u'I press "{button_text}"')
 def step_impl(context, button_text):
@@ -78,21 +79,17 @@ def step_impl(context, button_text):
 
 @then(u'I should see "{text}"')
 def step_impl(context, text):
-    # Escape single quotes in the text
-    escaped_text = text.replace("'", "\\'")
-    xpath = f"//*[contains(text(), '{escaped_text}')]"
-    WebDriverWait(context.browser, 10).until(
-        EC.presence_of_element_located((By.XPATH, xpath))
-    )
+    def text_to_be_present(driver):
+        return text in driver.page_source
+
+    WebDriverWait(context.browser, 10).until(text_to_be_present)
 
 @then(u'I should not see "{text}"')
 def step_impl(context, text):
-    # Escape single quotes in the text
-    escaped_text = text.replace("'", "\\'")
-    xpath = f"//*[contains(text(), '{escaped_text}')]"
-    WebDriverWait(context.browser, 10).until(
-        EC.invisibility_of_element_located((By.XPATH, xpath))
-    )
+    def text_not_to_be_present(driver):
+        return text not in driver.page_source
+
+    WebDriverWait(context.browser, 10).until(text_not_to_be_present)
 
 @when(u'I fill in "{field_name}" with "{value}"')
 def step_impl(context, field_name, value):
