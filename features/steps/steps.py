@@ -151,7 +151,6 @@ def step_impl(context, option, select_name):
         except TimeoutException:
             print(f"Element with name '{select_name}' not found")
             print(f"Current URL: {context.browser.current_url}")
-            print(f"Page source:\n{context.browser.page_source}")
             raise
 
         # Check if it's a select element or radio button
@@ -166,7 +165,6 @@ def step_impl(context, option, select_name):
         print(f"Error choosing option: {str(e)}")
         print(f"Option: {option}, Select Name: {select_name}")
         print(f"Current URL: {context.browser.current_url}")
-        print(f"Page source:\n{context.browser.page_source}")
         raise
 
 @when(u'I enter my name and contact details')
@@ -236,5 +234,4 @@ def step_impl(context):
     except (TimeoutException, AssertionError) as e:
         print(f"Error: {str(e)}")
         print(f"Current URL: {context.browser.current_url}")
-        print(f"Page source:\n{context.browser.page_source}")
         raise
