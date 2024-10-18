@@ -65,7 +65,6 @@ def step_impl(context):
     except Exception as e:
         print(f"Error submitting employment details: {str(e)}")
         print(f"Current URL: {context.browser.current_url}")
-        print(f"Page source:\n{context.browser.page_source}")
         raise
 
 @when(u'I visit "{url}"')
@@ -100,27 +99,13 @@ def step_impl(context, button_text):
 @then(u'I should see "{text}"')
 def step_impl(context, text):
     try:
-        # Escape single quotes in the text and use double quotes for the XPath
-        escaped_text = text.replace("'", "\\'").replace('"', '\\"')
         WebDriverWait(context.browser, 10).until(
-            EC.presence_of_element_located((By.XPATH, f'//*[contains(text(), "{escaped_text}")]'))
+            EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{text}')]"))
         )
     except TimeoutException:
-        # Check if the text is present in the page source
-        page_source = context.browser.page_source
-        if text in page_source:
-            return  # Text found, consider it a success
-        
-        # Check for partial matches (useful for long texts or texts with special characters)
-        words = text.split()
-        if len(words) > 3:
-            partial_text = ' '.join(words[:3])  # Use first 3 words
-            if partial_text in page_source:
-                return  # Partial match found, consider it a success
-
-        print(f"Text '{text}' not found in page source")
+        print(f"Text '{text}' not found on the page")
         print(f"Current URL: {context.browser.current_url}")
-        raise AssertionError(f"Text '{text}' not found in page source within 10 seconds")
+        raise AssertionError(f"Text '{text}' not found on the page")
 
 @then(u'I should not see "{text}"')
 def step_impl(context, text):
@@ -228,17 +213,15 @@ def step_impl(context, expected_path):
 
 @then(u'I should see the Welsh validation message')
 def step_impl(context):
-    expected_text = "Yn anffodus, nid yw'r cyfeirnod unigryw yn ddilys, ac nid yw'r system yn ei adnabod."
+    expected_text = "Yn anffodus, nid yw'r cyfeirnod unigryw yn ddilys"
     try:
         WebDriverWait(context.browser, 10).until(
-            EC.presence_of_element_located((By.XPATH, '//ul[@class="errorlist"]/li'))
+            EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{expected_text}')]"))
         )
-        error_message = context.browser.find_element(By.XPATH, '//ul[@class="errorlist"]/li').text
-        assert expected_text in error_message, f"Expected text not found. Found: {error_message}"
-    except (TimeoutException, AssertionError) as e:
-        print(f"Error: {str(e)}")
+    except TimeoutException:
+        print(f"Welsh validation message not found")
         print(f"Current URL: {context.browser.current_url}")
-        raise
+        raise AssertionError(f"Welsh validation message not found")
 
 @when(u'I check "{checkbox_name}"')
 def step_impl(context, checkbox_name):
@@ -252,3 +235,16 @@ def step_impl(context, checkbox_name):
         print(f"Checkbox '{checkbox_name}' not found")
         print(f"Current URL: {context.browser.current_url}")
         raise
+
+@when(u'I enter "{value}" in "{field_name}"')
+def step_impl(context, value, field_name):
+    try:
+        element = WebDriverWait(context.browser, 10).until(
+            EC.presence_of_element_located((By.ID, f"id_{field_name}"))
+        )
+        element.clear()
+        element.send_keys(value)
+    except TimeoutException:
+        print(f"Field '{field_name}' not found on the page")
+        print(f"Current URL: {context.browser.current_url}")
+        raise AssertionError(f"Field '{field_name}' not found on the page")

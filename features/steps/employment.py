@@ -51,13 +51,14 @@ def step_impl(context, amount):
     # Check if the amount is present on the page
     try:
         WebDriverWait(context.browser, 10).until(
-            EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{amount}')]"))
+            EC.presence_of_element_located((By.ID, "id_pay_amount"))
         )
+        input_element = context.browser.find_element(By.ID, "id_pay_amount")
+        assert input_element.get_attribute("value") == amount, f"Expected amount '{amount}', but found '{input_element.get_attribute('value')}'"
     except TimeoutException:
-        print(f"Amount '{amount}' not found on the page")
+        print(f"Amount input field not found on the page")
         print(f"Current URL: {context.browser.current_url}")
-        print(f"Page source:\n{context.browser.page_source}")
-        raise AssertionError(f"Amount '{amount}' not found on the page")
+        raise AssertionError(f"Amount input field not found on the page")
 
 
 @then(u'I should see be asked to review my plea')
@@ -66,3 +67,14 @@ def step_impl(context):
         Then the browser's URL should be "plea/review/"
         And I should see "Review the information you've given before making your pleas."
     ''')
+
+@then(u'I should see "{text}"')
+def step_impl(context, text):
+    try:
+        WebDriverWait(context.browser, 10).until(
+            EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{text}')]"))
+        )
+    except TimeoutException:
+        print(f"Text '{text}' not found on the page")
+        print(f"Current URL: {context.browser.current_url}")
+        raise AssertionError(f"Text '{text}' not found on the page")
