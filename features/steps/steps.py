@@ -2,6 +2,7 @@ from behave import when, then
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 @given(u'I have validated a personal URN')
 def step_impl(context):
@@ -103,9 +104,23 @@ def step_impl(context, element_id):
 
 @when(u'I choose "{option}" from "{select_name}"')
 def step_impl(context, option, select_name):
-    select_element = context.browser.find_element(By.ID, f"id_{select_name}")
-    select = Select(select_element)
-    select.select_by_visible_text(option)
+    try:
+        # Wait for the element to be present
+        select_element = WebDriverWait(context.browser, 10).until(
+            EC.presence_of_element_located((By.ID, f"id_{select_name}"))
+        )
+        select = Select(select_element)
+        select.select_by_visible_text(option)
+    except TimeoutException:
+        # If the element is not found, try to find it without the "id_" prefix
+        try:
+            select_element = context.browser.find_element(By.ID, select_name)
+            select = Select(select_element)
+            select.select_by_visible_text(option)
+        except NoSuchElementException:
+            # If still not found, print the page source for debugging
+            print(f"Page source:\n{context.browser.page_source}")
+            raise
 
 @when(u'I enter my name and contact details')
 def step_impl(context):
@@ -122,3 +137,16 @@ def step_impl(context):
         persona['email'],
         persona['contact_number']
     ))
+
+@when(u'I confirm my address as correct')
+def step_impl(context):
+    try:
+        context.execute_steps(u'''
+            When I choose "True" from "correct_address"
+            And I press "Continue"
+        ''')
+    except Exception as e:
+        print(f"Error confirming address: {str(e)}")
+        print(f"Current URL: {context.browser.current_url}")
+        print(f"Page source:\n{context.browser.page_source}")
+        raise
