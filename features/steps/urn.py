@@ -80,21 +80,15 @@ def step_impl(context):
 
 @then(u'I should be asked to validate my date of birth')
 def step_impl(context):
-    context.execute_steps(u'''
-        Then the browser's URL should be "plea/your_case_continued/"
-        And I should see "Date of birth"
-        And I should not see "Postcode"
-    ''')
-
+    step_impl(context, "plea/your_case_continued/")
+    assert "Date of birth" in context.browser.page_source
+    assert "Postcode" not in context.browser.page_source
 
 @then(u'I should be asked to validate my postcode')
 def step_impl(context):
-    context.execute_steps(u'''
-        Then the browser's URL should be "plea/your_case_continued/"
-        And I should see "Postcode"
-        And I should not see "Date of birth"
-    ''')
-
+    step_impl(context, "plea/your_case_continued/")
+    assert "Postcode" in context.browser.page_source
+    assert "Date of birth" not in context.browser.page_source
 
 @when(u'I submit an invalid URN three times')
 def step_impl(context):
@@ -140,19 +134,13 @@ def step_impl(context):
 
 @then(u'I should be asked for my personal details')
 def step_impl(context):
-    context.execute_steps(u'''
-        Then the browser's URL should be "plea/your_details/"
-        And I should see "We need these in case we have to get in touch with you about your plea."
-    ''')
-
+    step_impl(context, "plea/your_details/")
+    assert "We need these in case we have to get in touch with you about your plea." in context.browser.page_source
 
 @then(u'I should be asked for my company details')
 def step_impl(context):
-    context.execute_steps(u'''
-        Then the browser's URL should be "plea/company_details/"
-        Then I should see "You can only make a plea on behalf of a company if you are a director"
-    ''')
-
+    step_impl(context, "plea/company_details/")
+    assert "You can only make a plea on behalf of a company if you are a director" in context.browser.page_source
 
 @when(u'I submit a valid URN for court finder')
 def step_impl(context):

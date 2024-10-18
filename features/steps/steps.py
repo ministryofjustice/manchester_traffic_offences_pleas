@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from urllib.parse import urlparse
 
 @given(u'I have validated a personal URN')
 def step_impl(context):
@@ -93,17 +94,16 @@ def step_impl(context, button_text):
 
 @then(u'I should see "{text}"')
 def step_impl(context, text):
-    def text_to_be_present(driver):
-        return text in driver.page_source
-
-    WebDriverWait(context.browser, 10).until(text_to_be_present)
+    try:
+        WebDriverWait(context.browser, 10).until(
+            EC.text_to_be_present_in_element((By.TAG_NAME, "body"), text)
+        )
+    except TimeoutException:
+        assert False, f"Text '{text}' not found in page source within 10 seconds"
 
 @then(u'I should not see "{text}"')
 def step_impl(context, text):
-    def text_not_to_be_present(driver):
-        return text not in driver.page_source
-
-    WebDriverWait(context.browser, 10).until(text_not_to_be_present)
+    assert text not in context.browser.page_source, f"Text '{text}' found in page source, but it shouldn't be there"
 
 @when(u'I fill in "{field_name}" with "{value}"')
 def step_impl(context, field_name, value):
@@ -182,3 +182,11 @@ def step_impl(context):
             pass
         
         raise
+
+@then(u'the browser\'s URL should be "{expected_path}"')
+def step_impl(context, expected_path):
+    current_url = context.browser.current_url
+    parsed_url = urlparse(current_url)
+    actual_path = parsed_url.path.lstrip('/')  # Remove leading slash
+    
+    assert actual_path == expected_path, f"Expected URL path to be '{expected_path}', but got '{actual_path}'"
