@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from behave import then
 
 
 @then(u'my details should match')
@@ -61,10 +62,9 @@ def step_impl(context):
 @then(u'I should receive the confirmation email')
 def step_impl(context):
     context.execute_steps(u'''
-        Then I should receive an email at "$email" with subject "Online plea submission confirmation"
-        # And I should receive an email at "$email" containing "Your online pleas have been submitted"
-    ''')
-    # the above behaving step is failing in library code
+        Then I should receive an email at "{}" with subject "Online plea submission confirmation"
+    '''.format(context.email))
+    
     persona = context.persona
     messages = context.mail.messages_for_user(persona['email'])
     text = str(messages[0])
@@ -103,3 +103,21 @@ def step_impl(context):
     assert 'Your employment status' in text
     assert 'Total weekly income' in text
 
+
+@then(u'I should receive an email at "{email}" with subject "{subject}"')
+def step_impl(context, email, subject):
+    try:
+        messages = context.mail.messages_for_user(email)
+        assert len(messages) > 0, f"No emails received for {email}"
+        
+        found_subject = False
+        for message in messages:
+            if subject in message['subject']:
+                found_subject = True
+                break
+        
+        assert found_subject, f"Email with subject '{subject}' not found for {email}"
+    except AssertionError as e:
+        print(f"Error checking email: {str(e)}")
+        print(f"Received messages: {messages}")
+        raise
