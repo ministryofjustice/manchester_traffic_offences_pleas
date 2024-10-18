@@ -1,13 +1,4 @@
 from behave import when
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import Select
-
-@when(u'I confirm my address as correct')
-def step_impl(context):
-    context.execute_steps(u'''
-        When I choose "True" from "correct_address"
-        And I press "Continue"
-    ''')
 
 @when(u'I don\'t provide National Insurance number')
 def step_impl(context):
