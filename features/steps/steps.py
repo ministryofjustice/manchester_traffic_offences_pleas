@@ -95,10 +95,10 @@ def step_impl(context, button_text):
 @then(u'I should see "{text}"')
 def step_impl(context, text):
     try:
-        # Escape single quotes in the text
-        escaped_text = text.replace("'", "\\'")
+        # Escape single quotes in the text and use double quotes for the XPath
+        escaped_text = text.replace("'", "\\'").replace('"', '\\"')
         WebDriverWait(context.browser, 10).until(
-            EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{escaped_text}')]"))
+            EC.presence_of_element_located((By.XPATH, f'//*[contains(text(), "{escaped_text}")]'))
         )
     except TimeoutException:
         # Check if it's the Welsh validation message
@@ -106,7 +106,7 @@ def step_impl(context, text):
             # Look for a partial match
             try:
                 WebDriverWait(context.browser, 10).until(
-                    EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'Yn anffodus, nid yw')]"))
+                    EC.presence_of_element_located((By.XPATH, '//*[contains(text(), "Yn anffodus, nid yw")]'))
                 )
                 return  # If found, consider it a success
             except TimeoutException:
@@ -114,6 +114,7 @@ def step_impl(context, text):
 
         print(f"Text '{text}' not found in page source")
         print(f"Current URL: {context.browser.current_url}")
+        print(f"Page source:\n{context.browser.page_source}")
         raise AssertionError(f"Text '{text}' not found in page source within 10 seconds")
 
 @then(u'I should not see "{text}"')
@@ -142,10 +143,16 @@ def step_impl(context, option, select_name):
         print(f"Choosing option: {option} from {select_name}")  # Debug print
 
         # Wait for the element to be present
-        element = WebDriverWait(context.browser, 10).until(
-            EC.presence_of_element_located((By.NAME, select_name))
-        )
-        
+        try:
+            element = WebDriverWait(context.browser, 10).until(
+                EC.presence_of_element_located((By.NAME, select_name))
+            )
+        except TimeoutException:
+            print(f"Element with name '{select_name}' not found")
+            print(f"Current URL: {context.browser.current_url}")
+            print(f"Page source:\n{context.browser.page_source}")
+            raise
+
         # Check if it's a select element or radio button
         if element.tag_name == "select":
             select = Select(element)
@@ -158,6 +165,7 @@ def step_impl(context, option, select_name):
         print(f"Error choosing option: {str(e)}")
         print(f"Option: {option}, Select Name: {select_name}")
         print(f"Current URL: {context.browser.current_url}")
+        print(f"Page source:\n{context.browser.page_source}")
         raise
 
 @when(u'I enter my name and contact details')
