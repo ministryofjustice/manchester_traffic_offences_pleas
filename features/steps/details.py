@@ -9,12 +9,6 @@ def step_impl(context):
         And I press "Continue"
     ''')
 
-@when(u'I choose "{option}" from "{select_name}"')
-def step_impl(context, option, select_name):
-    select_element = context.browser.find_element(By.ID, f"id_{select_name}")
-    select = Select(select_element)
-    select.select_by_visible_text(option)
-
 @when(u'I don\'t provide National Insurance number')
 def step_impl(context):
     context.execute_steps(u'When I choose "False" from "have_ni_number"')
