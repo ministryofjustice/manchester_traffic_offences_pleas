@@ -97,6 +97,7 @@ def after_all(context):
 
 def before_scenario(context, scenario):
     context.personas = PERSONAS
+    context.persona = context.personas['John']
     context.execute_steps(u'''
         Given a browser
     ''')

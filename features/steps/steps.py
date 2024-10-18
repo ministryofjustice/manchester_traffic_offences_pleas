@@ -109,6 +109,7 @@ def step_impl(context, option, select_name):
 
 @when(u'I enter my name and contact details')
 def step_impl(context):
+    persona = context.persona
     context.execute_steps(u'''
         When I fill in "first_name" with "{}"
         And I fill in "last_name" with "{}"
@@ -116,8 +117,8 @@ def step_impl(context):
         And I fill in "contact_number" with "{}"
         And I press "Continue"
     '''.format(
-        context.persona['first_name'],
-        context.persona['last_name'],
-        context.persona['email'],
-        context.persona['contact_number']
+        persona['first_name'],
+        persona['last_name'],
+        persona['email'],
+        persona['contact_number']
     ))
