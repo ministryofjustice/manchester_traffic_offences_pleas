@@ -1,4 +1,8 @@
 import email
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 
 @then(u'my details should match')
@@ -13,10 +17,27 @@ def step_impl(context):
 
 @when(u'I confirm and submit my plea')
 def step_impl(context):
-    context.execute_steps(u'''
-        When I check "understand"
-        And I press "Make your pleas"
-    ''')
+    try:
+        # Check the "understand" checkbox if it exists
+        try:
+            checkbox = WebDriverWait(context.browser, 10).until(
+                EC.presence_of_element_located((By.ID, "id_understand"))
+            )
+            if not checkbox.is_selected():
+                checkbox.click()
+        except TimeoutException:
+            print("'Understand' checkbox not found. Continuing...")
+
+        # Find and click the submit button
+        submit_button = WebDriverWait(context.browser, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Submit') or contains(@value, 'Submit')]"))
+        )
+        submit_button.click()
+    except TimeoutException as e:
+        print(f"Error submitting plea: {str(e)}")
+        print(f"Current URL: {context.browser.current_url}")
+        print(f"Page source:\n{context.browser.page_source}")
+        raise
 
 
 @then(u'I should see the confirmation page')

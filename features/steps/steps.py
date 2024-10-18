@@ -247,20 +247,3 @@ def step_impl(context, checkbox_name):
         print(f"Checkbox '{checkbox_name}' not found")
         print(f"Current URL: {context.browser.current_url}")
         raise
-
-@when(u'I confirm and submit my plea')
-def step_impl(context):
-    try:
-        context.execute_steps(u'When I check "understand"')
-    except Exception as e:
-        print(f"Error checking 'understand': {str(e)}")
-    
-    try:
-        submit_button = WebDriverWait(context.browser, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Submit')]"))
-        )
-        submit_button.click()
-    except TimeoutException:
-        print("Submit button not found or not clickable")
-        print(f"Current URL: {context.browser.current_url}")
-        raise
