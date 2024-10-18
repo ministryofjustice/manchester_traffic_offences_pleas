@@ -7,12 +7,22 @@ from selenium.common.exceptions import TimeoutException
 
 @then(u'my details should match')
 def step_impl(context):
-    context.execute_steps(u'''
-        Then I should see "$first_name"
-        And I should see "$last_name"
-        And I should see "$contact_number"
-        And I should see "$email"
-    ''')
+    expected_details = [
+        context.first_name,
+        context.last_name,
+        context.contact_number,
+        context.email
+    ]
+    
+    for detail in expected_details:
+        try:
+            WebDriverWait(context.browser, 10).until(
+                EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{detail}')]"))
+            )
+        except TimeoutException:
+            print(f"Detail '{detail}' not found on the page")
+            print(f"Current URL: {context.browser.current_url}")
+            raise AssertionError(f"Detail '{detail}' not found on the page")
 
 
 @when(u'I confirm and submit my plea')
@@ -30,13 +40,12 @@ def step_impl(context):
 
         # Find and click the submit button
         submit_button = WebDriverWait(context.browser, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Submit') or contains(@value, 'Submit')]"))
+            EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Submit') or contains(@value, 'Submit') or contains(@type, 'submit')]"))
         )
         submit_button.click()
     except TimeoutException as e:
         print(f"Error submitting plea: {str(e)}")
         print(f"Current URL: {context.browser.current_url}")
-        print(f"Page source:\n{context.browser.page_source}")
         raise
 
 
@@ -93,3 +102,4 @@ def step_impl(context):
     assert 'Charge 2' in text
     assert 'Your employment status' in text
     assert 'Total weekly income' in text
+
