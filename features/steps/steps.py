@@ -73,10 +73,23 @@ def step_impl(context, url):
 
 @when(u'I press "{button_text}"')
 def step_impl(context, button_text):
-    button = WebDriverWait(context.browser, 10).until(
-        EC.element_to_be_clickable((By.XPATH, f"//button[contains(text(), '{button_text}')]"))
-    )
-    button.click()
+    try:
+        # Try to find a button first
+        element = WebDriverWait(context.browser, 10).until(
+            EC.element_to_be_clickable((By.XPATH, f"//button[contains(text(), '{button_text}')]"))
+        )
+    except TimeoutException:
+        # If button is not found, try to find a link
+        try:
+            element = WebDriverWait(context.browser, 10).until(
+                EC.element_to_be_clickable((By.XPATH, f"//a[contains(text(), '{button_text}')]"))
+            )
+        except TimeoutException:
+            print(f"Neither button nor link with text '{button_text}' found")
+            print(f"Current URL: {context.browser.current_url}")
+            raise
+    
+    element.click()
 
 @then(u'I should see "{text}"')
 def step_impl(context, text):
@@ -106,21 +119,22 @@ def step_impl(context, element_id):
 def step_impl(context, option, select_name):
     try:
         # Wait for the element to be present
-        select_element = WebDriverWait(context.browser, 10).until(
-            EC.presence_of_element_located((By.ID, f"id_{select_name}"))
+        element = WebDriverWait(context.browser, 10).until(
+            EC.presence_of_element_located((By.NAME, select_name))
         )
-        select = Select(select_element)
-        select.select_by_visible_text(option)
-    except TimeoutException:
-        # If the element is not found, try to find it without the "id_" prefix
-        try:
-            select_element = context.browser.find_element(By.ID, select_name)
-            select = Select(select_element)
+        
+        # Check if it's a select element or radio button
+        if element.tag_name == "select":
+            select = Select(element)
             select.select_by_visible_text(option)
-        except NoSuchElementException:
-            # If still not found, print the page source for debugging
-            print(f"Page source:\n{context.browser.page_source}")
-            raise
+        else:
+            # Assume it's a radio button
+            radio = context.browser.find_element(By.CSS_SELECTOR, f'input[name="{select_name}"][value="{option}"]')
+            radio.click()
+    except Exception as e:
+        print(f"Error choosing option: {str(e)}")
+        print(f"Current URL: {context.browser.current_url}")
+        raise
 
 @when(u'I enter my name and contact details')
 def step_impl(context):
@@ -141,12 +155,30 @@ def step_impl(context):
 @when(u'I confirm my address as correct')
 def step_impl(context):
     try:
-        context.execute_steps(u'''
-            When I choose "True" from "correct_address"
-            And I press "Continue"
-        ''')
+        # Wait for the radio buttons to be present
+        WebDriverWait(context.browser, 10).until(
+            EC.presence_of_element_located((By.NAME, "correct_address"))
+        )
+        
+        # Select the "Yes" option
+        yes_option = context.browser.find_element(By.CSS_SELECTOR, 'input[name="correct_address"][value="True"]')
+        yes_option.click()
+        
+        # Click the "Continue" button
+        continue_button = context.browser.find_element(By.XPATH, '//button[contains(text(), "Continue")]')
+        continue_button.click()
     except Exception as e:
         print(f"Error confirming address: {str(e)}")
         print(f"Current URL: {context.browser.current_url}")
-        print(f"Page source:\n{context.browser.page_source}")
+        
+        # Additional debugging information
+        try:
+            form_errors = context.browser.find_elements(By.CLASS_NAME, "errorlist")
+            if form_errors:
+                print("Form errors found:")
+                for error in form_errors:
+                    print(error.text)
+        except:
+            pass
+        
         raise
