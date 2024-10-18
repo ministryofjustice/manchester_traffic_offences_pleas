@@ -96,10 +96,12 @@ def step_impl(context, button_text):
 def step_impl(context, text):
     try:
         WebDriverWait(context.browser, 10).until(
-            EC.text_to_be_present_in_element((By.TAG_NAME, "body"), text)
+            EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{text}')]"))
         )
     except TimeoutException:
-        assert False, f"Text '{text}' not found in page source within 10 seconds"
+        print(f"Text '{text}' not found in page source")
+        print(f"Current URL: {context.browser.current_url}")
+        raise AssertionError(f"Text '{text}' not found in page source within 10 seconds")
 
 @then(u'I should not see "{text}"')
 def step_impl(context, text):
@@ -118,6 +120,12 @@ def step_impl(context, element_id):
 @when(u'I choose "{option}" from "{select_name}"')
 def step_impl(context, option, select_name):
     try:
+        # Replace variables with actual values from context.persona
+        if option.startswith('$'):
+            option = context.persona.get(option[1:], option)
+        if select_name.startswith('$'):
+            select_name = context.persona.get(select_name[1:], select_name)
+
         # Wait for the element to be present
         element = WebDriverWait(context.browser, 10).until(
             EC.presence_of_element_located((By.NAME, select_name))
@@ -133,6 +141,7 @@ def step_impl(context, option, select_name):
             radio.click()
     except Exception as e:
         print(f"Error choosing option: {str(e)}")
+        print(f"Option: {option}, Select Name: {select_name}")
         print(f"Current URL: {context.browser.current_url}")
         raise
 
