@@ -7,10 +7,13 @@ Feature: Review and submit a plea
     And I have submitted my employment details
 
   Scenario: Submit plea with confirmation
-    # When I review my case
-    Then my details should match
+    Given I have entered my personal details
+      | first_name | last_name | email           | contact_number |
+      | John       | Doe       | john@example.com| 1234567890     |
+    And I have submitted my employment details
     When I confirm and submit my plea
-    Then I should see the confirmation page
+    Then my details should match
+    And I should see the confirmation page
 
   @local
   Scenario: Confirmation and court emails sent

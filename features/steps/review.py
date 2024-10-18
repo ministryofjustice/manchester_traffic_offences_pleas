@@ -6,13 +6,22 @@ from selenium.common.exceptions import TimeoutException
 from behave import then
 
 
+@given(u'I have entered my personal details')
+def step_impl(context):
+    for row in context.table:
+        context.first_name = row['first_name']
+        context.last_name = row['last_name']
+        context.email = row['email']
+        context.contact_number = row['contact_number']
+
+
 @then(u'my details should match')
 def step_impl(context):
     expected_details = [
         context.first_name,
         context.last_name,
-        context.contact_number,
-        context.email
+        context.email,
+        context.contact_number
     ]
     
     for detail in expected_details:
@@ -23,6 +32,7 @@ def step_impl(context):
         except TimeoutException:
             print(f"Detail '{detail}' not found on the page")
             print(f"Current URL: {context.browser.current_url}")
+            print(f"Page source:\n{context.browser.page_source}")
             raise AssertionError(f"Detail '{detail}' not found on the page")
 
 

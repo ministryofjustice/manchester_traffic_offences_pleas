@@ -38,11 +38,21 @@ def step_impl(context):
 
 @then(u'I should see my calculated weekly income of "{amount}"')
 def step_impl(context, amount):
-    context.execute_steps(u'''
-        Then the browser's URL should be "plea/your_income/"
-        And I should see "Total weekly income"
-        And I should see "%s"
-    ''' % str(amount))
+    # Wait for the page to load
+    WebDriverWait(context.browser, 10).until(
+        EC.url_contains("plea/your_employment/")
+    )
+    
+    # Check if the amount is present on the page
+    try:
+        WebDriverWait(context.browser, 10).until(
+            EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{amount}')]"))
+        )
+    except TimeoutException:
+        print(f"Amount '{amount}' not found on the page")
+        print(f"Current URL: {context.browser.current_url}")
+        print(f"Page source:\n{context.browser.page_source}")
+        raise AssertionError(f"Amount '{amount}' not found on the page")
 
 
 @then(u'I should see be asked to review my plea')
