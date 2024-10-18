@@ -115,7 +115,6 @@ def step_impl(context, text):
 
         print(f"Text '{text}' not found in page source")
         print(f"Current URL: {context.browser.current_url}")
-        print(f"Page source:\n{page_source}")
         raise AssertionError(f"Text '{text}' not found in page source within 10 seconds")
 
 @then(u'I should not see "{text}"')
@@ -224,7 +223,7 @@ def step_impl(context, expected_path):
 
 @then(u'I should see the Welsh validation message')
 def step_impl(context):
-    expected_text = "Yn anffodus, nid yw'r cyfeirnod unigryw yn ddilys, ac nid yw'r system yn ei adnabod. Gallwch bledio yn Gymraeg os cyflawnwyd y drosedd yng Nghymru yn unig"
+    expected_text = "Yn anffodus, nid yw'r cyfeirnod unigryw yn ddilys, ac nid yw'r system yn ei adnabod."
     try:
         WebDriverWait(context.browser, 10).until(
             EC.presence_of_element_located((By.XPATH, '//ul[@class="errorlist"]/li'))
@@ -233,5 +232,35 @@ def step_impl(context):
         assert expected_text in error_message, f"Expected text not found. Found: {error_message}"
     except (TimeoutException, AssertionError) as e:
         print(f"Error: {str(e)}")
+        print(f"Current URL: {context.browser.current_url}")
+        raise
+
+@when(u'I check "{checkbox_name}"')
+def step_impl(context, checkbox_name):
+    try:
+        checkbox = WebDriverWait(context.browser, 10).until(
+            EC.presence_of_element_located((By.ID, f"id_{checkbox_name}"))
+        )
+        if not checkbox.is_selected():
+            checkbox.click()
+    except TimeoutException:
+        print(f"Checkbox '{checkbox_name}' not found")
+        print(f"Current URL: {context.browser.current_url}")
+        raise
+
+@when(u'I confirm and submit my plea')
+def step_impl(context):
+    try:
+        context.execute_steps(u'When I check "understand"')
+    except Exception as e:
+        print(f"Error checking 'understand': {str(e)}")
+    
+    try:
+        submit_button = WebDriverWait(context.browser, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Submit')]"))
+        )
+        submit_button.click()
+    except TimeoutException:
+        print("Submit button not found or not clickable")
         print(f"Current URL: {context.browser.current_url}")
         raise

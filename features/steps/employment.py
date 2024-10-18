@@ -31,8 +31,9 @@ def step_impl(context):
         context.execute_steps(u'When I choose "False" from "hardship"')
     except Exception as e:
         print(f"Hardship field not found. This may be expected. Error: {str(e)}")
-        # Optionally, you can add a check here to ensure we're on the correct page
+        # Check if we're on the correct page
         assert "Your employment" in context.browser.title, "Not on the expected employment page"
+        # If we're on the correct page, we can assume the hardship field is not needed and continue
 
 
 @then(u'I should see my calculated weekly income of "{amount}"')
