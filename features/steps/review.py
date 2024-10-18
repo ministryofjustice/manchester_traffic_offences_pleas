@@ -8,11 +8,16 @@ from behave import then
 
 @given(u'I have entered my personal details')
 def step_impl(context):
-    for row in context.table:
-        context.first_name = row['first_name']
-        context.last_name = row['last_name']
-        context.email = row['email']
-        context.contact_number = row['contact_number']
+    context.execute_steps(u'''
+        When I enter "John" in "first_name"
+        And I enter "Doe" in "last_name"
+        And I enter "john.doe@example.com" in "email"
+        And I enter "1234567890" in "contact_number"
+    ''')
+    context.email = "john.doe@example.com"
+    context.first_name = "John"
+    context.last_name = "Doe"
+    context.contact_number = "1234567890"
 
 
 @then(u'my details should match')

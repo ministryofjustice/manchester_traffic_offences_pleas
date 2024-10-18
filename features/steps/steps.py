@@ -56,12 +56,17 @@ def step_impl(context):
 
 @given(u'I have submitted my employment details')
 def step_impl(context):
-    context.execute_steps(u'''
-        When I submit my employment status as "Employed"
-        And I submit my home pay amount
-        When I choose no hardship
-        And I press "Continue"
-    ''')
+    try:
+        context.execute_steps(u'''
+            When I submit my employment status as "Employed"
+            And I choose "Monthly" from "pay_period"
+            And I enter "4000" in "income"
+        ''')
+    except Exception as e:
+        print(f"Error submitting employment details: {str(e)}")
+        print(f"Current URL: {context.browser.current_url}")
+        print(f"Page source:\n{context.browser.page_source}")
+        raise
 
 @when(u'I visit "{url}"')
 def step_impl(context, url):

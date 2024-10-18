@@ -1,3 +1,8 @@
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
+
 @when(u'I submit my employment status as "{type}"')
 def step_impl(context, type):
     context.execute_steps(u'''
