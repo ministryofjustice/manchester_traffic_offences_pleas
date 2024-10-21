@@ -227,7 +227,7 @@ def step_impl(context, expected_path):
 
 @then(u'I should see the Welsh validation message')
 def step_impl(context):
-    expected_text = "Yn anffodus, nid yw'r cyfeirnod unigryw yn ddilys, ac nid yw'r system yn ei adnabod."
+    expected_text = "Yn anffodus, nid yw'r cyfeirnod unigryw yn ddilys, ac nid yw'r system yn ei adnabod. Gallwch bledio yn Gymraeg os cyflawnwyd y drosedd yng Nghymru yn unig"
     try:
         WebDriverWait(context.browser, 10).until(
             EC.presence_of_element_located((By.XPATH, '//ul[@class="errorlist"]/li'))
@@ -249,5 +249,18 @@ def step_impl(context, checkbox_name):
             checkbox.click()
     except TimeoutException:
         print(f"Checkbox '{checkbox_name}' not found")
+        print(f"Current URL: {context.browser.current_url}")
+        raise
+
+@when(u'I enter "{value}" in "{field_name}"')
+def step_impl(context, value, field_name):
+    try:
+        field = WebDriverWait(context.browser, 10).until(
+            EC.presence_of_element_located((By.ID, f"id_{field_name}"))
+        )
+        field.clear()
+        field.send_keys(value)
+    except TimeoutException:
+        print(f"Field '{field_name}' not found")
         print(f"Current URL: {context.browser.current_url}")
         raise
