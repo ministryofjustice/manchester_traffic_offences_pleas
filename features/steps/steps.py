@@ -233,7 +233,7 @@ def step_impl(context):
             EC.presence_of_element_located((By.XPATH, '//ul[@class="errorlist"]/li'))
         )
         error_message = context.browser.find_element(By.XPATH, '//ul[@class="errorlist"]/li').text
-        assert expected_text in error_message, f"Expected text not found. Found: {error_message}"
+        assert error_message == expected_text, f"Expected text not found. Found: {error_message}"
     except (TimeoutException, AssertionError) as e:
         print(f"Error: {str(e)}")
         print(f"Current URL: {context.browser.current_url}")
