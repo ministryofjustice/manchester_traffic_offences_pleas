@@ -56,7 +56,6 @@ def step_impl(context, amount):
     except TimeoutException:
         print(f"Amount '{amount}' not found on the page")
         print(f"Current URL: {context.browser.current_url}")
-        print(f"Page source:\n{context.browser.page_source}")
         raise AssertionError(f"Amount '{amount}' not found on the page")
 
 

@@ -37,7 +37,6 @@ def step_impl(context):
         except TimeoutException:
             print(f"Detail '{detail}' not found on the page")
             print(f"Current URL: {context.browser.current_url}")
-            print(f"Page source:\n{context.browser.page_source}")
             raise AssertionError(f"Detail '{detail}' not found on the page")
 
 

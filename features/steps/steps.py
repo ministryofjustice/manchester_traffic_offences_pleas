@@ -65,7 +65,6 @@ def step_impl(context):
     except Exception as e:
         print(f"Error submitting employment details: {str(e)}")
         print(f"Current URL: {context.browser.current_url}")
-        print(f"Page source:\n{context.browser.page_source}")
         raise
 
 @when(u'I visit "{url}"')
