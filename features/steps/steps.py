@@ -200,6 +200,18 @@ def step_impl(context, expected_path):
     
     assert actual_path == expected_path, f"Expected URL path to be '{expected_path}', but got '{actual_path}'"
 
+@then(u'I should see the Welsh validation message')
+def step_impl(context):
+    expected_text = "Yn anffodus, nid yw'r cyfeirnod unigryw yn ddilys"
+    try:
+        WebDriverWait(context.browser, 10).until(
+            EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{expected_text}')]"))
+        )
+    except TimeoutException:
+        print(f"Welsh validation message not found")
+        print(f"Current URL: {context.browser.current_url}")
+        raise AssertionError(f"Welsh validation message not found")
+
 @when(u'I check "{checkbox_name}"')
 def step_impl(context, checkbox_name):
     try:
