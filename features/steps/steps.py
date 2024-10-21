@@ -96,6 +96,17 @@ def step_impl(context, button_text):
     
     element.click()
 
+@then(u'I should see "{text}"')
+def step_impl(context, text):
+    try:
+        WebDriverWait(context.browser, 10).until(
+            EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{text}')]"))
+        )
+    except TimeoutException:
+        print(f"Text '{text}' not found on the page")
+        print(f"Current URL: {context.browser.current_url}")
+        raise AssertionError(f"Text '{text}' not found on the page")
+
 @then(u'I should not see "{text}"')
 def step_impl(context, text):
     assert text not in context.browser.page_source, f"Text '{text}' found in page source, but it shouldn't be there"

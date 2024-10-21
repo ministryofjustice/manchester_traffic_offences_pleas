@@ -12,4 +12,5 @@ def step_impl(context):
     except TimeoutException:
         print(f"Welsh validation message not found")
         print(f"Current URL: {context.browser.current_url}")
+        print(f"Page source:\n{context.browser.page_source}")
         raise AssertionError(f"Welsh validation message not found")
