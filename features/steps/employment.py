@@ -65,3 +65,24 @@ def step_impl(context):
         Then the browser's URL should be "plea/review/"
         And I should see "Review the information you've given before making your pleas."
     ''')
+
+@when(u'I enter "{value}" in "{field_name}"')
+def step_impl(context, value, field_name):
+    try:
+        # Try to find the field by ID first
+        field = WebDriverWait(context.browser, 10).until(
+            EC.presence_of_element_located((By.ID, f"id_{field_name}"))
+        )
+    except TimeoutException:
+        try:
+            # If not found by ID, try to find by name
+            field = WebDriverWait(context.browser, 10).until(
+                EC.presence_of_element_located((By.NAME, field_name))
+            )
+        except TimeoutException:
+            print(f"Field '{field_name}' not found by ID or name")
+            print(f"Current URL: {context.browser.current_url}")
+            raise
+
+    field.clear()
+    field.send_keys(value)
