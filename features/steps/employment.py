@@ -100,4 +100,5 @@ def step_impl(context):
     except TimeoutException:
         print(f"Text 'Which benefit do you receive?' not found on the page")
         print(f"Current URL: {context.browser.current_url}")
+        print(f"Page source: {context.browser.page_source}")
         raise AssertionError("Text 'Which benefit do you receive?' not found on the page")
