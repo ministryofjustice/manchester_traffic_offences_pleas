@@ -11,4 +11,4 @@ Feature: Handles welsh pleas for english courts
 
   Scenario: Valid english urn shouldn't work
     When I submit a valid english URN in welsh
-    Then I should see the Welsh validation message
+    Then I should see "Yn anffodus, nid yw’r cyfeirnod unigryw yn ddilys, ac nid yw’r system yn ei adnabod. Gallwch bledio yn Gymraeg os cyflawnwyd y drosedd yng Nghymru yn unig"

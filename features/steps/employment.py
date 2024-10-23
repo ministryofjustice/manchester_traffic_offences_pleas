@@ -23,11 +23,12 @@ def step_impl(context, type):
 
 @when(u'I submit my home pay amount')
 def step_impl(context):
+    actual_pay_amount = "4000"
     context.execute_steps(u'''
         When I choose "$pay_period" from "pay_period"
-        And I fill in "pay_amount" with "$pay_amount"
+        And I fill in "pay_amount" with "{0}"
         And I press "Continue"
-    ''')
+    '''.format(actual_pay_amount))
 
 
 @when(u'I choose no hardship')
@@ -100,5 +101,4 @@ def step_impl(context):
     except TimeoutException:
         print(f"Text 'Which benefit do you receive?' not found on the page")
         print(f"Current URL: {context.browser.current_url}")
-        print(f"Page source: {context.browser.page_source}")
         raise AssertionError("Text 'Which benefit do you receive?' not found on the page")
