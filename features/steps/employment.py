@@ -48,6 +48,15 @@ def step_impl(context, amount):
         EC.url_contains("plea/your_employment/")
     )
     
+    # Check for any error messages on the page
+    try:
+        error_message = WebDriverWait(context.browser, 5).until(
+            EC.presence_of_element_located((By.XPATH, "//div[@class='error-message']"))
+        )
+        print(f"Error message found: {error_message.text}")
+    except TimeoutException:
+        print("No error message found.")
+
     # Check if the amount is present on the page
     try:
         WebDriverWait(context.browser, 10).until(
@@ -66,3 +75,29 @@ def step_impl(context):
         And I should see "Review the information you've given before making your pleas."
     ''')
 
+
+@then(u'I should see "Which benefit do you receive?"')
+def step_impl(context):
+    # Wait for the page to load
+    WebDriverWait(context.browser, 10).until(
+        EC.url_contains("plea/your_employment/")
+    )
+    
+    # Check for any error messages on the page
+    try:
+        error_message = WebDriverWait(context.browser, 5).until(
+            EC.presence_of_element_located((By.XPATH, "//div[@class='error-message']"))
+        )
+        print(f"Error message found: {error_message.text}")
+    except TimeoutException:
+        print("No error message found.")
+
+    # Check if the expected text is present on the page
+    try:
+        WebDriverWait(context.browser, 10).until(
+            EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'Which benefit do you receive?')]"))
+        )
+    except TimeoutException:
+        print(f"Text 'Which benefit do you receive?' not found on the page")
+        print(f"Current URL: {context.browser.current_url}")
+        raise AssertionError("Text 'Which benefit do you receive?' not found on the page")

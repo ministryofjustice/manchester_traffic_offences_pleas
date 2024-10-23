@@ -4,16 +4,15 @@ Feature: Review and submit a plea
     Given I have validated a personal URN
     And I have submitted my personal information
     And I have pleaded guilty to both charges
-    And I have submitted my employment details
 
   Scenario: Submit plea with confirmation
     Given I have entered my personal details
       | first_name | last_name | email           | contact_number |
-      | John       | Doe       | john@example.com| 1234567890     |
+      | John       | Doe       | john.doe@example.com| 1234567890     |
     And I have submitted my employment details
     When I confirm and submit my plea
     Then my details should match
-    And I should see the confirmation page
+    And I should receive the confirmation email
 
   @local
   Scenario: Confirmation and court emails sent

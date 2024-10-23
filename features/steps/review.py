@@ -75,6 +75,7 @@ def step_impl(context):
 
 @then(u'I should receive the confirmation email')
 def step_impl(context):
+    print(f"Debug: Email in context is {context.email}")  # Debugging line
     context.execute_steps(u'''
         Then I should receive an email at "{}" with subject "Online plea submission confirmation"
     '''.format(context.email))
