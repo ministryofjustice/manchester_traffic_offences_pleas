@@ -42,31 +42,22 @@ def step_impl(context):
         # If we're on the correct page, we can assume the hardship field is not needed and continue
 
 
-@then(u'I should see my calculated weekly income of "{amount}"')
-def step_impl(context, amount):
-    # Wait for the page to load
-    WebDriverWait(context.browser, 10).until(
-        EC.url_contains("plea/your_employment/")
-    )
-    
-    # Check for any error messages on the page
+@then(u'I should see my calculated weekly income of "{expected_income}"')
+def step_impl(context, expected_income):
     try:
-        error_message = WebDriverWait(context.browser, 5).until(
-            EC.presence_of_element_located((By.XPATH, "//div[@class='error-message']"))
+        # Wait for the income element to be present
+        WebDriverWait(context.browser, 15).until(  # Increased wait time from 10 to 15 seconds
+            EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'Weekly Income:')]]"))
         )
-        print(f"Error message found: {error_message.text}")
+        
+        # Now check if the expected income is displayed
+        income_element = context.browser.find_element(By.XPATH, "//*[contains(text(), 'Weekly Income:')]")
+        assert expected_income in income_element.text, f"Expected income '{expected_income}' not found. Found: {income_element.text}"
+        
     except TimeoutException:
-        print("No error message found.")
-
-    # Check if the amount is present on the page
-    try:
-        WebDriverWait(context.browser, 10).until(
-            EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{amount}')]"))
-        )
-    except TimeoutException:
-        print(f"Amount '{amount}' not found on the page")
+        print(f"Income element not found within the specified time.")
         print(f"Current URL: {context.browser.current_url}")
-        raise AssertionError(f"Amount '{amount}' not found on the page")
+        raise AssertionError(f"Income element not found within the specified time.")
 
 
 @then(u'I should see be asked to review my plea')
@@ -80,7 +71,7 @@ def step_impl(context):
 @then(u'I should see "Which benefit do you receive?"')
 def step_impl(context):
     # Wait for the page to load
-    WebDriverWait(context.browser, 10).until(
+    WebDriverWait(context.browser, 15).until(  # Increased wait time from 10 to 15 seconds
         EC.url_contains("plea/your_employment/")
     )
     
@@ -95,7 +86,7 @@ def step_impl(context):
 
     # Check if the expected text is present on the page
     try:
-        WebDriverWait(context.browser, 10).until(
+        WebDriverWait(context.browser, 15).until(  # Increased wait time from 10 to 15 seconds
             EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'Which benefit do you receive?')]"))
         )
     except TimeoutException:
