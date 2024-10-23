@@ -47,7 +47,7 @@ def step_impl(context, expected_income):
     try:
         # Wait for the income element to be present
         WebDriverWait(context.browser, 15).until(  # Increased wait time from 10 to 15 seconds
-            EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'Weekly Income:')]]"))
+            EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'Weekly Income:')]"))  # Fixed XPath
         )
         
         # Now check if the expected income is displayed
@@ -62,6 +62,10 @@ def step_impl(context, expected_income):
 
 @then(u'I should see be asked to review my plea')
 def step_impl(context):
+    # Ensure context.email is set before accessing it
+    if not hasattr(context, 'email'):
+        raise AttributeError("Context does not have 'email' attribute set.")
+    
     context.execute_steps(u'''
         Then the browser's URL should be "plea/review/"
         And I should see "Review the information you've given before making your pleas."
