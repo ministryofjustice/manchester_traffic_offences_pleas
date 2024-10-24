@@ -92,9 +92,17 @@ def step_impl(context):
     
     persona = context.persona
     messages = context.mail.messages_for_user(persona['email'])
+    
+    # Check if messages are retrieved
+    if not messages:
+        raise AssertionError("No messages found for the user.")
+
     text = str(messages[0])
+    print(f"Debug: Email content: {text}")  # Print the email content for debugging
+
+    # Check for the expected URN in the email content
     assert 'Your online pleas have been submitted' in text
-    assert 'Your URN: {}'.format(persona['urn']) in text
+    assert 'Your URN: {}'.format(persona['urn']) in text, f"Expected URN '{persona['urn']}' not found in email content."
 
 
 @then(u'police should receive confirmation email')
