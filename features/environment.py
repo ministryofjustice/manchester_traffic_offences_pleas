@@ -100,15 +100,7 @@ def before_scenario(context, scenario):
     # Initialize the mail context
     context.mail = MockMail()
     context.email = "test@example.com"
-    context.personas = {
-        'John': {
-            'first_name': 'John',
-            'last_name': 'Doe',
-            'email': context.email,
-            'urn': '00/FF/12345/60'
-        }
-    }
-    context.persona = context.personas['John']
+    context.persona = PERSONAS['John']
     context.execute_steps(u'''
         Given a browser
     ''')
@@ -119,7 +111,7 @@ def after_scenario(context, scenario):
 
 @given(u'"John" as the persona')
 def step_impl(context):
-    context.persona = context.personas['John']
+    context.persona = PERSONAS['John']
 
 @given(u'a browser')
 def step_impl(context):

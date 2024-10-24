@@ -173,7 +173,15 @@ def step_impl(context, option, select_name):
 
 @when(u'I enter my name and contact details')
 def step_impl(context):
-    persona = context.persona
+    persona = context.persona  # Access the persona from context
+
+    # Debugging output to check the contents of persona
+    print(f"Debug: Persona details: {persona}")  # Print the persona for debugging
+
+    # Ensure that the required keys are present
+    if 'contact_number' not in persona:
+        raise KeyError("contact_number not found in persona")
+
     context.execute_steps(u'''
         When I fill in "first_name" with "{}"
         And I fill in "last_name" with "{}"
