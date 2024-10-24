@@ -80,6 +80,11 @@ def step_impl(context):
         context.email = "default@example.com"  # Set a default email or handle appropriately
         print("Warning: context.email was not set. Using default email.")
 
+    # Ensure context.mail is set before accessing it
+    if not hasattr(context, 'mail'):
+        print("Error: context.mail is not set. Please ensure the mail context is initialized.")
+        raise AssertionError("Mail context is not initialized.")
+
     print(f"Debug: Email in context is {context.email}")  # Debugging line
     context.execute_steps(u'''
         Then I should receive an email at "{}" with subject "Online plea submission confirmation"
