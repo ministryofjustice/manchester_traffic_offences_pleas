@@ -97,8 +97,8 @@ def after_all(context):
         context.browser.quit()
 
 def before_scenario(context, scenario):
-    context.mail = MockMail()
-    context.email = "default@example.com"
+    context.mail = "test@example.com"
+    context.email = "test@example.com"
     context.personas = PERSONAS
     context.persona = context.personas['John']
     context.execute_steps(u'''
@@ -118,12 +118,3 @@ def step_impl(context):
     context.browser = webdriver.Chrome(**context.browser_args)
     context.browser.implicitly_wait(10)  # Wait up to 10 seconds for elements to appear
 
-class MockMail:
-    def messages_for_user(self, email):
-        # Return a list of mock messages
-        return [
-            {
-                'subject': 'Online plea submission confirmation',
-                'body': 'Your online pleas have been submitted. Your URN: 123456'
-            }
-        ]
