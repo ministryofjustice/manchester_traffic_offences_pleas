@@ -97,9 +97,17 @@ def after_all(context):
         context.browser.quit()
 
 def before_scenario(context, scenario):
-    context.mail = "test@example.com"
+    # Initialize the mail context
+    context.mail = MockMail()
     context.email = "test@example.com"
-    context.personas = PERSONAS
+    context.personas = {
+        'John': {
+            'first_name': 'John',
+            'last_name': 'Doe',
+            'email': context.email,
+            'urn': '00/FF/12345/60'
+        }
+    }
     context.persona = context.personas['John']
     context.execute_steps(u'''
         Given a browser
@@ -118,3 +126,12 @@ def step_impl(context):
     context.browser = webdriver.Chrome(**context.browser_args)
     context.browser.implicitly_wait(10)  # Wait up to 10 seconds for elements to appear
 
+class MockMail:
+    def __init__(self):
+        self.sent_emails = []
+
+    def messages_for_user(self, email):
+        return [email for email in self.sent_emails if email['to'] == email]
+
+    def send_email(self, to, subject, body):
+        self.sent_emails.append({'to': to, 'subject': subject, 'body': body})

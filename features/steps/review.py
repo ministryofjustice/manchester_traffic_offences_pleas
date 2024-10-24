@@ -78,7 +78,6 @@ def step_impl(context):
     # Ensure context.email is set before accessing it
     if not hasattr(context, 'email'):
         context.email = "default@example.com"  # Set a default email or handle appropriately
-        print("Warning: context.email was not set. Using default email.")
 
     # Ensure context.mail is set before accessing it
     if not hasattr(context, 'mail'):
@@ -91,13 +90,13 @@ def step_impl(context):
     '''.format(context.email))
     
     persona = context.persona
-    messages = context.mail.messages_for_user(persona['email'])
-    
+    messages = context.mail.messages_for_user(context.email)  # Ensure this is the correct email
+
     # Check if messages are retrieved
     if not messages:
         raise AssertionError("No messages found for the user.")
 
-    text = str(messages[0])
+    text = str(messages[0])  # Assuming messages is a list of dicts
     print(f"Debug: Email content: {text}")  # Print the email content for debugging
 
     # Check for the expected URN in the email content
@@ -154,3 +153,4 @@ def step_impl(context, email, subject):
         print(f"Error checking email: {str(e)}")
         print(f"Received messages: {messages}")
         raise
+
