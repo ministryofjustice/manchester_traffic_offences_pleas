@@ -44,6 +44,6 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {
 #
 # Override in your environment.
 #
-SECRET_KEY = os.environ.get("SECRET_KEY", "***REMOVED***")
+SECRET_KEY = os.environ.get("SECRET_KEY", "*** REMOVED ***")
 
 STORE_USER_DATA = False

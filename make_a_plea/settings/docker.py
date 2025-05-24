@@ -46,7 +46,7 @@ RATE_LIMIT = os.environ.get("RATE_LIMIT", "120/m")
 #
 # Override in your environment.
 #
-SECRET_KEY = os.environ.get("SECRET_KEY", "***REMOVED***")
+SECRET_KEY = os.environ.get("SECRET_KEY", "*** REMOVED ***")
 
 STORE_USER_DATA = os.environ.get("STORE_USER_DATA", True)
 
